@@ -1,0 +1,173 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - backend/**
+      - frontend/**
+      - Dockerfile
+      - .dockerignore
+      - scripts/image-fingerprint.sh
+      - k8s/**
+      - .github/workflows/build-and-deploy.yaml
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: "Git ref or commit SHA to build. Leave blank to build the dispatch revision."
+        required: false
+        type: string
+
+permissions:
+  id-token: write
+  contents: write
+
+concurrency:
+  group: build-and-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build image, push, bump Helm values tag
+    if: github.event_name == 'workflow_dispatch' || vars.ARM_CLIENT_ID != ''
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+    env:
+      REGISTRY: romainecr.azurecr.io
+      IMAGE: crenellation
+    # The backend smoke-test (npm test) exercises the Postgres-backed
+    # persistence endpoints, so the test job needs a real Postgres.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: crenellation
+          POSTGRES_PASSWORD: crenellation
+          POSTGRES_DB: crenellation
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U crenellation"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve requested ref
+        env:
+          INPUT_REF: ${{ inputs.git_ref }}
+        run: |
+          set -euo pipefail
+          git fetch --force --tags origin '+refs/heads/*:refs/remotes/origin/*'
+          target_ref="${INPUT_REF:-$GITHUB_SHA}"
+          if full_sha="$(git rev-parse --verify "${target_ref}^{commit}" 2>/dev/null)"; then
+            :
+          elif git show-ref --verify --quiet "refs/remotes/origin/${target_ref}"; then
+            full_sha="$(git rev-parse "refs/remotes/origin/${target_ref}^{commit}")"
+          elif git show-ref --verify --quiet "refs/tags/${target_ref}"; then
+            full_sha="$(git rev-parse "refs/tags/${target_ref}^{commit}")"
+          else
+            echo "::error::Unable to resolve git_ref '${target_ref}' to a commit."
+            exit 1
+          fi
+          git checkout --detach "$full_sha"
+          echo "Resolved ${target_ref} -> ${full_sha}"
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Test app
+        working-directory: backend
+        env:
+          DATABASE_URL: postgres://crenellation:crenellation@localhost:5432/crenellation
+        run: |
+          npm ci
+          npm test
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.ARM_CLIENT_ID }}
+          tenant-id: ${{ vars.ARM_TENANT_ID }}
+          subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Compute image fingerprint
+        id: fingerprint
+        shell: bash
+        run: |
+          set -euo pipefail
+          output="$(mktemp)"
+          scripts/image-fingerprint.sh \
+            --image app \
+            --dockerfile Dockerfile \
+            --context . \
+            --paths 'Dockerfile .dockerignore backend frontend' \
+            | tee "${output}"
+          tag="$(awk -F= '$1 == "proof_tag" { print $2 }' "${output}")"
+          test -n "${tag}" || { echo "::error::image fingerprint did not emit proof_tag"; exit 1; }
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+          echo "Built ref $(git rev-parse HEAD) as ${REGISTRY}/${IMAGE}:${tag}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Login to ACR
+        run: az acr login --name romainecr
+
+      - name: Check existing image tag
+        id: image
+        shell: bash
+        run: |
+          set -euo pipefail
+          if az acr repository show-tags \
+              --name romainecr \
+              --repository "${IMAGE}" \
+              --query "[?@=='${TAG}'] | [0]" \
+              --output tsv | grep -qx "${TAG}"; then
+            echo "target_exists=true" >>"${GITHUB_OUTPUT}"
+          else
+            echo "target_exists=false" >>"${GITHUB_OUTPUT}"
+          fi
+
+      - name: Build and push image
+        if: steps.image.outputs.target_exists != 'true'
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ env.TAG }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE }}-build-cache:app
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE }}-build-cache:app,mode=max
+
+      - name: Bump image tag in k8s/values.yaml
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          # Quote the tag so YAML never reinterprets image tag characters.
+          sed -i "s|^  tag: .*|  tag: \"${TAG}\"|" k8s/values.yaml
+          grep -qx "  tag: \"${TAG}\"" k8s/values.yaml \
+            || { echo "::error::k8s/values.yaml image tag was not updated"; exit 1; }
+
+      - name: Commit and push tag bump
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s/values.yaml
+          if git diff --cached --quiet; then
+            echo "No image tag changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: bump crenellation image to fingerprint ${{ env.TAG }} [skip ci]"
+          git push origin HEAD:main

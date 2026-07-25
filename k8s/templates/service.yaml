@@ -1,15 +1,15 @@
-{{- if eq (include "chess-tactics.renderHot" .) "true" }}
+{{- if eq (include "crenellation.renderHot" .) "true" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "chess-tactics.resourceName" . }}
-  namespace: {{ include "chess-tactics.namespace" . }}
+  name: {{ include "crenellation.resourceName" . }}
+  namespace: {{ include "crenellation.namespace" . }}
   labels:
-    app: {{ include "chess-tactics.resourceName" . }}
+    app: {{ include "crenellation.resourceName" . }}
 spec:
   type: ClusterIP
   selector:
-    app: {{ include "chess-tactics.resourceName" . }}
+    app: {{ include "crenellation.resourceName" . }}
   ports:
     - name: http
       port: 80
@@ -18,6 +18,6 @@ spec:
       # guarded because the helper lives in the vendored partial (absent on
       # non-preview renders); the disabled branch keeps normal / validation
       # renders targeting "http" unchanged.
-      targetPort: {{ if .Values.livePreview.enabled }}{{ include "live-preview-edge.servedPortName" (dict "spec" .Values.livePreview "appPortName" (include "chess-tactics.appPortName" .)) }}{{ else }}http{{ end }}
+      targetPort: {{ if .Values.livePreview.enabled }}{{ include "live-preview-edge.servedPortName" (dict "spec" .Values.livePreview "appPortName" (include "crenellation.appPortName" .)) }}{{ else }}http{{ end }}
       protocol: TCP
 {{- end }}

@@ -1,4 +1,4 @@
-{{- if and (eq (include "chess-tactics.isTestEnv" .) "true") (eq (include "chess-tactics.renderHot" .) "true") }}
+{{- if and (eq (include "crenellation.isTestEnv" .) "true") (eq (include "crenellation.renderHot" .) "true") }}
 # Ephemeral, in-cluster Postgres for a Glimmung test slot ONLY. Prod uses the
 # Azure Database for PostgreSQL provisioned by tofu/ and reached passwordless via
 # workload identity; a slot can't federate to that UAMI (its ServiceAccount
@@ -9,19 +9,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "chess-tactics.resourceName" . }}-postgres
-  namespace: {{ include "chess-tactics.namespace" . }}
+  name: {{ include "crenellation.resourceName" . }}-postgres
+  namespace: {{ include "crenellation.namespace" . }}
   labels:
-    app: {{ include "chess-tactics.resourceName" . }}-postgres
+    app: {{ include "crenellation.resourceName" . }}-postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ include "chess-tactics.resourceName" . }}-postgres
+      app: {{ include "crenellation.resourceName" . }}-postgres
   template:
     metadata:
       labels:
-        app: {{ include "chess-tactics.resourceName" . }}-postgres
+        app: {{ include "crenellation.resourceName" . }}-postgres
     spec:
       containers:
         - name: postgres
@@ -60,13 +60,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "chess-tactics.resourceName" . }}-postgres
-  namespace: {{ include "chess-tactics.namespace" . }}
+  name: {{ include "crenellation.resourceName" . }}-postgres
+  namespace: {{ include "crenellation.namespace" . }}
   labels:
-    app: {{ include "chess-tactics.resourceName" . }}-postgres
+    app: {{ include "crenellation.resourceName" . }}-postgres
 spec:
   selector:
-    app: {{ include "chess-tactics.resourceName" . }}-postgres
+    app: {{ include "crenellation.resourceName" . }}-postgres
   ports:
     - name: postgres
       port: 5432

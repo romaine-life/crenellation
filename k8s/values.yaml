@@ -2,15 +2,15 @@
 # .github/workflows/build-and-deploy.yaml on every push to main (via sed on
 # this file).
 image:
-  repository: romainecr.azurecr.io/chess-tactics
+  repository: romainecr.azurecr.io/crenellation
   # Quoted so YAML never reinterprets image tag characters.
   tag: "app-3441b69f7f4b1aec611e0c36ed7152952bf9f753f178f408350b584fec3c420e"
   pullPolicy: IfNotPresent
 
-name: chess-tactics
-namespace: chess-tactics
+name: crenellation
+namespace: crenellation
 
-hostname: chess.romaine.life
+hostname: crenellation.romaine.life
 
 # normal = full app (prod, what ArgoCD renders).
 # warm   = preliminary test-slot scaffolding only (SA, cert, route, listener).
@@ -31,7 +31,7 @@ testEnv:
 # this chart's charts/live-preview-edge/ at provision time (published as an
 # in-cluster ConfigMap — this chart declares NO Helm dependency and commits NO
 # copy of the partial; ACR Basic SKU rules out an oci:// dependency). The partial
-# then runs the generic edge in front of chess-tactics' backend: the edge becomes
+# then runs the generic edge in front of crenellation' backend: the edge becomes
 # the served port, the app backend listens internally on :3000 (loopback
 # upstream), and the edge serves the dev's pushed frontend override-first /
 # fresh-passthrough. Glimmung --sets image/upstream/authorizedSubject/
@@ -45,7 +45,7 @@ livePreview:
   enabled: false
   image:
     repository: romainecr.azurecr.io/glimmung-live-preview-edge
-    # Empty by default — there is NO floating ":edge" default. chess-tactics does
+    # Empty by default — there is NO floating ":edge" default. crenellation does
     # not own the edge-image lockstep (Glimmung does); the preview provision
     # --sets the fingerprint tag from the control plane's Settings. An empty tag
     # with enabled=true is a hard render error (the partial `required`s it), so a
@@ -55,12 +55,12 @@ livePreview:
   port: 8080
   servedPortName: http
   upstream:
-    # chess-tactics' backend listens internally on :3000 (== live_preview
+    # crenellation' backend listens internally on :3000 (== live_preview
     # backend_port); the edge fronts it over loopback.
     url: "http://127.0.0.1:3000"
   # Request path prefixes always reverse-proxied to the backend (the stable API
   # + health stay reachable through the edge regardless of override state).
-  # chess-tactics' backend serves /api/* and /health; everything else is
+  # crenellation' backend serves /api/* and /health; everything else is
   # frontend served override-first / fresh-passthrough.
   backendPrefixes:
     - /api
@@ -77,18 +77,18 @@ livePreview:
 # a federated token. Test slots use an ephemeral in-cluster Postgres and do not
 # federate. (BGM tracks stay public-read; the playlist listing reuses this same
 # workload identity — Storage Blob Data Reader on the media account.)
-serviceAccount: chess-tactics
+serviceAccount: crenellation
 
-# Workload-identity client id of the chess-tactics-identity UAMI (tofu output
+# Workload-identity client id of the crenellation-identity UAMI (tofu output
 # `app_identity_client_id`). That UAMI is the Postgres server's Entra admin. Copy
 # the value in after the first `tofu apply`; while empty the SA is left
 # un-annotated and prod persistence returns 503 until it is pinned — the game
 # itself still serves.
-serviceAccountClientId: "f9efb041-8b45-4cba-8f79-6a9546f73da1"
+serviceAccountClientId: "a8aedc74-987b-450f-82a3-2d6421ebe0fc"
 
-# Azure Database for PostgreSQL — the durable game/design document store
-# (levels, campaigns, campaign workspaces, design portfolios). Art assets are
-# committed files, not database rows. Provisioned by tofu/ (postgres.tf +
+# Azure Database for PostgreSQL — the durable game document store (maps,
+# profiles, in-progress battles). Asset bytes live in the crenellationmedia
+# storage account, never in git or database rows. Provisioned by tofu/ (postgres.tf +
 # identity.tf). host/database/user are deterministic from tofu and pre-filled;
 # confirm against the outputs after apply:
 #   host     <- terraform output postgres_fqdn
@@ -96,29 +96,29 @@ serviceAccountClientId: "f9efb041-8b45-4cba-8f79-6a9546f73da1"
 #   user     <- terraform output app_identity_name
 # None of these are secrets — auth is the workload-identity AAD token.
 postgres:
-  host: "chess-tactics-pg.postgres.database.azure.com"
-  database: "chess_tactics"
-  user: "chess-tactics-identity"
+  host: "crenellation-pg.postgres.database.azure.com"
+  database: "crenellation"
+  user: "crenellation-identity"
   # Throwaway in-cluster Postgres for test slots only (password mode); never used
   # in prod. Data lives on emptyDir and dies with the slot.
   testSlot:
     image: postgres:16-alpine
-    user: chess_tactics
-    password: chess_tactics
-    database: chess_tactics
+    user: crenellation
+    password: crenellation
+    database: crenellation
 
 # Background music: public blob container base URL provisioned by tofu/
-# (storage account `chesstacticsmedia`, container `bgm`). The backend LISTS this
+# (storage account `crenellationmedia`, container `bgm`). The backend LISTS this
 # container (each blob's metadata -> title/artist/album) to serve /api/bgm; tracks
 # stream from <baseUrl>/<file>. Empty disables BGM (e.g. before it is populated).
 bgm:
-  baseUrl: "https://chesstacticsmedia.blob.core.windows.net/bgm"
+  baseUrl: "https://crenellationmedia.blob.core.windows.net/bgm"
 
 ingress:
   gatewayName: main
   gatewayNamespace: envoy-gateway-system
   certIssuer: letsencrypt-prod
-  tlsSecret: chess-tactics-tls
+  tlsSecret: crenellation-tls
 
 # ADR-0038: comma-separated allowlist of emails allowed to publish the global
 # OFFICIAL campaign tier (backend requireAdmin). Fail-closed when empty; not a secret.

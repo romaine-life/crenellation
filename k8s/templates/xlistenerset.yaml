@@ -1,9 +1,9 @@
-{{- if eq (include "chess-tactics.renderWarm" .) "true" }}
+{{- if eq (include "crenellation.renderWarm" .) "true" }}
 apiVersion: gateway.networking.x-k8s.io/v1alpha1
 kind: XListenerSet
 metadata:
-  name: {{ include "chess-tactics.resourceName" . }}
-  namespace: {{ include "chess-tactics.namespace" . }}
+  name: {{ include "crenellation.resourceName" . }}
+  namespace: {{ include "crenellation.namespace" . }}
 spec:
   parentRef:
     group: gateway.networking.k8s.io

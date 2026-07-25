@@ -1,11 +1,11 @@
-{{- if eq (include "chess-tactics.renderHot" .) "true" }}
+{{- if eq (include "crenellation.renderHot" .) "true" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "chess-tactics.resourceName" . }}
-  namespace: {{ include "chess-tactics.namespace" . }}
+  name: {{ include "crenellation.resourceName" . }}
+  namespace: {{ include "crenellation.namespace" . }}
   labels:
-    app: {{ include "chess-tactics.resourceName" . }}
+    app: {{ include "crenellation.resourceName" . }}
 spec:
   # Single serving pod. When livePreview is enabled the live-preview-edge.replicas
   # helper returns 1 and FAILS the render on requested>1 (a per-pod emptyDir
@@ -16,7 +16,7 @@ spec:
   replicas: {{ if .Values.livePreview.enabled }}{{ include "live-preview-edge.replicas" (dict "spec" .Values.livePreview "requested" 1) }}{{ else }}1{{ end }}
   selector:
     matchLabels:
-      app: {{ include "chess-tactics.resourceName" . }}
+      app: {{ include "crenellation.resourceName" . }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -25,8 +25,8 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ include "chess-tactics.resourceName" . }}
-        {{- if and (ne (include "chess-tactics.isTestEnv" .) "true") .Values.serviceAccountClientId }}
+        app: {{ include "crenellation.resourceName" . }}
+        {{- if and (ne (include "crenellation.isTestEnv" .) "true") .Values.serviceAccountClientId }}
         # Triggers the azure-workload-identity webhook to project a federated
         # token for passwordless Postgres (Entra) auth. Prod only.
         azure.workload.identity/use: "true"
@@ -34,7 +34,7 @@ spec:
     spec:
       serviceAccountName: {{ .Values.serviceAccount }}
       containers:
-        - name: {{ include "chess-tactics.resourceName" . }}
+        - name: {{ include "crenellation.resourceName" . }}
           {{- $imageTag := .Values.image.tag | toString }}
           {{- $imageRef := ternary $imageTag (printf "%s:%s" .Values.image.repository $imageTag) (contains "/" $imageTag) }}
           image: {{ $imageRef | quote }}
@@ -53,10 +53,10 @@ spec:
             - name: BGM_BASE_URL
               value: {{ .Values.bgm.baseUrl | quote }}
             {{- end }}
-            {{- if eq (include "chess-tactics.isTestEnv" .) "true" }}
+            {{- if eq (include "crenellation.isTestEnv" .) "true" }}
             # Test slot: ephemeral in-cluster Postgres (password mode, throwaway).
             - name: DATABASE_URL
-              value: {{ printf "postgres://%s:%s@%s-postgres:5432/%s" .Values.postgres.testSlot.user .Values.postgres.testSlot.password (include "chess-tactics.resourceName" .) .Values.postgres.testSlot.database | quote }}
+              value: {{ printf "postgres://%s:%s@%s-postgres:5432/%s" .Values.postgres.testSlot.user .Values.postgres.testSlot.password (include "crenellation.resourceName" .) .Values.postgres.testSlot.database | quote }}
             {{- else }}
             # Prod: Azure Database for PostgreSQL, passwordless via workload
             # identity. The backend presents a fresh AAD token as the password
@@ -71,11 +71,11 @@ spec:
           ports:
             # When a live-preview edge fronts the backend, the edge owns the
             # "http" served port and the backend's own port is renamed to an
-            # internal name (chess-tactics.appPortName) to avoid a duplicate port
+            # internal name (crenellation.appPortName) to avoid a duplicate port
             # name in the pod. The container port NUMBER (3000) is unchanged, so
             # the edge's loopback upstream still targets :3000, and probes still
             # hit the backend directly. Disabled → name stays "http" (identical).
-            - name: {{ include "chess-tactics.appPortName" . }}
+            - name: {{ include "crenellation.appPortName" . }}
               containerPort: 3000
           resources:
             requests:
@@ -87,19 +87,19 @@ spec:
           startupProbe:
             httpGet:
               path: /health
-              port: {{ include "chess-tactics.appPortName" . }}
+              port: {{ include "crenellation.appPortName" . }}
             periodSeconds: 5
             failureThreshold: 10
           readinessProbe:
             httpGet:
               path: /health
-              port: {{ include "chess-tactics.appPortName" . }}
+              port: {{ include "crenellation.appPortName" . }}
             periodSeconds: 10
             failureThreshold: 3
           livenessProbe:
             httpGet:
               path: /health
-              port: {{ include "chess-tactics.appPortName" . }}
+              port: {{ include "crenellation.appPortName" . }}
             periodSeconds: 30
             failureThreshold: 3
         {{- /*

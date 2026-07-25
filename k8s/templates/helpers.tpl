@@ -1,4 +1,4 @@
-{{- define "chess-tactics.renderMode" -}}
+{{- define "crenellation.renderMode" -}}
 {{- $mode := .Values.renderMode | default "normal" -}}
 {{- if not (has $mode (list "normal" "warm" "hot")) -}}
 {{- fail (printf "renderMode must be one of: normal, warm, hot; got %q" $mode) -}}
@@ -6,31 +6,31 @@
 {{- $mode -}}
 {{- end -}}
 
-{{- define "chess-tactics.isTestEnv" -}}
-{{- $mode := include "chess-tactics.renderMode" . -}}
+{{- define "crenellation.isTestEnv" -}}
+{{- $mode := include "crenellation.renderMode" . -}}
 {{- if or (eq $mode "warm") (eq $mode "hot") -}}true{{- else -}}false{{- end -}}
 {{- end -}}
 
-{{- define "chess-tactics.renderWarm" -}}
-{{- $mode := include "chess-tactics.renderMode" . -}}
+{{- define "crenellation.renderWarm" -}}
+{{- $mode := include "crenellation.renderMode" . -}}
 {{- if or (eq $mode "normal") (eq $mode "warm") -}}true{{- else -}}false{{- end -}}
 {{- end -}}
 
-{{- define "chess-tactics.renderHot" -}}
-{{- $mode := include "chess-tactics.renderMode" . -}}
+{{- define "crenellation.renderHot" -}}
+{{- $mode := include "crenellation.renderMode" . -}}
 {{- if or (eq $mode "normal") (eq $mode "hot") -}}true{{- else -}}false{{- end -}}
 {{- end -}}
 
-{{- define "chess-tactics.resourceName" -}}
-{{- if eq (include "chess-tactics.isTestEnv" .) "true" -}}
+{{- define "crenellation.resourceName" -}}
+{{- if eq (include "crenellation.isTestEnv" .) "true" -}}
 {{- required "testEnv.slotName is required when renderMode is warm or hot" .Values.testEnv.slotName -}}
 {{- else -}}
-{{- .Values.name | default "chess-tactics" -}}
+{{- .Values.name | default "crenellation" -}}
 {{- end -}}
 {{- end -}}
 
-{{- define "chess-tactics.namespace" -}}
-{{- if eq (include "chess-tactics.isTestEnv" .) "true" -}}
+{{- define "crenellation.namespace" -}}
+{{- if eq (include "crenellation.isTestEnv" .) "true" -}}
 {{- .Release.Namespace -}}
 {{- else -}}
 {{- .Values.namespace | default .Release.Namespace -}}
@@ -38,7 +38,7 @@
 {{- end -}}
 
 {{/*
-chess-tactics.appPortName — the backend container's served port name. When a
+crenellation.appPortName — the backend container's served port name. When a
 live-preview edge fronts the backend (livePreview.enabled), the edge owns the
 "http" served port, so the backend's own port is renamed to an internal name to
 avoid a duplicate port name in the pod; the Service then targets the edge via
@@ -47,6 +47,6 @@ prod / validation renders are byte-identical. This helper is defined locally
 (not in the vendored live-preview-edge partial) so it is always available, even
 on renders where the partial is absent (livePreview off).
 */}}
-{{- define "chess-tactics.appPortName" -}}
+{{- define "crenellation.appPortName" -}}
 {{- if .Values.livePreview.enabled -}}app-internal{{- else -}}http{{- end -}}
 {{- end -}}
