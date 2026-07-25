@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { execSync } from 'node:child_process';
-import { nineSliceDevSave } from './scripts/vite-nine-slice-plugin.mjs';
 
 // Stamp build/server provenance into the bundle so Settings → About can always
 // say exactly what's serving this page. In dev that's the WORKTREE + commit (the
@@ -107,5 +106,5 @@ function bgmDevMock() {
 }
 
 export default defineConfig({
-  plugins: [react(), buildInfo(), doodadCompositionSave(), nineSliceDevSave(), bgmDevMock()],
+  plugins: [react(), buildInfo(), doodadCompositionSave(), bgmDevMock()],
 });
