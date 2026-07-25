@@ -23,6 +23,12 @@ Ground rules settled at kickoff (don't relitigate):
 - Gameplay constants (phase timers, scoring) are placeholders in
   `frontend/src/rampart/phases.ts` pending extraction from the Rampart ROM —
   numbers only; no ripped art or audio (repo and site are public).
+- **Local dev is the live-db flow**: `devctl up crenellation-backend` (runs
+  `backend/dev-live.ps1` — pgadmin password from ng6-crenellation, straight to
+  the PROD `crenellation-pg`) plus `devctl up crenellation-frontend`; vite
+  proxies `/api` + `/health` to the backend (default 127.0.0.1:8100, override
+  `DEV_BACKEND_ORIGIN`). Requires your IP in tofu/postgres.tf
+  (`allow-nelson-workstation`).
 
 # Working in this repo
 
