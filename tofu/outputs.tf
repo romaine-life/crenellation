@@ -5,7 +5,7 @@
 
 output "postgres_fqdn" {
   value       = azurerm_postgresql_flexible_server.main.fqdn
-  description = "FQDN of the chess-tactics Postgres Flexible Server (the pod's POSTGRES_HOST)."
+  description = "FQDN of the crenellation Postgres Flexible Server (the pod's POSTGRES_HOST)."
 }
 
 output "postgres_database_name" {
@@ -20,5 +20,5 @@ output "app_identity_name" {
 
 output "app_identity_client_id" {
   value       = azurerm_user_assigned_identity.app.client_id
-  description = "client_id of chess-tactics-identity. Pin into k8s/values.yaml serviceAccountClientId; the app SA annotation azure.workload.identity/client-id uses it."
+  description = "client_id of crenellation-identity. Pin into k8s/values.yaml serviceAccountClientId; the app SA annotation azure.workload.identity/client-id uses it."
 }

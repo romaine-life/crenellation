@@ -1,7 +1,7 @@
 variable "media_storage_account_name" {
-  description = "Globally-unique name for the chess-tactics media storage account (3-24 lowercase alphanumeric)."
+  description = "Globally-unique name for the crenellation media storage account (3-24 lowercase alphanumeric)."
   type        = string
-  default     = "chesstacticsmedia"
+  default     = "crenellationmedia"
 
   validation {
     condition     = can(regex("^[a-z0-9]{3,24}$", var.media_storage_account_name))
@@ -10,7 +10,7 @@ variable "media_storage_account_name" {
 }
 
 variable "key_vault_name" {
-  description = "chess-tactics-owned Key Vault for app/ops secrets (per-app ng6-<app> convention)."
+  description = "crenellation-owned Key Vault for app/ops secrets (per-app ng6-<app> convention)."
   type        = string
-  default     = "ng6-chess-tactics"
+  default     = "ng6-crenellation"
 }

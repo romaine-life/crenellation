@@ -14,17 +14,17 @@
 # minus that account's 90-day delete-retention — BGM is permanent content, not
 # ephemeral PR evidence.
 
-# Dedicated resource group for chess-tactics' own Azure resources (app-owned
+# Dedicated resource group for crenellation's own Azure resources (app-owned
 # infra, narrow blast radius), placed alongside the shared infra RG.
-resource "azurerm_resource_group" "chess_tactics" {
-  name     = "chess-tactics"
+resource "azurerm_resource_group" "crenellation" {
+  name     = "crenellation"
   location = data.azurerm_resource_group.infra.location
 }
 
 resource "azurerm_storage_account" "media" {
   name                     = var.media_storage_account_name
-  resource_group_name      = azurerm_resource_group.chess_tactics.name
-  location                 = azurerm_resource_group.chess_tactics.location
+  resource_group_name      = azurerm_resource_group.crenellation.name
+  location                 = azurerm_resource_group.crenellation.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
@@ -36,8 +36,8 @@ resource "azurerm_storage_account" "media" {
   # blob cross-origin from JS, so a CORS rule would be dead config.
 
   tags = {
-    app       = "chess-tactics"
-    managedBy = "chess-tactics"
+    app       = "crenellation"
+    managedBy = "crenellation"
     purpose   = "game-media"
   }
 }
@@ -52,13 +52,13 @@ resource "azurerm_storage_container" "bgm" {
   container_access_type = "blob"
 }
 
-# chess-tactics' CI service principal (created by module.app_org["chess-tactics"]
+# crenellation's CI service principal (created by module.app_org["crenellation"]
 # in infra-bootstrap). Data-plane write lets the `sync-bgm-metadata` workflow
 # stamp each track's title/artist/album onto its blob as metadata (read from the
 # mp3's own ID3 tag). Tracks are added/removed in the container directly (portal /
 # Storage Explorer) — CI never uploads audio.
 data "azuread_service_principal" "ci" {
-  display_name = "chess-tactics"
+  display_name = "crenellation"
 }
 
 resource "azurerm_role_assignment" "bgm_metadata_writer" {
@@ -67,14 +67,7 @@ resource "azurerm_role_assignment" "bgm_metadata_writer" {
   principal_id         = data.azuread_service_principal.ci.object_id
 }
 
-# Renamed from bgm_uploader (the old upload pipeline is gone); same scope/role/
-# principal, so this is a no-op rename rather than a destroy+create.
-moved {
-  from = azurerm_role_assignment.bgm_uploader
-  to   = azurerm_role_assignment.bgm_metadata_writer
-}
-
-# The app pod's workload identity (chess-tactics-identity, identity.tf) builds
+# The app pod's workload identity (crenellation-identity, identity.tf) builds
 # /api/bgm by LISTING the container and reading each blob's metadata. Reader
 # includes list; the app never writes. This is the UAMI's only Azure data-plane
 # grant besides being the Postgres Entra admin.
@@ -86,7 +79,7 @@ resource "azurerm_role_assignment" "bgm_reader" {
 
 output "media_storage_account" {
   value       = azurerm_storage_account.media.name
-  description = "Storage account holding chess-tactics game media."
+  description = "Storage account holding crenellation game media."
 }
 
 output "bgm_container" {

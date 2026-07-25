@@ -1,5 +1,5 @@
 # ============================================================================
-# Workload identity for the chess-tactics app pod's Postgres access
+# Workload identity for the crenellation app pod's Postgres access
 # ============================================================================
 # The app authenticates to Azure Database for PostgreSQL passwordless: the pod
 # projects its ServiceAccount token, exchanges it (via this federated credential)
@@ -13,20 +13,20 @@
 # needs to talk to its own database.
 
 resource "azurerm_user_assigned_identity" "app" {
-  name                = "chess-tactics-identity"
-  resource_group_name = azurerm_resource_group.chess_tactics.name
-  location            = azurerm_resource_group.chess_tactics.location
+  name                = "crenellation-identity"
+  resource_group_name = azurerm_resource_group.crenellation.name
+  location            = azurerm_resource_group.crenellation.location
 }
 
 # Federated credential: trust SA tokens the AKS OIDC issuer signs for the
-# chess-tactics app ServiceAccount. The azure-workload-identity webhook projects
+# crenellation app ServiceAccount. The azure-workload-identity webhook projects
 # the token into the pod; DefaultAzureCredential exchanges it for this UAMI's
 # Entra token at connect time (see backend/db).
 resource "azurerm_federated_identity_credential" "app" {
-  name                = "aks-chess-tactics"
-  resource_group_name = azurerm_resource_group.chess_tactics.name
+  name                = "aks-crenellation"
+  resource_group_name = azurerm_resource_group.crenellation.name
   parent_id           = azurerm_user_assigned_identity.app.id
   audience            = ["api://AzureADTokenExchange"]
   issuer              = local.aks_oidc_issuer_url
-  subject             = "system:serviceaccount:chess-tactics:chess-tactics"
+  subject             = "system:serviceaccount:crenellation:crenellation"
 }

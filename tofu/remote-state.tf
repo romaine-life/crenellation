@@ -1,4 +1,4 @@
-# Shared infrastructure provisioned by infra-bootstrap. chess-tactics only needs
+# Shared infrastructure provisioned by infra-bootstrap. crenellation only needs
 # the shared resource group's location to place its own media resources; the rest
 # of the app's Azure surface is owned here.
 
@@ -11,7 +11,7 @@ data "azurerm_resource_group" "infra" {
 }
 
 # infra-bootstrap publishes the AKS OIDC issuer URL; the federated credential in
-# identity.tf trusts tokens this issuer signs. Read-only — chess-tactics writes
+# identity.tf trusts tokens this issuer signs. Read-only — crenellation writes
 # nothing to shared infra state.
 data "terraform_remote_state" "infra_bootstrap" {
   backend = "azurerm"
