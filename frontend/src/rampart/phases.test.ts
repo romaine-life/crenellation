@@ -14,9 +14,9 @@ describe('advancePhase', () => {
     state = advancePhase(state, PHASE_DURATIONS_MS.place).state;
     expect(state.phase).toBe('battle');
     state = advancePhase(state, PHASE_DURATIONS_MS.battle).state;
-    expect(state.phase).toBe('rebuild');
+    expect(state.phase).toBe('build');
     expect(state.round).toBe(1);
-    state = advancePhase(state, PHASE_DURATIONS_MS.rebuild).state;
+    state = advancePhase(state, PHASE_DURATIONS_MS.build).state;
     expect(state.phase).toBe('place');
     expect(state.round).toBe(2);
   });
@@ -25,7 +25,7 @@ describe('advancePhase', () => {
     const dt = PHASE_DURATIONS_MS.place + PHASE_DURATIONS_MS.battle + 100;
     const { state, changed } = advancePhase(createPhaseState(), dt);
     expect(changed).toBe(true);
-    expect(state.phase).toBe('rebuild');
-    expect(state.remainingMs).toBe(PHASE_DURATIONS_MS.rebuild - 100);
+    expect(state.phase).toBe('build');
+    expect(state.remainingMs).toBe(PHASE_DURATIONS_MS.build - 100);
   });
 });

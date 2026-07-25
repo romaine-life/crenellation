@@ -10,7 +10,7 @@ image:
 name: crenellation
 namespace: crenellation
 
-hostname: crenellation.romaine.life
+hostname: rampart.romaine.life
 
 # normal = full app (prod, what ArgoCD renders).
 # warm   = preliminary test-slot scaffolding only (SA, cert, route, listener).

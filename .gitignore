@@ -26,3 +26,7 @@ tmp-shots/
 # Binary assets live in the crenellationmedia storage account, not git.
 # Local copies (untracked) keep the dev server working during the port.
 frontend/public/assets/
+
+# Rampart ROM + extraction workspace — local study only, never committed.
+/rampart.zip
+/romlab/
