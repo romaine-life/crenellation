@@ -1,0 +1,29 @@
+{
+  "note": "Where each UI-kit asset is actually used on a real screen — MANUALLY audited. The catalog/manifest only LIST assets; appearing there is not usage. An asset in `orphans` is referenced by no live screen. Re-audit when wiring/unwiring assets. Last audited 2026-06-27, after removing all Settings content-row icons.",
+  "usedOn": {
+    "gear": "Settings rail tab — General; Skirmish HUD Settings button (shared carved settings gear)",
+    "speaker": "Settings rail tab — Audio",
+    "knight": "Settings rail tab — Gameplay",
+    "wrench": "Settings rail tab — Creator Tools",
+    "brand-shield": "Brand lockup (Settings, Skirmish, Campaign editor)",
+    "crown": "Campaign editor — faction shields",
+    "rook": "Campaign editor — faction shields",
+    "crescent": "Campaign editor — faction shields",
+    "snow": "Campaign editor — faction shields",
+    "flame": "Campaign editor — faction shields",
+    "lion": "Campaign editor — faction shields",
+    "panel": "9-slice chrome — panels (many screens)",
+    "row": "9-slice chrome — rows (settings/studio)",
+    "button-neutral": "9-slice chrome — neutral buttons",
+    "button-primary": "9-slice chrome — primary buttons",
+    "button-danger": "9-slice chrome — danger buttons",
+    "mode-button": "9-slice chrome — tabs",
+    "mode-button-active": "9-slice chrome — active tab",
+    "field-input": "9-slice chrome — studio inputs"
+  },
+  "orphans": [
+    "bell", "lyre", "music", "effects", "interface-sounds", "monitor", "reset", "info", "save", "tileset-review", "unit-studio", "tileset-studio", "design-index",
+    "attack", "capture", "defend", "end-turn", "move", "objective", "power", "wait",
+    "field-select", "toggle-track", "toggle-knob", "divider"
+  ]
+}

@@ -1,0 +1,17 @@
+{{- if eq (include "chess-tactics.renderWarm" .) "true" }}
+{{- if not .Values.hostname -}}
+{{- fail "hostname is required" -}}
+{{- end -}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.ingress.tlsSecret }}
+  namespace: {{ include "chess-tactics.namespace" . }}
+spec:
+  secretName: {{ .Values.ingress.tlsSecret }}
+  issuerRef:
+    name: {{ .Values.ingress.certIssuer }}
+    kind: ClusterIssuer
+  dnsNames:
+    - {{ .Values.hostname | quote }}
+{{- end }}

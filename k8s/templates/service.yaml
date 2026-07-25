@@ -1,0 +1,23 @@
+{{- if eq (include "chess-tactics.renderHot" .) "true" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chess-tactics.resourceName" . }}
+  namespace: {{ include "chess-tactics.namespace" . }}
+  labels:
+    app: {{ include "chess-tactics.resourceName" . }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ include "chess-tactics.resourceName" . }}
+  ports:
+    - name: http
+      port: 80
+      # Served port: the live-preview edge when livePreview is enabled (it fronts
+      # the backend), the backend's own "http" port otherwise. The include is
+      # guarded because the helper lives in the vendored partial (absent on
+      # non-preview renders); the disabled branch keeps normal / validation
+      # renders targeting "http" unchanged.
+      targetPort: {{ if .Values.livePreview.enabled }}{{ include "live-preview-edge.servedPortName" (dict "spec" .Values.livePreview "appPortName" (include "chess-tactics.appPortName" .)) }}{{ else }}http{{ end }}
+      protocol: TCP
+{{- end }}

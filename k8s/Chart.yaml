@@ -1,0 +1,6 @@
+apiVersion: v2
+name: chess-tactics
+description: Chess Tactics — chess-based squad combat prototype (chess.romaine.life)
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

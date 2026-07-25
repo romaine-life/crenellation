@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Toggle — Atoms vs Frame-gen</title>
+<style>
+  :root{
+    --bg:#070b11; --panel:#0e1722; --panel2:#111e2b; --line:#1f3346;
+    --cyan:#5fb8ff; --cyan2:#79d3ff; --ink:#eaf4ff; --ink2:#9fc4d5; --ink3:#5d7a8c;
+    --good:#54e6a0; --bad:#ff7a8a;
+    --mono:ui-monospace,"Cascadia Mono",Consolas,monospace; --sans:"Segoe UI",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 650px at 50% -10%,#15273a 0,transparent 60%),var(--bg);
+    color:var(--ink);font-family:var(--sans);padding:56px clamp(20px,5vw,80px) 90px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto}
+  .eyebrow{color:var(--cyan2);font-family:var(--mono);font-size:.72rem;letter-spacing:.4em;text-transform:uppercase;margin:0 0 14px}
+  h1{font-size:clamp(2.3rem,5vw,3.4rem);margin:0;font-weight:800;letter-spacing:-.02em}
+  h1 .s{color:var(--cyan);font-weight:400}
+  .lede{color:var(--ink2);max-width:62ch;margin:16px 0 0;line-height:1.55}
+  section{margin-top:52px}
+  .sh{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:26px}
+  .sh .n{font-family:var(--mono);color:var(--cyan);font-size:.8rem;letter-spacing:.2em}
+  .sh h2{margin:0;font-size:1.25rem;font-weight:700}
+  .sh p{margin:0 0 0 auto;color:var(--ink3);font-size:.84rem;max-width:40ch;text-align:right}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .card{position:relative;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:12px;padding:26px}
+  .card.good{border-color:rgba(84,230,160,.32)} .card.bad{border-color:rgba(255,122,138,.28)}
+  .card .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin:0 0 18px}
+  .card.good .tag{color:var(--good)} .card.bad .tag{color:var(--bad)}
+  .stage{display:flex;flex-direction:column;align-items:center;gap:18px;min-height:120px;justify-content:center;
+    background:repeating-linear-gradient(45deg,#0a121b 0 10px,#0b141e 10px 20px);border-radius:8px;padding:26px}
+  .cap{font-family:var(--mono);font-size:.66rem;color:var(--ink3);letter-spacing:.08em}
+
+  /* --- the frame-gen baked sprite --- */
+  .baked{image-rendering:pixelated;display:block}
+  .baked.x1{width:152px;height:48px}
+  .baked.big{width:243px;height:77px}            /* 1.6x — fractional bitmap scale */
+
+  /* --- the atom 9-slice toggle: stretchable track + live text + sliding knob --- */
+  .atog{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    inline-size:152px;block-size:48px;padding:0 10px;
+    border:8px solid transparent;border-image:url(/assets/ui/kit/toggle-track.png) 8 fill / 8px stretch;
+    image-rendering:pixelated}
+  .atog .lbl{font-family:var(--mono);font-weight:700;font-size:18px;letter-spacing:2px;color:#eaf4ff;text-shadow:0 2px 0 #02070b}
+  .atog .knob{flex:none;inline-size:40px;block-size:30px;
+    background:url(/assets/ui/kit/toggle-knob.png) center/100% 100% no-repeat;image-rendering:pixelated}
+  .atog.off{flex-direction:row-reverse}
+  .atog.off .lbl{color:#9fb3c2}
+  .atog.off .knob{filter:grayscale(.55) brightness(.5)}
+  .atog.big{inline-size:243px;block-size:77px}
+  .atog.big .lbl{font-size:28px}
+  .atog.big .knob{inline-size:64px;block-size:48px}
+
+  .stack{display:flex;flex-direction:column;gap:14px;align-items:center}
+  .verdict{margin-top:46px;padding:20px 22px;border:1px solid var(--line);border-radius:10px;background:var(--panel);
+    color:var(--ink2);font-size:.92rem;line-height:1.6}
+  .verdict b{color:var(--ink)}
+  @media(max-width:820px){.row{grid-template-columns:1fr}.sh p{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Chess Tactics · UI Kit · Method Comparison</p>
+  <h1>Toggle <span class="s">·</span> atoms vs frame-gen</h1>
+  <p class="lede">Same widget, two build methods. The <b>frame-gen</b> sprite is one baked
+    152×48 PNG. The <b>atom</b> version is a 9-slice track assembled from one mirrored corner
+    atom, with the label as live text and the knob as a sliding sprite. At 1× they're twins —
+    the difference shows the moment you scale it or change what it says.</p>
+
+  <!-- 1 -->
+  <section>
+    <div class="sh"><span class="n">01</span><h2>At native 1×</h2><p>Both look right. No argument here.</p></div>
+    <div class="row">
+      <div class="card"><p class="tag">Frame-gen · baked sprite</p>
+        <div class="stage"><img class="baked x1" src="/assets/ui/kit/toggle-on.png" alt="baked toggle"><span class="cap">toggle-on.png · 152×48</span></div>
+      </div>
+      <div class="card good"><p class="tag">Atoms · 9-slice track + live text</p>
+        <div class="stage"><div class="atog"><span class="lbl">ON</span><span class="knob"></span></div><span class="cap">track + "ON" + knob</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="sh"><span class="n">02</span><h2>Scaled up (UI-scale 1.6×)</h2><p>A bitmap can only stretch its pixels; a 9-slice re-lays its border.</p></div>
+    <div class="row">
+      <div class="card bad"><p class="tag">Frame-gen · pixels stretched, soft</p>
+        <div class="stage"><img class="baked big" src="/assets/ui/kit/toggle-on.png" alt="baked scaled"><span class="cap">152×48 sprite → 243×77 (fractional)</span></div>
+      </div>
+      <div class="card good"><p class="tag">Atoms · border re-laid, crisp</p>
+        <div class="stage"><div class="atog big"><span class="lbl">ON</span><span class="knob"></span></div><span class="cap">track stretched, corners fixed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="sh"><span class="n">03</span><h2>Different content</h2><p>The baked sprite is welded to "ON". The track holds anything.</p></div>
+    <div class="row">
+      <div class="card bad"><p class="tag">Frame-gen · stuck</p>
+        <div class="stage"><img class="baked x1" src="/assets/ui/kit/toggle-on.png" alt="baked"><span class="cap">only ever says ON / OFF</span></div>
+      </div>
+      <div class="card good"><p class="tag">Atoms · same track, new text</p>
+        <div class="stage stack">
+          <div class="atog"><span class="lbl">AUTO</span><span class="knob"></span></div>
+          <div class="atog"><span class="lbl">MUTED</span><span class="knob"></span></div>
+          <div class="atog off"><span class="lbl">OFF</span><span class="knob"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="verdict">
+    <b>Read:</b> at 1× they're equivalent, so for a truly fixed-size / fixed-content control the
+    baked sprite is the simpler ship. But the atom track is the same art with two properties the
+    sprite can't have — it stays crisp under the UI-scale setting, and it hosts arbitrary text
+    (AUTO / MUTED / a value) while the knob still slides. The cost is one assembler script and a
+    knob element. <b>If there's any chance the toggle scales or ever says something other than
+    ON/OFF, atoms are the safer build.</b>
+  </div>
+</div>
+</body>
+</html>

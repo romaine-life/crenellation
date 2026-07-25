@@ -1,0 +1,707 @@
+{
+  "generated": "2026-06-28",
+  "summary": {
+    "total": 82,
+    "groups": 7
+  },
+  "groups": [
+    {
+      "id": "world-scenes",
+      "label": "World scenes",
+      "items": [
+        {
+          "id": "backgrounds/farm-behind-line-set-01/world",
+          "label": "Farm Behind Line",
+          "url": "/assets/backgrounds/farm-behind-line-set-01/world.png",
+          "w": 1619,
+          "h": 971,
+          "sub": "world scene"
+        },
+        {
+          "id": "backgrounds/summer-that-failed-set-01/world",
+          "label": "Summer That Failed",
+          "url": "/assets/backgrounds/summer-that-failed-set-01/world.png",
+          "w": 1609,
+          "h": 978,
+          "sub": "world scene"
+        },
+        {
+          "id": "ui/main-menu/background-scene-v1",
+          "label": "Main menu scene",
+          "url": "/assets/ui/main-menu/background-scene-v1.png",
+          "w": 1586,
+          "h": 991,
+          "sub": "main menu"
+        }
+      ]
+    },
+    {
+      "id": "portrait-backgrounds",
+      "label": "Portrait backgrounds",
+      "items": [
+        {
+          "id": "backgrounds/farm-behind-line-set-01/portraits/bishop",
+          "label": "Bishop",
+          "url": "/assets/backgrounds/farm-behind-line-set-01/portraits/bishop.png",
+          "w": 1122,
+          "h": 1402,
+          "sub": "Farm Behind Line"
+        },
+        {
+          "id": "backgrounds/farm-behind-line-set-01/portraits/king",
+          "label": "King",
+          "url": "/assets/backgrounds/farm-behind-line-set-01/portraits/king.png",
+          "w": 1619,
+          "h": 971,
+          "sub": "Farm Behind Line"
+        },
+        {
+          "id": "backgrounds/farm-behind-line-set-01/portraits/knight",
+          "label": "Knight",
+          "url": "/assets/backgrounds/farm-behind-line-set-01/portraits/knight.png",
+          "w": 1536,
+          "h": 1024,
+          "sub": "Farm Behind Line"
+        },
+        {
+          "id": "backgrounds/farm-behind-line-set-01/portraits/pawn",
+          "label": "Pawn",
+          "url": "/assets/backgrounds/farm-behind-line-set-01/portraits/pawn.png",
+          "w": 1536,
+          "h": 1024,
+          "sub": "Farm Behind Line"
+        },
+        {
+          "id": "backgrounds/farm-behind-line-set-01/portraits/queen",
+          "label": "Queen",
+          "url": "/assets/backgrounds/farm-behind-line-set-01/portraits/queen.png",
+          "w": 1536,
+          "h": 1024,
+          "sub": "Farm Behind Line"
+        },
+        {
+          "id": "backgrounds/farm-behind-line-set-01/portraits/rook",
+          "label": "Rook",
+          "url": "/assets/backgrounds/farm-behind-line-set-01/portraits/rook.png",
+          "w": 1536,
+          "h": 1024,
+          "sub": "Farm Behind Line"
+        },
+        {
+          "id": "backgrounds/summer-that-failed-set-01/portraits/bishop",
+          "label": "Bishop",
+          "url": "/assets/backgrounds/summer-that-failed-set-01/portraits/bishop.png",
+          "w": 1536,
+          "h": 1024,
+          "sub": "Summer That Failed"
+        },
+        {
+          "id": "backgrounds/summer-that-failed-set-01/portraits/king",
+          "label": "King",
+          "url": "/assets/backgrounds/summer-that-failed-set-01/portraits/king.png",
+          "w": 1612,
+          "h": 976,
+          "sub": "Summer That Failed"
+        },
+        {
+          "id": "backgrounds/summer-that-failed-set-01/portraits/knight",
+          "label": "Knight",
+          "url": "/assets/backgrounds/summer-that-failed-set-01/portraits/knight.png",
+          "w": 1626,
+          "h": 967,
+          "sub": "Summer That Failed"
+        },
+        {
+          "id": "backgrounds/summer-that-failed-set-01/portraits/pawn",
+          "label": "Pawn",
+          "url": "/assets/backgrounds/summer-that-failed-set-01/portraits/pawn.png",
+          "w": 1536,
+          "h": 1024,
+          "sub": "Summer That Failed"
+        },
+        {
+          "id": "backgrounds/summer-that-failed-set-01/portraits/queen",
+          "label": "Queen",
+          "url": "/assets/backgrounds/summer-that-failed-set-01/portraits/queen.png",
+          "w": 1536,
+          "h": 1024,
+          "sub": "Summer That Failed"
+        },
+        {
+          "id": "backgrounds/summer-that-failed-set-01/portraits/rook",
+          "label": "Rook",
+          "url": "/assets/backgrounds/summer-that-failed-set-01/portraits/rook.png",
+          "w": 1536,
+          "h": 1024,
+          "sub": "Summer That Failed"
+        }
+      ]
+    },
+    {
+      "id": "unit-portraits",
+      "label": "Unit portraits",
+      "items": [
+        {
+          "id": "units/bishop/portrait/crimson",
+          "label": "Bishop · Crimson",
+          "url": "/assets/units/bishop/portrait/crimson.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/bishop/portrait/emerald",
+          "label": "Bishop · Emerald",
+          "url": "/assets/units/bishop/portrait/emerald.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/bishop/portrait/golden",
+          "label": "Bishop · Golden",
+          "url": "/assets/units/bishop/portrait/golden.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/bishop/portrait/navy-blue",
+          "label": "Bishop · Navy Blue",
+          "url": "/assets/units/bishop/portrait/navy-blue.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/king/portrait/crimson",
+          "label": "King · Crimson",
+          "url": "/assets/units/king/portrait/crimson.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/king/portrait/emerald",
+          "label": "King · Emerald",
+          "url": "/assets/units/king/portrait/emerald.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/king/portrait/golden",
+          "label": "King · Golden",
+          "url": "/assets/units/king/portrait/golden.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/king/portrait/navy-blue",
+          "label": "King · Navy Blue",
+          "url": "/assets/units/king/portrait/navy-blue.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/knight/portrait/crimson",
+          "label": "Knight · Crimson",
+          "url": "/assets/units/knight/portrait/crimson.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/knight/portrait/emerald",
+          "label": "Knight · Emerald",
+          "url": "/assets/units/knight/portrait/emerald.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/knight/portrait/golden",
+          "label": "Knight · Golden",
+          "url": "/assets/units/knight/portrait/golden.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/knight/portrait/navy-blue",
+          "label": "Knight · Navy Blue",
+          "url": "/assets/units/knight/portrait/navy-blue.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/pawn/portrait/crimson",
+          "label": "Pawn · Crimson",
+          "url": "/assets/units/pawn/portrait/crimson.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/pawn/portrait/emerald",
+          "label": "Pawn · Emerald",
+          "url": "/assets/units/pawn/portrait/emerald.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/pawn/portrait/golden",
+          "label": "Pawn · Golden",
+          "url": "/assets/units/pawn/portrait/golden.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/pawn/portrait/navy-blue",
+          "label": "Pawn · Navy Blue",
+          "url": "/assets/units/pawn/portrait/navy-blue.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/queen/portrait/crimson",
+          "label": "Queen · Crimson",
+          "url": "/assets/units/queen/portrait/crimson.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/queen/portrait/emerald",
+          "label": "Queen · Emerald",
+          "url": "/assets/units/queen/portrait/emerald.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/queen/portrait/golden",
+          "label": "Queen · Golden",
+          "url": "/assets/units/queen/portrait/golden.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/queen/portrait/navy-blue",
+          "label": "Queen · Navy Blue",
+          "url": "/assets/units/queen/portrait/navy-blue.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/rook/portrait/crimson",
+          "label": "Rook · Crimson",
+          "url": "/assets/units/rook/portrait/crimson.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/rook/portrait/emerald",
+          "label": "Rook · Emerald",
+          "url": "/assets/units/rook/portrait/emerald.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/rook/portrait/golden",
+          "label": "Rook · Golden",
+          "url": "/assets/units/rook/portrait/golden.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        },
+        {
+          "id": "units/rook/portrait/navy-blue",
+          "label": "Rook · Navy Blue",
+          "url": "/assets/units/rook/portrait/navy-blue.png",
+          "w": 512,
+          "h": 512,
+          "sub": "team palette"
+        }
+      ]
+    },
+    {
+      "id": "portrait-editor",
+      "label": "Portrait-editor sources",
+      "items": [
+        {
+          "id": "portrait-editor/bishop/crimson",
+          "label": "Bishop · Crimson",
+          "url": "/assets/portrait-editor/bishop/crimson.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/bishop/emerald",
+          "label": "Bishop · Emerald",
+          "url": "/assets/portrait-editor/bishop/emerald.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/bishop/golden",
+          "label": "Bishop · Golden",
+          "url": "/assets/portrait-editor/bishop/golden.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/bishop/navy-blue",
+          "label": "Bishop · Navy Blue",
+          "url": "/assets/portrait-editor/bishop/navy-blue.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/king/crimson",
+          "label": "King · Crimson",
+          "url": "/assets/portrait-editor/king/crimson.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/king/emerald",
+          "label": "King · Emerald",
+          "url": "/assets/portrait-editor/king/emerald.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/king/golden",
+          "label": "King · Golden",
+          "url": "/assets/portrait-editor/king/golden.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/king/navy-blue",
+          "label": "King · Navy Blue",
+          "url": "/assets/portrait-editor/king/navy-blue.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/knight/crimson",
+          "label": "Knight · Crimson",
+          "url": "/assets/portrait-editor/knight/crimson.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/knight/emerald",
+          "label": "Knight · Emerald",
+          "url": "/assets/portrait-editor/knight/emerald.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/knight/golden",
+          "label": "Knight · Golden",
+          "url": "/assets/portrait-editor/knight/golden.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/knight/navy-blue",
+          "label": "Knight · Navy Blue",
+          "url": "/assets/portrait-editor/knight/navy-blue.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/pawn/crimson",
+          "label": "Pawn · Crimson",
+          "url": "/assets/portrait-editor/pawn/crimson.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/pawn/emerald",
+          "label": "Pawn · Emerald",
+          "url": "/assets/portrait-editor/pawn/emerald.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/pawn/golden",
+          "label": "Pawn · Golden",
+          "url": "/assets/portrait-editor/pawn/golden.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/pawn/navy-blue",
+          "label": "Pawn · Navy Blue",
+          "url": "/assets/portrait-editor/pawn/navy-blue.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/queen/crimson",
+          "label": "Queen · Crimson",
+          "url": "/assets/portrait-editor/queen/crimson.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/queen/emerald",
+          "label": "Queen · Emerald",
+          "url": "/assets/portrait-editor/queen/emerald.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/queen/golden",
+          "label": "Queen · Golden",
+          "url": "/assets/portrait-editor/queen/golden.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/queen/navy-blue",
+          "label": "Queen · Navy Blue",
+          "url": "/assets/portrait-editor/queen/navy-blue.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/rook/crimson",
+          "label": "Rook · Crimson",
+          "url": "/assets/portrait-editor/rook/crimson.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/rook/emerald",
+          "label": "Rook · Emerald",
+          "url": "/assets/portrait-editor/rook/emerald.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/rook/golden",
+          "label": "Rook · Golden",
+          "url": "/assets/portrait-editor/rook/golden.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        },
+        {
+          "id": "portrait-editor/rook/navy-blue",
+          "label": "Rook · Navy Blue",
+          "url": "/assets/portrait-editor/rook/navy-blue.png",
+          "w": 768,
+          "h": 768,
+          "sub": "portrait source"
+        }
+      ]
+    },
+    {
+      "id": "brand-key-art",
+      "label": "Brand & key art",
+      "items": [
+        {
+          "id": "ui/main-menu-aspirational",
+          "label": "Main Menu Aspirational",
+          "url": "/assets/ui/main-menu-aspirational.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "brand / key art"
+        },
+        {
+          "id": "ui/main-menu-brand-chrome-v1",
+          "label": "Main Menu Brand Chrome",
+          "url": "/assets/ui/main-menu-brand-chrome-v1.png",
+          "w": 1774,
+          "h": 887,
+          "sub": "brand / key art"
+        },
+        {
+          "id": "ui/main-menu-brand-rook-mark-v1",
+          "label": "Main Menu Brand Rook Mark",
+          "url": "/assets/ui/main-menu-brand-rook-mark-v1.png",
+          "w": 86,
+          "h": 116,
+          "sub": "brand / key art"
+        },
+        {
+          "id": "ui/main-menu-brand-title-only-v1",
+          "label": "Main Menu Brand Title Only",
+          "url": "/assets/ui/main-menu-brand-title-only-v1.png",
+          "w": 730,
+          "h": 212,
+          "sub": "brand / key art"
+        },
+        {
+          "id": "ui/main-menu-button-art-five-mode",
+          "label": "Main Menu Button Art Five Mode",
+          "url": "/assets/ui/main-menu-button-art-five-mode.png",
+          "w": 1026,
+          "h": 1533,
+          "sub": "brand / key art"
+        },
+        {
+          "id": "ui/main-menu-button-art-three-state",
+          "label": "Main Menu Button Art Three State",
+          "url": "/assets/ui/main-menu-button-art-three-state.png",
+          "w": 1619,
+          "h": 971,
+          "sub": "brand / key art"
+        }
+      ]
+    },
+    {
+      "id": "concept-art",
+      "label": "Concept art",
+      "items": [
+        {
+          "id": "art/skirmish-style-target",
+          "label": "Skirmish Style Target",
+          "url": "/assets/art/skirmish-style-target.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "concept"
+        },
+        {
+          "id": "ui/campaign-editor-concept",
+          "label": "Campaign Editor Concept",
+          "url": "/assets/ui/campaign-editor-concept.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "concept"
+        },
+        {
+          "id": "ui/level-editor-concept",
+          "label": "Level Editor Concept",
+          "url": "/assets/ui/level-editor-concept.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "concept"
+        },
+        {
+          "id": "ui/skirmish-concept",
+          "label": "Skirmish Concept",
+          "url": "/assets/ui/skirmish-concept.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "concept"
+        }
+      ]
+    },
+    {
+      "id": "inspiration",
+      "label": "Inspiration",
+      "items": [
+        {
+          "id": "artwork/inspiration/ui-screen-concepts/01-main-menu-aspirational",
+          "label": "01 Main Menu Aspirational",
+          "url": "/assets/artwork/inspiration/ui-screen-concepts/01-main-menu-aspirational.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "ui-screen-concepts"
+        },
+        {
+          "id": "artwork/inspiration/ui-screen-concepts/02-campaign-editor",
+          "label": "02 Campaign Editor",
+          "url": "/assets/artwork/inspiration/ui-screen-concepts/02-campaign-editor.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "ui-screen-concepts"
+        },
+        {
+          "id": "artwork/inspiration/ui-screen-concepts/03-level-editor",
+          "label": "03 Level Editor",
+          "url": "/assets/artwork/inspiration/ui-screen-concepts/03-level-editor.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "ui-screen-concepts"
+        },
+        {
+          "id": "artwork/inspiration/ui-screen-concepts/04-skirmish",
+          "label": "04 Skirmish",
+          "url": "/assets/artwork/inspiration/ui-screen-concepts/04-skirmish.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "ui-screen-concepts"
+        },
+        {
+          "id": "artwork/inspiration/ui-screen-concepts/generated/settings-audio-concept-v1",
+          "label": "Settings Audio Concept V1",
+          "url": "/assets/artwork/inspiration/ui-screen-concepts/generated/settings-audio-concept-v1.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "ui-screen-concepts"
+        },
+        {
+          "id": "artwork/inspiration/ui-screen-concepts/generated/settings-creator-tools-concept-v1",
+          "label": "Settings Creator Tools Concept V1",
+          "url": "/assets/artwork/inspiration/ui-screen-concepts/generated/settings-creator-tools-concept-v1.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "ui-screen-concepts"
+        },
+        {
+          "id": "artwork/inspiration/ui-screen-concepts/generated/settings-gameplay-concept-v1",
+          "label": "Settings Gameplay Concept V1",
+          "url": "/assets/artwork/inspiration/ui-screen-concepts/generated/settings-gameplay-concept-v1.png",
+          "w": 1553,
+          "h": 1013,
+          "sub": "ui-screen-concepts"
+        },
+        {
+          "id": "artwork/inspiration/ui-screen-concepts/generated/settings-general-concept-v1",
+          "label": "Settings General Concept V1",
+          "url": "/assets/artwork/inspiration/ui-screen-concepts/generated/settings-general-concept-v1.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "ui-screen-concepts"
+        },
+        {
+          "id": "artwork/inspiration/ui-screen-concepts/generated/settings-page-concept-v1",
+          "label": "Settings Page Concept V1",
+          "url": "/assets/artwork/inspiration/ui-screen-concepts/generated/settings-page-concept-v1.png",
+          "w": 1586,
+          "h": 992,
+          "sub": "ui-screen-concepts"
+        }
+      ]
+    }
+  ]
+}

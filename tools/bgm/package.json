@@ -1,0 +1,14 @@
+{
+  "name": "chess-tactics-bgm-tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "One-off BGM ops: mirror mp3 ID3 tags onto blob metadata for the live-listed playlist.",
+  "scripts": {
+    "sync": "node sync-metadata.mjs"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.13.1",
+    "@azure/storage-blob": "^12.33.0"
+  }
+}

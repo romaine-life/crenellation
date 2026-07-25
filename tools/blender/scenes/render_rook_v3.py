@@ -1,0 +1,7 @@
+from pathlib import Path
+
+ROOT = Path("D:/repos/chess-tactics")
+SCRIPT = ROOT / "tools" / "blender" / "scenes" / "rook_v3.py"
+
+namespace = {"__ROOK_V2_RENDER__": True}
+exec(SCRIPT.read_text(encoding="utf-8"), namespace)

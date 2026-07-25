@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chess Tactics</title>
+    <style>
+      html,
+      body {
+        background: #05090d;
+        color: #dbe7ea;
+        margin: 0;
+      }
+
+      .shell {
+        visibility: hidden;
+      }
+    </style>
+    <link rel="preload" as="font" type="font/otf" href="/assets/fonts/advance-wars-2-gba/advance-wars-2-gba.otf" crossorigin>
+    <!--
+      The global background preload was removed: index.html is the shared SPA
+      shell for every route, so preloading the main-menu background made all
+      routes pay for it and pinned the heavy ~2.6MB PNG. The accepted background
+      now loads as an optimized AVIF/WebP (~80KB) via the .main-menu-layer CSS
+      image-set() only when the menu route mounts. A route-scoped preload would
+      have to land in the initial HTML to beat the stylesheet fetch, which the
+      static shell can't target per-route; given the new ~80KB payload it is not
+      worth the global cost.
+    -->
+  </head>
+  <body>
+    <main class="shell">
+      <!-- The title bar is the React app-shell bar (src/ui/shell/AppTitleBar), rendered
+           inside #root and fixed at the top; the old static topbar + its auth wiring were
+           retired and deleted when every screen moved to the shell bar. -->
+      <div id="root" class="app-root"></div>
+    </main>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

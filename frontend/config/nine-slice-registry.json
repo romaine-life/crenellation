@@ -1,0 +1,176 @@
+{
+  "_doc": "Single source of truth for atom-built 9-slice frames. Read by the Node bake (scripts/nine-slice-kit.mjs), the in-app editor (NineSliceEditor), and the catalog edit-link (AssetLibraryStudio). Add a frame here and it becomes bakeable, editable, and catalog-linked with no other code change. atoms = names in public/assets/ui/kit/atoms; variants[].out = composed PNG in public/assets/ui/kit; swap = palette name; consume = the CSS var its content drives; carve = flood navy bleed outside the rail; line = filename of the transparent-interior 'line' twin baked into public/assets/ui/explore/frames (full ornament over a see-through center — assembled from the corner+edge atoms with a transparent fill; no masking, no carve — the fix for the 9-slice fill problem so a surface shows behind the chrome while the frame stays; the ornament must reach the element edge, so only bracket frames qualify, NOT the inset steel row rail; see ADR-0034).",
+  "palettes": {
+    "active": {
+      "101921": "183452",
+      "faefbb": "d6f4ff",
+      "c79b55": "4fbdf0",
+      "a7793d": "2f93dd",
+      "5b4124": "14507f",
+      "414e61": "2896c3",
+      "2f3a48": "1c608c",
+      "121c23": "1c3a5a",
+      "0f181f": "152f4c",
+      "0d151c": "122a46"
+    },
+    "danger": {
+      "faefbb": "ffd9b8",
+      "c79b55": "e07a3c",
+      "a7793d": "c0532a",
+      "5b4124": "6e2c18"
+    },
+    "row-active": {
+      "142234": "183452",
+      "142334": "183452",
+      "152334": "183452",
+      "152335": "183452",
+      "152435": "183452",
+      "162335": "183452",
+      "283648": "1c608c",
+      "516077": "4fbdf0",
+      "516178": "4fbdf0",
+      "526078": "4fbdf0",
+      "526178": "4fbdf0",
+      "526179": "4fbdf0",
+      "526279": "4fbdf0",
+      "536279": "4fbdf0",
+      "000717": "122a46",
+      "000a1a": "122a46",
+      "000716": "122a46",
+      "000314": "122a46",
+      "19283a": "1c3a5a",
+      "313e52": "1c608c",
+      "303d50": "1c608c",
+      "313d51": "1c608c",
+      "303d51": "1c608c",
+      "303c50": "1c608c",
+      "2f3c4f": "1c608c",
+      "000210": "122a46",
+      "202e40": "1c3a5a",
+      "54637a": "4fbdf0",
+      "4f5e74": "4fbdf0",
+      "505f75": "4fbdf0",
+      "4e5d73": "4fbdf0",
+      "4d5c72": "2f93dd",
+      "4e5e74": "4fbdf0",
+      "000211": "122a46",
+      "1c2839": "1c3a5a",
+      "2c3a4d": "1c608c",
+      "0f1b2b": "183452",
+      "1e2a3c": "1c3a5a",
+      "1c293b": "1c3a5a",
+      "000e21": "152f4c",
+      "001125": "152f4c",
+      "001124": "152f4c",
+      "001023": "152f4c",
+      "021326": "152f4c",
+      "001225": "152f4c",
+      "001226": "152f4c",
+      "1d293b": "1c3a5a",
+      "051121": "152f4c",
+      "1d283a": "1c3a5a",
+      "2b3a4d": "1c608c",
+      "1c283a": "1c3a5a",
+      "2d3b4f": "1c608c",
+      "011227": "152f4c",
+      "011226": "152f4c",
+      "2c3a4e": "1c608c",
+      "021124": "152f4c",
+      "1c283b": "1c3a5a",
+      "021224": "152f4c",
+      "021225": "152f4c",
+      "001126": "152f4c",
+      "011225": "152f4c"
+    }
+  },
+  "assets": {
+    "mode-button": {
+      "label": "Mode button (tabs / header)",
+      "atoms": {
+        "corner": "corner",
+        "edge": "edge",
+        "fill": "fill"
+      },
+      "frame": {
+        "w": 72,
+        "h": 72
+      },
+      "variants": [
+        {
+          "out": "mode-button.png"
+        },
+        {
+          "out": "mode-button-active.png",
+          "swap": "active",
+          "inspect": "corner-cyan"
+        }
+      ]
+    },
+    "button": {
+      "label": "Action button (settings / studio) — neutral / primary / danger",
+      "atoms": {
+        "corner": "corner",
+        "edge": "edge",
+        "fill": "fill"
+      },
+      "frame": {
+        "w": 72,
+        "h": 72
+      },
+      "variants": [
+        {
+          "out": "button-neutral.png"
+        },
+        {
+          "out": "button-primary.png",
+          "swap": "active"
+        },
+        {
+          "out": "button-danger.png",
+          "swap": "danger"
+        }
+      ]
+    },
+    "panel": {
+      "label": "Settings panel / frame",
+      "atoms": {
+        "corner": "corner",
+        "edge": "edge",
+        "fill": "fill"
+      },
+      "frame": {
+        "w": 72,
+        "h": 72
+      },
+      "line": "panel-line.png",
+      "variants": [
+        {
+          "out": "panel.png"
+        }
+      ]
+    },
+    "row": {
+      "label": "Settings row",
+      "atoms": {
+        "corner": "row-corner",
+        "edge": "row-edge",
+        "fill": "row-fill"
+      },
+      "frame": {
+        "w": 160,
+        "h": 112
+      },
+      "carve": true,
+      "flipSides": true,
+      "variants": [
+        {
+          "out": "row.png"
+        },
+        {
+          "out": "row-active.png",
+          "swap": "row-active"
+        }
+      ]
+    }
+  }
+}

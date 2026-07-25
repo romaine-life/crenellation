@@ -1,0 +1,212 @@
+{
+  "process": "forge-atom clean pipeline (codex img2img on a chroma plate -> despill -> low-fi -> trim glyph -> pad to the ADR-0026 64x64 canvas -> dimension assert), method-verified via the codex rollout (image_generation_call), NOT code-drawn",
+  "lastRun": "2026-06-28",
+  "assets": {
+    "pawn": {
+      "group": "settings",
+      "forged": "2026-06-28",
+      "tries": 2,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "bishop": {
+      "group": "settings",
+      "forged": "2026-06-28",
+      "tries": 1,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "castle": {
+      "group": "settings",
+      "forged": "2026-06-28",
+      "tries": 1,
+      "method": "image-generator (verified)",
+      "gate": "pass",
+      "note": "Flat chess-rook PIECE for the Party squad picker / lobby rows. Named 'castle' (not 'rook') because provenance + the forge name-filter key by bare name and the shields/rook heraldic emblem already owns 'rook'. CSS .icon-rook -> kit/icons/castle.png."
+    },
+    "queen": {
+      "group": "settings",
+      "forged": "2026-06-28",
+      "tries": 1,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "king": {
+      "group": "settings",
+      "forged": "2026-06-28",
+      "tries": 1,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "players": {
+      "group": "settings",
+      "forged": "2026-06-28",
+      "tries": 2,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "gear": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "carved main-menu gear (codex img2img, rollout-verified) adopted as the shared settings gear",
+      "canvas": "64x64",
+      "gate": "soft-alpha (menu hero register — NOT the forge-atom hard-alpha gate)",
+      "note": "Replaced the forge-atom gear so the whole game shares ONE settings gear. Source: icons-carved/settings-smooth.png packed via pack-menu-icons.mjs. Same bytes ship to kit/icons/gear.png (Settings rail + Skirmish HUD) and the menu row (icons-carved/settings.png); the account cog is the same art at 37x37."
+    },
+    "speaker": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "knight": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "wrench": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "monitor": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "save": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "reset": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "info": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "music": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "effects": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "interface-sounds": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "design-index": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "tileset-studio": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "unit-studio": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "tileset-review": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "image-generator (verified)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "lyre": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "re-canvased (approved forge-atom pixels)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "bell": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "method": "re-canvased (approved forge-atom pixels)",
+      "canvas": "64x64",
+      "gate": "pass"
+    },
+    "delete": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "tries": 1,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "chevron-up": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "tries": 1,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "chevron-down": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "tries": 1,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "lock": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "tries": 1,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "star": {
+      "group": "settings",
+      "forged": "2026-06-27",
+      "tries": 2,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    },
+    "sign-out": {
+      "group": "settings",
+      "forged": "2026-06-28",
+      "tries": 1,
+      "method": "image-generator (verified)",
+      "gate": "pass"
+    }
+  },
+  "note": "Settings icon set re-forged onto the ADR-0026 64x64 canvas. The 15 content glyphs were regenerated through forge-atom's clean pipeline and method-verified (a real image_generation_call in the rollout, not a PIL/SVG hand-draw). lyre/bell were re-canvased from their already-approved forge-atom output (pixels preserved, centered on 64). brand-shield is the 256x256 source-sprite exception (ADR-0026) and was intentionally not re-forged."
+}

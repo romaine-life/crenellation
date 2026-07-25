@@ -1,0 +1,17 @@
+{
+  "name": "chess-tactics-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static server for Chess Tactics.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node supervisor.js",
+    "test": "npm --prefix ../frontend ci && npm --prefix ../frontend run check && npm --prefix ../frontend run build && node --check server.js && node --check supervisor.js && node --check smoke-test.js && sh -n ../bin/agent-preview && sh -n ../bin/agent-preview-status && node smoke-test.js"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.13.1",
+    "@azure/storage-blob": "^12.33.0",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  }
+}

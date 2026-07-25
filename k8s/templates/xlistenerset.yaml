@@ -1,0 +1,24 @@
+{{- if eq (include "chess-tactics.renderWarm" .) "true" }}
+apiVersion: gateway.networking.x-k8s.io/v1alpha1
+kind: XListenerSet
+metadata:
+  name: {{ include "chess-tactics.resourceName" . }}
+  namespace: {{ include "chess-tactics.namespace" . }}
+spec:
+  parentRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: {{ .Values.ingress.gatewayName }}
+    namespace: {{ .Values.ingress.gatewayNamespace }}
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: {{ .Values.hostname | quote }}
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: {{ .Values.ingress.tlsSecret }}
+{{- end }}

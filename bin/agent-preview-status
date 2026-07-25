@@ -1,0 +1,46 @@
+#!/bin/sh
+set -eu
+
+port=${PORT:-3000}
+url=${CHESS_TACTICS_PREVIEW_URL:-http://127.0.0.1:$port/health}
+runtime_root=${XDG_RUNTIME_DIR:-/tmp}
+hot_backend_dir=${HOT_BACKEND_DIR:-$runtime_root/chess-tactics-hot}
+
+supervisor=$(ps -ef | awk '/[n]ode supervisor[.]js/ { print }')
+hot_child=$(ps -ef | awk -v hot_server="$hot_backend_dir/server.js" '/[n]ode/ && index($0, hot_server) { print }')
+direct_server=$(ps -ef | awk '/[n]ode .*backend\/server[.]js/ { print }')
+
+health=unreachable
+if body=$(curl -fsS --max-time 2 "$url" 2>/dev/null); then
+  if [ "$body" = "ok" ]; then
+    health=ok
+  else
+    health="unexpected-body"
+  fi
+fi
+
+printf 'preview url: %s\n' "$url"
+printf 'hot backend: %s\n' "$hot_backend_dir"
+printf 'health: %s\n' "$health"
+
+if [ -n "$supervisor" ]; then
+  printf 'supervisor: running\n'
+else
+  printf 'supervisor: missing\n'
+fi
+
+if [ -n "$hot_child" ]; then
+  printf 'hot child: running\n'
+else
+  printf 'hot child: missing\n'
+fi
+
+if [ -n "$direct_server" ]; then
+  printf 'direct backend/server.js: running (not the agent preview contract)\n'
+fi
+
+if [ "$health" = ok ] && [ -n "$supervisor" ] && [ -n "$hot_child" ]; then
+  exit 0
+fi
+
+exit 1

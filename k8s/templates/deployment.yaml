@@ -1,0 +1,119 @@
+{{- if eq (include "chess-tactics.renderHot" .) "true" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chess-tactics.resourceName" . }}
+  namespace: {{ include "chess-tactics.namespace" . }}
+  labels:
+    app: {{ include "chess-tactics.resourceName" . }}
+spec:
+  # Single serving pod. When livePreview is enabled the live-preview-edge.replicas
+  # helper returns 1 and FAILS the render on requested>1 (a per-pod emptyDir
+  # override behind replicas>1 load-balances reads 50/50 and flickers the
+  # co-watched frontend, v1 #1419). Disabled → renders the app's own count (1),
+  # so normal / validation renders are unchanged. The include is guarded because
+  # the helper lives in the vendored partial, absent on non-preview renders.
+  replicas: {{ if .Values.livePreview.enabled }}{{ include "live-preview-edge.replicas" (dict "spec" .Values.livePreview "requested" 1) }}{{ else }}1{{ end }}
+  selector:
+    matchLabels:
+      app: {{ include "chess-tactics.resourceName" . }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: {{ include "chess-tactics.resourceName" . }}
+        {{- if and (ne (include "chess-tactics.isTestEnv" .) "true") .Values.serviceAccountClientId }}
+        # Triggers the azure-workload-identity webhook to project a federated
+        # token for passwordless Postgres (Entra) auth. Prod only.
+        azure.workload.identity/use: "true"
+        {{- end }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount }}
+      containers:
+        - name: {{ include "chess-tactics.resourceName" . }}
+          {{- $imageTag := .Values.image.tag | toString }}
+          {{- $imageRef := ternary $imageTag (printf "%s:%s" .Values.image.repository $imageTag) (contains "/" $imageTag) }}
+          image: {{ $imageRef | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- if .Values.adminEmails }}
+            # ADR-0038: who may author/publish the global OFFICIAL campaign tier.
+            - name: ADMIN_EMAILS
+              value: {{ .Values.adminEmails | quote }}
+            {{- end }}
+            {{- if .Values.bgm.baseUrl }}
+            # Public blob base for BGM track streaming. The backend also LISTS this
+            # container (each blob's metadata -> title/artist/album) to build
+            # /api/bgm, authenticating with the pod's workload identity (Storage
+            # Blob Data Reader, tofu). Empty value disables BGM.
+            - name: BGM_BASE_URL
+              value: {{ .Values.bgm.baseUrl | quote }}
+            {{- end }}
+            {{- if eq (include "chess-tactics.isTestEnv" .) "true" }}
+            # Test slot: ephemeral in-cluster Postgres (password mode, throwaway).
+            - name: DATABASE_URL
+              value: {{ printf "postgres://%s:%s@%s-postgres:5432/%s" .Values.postgres.testSlot.user .Values.postgres.testSlot.password (include "chess-tactics.resourceName" .) .Values.postgres.testSlot.database | quote }}
+            {{- else }}
+            # Prod: Azure Database for PostgreSQL, passwordless via workload
+            # identity. The backend presents a fresh AAD token as the password
+            # (see backend/server.js); host/db/user are not secrets.
+            - name: POSTGRES_HOST
+              value: {{ .Values.postgres.host | quote }}
+            - name: POSTGRES_DATABASE
+              value: {{ .Values.postgres.database | quote }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.user | quote }}
+            {{- end }}
+          ports:
+            # When a live-preview edge fronts the backend, the edge owns the
+            # "http" served port and the backend's own port is renamed to an
+            # internal name (chess-tactics.appPortName) to avoid a duplicate port
+            # name in the pod. The container port NUMBER (3000) is unchanged, so
+            # the edge's loopback upstream still targets :3000, and probes still
+            # hit the backend directly. Disabled → name stays "http" (identical).
+            - name: {{ include "chess-tactics.appPortName" . }}
+              containerPort: 3000
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: {{ include "chess-tactics.appPortName" . }}
+            periodSeconds: 5
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ include "chess-tactics.appPortName" . }}
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ include "chess-tactics.appPortName" . }}
+            periodSeconds: 30
+            failureThreshold: 3
+        {{- /*
+        The live-preview edge, in front of the backend. Self-gated on
+        livePreview.enabled (off by default → renders nothing), and the include
+        is additionally guarded because the partial is only vendored on a preview
+        lease. When enabled it becomes the pod's served port and reverse-proxies
+        the backend on :3000. Changes nothing on a normal / validation install.
+        */ -}}
+        {{- if .Values.livePreview.enabled }}
+        {{- include "live-preview-edge.container" .Values.livePreview | nindent 8 }}
+        {{- end }}
+      {{- if .Values.livePreview.enabled }}
+      volumes:
+        {{- include "live-preview-edge.volume" .Values.livePreview | nindent 8 }}
+      {{- end }}
+{{- end }}

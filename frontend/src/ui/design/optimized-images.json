@@ -1,0 +1,24 @@
+{
+  "_comment": "Single source of truth for the main-menu first-visit image-optimization pass. The optimizer script (frontend/scripts/optimize-main-menu-assets.mjs) reads `targets` to emit deterministic AVIF + WebP derivatives next to each PNG source; the runtime (catalogData.imageSetFor / style.css / MainMenu.tsx <picture>) prefers those derivatives with the original PNG kept as the universal fallback. PNG sources stay checked in and authoritative. To regenerate: `npm --prefix frontend run optimize:assets`.",
+  "schemaVersion": 1,
+  "targets": [
+    {
+      "path": "/assets/ui/main-menu/background-scene-v1.png",
+      "note": "Full-bleed accepted background scene (~2.6MB PNG); opaque, photographic.",
+      "avif": { "quality": 50, "effort": 6 },
+      "webp": { "quality": 78, "effort": 6 }
+    },
+    {
+      "path": "/assets/ui/main-menu-brand-title-only-v1.png",
+      "note": "Accepted title art; has alpha.",
+      "avif": { "quality": 60, "effort": 6 },
+      "webp": { "quality": 88, "effort": 6 }
+    },
+    {
+      "path": "/assets/ui/surfaces/baseline-stone-blue.png",
+      "note": "Carved-stone rail/tab surface (~440KB PNG, opaque). Single heaviest menu image; gates the buttons layer in the cold-load reveal. Higher quality preserves the 1024px tile under `repeat`.",
+      "avif": { "quality": 70, "effort": 6 },
+      "webp": { "quality": 90, "effort": 6 }
+    }
+  ]
+}

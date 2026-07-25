@@ -1,0 +1,74 @@
+{{- if and (eq (include "chess-tactics.isTestEnv" .) "true") (eq (include "chess-tactics.renderHot" .) "true") }}
+# Ephemeral, in-cluster Postgres for a Glimmung test slot ONLY. Prod uses the
+# Azure Database for PostgreSQL provisioned by tofu/ and reached passwordless via
+# workload identity; a slot can't federate to that UAMI (its ServiceAccount
+# subject differs) and must never touch prod data, so it gets its own throwaway
+# Postgres instead. Storage is emptyDir — the data dies with the slot, which is
+# exactly what a test environment wants. The app pod points DATABASE_URL here
+# (see deployment.yaml).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chess-tactics.resourceName" . }}-postgres
+  namespace: {{ include "chess-tactics.namespace" . }}
+  labels:
+    app: {{ include "chess-tactics.resourceName" . }}-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "chess-tactics.resourceName" . }}-postgres
+  template:
+    metadata:
+      labels:
+        app: {{ include "chess-tactics.resourceName" . }}-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: {{ .Values.postgres.testSlot.image | quote }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.testSlot.user | quote }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgres.testSlot.password | quote }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.testSlot.database | quote }}
+            # Keep PGDATA on the emptyDir mount.
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - name: postgres
+              containerPort: 5432
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", {{ .Values.postgres.testSlot.user | quote }}]
+            periodSeconds: 5
+            failureThreshold: 12
+          resources:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+            limits:
+              memory: 256Mi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chess-tactics.resourceName" . }}-postgres
+  namespace: {{ include "chess-tactics.namespace" . }}
+  labels:
+    app: {{ include "chess-tactics.resourceName" . }}-postgres
+spec:
+  selector:
+    app: {{ include "chess-tactics.resourceName" . }}-postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
+{{- end }}

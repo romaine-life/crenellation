@@ -1,0 +1,26 @@
+#!/bin/sh
+set -eu
+
+repo_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+port=${PORT:-3000}
+runtime_root=${XDG_RUNTIME_DIR:-/tmp}
+
+export PORT=$port
+export HOT_BACKEND_DIR=${HOT_BACKEND_DIR:-$runtime_root/chess-tactics-hot}
+export STATIC_FRONTEND_DIR=${STATIC_FRONTEND_DIR:-$runtime_root/chess-tactics-static-override}
+export FRONTEND_DIR=${FRONTEND_DIR:-$repo_dir/frontend/dist}
+
+if [ ! -d "$repo_dir/frontend/node_modules" ]; then
+  npm --prefix "$repo_dir/frontend" ci
+fi
+npm --prefix "$repo_dir/frontend" run build
+
+cd "$repo_dir/backend"
+
+printf 'chess-tactics preview url: http://127.0.0.1:%s\n' "$PORT"
+printf 'chess-tactics preview entrypoint: backend/supervisor.js\n'
+printf 'chess-tactics built frontend: %s\n' "$FRONTEND_DIR"
+printf 'chess-tactics hot backend: %s\n' "$HOT_BACKEND_DIR"
+printf 'chess-tactics static override: %s\n' "$STATIC_FRONTEND_DIR"
+
+exec npm start

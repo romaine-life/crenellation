@@ -1,0 +1,104 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Surface review — real settings page</title>
+<style>
+  :root { --ink:#edf3f4; --muted:#9fb0b7; --muted-2:#6f838c; --gold:#c9a44c; --cobalt:#65b8ff; }
+  * { box-sizing:border-box; }
+  html,body { height:100%; margin:0; }
+  body { background:#05080c; color:var(--ink); font-family:system-ui,sans-serif; display:flex; flex-direction:column; }
+  .controls { flex:none; display:flex; gap:18px; align-items:center; flex-wrap:wrap;
+    padding:8px 14px; background:#0a1118; border-bottom:1px solid #1c2a35; font-size:12px; }
+  .controls .grp { display:flex; gap:6px; align-items:center; }
+  .controls .lbl { color:var(--muted-2); text-transform:uppercase; letter-spacing:.08em; font-size:10px; margin-right:2px; }
+  button { font:700 12px/1 system-ui; color:var(--ink); background:#11202c; border:1px solid #243a4a;
+    border-radius:5px; padding:7px 12px; cursor:pointer; }
+  button:hover { border-color:#3a5a70; }
+  button.on { background:#1d3a4f; border-color:var(--gold); color:#fff; }
+  button:disabled { opacity:.3; cursor:not-allowed; }
+  .note { color:var(--muted-2); margin-left:auto; }
+  iframe { flex:1; width:100%; border:0; background:#05080c; }
+</style>
+
+<div class="controls">
+  <div class="grp"><span class="lbl">approach</span>
+    <button data-app="B">B · hybrid</button>
+    <button data-app="C">C · pixel-model</button>
+    <button data-app="baseline">baseline</button>
+    <button data-app="D">D · pixellab</button>
+  </div>
+  <div class="grp"><span class="lbl">material</span>
+    <button data-mat="stone-blue">stone-blue</button>
+    <button data-mat="stone-grey">stone-grey</button>
+    <button data-mat="wood-oak">wood-oak</button>
+    <button data-mat="wood-walnut">wood-walnut</button>
+  </div>
+  <div class="grp"><span class="lbl">tile px</span>
+    <button data-zoom="1024px">1024</button>
+    <button data-zoom="1536px">1536</button>
+    <button data-zoom="2048px">2048</button>
+  </div>
+  <div class="grp"><span class="lbl">frame</span>
+    <button data-frame="line">corners + line</button>
+    <button data-frame="corners">corners only</button>
+    <button data-frame="original">original (broken)</button>
+  </div>
+  <span class="note" id="status"></span>
+</div>
+
+<iframe id="app" src="/settings"></iframe>
+
+<script>
+  const AVAIL = {
+    B: ['stone-blue','wood-oak'],
+    C: ['stone-blue'],
+    baseline: ['stone-blue','wood-oak'],
+    D: ['stone-blue'],
+  };
+  const state = { app:'B', mat:'stone-blue', zoom:'1536px', frame:'line' };
+  const frame = document.getElementById('app');
+  const $ = (s)=>document.querySelectorAll(s);
+
+  function css() {
+    const tex = `/assets/ui/explore/review/${state.app}-${state.mat}.png`;
+    // Frame layer: a transparent-INTERIOR 9-slice (gold ornament only) so the texture behind shows
+    // to the edge. `original` keeps the real panel.png with fill dropped — i.e. the broken navy-ring,
+    // for comparison. The texture is a separate background layer, border-box so it fills under the ring.
+    const frameRule = state.frame === 'original'
+      ? `border-image-slice: 24 !important;`
+      : `border-image: url("/assets/ui/explore/frames/panel-${state.frame}.png") 24 / 16px round !important;`;
+    const fill = `background:url("${tex}") top left/${state.zoom} repeat !important;`
+      + `background-origin:border-box !important; background-clip:border-box !important; image-rendering:pixelated !important;`;
+    return `
+      [data-testid="settings"] .settings-frame,
+      [data-testid="settings"] .settings-rail-frame,
+      [data-testid="settings"] .app-titlebar.settings-header-frame {
+        ${frameRule} ${fill} }
+    `;
+  }
+  function inject() {
+    try {
+      const doc = frame.contentDocument;
+      if (!doc) return;
+      let el = doc.getElementById('surface-override');
+      if (!el) { el = doc.createElement('style'); el.id = 'surface-override'; doc.head.appendChild(el); }
+      el.textContent = css();
+    } catch (e) { /* same-origin; ignore transient */ }
+  }
+  function apply() {
+    const mats = AVAIL[state.app];
+    if (!mats.includes(state.mat)) state.mat = mats[0];
+    $('[data-app]').forEach(b=>b.classList.toggle('on', b.dataset.app===state.app));
+    $('[data-mat]').forEach(b=>{ const ok=mats.includes(b.dataset.mat); b.disabled=!ok; b.classList.toggle('on', b.dataset.mat===state.mat); });
+    $('[data-zoom]').forEach(b=>b.classList.toggle('on', b.dataset.zoom===state.zoom));
+    $('[data-frame]').forEach(b=>b.classList.toggle('on', b.dataset.frame===state.frame));
+    document.getElementById('status').textContent = `${state.app}-${state.mat} · frame:${state.frame} · real /settings page`;
+    inject();
+  }
+  $('[data-app]').forEach(b=>b.onclick=()=>{ state.app=b.dataset.app; apply(); });
+  $('[data-mat]').forEach(b=>b.onclick=()=>{ if(!b.disabled){ state.mat=b.dataset.mat; apply(); } });
+  $('[data-zoom]').forEach(b=>b.onclick=()=>{ state.zoom=b.dataset.zoom; apply(); });
+  $('[data-frame]').forEach(b=>b.onclick=()=>{ state.frame=b.dataset.frame; apply(); });
+  frame.addEventListener('load', apply);
+  // keep re-applying briefly in case the SPA mounts Settings after load
+  let n=0; const t=setInterval(()=>{ inject(); if(++n>20) clearInterval(t); }, 250);
+</script>

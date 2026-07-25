@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Toggle — Chess Tactics UI Kit</title>
+<style>
+  :root {
+    --bg: #070b11;
+    --bg-2: #0c131d;
+    --panel: #0e1722;
+    --panel-2: #111e2b;
+    --line: #1f3346;
+    --cyan: #5fb8ff;
+    --cyan-bright: #79d3ff;
+    --ink: #eaf4ff;
+    --ink-2: #9fc4d5;
+    --ink-3: #5d7a8c;
+    --good: #54e6a0;
+    --bad: #ff7a8a;
+    --mono: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+    --sans: "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background:
+      radial-gradient(1200px 700px at 50% -10%, #15273a 0%, transparent 60%),
+      radial-gradient(900px 600px at 100% 110%, #0f1d2e 0%, transparent 55%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 56px clamp(20px, 5vw, 80px) 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  /* ---- header ---- */
+  .eyebrow {
+    color: var(--cyan-bright);
+    font-family: var(--mono);
+    font-size: .72rem;
+    letter-spacing: .42em;
+    text-transform: uppercase;
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    line-height: .95;
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: -.02em;
+  }
+  h1 .slash { color: var(--cyan); font-weight: 400; }
+  .lede {
+    color: var(--ink-2);
+    font-size: 1.02rem;
+    max-width: 56ch;
+    margin: 18px 0 0;
+    line-height: 1.5;
+  }
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-top: 22px;
+  }
+  .pill {
+    font-family: var(--mono);
+    font-size: .72rem;
+    letter-spacing: .08em;
+    color: var(--ink-2);
+    border: 1px solid var(--line);
+    background: rgba(20, 34, 50, .5);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .pill b { color: var(--cyan-bright); font-weight: 600; }
+
+  /* ---- section scaffold ---- */
+  section { margin-top: 56px; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 14px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px; margin-bottom: 28px;
+  }
+  .sec-num {
+    font-family: var(--mono); color: var(--cyan);
+    font-size: .8rem; letter-spacing: .2em;
+  }
+  .sec-head h2 { margin: 0; font-size: 1.35rem; font-weight: 700; letter-spacing: -.01em; }
+  .sec-head p { margin: 0 0 0 auto; color: var(--ink-3); font-size: .85rem; max-width: 38ch; text-align: right; }
+
+  /* ---- framed art card (echoes the kit corner-tick motif) ---- */
+  .grid { display: grid; gap: 22px; }
+  .grid.two { grid-template-columns: 1fr 1fr; }
+  .grid.three { grid-template-columns: repeat(3, 1fr); }
+
+  .card {
+    position: relative;
+    background: linear-gradient(180deg, var(--panel-2), var(--panel));
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 30px 26px 22px;
+  }
+  .card.flag-good { border-color: rgba(84, 230, 160, .35); }
+  .card.flag-bad { border-color: rgba(255, 122, 138, .3); }
+  /* corner ticks */
+  .card::before, .card::after {
+    content: ""; position: absolute; width: 14px; height: 14px;
+    border: 2px solid var(--cyan); opacity: .55;
+  }
+  .card::before { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+  .card::after { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+
+  .card .tag {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ink-3); margin: 0 0 18px;
+  }
+  .card.flag-good .tag { color: var(--good); }
+  .card.flag-bad .tag { color: var(--bad); }
+
+  .stage {
+    display: flex; align-items: center; justify-content: center;
+    gap: 28px; flex-wrap: wrap;
+    min-height: 132px;
+    background:
+      linear-gradient(rgba(255,255,255,.015), rgba(255,255,255,.015)),
+      repeating-linear-gradient(45deg, #0a121b 0 10px, #0b141e 10px 20px);
+    border-radius: 8px;
+    padding: 26px;
+  }
+  .stage img { image-rendering: pixelated; display: block; }
+  /* original artwork is a screenshot of the concept — scale it smoothly, in context */
+  .context { width: min(380px, 100%); height: auto; image-rendering: auto;
+    border-radius: 5px; outline: 1px solid var(--line); }
+  .shot { display: grid; gap: 8px; justify-items: center; }
+  .shot small { font-family: var(--mono); font-size: .66rem; color: var(--ink-3); letter-spacing: .1em; }
+
+  /* native (1x) and doubled (2x) display helpers — integer scale only */
+  .x1 { width: 152px; height: 48px; }
+  .x2 { width: 304px; height: 96px; }
+  .prev1 { width: 150px; height: 45px; }   /* how the bad one was actually stretched */
+
+  /* ---- zoom comparison ---- */
+  .zoom-card .stage { gap: 40px; }
+  .zoom img { width: 456px; height: 144px; image-rendering: pixelated; outline: 1px solid var(--line); }
+  .zoom small { display:block; margin-top:10px; }
+
+  /* ---- spec table ---- */
+  .specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .spec {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px 16px;
+  }
+  .spec .k { font-family: var(--mono); font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+  .spec .v { font-size: 1.5rem; font-weight: 700; margin-top: 8px; }
+  .spec .v.ok { color: var(--good); }
+  .spec .v.no { color: var(--bad); }
+  .spec .sub { color: var(--ink-3); font-size: .74rem; margin-top: 4px; }
+
+  .footnote {
+    margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line);
+    color: var(--ink-3); font-family: var(--mono); font-size: .74rem; line-height: 1.7;
+  }
+  .footnote b { color: var(--ink-2); font-weight: 600; }
+  .arrow { color: var(--cyan); }
+
+  @media (max-width: 860px) {
+    .grid.two, .grid.three, .specs { grid-template-columns: 1fr; }
+    .sec-head p { display: none; }
+    .zoom img { width: 100%; height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Chess Tactics · UI Kit · Component Portfolio</p>
+    <h1>Toggle <span class="slash">/</span> on · off</h1>
+    <p class="lede">
+      The settings toggle, rebuilt through the asset pipeline — a self-contained
+      brief, a codex-painted source, and a verification gate — so the shipped
+      sprite matches the accepted concept artwork pixel-for-pixel instead of a
+      soft, mis-sized hand copy.
+    </p>
+    <div class="meta-row">
+      <span class="pill">native <b>152 × 48</b></span>
+      <span class="pill">alpha <b>0 / 255</b> only</span>
+      <span class="pill">silhouette mirror <b>0.00%</b> Δ</span>
+      <span class="pill">render <b>1 : 1</b></span>
+    </div>
+  </header>
+
+  <!-- 1 · fidelity -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>Fidelity to the original artwork</h2>
+      <p>The regenerated sprite reproduces the accepted concept toggle — same pill, border, glow, knob.</p>
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <p class="tag">Original artwork · from the accepted concept</p>
+        <div class="stage">
+          <div class="shot">
+            <img class="context" src="/kit-portfolio/original-on.png" alt="Original ON toggle on the concept backdrop" />
+            <small>ON · in place on the settings-audio concept</small>
+          </div>
+        </div>
+      </div>
+      <div class="card flag-good">
+        <p class="tag">Regenerated · shipped kit asset</p>
+        <div class="stage">
+          <div class="shot">
+            <img class="x2" src="/assets/ui/kit/toggle-on.png" alt="Regenerated ON toggle" />
+            <small>toggle-on.png</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · both states -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>Both states, one geometry</h2>
+      <p>The concept only ever drew ON; the OFF state extends the same outer pill with the knob slid left and dimmed.</p>
+    </div>
+    <div class="grid two">
+      <div class="card flag-good">
+        <p class="tag">ON · knob right, bright</p>
+        <div class="stage">
+          <div class="shot"><img class="x1" src="/assets/ui/kit/toggle-on.png" alt="ON 1x" /><small>1× — 152 × 48</small></div>
+          <div class="shot"><img class="x2" src="/assets/ui/kit/toggle-on.png" alt="ON 2x" /><small>2× — crisp</small></div>
+        </div>
+      </div>
+      <div class="card flag-good">
+        <p class="tag">OFF · knob left, dim</p>
+        <div class="stage">
+          <div class="shot"><img class="x1" src="/assets/ui/kit/toggle-off.png" alt="OFF 1x" /><small>1× — 152 × 48</small></div>
+          <div class="shot"><img class="x2" src="/assets/ui/kit/toggle-off.png" alt="OFF 2x" /><small>2× — crisp</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · the upgrade -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>What it replaced</h2>
+      <p>The previous toggle never went through the pipeline — soft, 96 × 48, then fractionally stretched on screen.</p>
+    </div>
+    <div class="grid two">
+      <div class="card flag-bad zoom-card">
+        <p class="tag">Before · off-pipeline, ~42–48% anti-aliased</p>
+        <div class="stage">
+          <div class="shot zoom">
+            <img src="/kit-portfolio/prev-on.png" alt="Previous ON toggle, zoomed" />
+            <small>prev toggle-on · 96 × 44 source @ ~4.75× — note the fuzzy, halo'd edges</small>
+          </div>
+        </div>
+      </div>
+      <div class="card flag-good zoom-card">
+        <p class="tag">After · pipeline, binary alpha</p>
+        <div class="stage">
+          <div class="shot zoom">
+            <img src="/assets/ui/kit/toggle-on.png" alt="Regenerated ON toggle, zoomed" />
+            <small>toggle-on · 152 × 48 source @ 3× — every edge is a hard 1px step</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · verification -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>Gate report</h2>
+      <p>Measured, not eyeballed — every check is a per-pixel pass on the shipped files.</p>
+    </div>
+    <div class="specs">
+      <div class="spec">
+        <div class="k">Native size</div>
+        <div class="v ok">152 × 48</div>
+        <div class="sub">was 96 × 44, stretched</div>
+      </div>
+      <div class="spec">
+        <div class="k">Semi-transparent px</div>
+        <div class="v ok">0.0%</div>
+        <div class="sub">was 41.7% / 48.0%</div>
+      </div>
+      <div class="spec">
+        <div class="k">Silhouette L/R Δ</div>
+        <div class="v ok">0.00%</div>
+        <div class="sub">outer pill mirrors exactly</div>
+      </div>
+      <div class="spec">
+        <div class="k">Corner alpha</div>
+        <div class="v ok">clear</div>
+        <div class="sub">transparent, no box</div>
+      </div>
+    </div>
+  </section>
+
+  <p class="footnote">
+    pipeline &nbsp;<b>brief</b> <span class="arrow">→</span> docs/art/kit-briefs/toggle.md
+    &nbsp;·&nbsp; <b>source</b> <span class="arrow">→</span> codex (gpt-image), attached concept + ref crop
+    &nbsp;·&nbsp; <b>gate</b> <span class="arrow">→</span> size / alpha / symmetry / transparency<br/>
+    assets &nbsp;<b>/assets/ui/kit/toggle-on.png</b> · <b>toggle-off.png</b> (+@2x) &nbsp;·&nbsp; commit 758c5f1
+  </p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,455 @@
+{
+  "generated": "2026-06-27",
+  "gate": "verify-kit-asset.mjs --glyph (transparency hygiene: magenta despill + edge bleed; anti-aliasing allowed)",
+  "summary": {
+    "pass": 32,
+    "total": 32,
+    "frames": 12
+  },
+  "groups": [
+    {
+      "id": "settings",
+      "label": "Settings icons",
+      "items": [
+        {
+          "name": "bell",
+          "url": "/assets/ui/kit/icons/bell.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 13.4,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "brand-shield",
+          "url": "/assets/ui/kit/icons/brand-shield.png",
+          "w": 256,
+          "h": 256,
+          "magenta": 0,
+          "semiPct": 1.5,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "design-index",
+          "url": "/assets/ui/kit/icons/design-index.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 7.2,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "effects",
+          "url": "/assets/ui/kit/icons/effects.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 13.5,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "gear",
+          "url": "/assets/ui/kit/icons/gear.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 13.3,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "info",
+          "url": "/assets/ui/kit/icons/info.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 7.1,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "interface-sounds",
+          "url": "/assets/ui/kit/icons/interface-sounds.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 3,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "knight",
+          "url": "/assets/ui/kit/icons/knight.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 8.2,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "lyre",
+          "url": "/assets/ui/kit/icons/lyre.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 22,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "monitor",
+          "url": "/assets/ui/kit/icons/monitor.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 5.3,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "music",
+          "url": "/assets/ui/kit/icons/music.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 10.8,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "reset",
+          "url": "/assets/ui/kit/icons/reset.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 14.7,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "save",
+          "url": "/assets/ui/kit/icons/save.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 4.2,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "speaker",
+          "url": "/assets/ui/kit/icons/speaker.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 13.2,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "tileset-review",
+          "url": "/assets/ui/kit/icons/tileset-review.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 13.3,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "tileset-studio",
+          "url": "/assets/ui/kit/icons/tileset-studio.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 21,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "unit-studio",
+          "url": "/assets/ui/kit/icons/unit-studio.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 8,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "wrench",
+          "url": "/assets/ui/kit/icons/wrench.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 10.1,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        }
+      ]
+    },
+    {
+      "id": "game",
+      "label": "Game icons · skirmish HUD",
+      "items": [
+        {
+          "name": "attack",
+          "url": "/assets/ui/kit/icons/game/attack.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 1,
+          "semiPct": 12.3,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "capture",
+          "url": "/assets/ui/kit/icons/game/capture.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 21.5,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "defend",
+          "url": "/assets/ui/kit/icons/game/defend.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 11.3,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "end-turn",
+          "url": "/assets/ui/kit/icons/game/end-turn.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 17.8,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "move",
+          "url": "/assets/ui/kit/icons/game/move.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 12.9,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "objective",
+          "url": "/assets/ui/kit/icons/game/objective.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 1,
+          "semiPct": 12.4,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "power",
+          "url": "/assets/ui/kit/icons/game/power.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 2,
+          "semiPct": 12.6,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "wait",
+          "url": "/assets/ui/kit/icons/game/wait.png",
+          "w": 64,
+          "h": 64,
+          "magenta": 0,
+          "semiPct": 15.2,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        }
+      ]
+    },
+    {
+      "id": "shields",
+      "label": "Faction shields · campaign editor",
+      "items": [
+        {
+          "name": "crescent",
+          "url": "/assets/ui/kit/icons/shields/crescent.png",
+          "w": 64,
+          "h": 80,
+          "magenta": 0,
+          "semiPct": 10.1,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "crown",
+          "url": "/assets/ui/kit/icons/shields/crown.png",
+          "w": 64,
+          "h": 80,
+          "magenta": 0,
+          "semiPct": 11.5,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "flame",
+          "url": "/assets/ui/kit/icons/shields/flame.png",
+          "w": 64,
+          "h": 80,
+          "magenta": 0,
+          "semiPct": 10,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "lion",
+          "url": "/assets/ui/kit/icons/shields/lion.png",
+          "w": 64,
+          "h": 80,
+          "magenta": 0,
+          "semiPct": 10,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "rook",
+          "url": "/assets/ui/kit/icons/shields/rook.png",
+          "w": 64,
+          "h": 80,
+          "magenta": 0,
+          "semiPct": 10,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        },
+        {
+          "name": "snow",
+          "url": "/assets/ui/kit/icons/shields/snow.png",
+          "w": 64,
+          "h": 80,
+          "magenta": 0,
+          "semiPct": 10.8,
+          "edge": 0,
+          "pass": true,
+          "fails": []
+        }
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "name": "panel",
+      "url": "/assets/ui/kit/panel.png",
+      "w": 72,
+      "h": 72
+    },
+    {
+      "name": "row",
+      "url": "/assets/ui/kit/row.png",
+      "w": 160,
+      "h": 112
+    },
+    {
+      "name": "button-neutral",
+      "url": "/assets/ui/kit/button-neutral.png",
+      "w": 114,
+      "h": 46
+    },
+    {
+      "name": "button-primary",
+      "url": "/assets/ui/kit/button-primary.png",
+      "w": 114,
+      "h": 46
+    },
+    {
+      "name": "button-danger",
+      "url": "/assets/ui/kit/button-danger.png",
+      "w": 114,
+      "h": 46
+    },
+    {
+      "name": "mode-button",
+      "url": "/assets/ui/kit/mode-button.png",
+      "w": 72,
+      "h": 72
+    },
+    {
+      "name": "mode-button-active",
+      "url": "/assets/ui/kit/mode-button-active.png",
+      "w": 72,
+      "h": 72
+    },
+    {
+      "name": "field-input",
+      "url": "/assets/ui/kit/field-input.png",
+      "w": 198,
+      "h": 38
+    },
+    {
+      "name": "field-select",
+      "url": "/assets/ui/kit/field-select.png",
+      "w": 198,
+      "h": 38
+    },
+    {
+      "name": "toggle-track",
+      "url": "/assets/ui/kit/toggle-track.png",
+      "w": 48,
+      "h": 48
+    },
+    {
+      "name": "toggle-knob",
+      "url": "/assets/ui/kit/toggle-knob.png",
+      "w": 44,
+      "h": 36
+    },
+    {
+      "name": "divider",
+      "url": "/assets/ui/kit/divider.png",
+      "w": 10,
+      "h": 12
+    }
+  ]
+}

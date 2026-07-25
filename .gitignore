@@ -1,0 +1,28 @@
+node_modules/
+frontend/dist/
+npm-debug.log
+.DS_Store
+
+# BGM / large media is hosted in Azure Blob Storage (see tofu/ + docs/bgm-audio.md),
+# never committed to the repo or baked into the image. The committed manifest
+# (frontend/public/assets/audio/bgm-manifest.json) points at the blob container.
+*.mp3
+
+# OpenTofu local working artifacts. Provider versions + the lockfile are injected
+# by the shared pipeline (see tofu/provider.tf), so neither is committed here.
+.terraform/
+.terraform.lock.hcl
+
+# Local Claude Code tooling: worktrees, launch config, and a scratch dir used
+# for headless screenshot capture (Playwright + Chromium). Never committed —
+# except checked-in skills under .claude/skills/, which ship with the repo.
+.claude/*
+!.claude/skills/
+.pwshot/
+frontend/.codex-vite-*.log
+frontend/.chrome-campaign-proof/
+tmp-shots/
+
+# Binary assets live in the crenellationmedia storage account, not git.
+# Local copies (untracked) keep the dev server working during the port.
+frontend/public/assets/

@@ -1,0 +1,53 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>PixelLab surface tiles — all 16 variations</title>
+<style>
+  :root { --ink:#edf3f4; --ink-strong:#f7fbf8; --muted:#9fb0b7; --muted-2:#6f838c; --gold:#c9a44c; --cobalt:#65b8ff; }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:26px; background:#070d13; font-family:system-ui,sans-serif; color:var(--ink); }
+  h1 { font-size:15px; letter-spacing:.04em; color:var(--muted); margin:0 0 4px; text-transform:uppercase; }
+  .sub { font-size:12px; color:var(--muted-2); margin:0 0 22px; }
+  h2 { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin:22px 0 12px; }
+  .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:1100px; }
+  .card { }
+  .card .label { font-size:11px; color:var(--muted); margin:0 0 6px; letter-spacing:.03em; }
+  .card .label b { color:var(--ink-strong); font-weight:700; }
+  .card.lead .label b { color:var(--gold); }
+  .panel { border:3px solid var(--gold); border-radius:6px; padding:10px; min-height:120px;
+    image-rendering:pixelated; background-repeat:repeat; background-size:96px 96px; }
+  .panel .t { font:700 11px/1 system-ui; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-strong); text-shadow:0 1px 2px #000; margin-bottom:8px; }
+  .panel .r { display:flex; justify-content:space-between; font:600 11px/1 system-ui; color:var(--ink); background:rgba(6,14,20,.5); padding:6px 8px; border-radius:3px; margin-bottom:4px; text-shadow:0 1px 2px #000; }
+  .panel .r .v { color:var(--cobalt); }
+  .scalebar { font-size:10px; color:var(--muted-2); margin-top:5px; }
+</style>
+<h1>PixelLab surface tiles — pick a stone &amp; a wood</h1>
+<p class="sub">All 16 variations, each tiled inside a panel with sample UI. Gold-labelled = my lead pick for that material. Tell me the tile number you want for stone and for wood.</p>
+
+<h2>Stone</h2>
+<div class="grid" id="stones"></div>
+<h2>Wood</h2>
+<div class="grid" id="woods"></div>
+
+<script>
+  const leads = new Set([0,5,10,12]);
+  const stoneRows = [['Selected unit',['Movement','4'],['Attack','2']]];
+  const woodRows  = [['Roster',['Knight','Ready'],['Rook','Moved']]];
+  function card(i, rows) {
+    const [title,r1,r2] = rows[0];
+    const lead = leads.has(i);
+    const el = document.createElement('div');
+    el.className = 'card' + (lead?' lead':'');
+    el.innerHTML =
+      '<p class="label"><b>tile_'+i+(lead?' ★':'')+'</b></p>'+
+      '<div class="panel" style="background-image:url(/assets/ui/explore/pixellab/tile_'+i+'.png)">'+
+        '<div class="t">'+title+'</div>'+
+        '<div class="r"><span>'+r1[0]+'</span><span class="v">'+r1[1]+'</span></div>'+
+        '<div class="r"><span>'+r2[0]+'</span><span class="v">'+r2[1]+'</span></div>'+
+      '</div>';
+    return el;
+  }
+  const stones=[0,1,2,3,4,5,6,7], woods=[8,9,10,11,12,13,14,15];
+  const sg=document.getElementById('stones'), wg=document.getElementById('woods');
+  stones.forEach(i=>sg.appendChild(card(i,stoneRows)));
+  woods.forEach(i=>wg.appendChild(card(i,woodRows)));
+</script>

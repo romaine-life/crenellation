@@ -1,0 +1,55 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Surface seam check</title>
+<style>
+  :root { --ink:#edf3f4; --muted:#9fb0b7; --muted-2:#6f838c; --gold:#c9a44c; --tile:96px; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:24px; background:#070d13; font-family:system-ui,sans-serif; color:var(--ink); }
+  h1 { font-size:15px; letter-spacing:.04em; color:var(--muted); margin:0 0 4px; text-transform:uppercase; }
+  .sub { font-size:12px; color:var(--muted-2); margin:0 0 16px; }
+  .controls { display:flex; gap:8px; align-items:center; margin:0 0 20px; }
+  .controls span { font-size:12px; color:var(--muted); margin-right:4px; }
+  button { font:700 12px/1 system-ui; color:var(--ink); background:#11202c; border:1px solid #2a4150;
+    border-radius:5px; padding:7px 14px; cursor:pointer; }
+  button.on { background:#1d3a4f; border-color:var(--gold); color:#fff; }
+  .block { margin:0 0 18px; }
+  .block .name { font:600 12px/1 system-ui; margin:0 0 6px; }
+  .block .name b { color:var(--gold); }
+  .block .name .seam { color:var(--muted-2); font-weight:400; margin-left:8px; }
+  .field { height:190px; border:1px solid #1c2a35; border-radius:4px;
+    image-rendering:pixelated; background-repeat:repeat; background-size:var(--tile) var(--tile); }
+</style>
+<h1>Surface seam check — judge the tiling by eye</h1>
+<p class="sub">Each surface repeated across a wide field. Look for a hard line/grid where copies meet. Use the zoom to inspect at the scale it'll render in-panel.</p>
+<div class="controls">
+  <span>zoom</span>
+  <button data-px="48">1×</button>
+  <button data-px="96" class="on">2×</button>
+  <button data-px="144">3×</button>
+</div>
+<div id="blocks"></div>
+<script>
+  const surfaces = [
+    ['stone-slate-blue','2.6 / 2.6'],
+    ['stone-cobble-blue','5.4 / 7.4'],
+    ['stone-blue-ornate','18.2 / 12.8'],
+    ['stone-grey','11.1 / 9.9'],
+    ['stone-sandstone','12.4 / 11.5'],
+    ['wood-oak','14.3 / 4.9'],
+    ['wood-oak-worn','11.7 / 33.1'],
+    ['wood-walnut','6.9 / 4.8'],
+  ];
+  const root = document.getElementById('blocks');
+  for (const [name, seam] of surfaces) {
+    const b = document.createElement('div');
+    b.className = 'block';
+    b.innerHTML = '<p class="name"><b>'+name+'</b><span class="seam">my metric L↔R/T↔B: '+seam+'</span></p>'+
+      '<div class="field" style="background-image:url(/assets/ui/surfaces/'+name+'.png)"></div>';
+    root.appendChild(b);
+  }
+  document.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('button').forEach(x => x.classList.remove('on'));
+    btn.classList.add('on');
+    document.documentElement.style.setProperty('--tile', btn.dataset.px + 'px');
+  }));
+</script>
