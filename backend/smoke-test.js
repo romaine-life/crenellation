@@ -239,7 +239,7 @@ async function main() {
   await resetDb();
 
   const root = await get('/');
-  if (root.statusCode !== 200 || !root.body.includes('Chess Tactics')) {
+  if (root.statusCode !== 200 || !root.body.includes('Rampart')) {
     throw new Error(`Unexpected root response: ${root.statusCode}`);
   }
   // The shell is the React SPA mount (#root). Account state + optional sign-in render
@@ -250,7 +250,7 @@ async function main() {
     throw new Error('Root shell should load the app for guests without a blocking sign-in gate');
   }
   const fallback = await get('/squad/unknown');
-  if (fallback.statusCode !== 200 || !fallback.body.includes('Chess Tactics')) {
+  if (fallback.statusCode !== 200 || !fallback.body.includes('Rampart')) {
     throw new Error(`Unexpected fallback response: ${fallback.statusCode}`);
   }
   const missingAsset = await get('/assets/missing.png');
@@ -291,27 +291,13 @@ async function main() {
   ];
   for (const reviewUrl of reviewUrls) {
     const response = await get(reviewUrl);
-    if (response.statusCode !== 200 || !response.body.includes('Chess Tactics')) {
+    if (response.statusCode !== 200 || !response.body.includes('Rampart')) {
       throw new Error(`Unexpected review URL response for ${reviewUrl}: ${response.statusCode}`);
     }
   }
 
-  const artAssets = [
-    '/assets/ui/main-menu-aspirational.png',
-    '/assets/ui/campaign-editor-concept.png',
-    '/assets/ui/level-editor-concept.png',
-    '/assets/ui/skirmish-concept.png',
-    '/assets/ui/main-menu-button-art-five-mode.png',
-    '/assets/ui/main-menu-button-art-three-state.png',
-    '/assets/ui/main-menu-brand-title-only-v1.png',
-    '/assets/ui/main-menu-brand-chrome-v1.png',
-  ];
-  for (const assetPath of artAssets) {
-    const response = await get(assetPath);
-    if (response.statusCode !== 200 || !String(response.headers['content-type'] || '').includes('image/png')) {
-      throw new Error(`Unexpected art asset response for ${assetPath}: ${response.statusCode} ${response.headers['content-type'] || ''}`);
-    }
-  }
+  // Art assets are not committed (they live in the crenellationmedia storage
+  // account), so there is nothing to assert here for the Rampart port.
 
   // Migration guard: the profile/news/dock chrome bitmaps were retired in favor
   // of live DOM components and must no longer be served.
