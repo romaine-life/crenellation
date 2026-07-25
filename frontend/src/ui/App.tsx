@@ -32,6 +32,7 @@ const importTilePreview = () => import('./TilePreview');
 const importLevelEditor = () => import('./LevelEditor');
 const importPortraitEditor = () => import('./PortraitEditor');
 const importDoodadEditor = () => import('./DoodadEditor');
+const importRampart = () => import('../rampart/RampartScreen');
 
 const Skirmish = lazy(() => importSkirmish().then((m) => ({ default: m.Skirmish })));
 const CampaignEditor = lazy(() => importCampaignEditor().then((m) => ({ default: m.CampaignEditor })));
@@ -39,6 +40,7 @@ const TilesetStudio = lazy(() => importTilePreview().then((m) => ({ default: m.T
 const LevelEditor = lazy(() => importLevelEditor().then((m) => ({ default: m.LevelEditor })));
 const PortraitEditor = lazy(() => importPortraitEditor().then((m) => ({ default: m.PortraitEditor })));
 const DoodadEditor = lazy(() => importDoodadEditor().then((m) => ({ default: m.DoodadEditor })));
+const Rampart = lazy(() => importRampart().then((m) => ({ default: m.Rampart })));
 
 const fallback = <div style={{ padding: 40, color: 'var(--ds-ink-3)', fontFamily: 'var(--ds-font-sans)' }}>Loading…</div>;
 
@@ -46,7 +48,8 @@ const fallback = <div style={{ padding: 40, color: 'var(--ds-ink-3)', fontFamily
 // routes (Campaign, Lobbies, Settings…) return null — they're already in the main
 // bundle, nothing to warm.
 function chunkForPath(path: string): (() => Promise<unknown>) | null {
-  if (path === '/play' || path === '/skirmish') return importSkirmish;
+  if (path === '/play') return importRampart;
+  if (path === '/skirmish') return importSkirmish;
   if (path === '/tileset-studio' || path === '/unit-studio' || path === '/nine-slice-editor') return importTilePreview;
   if (path === '/edit' || path === '/level-editor') return importLevelEditor;
   if (path === '/portrait-editor') return importPortraitEditor;
@@ -82,7 +85,9 @@ const isHeavyRoute = (path: string): boolean => HEAVY_ROUTES.has(path);
 // one, the veil holds its dissolve until the board's tiles have decoded — so the reveal
 // lands on a complete board, never an empty frame that then popcorns in. Only the live
 // skirmish opts in today; the level/campaign editors keep the plain JS-load veil.
-const BOARD_ART_ROUTES = new Set(['/play', '/skirmish']);
+// (/play is Rampart's Pixi canvas now — it loads no board art, so gating it
+// on boardArtReady would hold the veil forever.)
+const BOARD_ART_ROUTES = new Set(['/skirmish']);
 
 // Veil timings — keep in lockstep with --route-veil-cover-ms / --route-veil-reveal-ms
 // in style.css (JS drives the route swap; CSS drives the opacity fade).
@@ -262,7 +267,8 @@ export function App(): ReactElement {
 }
 
 function renderRoute(path: string): ReactElement {
-  if (path === '/play' || path === '/skirmish') return <Skirmish />;
+  if (path === '/play') return <Rampart />;
+  if (path === '/skirmish') return <Skirmish />;
   if (path === '/tileset-studio') return <TilesetStudio />;
   // /unit-studio is a deep-link into the one Studio with the Units shelf
   // preselected — not a separate surface. Keeps old links working while the

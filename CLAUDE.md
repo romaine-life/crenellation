@@ -1,3 +1,29 @@
+# crenellation
+
+Rampart-like castles-and-cannons arcade game (2P couch, controllers, one URL) —
+**mid-port from the chess-tactics engine** (imported at chess-tactics@09cc849b,
+no history carried). The chess screens still exist as reference while the port
+proceeds; Rampart code lives in `frontend/src/rampart/` and mounts at `/play`
+(`/skirmish` is the inherited chess game, which dies when the port no longer
+needs it).
+
+Ground rules settled at kickoff (don't relitigate):
+
+- **Binary assets are data, never source.** `frontend/public/assets/` is
+  gitignored (present locally for the dev server); art/music ship from the
+  `crenellationmedia` storage account, not the repo or the image.
+- **Persistence**: own Azure Postgres (`crenellation-pg`, db `crenellation`,
+  workload identity `crenellation-identity`) — maps, profiles, in-progress
+  battles as jsonb-style documents. The game must stay playable with the DB
+  down. Provisioned by `tofu/` (state key `crenellation.tfstate`).
+- **Deploys**: ArgoCD watches the `prod` branch (`k8s/`), host
+  crenellation.romaine.life. Deliberately not cut until the port has something
+  worth serving; build-and-deploy on main fails at the sprite guard until the
+  frontend checks are reshaped for rampart — known, not worth fixing early.
+- Gameplay constants (phase timers, scoring) are placeholders in
+  `frontend/src/rampart/phases.ts` pending extraction from the Rampart ROM —
+  numbers only; no ripped art or audio (repo and site are public).
+
 # Working in this repo
 
 ## Taking screenshots (read this before trying to screenshot the app)
