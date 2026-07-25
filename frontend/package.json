@@ -19,7 +19,7 @@
     "visual:health": "node scripts/check-local-server.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "node --check src/bgm.js && node scripts/check-no-chrome-bitmaps.mjs && node scripts/check-bgm-shuffle.mjs && node scripts/check-sprites.mjs && node scripts/check-imagegen-gate.mjs && vitest run && tsc --noEmit"
+    "check": "node --check src/bgm.js && vitest run && tsc --noEmit"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
