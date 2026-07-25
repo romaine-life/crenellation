@@ -106,18 +106,6 @@ function bgmDevMock() {
   };
 }
 
-// Live-db dev flow: the local backend (devctl `crenellation-backend`, prod
-// Postgres behind it) owns /api and /health; vite fronts it so one origin
-// serves the whole app in dev. BGM_DEV_TRACKS=1 still shadows /api/bgm via the
-// middleware above (middlewares run before the proxy).
-const DEV_BACKEND_ORIGIN = process.env.DEV_BACKEND_ORIGIN || 'http://127.0.0.1:8100';
-
 export default defineConfig({
   plugins: [react(), buildInfo(), doodadCompositionSave(), nineSliceDevSave(), bgmDevMock()],
-  server: {
-    proxy: {
-      '/api': { target: DEV_BACKEND_ORIGIN },
-      '/health': { target: DEV_BACKEND_ORIGIN },
-    },
-  },
 });

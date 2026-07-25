@@ -23,12 +23,15 @@ Ground rules settled at kickoff (don't relitigate):
 - Gameplay constants (phase timers, scoring) are placeholders in
   `frontend/src/rampart/phases.ts` pending extraction from the Rampart ROM —
   numbers only; no ripped art or audio (repo and site are public).
-- **Local dev is the live-db flow**: `devctl up crenellation-backend` (runs
-  `backend/dev-live.ps1` — pgadmin password from ng6-crenellation, straight to
-  the PROD `crenellation-pg`) plus `devctl up crenellation-frontend`; vite
-  proxies `/api` + `/health` to the backend (default 127.0.0.1:8100, override
-  `DEV_BACKEND_ORIGIN`). Requires your IP in tofu/postgres.tf
-  (`allow-nelson-workstation`).
+- **Local dev is the live-db flow, same shape as chess-tactics**: set
+  `DATABASE_URL` in the shell (pgadmin + the break-glass password from
+  ng6-crenellation, `sslmode=require`, password URL-encoded), then
+  `devctl up crenellation-backend` — plain `node supervisor.js`, inherits the
+  env, talks straight to the PROD `crenellation-pg`. The workstation IP is a
+  hand-added server firewall rule (`dev-nelson-laptop`, not in tofu — same as
+  chess-tactics-pg). Frontend iteration stays on `devctl up
+  crenellation-frontend` (vite, no proxy); persistence testing runs against
+  the backend's baked preview, same as chess-tactics.
 
 # Working in this repo
 

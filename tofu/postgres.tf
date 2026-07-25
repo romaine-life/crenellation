@@ -104,17 +104,6 @@ resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_azure_interna
   end_ip_address   = "0.0.0.0"
 }
 
-# Nelson's workstation — the live-db dev flow: the local backend (devctl
-# `crenellation-backend`, backend/dev-live.ps1) connects straight to this
-# server as pgadmin using the break-glass password from ng6-crenellation.
-# Update the IP here when the home address changes.
-resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_nelson_workstation" {
-  name             = "allow-nelson-workstation"
-  server_id        = azurerm_postgresql_flexible_server.main.id
-  start_ip_address = "24.20.230.44"
-  end_ip_address   = "24.20.230.44"
-}
-
 # --- Key Vault publication (break-glass / ops convenience) ------------------
 # Non-secret coordinates (host, database) live here too so a human ops session
 # has everything for a break-glass psql in one place. The app reads none of it.
