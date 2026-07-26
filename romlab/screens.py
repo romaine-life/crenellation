@@ -21,12 +21,15 @@ BASE, W, H, STRIDE = 0x200000, 512, 256, 512
 
 
 def lut(pal):
+    """MAME expands a 6-bit channel as (x<<2)|(x>>4); x*255/63 is a step off."""
+    def e6(x):
+        return ((x << 2) | (x >> 4)) & 0xFF
     out = []
-    for v in range(256):
+    for v in range(len(pal) // 2):
         (w,) = struct.unpack_from("<H", pal, v * 2)
         i = (w >> 15) & 1
-        out.append(tuple((((w >> s) & 0x3E) | i) * 255 // 63 for s in (9, 4)) +
-                   ((((w << 1) & 0x3E) | i) * 255 // 63,))
+        out.append((e6(((w >> 9) & 0x3E) | i), e6(((w >> 4) & 0x3E) | i),
+                    e6(((w << 1) & 0x3E) | i)))
     return out
 
 

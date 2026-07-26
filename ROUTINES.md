@@ -135,6 +135,52 @@ framebuffer snapshots reproduces **92.3%** of the pixels those tiles covered.
 The shortfall is not a decode error - it is the already-documented unported
 writers (terrain painter, sprites, text) overwriting tiles before the snapshot.
 
+## Sprites (motion objects) decoded from ROM
+
+Sprites are not part of the compressed playfield stream. They are hardware
+motion objects: a 2KB display list of 4-word entries indexing 8x8 4bpp tiles in
+the `:gfx` ROM (`romlab/extract_sprites.py` - **4096 tiles, 2179 distinct, 3903
+non-blank**; the sheet shows castles, ships, cannons, walls and the attract
+text). Pen 0 is transparent; the palette entry is `0x100 + color*16 + pen`.
+
+Entry format, recovered by fitting against real frames:
+
+| Field | Source |
+| --- | --- |
+| link | word0 `& 0x00ff` |
+| code | word1 `& 0x7fff` |
+| hflip | word1 `& 0x8000` |
+| colour | word2 `& 0x000f` |
+| X | (word2 `& 0xff80`) >> 7 |
+| Y | **negated**: `(-((word3 & 0xff80) >> 7) - height*8) & 0x1ff` |
+| width / height (tiles) | word3 `& 0x0070` >> 4, word3 `& 0x0007`, both +1 |
+
+Crucially the hardware does **not** draw every entry in the list. It walks a
+per-8-scanline-band chain: each band has a pointer in `:mob:slip`, entries are
+linked, and each object is clipped to its band. Drawing the whole list renders
+stale sprites - that alone was the difference between 91% and 98.7%.
+
+**Verification** (`romlab/mobrender.py`): render playfield + sprites and compare
+against the frame the emulator actually drew.
+
+- State snapshotted at frame N corresponds to the screen at frame **N+1** - the
+  one-frame skew was measured, not assumed, by cross-comparing six consecutive
+  frames (the correct pairing scored 80640/80640 while every other pairing
+  scored ~74000).
+- Over 40 consecutive frames: **13 frames reproduced all 80640 pixels exactly**,
+  **99.74%** of pixels overall.
+- Every residual pixel is explained: re-rendering with the *following* frame's
+  state accounts for **100%** of them (2314/2314, 1724/1724, 1340/1340). The
+  playfield is redrawn mid-scan, so a single snapshot cannot represent what the
+  screen showed. That is a capture limit, not a rendering error.
+
+### Palette correction
+
+MAME expands a 6-bit colour channel as `(x << 2) | (x >> 4)`, not `x * 255 /
+63`. The two differ by one step on most values, which is why an early attempt to
+match the screen scored only 34.6%; with the correct expansion the playfield
+alone explains 97.8-99.9% of it. `romart.py` and `screens.py` were corrected.
+
 ## Correction: the scoring measurement was wrong
 
 Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
@@ -194,7 +240,7 @@ rather than read from the routine that produces them.
 | Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
 | Damage / blast footprint | `game.ts`, inferred from captured battle frames | Find the impact routine; call it against a crafted wall layout; compare which cells are destroyed |
 | Phase control | `phases.ts`, durations read from the countdown word in RAM | Find the phase state machine; compare transition frames |
-| Object composition (art) | Sprites cropped from captured frames | Decode tile codes + palette banks + sizes from the motion-object list; render from the gfx ROM |
+| ~~Object composition (art)~~ | **Decoded from ROM** - `extract_sprites.py` + `mobrender.py`, 13/40 frames pixel-exact | Done; remaining work is wiring the sprites into the game |
 | ~~Terrain plates (art)~~ | **Decoded from ROM** - `extract_tiles.py`, 5907 tiles verified against 11614 live draws | Done; remaining work is wiring the tileset into the game |
 | ~~Attract screens (art)~~ | **Decoded from ROM** - same tileset; screens are placement maps over it | Done; remaining work is wiring the tileset into the game |
 

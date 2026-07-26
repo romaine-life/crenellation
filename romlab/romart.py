@@ -84,14 +84,15 @@ def decode_strip(src, pal=0, d4=7):
 
 
 def lut(pal: bytes):
+    """MAME expands a 6-bit channel as (x<<2)|(x>>4); x*255/63 is a step off."""
+    def e6(x):
+        return ((x << 2) | (x >> 4)) & 0xFF
     out = []
     for v in range(256):
         (w,) = struct.unpack_from("<H", pal, v * 2)
         i = (w >> 15) & 1
-        r = (((w >> 9) & 0x3E) | i) * 255 // 63
-        g = (((w >> 4) & 0x3E) | i) * 255 // 63
-        b = (((w << 1) & 0x3E) | i) * 255 // 63
-        out.append((r, g, b))
+        out.append((e6(((w >> 9) & 0x3E) | i), e6(((w >> 4) & 0x3E) | i),
+                    e6(((w << 1) & 0x3E) | i)))
     return out
 
 
