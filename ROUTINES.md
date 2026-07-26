@@ -11,60 +11,58 @@ plausible the current implementation looks.
 ## Verification state
 
 Measured, not asserted. Every routine is run on the real 68000 under MAME and
-again in the TypeScript port from byte-identical starting state, and all
-registers plus a hash of the memory window it works in are compared. Three
-harnesses do this: one drives each routine with three argument shapes in a
-single pass, one drives every routine with a single shape per run of the
-emulator, and one replays the arguments the game itself passed during play.
+again in the TypeScript port from byte-identical starting state, and compared.
 
 | | |
 |---|---|
 | Routines in the overlay | 763 |
-| Verified against hardware | 480 |
-| Failing | 23 |
+| **Verified against hardware** | **572** |
+| Failing | 19 |
 | Passing under some inputs, failing under others | 21 |
-| Never exercised (hardware never returned) | 239 |
+| Judged only by a method whose failures are inconclusive | 60 |
+| Never judged by anything | 147 |
 
-Of the 239, **111 contain no `rts` at all** and can never be judged by calling
-them. A fourth instrument that compares writes rather than returns reaches 7 of
-the rest; see below for why it is not counted.
+Four harnesses. Three call the routine and compare everything when it comes
+back to a sentinel return address: one drives it with three argument shapes in
+a pass, one with a single shape per run of the emulator, one replays the
+arguments the game itself passed during play. Those three cannot judge a
+routine that never returns, and 111 routines contain no `rts` at all.
 
-The routine count rose from the original 593 because executable code kept
-turning up that had been filed as data or merged into a neighbour: 66 `jmp`
-trampolines below the first ordinary routine, the cases reached through
-pc-relative jump tables, and the handlers whose addresses live in tables of
-32-bit function pointers - those often point into the middle of an existing
-function, so several handlers were being measured as one block that nothing
-ever calls as a whole. Coverage of the overlay is 100% with no function
-labelled unknown.
+The fourth runs both sides for a fixed number of **instructions** and compares
+fifteen registers and a hash of the memory window there, so it does not need
+the routine to finish. It judges 92 routines no other harness can reach,
+including 31 of the 111 with no `rts`.
+
+Its passes count and its failures do not, which is deliberate. The capture
+counts instruction boundaries by watching CURPC change, and an instruction that
+does not change it - a tight loop, or a sample taken mid-instruction because
+the tap fires on prefetch - is not counted. The counter therefore lags by up to
+three, never leads: of the routines that agree, 112 agree at the same count, 62
+one later, 24 two, 9 three. Matching fifteen registers and a memory hash at any
+of those offsets is not something that happens by accident, so a match is
+conclusive; a mismatch may only mean the drift was larger than three, so it is
+not.
 
 ### Instruction rules
 
 **9,149 of 9,153 comparable cases reproduce exactly, condition codes included.**
 204 further cases are not comparable because they read the playfield, the input
-ports or the sound chips.
+ports or the sound chips. Instructions that write the status register are not
+claimed at all - writing it unmasks interrupts, so the case measures the game's
+interrupt handler. Nor are pc-relative operands, because the harness relocates
+each encoding to a scratch address; there are 93 of those and
+`romlab/pcrelcheck.py` checks each against its encoding instead. All 93 agree.
 
-Two classes cannot be measured that way and are not claimed on the strength of
-it: instructions that write the status register, because writing it unmasks
-interrupts and the case then measures the game's interrupt handler; and
-pc-relative operands, because the harness relocates each encoding to a scratch
-address so the operand resolves against the wrong base. There are 93 of the
-latter and `romlab/pcrelcheck.py` checks each against its encoding instead -
-the displacement is measured from the address of the extension word. All 93
-agree.
-
-### The two defects that mattered most
+### The defects that mattered most
 
 - `jsr`/`bsr` did not push a return address, so every callee read its stack
-  arguments four bytes off. Routines reproducing went from 172 to 346, and it
-  explains why leaf routines had always matched far more often than the
-  routines calling them.
+  arguments four bytes off. Routines reproducing went from 172 to 346.
 - A jump target was matched with an unanchored pattern, so `$d00e(pc, d0.w)`
-  was read as the fixed address `$d00e`. Every table-driven dispatch in the
-  program jumped to the base of its own jump table instead of the case the
-  table selected - and that made four table bases look like missing entry
-  points, so an earlier pass had injected them as functions and turned data
-  into code.
+  was read as the fixed address `$d00e`. Every table-driven dispatch jumped to
+  the base of its own jump table instead of the case the table selected.
+- A long written through a pre-decremented address goes low word first on the
+  68000; the port wrote ascending. The bytes land in the same places either
+  way, so only a harness that compares the order of writes could ever see it.
 
 Thirteen more: absolute short addressing not sign-extending; pre-decrement and
 post-increment applied twice on read-modify-write operands; a byte access
@@ -76,73 +74,21 @@ from the value they had already written; an arithmetic right shift past the
 operand width dropping the sign bit out of C; and `movep`, `roxl`/`roxr` and
 status-register access having no rules at all.
 
-### The ceiling of this method, stated exactly
+### What is left
 
-Every harness here judges a routine by calling it and waiting for it to come
-back to a sentinel return address.
+- **19 failing.** Most read the input ports or the sound chips, which the port
+  does not model. A few unmask interrupts - `0x656` is `move.w $3e0804.l, sr;
+  rts` - and cannot be held still long enough to compare. One is a boundary
+  rather than a bug: `0xEDEA` calls `$140010`, which the board does not decode.
+- **21 input-dependent.** They pass under one set of arguments and fail under
+  another. Nothing had asked them the right question before the per-shape runs.
+- **60 judged only by the instruction-count method, and only by failing it.**
+  Tightening that counter - so the boundary is exact rather than within three -
+  would turn each of these into a real answer either way.
+- **147 never judged.** 80 of them contain no `rts` and did not run far enough
+  in one frame for the instruction-count method to catch them either.
 
-**111 of the 239 never-exercised routines contain no `rts` at all.** They end by
-jumping elsewhere, or they are loops the game only leaves by interrupt. None of
-them returned under any of the eleven argument shapes tried. Verifying those
-needs a different method - comparing execution as it happens rather than a
-result at the end - not more arguments.
 
-The other 128 have an `rts`; the arguments simply never reached it. Of the 239
-altogether, 156 have no direct caller anywhere in the ROM and are reached only
-through pointers the game fills in at run time.
-
-What was tried against them, and what each was worth:
-
-- Starting a real game before taking the memory baseline, and handing later
-  trials the structures the game actually passes: 66 routines.
-- Eleven argument shapes rather than three, one shape per run of the emulator:
-  10 routines, plus 22 that turned out to pass under one set of inputs and fail
-  under another, and 9 more missing entry points. Running the shapes in a
-  single pass loses everything after whichever shape kills MAME.
-- Three capture passes driving every input the board has, including one with
-  the service switch held from frame 1 - setting it later does nothing, the
-  game reads it during the power-on check: took the routines the game executes
-  from 330 to 421, nearly all already covered by another harness.
-- Borrowing arguments from a routine's siblings in the same pointer table, on
-  the grounds that a dispatcher calls all its handlers the same way: 19
-  routines.
-
-### A fourth instrument: comparing writes instead of returns
-
-The three harnesses above all call a routine and wait for it to come back to a
-sentinel, so 111 routines with no `rts` are outside all of them. Starting from
-identical state the bytes a routine writes are as deterministic as the
-registers it ends with, so `romlab/writecap.lua` records the first 48
-byte-writes each routine makes in one frame, whether or not it returns, and
-`write.test.ts` runs the port against that.
-
-It found a real fidelity defect immediately: the 68000 writes a long through a
-pre-decremented address **low word first**, and the port wrote ascending. The
-bytes land in the same places either way, so nothing that compares final state
-could ever have seen it - only the order of the writes.
-
-It is **not** counted towards the verified figure, because it is not sound
-enough to be authoritative. The order of the two halves of a long depends on
-the instruction, not just the addressing mode, so the comparison has to ignore
-ordering within a store; and the port is stopped after as many writes as the
-hardware made, so near that boundary the two sides can hold different sets of
-writes without either being wrong. It judges 266 routines, agrees on 165, and
-disagrees with the call-and-return harnesses on 41 that they pass - and those
-41 cannot presently be attributed to the port rather than to the method.
-
-What it does contribute: **7 routines that no other harness can judge at all**,
-and the ordering defect above.
-
-### What the remaining failures are
-
-Of the 23 failing, most read the input ports or the sound chips, which the port
-does not model. A few unmask interrupts - `0x656` is `move.w $3e0804.l, sr;
-rts` - and cannot be held still long enough to compare. One is a boundary
-rather than a bug: `0xEDEA` calls `$140010`, an address the board does not
-decode at all.
-
-The 21 that pass under some inputs and fail under others were not made wrong by
-the new shapes; nothing had asked them the right question before.
 
 
 ## Harness
