@@ -181,6 +181,69 @@ MAME expands a 6-bit colour channel as `(x << 2) | (x >> 4)`, not `x * 255 /
 match the screen scored only 34.6%; with the correct expansion the playfield
 alone explains 97.8-99.9% of it. `romart.py` and `screens.py` were corrected.
 
+### Cell address - `0x11BD8`
+- **Port:** `romlab/compare_board.py` (`cell_address`)
+- **Behaviour:** `base + x*32 + y` where the packed argument is a word, x in the
+  high byte and y in the low. Both operands are byte sized, so coordinates wrap
+  at 256 instead of being clamped.
+- **Evidence:** `romlab/verify8.lua` - 12 cases covering all four corners, the
+  origin, interior points and two out-of-range coordinates. All identical.
+
+### Distance approximation - `0x11D5C`
+- **Port:** `romlab/compare_board.py` (`distance`)
+- **Behaviour:** *not* the usual `max + min/2 - min/8`. The routine puts the
+  larger operand in d0 and the smaller in d1, then computes `min*min / max`
+  and applies the halving and eighth-subtraction to **that**: the result is
+  `max + q/2 - q/8` where `q = min^2 / max`.
+- **Two details only a comparison would catch.** The swap test is a *signed*
+  compare, so an operand of -32768 - whose negation overflows back to itself -
+  stays on the small side rather than the large one. And the divide is
+  unsigned, leaving its destination untouched on overflow, which the routine
+  detects and replaces with `0x7fff`.
+- **Evidence:** `romlab/verify8.lua` - 18 cases: axis-aligned, diagonal, all
+  four sign combinations, zero, and the overflow extremes. First run was 17/18;
+  the failure was exactly the -32768 case, and both details above came out of
+  chasing it. **18/18 after the fix.**
+
+## The board
+
+Rampart keeps no tilemap and does not read the screen to decide what is walled.
+There is a real board array, found by tracing which code runs at a phase change
+and following the addressing:
+
+- **Base `0x3E0864`**, one byte per cell, **stride 32**.
+- `cell = 0x3E0864 + x*32 + y` - **x is the column (0..41), y the row (0..29)**,
+  so the board is stored column major. 42x30 cells over a 336x240 screen is
+  exactly 8x8 pixels per cell.
+- Bounds are checked as `x < 0x2A`, `y < 0x1E` in the code itself.
+- **Cell encoding: low 6 bits (`& 0x3F`) = terrain type, high 2 bits (`& 0xC0`)
+  = owner.** Owner codes come from a table at `0x1000A`: `0x40`, `0x80`, `0xC0`
+  for the three players. A player's wall is `owner | 1`.
+
+Three direction tables sit together at `0xFCCA`:
+
+| Table | Contents | Meaning |
+| --- | --- | --- |
+| `0xFCCA` | words `32, -1, -32, 1, 33, 31, -31, -33` | pointer delta per direction |
+| `0xFCDA` | bytes `1,0,-1,0,1,1,-1,-1` | x delta per direction |
+| `0xFCE2` | bytes `0,-1,0,1,1,-1,1,-1` | y delta per direction |
+
+They agree with `x*32 + y` exactly: direction 0 is (+1,0) = +32, direction 3 is
+(0,+1) = +1, and the diagonals follow. That agreement is what confirms the
+layout rather than merely fitting it.
+
+**Pieces are direction scripts, not bitmaps.** `0x8B4` takes a start coordinate
+and a pointer to a byte script: two bytes of starting offset, then a run of
+direction indices, terminated by a negative byte, with `0x0B` acting as a
+double-step escape. It walks the piece cell by cell, checking each is in bounds
+and either unowned or the player's own, then stamps `owner | 1`. This is the
+shape of piece placement, and it means the piece table is a set of scripts.
+
+Located but not yet ported: `0x8B4` (piece walk/placement), `0xB7FA` (the
+computer player scoring candidate wall positions - it scans all 42x30 cells,
+counts matching neighbours through `0xFCCA`, and keeps the best), `0x122C`
+(a full-board scan over type-1 cells), `0xA20` (board addressing from a script).
+
 ## Correction: the scoring measurement was wrong
 
 Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
@@ -234,8 +297,8 @@ rather than read from the routine that produces them.
 
 | System | Current implementation | What verification requires |
 | --- | --- | --- |
-| Enclosure / flood fill | `enclosure.ts`, written from the rules as I understand them | Locate the routine that runs after a wall is placed; call it with a crafted board in RAM; compare the territory result |
-| Piece generation | `pieces.ts`, shapes and weights inferred from 292 observed placements | Find the shape table and the selection routine; compare the sequence for a fixed seed/state |
+| Enclosure / flood fill | `enclosure.ts`, written from the rules as I understand them | **Board located** (`0x3E0864`, 42x30, column major). Craft a board, call the fill, compare all 1344 cells |
+| Piece generation | `pieces.ts`, shapes and weights inferred from 292 observed placements | **Pieces are direction scripts** walked by `0x8B4`; RNG at `0x11E58` already verified. Find the script table, compare placements |
 | Scoring | `game.ts` constants, inferred from grouping score-counter ticks into bursts | Find the routine that adds to the score word; call it per event type; compare awards |
 | Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
 | Damage / blast footprint | `game.ts`, inferred from captured battle frames | Find the impact routine; call it against a crafted wall layout; compare which cells are destroyed |
