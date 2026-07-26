@@ -112,6 +112,21 @@ def jump_table_cases():
     return [(r[0], r[1]) for r in json.loads(f.read_text())] if f.exists() else []
 
 
+def pointer_table_handlers():
+    """Handler addresses held in tables of 32-bit function pointers.
+
+    These already sit inside a known code run, so they need no run of their
+    own - they are split points. Without them several handlers are merged into
+    whichever function starts before them, and the merged block is measured as
+    one unit that nothing ever calls as a whole.
+    """
+    f = HERE / "out" / "ptrtargets.json"
+    return json.loads(f.read_text()) if f.exists() else []
+
+
+for a in pointer_table_handlers():
+    entries.append(a)
+
 THUNKS = thunks_below_first_function() + jump_table_cases()
 for a, b in THUNKS:
     entries.append(a)

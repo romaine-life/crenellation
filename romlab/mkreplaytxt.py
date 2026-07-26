@@ -12,7 +12,9 @@ import collections
 import pathlib
 
 HERE = pathlib.Path(__file__).parent
-LOG = HERE / "out" / "calls" / "c.log"
+# every capture pass: attract and play never run the self-test, and the
+# self-test never runs the board code, so the passes are merged
+LOGS = sorted((HERE / "out" / "calls").glob("c*.log"))
 OUT = HERE / "out" / "calls" / "replay.txt"
 PER_ROUTINE = 4
 
@@ -20,7 +22,10 @@ PER_ROUTINE = 4
 def main():
     kept = collections.Counter()
     lines = []
-    for raw in LOG.read_text().splitlines():
+    raws = []
+    for f in LOGS:
+        raws.extend(f.read_text().splitlines())
+    for raw in raws:
         p = raw.split()
         if not p or p[0] != "C" or len(p) < 26:
             continue
@@ -33,8 +38,8 @@ def main():
         stk = p[18:27]              # what was on the stack at entry
         lines.append(" ".join([entry] + d + a + stk))
     OUT.write_text("\n".join(lines) + "\n")
-    print("replay cases: %d across %d routines -> %s"
-          % (len(lines), len(kept), OUT))
+    print("replay cases: %d across %d routines from %d passes -> %s"
+          % (len(lines), len(kept), len(LOGS), OUT))
 
 
 if __name__ == "__main__":

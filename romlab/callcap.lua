@@ -9,7 +9,13 @@
 -- register state and the top of the stack. A later pass replays those exact
 -- inputs through the controlled harness, where outputs can be captured.
 local OUT = "D:/repos/crenellation/romlab/out/calls/"
-local log = io.open(OUT .. "c.log", "w")
+-- Several passes over the game reach different code. Each writes its own log
+-- and they are merged: attract and play never run the self-test, and the
+-- self-test never runs the board code.
+local MODE = os.getenv("CAPMODE") or "play"
+local DUTY = os.getenv("CAPDUTY") or "window"
+local STOP = tonumber(os.getenv("CAPSTOP") or "90000")
+local log = io.open(OUT .. "c-" .. MODE .. ".log", "w")
 local NL = string.char(10)
 local cpu = manager.machine.devices[":maincpu"]
 local space = cpu.spaces["program"]
@@ -63,6 +69,29 @@ end
 emu.register_frame_done(function()
   frame = frame + 1
   if frame == 300 then install() end
+  if MODE == "service" then
+    -- held from frame 1: the self-test is entered out of the power-on check,
+    -- long before any of the play inputs are touched
+    set(":IN1", "Service Mode", 1)
+    if frame % 300 == 120 then set(":IN1", "Service 1", 1) end
+    if frame % 300 == 150 then set(":IN1", "Service 1", 0) end
+    if frame % 300 == 200 then set(":IN1", "P1 Button 1", 1) end
+    if frame % 300 == 220 then set(":IN1", "P1 Button 1", 0) end
+    tx = (tx + 5) % 256; ty = (ty + 3) % 256
+    set(":TRACK3", "Trackball X", tx); set(":TRACK2", "Trackball Y", ty)
+    local m2 = frame % 30
+    if m2 == 0 and frame > 60 then capturing = true
+    elseif m2 == 6 then capturing = false end
+    if frame == 30 then install() end
+    if frame == 30000 then
+      local covered = 0
+      for _, c in pairs(seen) do if c > 0 then covered = covered + 1 end end
+      log:write(string.format("# samples %d routines %d", n, covered) .. NL)
+      log:flush()
+      manager.machine:exit()
+    end
+    return
+  end
   -- Drive every input the board has, not the two that were guessed at. A
   -- routine is only recorded if the game calls it, and most of the ones that
   -- were never exercised are ordinary play code the previous run simply never
@@ -104,12 +133,17 @@ emu.register_frame_done(function()
     if q == 41 then set(":P3", "P3 Button 1", 1) end
     if q == 44 then set(":P3", "P3 Button 1", 0) end
   end
-  -- capture in short windows: the tap fires on every instruction fetch, which
-  -- is far too slow to leave on continuously
+  -- The tap fires on every instruction fetch, so this used to run for four
+  -- frames in every thirty. That misses most of what the game calls: a routine
+  -- reached once per level, or on one branch of a menu, almost never lands in
+  -- a window. Continuous capture is several times slower and worth it, since
+  -- the whole point is which routines get called at all.
   local m = frame % 30
-  if m == 0 and frame > 400 then capturing = true
+  if DUTY == "full" then
+    capturing = frame > 400
+  elseif m == 0 and frame > 400 then capturing = true
   elseif m == 4 then capturing = false end
-  if frame == 90000 then
+  if frame == STOP then
     local covered = 0
     for _, c in pairs(seen) do if c > 0 then covered = covered + 1 end end
     log:write(string.format("# samples %d routines %d", n, covered) .. NL)

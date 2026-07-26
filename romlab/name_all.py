@@ -49,6 +49,19 @@ def setname(a, name, why):
         WHY[a] = why
 
 
+# Handlers held in tables of 32-bit function pointers. Nothing calls these by
+# name, so no rule that works from the call graph can describe them.
+PT = set()
+pf = HERE / "out" / "ptrtargets.json"
+if pf.exists():
+    PT = set(json.loads(pf.read_text()))
+for a, b in funcs:
+    if a in PT:
+        setname(a, "handler reached through a function-pointer table",
+                "its address is held in a run of 32-bit pointers that a "
+                "dispatcher indexes; nothing calls it by name")
+
+
 # The cases a pc-relative jump table reaches, and anything called from inside
 # one. These were data until jumptables.py enumerated the tables, so they have
 # no name from any other rule.

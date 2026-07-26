@@ -818,5 +818,17 @@
  "0xfbe4": [
   "power-on probe of the 0x140000 address space",
   "tst.w at 0x140000 and 0x1400A8, which are outside the program ROM and outside every RAM the board decodes; bracketed by calls to the trampolines at 0x64A and 0x656"
+ ],
+ "0xfb4": [
+  "extracts the owner bits from a cell byte",
+  "reads a byte from the caller's frame at -0xd(a6) and masks 0xC0, which is the two-bit owner field the board packs above the terrain bits"
+ ],
+ "0x3ba4": [
+  "board cell address lookup wrapper",
+  "passes a word argument at 0x1c(a7) to 0x11BD8, the verified board coordinate to cell address routine, and uses the result as a pointer"
+ ],
+ "0x77c8": [
+  "tests the flag at +0x15 of a passed struct",
+  "links a frame, takes a pointer argument at 8(a6) and branches on the byte at offset 0x15 of it"
  ]
 }
