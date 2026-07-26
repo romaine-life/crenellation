@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Application, Assets, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
+import { Application, Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
 import { createGameLoop, STEP_MS } from './loop';
 import { BOARD_H, BOARD_W, GRID_COLS, GRID_ROWS, TILE_PX, cellAt, idx } from './board';
 import { PHASE_LABEL } from './phases';
@@ -74,10 +74,30 @@ export function Rampart() {
       backdrop.height = BOARD_H;
       world.addChild(backdrop);
 
+      const objLayer = new Container();
       const territoryG = new Graphics();
       const piecesG = new Graphics();
       const overlayG = new Graphics();
-      world.addChild(territoryG, piecesG, overlayG);
+      world.addChild(territoryG, objLayer, piecesG, overlayG);
+
+      // Reuse sprites frame to frame rather than rebuilding the scene graph.
+      const pool: Sprite[] = [];
+      let poolUsed = 0;
+      const putTile = (name: string, x: number, y: number) => {
+        const tex = objTex.get(name);
+        if (!tex) return false;
+        let sp = pool[poolUsed];
+        if (!sp) {
+          sp = new Sprite();
+          pool.push(sp);
+          objLayer.addChild(sp);
+        }
+        sp.texture = tex;
+        sp.position.set(x, y);
+        sp.visible = true;
+        poolUsed += 1;
+        return true;
+      };
 
       const hud = new Text({ text: '', style: { fill: 0xe6f0e6, fontFamily: 'monospace', fontSize: 13 } });
       hud.position.set(8, BOARD_H * SCALE + 4);
@@ -97,6 +117,26 @@ export function Rampart() {
 
       // Preload every screen so transitions never flash an empty frame.
       const textures = new Map<string, Texture>();
+      // Object sprites cut from real arcade frames (walls, cannon, castle, tree).
+      const OBJ_ORDER = ['wall_h', 'wall_v', 'wall_x', 'cannon', 'castle', 'tree'];
+      const objTex = new Map<string, Texture>();
+      const loadObjects = async () => {
+        try {
+          const base: Texture = await Assets.load(artUrl('objects'));
+          OBJ_ORDER.forEach((name, i) => {
+            objTex.set(
+              name,
+              new Texture({
+                source: base.source,
+                frame: new Rectangle(i * TILE_PX, 0, TILE_PX, TILE_PX),
+              }),
+            );
+          });
+        } catch {
+          /* fall back to drawn shapes */
+        }
+      };
+
       const preload = async () => {
         const names = [...ATTRACT.map((f) => f.name), 'screen-select', 'screen-difficulty', ...BATTLEFIELDS];
         await Promise.all(
@@ -110,6 +150,7 @@ export function Rampart() {
         );
       };
       await preload();
+      await loadObjects();
 
       let screen: Screen = 'attract';
       let screenMs = 0;
@@ -217,6 +258,8 @@ export function Rampart() {
       const drawBoard = () => {
         territoryG.clear();
         piecesG.clear();
+        for (const sp of pool) sp.visible = false;
+        poolUsed = 0;
         for (let r = 0; r < GRID_ROWS; r += 1) {
           for (let c = 0; c < GRID_COLS; c += 1) {
             const cell = cellAt(game.board, c, r);
@@ -226,16 +269,26 @@ export function Rampart() {
             if (game.board.territory[idx(c, r)] === 0) {
               territoryG.rect(x, y, TILE_PX, TILE_PX).fill({ color: C_TERRITORY, alpha: 0.2 });
             }
-            if (cell.occupant === 'wall') drawWall(c, r);
+            if (cell.occupant === 'wall') {
+              // Pick the tile that matches how this wall connects to its run.
+              const near = (dc: number, dr: number) =>
+                cellAt(game.board, c + dc, r + dr)?.occupant === 'wall';
+              const horiz = near(1, 0) || near(-1, 0);
+              const vert = near(0, 1) || near(0, -1);
+              const name = horiz && vert ? 'wall_x' : vert ? 'wall_v' : 'wall_h';
+              if (!putTile(name, x, y)) drawWall(c, r);
+            }
             else if (cell.occupant === 'rubble') {
               piecesG.rect(x + 4, y + 5, TILE_PX - 8, TILE_PX - 9).fill({ color: C_RUBBLE });
             } else if (cell.occupant === 'castle') {
-              piecesG.rect(x, y, TILE_PX, TILE_PX).fill({ color: C_CASTLE });
-              piecesG.rect(x + 3, y + 3, TILE_PX - 6, TILE_PX - 6).fill({ color: 0xf0f0ff });
-              piecesG.rect(x + 5, y + 5, TILE_PX - 10, TILE_PX - 10).fill({ color: C_CASTLE });
+              if (!putTile('castle', x, y)) {
+                piecesG.rect(x, y, TILE_PX, TILE_PX).fill({ color: C_CASTLE });
+                piecesG.rect(x + 3, y + 3, TILE_PX - 6, TILE_PX - 6).fill({ color: 0xf0f0ff });
+              }
             } else if (cell.occupant === 'cannon') {
-              piecesG.circle(x + TILE_PX / 2, y + TILE_PX / 2, TILE_PX / 2 - 2).fill({ color: C_CANNON });
-              piecesG.circle(x + TILE_PX / 2, y + TILE_PX / 2, 2).fill({ color: 0x909098 });
+              if (!putTile('cannon', x, y)) {
+                piecesG.circle(x + TILE_PX / 2, y + TILE_PX / 2, TILE_PX / 2 - 2).fill({ color: C_CANNON });
+              }
             }
           }
         }
