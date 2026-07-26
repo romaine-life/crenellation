@@ -491,6 +491,23 @@ for each of (count + 1) records:
   record fired is read from its countdown - a fired record reloads, an unfired
   one keeps the decremented value.
 
+### Multiplayer - three players throughout
+- **Port:** the existing ports, exercised per player; `romlab/verify23.lua`
+- Rampart is **three-player everywhere in the data model**, not one player with
+  bolt-ons. The player structs are an array at `0x3E1968` with stride `0x7E`,
+  and each player's identity is the byte at +2, which indexes the owner table at
+  `0x1000A` to give `0x40`, `0x80` or `0xC0`. Every board cell carries its owner
+  in its top two bits, so ownership is intrinsic to the board rather than
+  tracked separately.
+- The systems already verified are per-player by construction: the enclosure
+  test takes an owner and was checked with a rival's wall present, the damage
+  initiator walks all three structs at stride `0x7E`, the score lives at
+  `player+0x56`, and the piece bag has **per-player-kind weight tables**.
+- **Evidence:** `romlab/verify23.lua` re-runs the whole piece table through the
+  ROM for **each of the three players** - 40 shapes x 3 - and the port must
+  reproduce every board. **120/120 identical**, 40 for each of owner `0x40`,
+  `0x80` and `0xC0`.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -748,4 +765,11 @@ rather than read from the routine that produces them.
 
 ## Multiplayer
 
-Hot-seat shaped in code but only one castle is placed; not playable. Outstanding.
+**The ROM side is verified** - see above: three player structs, owner codes
+`0x40`/`0x80`/`0xC0` carried in the top two bits of every board cell, and the
+whole piece table reproduced for all three players (120/120).
+
+What remains is **not** a reverse-engineering task: `crenellation`'s own
+front-end still places a single castle and has no hot-seat turn handling. That
+is application work against the verified ports, not something to recover from
+the disassembly.
