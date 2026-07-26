@@ -8,14 +8,6 @@
   "why": "memory only"
  },
  {
-  "entry": "0x9208",
-  "why": "threw: no routine covers 0x9248"
- },
- {
-  "entry": "0xcfda",
-  "why": "threw: no routine covers 0xd012"
- },
- {
   "entry": "0xa7e6",
   "why": "reads 0x640000 (not modelled)"
  },
@@ -36,20 +28,8 @@
   "why": "reads 0x32c60000 0x32c60001 (not modelled)"
  },
  {
-  "entry": "0x1a1ca",
-  "why": "threw: Maximum call stack size exceeded"
- },
- {
   "entry": "0xb738",
   "why": "reads 0x6000002c 0x6000002d 0x6000002e 0x6000002f (not modelled)"
- },
- {
-  "entry": "0x3f94",
-  "why": "threw: unsupported ori.w #$f6, $1a0(d0.w) at 0x0276c"
- },
- {
-  "entry": "0x272e",
-  "why": "threw: unsupported ori.w #$f6, $1a0(d0.w) at 0x0276c"
  },
  {
   "entry": "0x656",
@@ -60,11 +40,11 @@
   "why": "reads 0x54005400 0x54005401 0x54005402 0x54005403 (not modelled)"
  },
  {
-  "entry": "0x74fa",
-  "why": "threw: no routine covers 0x752e"
+  "entry": "0x3242",
+  "why": "threw: no routine covers 0x12574"
  },
  {
-  "entry": "0x3242",
-  "why": "threw: unsupported ori.w #$f6, $1a0(d0.w) at 0x0276c"
+  "entry": "0x74fa",
+  "why": "reads 0xf900003e (not modelled)"
  }
 ]

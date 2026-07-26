@@ -9,7 +9,7 @@ that cite the evidence they used.
 ## Coverage
 
 - **Bytes accounted for: 131072 of 131072 - 100.0%**
-- Code: 85372 bytes in **721 functions**
+- Code: 85412 bytes in **722 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -533,6 +533,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `1238C` | 306 | 0 | RLE decoder - variant D | byte stream with a high-bit terminator |
 | `124BE` | 36 | 5 | terrain painter (verified) | ported and checked against the ROM |
 | `124E2` | 146 | 0 | RLE decoder - variant B | byte stream with a 0x1F run mask and a second counter |
+| `12574` | 40 | 0 | computed-jump entry at 0x12574 | observed as a jump target during the differential run with no function covering it |
 | `1259C` | 62 | 0 | decompressor nibble expand | splits a byte into two 4-bit values and scales |
 | `125DA` | 64 | 1 | helper for vblank gate tick | only caller is 0x580 |
 | `1262A` | 614 | 0 | register-save leaf routine | saves registers, calls nothing |

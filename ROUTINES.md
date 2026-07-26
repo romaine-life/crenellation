@@ -18,17 +18,16 @@ replays the arguments the game itself passed during play.
 
 | | |
 |---|---|
-| Routines in the overlay | 723 |
-| Verified against hardware | 453 |
-| Failing | 39 |
+| Routines in the overlay | 722 |
+| Verified against hardware | 462 |
+| Failing | 30 |
 | Passing one harness, failing the other | 9 |
-| Never exercised (hardware never returned) | 222 |
+| Never exercised (hardware never returned) | 221 |
 
-The routine count rose from the original 593 because two kinds of executable
-code had been filed as data: 66 `jmp` trampolines below the first ordinary
-routine, and 61 jump-table cases. Both are reached at run time, so both are now
-functions, ported and dispatchable. Coverage of the overlay is still 100% with
-no function labelled unknown.
+The routine count rose from the original 593 because executable code had been
+filed as data: 66 `jmp` trampolines below the first ordinary routine, and the
+cases reached through pc-relative jump tables. Coverage of the overlay is still
+100% with no function labelled unknown.
 
 ### Instruction rules
 
@@ -39,10 +38,20 @@ known registers, at a fixed address.
 
 **9,149 of 9,153 comparable cases reproduce exactly, condition codes included.**
 204 further cases are not comparable because they read the playfield, the input
-ports or the sound chips. Instructions that write the status register are not
-claimed at all: writing it unmasks interrupts, so the case measures the game's
-interrupt handler rather than the instruction. The two remaining failures are
-byte sequences that no consistent walk reaches as instructions.
+ports or the sound chips.
+
+Two classes cannot be measured that way at all, and are not claimed as verified
+on the strength of it:
+
+- **Instructions that write the status register.** Writing it unmasks
+  interrupts, so the case measures the game's interrupt handler running before
+  the instruction finishes, not the instruction.
+- **pc-relative operands.** The harness writes each encoding to a scratch
+  address and runs it there, so the operand resolves against that address
+  instead of the one it has in the ROM - the two sides disagree by
+  construction. There are only 93 in the program and the rule is fixed, so
+  `romlab/pcrelcheck.py` checks each against its encoding instead: the
+  displacement is measured from the address of the extension word. All 93 agree.
 
 ### Defects this found
 
@@ -52,6 +61,10 @@ Every one was found by comparison against the chip, not by reading the code.
   arguments four bytes off. This alone took the routines that reproduce from
   172 to 346, and explains why leaf routines had always matched far more often
   than the routines calling them.
+- A jump target was matched with an unanchored pattern, so `$d00e(pc, d0.w)`
+  was read as the fixed address `$d00e`. Every table-driven dispatch in the
+  program jumped to the base of its own jump table instead of to the case the
+  table selected.
 - Absolute short addressing did not sign-extend: `$fff4.w` is 0xFFFFFFF4, not
   0x0000FFF4, so every high short address named a different location.
 - Pre-decrement and post-increment applied twice on read-modify-write operands
@@ -63,8 +76,7 @@ Every one was found by comparison against the chip, not by reading the code.
 - Bit instructions took their width from the mnemonic; the destination decides
   it - a data register is 32 bits modulo 32, memory is 8 bits modulo 8.
 - `divu` used the signed overflow bound, rejecting every quotient over 32767.
-- `cmp` set X, which it must not; an `addx` after a `cmp` then read the wrong
-  carry.
+- `cmp` set X, which it must not.
 - `asl` never set V, which needs its own rule: the sign bit changing during the
   shift, not the result being negative.
 - Multiply, swap and rotate evaluated their result expression twice - once to
@@ -76,14 +88,19 @@ Every one was found by comparison against the chip, not by reading the code.
 
 ### What the remaining failures are
 
-Of the 39 failing routines, most read the input ports or the sound chips, which
-the port does not model; a handful still reach a computed jump with no function
-covering the address. The 222 never exercised are routines that do not return
-on the hardware side: the harness calls them out of context, and one that
-expects a live entity or a valid pointer runs until the frame ends. Starting a
-real game before taking the memory baseline, and handing later trials the
-structures the game actually passes, moved 66 of them into range; the rest need
-the game to reach the state that calls them.
+Of the 30 failing routines, most read the input ports or the sound chips, which
+the port does not model. A few unmask interrupts - `0x656` is
+`move.w $3e0804.l, sr; rts` - and any routine that does cannot be held still
+long enough to compare.
+
+The 221 never exercised are routines that do not return on the hardware side.
+The harness calls them out of context, and one that expects a live entity or a
+valid pointer runs until the frame ends. Starting a real game before taking the
+memory baseline and handing later trials the structures the game actually uses
+moved 66 of them into range. The rest need the game to reach the state that
+calls them: a capture driving every input the board has - three players, both
+coins, all four trackball axes - still executes only 330 distinct routines,
+because service mode is read at boot and the later levels were never reached.
 
 
 ## Harness

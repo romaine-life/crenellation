@@ -244,8 +244,16 @@ def is_addr_reg(tok):
 
 
 def target_addr(tok):
-    m = re.match(r"^\$([0-9a-fA-F]+)", tok.strip())
-    return int(m.group(1), 16) if m else None
+    """A branch or jump target, but only when the whole operand is one.
+
+    This has to match the entire token. An unanchored match also accepts the
+    leading `$d00e` of `$d00e(pc, d0.w)` and reports it as a fixed target,
+    which silently drops the index: every table-driven dispatch in the program
+    then jumps to the base of its own jump table instead of to the case the
+    table selected.
+    """
+    m = ABS.match(tok.strip())
+    return abs_addr(m) if m else None
 
 
 def emit(ins, nxt):

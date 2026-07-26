@@ -2300,7 +2300,7 @@ export function fn_09208(m: Machine, at = 0x09208): void {
       case 0x09228: { if (m.cond('hi')) { pc = 0x0a7da; } else { pc = 0x0922c; } } break;
       case 0x0922c: { { const _a = m.rd(m.d0, 16);  const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x0922e; } break;
       case 0x0922e: { { const _s = m.load(0 + 37430 + m.sx(m.d0, 16), 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x09232; } break;
-      case 0x09232: { pc = 0x09236; break; } break;
+      case 0x09232: { pc = ((0 + 37430 + m.sx(m.d0, 16))) >>> 0; break; } break;
       default: call(pc, m); return;
     }
   }
@@ -3038,7 +3038,7 @@ export function fn_09266(m: Machine, at = 0x09266): void {
       case 0x09d68: { if (m.cond('gt')) { pc = 0x09e80; } else { pc = 0x09d6c; } } break;
       case 0x09d6c: { { const _a = m.rd(m.d0, 16);  const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x09d6e; } break;
       case 0x09d6e: { { const _s = m.load(0 + 40310 + m.sx(m.d0, 16), 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x09d72; } break;
-      case 0x09d72: { pc = 0x09d76; break; } break;
+      case 0x09d72: { pc = ((0 + 40310 + m.sx(m.d0, 16))) >>> 0; break; } break;
       default: call(pc, m); return;
     }
   }

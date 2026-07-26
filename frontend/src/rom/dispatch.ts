@@ -520,6 +520,7 @@ const STARTS: number[] = [
   0x1238c,
   0x124be,
   0x124e2,
+  0x12574,
   0x1259c,
   0x125da,
   0x1262a,
@@ -1243,6 +1244,7 @@ const ENDS: number[] = [
   0x124be,
   0x124e2,
   0x12574,
+  0x1259c,
   0x125da,
   0x1261a,
   0x12890,
@@ -1966,6 +1968,7 @@ const FNS: Routine[] = [
   r08.fn_1238c,
   r08.fn_124be,
   r08.fn_124e2,
+  r08.fn_12574,
   r08.fn_1259c,
   r08.fn_125da,
   r08.fn_1262a,
@@ -2011,7 +2014,7 @@ const FNS: Routine[] = [
   r08.fn_15100,
   r08.fn_1520e,
   r08.fn_155a0,
-  r08.fn_15672,
+  r09.fn_15672,
   r09.fn_1568e,
   r09.fn_156ac,
   r09.fn_15830,
@@ -2072,7 +2075,7 @@ const FNS: Routine[] = [
   r09.fn_18658,
   r09.fn_1865e,
   r09.fn_1866c,
-  r09.fn_1867c,
+  r10.fn_1867c,
   r10.fn_1868c,
   r10.fn_1869e,
   r10.fn_18764,
@@ -2133,7 +2136,7 @@ const FNS: Routine[] = [
   r10.fn_19ccc,
   r10.fn_19cd0,
   r10.fn_19f3e,
-  r10.fn_1a05a,
+  r11.fn_1a05a,
   r11.fn_1a0cc,
   r11.fn_1a100,
   r11.fn_1a14e,
@@ -2211,4 +2214,4 @@ export function call(addr: number, m: Machine): void {
   FNS[found](m, a);
 }
 
-export const ROUTINE_COUNT = 721;
+export const ROUTINE_COUNT = 722;

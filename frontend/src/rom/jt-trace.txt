@@ -1,0 +1,3 @@
+cfda: load d010.16 = 40  no routine covers 0xd00e
+272e: load 2770.16 = 1a0  no routine covers 0x2768
+74fa: load 7536.16 = 144  no routine covers 0x752e

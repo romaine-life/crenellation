@@ -1981,7 +1981,7 @@ export function fn_0551c(m: Machine, at = 0x0551c): void {
       case 0x05542: { if (m.cond('hi')) { pc = 0x0561c; } else { pc = 0x05546; } } break;
       case 0x05546: { { const _a = m.rd(m.d0, 16);  const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x05548; } break;
       case 0x05548: { { const _s = m.load(0 + 21840 + m.sx(m.d0, 16), 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x0554c; } break;
-      case 0x0554c: { pc = 0x05550; break; } break;
+      case 0x0554c: { pc = ((0 + 21840 + m.sx(m.d0, 16))) >>> 0; break; } break;
       case 0x05552: { { const _a = 116; const _ea = ((m.a6 + 184)) >>> 0; const _b = m.load(_ea, 8); const _r = (_b | _a); m.store(_ea, _r, 8); m.logicFlags(_r, 8); } pc = 0x05558; } break;
       case 0x05558: { m.logicFlags(m.load(m.a3, 8), 8); pc = 0x0555a; } break;
       case 0x0555a: { if (m.cond('ne')) { pc = 0x05578; } else { pc = 0x0555c; } } break;

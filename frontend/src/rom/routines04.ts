@@ -669,7 +669,7 @@ export function fn_05fa6(m: Machine, at = 0x05fa6): void {
       case 0x06082: { if (m.cond('lt')) { pc = 0x06232; } else { pc = 0x06086; } } break;
       case 0x06086: { { const _a = m.rd(m.d1, 32);  const _b = m.rd(m.d1, 32); m.d1 = m.wr(m.d1, m.addFlags(_b, _a, 32), 32); } pc = 0x06088; } break;
       case 0x06088: { { const _s = m.load(0 + 24668 + m.sx(m.d1, 32), 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x0608c; } break;
-      case 0x0608c: { pc = 0x06090; break; } break;
+      case 0x0608c: { pc = ((0 + 24720 + m.sx(m.d1, 16))) >>> 0; break; } break;
       default: call(pc, m); return;
     }
   }
@@ -910,7 +910,7 @@ export function fn_062a6(m: Machine, at = 0x062a6): void {
       case 0x0638e: { if (m.cond('lt')) { pc = 0x0653e; } else { pc = 0x06392; } } break;
       case 0x06392: { { const _a = m.rd(m.d1, 32);  const _b = m.rd(m.d1, 32); m.d1 = m.wr(m.d1, m.addFlags(_b, _a, 32), 32); } pc = 0x06394; } break;
       case 0x06394: { { const _s = m.load(0 + 25448 + m.sx(m.d1, 32), 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x06398; } break;
-      case 0x06398: { pc = 0x0639c; break; } break;
+      case 0x06398: { pc = ((0 + 25500 + m.sx(m.d1, 16))) >>> 0; break; } break;
       default: call(pc, m); return;
     }
   }
@@ -1196,7 +1196,7 @@ export function fn_06648(m: Machine, at = 0x06648): void {
       case 0x066ae: { if (m.cond('hi')) { pc = 0x066d4; } else { pc = 0x066b0; } } break;
       case 0x066b0: { { const _a = m.rd(m.d1, 16);  const _b = m.rd(m.d1, 16); m.d1 = m.wr(m.d1, m.addFlags(_b, _a, 16), 16); } pc = 0x066b2; } break;
       case 0x066b2: { { const _s = m.load(0 + 26298 + m.sx(m.d1, 16), 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x066b6; } break;
-      case 0x066b6: { pc = 0x066ba; break; } break;
+      case 0x066b6: { pc = ((0 + 26298 + m.sx(m.d1, 16))) >>> 0; break; } break;
       default: call(pc, m); return;
     }
   }
@@ -2266,7 +2266,7 @@ export function fn_07004(m: Machine, at = 0x07004): void {
       case 0x071a6: { if (m.cond('hi')) { pc = 0x071c4; } else { pc = 0x071a8; } } break;
       case 0x071a8: { { const _a = m.rd(m.d1, 16);  const _b = m.rd(m.d1, 16); m.d1 = m.wr(m.d1, m.addFlags(_b, _a, 16), 16); } pc = 0x071aa; } break;
       case 0x071aa: { { const _s = m.load(0 + 29106 + m.sx(m.d1, 16), 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x071ae; } break;
-      case 0x071ae: { pc = 0x071b2; break; } break;
+      case 0x071ae: { pc = ((0 + 29106 + m.sx(m.d1, 16))) >>> 0; break; } break;
       default: call(pc, m); return;
     }
   }
@@ -2606,7 +2606,7 @@ export function fn_074fa(m: Machine, at = 0x074fa): void {
       case 0x07520: { if (m.cond('hi')) { pc = 0x07672; } else { pc = 0x07524; } } break;
       case 0x07524: { { const _a = m.rd(m.d1, 16);  const _b = m.rd(m.d1, 16); m.d1 = m.wr(m.d1, m.addFlags(_b, _a, 16), 16); } pc = 0x07526; } break;
       case 0x07526: { { const _s = m.load(0 + 29996 + m.sx(m.d1, 16), 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x0752a; } break;
-      case 0x0752a: { pc = 0x0752e; break; } break;
+      case 0x0752a: { pc = ((0 + 29998 + m.sx(m.d1, 16))) >>> 0; break; } break;
       default: call(pc, m); return;
     }
   }

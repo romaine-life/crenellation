@@ -1235,7 +1235,7 @@ export function fn_00e4e(m: Machine, at = 0x00e4e): void {
       case 0x00f46: { if (m.cond('hi')) { pc = 0x011a0; } else { pc = 0x00f4a; } } break;
       case 0x00f4a: { { const _a = m.rd(m.d1, 16);  const _b = m.rd(m.d1, 16); m.d1 = m.wr(m.d1, m.addFlags(_b, _a, 16), 16); } pc = 0x00f4c; } break;
       case 0x00f4c: { { const _s = m.load(0 + 3922 + m.sx(m.d1, 16), 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x00f50; } break;
-      case 0x00f50: { pc = 0x00f54; break; } break;
+      case 0x00f50: { pc = ((0 + 3924 + m.sx(m.d1, 16))) >>> 0; break; } break;
       default: call(pc, m); return;
     }
   }
