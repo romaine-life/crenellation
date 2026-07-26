@@ -16,11 +16,11 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 763 |
-| **Verified against hardware** | **572** |
-| Failing | 19 |
+| **Verified against hardware** | **569** |
+| Failing | 21 |
 | Passing under some inputs, failing under others | 21 |
-| Judged only by a method whose failures are inconclusive | 60 |
-| Never judged by anything | 147 |
+| Judged only by a stopping-point mismatch | 63 |
+| Never judged | 87 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -28,20 +28,27 @@ a pass, one with a single shape per run of the emulator, one replays the
 arguments the game itself passed during play. Those three cannot judge a
 routine that never returns, and 111 routines contain no `rts` at all.
 
-The fourth runs both sides for a fixed number of **instructions** and compares
-fifteen registers and a hash of the memory window there, so it does not need
-the routine to finish. It judges 92 routines no other harness can reach,
-including 31 of the 111 with no `rts`.
+The fourth does not need the routine to finish. The capture runs the chip for a
+while, stops, and records **the address of the instruction it stopped on**
+along with fifteen registers and a hash of the memory window. The port then
+compares every time it arrives at that address. It reaches 89 routines no other
+harness can, 32 of them with no `rts`.
 
-Its passes count and its failures do not, which is deliberate. The capture
-counts instruction boundaries by watching CURPC change, and an instruction that
-does not change it - a tight loop, or a sample taken mid-instruction because
-the tap fires on prefetch - is not counted. The counter therefore lags by up to
-three, never leads: of the routines that agree, 112 agree at the same count, 62
-one later, 24 two, 9 three. Matching fifteen registers and a memory hash at any
-of those offsets is not something that happens by accident, so a match is
-conclusive; a mismatch may only mean the drift was larger than three, so it is
-not.
+Two earlier attempts at that fourth harness are worth recording because they
+were wrong:
+
+- **Comparing write sequences.** Unsound: which half of a long is written first
+  depends on the instruction, so stopping after a fixed number of writes leaves
+  the two sides holding different sets. It did find a real defect first - a long
+  written through a pre-decremented address goes low word first, and the port
+  wrote ascending.
+- **Comparing after a fixed instruction count.** Also unsound, though less
+  obviously. The capture counts boundaries by watching CURPC change, and an
+  instruction that does not change it goes uncounted, so the counter lagged by
+  up to three. Searching a small window of offsets made 207 routines agree
+  instead of 112 - but "agrees at one of four counts" is a weaker claim than
+  "agrees at the instruction the chip was on", and the stricter test is the one
+  reported. It puts the figure at 569 rather than 572.
 
 ### Instruction rules
 
@@ -76,20 +83,18 @@ status-register access having no rules at all.
 
 ### What is left
 
-- **19 failing.** Most read the input ports or the sound chips, which the port
+- **21 failing.** Most read the input ports or the sound chips, which the port
   does not model. A few unmask interrupts - `0x656` is `move.w $3e0804.l, sr;
   rts` - and cannot be held still long enough to compare. One is a boundary
   rather than a bug: `0xEDEA` calls `$140010`, which the board does not decode.
 - **21 input-dependent.** They pass under one set of arguments and fail under
   another. Nothing had asked them the right question before the per-shape runs.
-- **60 judged only by the instruction-count method, and only by failing it.**
-  Tightening that counter - so the boundary is exact rather than within three -
-  would turn each of these into a real answer either way.
-- **147 never judged.** 80 of them contain no `rts` and did not run far enough
-  in one frame for the instruction-count method to catch them either.
-
-
-
+- **63 whose only evidence is a stopping-point mismatch.** Either the port never
+  arrives at the address the chip stopped on, or it arrives with different
+  state. Both are worth chasing individually; neither has been.
+- **87 never judged at all**, 49 of them with no `rts`. They neither return nor
+  run far enough for the chip's stopping point to be somewhere the port can be
+  compared against.
 
 ## Harness
 

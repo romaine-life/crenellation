@@ -29,7 +29,18 @@ export class Machine {
   steps = 0;
   budget = 2_000_000;
 
-  tick(): void {
+  /**
+   * Called once per instruction, with the address of the instruction about to
+   * run. A test that needs to stop at a particular point can then recognise it
+   * by address, which is exact, instead of counting instructions on both sides
+   * and hoping the counts mean the same thing.
+   */
+  pc = 0;
+  atPc: ((pc: number) => void) | null = null;
+
+  tick(pc = 0): void {
+    this.pc = pc;
+    if (this.atPc) this.atPc(pc);
     this.steps += 1;
     if (this.steps > this.budget) {
       throw new Error('instruction budget exhausted after ' + this.steps + ' steps');

@@ -42,7 +42,9 @@ def emit_function(entry, end, label):
                  % (entry, entry))
     lines.append("  let pc = at;")
     lines.append("  for (;;) {")
-    lines.append("    m.tick();")
+    # pass the program counter so a test can recognise an instruction
+    # boundary by address rather than by counting to it
+    lines.append("    m.tick(pc);")
     lines.append("    switch (pc) {")
     addr = entry
     while addr < end:

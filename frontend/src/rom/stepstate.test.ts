@@ -23,14 +23,14 @@ const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const ramBaseline = new Uint8Array(readFileSync(join(here, 'step-ram-baseline.bin')));
 const pfBaseline = new Uint8Array(readFileSync(join(here, 'step-pf-baseline.bin')));
 
-type Case = { entry: number; steps: number; regs: number[]; hash: number };
+type Case = { entry: number; steps: number; pc: number; regs: number[]; hash: number };
 const cases: Case[] = [];
 for (const line of readFileSync(join(here, 'stepstate.log'), 'utf8').split('\n')) {
   const p = line.trim().split(/\s+/);
   if (p[0] !== 'S') continue;
   const v = p.slice(3).map((x) => parseInt(x, 16));
-  cases.push({ entry: parseInt(p[1], 16), steps: Number(p[2]),
-    regs: v.slice(0, 15), hash: v[15] });
+  cases.push({ entry: parseInt(p[1], 16), steps: Number(p[2]), pc: v[0],
+    regs: v.slice(1, 16), hash: v[16] });
 }
 
 const entries: number[] = readFileSync(join(here, 'entries.txt'), 'utf8')
@@ -56,7 +56,9 @@ class Rand {
   }
 }
 
-describe('routines compared after a fixed number of instructions', () => {
+const FOUND = 'state-matched';
+
+describe('routines compared at the instruction the chip stopped on', () => {
   it('reproduces the captured state', () => {
     const byEntry = new Map<number, Case>();
     for (const c of cases) byEntry.set(c.entry, c);
@@ -67,7 +69,6 @@ describe('routines compared after a fixed number of instructions', () => {
     const pass = new Set<number>();
     const fail = new Set<number>();
     const detail: Array<{ entry: string; what: string }> = [];
-    const offsets = new Map<number, number>();
 
     for (const entry of entries) {
       const m = new Machine(rom);
@@ -101,76 +102,52 @@ describe('routines compared after a fixed number of instructions', () => {
       m.budget = c.steps;      // throws at the start of instruction N+1
 
       compared += 1;
-      let threw = '';
-      // Try a small window of instruction counts. If the two sides agree at
-      // N plus or minus a little, the counting is off rather than the port:
-      // the capture counts a change of CURPC, and prefetch means the first
-      // sample of a case can still name the instruction before it.
-      let alignedAt: number | null = null;
-      // Only forward: the capture's counter lags, never leads. It counts a
-      // change of CURPC, and an instruction that does not change it - a tight
-      // loop, or a sample taken mid-instruction because of prefetch - is not
-      // counted. Matching fifteen registers and a memory hash at any of these
-      // offsets is not something that happens by accident; the offset is an
-      // index, the match is the evidence.
-      for (const off of [0, 1, 2, 3]) {
-        const mm = new Machine(rom);
-        for (let i = 0; i < ramBaseline.length; i += 1) mm.setByte(RAM_LO + i, ramBaseline[i]);
-        for (let i = 0; i < pfBaseline.length; i += 1) mm.setByte(PF_LO + i, pfBaseline[i]);
-        mm.store(SENTINEL, 0x60fe, 16);
-        for (let i = 0; i < SCRATCH_LEN; i += 1) mm.setByte(SCRATCH + i, m.byte(SCRATCH + i));
-        for (let k = 0; k < 8; k += 1) (mm as never as Record<string, number>)[`d${k}`] = d[k];
-        for (let k = 0; k < 6; k += 1) (mm as never as Record<string, number>)[`a${k}`] = a[k];
-        for (let s = STACK - 20; s < STACK; s += 1) mm.setByte(s, m.byte(s));
-        mm.a7 = sp; mm.a6 = STACK + 0x200; mm.sr = 0x2700;
-        mm.stubMissing = true;
-        mm.budget = c.steps + off;
-        try { call(entry, mm); } catch { /* budget */ }
-        const g = [mm.d0, mm.d1, mm.d2, mm.d3, mm.d4, mm.d5, mm.d6, mm.d7,
-                   mm.a0, mm.a1, mm.a2, mm.a3, mm.a4, mm.a5, mm.a6].map((v) => v >>> 0);
+      // Stop where the chip stopped, by address. Counting instructions on both
+      // sides only works if both count the same things, and the capture's
+      // counter misses an instruction that does not change CURPC. The address
+      // of the instruction about to run is not a count and cannot drift: the
+      // port compares every time it arrives there.
+      let hit = false;
+      let arrivals = 0;
+      m.budget = 400000;
+      m.atPc = (pc: number) => {
+        if (hit || pc !== c.pc) return;
+        arrivals += 1;
+        const got = [m.d0, m.d1, m.d2, m.d3, m.d4, m.d5, m.d6, m.d7,
+                     m.a0, m.a1, m.a2, m.a3, m.a4, m.a5, m.a6].map((v) => v >>> 0);
+        if (!got.every((v, i) => v === (c.regs[i] >>> 0))) return;
         let hh = 0;
-        for (let i = 0; i < 0x2000; i += 1) hh = (hh * 31 + mm.byte(SCRATCH + i)) >>> 0;
-        if (g.every((v, i) => v === (c.regs[i] >>> 0)) && hh === (c.hash >>> 0)) {
-          alignedAt = off;
-          break;
-        }
+        for (let i = 0; i < 0x2000; i += 1) hh = (hh * 31 + m.byte(SCRATCH + i)) >>> 0;
+        if (hh !== (c.hash >>> 0)) return;
+        hit = true;
+        throw new Error(FOUND);
+      };
+      let threw = '';
+      try { call(entry, m); } catch (e) {
+        const msg = (e as Error).message;
+        if (msg !== FOUND) threw = msg;
       }
-      if (alignedAt !== null) offsets.set(alignedAt, (offsets.get(alignedAt) ?? 0) + 1);
-      try { call(entry, m); } catch (e) { threw = (e as Error).message; }
+      m.atPc = null;
 
-      // A skipped call means the port executed fewer instructions than the
-      // chip, so the counts no longer line up and the comparison is void.
+      // A skipped call means the port did not run what the chip ran.
       if (m.missingCalls.length) { stubbed += 1; compared -= 1; continue; }
 
-      if (alignedAt !== null) { matched += 1; pass.add(entry); continue; }
-
-      const got = [m.d0, m.d1, m.d2, m.d3, m.d4, m.d5, m.d6, m.d7,
-                   m.a0, m.a1, m.a2, m.a3, m.a4, m.a5, m.a6].map((v) => v >>> 0);
-      let h = 0;
-      for (let i = 0; i < 0x2000; i += 1) h = (h * 31 + m.byte(SCRATCH + i)) >>> 0;
-      const regsOk = got.every((v, i) => v === (c.regs[i] >>> 0));
-      const memOk = h === (c.hash >>> 0);
-      const ok = regsOk && memOk;
-      if (ok) { matched += 1; pass.add(entry); }
+      if (hit) { matched += 1; pass.add(entry); }
       else {
         fail.add(entry);
         if (detail.length < 20) {
-          const i = got.findIndex((v, j) => v !== (c.regs[j] >>> 0));
-          const names = ['d0','d1','d2','d3','d4','d5','d6','d7','a0','a1','a2','a3','a4','a5','a6'];
           detail.push({ entry: '0x' + entry.toString(16),
-            what: threw && !threw.includes('budget') ? `threw: ${threw.slice(0, 40)}`
-              : i >= 0 ? `${names[i]} rom=${(c.regs[i] >>> 0).toString(16)} port=${got[i].toString(16)}`
-              : 'memory' });
+            what: threw ? `threw: ${threw.slice(0, 44)}`
+              : arrivals === 0 ? `never reached pc 0x${c.pc.toString(16)}`
+              : `reached pc 0x${c.pc.toString(16)} ${arrivals}x, state differed` });
         }
       }
     }
 
     // eslint-disable-next-line no-console
-    console.log(`after ${cases[0]?.steps ?? 0} instructions: ${matched}/${compared} routines `
-      + `reproduce their state (${stubbed} void - the port skipped a call the chip made)`);
+    console.log(`at the chip's stopping instruction: ${matched}/${compared} routines reproduce `
+      + `its state (${stubbed} void - the port skipped a call the chip made)`);
     // eslint-disable-next-line no-console
-    console.log('aligned at offset:', [...offsets.entries()].sort((x, y) => y[1] - x[1])
-      .map(([o, n]) => `${o >= 0 ? '+' : ''}${o}: ${n}`).join('  '));
     writeFileSync(join(here, 'stepstate-result.json'),
       JSON.stringify({ pass: [...pass], fail: [...fail], detail }));
 

@@ -79,6 +79,9 @@ end
 
 local function take_snapshot()
   local parts = {}
+  -- the address of the instruction about to run: the port can recognise this
+  -- point by address, which is exact, instead of counting to it
+  parts[#parts + 1] = string.format("%05X", cpu.state["CURPC"].value)
   for k = 0, 7 do parts[#parts + 1] = string.format("%08X", cpu.state["D" .. k].value % 0x100000000) end
   for k = 0, 6 do parts[#parts + 1] = string.format("%08X", cpu.state["A" .. k].value % 0x100000000) end
   local h = 0
