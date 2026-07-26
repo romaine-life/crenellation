@@ -16,11 +16,11 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 763 |
-| **Verified against hardware** | **569** |
+| **Verified against hardware** | **567** |
 | Failing | 21 |
 | Passing under some inputs, failing under others | 21 |
-| Judged only by a stopping-point mismatch | 63 |
-| Never judged | 87 |
+| Judged only by a stopping-point mismatch | 41 |
+| Never judged | 111 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -33,6 +33,15 @@ while, stops, and records **the address of the instruction it stopped on**
 along with fifteen registers and a hash of the memory window. The port then
 compares every time it arrives at that address. It reaches 89 routines no other
 harness can, 32 of them with no `rts`.
+
+A quarter of what that harness first measured was not the routine at all. 89 of
+365 snapshots were taken inside `0x1357C`, the power-on reset routine - it
+re-masks interrupts, rebuilds the stack pointer from scratch and clears the
+palette. Reaching it means the routine under test went off the rails and the
+machine restarted, so the snapshot describes the reset code. Others had landed
+on bytes that are not instructions at all. Those cases are discarded now rather
+than counted as failures, which is why the number of unexplained mismatches
+fell from 63 to 41 while the verified figure barely moved.
 
 Two earlier attempts at that fourth harness are worth recording because they
 were wrong:

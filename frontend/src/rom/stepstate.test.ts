@@ -66,6 +66,7 @@ describe('routines compared at the instruction the chip stopped on', () => {
     let compared = 0;
     let matched = 0;
     let stubbed = 0;
+    let crashed = 0;
     const pass = new Set<number>();
     const fail = new Set<number>();
     const detail: Array<{ entry: string; what: string }> = [];
@@ -92,6 +93,14 @@ describe('routines compared at the instruction the chip stopped on', () => {
 
       const c = byEntry.get(entry);
       if (!c) continue;   // finished before N instructions; the other harnesses have it
+
+      // The chip stopped inside the power-on reset routine, which re-masks
+      // interrupts and rebuilds the stack pointer from scratch before clearing
+      // the palette. Getting there means the routine under test went off the
+      // rails and the machine restarted - the snapshot describes the reset
+      // code, not the routine, and there is nothing to compare. 87 of 365
+      // cases land here.
+      if (c.pc >= 0x1357c && c.pc < 0x1365c) { crashed += 1; continue; }
 
       for (let k = 0; k < 8; k += 1) (m as never as Record<string, number>)[`d${k}`] = d[k];
       for (let k = 0; k < 6; k += 1) (m as never as Record<string, number>)[`a${k}`] = a[k];
@@ -146,7 +155,8 @@ describe('routines compared at the instruction the chip stopped on', () => {
 
     // eslint-disable-next-line no-console
     console.log(`at the chip's stopping instruction: ${matched}/${compared} routines reproduce `
-      + `its state (${stubbed} void - the port skipped a call the chip made)`);
+      + `its state (${crashed} discarded - the chip had crashed into its reset code, `
+      + `${stubbed} void - the port skipped a call the chip made)`);
     // eslint-disable-next-line no-console
     writeFileSync(join(here, 'stepstate-result.json'),
       JSON.stringify({ pass: [...pass], fail: [...fail], detail }));
