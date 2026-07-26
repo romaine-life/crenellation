@@ -205,6 +205,28 @@ alone explains 97.8-99.9% of it. `romart.py` and `screens.py` were corrected.
   the failure was exactly the -32768 case, and both details above came out of
   chasing it. **18/18 after the fix.**
 
+### Piece walker and the shape table - `0x8B4`, table at `0xFE4E`
+- **Port:** `romlab/compare_pieces.py` (`place`)
+- **Signature:** `place(word packed_xy @+8, long script @+0xA, long stamp @+0xE)`
+  called as `jsr $8b4.w` - **absolute short**. That is why an earlier search for
+  callers found none: the address fits in 16 bits, so it never appears as a long
+  anywhere in the ROM.
+- **Pieces are scripts, not bitmaps.** An entry is `[id][dx][dy][directions...]`
+  terminated by any byte with the high bit set. `dx,dy` offset the cursor, then
+  each direction byte steps one cell through the tables at `0xFCCA/0xFCDA/0xFCE2`.
+  `0x0B` is an escape meaning "take an extra step first", which is how the
+  diagonal shapes are expressed.
+- **The table holds 40 pieces** (`0xFE4E`-`0xFF81`): a single cell, both
+  dominoes, both 3-bars, all four L corners, every rotation of the S, Z, T, U
+  and J shapes, the plus, and the diagonals - Rampart's full set with rotations.
+- Each cell is rejected unless it is on the board and either unowned or already
+  the player's, and its terrain is clear or exactly `0x30`. The return is 0 for
+  a rejected placement, 2 if it overlapped the player's own wall, otherwise 1.
+- **Evidence:** `romlab/verify10.lua` walks the table in ROM, stamps all 40
+  pieces onto a cleared board through the ROM routine, and dumps the result.
+  `compare_pieces.py` reproduces **40/40 - every one of the 1344 board cells
+  and the return value identical for every piece.**
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -287,9 +309,10 @@ tracing a phase change:
 event id, it fires the event only when `0x3E195C` and `0x3E1870` both match and
 `0x3E1950` is clear. That is the hook the phase script hangs off.
 
-**Not yet reached:** the piece walker `0x8B4` has **no direct callers anywhere
-in the ROM** - not as `jsr`, `bsr` or a stored pointer - so it is entered
-indirectly and the piece script table has not been found through it.
+**Correction to an earlier note:** `0x8B4` does have callers - `0x6A4`,
+`0x6E6`, `0x8D68` and `0x8E10` - but they use `jsr $8b4.w`, absolute short. A
+search for the 32-bit address cannot find them. They pass
+`*(player->0x24) + 1`, which is how the piece script table was located.
 
 ## Correction: the scoring measurement was wrong
 
@@ -345,7 +368,7 @@ rather than read from the routine that produces them.
 | System | Current implementation | What verification requires |
 | --- | --- | --- |
 | ~~Enclosure test~~ | **Ported and verified** - `compare_enclose.py`, 18/18 crafted boards | Done; remaining work is replacing `enclosure.ts` with the port |
-| Piece generation | `pieces.ts`, shapes and weights inferred from 292 observed placements | **Pieces are direction scripts** walked by `0x8B4`; RNG at `0x11E58` already verified. Find the script table, compare placements |
+| Piece shapes and placement | **Ported and verified** - all 40 pieces from the table at `0xFE4E`, walker `0x8B4`, 40/40 boards identical | Remaining: which piece the game *picks* (the selection is still unlocated) |
 | Scoring | `game.ts` constants, inferred from grouping score-counter ticks into bursts | Find the routine that adds to the score word; call it per event type; compare awards |
 | Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
 | Damage / blast footprint | `game.ts`, inferred from captured battle frames | Find the impact routine; call it against a crafted wall layout; compare which cells are destroyed |
