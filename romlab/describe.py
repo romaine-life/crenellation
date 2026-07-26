@@ -84,12 +84,39 @@ def thunks_below_first_function():
     return out
 
 
-THUNKS = thunks_below_first_function()
+def carve(runs, a, b):
+    """Remove [a, b) from a list of runs, keeping whatever lies either side."""
+    out = []
+    for x, y in runs:
+        if y <= a or x >= b:
+            out.append((x, y))
+            continue
+        if x < a:
+            out.append((x, a))
+        if y > b:
+            out.append((b, y))
+    return out
+
+
+def jump_table_cases():
+    """Entry points a pc-relative jump table reaches.
+
+    `jmp $BASE(pc, dN.w)` adds a signed offset from a table to BASE. The table
+    is data, so the classifier ends the function at it and the code past it
+    gets no entry point - the port then has no case for the address and every
+    call through the table dies. romlab/jumptables.py finds the tables, bounds
+    each by its own contents, and follows each target's basic blocks to a
+    terminator so the extent is the case itself rather than the whole region.
+    """
+    f = HERE / "out" / "jumptargets.json"
+    return [(r[0], r[1]) for r in json.loads(f.read_text())] if f.exists() else []
+
+
+THUNKS = thunks_below_first_function() + jump_table_cases()
 for a, b in THUNKS:
     entries.append(a)
     code_runs.append((a, b))
-    data_runs = [(x, y) for x, y in data_runs if not (x < b and a < y)] +                 [(x, y) for x, y in data_runs if x < b and a < y
-                 for (x, y) in ([(x, a)] if x < a else []) + ([(b, y)] if y > b else [])]
+    data_runs = carve(data_runs, a, b)
 entries = sorted(set(entries))
 code_runs = sorted(set(code_runs))
 data_runs = sorted({(x, y) for x, y in data_runs if y > x})
@@ -103,6 +130,17 @@ for a, b in code_runs:
     for i, e in enumerate(inside):
         end = inside[i + 1] if i + 1 < len(inside) else b
         funcs.append((e, end))
+
+# The injected spans overlap the runs they were carved out of, so one address
+# can start a function twice. The translator names a function after its start,
+# so a duplicate is a duplicate declaration and the whole module fails to
+# parse. Keep the widest extent: a longer switch covers more addresses, and
+# anything past the end still falls through to the dispatcher.
+widest = {}
+for a, b in funcs:
+    if b > widest.get(a, -1):
+        widest[a] = b
+funcs = sorted(widest.items())
 
 callers = defaultdict(set)
 calls_of = defaultdict(set)

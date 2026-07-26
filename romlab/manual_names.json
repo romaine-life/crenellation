@@ -806,5 +806,17 @@
  "0x3354": [
   "cell draw by coordinate",
   "resolves the same coordinate to screen and cell address, then draws"
+ ],
+ "0x9150": [
+  "accessor for the state block at 0x3E1946",
+  "takes one argument at 8(a7), points a2 at 0x3E1946 and branches on the word at 0x3E1948; called from three sites"
+ ],
+ "0xe020": [
+  "flag test on the word at 0x3E0DE0",
+  "loads 0x3E0DE0 and tests bit 15 then bit 14, branching on each; saves d2-d5/a2-a4, so it does real work per flag"
+ ],
+ "0xfbe4": [
+  "power-on probe of the 0x140000 address space",
+  "tst.w at 0x140000 and 0x1400A8, which are outside the program ROM and outside every RAM the board decodes; bracketed by calls to the trampolines at 0x64A and 0x656"
  ]
 }

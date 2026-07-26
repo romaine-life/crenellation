@@ -9,7 +9,7 @@ that cite the evidence they used.
 ## Coverage
 
 - **Bytes accounted for: 131072 of 131072 - 100.0%**
-- Code: 80746 bytes in **659 functions**
+- Code: 84792 bytes in **723 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -54,7 +54,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `00196` | 6 | 2 | trampoline to 0x14c3c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `0019C` | 6 | 2 | trampoline to 0x14d48 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `001A2` | 6 | 0 | trampoline to 0x15064 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
-| `001A8` | 6 | 0 | trampoline to 0x155a0 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001A8` | 6 | 1 | trampoline to 0x155a0 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `001AE` | 6 | 2 | trampoline to 0x15672 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `001B4` | 6 | 0 | trampoline to 0x1568e | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `001BA` | 6 | 4 | trampoline to 0x156ac | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
@@ -96,15 +96,15 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `00300` | 6 | 0 | trampoline to 0x003ea | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00306` | 6 | 1 | trampoline to 0x00580 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `0042A` | 6 | 0 | trampoline to 0x09188 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
-| `00430` | 8 | 1 | small leaf utility | 8 bytes, no calls, no state access |
+| `00430` | 8 | 1 | helper for accessor for the state block at 0x3E1946 | only caller is 0x9150 |
 | `00438` | 218 | 0 | dispatcher gate check | tests the gate word at 0x3E0802 |
 | `00512` | 24 | 4 | small leaf utility | 24 bytes, no calls, no state access |
 | `0052A` | 10 | 4 | small leaf utility | 10 bytes, no calls, no state access |
 | `00534` | 76 | 0 | negate and store | negates a byte and writes it back with its neighbour |
 | `00580` | 48 | 0 | vblank gate tick | increments the dispatcher gate at 0x3E0802 and wraps it at 0x78 |
 | `005B4` | 100 | 2 | helper for player state access | only caller is 0x2248 |
-| `00618` | 8 | 2 | helper for vblank gate tick | only caller is 0x580 |
-| `00620` | 6 | 1 | small leaf utility | 6 bytes, no calls, no state access |
+| `00618` | 8 | 2 | small leaf utility | 8 bytes, no calls, no state access |
+| `00620` | 6 | 1 | helper for accessor for the state block at 0x3E1946 | only caller is 0x9150 |
 | `00626` | 8 | 0 | small leaf utility | 8 bytes, no calls, no state access |
 | `0062E` | 20 | 4 | small leaf utility | 20 bytes, no calls, no state access |
 | `00642` | 8 | 0 | small leaf utility | 8 bytes, no calls, no state access |
@@ -165,6 +165,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `025F4` | 164 | 2 | cell pair draw | resolves two coordinates to screen addresses and draws |
 | `02698` | 150 | 2 | cell redraw | re-draws a single cell from its board value |
 | `0272E` | 58 | 3 | cell owner read | reads a cell's owner byte for a coordinate |
+| `02768` | 14 | 0 | computed-jump entry at 0x02768 | observed as a jump target during the differential run with no function covering it |
 | `027C2` | 454 | 0 | board region redraw | resolves a region through 0x3BA4 and redraws its cells |
 | `02988` | 212 | 4 | cell type test | reads a cell and compares its low 6 bits against 3 |
 | `02A5C` | 82 | 4 | cell draw at 0x2065A | draws a cell to the fixed framebuffer address 0x2065A |
@@ -265,7 +266,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `05488` | 32 | 2 | round entity teardown | clears the entity count at 0x3E0EBE and removes event 0x11B1E |
 | `054A8` | 116 | 1 | sprite entity update | touches the motion-object table |
 | `0551C` | 262 | 0 | pause and sound gate | checks the pause flag at 0x3E1950 and the entity list before calling 0x90E6 |
-| `05622` | 210 | 1 | entity spawn and queue | allocates an entity then posts its event |
+| `05622` | 210 | 2 | entity spawn and queue | allocates an entity then posts its event |
 | `056F4` | 292 | 1 | status panel draw | draws at fixed screen offsets 0x38, 0x50 |
 | `05818` | 122 | 1 | framebuffer draw | writes the framebuffer |
 | `05892` | 84 | 2 | framebuffer rectangle grab | ported and checked against the ROM |
@@ -283,7 +284,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `05CB0` | 30 | 1 | helper for shot record access | only caller is 0x7004 |
 | `05CCE` | 190 | 1 | sprite entity update | touches the motion-object table |
 | `05D8C` | 94 | 0 | sprite entity update | touches the motion-object table |
-| `05DEA` | 2 | 1 | small leaf utility | 2 bytes, no calls, no state access |
+| `05DEA` | 2 | 1 | helper for accessor for the state block at 0x3E1946 | only caller is 0x9150 |
 | `05DEC` | 18 | 0 | small leaf utility | 18 bytes, no calls, no state access |
 | `05DFE` | 2 | 1 | helper for main game state machine | only caller is 0x9266 |
 | `05E00` | 2 | 0 | small leaf utility | 2 bytes, no calls, no state access |
@@ -293,13 +294,21 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `05E38` | 106 | 2 | seal event post | ported and checked against the ROM |
 | `05EA2` | 260 | 0 | territory flood fill | ported and checked against the ROM |
 | `05FA6` | 234 | 1 | resolves a player's owner code | references the table at 0x11748 |
+| `060BE` | 86 | 0 | jump-table case at 0x060be | reached from the table at 0x06090 used by the jmp at 0x0608c |
+| `06166` | 66 | 0 | jump-table case at 0x06166 | reached from the table at 0x06090 used by the jmp at 0x0608c |
 | `061C2` | 228 | 0 | placement validate | checks a placement through 0x6BC0 before committing |
 | `062A6` | 246 | 1 | resolves a player's owner code | references the table at 0x11748 |
+| `063CA` | 86 | 0 | jump-table case at 0x063ca | reached from the table at 0x0639c used by the jmp at 0x06398 |
 | `06460` | 330 | 0 | placement commit | draws the committed cell through 0x2B88 |
 | `065AA` | 112 | 1 | flood-fill span scanner (verified) | ported and checked against the ROM |
 | `0661A` | 34 | 1 | coordinate stack pop | ported and checked against the ROM |
 | `0663C` | 12 | 3 | coordinate stack push | ported and checked against the ROM |
 | `06648` | 114 | 1 | board access | reads or writes the board array |
+| `066C8` | 4 | 0 | jump-table case at 0x066c8 | reached from the table at 0x066ba used by the jmp at 0x066b6 |
+| `066CC` | 2 | 0 | jump-table case at 0x066cc | reached from the table at 0x066ba used by the jmp at 0x066b6 |
+| `066CE` | 4 | 0 | jump-table case at 0x066ce | reached from the table at 0x066ba used by the jmp at 0x066b6 |
+| `066D2` | 2 | 0 | jump-table case at 0x066d2 | reached from the table at 0x066ba used by the jmp at 0x066b6 |
+| `066D4` | 58 | 0 | jump-table case at 0x066d4 | reached from the table at 0x066ba used by the jmp at 0x066b6 |
 | `0670E` | 32 | 1 | player state access | touches the player structs |
 | `0672E` | 200 | 0 | player state access | touches the player structs |
 | `067F6` | 402 | 1 | resolves a player's owner code | references the table at 0x1000e |
@@ -326,7 +335,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `07870` | 326 | 2 | board access | reads or writes the board array |
 | `079B6` | 24 | 3 | phase timer set | loads 0x3E1870 and ticks it once |
 | `079CE` | 52 | 2 | phase timer start with value | loads 0x3E1870 then posts the countdown event |
-| `07A02` | 16 | 3 | phase timer stop | removes the countdown event 0x11B00 |
+| `07A02` | 16 | 4 | phase timer stop | removes the countdown event 0x11B00 |
 | `07A12` | 18 | 2 | phase timer start | posts the countdown event 0x11B00 |
 | `07A24` | 100 | 2 | phase countdown tick | ported and checked against the ROM |
 | `07A88` | 140 | 5 | reads projectile speed | references the table at 0x117ac |
@@ -366,11 +375,12 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `09034` | 76 | 1 | helper for main game state machine | only caller is 0x9266 |
 | `09080` | 62 | 1 | credit compare | compares the credit counters at 0x3E1942 and 0x3E1944 |
 | `090BE` | 40 | 0 | credit add | adds to the credit counter at 0x3E1942 |
-| `090E6` | 24 | 19 | small leaf utility | 24 bytes, no calls, no state access |
+| `090E6` | 24 | 21 | small leaf utility | 24 bytes, no calls, no state access |
 | `090FE` | 16 | 1 | helper for text line draw | only caller is 0xdb7e |
 | `0910E` | 66 | 3 | register-save leaf routine | saves registers, calls nothing |
-| `09150` | 184 | 1 | helper for resolves a player's owner code | only caller is 0x8326 |
+| `09150` | 184 | 3 | accessor for the state block at 0x3E1946 | takes one argument at 8(a7), points a2 at 0x3E1946 and branches on the word at 0x3E1948; called from three sites |
 | `09208` | 46 | 0 | register-save leaf routine | saves registers, calls nothing |
+| `09236` | 18 | 0 | computed-jump entry at 0x09236 | observed as a jump target during the differential run with no function covering it |
 | `09266` | 2832 | 0 | main game state machine | 2832 bytes, entered by pointer; drives round flow and calls the phase helpers |
 | `09D80` | 2660 | 0 | player state access | touches the player structs |
 | `0A7E4` | 2 | 0 | small leaf utility | 2 bytes, no calls, no state access |
@@ -380,6 +390,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0A9BE` | 200 | 3 | player state access | touches the player structs |
 | `0AA86` | 140 | 2 | player state access | touches the player structs |
 | `0AB12` | 70 | 2 | round teardown | removes the round events 0x11B60 and 0x11B4E |
+| `0AC4C` | 270 | 0 | computed-jump entry at 0x0ac4c | observed as a jump target during the differential run with no function covering it |
 | `0AD5A` | 360 | 0 | player state access | touches the player structs |
 | `0AF72` | 104 | 2 | moving-unit step (verified) | ported and checked against the ROM |
 | `0B032` | 638 | 0 | converts claimed area to a score | references the table at 0x11830 |
@@ -394,17 +405,17 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0BB7C` | 1492 | 0 | sprite entity update | touches the motion-object table |
 | `0C150` | 158 | 0 | computer player targeting | scans 0x3E1900 with a 0x3E7 bound and takes a bearing |
 | `0C1EE` | 24 | 0 | small leaf utility | 24 bytes, no calls, no state access |
-| `0C206` | 58 | 0 | register-save leaf routine | saves registers, calls nothing |
+| `0C206` | 58 | 2 | register-save leaf routine | saves registers, calls nothing |
 | `0C240` | 124 | 1 | helper for player state access | only caller is 0x7578 |
-| `0C2BC` | 32 | 0 | cell sign test | tests the high bit of a cell byte |
+| `0C2BC` | 32 | 2 | cell sign test | tests the high bit of a cell byte |
 | `0C2DC` | 268 | 2 | round state reset | clears the 32-entry state block at 0x3E1C44 |
-| `0C3E8` | 78 | 0 | converts claimed area to a score | references the table at 0x11838 |
+| `0C3E8` | 78 | 2 | converts claimed area to a score | references the table at 0x11838 |
 | `0C436` | 120 | 1 | helper for player state access | only caller is 0x9d80 |
 | `0C4AE` | 28 | 0 | list node insert | links a node into an allocator list |
 | `0C4E8` | 28 | 0 | list node unlink | unlinks a node from an allocator list |
 | `0C504` | 52 | 0 | register-save leaf routine | saves registers, calls nothing |
 | `0C538` | 48 | 0 | register-save leaf routine | saves registers, calls nothing |
-| `0C568` | 98 | 1 | helper for resolves a player's owner code | only caller is 0x9150 |
+| `0C568` | 98 | 1 | helper for accessor for the state block at 0x3E1946 | only caller is 0x9150 |
 | `0C5CA` | 190 | 1 | palette update | writes the palette |
 | `0C688` | 156 | 2 | palette update | writes the palette |
 | `0C724` | 152 | 2 | palette update | writes the palette |
@@ -417,9 +428,11 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0CAE2` | 66 | 2 | scheduled event trigger | ported and checked against the ROM |
 | `0CB24` | 138 | 1 | player state access | touches the player structs |
 | `0CBAE` | 96 | 0 | player state access | touches the player structs |
+| `0CC18` | 34 | 0 | jump-table case at 0x0cc18 | reached from the table at 0x0cc0e used by the jmp at 0x0cc0a |
 | `0CC3A` | 120 | 0 | computer player parity | masks bit 0 of the AI state byte at +0x19 |
 | `0CCB2` | 52 | 1 | helper for current piece draw | only caller is 0x686 |
 | `0CCE6` | 38 | 1 | helper for current piece draw | only caller is 0x686 |
+| `0CD4A` | 100 | 0 | computed-jump entry at 0x0cd4a | observed as a jump target during the differential run with no function covering it |
 | `0CDAE` | 18 | 1 | helper for player state access | only caller is 0x9d80 |
 | `0CDC0` | 54 | 1 | helper for unit step wrapper | only caller is 0x6b10 |
 | `0CDF6` | 82 | 2 | message selector | picks a message id pair from a phase argument |
@@ -428,6 +441,8 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0CEE8` | 88 | 1 | player state access | touches the player structs |
 | `0CF40` | 154 | 0 | computer player fire decision | checks the score field at player+0x22 before firing |
 | `0CFDA` | 52 | 1 | helper for main game state machine | only caller is 0x9266 |
+| `0D00E` | 4 | 0 | computed-jump entry at 0x0d00e | observed as a jump target during the differential run with no function covering it |
+| `0D030` | 30 | 0 | jump-table case at 0x0d030 | reached from the table at 0x0d00e used by the jmp at 0x0d00a |
 | `0D04E` | 1090 | 0 | battle phase controller | waits on event 0x11B1E and reads the phase countdown at 0x3E1870 |
 | `0D696` | 80 | 1 | player state access | touches the player structs |
 | `0D7A0` | 180 | 0 | round event wait | waits on event 0x11B1E before proceeding |
@@ -442,7 +457,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0DE1A` | 174 | 1 | player state access | touches the player structs |
 | `0DEC8` | 312 | 1 | player state access | touches the player structs |
 | `0E000` | 32 | 0 | service mode entry | enters the operator menu through 0x18A |
-| `0E020` | 206 | 1 | helper for resolves a player's owner code | only caller is 0x9150 |
+| `0E020` | 206 | 1 | flag test on the word at 0x3E0DE0 | loads 0x3E0DE0 and tests bit 15 then bit 14, branching on each; saves d2-d5/a2-a4, so it does real work per flag |
 | `0E0EE` | 580 | 2 | framebuffer draw | writes the framebuffer |
 | `0E332` | 126 | 1 | picks a default high-score name | references the table at 0x11a50 |
 | `0E3B0` | 358 | 1 | operator menu | 358 bytes of menu handling built on a large stack frame |
@@ -482,7 +497,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0FB80` | 70 | 0 | arithmetic helper | multiply/divide with no state access |
 | `0FBC6` | 28 | 1 | stack probe | offsets the stack pointer by a value from 0x3E0800 |
 | `0FBE2` | 2 | 0 | small leaf utility | 2 bytes, no calls, no state access |
-| `0FBE4` | 34 | 1 | helper for resolves a player's owner code | only caller is 0x9150 |
+| `0FBE4` | 34 | 1 | power-on probe of the 0x140000 address space | tst.w at 0x140000 and 0x1400A8, which are outside the program ROM and outside every RAM the board decodes; bracketed by calls to the trampolines at 0x64A and 0x656 |
 | `0FC06` | 8 | 2 | helper used by player state access | 2 of 2 callers are player state access |
 | `0FC0E` | 2 | 0 | small leaf utility | 2 bytes, no calls, no state access |
 | `0FC10` | 14 | 1 | helper for player state access | only caller is 0xe7a8 |
@@ -502,10 +517,10 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `11D5C` | 58 | 1 | octagonal distance approximation (verified) | ported and checked against the ROM |
 | `11D96` | 122 | 2 | scaling blitter | ported and checked against the ROM |
 | `11E10` | 72 | 5 | screen dissolve (verified) | ported and checked against the ROM |
-| `11E58` | 38 | 6 | random number generator (verified) | ported and checked against the ROM |
+| `11E58` | 38 | 7 | random number generator (verified) | ported and checked against the ROM |
 | `11EDA` | 24 | 1 | helper for framebuffer draw | only caller is 0x36a2 |
 | `11EF2` | 12 | 7 | small leaf utility | 12 bytes, no calls, no state access |
-| `11EFE` | 44 | 10 | register-save leaf routine | saves registers, calls nothing |
+| `11EFE` | 44 | 12 | register-save leaf routine | saves registers, calls nothing |
 | `11F2A` | 206 | 0 | graphics decompressor (verified) | ported and checked against the ROM |
 | `11FF8` | 46 | 2 | block recolour (verified) | ported and checked against the ROM |
 | `12026` | 38 | 1 | helper for cell value draw | only caller is 0x3cee |
@@ -525,14 +540,15 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `125DA` | 64 | 1 | helper for vblank gate tick | only caller is 0x580 |
 | `1262A` | 614 | 0 | register-save leaf routine | saves registers, calls nothing |
 | `128BC` | 32 | 1 | helper for steps a board direction | only caller is 0x1512 |
-| `130B0` | 62 | 0 | register-save leaf routine | saves registers, calls nothing |
-| `130EE` | 10 | 0 | small leaf utility | 10 bytes, no calls, no state access |
-| `130F8` | 60 | 0 | framebuffer draw | writes the framebuffer |
+| `130B0` | 62 | 1 | helper for helper inside the jump-table case at 0x16d3e | only caller is 0x16ff0 |
+| `130EE` | 10 | 1 | helper for helper inside the jump-table case at 0x16d3e | only caller is 0x16ff0 |
+| `130F8` | 60 | 1 | framebuffer draw | writes the framebuffer |
 | `13350` | 98 | 0 | sound cold start | sets 0x3E340C, resets the driver and lowers the interrupt mask |
 | `133B2` | 58 | 0 | sound IRQ acknowledge | reads the interrupt latch at 0x640000 |
 | `133EC` | 28 | 0 | sound command latch | gates on 0x3E340C and reads 0x640002 |
-| `1354C` | 48 | 0 | sound register preset | writes the fixed register list into 0x3E3F00 |
+| `1354C` | 48 | 1 | sound register preset | writes the fixed register list into 0x3E3F00 |
 | `1357C` | 224 | 1 | palette update | writes the palette |
+| `1378E` | 492 | 0 | computed-jump entry at 0x1378e | observed as a jump target during the differential run with no function covering it |
 | `13CDA` | 64 | 0 | coin counter pulse | pulses 0x6C0000 and sets a bit in 0x3E3D8E |
 | `13E6A` | 42 | 0 | sound call marshaller | builds a stack frame for a driver call |
 | `13E94` | 172 | 1 | helper for sound driver helper | only caller is 0x196ac |
@@ -561,17 +577,32 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `14FF2` | 114 | 0 | sound channel bound | rejects channel numbers of 6 and above |
 | `15064` | 156 | 2 | sound parameter scaler | scales three word parameters for the driver |
 | `15100` | 270 | 0 | arithmetic helper | multiply/divide with no state access |
-| `1520E` | 508 | 0 | title screen renderer | draws through 0x18E66 from the table at 0x1D6A0 |
+| `1520E` | 508 | 1 | title screen renderer | draws through 0x18E66 from the table at 0x1D6A0 |
 | `155A0` | 210 | 0 | sound tempo update | advances the tempo counters at 0x3E365A |
 | `15672` | 28 | 0 | bit set helper | builds a one-bit mask from a byte argument |
 | `1568E` | 30 | 0 | bit clear helper | builds an inverted one-bit mask |
 | `156AC` | 388 | 0 | sound cue selector | selects from the cue table at 0x3E3632 |
 | `15830` | 58 | 0 | voice index clamp | clamps a voice number to at most 0x13 |
-| `160BA` | 34 | 0 | audio reset wrapper | calls the sound reset then the shared init |
-| `1684C` | 172 | 0 | audio and video reset | calls the sound reset 0x19366 and the video reset 0x17500 |
-| `168F8` | 96 | 0 | audio and video reset (variant) | same pair with an extra flag test at 0x372 |
+| `160BA` | 34 | 1 | audio reset wrapper | calls the sound reset then the shared init |
+| `1684C` | 172 | 1 | audio and video reset | calls the sound reset 0x19366 and the video reset 0x17500 |
+| `168F8` | 96 | 1 | audio and video reset (variant) | same pair with an extra flag test at 0x372 |
 | `16BC8` | 18 | 0 | sound ready wait | spins on 0x144AE until the driver reports ready |
 | `16BDA` | 332 | 1 | high score table renderer | draws from 0x1851C and 0x17EDE |
+| `16D3E` | 16 | 0 | jump-table case at 0x16d3e | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16D4E` | 18 | 0 | jump-table case at 0x16d4e | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16D60` | 14 | 0 | jump-table case at 0x16d60 | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16D6E` | 10 | 0 | jump-table case at 0x16d6e | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16D78` | 8 | 0 | jump-table case at 0x16d78 | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16D80` | 8 | 0 | jump-table case at 0x16d80 | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16D88` | 140 | 0 | jump-table case at 0x16d88 | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16E14` | 8 | 0 | jump-table case at 0x16e14 | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16E1C` | 8 | 0 | jump-table case at 0x16e1c | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16E24` | 8 | 0 | jump-table case at 0x16e24 | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16E2C` | 192 | 0 | jump-table case at 0x16e2c | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16EEC` | 260 | 0 | jump-table case at 0x16eec | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
+| `16FF0` | 832 | 0 | helper inside the jump-table case at 0x16d3e | lies within the case reached from the table at 0x16d26 |
+| `17330` | 168 | 0 | helper inside the jump-table case at 0x16d3e | lies within the case reached from the table at 0x16d26 |
+| `173D8` | 202 | 0 | helper inside the jump-table case at 0x16d3e | lies within the case reached from the table at 0x16d26 |
 | `174A2` | 94 | 1 | framebuffer draw | writes the framebuffer |
 | `17500` | 60 | 3 | framebuffer draw | writes the framebuffer |
 | `1753C` | 162 | 0 | self-test string draw | draws a message with a width and a colour argument |
@@ -613,13 +644,19 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `1868C` | 18 | 1 | helper for title screen renderer | only caller is 0x17fcc |
 | `1869E` | 26 | 3 | dual divide helper | divides two words by a common divisor |
 | `18764` | 218 | 0 | register-save leaf routine | saves registers, calls nothing |
+| `1884A` | 16 | 0 | jump-table case at 0x1884a | reached from the table at 0x1883e used by the jmp at 0x1883a |
+| `1885A` | 50 | 0 | jump-table case at 0x1885a | reached from the table at 0x1883e used by the jmp at 0x1883a |
+| `1888C` | 30 | 0 | jump-table case at 0x1888c | reached from the table at 0x1883e used by the jmp at 0x1883a |
+| `188AA` | 66 | 0 | jump-table case at 0x188aa | reached from the table at 0x1883e used by the jmp at 0x1883a |
+| `188EC` | 12 | 0 | jump-table case at 0x188ec | reached from the table at 0x1883e used by the jmp at 0x1883a |
+| `188F8` | 20 | 0 | jump-table case at 0x188f8 | reached from the table at 0x1883e used by the jmp at 0x1883a |
 | `1890C` | 48 | 0 | sound gate on 0x3E340E | skips the call when the flag is set |
 | `18A5E` | 8 | 5 | small leaf utility | 8 bytes, no calls, no state access |
 | `18A66` | 152 | 0 | framebuffer draw | writes the framebuffer |
 | `18AFE` | 40 | 1 | sound call - two long args | marshals two longs for the driver |
-| `18B26` | 54 | 1 | helper for title screen renderer | only caller is 0x1520e |
-| `18B5C` | 26 | 0 | sound call - three long args | marshals three longs for the driver |
-| `18B76` | 28 | 5 | bitfield extract | packs two byte arguments into a shifted field |
+| `18B26` | 54 | 3 | helper used by helper inside the jump-table case at 0x16d3e | 2 of 3 callers are helper inside the jump-table case at 0x16d3e |
+| `18B5C` | 26 | 1 | sound call - three long args | marshals three longs for the driver |
+| `18B76` | 28 | 9 | bitfield extract | packs two byte arguments into a shifted field |
 | `18B92` | 170 | 0 | framebuffer draw | writes the framebuffer |
 | `18C3C` | 12 | 0 | small leaf utility | 12 bytes, no calls, no state access |
 | `18C48` | 98 | 0 | script interpreter - step | walks a byte script adding to an index |
@@ -632,7 +669,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `18DF6` | 6 | 0 | small leaf utility | 6 bytes, no calls, no state access |
 | `18DFC` | 10 | 0 | small leaf utility | 10 bytes, no calls, no state access |
 | `18E06` | 96 | 0 | register-save leaf routine | saves registers, calls nothing |
-| `18E66` | 170 | 4 | register-save leaf routine | saves registers, calls nothing |
+| `18E66` | 170 | 6 | register-save leaf routine | saves registers, calls nothing |
 | `18F10` | 256 | 0 | character glyph select | selects a glyph from the table at 0x19182 |
 | `19010` | 34 | 1 | sound driver helper | inside the sound driver's code range |
 | `19032` | 34 | 1 | sound driver helper | inside the sound driver's code range |
@@ -646,6 +683,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `1940A` | 32 | 0 | framebuffer draw | writes the framebuffer |
 | `1942A` | 68 | 0 | framebuffer draw | writes the framebuffer |
 | `1946E` | 228 | 0 | sound driver helper | inside the sound driver's code range |
+| `19552` | 76 | 0 | computed-jump entry at 0x19552 | observed as a jump target during the differential run with no function covering it |
 | `195B4` | 86 | 0 | sound driver helper | inside the sound driver's code range |
 | `19614` | 152 | 0 | sound driver helper | inside the sound driver's code range |
 | `196AC` | 218 | 1 | sound driver helper | inside the sound driver's code range |
@@ -668,11 +706,37 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `1A100` | 78 | 0 | sound driver helper | inside the sound driver's code range |
 | `1A14E` | 76 | 1 | sound driver helper | inside the sound driver's code range |
 | `1A1CA` | 58 | 0 | sound driver helper | inside the sound driver's code range |
+| `1A204` | 44 | 0 | computed-jump entry at 0x1a204 | observed as a jump target during the differential run with no function covering it |
+| `1A230` | 12 | 0 | jump-table case at 0x1a230 | reached from the table at 0x1a204 used by the jmp at 0x1a200 |
+| `1A23C` | 12 | 0 | jump-table case at 0x1a23c | reached from the table at 0x1a204 used by the jmp at 0x1a200 |
+| `1A248` | 14 | 0 | jump-table case at 0x1a248 | reached from the table at 0x1a204 used by the jmp at 0x1a200 |
+| `1A256` | 10 | 0 | jump-table case at 0x1a256 | reached from the table at 0x1a204 used by the jmp at 0x1a200 |
+| `1A260` | 36 | 0 | jump-table case at 0x1a260 | reached from the table at 0x1a204 used by the jmp at 0x1a200 |
+| `1A284` | 66 | 0 | jump-table case at 0x1a284 | reached from the table at 0x1a204 used by the jmp at 0x1a200 |
+| `1A2C6` | 82 | 0 | jump-table case at 0x1a2c6 | reached from the table at 0x1a204 used by the jmp at 0x1a200 |
 | `1A318` | 206 | 0 | sound driver helper | inside the sound driver's code range |
 | `1A3E6` | 420 | 0 | sound driver helper | inside the sound driver's code range |
 | `1A58A` | 102 | 0 | sound driver helper | inside the sound driver's code range |
 | `1A5F0` | 600 | 2 | sound driver helper | inside the sound driver's code range |
 | `1A8C0` | 1044 | 0 | sound driver helper | inside the sound driver's code range |
+| `1ACE0` | 12 | 0 | jump-table case at 0x1ace0 | reached from the table at 0x1acd4 used by the jmp at 0x1acd0 |
+| `1ACEC` | 10 | 0 | jump-table case at 0x1acec | reached from the table at 0x1acd4 used by the jmp at 0x1acd0 |
+| `1ACF6` | 14 | 0 | jump-table case at 0x1acf6 | reached from the table at 0x1acd4 used by the jmp at 0x1acd0 |
+| `1AD04` | 28 | 0 | jump-table case at 0x1ad04 | reached from the table at 0x1acd4 used by the jmp at 0x1acd0 |
+| `1AD20` | 24 | 0 | jump-table case at 0x1ad20 | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
+| `1AD42` | 18 | 0 | jump-table case at 0x1ad42 | reached from the table at 0x1ad38 used by the jmp at 0x1ad34 |
+| `1AD54` | 12 | 0 | jump-table case at 0x1ad54 | reached from the table at 0x1ad38 used by the jmp at 0x1ad34 |
+| `1AD60` | 14 | 0 | jump-table case at 0x1ad60 | reached from the table at 0x1ad38 used by the jmp at 0x1ad34 |
+| `1AD6E` | 20 | 0 | jump-table case at 0x1ad6e | reached from the table at 0x1ad38 used by the jmp at 0x1ad34 |
+| `1AD82` | 24 | 0 | jump-table case at 0x1ad82 | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
+| `1AD9A` | 8 | 0 | jump-table case at 0x1ad9a | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
+| `1ADA2` | 14 | 0 | jump-table case at 0x1ada2 | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
+| `1ADB0` | 28 | 0 | jump-table case at 0x1adb0 | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
+| `1ADCC` | 22 | 0 | jump-table case at 0x1adcc | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
+| `1ADE2` | 22 | 0 | jump-table case at 0x1ade2 | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
+| `1ADF8` | 22 | 0 | jump-table case at 0x1adf8 | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
+| `1AE0E` | 28 | 0 | jump-table case at 0x1ae0e | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
+| `1AE2A` | 18 | 0 | jump-table case at 0x1ae2a | reached from the table at 0x1a848 used by the jmp at 0x1a844 |
 | `1AE3C` | 562 | 0 | sound driver helper | inside the sound driver's code range |
 | `1B06E` | 174 | 0 | sound driver helper | inside the sound driver's code range |
 | `1B11C` | 74 | 1 | sound driver helper | inside the sound driver's code range |

@@ -74,6 +74,7 @@ describe('routines replayed with the arguments the game passed', () => {
       m.a3 = c.ain[3]; m.a4 = c.ain[4]; m.a5 = c.ain[5];
       m.a7 = sp;
       m.a6 = STACK + 0x200;
+      m.sr = 0x2700;
       m.stubMissing = true;
       m.budget = 4_000_000;
 

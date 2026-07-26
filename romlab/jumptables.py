@@ -19,6 +19,12 @@ HERE = pathlib.Path(__file__).parent
 UP = (HERE / "prog_upper.bin").read_bytes()
 LIMIT = 0x20000
 JMPIDX = re.compile(r"^\$([0-9a-fA-F]+)\((?:pc),\s*d\d\.w\)$")
+ABSTGT = re.compile(r"^\$([0-9a-fA-F]+)$")
+TERMINATORS = {"rts", "rte", "rtr", "bra", "jmp"}
+BRANCHES = {"bra", "beq", "bne", "bcs", "bcc", "bmi", "bpl", "bvs", "bvc",
+            "blt", "bge", "ble", "bgt", "bls", "bhi", "bsr",
+            "dbra", "dbf", "dbeq", "dbne", "dbcs", "dbcc", "dbmi", "dbpl",
+            "dblt", "dbge", "dble", "dbgt", "dbls", "dbhi", "dbt"}
 
 
 def table_targets(base):
@@ -68,7 +74,36 @@ def main():
                         found[base] = (tg, tend, ins.address)
             addr += ins.size
 
+    def extent(start, region_end):
+        """Where the code reached from `start` stops.
+
+        A jump-table case runs until it returns or jumps away, but a `bra`
+        inside it is not the end - the block it skips over belongs to the same
+        case. So a terminator is only accepted once the scan is past every
+        branch target seen so far, which is the ordinary way to find the end of
+        a chain of basic blocks. Taking the whole enclosing region instead
+        shatters the function map.
+        """
+        addr = start
+        furthest = start
+        while addr < region_end:
+            ins = next(md.disasm(UP[addr:addr + 16], addr, 1), None)
+            if ins is None:
+                return addr
+            nxt = addr + ins.size
+            base_mn = ins.mnemonic.split(".")[0]
+            m = ABSTGT.match(ins.op_str.strip())
+            if m and base_mn in BRANCHES:
+                tgt = int(m.group(1), 16)
+                if start <= tgt < region_end:
+                    furthest = max(furthest, tgt)
+            if base_mn in TERMINATORS and nxt > furthest:
+                return nxt
+            addr = nxt
+        return region_end
+
     new = set()
+    origin = {}                 # target -> (table base, the jmp that uses it)
     for base, (tg, tend, site) in sorted(found.items()):
         # a target inside a function is already reachable: the switch has a
         # case for every instruction address in the extent, so dispatch can
@@ -77,8 +112,61 @@ def main():
         print("%05x  table at %05x..%05x  %d targets, %d needing an entry"
               % (site, base, tend, len(tg), len(outside)))
         new.update(outside)
+        for x in outside:
+            origin.setdefault(x, (base, site))
     print("\njump-table targets needing a function entry: %d" % len(new))
-    json.dump(sorted(new), open(HERE / "out" / "jumptargets.json", "w"))
+
+    # Bound each one before the next known function, then follow its blocks.
+    spans = []
+    for tgt in sorted(new):
+        region_end = LIMIT
+        for a, b in funcs:
+            if a > tgt:
+                region_end = min(region_end, a)
+                break
+        # a 68000 instruction is word-aligned, so an odd target means the
+        # table walk ran past the end of the table into unrelated bytes
+        if tgt % 2:
+            continue
+        end = extent(tgt, region_end)
+        if end > tgt:
+            base, site = origin[tgt]
+            spans.append([tgt, end, base, site])
+    # Addresses the port was actually observed jumping to and finding nothing.
+    # Static analysis finds the pc-relative tables; this catches the rest -
+    # dispatch through a pointer, and tables the pattern does not match.
+    obs = HERE / "out" / "missing-entries.json"
+    if obs.exists():
+        for tgt in json.loads(obs.read_text()):
+            if tgt % 2 or covered(tgt):
+                continue
+            region_end = LIMIT
+            for a, b in funcs:
+                if a > tgt:
+                    region_end = min(region_end, a)
+                    break
+            end = extent(tgt, region_end)
+            if end > tgt:
+                spans.append([tgt, end, 0, 0])
+
+    # Merge with what is already known. describe.py feeds these spans back into
+    # the function map, so a second run sees them as covered and would find
+    # nothing - overwriting the file would then throw away every target from
+    # the previous pass. Run until the count stops rising.
+    out = HERE / "out" / "jumptargets.json"
+    merged = {}
+    if out.exists():
+        for r in json.loads(out.read_text()):
+            merged[r[0]] = r
+    added = 0
+    for r in spans:
+        if r[0] not in merged:
+            merged[r[0]] = r
+            added += 1
+    spans = [merged[k] for k in sorted(merged)]
+    print("spans: %d covering %d bytes (%d new this pass)"
+          % (len(spans), sum(r[1] - r[0] for r in spans), added))
+    json.dump(spans, open(out, "w"))
 
 
 if __name__ == "__main__":

@@ -216,6 +216,53 @@ export class Machine {
     this.x = c;
   }
 
+  /**
+   * The status register as the chip presents it: the flags live in `c`/`v`/
+   * `z`/`n`/`x`, and the high byte (interrupt mask and supervisor bit) is
+   * whatever was last written. `move sr,dN` reads real flags, so composing it
+   * from a stale field returns a number that was never true.
+   */
+  getSR(): number {
+    return ((this.sr & 0xff00)
+      | (this.x ? 16 : 0) | (this.n ? 8 : 0) | (this.z ? 4 : 0)
+      | (this.v ? 2 : 0) | (this.c ? 1 : 0)) >>> 0;
+  }
+
+  setSR(v: number): void {
+    this.sr = v & 0xffff;
+    this.x = (v & 16) !== 0;
+    this.n = (v & 8) !== 0;
+    this.z = (v & 4) !== 0;
+    this.v = (v & 2) !== 0;
+    this.c = (v & 1) !== 0;
+  }
+
+  /**
+   * Rotate through the extend bit. The X bit joins the operand, so the rotate
+   * is over `bits + 1` places, and X ends up holding the bit that came out.
+   */
+  roxFlags(value: number, count: number, bits: number, left: boolean): number {
+    const mask = bits === 32 ? 0xffffffff : (1 << bits) - 1;
+    let v = value & mask;
+    let x = this.x;
+    const n = count % (bits + 1);
+    for (let i = 0; i < n; i += 1) {
+      if (left) {
+        const out = (v >>> (bits - 1)) & 1;
+        v = ((v << 1) & mask) | (x ? 1 : 0);
+        x = out === 1;
+      } else {
+        const out = v & 1;
+        v = ((v >>> 1) | ((x ? 1 : 0) << (bits - 1))) & mask;
+        x = out === 1;
+      }
+    }
+    this.logicFlags(v >>> 0, bits);
+    this.x = x;
+    this.c = x;                 // a zero count leaves C equal to X, as on the chip
+    return v >>> 0;
+  }
+
   /** Set N and Z from a result of the given width; clear V and C. */
   logicFlags(v: number, bits: number): void {
     const s = this.sx(v, bits);

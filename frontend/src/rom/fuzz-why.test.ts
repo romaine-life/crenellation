@@ -23,6 +23,9 @@ const fuzz = JSON.parse(readFileSync(join(here, 'fuzz.json'), 'utf8'));
 const entries = readFileSync(join(here, 'entries.txt'), 'utf8')
   .split('\n').map((s) => s.trim()).filter(Boolean).map((s) => parseInt(s, 16));
 
+const STRUCTS = [
+  0x3e0864, 0x3e1968, 0x3e1cf6, 0x3e1bc6, 0x3e0f48, 0x3e02d8, 0x3e4000,
+];
 const RAM_LO = 0x3e0000, SCRATCH = 0x3e4000, SCRATCH_LEN = 0x400;
 const STACK = 0x3e5000, SENTINEL = 0x3e6000, TRIALS = 3;
 
@@ -75,6 +78,7 @@ for (const entry of entries) {
     for (let k = 0; k < 6; k += 1) m[`a${k}`] = a[k];
     m.a7 = sp;
     m.a6 = STACK + 0x200;
+    m.sr = 0x2700;
     m.stubMissing = true;
     m.trackOffMap = true;
 

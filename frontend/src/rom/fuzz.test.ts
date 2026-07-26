@@ -42,6 +42,9 @@ const entries: number[] = readFileSync(join(here, 'entries.txt'), 'utf8')
   .filter(Boolean)
   .map((s) => parseInt(s, 16));
 
+const STRUCTS = [
+  0x3e0864, 0x3e1968, 0x3e1cf6, 0x3e1bc6, 0x3e0f48, 0x3e02d8, 0x3e4000,
+];
 const SCRATCH = 0x3e4000;
 const SCRATCH_LEN = 0x400;
 const STACK = 0x3e5000;
@@ -97,9 +100,18 @@ describe('every routine against the real 68000', () => {
     for (let i = 0; i < pfBaseline.length; i += 1) m.setByte(PF_LO + i, pfBaseline[i]);
         for (let i = 0; i < SCRATCH_LEN; i += 1) m.setByte(SCRATCH + i, rand.next() % 256);
         const d: number[] = [];
-        for (let k = 0; k < 8; k += 1) d.push(rand.next() % 0x10000);
+        // trial 0 is noise; later trials hand the routine the structures the
+        // game really passes and indices small enough to be in range, which is
+        // the difference between a routine returning and wandering off
+        for (let k = 0; k < 8; k += 1) {
+          const r = rand.next();
+          d.push(trial === 0 ? r % 0x10000 : trial === 1 ? r % 32 : r % 256);
+        }
         const a: number[] = [];
-        for (let k = 0; k < 6; k += 1) a.push(SCRATCH + (rand.next() % (SCRATCH_LEN - 0x80)));
+        for (let k = 0; k < 6; k += 1) {
+          const r = rand.next();
+          a.push(trial === 0 ? SCRATCH + (r % (SCRATCH_LEN - 0x80)) : STRUCTS[r % STRUCTS.length]);
+        }
         let sp = STACK;
         for (let k = 1; k <= 4; k += 1) {
           sp -= 4;
@@ -119,6 +131,7 @@ describe('every routine against the real 68000', () => {
         m.a3 = a[3]; m.a4 = a[4]; m.a5 = a[5];
         m.a7 = sp;
         m.a6 = STACK + 0x200;
+        m.sr = 0x2700;
         m.stubMissing = true;
 
         compared += 1;

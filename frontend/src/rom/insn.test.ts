@@ -108,6 +108,9 @@ describe('instruction rules against the real 68000', () => {
         m.a0 = a[0]; m.a1 = a[1]; m.a2 = a[2];
         m.a3 = a[3]; m.a4 = a[4]; m.a5 = a[5];
         m.a6 = SCRATCH + 0x300;
+        // the capture masks interrupts for the duration of each case, and
+        // `move sr,dN` reads that back, so the port has to start from it too
+        m.sr = 0x2700;
         m.a7 = SCRATCH + 0x380;
 
         // the instruction under test lives at CODE, as it did on hardware

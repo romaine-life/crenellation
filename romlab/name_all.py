@@ -49,6 +49,35 @@ def setname(a, name, why):
         WHY[a] = why
 
 
+# The cases a pc-relative jump table reaches, and anything called from inside
+# one. These were data until jumptables.py enumerated the tables, so they have
+# no name from any other rule.
+JT = {}
+jf = HERE / "out" / "jumptargets.json"
+if jf.exists():
+    for r in json.loads(jf.read_text()):
+        JT[r[0]] = (r[1], r[2], r[3])
+for a, b in funcs:
+    if a in JT:
+        _, base, site = JT[a]
+        if base:
+            setname(a, "jump-table case at 0x%05x" % a,
+                    "reached from the table at 0x%05x used by the jmp at 0x%05x"
+                    % (base, site))
+        else:
+            # found by running, not by reading: a computed jump landed here and
+            # no function covered the address
+            setname(a, "computed-jump entry at 0x%05x" % a,
+                    "observed as a jump target during the differential run "
+                    "with no function covering it")
+for a, b in funcs:
+    for start, (end, base, site) in JT.items():
+        if start < a < end:
+            setname(a, "helper inside the jump-table case at 0x%05x" % start,
+                    "lies within the case reached from the table at 0x%05x" % base)
+            break
+
+
 # A six-byte function that is nothing but `jmp <abs>.l` is a trampoline. The
 # whole block of them sits below the first ordinary routine and is reached by
 # absolute-short calls and pointer tables, so each one is named for where it

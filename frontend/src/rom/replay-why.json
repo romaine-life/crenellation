@@ -1,0 +1,110 @@
+[
+ {
+  "entry": "0x133ec",
+  "why": "reads 0x7effff 0x72ffff 0x640002 0x3c0000 then no routine covers 0x1378e"
+ },
+ {
+  "entry": "0x14dc",
+  "why": "memory only"
+ },
+ {
+  "entry": "0x9208",
+  "why": "threw: no routine covers 0x9236"
+ },
+ {
+  "entry": "0xcfda",
+  "why": "threw: no routine covers 0xd00e"
+ },
+ {
+  "entry": "0xa7e6",
+  "why": "reads 0x640000 (not modelled)"
+ },
+ {
+  "entry": "0x5b4",
+  "why": "reads 0x640000 (not modelled)"
+ },
+ {
+  "entry": "0x534",
+  "why": "reads 0x6c0007 (not modelled)"
+ },
+ {
+  "entry": "0x875e",
+  "why": "reads 0x86000001 0x86000002 0x86000001 0x86000002 then instruction budget exhausted after 20000"
+ },
+ {
+  "entry": "0x8b4",
+  "why": "reads 0x32c60000 0x32c60001 (not modelled)"
+ },
+ {
+  "entry": "0x1a1ca",
+  "why": "threw: no routine covers 0x1a204"
+ },
+ {
+  "entry": "0xb738",
+  "why": "reads 0x6000002c 0x6000002d 0x6000002e 0x6000002f (not modelled)"
+ },
+ {
+  "entry": "0x6b10",
+  "why": "threw: no routine covers 0xcd4a"
+ },
+ {
+  "entry": "0xcdc0",
+  "why": "threw: no routine covers 0xcd4a"
+ },
+ {
+  "entry": "0x3f94",
+  "why": "threw: no routine covers 0x2768"
+ },
+ {
+  "entry": "0x272e",
+  "why": "threw: no routine covers 0x2768"
+ },
+ {
+  "entry": "0x656",
+  "why": "memory only"
+ },
+ {
+  "entry": "0x7f5a",
+  "why": "threw: no routine covers 0x19552"
+ },
+ {
+  "entry": "0x28c",
+  "why": "threw: no routine covers 0x19552"
+ },
+ {
+  "entry": "0x19054",
+  "why": "threw: no routine covers 0x19552"
+ },
+ {
+  "entry": "0x1946e",
+  "why": "threw: no routine covers 0x19552"
+ },
+ {
+  "entry": "0x1a3e6",
+  "why": "d1 first d1 rom=2704 port=0 +memory"
+ },
+ {
+  "entry": "0x19c22",
+  "why": "d0 first d0 rom=2704 port=0"
+ },
+ {
+  "entry": "0x5056",
+  "why": "reads 0x54005400 0x54005401 0x54005402 0x54005403 (not modelled)"
+ },
+ {
+  "entry": "0x74fa",
+  "why": "threw: no routine covers 0x752e"
+ },
+ {
+  "entry": "0x3242",
+  "why": "threw: no routine covers 0x2768"
+ },
+ {
+  "entry": "0x8200",
+  "why": "threw: no routine covers 0x19552"
+ },
+ {
+  "entry": "0xa90e",
+  "why": "threw: no routine covers 0xac4c"
+ }
+]

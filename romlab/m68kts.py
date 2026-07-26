@@ -43,7 +43,7 @@ def num(t):
 
 REG = re.compile(r"^([da]\d)$")
 IMM = re.compile(r"^#(.+)$")
-ABS = re.compile(r"^\$([0-9a-fA-F]+)(?:\.[wl])?$")
+ABS = re.compile(r"^\$([0-9a-fA-F]+)(\.[wl])?$")
 IND = re.compile(r"^\((a\d|sp)\)$")
 POST = re.compile(r"^\((a\d|sp)\)\+$")
 PRE = re.compile(r"^-\((a\d|sp)\)$")
@@ -52,6 +52,20 @@ IDX = re.compile(r"^(-?\$?[0-9a-fA-F]+)\((a\d|sp|pc),\s*([da]\d)\.([wl])\)$")
 # the same indexed form with the displacement omitted, which capstone prints
 # as (a0,d0.l) - by far the most common form the first pass missed
 NOIDX = re.compile(r"^\((a\d|sp|pc),\s*([da]\d)\.([wl])\)$")
+
+
+def abs_addr(m):
+    """Absolute address, taking the .w form as signed.
+
+    `$fff4.w` is 0xFFFFFFF4, not 0x0000FFF4: absolute short sign-extends its
+    16-bit address, which is how the low end of the address space and the top
+    of it are both reachable in one word. Dropping the suffix silently turns
+    every high short address into a completely different location.
+    """
+    a = int(m.group(1), 16)
+    if m.group(2) == ".w" and a & 0x8000:
+        a = (a - 0x10000) & 0xFFFFFFFF
+    return a
 
 
 class Operand:
@@ -97,7 +111,7 @@ class Operand:
             return
         m = ABS.match(t)
         if m:
-            a = int(m.group(1), 16)
+            a = abs_addr(m)
             self.read = "m.load(0x%x, %d)" % (a, self.bits)
             self.write = "m.store(0x%x, %%s, %d)" % (a, self.bits)
             return
@@ -181,7 +195,7 @@ class Operand:
         t = self.tok
         m = ABS.match(t)
         if m:
-            return "0x%x" % int(m.group(1), 16)
+            return "0x%x" % abs_addr(m)
         m = IND.match(t)
         if m:
             return self._reg(m.group(1))
@@ -254,6 +268,13 @@ def emit(ins, nxt):
         return "m.a7 = (m.a7 + 4) >>> 0; return;"
     if b == "nop":
         return s
+    if b == "move" and len(ops) == 2 and ops[1].strip() == "sr":
+        return "m.setSR(%s); %s" % (O[0].read, s)
+    if b == "move" and len(ops) == 2 and ops[0].strip() == "sr":
+        W = Operand(ops[1], "w")
+        return "%s; %s" % (W.write % "m.getSR()", s) if W.write else None
+    if b == "move" and len(ops) == 2 and ops[1].strip() == "ccr":
+        return "m.setSR((m.getSR() & 0xff00) | (%s & 0xff)); %s" % (O[0].read, s)
     if b in ("move", "movea") and len(O) == 2 and O[0].read and O[1].write:
         # Bind the source to a temporary. Emitting its read expression twice -
         # once to store, once for the flags - applies a postincrement or
@@ -535,6 +556,16 @@ def emit(ins, nxt):
     if b == "trap":
         n = num(ops[0].lstrip("#")) if ops else 0
         return "m.trap(%d); %s" % (n, s)
+    if b in ("roxl", "roxr") and O and O[-1].write:
+        cnt = O[0].read if len(O) == 2 else "1"
+        rw = O[-1].rmw()
+        if rw is None:
+            return None
+        setup, rd, wr = rw
+        return ("{ const _c = (%s) & 63; %s const _v = %s; "
+                "const _r = m.roxFlags(_v, _c, %d, %s); %s; } %s") % (
+            cnt, setup, rd, bits, "true" if b == "roxl" else "false",
+            wr % "_r", s)
     if b in ("rol", "ror") and O and O[-1].write:
         cnt = O[0].read if len(O) == 2 else "1"
         v = "((%s) & %d)" % (O[-1].read, (1 << bits) - 1 if bits < 32 else 0xFFFFFFFF)
@@ -554,7 +585,7 @@ def emit(ins, nxt):
             cnt, bits, e, O[-1].write % "_r", bits, cbit, s)
     if b in ("ori", "andi", "eori") and len(ops) == 2 and ops[1].strip() in ("sr", "ccr"):
         op = {"ori": "|", "andi": "&", "eori": "^"}[b]
-        return "m.sr = (m.sr %s %s) >>> 0; %s" % (op, O[0].read, s)
+        return "m.setSR((m.getSR() %s (%s)) >>> 0); %s" % (op, O[0].read, s)
     if b == "dc":
         # data that the linear decoder read as an instruction; the emitted
         # routine should never reach it

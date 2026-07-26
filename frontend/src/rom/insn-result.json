@@ -1,1 +1,1 @@
-{"matched":7191,"compared":7192,"offMap":204,"noRule":1,"failing":[{"hex":"3131313120455843","asm":"move.w ([$20455843, a1, d3.w]), -(a0)"}]}
+{"matched":9149,"compared":9153,"offMap":204,"noRule":2,"failing":[{"hex":"007200F601A001A0","asm":"ori.w #$f6, $1a0(d0.w)"},{"hex":"E034","asm":"roxr.l #$8, d4"}]}

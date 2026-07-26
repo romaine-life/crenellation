@@ -70,6 +70,13 @@ local finished = false
 local finishedOk = false
 local dirty = {}
 
+-- The structures the game passes around, recovered and verified earlier: the
+-- board, the player array, the event queue, the moving-unit table, the shot
+-- rings, the entity table, and the scratch window itself.
+local STRUCTS = {
+  0x3E0864, 0x3E1968, 0x3E1CF6, 0x3E1BC6, 0x3E0F48, 0x3E02D8, 0x3E4000,
+}
+
 local pfbase = {}
 
 local function dump_range(lo, hi, store, name)
@@ -118,13 +125,29 @@ local function begin_case()
   space:write_u16(SENTINEL, PARK)
   for i = 0, SCRATCH_LEN - 1 do space:write_u8(SCRATCH + i, rnd() % 256) end
   inregs = {}
+  -- Random values mostly prove a routine does not crash. A routine that wants
+  -- a board pointer and a cell index gets neither from noise: it wanders and
+  -- never reaches the sentinel, and the case is thrown away as "no return".
+  -- Later trials therefore hand it the structures the game really passes and
+  -- indices small enough to be in range. The number of draws is identical in
+  -- every mode so the port's generator stays in step.
   for k = 0, 7 do
-    local v = rnd() % 0x10000
+    local r = rnd()
+    local v
+    if trial == 0 then v = r % 0x10000
+    elseif trial == 1 then v = r % 32
+    else v = r % 256 end
     inregs["D" .. k] = v
     cpu.state["D" .. k].value = v
   end
   for k = 0, 5 do
-    local v = SCRATCH + (rnd() % (SCRATCH_LEN - 0x80))
+    local r = rnd()
+    local v
+    if trial == 0 then
+      v = SCRATCH + (r % (SCRATCH_LEN - 0x80))
+    else
+      v = STRUCTS[(r % #STRUCTS) + 1]
+    end
     inregs["A" .. k] = v
     cpu.state["A" .. k].value = v
   end
@@ -194,9 +217,35 @@ local function install()
     end)
 end
 
+local function fld(pt, f)
+  local q = manager.machine.ioport.ports[pt]
+  return q and q.fields[f] or nil
+end
+local function set(pt, f, v)
+  local q = fld(pt, f)
+  if q then pcall(function() q:set_value(v) end) end
+end
+
+-- Coin up and start a game before taking the baseline. The old baseline was
+-- captured in attract mode, so every routine that wants a board, a player or a
+-- live entity found none, wandered off and never returned - and the case was
+-- discarded as "no return" rather than compared. Starting a real game first
+-- gives them state that makes sense.
+local START = 2400
+
 emu.register_frame_done(function()
   frame = frame + 1
-  if frame == 400 then
+  if frame < START then
+    local c = frame % 240
+    if c == 0 then set(":IN1", "Coin 1", 1) end
+    if c == 20 then set(":IN1", "Coin 1", 0) end
+    if c == 40 then set(":IN1", "P1 Button 1", 1) end
+    if c == 50 then set(":IN1", "P1 Button 1", 0) end
+    local q = frame % 45
+    if q == 0 then set(":IN1", "P1 Button 1", 1) end
+    if q == 6 then set(":IN1", "P1 Button 1", 0) end
+  end
+  if frame == START then
     space:write_u16(SENTINEL, PARK)
     dump_baseline()
     install()
@@ -205,13 +254,18 @@ emu.register_frame_done(function()
     begin_case()
     return
   end
-  if frame < 400 then return end
+  if frame < START then return end
   if finishedOk then
     finishedOk = false
     begin_case()
     return
   end
   -- a case still running after a whole frame is hung on its random input
+  -- One frame only. Giving a stuck routine longer does not rescue it: it lets
+  -- wild execution reach an address error, and with the vector table in the
+  -- state the harness leaves it that becomes a double fault and halts the CPU
+  -- for every case after it. Measured - an eight-frame window took the
+  -- routines that returned from 400 down to 13.
   if running and frame > startedFrame then
     running = false
     record("N")

@@ -10,49 +10,56 @@ plausible the current implementation looks.
 
 ## Verification state
 
-Measured, not asserted. Two harnesses run every routine on the real 68000 under
-MAME and again in the TypeScript port from byte-identical starting state, and
-compare all registers plus a hash of the memory window the routine works in.
+Measured, not asserted. Every routine is run on the real 68000 under MAME and
+again in the TypeScript port from byte-identical starting state, and all
+registers plus a hash of the memory window it works in are compared. Two
+harnesses do this: one drives each routine with generated arguments, the other
+replays the arguments the game itself passed during play.
 
 | | |
 |---|---|
-| Routines in the overlay | 659 |
-| Verified against hardware | 410 |
-| Failing | 48 |
+| Routines in the overlay | 723 |
+| Verified against hardware | 453 |
+| Failing | 39 |
 | Passing one harness, failing the other | 9 |
-| Never exercised (hardware never returned) | 192 |
+| Never exercised (hardware never returned) | 222 |
 
-The routine count rose from 593 because 66 `jmp` trampolines below the first
-ordinary routine had been classified as data. They are executed - 74 call sites
-name one directly and 108 pointer-table slots hold their addresses - so they are
-now functions, ported and dispatchable.
+The routine count rose from the original 593 because two kinds of executable
+code had been filed as data: 66 `jmp` trampolines below the first ordinary
+routine, and 61 jump-table cases. Both are reached at run time, so both are now
+functions, ported and dispatchable. Coverage of the overlay is still 100% with
+no function labelled unknown.
 
 ### Instruction rules
 
 Routine-level differences say a routine is wrong, not which rule is wrong, and
-one bad rule spreads across every routine that uses it. Each of the 4,680
-distinct instruction encodings in the ROM is therefore also run on its own, with
+one bad rule spreads across every routine that uses it. Each distinct
+instruction encoding inside a function is therefore also run on its own, with
 known registers, at a fixed address.
 
-**7,191 of 7,192 comparable cases reproduce exactly, condition codes included.**
-The one exclusion is encoding `3131313120455843` - the ASCII bytes `"1111 EXC"`
-from the exception-message table, which capstone reads as a 68020
-memory-indirect form the 68000 does not have. It is data, not an instruction.
-A further 204 cases are not comparable because they read the playfield, the
-input ports or the sound chips, which the port does not model.
+**9,149 of 9,153 comparable cases reproduce exactly, condition codes included.**
+204 further cases are not comparable because they read the playfield, the input
+ports or the sound chips. Instructions that write the status register are not
+claimed at all: writing it unmasks interrupts, so the case measures the game's
+interrupt handler rather than the instruction. The two remaining failures are
+byte sequences that no consistent walk reaches as instructions.
 
 ### Defects this found
 
 Every one was found by comparison against the chip, not by reading the code.
 
 - `jsr`/`bsr` did not push a return address, so every callee read its stack
-  arguments four bytes off. This alone was 174 routines.
+  arguments four bytes off. This alone took the routines that reproduce from
+  172 to 346, and explains why leaf routines had always matched far more often
+  than the routines calling them.
+- Absolute short addressing did not sign-extend: `$fff4.w` is 0xFFFFFFF4, not
+  0x0000FFF4, so every high short address named a different location.
 - Pre-decrement and post-increment applied twice on read-modify-write operands
   (`neg.b -(a0)`, `eor.b d0,(a0)+`), walking pointers off by an operand.
 - A byte access through `a7` stepped by one; the 68000 steps by two to keep the
   stack word-aligned.
-- Shift counts come from a register modulo 64, but JavaScript takes shift counts
-  modulo 32, so "shift everything out" became "shift by a few".
+- Shift counts come from a register modulo 64, but JavaScript takes shift
+  counts modulo 32, so "shift everything out" became "shift by a few".
 - Bit instructions took their width from the mnemonic; the destination decides
   it - a data register is 32 bits modulo 32, memory is 8 bits modulo 8.
 - `divu` used the signed overflow bound, rejecting every quotient over 32767.
@@ -64,15 +71,20 @@ Every one was found by comparison against the chip, not by reading the code.
   store, once for the flags - so the flags described the value already written.
 - An arithmetic right shift past the operand width cleared C instead of keeping
   the sign bit.
-- `movep` had no rule at all.
+- `movep`, `roxl`/`roxr`, and reading or writing the status register had no
+  rules at all.
 
 ### What the remaining failures are
 
-Of the 48 failing routines, 28 reach a computed jump whose target table is
-classified as data, so the port has no case for the address; 11 read the input
-ports; the rest differ in memory. The 192 never exercised are routines the
-hardware harness could not make return - it drives them with random arguments,
-and a routine that expects a valid pointer does not come back.
+Of the 39 failing routines, most read the input ports or the sound chips, which
+the port does not model; a handful still reach a computed jump with no function
+covering the address. The 222 never exercised are routines that do not return
+on the hardware side: the harness calls them out of context, and one that
+expects a live entity or a valid pointer runs until the frame ends. Starting a
+real game before taking the memory baseline, and handing later trials the
+structures the game actually passes, moved 66 of them into range; the rest need
+the game to reach the state that calls them.
+
 
 ## Harness
 

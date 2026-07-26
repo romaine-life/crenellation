@@ -63,7 +63,7 @@ end
 emu.register_frame_done(function()
   frame = frame + 1
   if frame == 300 then install() end
-  if frame > 300 and frame < 16000 then
+  if frame > 300 and frame < 48000 then
     local c = frame % 240
     if c == 0 then set(":IN1", "Coin 1", 1) end
     if c == 20 then set(":IN1", "Coin 1", 0) end
@@ -84,7 +84,7 @@ emu.register_frame_done(function()
   local m = frame % 30
   if m == 0 and frame > 400 then capturing = true
   elseif m == 4 then capturing = false end
-  if frame == 16000 then
+  if frame == 48000 then
     local covered = 0
     for _, c in pairs(seen) do if c > 0 then covered = covered + 1 end end
     log:write(string.format("# samples %d routines %d", n, covered) .. NL)
