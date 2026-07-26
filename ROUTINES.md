@@ -313,6 +313,25 @@ selection reaches them some other way and is not yet located.
   16:7 boundary ratios and both sides of them, zero, every sign combination,
   and the 16-bit extremes. **35/35 identical.**
 
+### Damage - `0x8598` selects, `0x8606` applies
+- **Port:** `romlab/compare_damage.py` (`damage_step`)
+- **Damage is a scripted list of coordinates, not a computed blast radius.**
+  `0x8598` walks the three player structs (stride `0x7E` from `0x3E1968`), and
+  for any flagged one it picks a script from a table reached through
+  `0x3E0DCA` + `0x22` + index*4, skips forward by the player's `+0x1D` entries,
+  parks the cursor at `player+0x3E` and queues handler `0x8606`.
+- **The rule runs the opposite way round from what "damage" suggests:** each
+  call consumes one packed (x, y) word and stamps rubble `0x30` **only where
+  the cell is already empty**. A cell still holding a wall is left alone on that
+  pass. Since `0x30` is exactly what the verified piece walker accepts for
+  rebuilding, this is the step that turns cleared ground into buildable ruin.
+- Termination is by sign: when the next entry's high byte is negative the
+  handler removes its own event, and the queue count goes with it.
+- **Evidence:** `romlab/verify16.lua` - 8 crafted cases covering an empty cell,
+  a cell holding a wall, a cell already rubble, a mid-list cursor, both board
+  corners, and immediate termination. **8/8 identical** across all 1344 board
+  cells, the cursor, and the event count.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -467,6 +486,11 @@ Projectiles are a ring of **0x1A-byte records** at `player+0x6A`, with
 verified distance routine and a speed table at `0x11774` (64, 80, 96, 96, 96),
 writing x velocity to record+6, y velocity to +0xA and an arc term to +0xE.
 
+`0x6CAE` is the fire trigger. It places the muzzle using per-direction offset
+tables at `0x11754` (x) and `0x11764` (y), which are a clean radius-7 circle -
+(7,0), (4,4), (0,7), (-4,4), (-7,0), (-4,-4), (0,-7), (4,-4) - then spawns the
+projectile entity into the table at `0x3E02D8`, 16 bytes per entry.
+
 ## Correction: the scoring measurement was wrong
 
 Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
@@ -524,7 +548,7 @@ rather than read from the routine that produces them.
 | Piece shapes and placement | **Ported and verified** - all 40 pieces from the table at `0xFE4E`, walker `0x8B4`, 40/40 boards identical | Remaining: which piece the game *picks* (the selection is still unlocated) |
 | ~~Scoring~~ | **Ported and verified** - `0x865E`, 26/26 across every threshold boundary | Done; remaining work is replacing the guessed constants in `game.ts` |
 | Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
-| Damage / blast footprint | `game.ts`, inferred from captured battle frames | Find the impact routine; call it against a crafted wall layout; compare which cells are destroyed |
+| ~~Damage~~ | **Ported and verified** - `0x8606`, 8/8 crafted boards | Done; the blast *scripts* themselves still need extracting from the table at `0x3E0DCA` |
 | Phase control | `phases.ts`, durations read from the countdown word in RAM | **Dispatcher located** (`0x9300`-`0xA7DA`); its event predicate `0xEFFA` ported and verified 12/12. Remaining: the dispatcher itself |
 | ~~Object composition (art)~~ | **Decoded from ROM** - `extract_sprites.py` + `mobrender.py`, 13/40 frames pixel-exact | Done; remaining work is wiring the sprites into the game |
 | ~~Terrain plates (art)~~ | **Decoded from ROM** - `extract_tiles.py`, 5907 tiles verified against 11614 live draws | Done; remaining work is wiring the tileset into the game |
