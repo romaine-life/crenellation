@@ -15,7 +15,13 @@
 --    baseline between cases, which the port loads too, so both sides start
 --    byte-identical.
 local OUT = "D:/repos/crenellation/romlab/out/fuzz/"
-local log = io.open(OUT .. "f.log", "w")
+-- One argument shape per run of the emulator. Eight shapes in a single run was
+-- tried and lost most of the work: some shape drives a routine into a state
+-- that kills MAME, and every entry after it in that run is gone. Split across
+-- runs, a fatal shape costs only its own run.
+local SHAPE = tonumber(os.getenv("FUZZSHAPE") or "-1")
+local TRIALS = SHAPE >= 0 and 1 or 3
+local log = io.open(OUT .. (SHAPE >= 0 and ("f-" .. SHAPE .. ".log") or "f.log"), "w")
 local NL = string.char(10)
 local cpu = manager.machine.devices[":maincpu"]
 local space = cpu.spaces["program"]
@@ -37,10 +43,6 @@ local PF_LO, PF_HI = 0x200000, 0x21FFFF
 local SCRATCH, SCRATCH_LEN = 0x3E4000, 0x400
 local STACK = 0x3E5000
 local DIGEST_LO, DIGEST_LEN = 0x3E4000, 0x2000
--- Three shapes, not more. Eight was tried: the extra shapes drive some
--- routine into a state that kills the emulator, and the run stops after 211
--- of 754 entries, which loses far more than the extra shapes gain.
-local TRIALS = 3
 
 local seed = 0x12345678
 local function rnd()
@@ -139,16 +141,17 @@ local function begin_case()
   -- yields nothing to compare, so several shapes are tried and whichever ones
   -- come back are the ones that get compared. The number of draws is the same
   -- in every shape, so the port's generator stays in step.
+  local sh = SHAPE >= 0 and SHAPE or trial
   for k = 0, 7 do
     local r = rnd()
     local v
-    if trial == 0 then v = r % 0x10000
-    elseif trial == 1 then v = r % 32
-    elseif trial == 2 then v = r % 256
-    elseif trial == 3 then v = 0
-    elseif trial == 4 then v = 1
-    elseif trial == 5 then v = (r % 8)
-    elseif trial == 6 then v = 0xFFFF
+    if sh == 0 then v = r % 0x10000
+    elseif sh == 1 then v = r % 32
+    elseif sh == 2 then v = r % 256
+    elseif sh == 3 then v = 0
+    elseif sh == 4 then v = 1
+    elseif sh == 5 then v = (r % 8)
+    elseif sh == 6 then v = 0xFFFF
     else v = (r % 4) end
     inregs["D" .. k] = v
     cpu.state["D" .. k].value = v
@@ -156,13 +159,13 @@ local function begin_case()
   for k = 0, 5 do
     local r = rnd()
     local v
-    if trial == 0 then
+    if sh == 0 then
       v = SCRATCH + (r % (SCRATCH_LEN - 0x80))
-    elseif trial == 3 or trial == 6 then
+    elseif sh == 3 or sh == 6 then
       v = SCRATCH + 0x40 * k
-    elseif trial == 4 then
+    elseif sh == 4 then
       v = STRUCTS[1]
-    elseif trial == 7 then
+    elseif sh == 7 then
       v = STRUCTS[(k % #STRUCTS) + 1]
     else
       v = STRUCTS[(r % #STRUCTS) + 1]
