@@ -344,6 +344,40 @@ selection reaches them some other way and is not yet located.
   group. That count is an independent confirmation of the group structure,
   since nothing in the test told it how many groups to expect.
 
+### Piece selection - the bag builder `0x59EE`
+- **Port:** `romlab/compare_bag.py` (`build`)
+- **Rampart does not draw a random piece each turn. It builds a bag.** A weight
+  list chosen by **player kind and level** says how many copies of each rotation
+  group to include; the bag is terminated with `0xFF` and then **riffle shuffled
+  eight times** - four rounds of destination -> scratch -> destination. Each
+  riffle cuts at `count/4 + random(count/2)` and interleaves the halves a byte
+  at a time, drawing from the verified RNG at `0x11E58`.
+- Selection itself (`0x59CA`) then walks the shuffled bag one byte at a time,
+  indexing the group table at **`0xFF90`** (13 entries: single, bar, L1, J, L2,
+  U, S, Z, diag1, diag2, T, plus, domino), and re-draws if the piece matches the
+  previous one. When the bag runs out the byte is negative and it refills.
+- **The weight tables are the difficulty curve:**
+
+| Kind | Level | Bag |
+| --- | --- | --- |
+| 0 | 0-1 | single x2, bar x4, L1 x2, domino x2 (10) |
+| 0 | 2-3 | single, bar x3, L1 x2, J x2, L2 x2, domino (11) |
+| 0 | 4 | single, bar x2, L1 x3, J x5, L2 x5, S x2, Z x2, domino (21) |
+| 1 | 0-1 | single, bar x2, L1 x2, J x2, L2 x2, S, Z, T, domino (13) |
+| 1 | 2-3 | adds U, diag1, diag2, more S/Z/T (21) |
+| 1 | 4 | adds plus, drops domino (21) |
+| 2+ | any | single x2, bar x5, L1 x2, domino x4 (13) |
+
+- **Evidence:** `romlab/verify18.lua` - 45 cases, 3 RNG seeds x 3 kinds x 5
+  levels, comparing the whole 48-byte buffer **and** the resulting RNG seed.
+  **45/45 identical.**
+- **What the failure taught:** the first run was 30/45, and every failure was
+  kind 2 in the bytes *after* the terminator. The three destination buffers and
+  the shuffle scratch are real addresses that **overlap** - for kind 2 the
+  destination is `0x3E1ECA` and the scratch `0x3E1EE0`, 22 bytes later - so the
+  shuffle's intermediate copy lands inside the bag's own buffer. Modelling flat
+  memory at the true addresses reproduces it exactly.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -557,7 +591,7 @@ rather than read from the routine that produces them.
 | System | Current implementation | What verification requires |
 | --- | --- | --- |
 | ~~Enclosure test~~ | **Ported and verified** - `compare_enclose.py`, 18/18 crafted boards | Done; remaining work is replacing `enclosure.ts` with the port |
-| Piece shapes, placement, rotation | **Ported and verified** - 40 shapes (`0x8B4`, 40/40 boards), rotation (`0x5AFC`, 131/131) | Remaining: which *group* a new piece is drawn from |
+| ~~Piece generation~~ | **Ported and verified** - 40 shapes (40/40), rotation (131/131), bag + weights + shuffle (45/45) | Done; remaining work is replacing `pieces.ts` with the port |
 | ~~Scoring~~ | **Ported and verified** - `0x865E`, 26/26 across every threshold boundary | Done; remaining work is replacing the guessed constants in `game.ts` |
 | Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
 | ~~Damage~~ | **Ported and verified** - `0x8606`, 8/8 crafted boards | Done; the blast *scripts* themselves still need extracting from the table at `0x3E0DCA` |
