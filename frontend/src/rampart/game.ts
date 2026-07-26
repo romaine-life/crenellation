@@ -57,6 +57,18 @@ export const SCORE_ROUND = 350;
 export const SCORE_SHIP = 350;
 export const SCORE_WALL_HIT = 35;
 
+// Ship behaviour, measured by decoding motion-object RAM (romlab/ships2.py:
+// the display list is rebuilt each frame, so objects are tracked by sprite
+// code + nearest position rather than by slot). Ship tracks cover ~38px of
+// travel per second, moving in bursts of 2-4 px/frame about a third of the
+// time. Projectile tracks spawn at 3.83/sec while the automated player was
+// firing 2.4/sec, leaving ~1.4/sec from the ships themselves; across the
+// three or four on screen that is roughly one shot each per 2.5s.
+// Those projectile tracks also live a median of 17 frames, corroborating the
+// 20-frame flight time measured independently from the sound cues.
+export const SHIP_CELLS_PER_SEC = 38 / 16;
+export const SHIP_FIRE_INTERVAL_MS = 2500;
+
 // The game accepted fire cues at 24-25 frame intervals across a long session
 // (min observed gap 24), so reload is at most 24 frames = 400ms.
 export const CANNON_RELOAD_FRAMES = 24;
@@ -400,9 +412,9 @@ function spawnShips(game: GameState): void {
 
       y: 1 + ((i * 3.1) % (GRID_ROWS - 2)),
 
-      vy: i % 2 === 0 ? 0.6 : -0.6,
+      vy: i % 2 === 0 ? SHIP_CELLS_PER_SEC : -SHIP_CELLS_PER_SEC,
 
-      cooldownMs: 1200 + i * 400,
+      cooldownMs: (SHIP_FIRE_INTERVAL_MS * (i + 1)) / (count + 1),
 
     });
 
@@ -532,7 +544,7 @@ export function update(game: GameState, dtMs: number): void {
 
       if (ship.cooldownMs <= 0) {
 
-        ship.cooldownMs = 2200 + Math.random() * 1500;
+        ship.cooldownMs = SHIP_FIRE_INTERVAL_MS;
 
         const target = pickWallTarget(game);
 
