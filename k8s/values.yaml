@@ -4,7 +4,7 @@
 image:
   repository: romainecr.azurecr.io/crenellation
   # Quoted so YAML never reinterprets image tag characters.
-  tag: "app-060bb62e1991ad53179494aa987cd137e4c6b619dd13b31a48ecaa9819ab5b23"
+  tag: "app-eaff235ff7c2679bf6c397673d515e18ad78c2f7380bba7a8486409206e58856"
   pullPolicy: IfNotPresent
 
 name: crenellation
