@@ -555,6 +555,38 @@ tables at `0x11754` (x) and `0x11764` (y), which are a clean radius-7 circle -
 (7,0), (4,4), (0,7), (-4,4), (-7,0), (-4,-4), (0,-7), (4,-4) - then spawns the
 projectile entity into the table at `0x3E02D8`, 16 bytes per entry.
 
+## Where the code is
+
+**All game code lives below `0x20000`** - the overlay. Scanning the remaining
+900KB of the ROM for the addresses every system touches (the board, the player
+array, the entity table, the RNG seed, the event count) finds **zero**
+references above `0x20000`, and the whole region contains just 8 `rts` and 2
+`link` opcodes, which is noise rather than code. Everything above the overlay is
+graphics, audio and level data.
+
+That bounds the remaining work: anything still unlocated is in the 128KB
+already being disassembled, not in a bank that has been missed.
+
+## Firing chain
+
+| Address | Role |
+| --- | --- |
+| `0x6CAE` | fire trigger: muzzle position from the radius-7 offset tables, then spawn |
+| `0x220C` | spawn wrapper: looks up an entity template from the table at `0xFD5E` and calls the allocator |
+| `0xFD16`-`0xFD58` | 12 entity templates, 6 bytes each - a zero word, a sprite code (`0x131`-`0x13C`) and a flag word |
+| `0x5B40` | the allocator proper; refuses past a capacity check on `0x3E02CA` and returns `0xFF` |
+| `0x11CF8` | aiming direction - **ported and verified** |
+| `0x11D5C` | distance - **ported and verified** |
+
+Shot state lives in the **0x1A-byte records at `player+0x6A`**, not in the
+16-byte entity records: x velocity at +6, y velocity at +0xA, an arc term at
++0xE, and the spawned entity pointer at +0x16. `0x6FB4` advances the cursor at
+`player+0x72` through them and retires the event when the last shot is gone.
+
+**Still unlocated:** the per-frame integration that moves a shot along that
+velocity. `0xF79E` and `0xF936` looked like candidates but are the sprite depth
+sorter; `0xF306` is an animation table walker.
+
 ## Correction: the scoring measurement was wrong
 
 Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
