@@ -84,6 +84,19 @@ Register note: MAME's m68k state exposes the stack as `SP`, not `A7`.
   the addresses it clears were recorded in order and compared against the port:
   **61441 leading entries identical**, an entire dissolve pass.
 
+### Random number generator - `0x11E58`  *(first game-logic routine)*
+- **Port:** `romlab/compare_rng.py` (`random`)
+- **Signature:** `random(long n @+4) -> long`, called from 10 sites. This is
+  the RNG behind piece selection and other in-game randomness.
+- **Behaviour:** a 16-bit LCG whose seed lives at `0x3E0842`. The seed is
+  multiplied by `0x3619` (signed 16x16 -> 32), `0x5D35` is added **as a word**
+  so only the low half changes, and that low word becomes the new seed. The
+  result is that seed multiplied by `n`, plus `(n << 16) >> 1`, returning the
+  sign-extended high word - i.e. a value scaled into `n`.
+- **Evidence:** `romlab/compare_rng.py` - 96 cases (8 seeds x 12 values of n,
+  including 0x0000, 0x8000 and 0xFFFF to cover sign handling). Return value and
+  updated seed both identical in every case.
+
 ## Correction: the scoring measurement was wrong
 
 Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
@@ -121,6 +134,13 @@ ad-hoc memory probing had mistaken for scoring. Use it before probing.
   framebuffer (~8% of bytes differ): several other routines draw into it too -
   `0x125C4`, `0x11E44`, `0x12350`, `0x1E7EE`, `0x122AE`, `0x1E79A`, `0x12010`,
   `0x18EC4`, `0x2320`-`0x232C`. Whole-screen reproduction needs those ported.
+
+
+- **Stateful routines do not need their layout mapped first.** Snapshot the
+  state before the call, snapshot after, and require the port to reproduce the
+  same delta. The RNG was verified this way: set the seed, call, compare both
+  the return value and the new seed. The same approach scales to routines whose
+  state is a whole RAM region - snapshot all 16KB of work RAM if necessary.
 
 ## Outstanding â€” not ported, not verified
 
