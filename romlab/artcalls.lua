@@ -19,11 +19,26 @@ local calls = 0
 -- 0x11F2A is the LOOP HEAD (the routine branches back to it), so tapping it
 -- captures mid-run states, not calls. 0x11F1C is the bsr that enters it, by
 -- which point a0/a1/d2/d4 are all set up.
-local DECOMP = 0x11F1C
+local DECOMP = 0x11F1C     -- call site of decompressor 1
+local DECOMP2 = 0x124D8    -- call site of decompressor 2 (terrain painter)
 local BITMAP = 0x200000
 local BMP_SIZE = 0x20000
 
 local function install()
+  TAPS[#TAPS + 1] = space:install_read_tap(DECOMP2, DECOMP2 + 1, "entry2", function(offset, data, mask)
+    if recording then
+      calls = calls + 1
+      log:write(string.format(
+        "T %d %06X %06X %d %d",
+        frame,
+        cpu.state["A0"].value,
+        cpu.state["A1"].value,
+        space:read_u16(0x3E0E76),
+        0
+      ) .. NL)
+    end
+    return data
+  end)
   TAPS[#TAPS + 1] = space:install_read_tap(DECOMP, DECOMP + 1, "entry", function(offset, data, mask)
     if recording then
       calls = calls + 1

@@ -61,6 +61,31 @@ Register note: MAME's m68k state exposes the stack as `SP`, not `A7`.
 - **Evidence:** `romlab/compare_recolor.py` - 6 cases over seeded input blocks,
   all 64 pixels identical, palette bases 0x00 through 0xF0.
 
+## Correction: the scoring measurement was wrong
+
+Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
+deltas at `0x3E20AA` / `0x3E20E4` into bursts. The function map shows those
+addresses are **linked-list heads used by an allocator** (`0xCA52` walks a
+circular list at `0x3E20A0`; `0xC504` pops from `0x3E20A8`; `0x3E2498` is a
+lock flag). The "awards" were almost certainly allocation activity, not score.
+The scoring constants currently in `game.ts` are therefore not measured, and
+the real score location is still unknown.
+
+## Framebuffer reproduction
+
+Replaying calls to both verified decoders onto a "before" snapshot reproduces
+**99.4%** of the framebuffer (787 of 131072 bytes differ, down from ~8% with
+decoder 1 alone). The remainder comes from writers not yet ported: `0x11E44`,
+`0x12350`, `0x1E7EE`, `0x122AE`, `0x1E79A`, `0x12010`, `0x18EC4`,
+`0x2320`-`0x232C`.
+
+## Tooling
+
+`romlab/mapcode.py` builds a function map from the ROM: call targets from a
+linear sweep, function bodies walked to their terminator, with call graph and
+absolute data references. This is what surfaced the allocator cluster that
+ad-hoc memory probing had mistaken for scoring. Use it before probing.
+
 ## Method notes
 
 - `PC` during a memory tap is the *next* instruction; use **`CURPC`** for the
