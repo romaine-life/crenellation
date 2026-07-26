@@ -9,7 +9,7 @@ that cite the evidence they used.
 ## Coverage
 
 - **Bytes accounted for: 131072 of 131072 - 100.0%**
-- Code: 85412 bytes in **749 functions**
+- Code: 85608 bytes in **754 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -48,8 +48,8 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `00172` | 6 | 0 | trampoline to 0x13e94 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00178` | 6 | 2 | trampoline to 0x14a36 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `0017E` | 6 | 1 | trampoline to 0x14578 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
-| `00184` | 6 | 1 | trampoline to 0x14772 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
-| `0018A` | 6 | 3 | trampoline to 0x1485c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00184` | 6 | 2 | trampoline to 0x14772 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0018A` | 6 | 5 | trampoline to 0x1485c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00190` | 6 | 2 | trampoline to 0x14b8a | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00196` | 6 | 2 | trampoline to 0x14c3c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `0019C` | 6 | 2 | trampoline to 0x14d48 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
@@ -480,6 +480,9 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0E0EE` | 580 | 2 | framebuffer draw | writes the framebuffer |
 | `0E332` | 126 | 1 | picks a default high-score name | references the table at 0x11a50 |
 | `0E3B0` | 358 | 1 | operator menu | 358 bytes of menu handling built on a large stack frame |
+| `0E516` | 48 | 0 | computed-jump entry at 0x0e516 | observed as a jump target during the differential run with no function covering it |
+| `0E546` | 14 | 0 | helper inside the jump-table case at 0x0e516 | lies within the case reached from the table at 0x00000 |
+| `0E554` | 14 | 0 | helper inside the jump-table case at 0x0e516 | lies within the case reached from the table at 0x00000 |
 | `0E7A8` | 124 | 1 | player state access | touches the player structs |
 | `0E824` | 360 | 1 | attract mode controller | reads 0x3E1CB4 and 0x3E1954 to sequence the demo |
 | `0E98C` | 186 | 1 | phase advance helper | updates 0x3E195C and 0x3E0DD2 |
@@ -716,6 +719,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `196AC` | 218 | 1 | sound driver helper | inside the sound driver's code range |
 | `19786` | 8 | 0 | sound driver helper | inside the sound driver's code range |
 | `1978E` | 74 | 0 | sound driver helper | inside the sound driver's code range |
+| `197D8` | 28 | 0 | computed-jump entry at 0x197d8 | observed as a jump target during the differential run with no function covering it |
 | `198C0` | 182 | 1 | sound driver helper | inside the sound driver's code range |
 | `1997A` | 170 | 0 | sound driver helper | inside the sound driver's code range |
 | `19A24` | 208 | 0 | sound driver helper | inside the sound driver's code range |
@@ -725,6 +729,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `19C22` | 12 | 1 | sound driver helper | inside the sound driver's code range |
 | `19C2E` | 14 | 4 | sound driver helper | inside the sound driver's code range |
 | `19C3C` | 52 | 1 | sound driver helper | inside the sound driver's code range |
+| `19C70` | 92 | 0 | computed-jump entry at 0x19c70 | observed as a jump target during the differential run with no function covering it |
 | `19CCC` | 4 | 2 | sound driver helper | inside the sound driver's code range |
 | `19CD0` | 20 | 2 | sound driver helper | inside the sound driver's code range |
 | `19F3E` | 284 | 1 | sound driver helper | inside the sound driver's code range |

@@ -1250,7 +1250,7 @@ export function fn_00f14(m: Machine, at = 0x00f14): void {
   }
 }
 
-/** routine */
+/** extracts the owner bits from a cell byte */
 export function fn_00fb4(m: Machine, at = 0x00fb4): void {
   let pc = at;
   for (;;) {

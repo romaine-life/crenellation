@@ -2950,7 +2950,7 @@ export function fn_03a4a(m: Machine, at = 0x03a4a): void {
   }
 }
 
-/** routine */
+/** board cell address lookup wrapper */
 export function fn_03ba4(m: Machine, at = 0x03ba4): void {
   let pc = at;
   for (;;) {

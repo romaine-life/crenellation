@@ -197,7 +197,7 @@ export function fn_0778a(m: Machine, at = 0x0778a): void {
   }
 }
 
-/** routine */
+/** tests the flag at +0x15 of a passed struct */
 export function fn_077c8(m: Machine, at = 0x077c8): void {
   let pc = at;
   for (;;) {
