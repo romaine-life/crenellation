@@ -31,7 +31,6 @@ jobs:
     name: Build image, push, bump Helm values tag
     if: github.event_name == 'workflow_dispatch' || vars.ARM_CLIENT_ID != ''
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
     env:
       REGISTRY: romainecr.azurecr.io
       IMAGE: crenellation
