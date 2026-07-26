@@ -18,9 +18,11 @@ import { computeTerritory, hasSealedCastle } from './enclosure';
 import { PieceBag, rotate, type Piece, type Shape } from './pieces';
 import { advancePhase, createPhaseState, type PhaseState } from './phases';
 
-// Cannonball flight: the arcade fires on a fixed arc, the shot hangs, then
-// lands. 45 frames at 60Hz measured from motion-object RAM during battle.
-export const SHOT_FLIGHT_MS = 750;
+// Cannonball flight measured from the arcade: the launch cue (sound id 94) is
+// followed by the impact cue exactly 20 frames later, in 42 of 42 observed
+// shots. 20 frames at 60Hz = 333ms, independent of distance.
+export const SHOT_FLIGHT_FRAMES = 20;
+export const SHOT_FLIGHT_MS = (SHOT_FLIGHT_FRAMES / 60) * 1000;
 export const SHOT_BLAST_RADIUS = 1;
 export const CANNON_RELOAD_MS = 900;
 export const MAX_CANNONS_PER_TERRITORY_CELL = 1 / 12; // one cannon per 12 sealed cells
@@ -154,9 +156,20 @@ export function fireAt(game: GameState, x: number, y: number): boolean {
   return true;
 }
 
+// Measured footprint: frames captured through a battle show a hit costing 1-3
+// wall cells with a bounding box up to 3x1 — the target plus orthogonal
+// neighbours, not a full 3x3 (which would take up to nine).
+const BLAST_CELLS: Array<[number, number]> = [
+  [0, 0],
+  [1, 0],
+  [-1, 0],
+  [0, 1],
+  [0, -1],
+];
+
 function damageAt(game: GameState, col: number, row: number, owner: Owner): void {
-  for (let dr = -SHOT_BLAST_RADIUS; dr <= SHOT_BLAST_RADIUS; dr += 1) {
-    for (let dc = -SHOT_BLAST_RADIUS; dc <= SHOT_BLAST_RADIUS; dc += 1) {
+  {
+    for (const [dc, dr] of BLAST_CELLS) {
       const cell = cellAt(game.board, col + dc, row + dr);
       if (!cell) continue;
       if (cell.occupant === 'wall') {
