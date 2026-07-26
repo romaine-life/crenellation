@@ -267,6 +267,30 @@ computer player scoring candidate wall positions - it scans all 42x30 cells,
 counts matching neighbours through `0xFCCA`, and keeps the best), `0x122C`
 (a full-board scan over type-1 cells), `0xA20` (board addressing from a script).
 
+## Game state addresses
+
+Recovered from the writer index (`romlab/whowrites.lua`, address -> writing
+routine, validated by finding the verified RNG writing its own seed) and from
+tracing a phase change:
+
+| Address | Holds |
+| --- | --- |
+| `0x3E0864` | the board, 42x30 bytes, stride 32, column major |
+| `0x3E0842` | RNG seed (verified routine `0x11E58`) |
+| `0x3E1870` | phase countdown, in seconds; `0x7A24` decrements it and beeps through a table at `0x11792` over the last five |
+| `0x3E195C` | **phase / state** |
+| `0x3E1950` | pause flag - nonzero suppresses scheduled events |
+| `0x3E1960` | pointer to the current player struct; byte +2 is the player index |
+| `0x3E0E76` | texture rotation used by the terrain painter |
+
+`0xCAE2` is a scheduled-event trigger: given a phase, a countdown value and an
+event id, it fires the event only when `0x3E195C` and `0x3E1870` both match and
+`0x3E1950` is clear. That is the hook the phase script hangs off.
+
+**Not yet reached:** the piece walker `0x8B4` has **no direct callers anywhere
+in the ROM** - not as `jsr`, `bsr` or a stored pointer - so it is entered
+indirectly and the piece script table has not been found through it.
+
 ## Correction: the scoring measurement was wrong
 
 Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
