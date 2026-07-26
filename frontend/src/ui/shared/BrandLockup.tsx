@@ -8,10 +8,10 @@ import { type ReactElement } from 'react';
 // mark. Links home, like a logo should.
 export function BrandLockup({ screenName }: { screenName: string }): ReactElement {
   return (
-    <a className="brand-lockup" href="/" aria-label={`${screenName} — Chess Tactics home`}>
+    <a className="brand-lockup" href="/" aria-label={`${screenName} — Rampart home`}>
       <img className="brand-lockup-mark" src="/assets/ui/kit/icons/brand-shield.png" alt="" aria-hidden="true" />
       <span className="brand-lockup-copy">
-        <em>Chess Tactics</em>
+        <em>Rampart</em>
         <strong>{screenName}</strong>
       </span>
     </a>

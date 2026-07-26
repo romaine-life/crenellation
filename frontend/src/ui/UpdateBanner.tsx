@@ -9,7 +9,7 @@ export function UpdateBanner(): ReactElement | null {
   if (!available) return null;
   return (
     <div className="app-update-banner" role="status" aria-live="polite">
-      <span>A new version of Chess Tactics is available.</span>
+      <span>A new version of Rampart is available.</span>
       <button type="button" onClick={() => window.location.reload()}>Refresh</button>
     </div>
   );

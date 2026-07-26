@@ -532,7 +532,7 @@ export function Settings(): ReactElement {
   const renderAudio = () => (
     <>
       <SettingsSection title="Master">
-        <SettingsRow title="Master Audio" description="Mute or restore all browser audio for Chess Tactics.">
+        <SettingsRow title="Master Audio" description="Mute or restore all browser audio for Rampart.">
           <Toggle checked={settings.masterAudio} label="Toggle Master Audio" onChange={setMasterAudio} />
         </SettingsRow>
       </SettingsSection>

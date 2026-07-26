@@ -259,7 +259,7 @@ export function App(): ReactElement {
             <polyline points="7.5 18.5 13 20 15 14.5" />
           </svg>
           <p className="rotate-gate-title">Rotate your device</p>
-          <p className="rotate-gate-copy">Chess Tactics plays in landscape.</p>
+          <p className="rotate-gate-copy">Rampart plays in landscape.</p>
         </div>
       </div>
     </>
