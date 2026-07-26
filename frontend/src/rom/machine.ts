@@ -22,6 +22,21 @@ export class Machine {
   stopped = false;
 
   /**
+   * Instruction budget. On hardware a runaway routine is bounded by the frame
+   * it runs in; here nothing stops it, and several routines loop forever when
+   * fed arbitrary input. Exceeding the budget throws rather than hanging.
+   */
+  steps = 0;
+  budget = 2_000_000;
+
+  tick(): void {
+    this.steps += 1;
+    if (this.steps > this.budget) {
+      throw new Error('instruction budget exhausted after ' + this.steps + ' steps');
+    }
+  }
+
+  /**
    * Some routines call through a function pointer supplied by the caller, or
    * into display and sound code that expects hardware state. Running one of
    * those in isolation reaches an address that is not code at all.

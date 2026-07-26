@@ -42,6 +42,7 @@ def emit_function(entry, end, label):
                  % (entry, entry))
     lines.append("  let pc = at;")
     lines.append("  for (;;) {")
+    lines.append("    m.tick();")
     lines.append("    switch (pc) {")
     addr = entry
     while addr < end:
