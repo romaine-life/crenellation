@@ -396,6 +396,37 @@ selection reaches them some other way and is not yet located.
   different column entirely. **10/10 identical** in both the queued coordinates
   and the final stack pointer.
 
+### Projectile flight - `0x7008`
+- **Port:** `romlab/compare_shot.py` (`step`, `screen`)
+- **Rampart flies a shot as a ground-plane vector plus an independent height**,
+  which is what produces the arc without any trigonometry:
+
+```
+x += vx ; y += vy          positions are in 1/64 units
+height += vz               using vz BEFORE gravity is applied
+vz -= 1                    gravity, one unit per frame
+screen_x = x >> 6
+screen_y = (y - height) >> 6
+```
+
+  The shadow travels the ground plane in a straight line and the height lifts
+  the sprite off it. When height reaches zero or below the shot has landed: the
+  final position stands and the velocities and height are cleared.
+- Shot state is the `0x1A`-byte record: vx at +6, x at +8, vy at +0xA, y at
+  +0xC, vz at +0xE, height at +0x10, the target at +0x12/+0x14 and the sprite
+  at +0x16.
+- **Verified against real flights rather than invented ones.** The routine is
+  long and does not return in isolation, so instead `romlab/shotcap.lua`
+  sampled every live shot every frame - **8686 records** - and the port must
+  turn each frame into the next.
+  - **8627 of 8630 transitions reproduced by exactly one step.**
+  - The remaining **3** are update cadence, not a wrong rule: two frames where
+    the shot was not stepped at all and one where it stepped three times. Each
+    is exactly N applications of the same rule.
+  - **0 unexplained.** The one case that initially looked wrong was a landing,
+    and modelling the landing reproduced it exactly, including the final
+    integration happening before the clear.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -583,9 +614,10 @@ Shot state lives in the **0x1A-byte records at `player+0x6A`**, not in the
 +0xE, and the spawned entity pointer at +0x16. `0x6FB4` advances the cursor at
 `player+0x72` through them and retires the event when the last shot is gone.
 
-**Still unlocated:** the per-frame integration that moves a shot along that
-velocity. `0xF79E` and `0xF936` looked like candidates but are the sprite depth
-sorter; `0xF306` is an animation table walker.
+The per-frame integration is `0x7008`, **ported and verified above**. It was
+found by reading `player+0x6A` live and tapping writes across the ring, after
+`0xF79E`/`0xF936` (the sprite depth sorter) and `0xF306` (an animation table
+walker) turned out to be the wrong places.
 
 ## Correction: the scoring measurement was wrong
 
@@ -643,7 +675,7 @@ rather than read from the routine that produces them.
 | ~~Enclosure test~~ | **Ported and verified** - `compare_enclose.py`, 18/18 crafted boards | Done; remaining work is replacing `enclosure.ts` with the port |
 | ~~Piece generation~~ | **Ported and verified** - 40 shapes (40/40), rotation (131/131), bag + weights + shuffle (45/45) | Done; remaining work is replacing `pieces.ts` with the port |
 | ~~Scoring~~ | **Ported and verified** - `0x865E`, 26/26 across every threshold boundary | Done; remaining work is replacing the guessed constants in `game.ts` |
-| Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
+| Firing and projectile flight | **Ported and verified** - aiming (`0x11CF8`, 35/35), distance (`0x11D5C`, 18/18), flight (`0x7008`, 8627/8630 live steps) | Remaining: ship spawning and movement, which is a separate system from the cannons |
 | ~~Damage~~ | **Ported and verified** - `0x8606`, 8/8 crafted boards | Done; the blast *scripts* themselves still need extracting from the table at `0x3E0DCA` |
 | Phase control | `phases.ts`, durations read from the countdown word in RAM | **Dispatcher located** (`0x9300`-`0xA7DA`); its event predicate `0xEFFA` ported and verified 12/12. Remaining: the dispatcher itself |
 | ~~Object composition (art)~~ | **Decoded from ROM** - `extract_sprites.py` + `mobrender.py`, 13/40 frames pixel-exact | Done; remaining work is wiring the sprites into the game |
