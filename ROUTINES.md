@@ -16,11 +16,11 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 753 |
-| **Verified against hardware** | **620** |
-| Failing | 12 |
+| **Verified against hardware** | **649** |
+| Failing | 5 |
 | Passing under some inputs, failing under others | 26 |
-| Judged only by a stopping-point mismatch | 16 |
-| Never judged | 75 |
+| Judged only by a stopping-point mismatch | 26 |
+| Never judged | 36 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -32,11 +32,16 @@ The fourth does not need the routine to finish, and it is now the widest of
 the four: it reaches 135 routines no call-and-return harness can judge. The capture runs the chip for a
 while, stops, and records **the address of the instruction it stopped on**
 along with fifteen registers and a hash of the memory window. The port then
-compares every time it arrives at that address. The capture runs at three stopping points - 20, 60 and 200 instructions - and a
-match at any of them settles the routine. One stopping point was not enough:
-174 routines stop somewhere between 25 and 200 instructions, so a snapshot
-taken only at 200 missed every one of them. Adding the two shorter points took
-this harness from 187 routines of 278 to 405 of 468.
+compares every time it arrives at that address. The capture runs at seven stopping points - 2, 3, 5, 10, 20, 60 and 200
+instructions - and a match at any of them settles the routine.
+
+One stopping point was not enough, and the reason is worth stating because it
+had been mistaken for the port's fault. A routine only has a comparable
+stopping point if it is still running when the snapshot is taken. 174 routines
+stop between 25 and 200 instructions and another 21 stop within six, so a
+snapshot taken only at 200 had nothing to say about any of them - and they were
+being counted as never judged. Widening the set took this harness from 187
+routines of 278 to 603 of 633.
 
 The routine count went *down* from 763 to 745 when the pointer-table detector
 was tightened. It had been accepting any run of three longs whose values landed
