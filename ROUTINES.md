@@ -25,6 +25,10 @@ emulator, and one replays the arguments the game itself passed during play.
 | Passing under some inputs, failing under others | 21 |
 | Never exercised (hardware never returned) | 239 |
 
+Of the 239, **111 contain no `rts` at all** and can never be judged by calling
+them. A fourth instrument that compares writes rather than returns reaches 7 of
+the rest; see below for why it is not counted.
+
 The routine count rose from the original 593 because executable code kept
 turning up that had been filed as data or merged into a neighbour: 66 `jmp`
 trampolines below the first ordinary routine, the cases reached through
@@ -102,6 +106,32 @@ What was tried against them, and what each was worth:
 - Borrowing arguments from a routine's siblings in the same pointer table, on
   the grounds that a dispatcher calls all its handlers the same way: 19
   routines.
+
+### A fourth instrument: comparing writes instead of returns
+
+The three harnesses above all call a routine and wait for it to come back to a
+sentinel, so 111 routines with no `rts` are outside all of them. Starting from
+identical state the bytes a routine writes are as deterministic as the
+registers it ends with, so `romlab/writecap.lua` records the first 48
+byte-writes each routine makes in one frame, whether or not it returns, and
+`write.test.ts` runs the port against that.
+
+It found a real fidelity defect immediately: the 68000 writes a long through a
+pre-decremented address **low word first**, and the port wrote ascending. The
+bytes land in the same places either way, so nothing that compares final state
+could ever have seen it - only the order of the writes.
+
+It is **not** counted towards the verified figure, because it is not sound
+enough to be authoritative. The order of the two halves of a long depends on
+the instruction, not just the addressing mode, so the comparison has to ignore
+ordering within a store; and the port is stopped after as many writes as the
+hardware made, so near that boundary the two sides can hold different sets of
+writes without either being wrong. It judges 266 routines, agrees on 165, and
+disagrees with the call-and-return harnesses on 41 that they pass - and those
+41 cannot presently be attributed to the port rather than to the method.
+
+What it does contribute: **7 routines that no other harness can judge at all**,
+and the ordering defect above.
 
 ### What the remaining failures are
 

@@ -182,6 +182,14 @@ export class Machine {
   storePre(name: string, step: number, v: number, bits: number): void {
     const a = this.reg(name) - step;
     this.setReg(name, a);
+    if (bits === 32) {
+      // A long written through a pre-decremented address goes low word first.
+      // The bytes end up in the same places either way, so nothing that
+      // compares final state can see this - only the order of the writes.
+      this.store(a + 2, v & 0xffff, 16);
+      this.store(a, (v >>> 16) & 0xffff, 16);
+      return;
+    }
     this.store(a, v, bits);
   }
 
