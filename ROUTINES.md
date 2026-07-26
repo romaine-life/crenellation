@@ -427,6 +427,21 @@ screen_y = (y - height) >> 6
     and modelling the landing reproduced it exactly, including the final
     integration happening before the clear.
 
+### Cannon aiming handler - `0x6C20`
+- **Port:** `romlab/verify21.lua` companion (`aim`)
+- **Behaviour:** takes the cannon record at `player+0x6E`, converts its grid
+  position to pixels (`x8`), takes the direction to the target at
+  `player+0x4E/0x50` through the verified `0x11CF8` (note the **y difference is
+  negated** before the call), and rotates the facing byte at record+4 **one step
+  the short way round**: the gap `(direction - facing) & 7` is compared against
+  4, turning one way when it is under and the other when it is over. It then
+  advances the cursor by one `0x1A`-byte record.
+- **Evidence:** 64 cases - 8 target bearings around the cannon x 8 starting
+  facings. **40/40 of the cases that return in isolation are identical.** The
+  other 24 call the redraw routine `0x2698`, which needs graphics state the
+  harness does not set up, so they do not return; they are not counted as
+  passes.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
