@@ -14,6 +14,8 @@ handlers.
 import json
 import pathlib
 
+import capstone
+
 HERE = pathlib.Path(__file__).parent
 UP = (HERE / "prog_upper.bin").read_bytes()
 LIMIT = 0x20000
@@ -34,8 +36,40 @@ def main():
                 return False
         return False
 
+    md = capstone.Cs(capstone.CS_ARCH_M68K,
+                     capstone.CS_MODE_BIG_ENDIAN | capstone.CS_MODE_M68K_000)
+    boundaries = {}
+
+    def is_boundary(v):
+        """Whether v is where an instruction actually starts.
+
+        Landing inside a function is not enough. Three longs whose values
+        happen to point into code look exactly like a table, and the values
+        that pass that test are mostly round numbers - 0x1000, 0x2000, 0x5800 -
+        which are constants and address masks, not entry points. Disassembling
+        forward from the containing function says whether the address is a
+        place the chip could ever be.
+        """
+        for a, b in funcs:
+            if a <= v < b:
+                if a not in boundaries:
+                    s = set()
+                    addr = a
+                    while addr < b:
+                        ins = next(md.disasm(UP[addr:addr + 16], addr, 1), None)
+                        if ins is None:
+                            addr += 2
+                            continue
+                        s.add(addr)
+                        addr += ins.size
+                    boundaries[a] = s
+                return v in boundaries[a]
+            if a > v:
+                return False
+        return False
+
     def plausible(v):
-        return LO <= v < LIMIT and v % 2 == 0 and inside(v)
+        return LO <= v < LIMIT and v % 2 == 0 and inside(v) and is_boundary(v)
 
     targets = set()
     tables = 0
@@ -53,9 +87,9 @@ def main():
         else:
             a += 2
 
-    fresh = sorted(t for t in targets if t not in starts)
-    print("pointer tables: %d   distinct targets: %d   not already an entry: %d"
-          % (tables, len(targets), len(fresh)))
+    fresh = sorted(targets)
+    print("pointer tables: %d   distinct targets: %d   (%d were not already entries)"
+          % (tables, len(fresh), len([t for t in fresh if t not in starts])))
     json.dump(fresh, open(HERE / "out" / "ptrtargets.json", "w"))
 
 

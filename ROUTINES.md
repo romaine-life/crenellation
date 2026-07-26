@@ -15,12 +15,12 @@ again in the TypeScript port from byte-identical starting state, and compared.
 
 | | |
 |---|---|
-| Routines in the overlay | 763 |
-| **Verified against hardware** | **567** |
-| Failing | 21 |
-| Passing under some inputs, failing under others | 21 |
+| Routines in the overlay | 745 |
+| **Verified against hardware** | **556** |
+| Failing | 19 |
+| Passing under some inputs, failing under others | 28 |
 | Judged only by a stopping-point mismatch | 41 |
-| Never judged | 111 |
+| Never judged | 99 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -33,6 +33,16 @@ while, stops, and records **the address of the instruction it stopped on**
 along with fifteen registers and a hash of the memory window. The port then
 compares every time it arrives at that address. It reaches 89 routines no other
 harness can, 32 of them with no `rts`.
+
+The routine count went *down* from 763 to 745 when the pointer-table detector
+was tightened. It had been accepting any run of three longs whose values landed
+inside known code, and most of what passed that test were round numbers -
+0x1000, 0x2000, 0x5800 - which are constants and address masks, not entry
+points. Requiring the value to be an address an instruction actually starts at
+removed 18 invented routines, each of which could only ever have failed. What
+survives is unambiguous: `link`/`movem` prologues, the reset routine, and the
+run of exception stubs at 0x18548 that each do `jsr $18652` followed by their
+message text.
 
 A quarter of what that harness first measured was not the routine at all. 89 of
 365 snapshots were taken inside `0x1357C`, the power-on reset routine - it

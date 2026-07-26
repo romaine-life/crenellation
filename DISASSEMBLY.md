@@ -9,7 +9,7 @@ that cite the evidence they used.
 ## Coverage
 
 - **Bytes accounted for: 131072 of 131072 - 100.0%**
-- Code: 86650 bytes in **763 functions**
+- Code: 86650 bytes in **745 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -81,7 +81,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0023C` | 6 | 1 | trampoline to 0x19f3e | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00242` | 6 | 0 | trampoline to 0x1684c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00248` | 6 | 0 | trampoline to 0x18b76 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
-| `0024E` | 6 | 3 | trampoline to 0x18b26 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0024E` | 6 | 2 | trampoline to 0x18b26 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00254` | 6 | 0 | trampoline to 0x18b5c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `0025A` | 6 | 2 | trampoline to 0x190da | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00260` | 6 | 1 | trampoline to 0x1908a | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
@@ -112,20 +112,15 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `00656` | 8 | 6 | small leaf utility | 8 bytes, no calls, no state access |
 | `00660` | 38 | 1 | helper for player state access | only caller is 0x15fe |
 | `00686` | 242 | 2 | current piece draw | reads player->0x24 and walks the piece through 0x8B4 |
-| `00778` | 136 | 3 | cursor move | reads the player cursor at +0x46 and resolves it to a cell |
-| `00800` | 180 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
-| `008B4` | 332 | 2 | piece walker and stamper (verified) | ported and checked against the ROM |
-| `00A00` | 32 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `00778` | 316 | 3 | cursor move | reads the player cursor at +0x46 and resolves it to a cell |
+| `008B4` | 364 | 2 | piece walker and stamper (verified) | ported and checked against the ROM |
 | `00A20` | 418 | 1 | wall placement enclosure check | ported and checked against the ROM |
 | `00BC2` | 234 | 2 | enclosure test - wall follower (verified) | ported and checked against the ROM |
 | `00CAC` | 238 | 1 | steps a board direction | references the table at 0x1000a |
 | `00D9A` | 64 | 0 | counter reset | reloads the counter at 0x3E0DC4 |
 | `00DDA` | 116 | 0 | counter step | advances the counter at 0x3E0DC4 |
-| `00E4E` | 198 | 8 | board cell run renderer | converts a coordinate to both cell and screen address, then draws through 0x11EFE |
-| `00F14` | 64 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
-| `00FB4` | 76 | 0 | extracts the owner bits from a cell byte | reads a byte from the caller's frame at -0xd(a6) and masks 0xC0, which is the two-bit owner field the board packs above the terrain bits |
-| `01000` | 518 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
-| `01206` | 38 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `00E4E` | 262 | 8 | board cell run renderer | converts a coordinate to both cell and screen address, then draws through 0x11EFE |
+| `00FB4` | 632 | 0 | extracts the owner bits from a cell byte | reads a byte from the caller's frame at -0xd(a6) and masks 0xC0, which is the two-bit owner field the board packs above the terrain bits |
 | `0122C` | 158 | 3 | board access | reads or writes the board array |
 | `012CA` | 232 | 1 | phase-gated board update | only runs once the phase at 0x3E195C reaches 2 |
 | `013B2` | 232 | 2 | steps a board direction | references the table at 0xfe02 |
@@ -133,10 +128,10 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `014DC` | 54 | 1 | steps a board direction | references the table at 0xfcf6 |
 | `01512` | 90 | 1 | steps a board direction | references the table at 0xfcf2 |
 | `0156C` | 12 | 1 | helper for sprite entity update | only caller is 0x5cce |
-| `01578` | 12 | 5 | helper used by handler reached through a function-pointer table | 3 of 5 callers are handler reached through a function-pointer table |
+| `01578` | 12 | 5 | helper used by handler reached through a function-pointer table | 4 of 5 callers are handler reached through a function-pointer table |
 | `01584` | 14 | 0 | small leaf utility | 14 bytes, no calls, no state access |
-| `01592` | 14 | 1 | helper for interrupt mask set | only caller is 0x15a0 |
-| `015A0` | 20 | 0 | interrupt mask set | raises then lowers the mask through 0x1592 and 0x1578 |
+| `01592` | 14 | 1 | helper for handler reached through a function-pointer table | only caller is 0x15a0 |
+| `015A0` | 20 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `015B4` | 10 | 1 | player state access | touches the player structs |
 | `015BE` | 24 | 1 | helper for player state access | only caller is 0xde1a |
 | `015D6` | 40 | 1 | player state access | touches the player structs |
@@ -152,18 +147,14 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `01B46` | 80 | 5 | helper used by player state access | 3 of 5 callers are player state access |
 | `01B96` | 158 | 1 | resolves a player's owner code | references the table at 0x1000a |
 | `01C34` | 50 | 1 | player state access | touches the player structs |
-| `01C66` | 410 | 1 | player state access | touches the player structs |
-| `01E00` | 116 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `01C66` | 526 | 1 | player state access | touches the player structs |
 | `01E74` | 198 | 2 | player state access | touches the player structs |
 | `01F3A` | 38 | 2 | player state access | touches the player structs |
-| `01F60` | 16 | 3 | helper used by player state access | 2 of 3 callers are player state access |
+| `01F60` | 16 | 3 | helper used by player state access | 3 of 3 callers are player state access |
 | `01F70` | 18 | 1 | helper for main game state machine | only caller is 0x9266 |
-| `01F82` | 84 | 3 | helper used by player state access | 2 of 3 callers are player state access |
-| `01FD6` | 42 | 1 | helper for main game state machine | only caller is 0x9266 |
-| `02000` | 10 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
-| `0200A` | 22 | 1 | helper for main game state machine | only caller is 0x1fd6 |
-| `02020` | 248 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
-| `02118` | 130 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `01F82` | 84 | 3 | helper used by player state access | 3 of 3 callers are player state access |
+| `01FD6` | 52 | 1 | helper for main game state machine | only caller is 0x9266 |
+| `0200A` | 400 | 1 | player state access | touches the player structs |
 | `0219A` | 114 | 1 | steps a board direction | references the table at 0xfd12 |
 | `0220C` | 60 | 6 | entity spawn wrapper | ported and checked against the ROM |
 | `02248` | 114 | 1 | player state access | touches the player structs |
@@ -173,7 +164,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0255C` | 152 | 2 | wall cell set | writes owner|1 into a cell |
 | `025F4` | 164 | 2 | cell pair draw | resolves two coordinates to screen addresses and draws |
 | `02698` | 150 | 2 | cell redraw | re-draws a single cell from its board value |
-| `0272E` | 58 | 4 | cell owner read | reads a cell's owner byte for a coordinate |
+| `0272E` | 58 | 3 | cell owner read | reads a cell's owner byte for a coordinate |
 | `027C2` | 454 | 0 | board region redraw | resolves a region through 0x3BA4 and redraws its cells |
 | `02988` | 212 | 4 | cell type test | reads a cell and compares its low 6 bits against 3 |
 | `02A5C` | 82 | 4 | cell draw at 0x2065A | draws a cell to the fixed framebuffer address 0x2065A |
@@ -201,8 +192,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `03726` | 2 | 0 | small leaf utility | 2 bytes, no calls, no state access |
 | `03728` | 170 | 1 | framebuffer band clear | clears a band at 0x200004 + 0xF000 |
 | `037D2` | 22 | 1 | framebuffer draw | writes the framebuffer |
-| `037E8` | 24 | 1 | helper for player state access | only caller is 0x15fe |
-| `03800` | 2 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `037E8` | 26 | 1 | helper for player state access | only caller is 0x15fe |
 | `03802` | 174 | 2 | level data load | reads the level pointer at 0x3E0DCA and copies its header |
 | `038B0` | 326 | 0 | unit spawn placement | reads a unit record and places it on the board |
 | `03A08` | 34 | 0 | event id dispatch | branches on an event id against 0x11 and 0x1A |
@@ -218,8 +208,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `03F10` | 10 | 1 | helper for main game state machine | only caller is 0x9266 |
 | `03F1A` | 8 | 1 | helper for main game state machine | only caller is 0x9266 |
 | `03F22` | 114 | 1 | slot table walk | walks the 8-byte records at 0x3E0DF6 |
-| `03F94` | 108 | 0 | cell owner and type read | reads both fields of a cell for a caller |
-| `04000` | 74 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `03F94` | 182 | 0 | cell owner and type read | reads both fields of a cell for a caller |
 | `0404A` | 68 | 1 | framebuffer draw | writes the framebuffer |
 | `0408E` | 68 | 1 | screen row address (+0xB0) | resolves a coordinate then offsets by 0xB0 |
 | `040D2` | 236 | 2 | helper for sprite entity update | only caller is 0xb9c8 |
@@ -228,8 +217,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `04332` | 40 | 3 | screen row address | resolves a coordinate to a screen address plus 0xC0 |
 | `0435A` | 104 | 2 | conditional draw | branches on a byte argument before drawing |
 | `043C2` | 90 | 1 | helper for attract mode controller | only caller is 0xe824 |
-| `0441C` | 50 | 1 | helper for territory scoring (verified) | only caller is 0x865e |
-| `0444E` | 84 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `0441C` | 134 | 1 | helper for territory scoring (verified) | only caller is 0x865e |
 | `044A2` | 106 | 0 | round display teardown | removes the round's display event |
 | `0450C` | 34 | 8 | palette fade step | calls the colour ramp helper 0xC7BC then the palette writer |
 | `0452E` | 36 | 3 | palette fade step with flag | as 0x450C but passes 1 to the ramp helper |
@@ -250,8 +238,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `04A6A` | 78 | 2 | player state access | touches the player structs |
 | `04AB8` | 82 | 2 | palette sequence - table 0x1EDA0 | runs a fade using the ramp at 0x1EDA0 |
 | `04B0A` | 240 | 2 | palette update | writes the palette |
-| `04BFA` | 90 | 2 | level intro sequence | queues the intro steps from 0x1F7E8 |
-| `04C54` | 44 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `04BFA` | 134 | 2 | level intro sequence | queues the intro steps from 0x1F7E8 |
 | `04C80` | 196 | 1 | helper for player state access | only caller is 0xaa86 |
 | `04D44` | 40 | 2 | palette sequence - table 0xFE18 | runs a fade using the ramp at 0xFE18 |
 | `04D6C` | 36 | 5 | palette clear | writes a zeroed palette |
@@ -269,8 +256,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0512A` | 62 | 4 | player state access | touches the player structs |
 | `05168` | 42 | 1 | cursor entity draw | draws the player's cursor entity from +0x42 |
 | `05192` | 156 | 3 | register-save leaf routine | saves registers, calls nothing |
-| `0522E` | 38 | 1 | helper for main game state machine | only caller is 0x9266 |
-| `05254` | 44 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `0522E` | 82 | 1 | helper for main game state machine | only caller is 0x9266 |
 | `05280` | 98 | 1 | current player lookup | reads the current player pointer at 0x3E1960 |
 | `052E2` | 100 | 1 | helper for main game state machine | only caller is 0x9266 |
 | `05346` | 96 | 1 | helper for resolves a player's owner code | only caller is 0x8326 |
@@ -280,11 +266,9 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `05474` | 20 | 0 | entity list bound check | compares the entity list head against 0x10E |
 | `05488` | 32 | 2 | round entity teardown | clears the entity count at 0x3E0EBE and removes event 0x11B1E |
 | `054A8` | 116 | 1 | sprite entity update | touches the motion-object table |
-| `0551C` | 52 | 0 | pause and sound gate | checks the pause flag at 0x3E1950 and the entity list before calling 0x90E6 |
-| `05550` | 210 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `0551C` | 262 | 0 | pause and sound gate | checks the pause flag at 0x3E1950 and the entity list before calling 0x90E6 |
 | `05622` | 210 | 2 | entity spawn and queue | allocates an entity then posts its event |
-| `056F4` | 268 | 1 | status panel draw | draws at fixed screen offsets 0x38, 0x50 |
-| `05800` | 24 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `056F4` | 292 | 1 | status panel draw | draws at fixed screen offsets 0x38, 0x50 |
 | `05818` | 122 | 1 | framebuffer draw | writes the framebuffer |
 | `05892` | 84 | 2 | framebuffer rectangle grab | ported and checked against the ROM |
 | `058E6` | 34 | 0 | player flag set | sets a player flag through 0x5948 |
@@ -368,8 +352,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `07DCE` | 172 | 2 | framebuffer draw | writes the framebuffer |
 | `07E7A` | 42 | 2 | player state access | touches the player structs |
 | `07EA4` | 182 | 0 | places a cannon muzzle | references the table at 0x11ba2 |
-| `07F5A` | 166 | 0 | entity field update | updates a field on a passed entity |
-| `08000` | 8 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `07F5A` | 174 | 0 | entity field update | updates a field on a passed entity |
 | `08008` | 504 | 1 | player state access | touches the player structs |
 | `08200` | 294 | 0 | level teardown | reads the level pointer and removes its events |
 | `08326` | 360 | 0 | resolves a player's owner code | references the table at 0x128b4 |
@@ -475,8 +458,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0DB7E` | 104 | 3 | text line draw | draws one line through the glyph routine at 0x206 |
 | `0DBE6` | 42 | 0 | text line measure | measures a line through the glyph routines |
 | `0DC10` | 42 | 2 | text width measure | measures a string through 0x200 |
-| `0DC3A` | 280 | 3 | round summary sequence | steps the between-round display |
-| `0DD52` | 200 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `0DC3A` | 480 | 3 | round summary sequence | steps the between-round display |
 | `0DE1A` | 174 | 1 | player state access | touches the player structs |
 | `0DEC8` | 312 | 1 | player state access | touches the player structs |
 | `0E000` | 32 | 0 | service mode entry | enters the operator menu through 0x18A |
@@ -507,7 +489,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0EFBA` | 64 | 6 | event queue access | touches the event queue |
 | `0EFFA` | 6 | 6 | event queue membership test (verified) | ported and checked against the ROM |
 | `0F000` | 48 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
-| `0F13E` | 188 | 0 | display list build | walks the entity table into the sprite table at 0x3E0000 |
+| `0F13E` | 188 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `0F1FA` | 112 | 1 | motion-object entry write | writes a built sprite entry into the display list |
 | `0F26A` | 98 | 1 | motion-object word pack | packs entity x/y into the hardware's 0xff80>>7 sprite words |
 | `0F2CC` | 34 | 1 | helper for motion-object entry write | only caller is 0xf1fa |
@@ -558,7 +540,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `12066` | 18 | 0 | small leaf utility | 18 bytes, no calls, no state access |
 | `12078` | 42 | 4 | register-save leaf routine | saves registers, calls nothing |
 | `1217E` | 70 | 1 | rectangle palette remap (verified) | ported and checked against the ROM |
-| `121C4` | 94 | 5 | register-save leaf routine | saves registers, calls nothing |
+| `121C4` | 94 | 4 | register-save leaf routine | saves registers, calls nothing |
 | `12222` | 164 | 0 | RLE decoder - variant A | byte stream with a 0x1F run mask, high bit terminates |
 | `122C6` | 64 | 0 | decompressor inner loop | run expansion using the table at 0x12350 |
 | `1231A` | 58 | 0 | decompressor nibble split | splits a control byte into count and value |
@@ -576,10 +558,10 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `130EE` | 10 | 1 | helper for helper inside the jump-table case at 0x16d3e | only caller is 0x16ff0 |
 | `130F8` | 60 | 1 | framebuffer draw | writes the framebuffer |
 | `13350` | 98 | 0 | sound cold start | sets 0x3E340C, resets the driver and lowers the interrupt mask |
-| `133B2` | 58 | 0 | sound IRQ acknowledge | reads the interrupt latch at 0x640000 |
+| `133B2` | 58 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `133EC` | 28 | 0 | sound command latch | gates on 0x3E340C and reads 0x640002 |
 | `1354C` | 48 | 1 | sound register preset | writes the fixed register list into 0x3E3F00 |
-| `1357C` | 224 | 1 | palette update | writes the palette |
+| `1357C` | 224 | 1 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `1378E` | 492 | 0 | computed-jump entry at 0x1378e | observed as a jump target during the differential run with no function covering it |
 | `1397A` | 484 | 0 | computed-jump entry at 0x1397a | observed as a jump target during the differential run with no function covering it |
 | `13CDA` | 64 | 0 | coin counter pulse | pulses 0x6C0000 and sets a bit in 0x3E3D8E |
@@ -657,23 +639,23 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `18418` | 38 | 1 | helper for sound sequence player | only caller is 0x14578 |
 | `1851C` | 40 | 4 | self-test result accumulate | folds a result into the words at 0x3E3D82/0x3E3D86 |
 | `18544` | 4 | 0 | small leaf utility | 4 bytes, no calls, no state access |
-| `18548` | 10 | 0 | exception stub - bus error | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `18556` | 10 | 0 | exception stub - address error | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `18564` | 6 | 0 | exception stub - illegal instruction | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `18576` | 6 | 0 | exception stub - divide by zero | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `18588` | 12 | 0 | exception stub - CHK failure | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `18598` | 6 | 0 | exception stub - TRAPV overflow | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `185AA` | 8 | 0 | exception stub - privilege violation | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `185B6` | 8 | 0 | exception stub - trace | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `185CC` | 8 | 0 | exception stub - line-A emulation | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `185DC` | 14 | 0 | exception stub - line-F emulation | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `185EE` | 14 | 0 | exception stub - format error | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `18600` | 12 | 0 | exception stub - uninitialised vector | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `18614` | 6 | 0 | exception stub - spurious interrupt | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `18626` | 8 | 0 | exception stub - unassigned vector | calls the common reporter at 0x18652; the exception's name string follows inline |
-| `1863E` | 10 | 0 | exception stub - initialised vector | calls the common reporter at 0x18652; the exception's name string follows inline |
+| `18548` | 10 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `18556` | 10 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `18564` | 6 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `18576` | 6 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `18588` | 12 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `18598` | 6 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `185AA` | 8 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `185B6` | 8 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `185CC` | 8 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `185DC` | 14 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `185EE` | 14 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `18600` | 12 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `18614` | 6 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `18626` | 8 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `1863E` | 10 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `18652` | 6 | 15 | exception reporter | shared tail of the exception stubs; prints the name that follows the call |
-| `18658` | 6 | 0 | trampoline to 0x1e8d2 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `18658` | 6 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `1865E` | 14 | 1 | helper for title screen renderer | only caller is 0x1520e |
 | `1866C` | 16 | 1 | helper for title screen renderer | only caller is 0x1520e |
 | `1867C` | 16 | 0 | small leaf utility | 16 bytes, no calls, no state access |
