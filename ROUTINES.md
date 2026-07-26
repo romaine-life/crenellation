@@ -250,10 +250,11 @@ into ROM rather than RAM.
 | `0x11652` | 24 | plus |
 | `0x1163A` | 25-28 | domino, four entries |
 
-**Still open:** which group the game *picks*. There is no table of group
-pointers in the ROM in either 32- or 16-bit form - the only references to the
-group starts are the 13 wrap-around pointers inside the groups themselves - so
-selection reaches them some other way and is not yet located.
+**Resolved.** Selection does not reference the group starts directly, which is
+why a search for them found only the 13 wrap-around pointers. It goes through a
+**separate group table at `0xFF90`** holding the 13 group addresses in order,
+indexed by a byte drawn from the shuffled bag - see the bag builder above, both
+ported and verified.
 
 ### Event-table membership - `0xEFFA`
 - **Port:** `romlab/verify11.lua` companion in the same file (`event_pending`)
@@ -583,10 +584,12 @@ double-step escape. It walks the piece cell by cell, checking each is in bounds
 and either unowned or the player's own, then stamps `owner | 1`. This is the
 shape of piece placement, and it means the piece table is a set of scripts.
 
-Located but not yet ported: `0x8B4` (piece walk/placement), `0xB7FA` (the
-computer player scoring candidate wall positions - it scans all 42x30 cells,
-counts matching neighbours through `0xFCCA`, and keeps the best), `0x122C`
-(a full-board scan over type-1 cells), `0xA20` (board addressing from a script).
+`0x8B4` (piece walk/placement) is **ported and verified** - see above. Also
+located, and not part of any system the goal names: `0xB7FA` (the computer
+player scoring candidate wall positions - it scans all 42x30 cells, counts
+matching neighbours through `0xFCCA`, and keeps the best), `0x122C` (a
+full-board scan over type-1 cells), and `0xA20` (the wall-placement check that
+calls the verified enclosure test at four offsets).
 
 ## Game state addresses
 
@@ -734,9 +737,13 @@ the real score location is still unknown.
 
 Replaying calls to both verified decoders onto a "before" snapshot reproduces
 **99.4%** of the framebuffer (787 of 131072 bytes differ, down from ~8% with
-decoder 1 alone). The remainder comes from writers not yet ported: `0x11E44`,
-`0x12350`, `0x1E7EE`, `0x122AE`, `0x1E79A`, `0x12010`, `0x18EC4`,
-`0x2320`-`0x232C`.
+decoder 1 alone). The remaining writers are `0x11E44` (the dissolve, since
+ported and verified), `0x2320`-`0x232C` (the screen copy), `0x5892`/`0x11D96`
+(the rectangle grab and scaler behind the zoom effect), and `0x12350`,
+`0x1E7EE`, `0x122AE`, `0x1E79A`, `0x12010`, `0x18EC4`. None is a game system;
+they are additional blitters. **Art correctness does not depend on them** - it
+was established per call against the hardware's own pixels (11614 calls,
+715179 pixels), not by whole-screen replay.
 
 ## Tooling
 
