@@ -97,6 +97,44 @@ Register note: MAME's m68k state exposes the stack as `SP`, not `A7`.
   including 0x0000, 0x8000 and 0xFFFF to cover sign handling). Return value and
   updated seed both identical in every case.
 
+## Art decoded from ROM
+
+The playfield art is **not** a set of pictures in the ROM. It is one
+back-to-back compressed stream of 8x8 tiles: every tile decodes to a clean
+terminator and the next begins exactly where the last ended. Screens are
+placement maps over that tileset, and the palette bank is applied at draw time
+(the `pal` argument), so one tile serves every colour scheme it appears in.
+
+**Alignment evidence:** walking the stream from the first observed source,
+**all 140** sources recorded during capture land exactly on a walk boundary,
+and every stream decodes to exactly 8 rows. The walk runs clean from
+`0x0D75BB` to `0x0FBA11`.
+
+**Extraction:** `romlab/extract_tiles.py` - **5907 tiles, 4951 distinct**,
+written as 4-bit indices (`out/tileset/tiles.bin`) plus a contact sheet and a
+source-address index. The sheet shows the game's own text - INSERT COIN, USE
+TRACKBALL, MILITARY MASTERS, FIREPOWER, BATTLEFIELD, ENTER YOUR NAME - along
+with terrain and wall art.
+
+**Verification:** `romlab/artverify.lua` + `romlab/compare_art.py`. Every call
+the game made to the decompressor was tapped for its arguments, and the pixels
+the hardware left at the destination were read back and compared against the
+port:
+
+- **11614 calls**, **1788 distinct (source, palette, row-count) combinations**,
+  **715179 pixels compared**
+- **11604 of 11614 tiles identical.** The 10 exceptions came from 9
+  configurations, 8 of which matched *the same arguments* elsewhere in the same
+  run - 1424x, 1657x, 281x, 107x, 35x, 16x, 4x and 2x - meaning the readback,
+  which happens on the following call, had been overwritten by another routine.
+- All 9 were re-run in the controlled harness where nothing else can write
+  (`romlab/verify7.lua`): **9 of 9 identical**. No decoder discrepancy remains.
+
+**Screen rebuild** (`romlab/screens.py`): replaying placements between
+framebuffer snapshots reproduces **92.3%** of the pixels those tiles covered.
+The shortfall is not a decode error - it is the already-documented unported
+writers (terrain painter, sprites, text) overwriting tiles before the snapshot.
+
 ## Correction: the scoring measurement was wrong
 
 Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
@@ -157,8 +195,8 @@ rather than read from the routine that produces them.
 | Damage / blast footprint | `game.ts`, inferred from captured battle frames | Find the impact routine; call it against a crafted wall layout; compare which cells are destroyed |
 | Phase control | `phases.ts`, durations read from the countdown word in RAM | Find the phase state machine; compare transition frames |
 | Object composition (art) | Sprites cropped from captured frames | Decode tile codes + palette banks + sizes from the motion-object list; render from the gfx ROM |
-| Terrain plates (art) | Painted from two sampled tiles with a synthetic bank edge | Decompress the real terrain art from ROM via the verified decompressor |
-| Attract screens (art) | PNG screenshots | Decompress from ROM via the verified decompressor |
+| ~~Terrain plates (art)~~ | **Decoded from ROM** - `extract_tiles.py`, 5907 tiles verified against 11614 live draws | Done; remaining work is wiring the tileset into the game |
+| ~~Attract screens (art)~~ | **Decoded from ROM** - same tileset; screens are placement maps over it | Done; remaining work is wiring the tileset into the game |
 
 ## Multiplayer
 
