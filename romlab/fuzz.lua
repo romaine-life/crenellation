@@ -21,7 +21,13 @@ local cpu = manager.machine.devices[":maincpu"]
 local space = cpu.spaces["program"]
 local TAPS = {}
 
-local SENTINEL = 0x0FFFF0
+-- The sentinel must be an address whose contents are harmless to execute.
+-- Setting the PC from inside the tap does not take effect until the CPU has
+-- finished the instruction it is fetching, so one instruction at the sentinel
+-- runs before the next case starts. In ROM that was arbitrary data - it was
+-- adding 8 to d0 - so the sentinel lives in RAM with a nop written into it.
+local SENTINEL = 0x3E6000
+local NOP = 0x4E71
 local RAM_LO, RAM_HI = 0x3E0000, 0x3EFFFF
 local SCRATCH, SCRATCH_LEN = 0x3E4000, 0x400
 local STACK = 0x3E5000
@@ -92,6 +98,7 @@ local function begin_case()
     return
   end
   restore_ram()
+  space:write_u16(SENTINEL, NOP)
   for i = 0, SCRATCH_LEN - 1 do space:write_u8(SCRATCH + i, rnd() % 256) end
   inregs = {}
   for k = 0, 7 do
@@ -164,6 +171,7 @@ end
 emu.register_frame_done(function()
   frame = frame + 1
   if frame == 400 then
+    space:write_u16(SENTINEL, NOP)
     dump_baseline()
     install()
     log:write("baseline dumped" .. NL)

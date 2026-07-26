@@ -19,7 +19,7 @@ const RAM_LO = 0x3e0000;
 const SCRATCH = 0x3e4000;
 const SCRATCH_LEN = 0x400;
 const STACK = 0x3e5000;
-const SENTINEL = 0x0ffff0;
+const SENTINEL = 0x3e6000;
 const TRIALS = 3;
 
 const want = process.argv[2] ? parseInt(process.argv[2], 16) : 0x11e58;
@@ -60,6 +60,7 @@ for (const entry of entries) {
 
     const c = byKey.get(`${entry}:${trial}`);
     if (entry !== want || !c) continue;
+    // fall through and report every trial for this entry
 
     m.d0 = d[0]; m.d1 = d[1]; m.d2 = d[2]; m.d3 = d[3];
     m.d4 = d[4]; m.d5 = d[5]; m.d6 = d[6]; m.d7 = d[7];
@@ -74,8 +75,10 @@ for (const entry of entries) {
                  m.a0, m.a1, m.a2, m.a3].map((v) => (v >>> 0));
     const names = ['d0','d1','d2','d3','d4','d5','d6','d7','a0','a1','a2','a3'];
     console.log(`entry 0x${entry.toString(16)} trial ${trial}${err ? '  ERROR: ' + err : ''}`);
-    console.log('  in  d:', d.map((v) => v.toString(16)).join(' '));
-    console.log('  in  a:', a.map((v) => v.toString(16)).join(' '));
+    const dIn = d.map((v) => v.toString(16)).join(' ');
+    const dRom = (c.din ?? []).map((v) => v.toString(16)).join(' ');
+    console.log('  in  d port:', dIn);
+    console.log('  in  d rom :', dRom, dIn === dRom ? '' : '  <-- INPUTS DIFFER');
     for (let i = 0; i < names.length; i += 1) {
       const w = c.out[i] >>> 0;
       const g = got[i];
@@ -91,7 +94,6 @@ for (const entry of entries) {
     const gotHash = h1.toString(16).toUpperCase().padStart(8, '0') +
                     h2.toString(16).toUpperCase().padStart(8, '0');
     console.log(`   mem  rom ${c.hash}  port ${gotHash}  ${c.hash === gotHash ? '' : '<-- differs'}`);
-    process.exit(0);
   }
 }
 console.log('no case found for that entry');

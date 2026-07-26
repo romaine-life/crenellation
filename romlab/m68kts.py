@@ -201,12 +201,26 @@ def emit(ins, nxt):
     if b == "nop":
         return s
     if b in ("move", "movea") and len(O) == 2 and O[0].read and O[1].write:
+        # Bind the source to a temporary. Emitting its read expression twice -
+        # once to store, once for the flags - applies a postincrement or
+        # predecrement twice, which silently corrupts every pointer walk.
         if b == "movea":
-            return "%s; %s" % (O[1].write % ("m.sx(%s, %d)" % (O[0].read, bits)), s)
-        return "%s; m.logicFlags(%s, %d); %s" % (
-            O[1].write % O[0].read, O[0].read, bits, s)
-    if b == "moveq" and len(O) == 2 and O[1].write:
-        return "%s; m.logicFlags(%s, 32); %s" % (O[1].write % O[0].read, O[0].read, s)
+            return "{ const _s = %s; %s; } %s" % (
+                O[0].read, O[1].write % ("m.sx(_s, %d)" % bits), s)
+        return "{ const _s = %s; %s; m.logicFlags(_s, %d); } %s" % (
+            O[0].read, O[1].write % "_s", bits, s)
+    if b == "moveq" and len(ops) == 2:
+        # moveq is always 32-bit and sign-extends its 8-bit immediate, so
+        # #$ff means -1 and not 255. Taking the size from the mnemonic makes it
+        # a word and drops the extension - and moveq is the second most common
+        # instruction in this ROM.
+        v = num(ops[0].lstrip("#")) & 0xFF
+        if v & 0x80:
+            v -= 0x100
+        L = Operand(ops[1], "l")
+        if not L.write:
+            return None
+        return "%s; m.logicFlags(%d, 32); %s" % (L.write % ("(%d >>> 0)" % (v & 0xFFFFFFFF)), v, s)
     if b == "lea" and len(O) == 2 and O[1].write:
         ea = O[0].ea()
         return "%s; %s" % (O[1].write % ea, s) if ea else None
@@ -218,34 +232,40 @@ def emit(ins, nxt):
     if b == "tst" and len(O) == 1 and O[0].read:
         return "m.logicFlags(%s, %d); %s" % (O[0].read, bits, s)
     if b in ("add", "addi", "addq") and len(O) == 2 and O[0].read and O[1].write:
-        e = "m.addFlags(%s, %s, %d)" % (O[1].read, O[0].read, bits)
-        return "%s; %s" % (O[1].write % e, s)
+        return "{ const _a = %s; const _b = %s; %s; } %s" % (
+            O[0].read, O[1].read, O[1].write % ("m.addFlags(_b, _a, %d)" % bits), s)
     if b == "adda" and len(O) == 2 and O[0].read and O[1].write:
-        e = "(%s + m.sx(%s, %d))" % (O[1].read, O[0].read, bits)
-        return "%s; %s" % (O[1].write % e, s)
+        return "{ const _a = m.sx(%s, %d); %s; } %s" % (
+            O[0].read, bits, O[1].write % ("(%s + _a)" % O[1].read), s)
     if b in ("sub", "subi", "subq") and len(O) == 2 and O[0].read and O[1].write:
-        e = "m.subFlags(%s, %s, %d)" % (O[1].read, O[0].read, bits)
-        return "%s; %s" % (O[1].write % e, s)
+        return "{ const _a = %s; const _b = %s; %s; } %s" % (
+            O[0].read, O[1].read, O[1].write % ("m.subFlags(_b, _a, %d)" % bits), s)
     if b == "suba" and len(O) == 2 and O[0].read and O[1].write:
-        e = "(%s - m.sx(%s, %d))" % (O[1].read, O[0].read, bits)
-        return "%s; %s" % (O[1].write % e, s)
+        return "{ const _a = m.sx(%s, %d); %s; } %s" % (
+            O[0].read, bits, O[1].write % ("(%s - _a)" % O[1].read), s)
     if b in ("cmp", "cmpi", "cmpa") and len(O) == 2 and O[0].read and O[1].read:
-        cb = 32 if b == "cmpa" else bits
-        return "m.subFlags(%s, %s, %d); %s" % (O[1].read, O[0].read, cb, s)
+        if b == "cmpa":
+            # a word source is sign-extended to 32 bits before the comparison
+            return ("{ const _a = m.sx(%s, %d); const _b = %s; "
+                    "m.subFlags(_b, _a, 32); } %s") % (
+                O[0].read, bits, Operand(ops[1], "l").read, s)
+        return "{ const _a = %s; const _b = %s; m.subFlags(_b, _a, %d); } %s" % (
+            O[0].read, O[1].read, bits, s)
     for name, op in BITWISE:
         if b == name and len(O) == 2 and O[0].read and O[1].write:
-            e = "(%s %s %s)" % (O[1].read, op, O[0].read)
-            return "%s; m.logicFlags(%s, %d); %s" % (O[1].write % e, e, bits, s)
+            return ("{ const _a = %s; const _b = %s; const _r = (_b %s _a); "
+                    "%s; m.logicFlags(_r, %d); } %s") % (
+                O[0].read, O[1].read, op, O[1].write % "_r", bits, s)
     if b == "not" and len(O) == 1 and O[0].write:
-        e = "(~%s)" % O[0].read
-        return "%s; m.logicFlags(%s, %d); %s" % (O[0].write % e, e, bits, s)
+        return "{ const _r = (~%s); %s; m.logicFlags(_r, %d); } %s" % (
+            O[0].read, O[0].write % "_r", bits, s)
     if b == "neg" and len(O) == 1 and O[0].write:
-        e = "m.subFlags(0, %s, %d)" % (O[0].read, bits)
-        return "%s; %s" % (O[0].write % e, s)
+        return "{ const _v = %s; %s; } %s" % (
+            O[0].read, O[0].write % ("m.subFlags(0, _v, %d)" % bits), s)
     if b == "ext" and len(O) == 1 and O[0].write:
         src = 8 if size == "w" else 16
-        e = "m.sx(%s, %d)" % (O[0].read, src)
-        return "%s; m.logicFlags(%s, %d); %s" % (O[0].write % e, e, bits, s)
+        return "{ const _r = m.sx(%s, %d); %s; m.logicFlags(_r, %d); } %s" % (
+            O[0].read, src, O[0].write % "_r", bits, s)
     if b == "swap" and len(ops) == 1:
         # swap is always a full 32-bit operation; taking the size from the
         # mnemonic would default it to a word and lose the upper half
@@ -256,26 +276,29 @@ def emit(ins, nxt):
         return "%s; m.logicFlags(%s, 32); %s" % (L.write % e, e, s)
     if b in ("asl", "lsl") and O and O[-1].write:
         cnt = O[0].read if len(O) == 2 else "1"
-        e = "((%s) << (%s))" % (O[-1].read, cnt)
-        return "%s; m.logicFlags(%s, %d); %s" % (O[-1].write % e, e, bits, s)
+        return ("{ const _c = (%s) & 63; const _r = (%s) << _c; %s; "
+                "m.logicFlags(_r, %d); } %s") % (
+            cnt, O[-1].read, O[-1].write % "_r", bits, s)
     if b == "lsr" and O and O[-1].write:
         cnt = O[0].read if len(O) == 2 else "1"
         mask = (1 << bits) - 1 if bits < 32 else 0xFFFFFFFF
-        e = "(((%s) & %d) >>> (%s))" % (O[-1].read, mask, cnt)
-        return "%s; %s" % (O[-1].write % e, s)
+        return ("{ const _c = (%s) & 63; const _r = ((%s) & %d) >>> _c; %s; "
+                "m.logicFlags(_r, %d); } %s") % (
+            cnt, O[-1].read, mask, O[-1].write % "_r", bits, s)
     if b == "asr" and O and O[-1].write:
         cnt = O[0].read if len(O) == 2 else "1"
-        e = "(m.sx(%s, %d) >> (%s))" % (O[-1].read, bits, cnt)
-        return "%s; %s" % (O[-1].write % e, s)
+        return ("{ const _c = (%s) & 63; const _r = m.sx(%s, %d) >> _c; %s; "
+                "m.logicFlags(_r, %d); } %s") % (
+            cnt, O[-1].read, bits, O[-1].write % "_r", bits, s)
     if b == "btst" and len(O) == 2 and O[0].read and O[1].read:
-        return "m.z = (((%s) >>> ((%s) & 31)) & 1) === 0; %s" % (
-            O[1].read, O[0].read, s)
+        return ("{ const _n = %s; const _v = %s; "
+                "m.z = ((_v >>> (_n & 31)) & 1) === 0; } %s") % (
+            O[0].read, O[1].read, s)
     if b in ("bset", "bclr", "bchg") and len(O) == 2 and O[1].write:
-        bit = "(1 << ((%s) & 31))" % O[0].read
-        tmpl = {"bset": "(%s | %s)", "bclr": "(%s & ~%s)", "bchg": "(%s ^ %s)"}[b]
-        e = tmpl % (O[1].read, bit)
-        return "m.z = (((%s) >>> ((%s) & 31)) & 1) === 0; %s; %s" % (
-            O[1].read, O[0].read, O[1].write % e, s)
+        tmpl = {"bset": "(_v | _bit)", "bclr": "(_v & ~_bit)", "bchg": "(_v ^ _bit)"}[b]
+        return ("{ const _n = %s; const _v = %s; const _bit = 1 << (_n & 31); "
+                "m.z = ((_v >>> (_n & 31)) & 1) === 0; %s; } %s") % (
+            O[0].read, O[1].read, O[1].write % tmpl, s)
     if b in BRANCH_CC and len(ops) == 1:
         t = target_addr(ops[0])
         if t is None:
@@ -383,10 +406,15 @@ def emit(ins, nxt):
         # peripheral transfer: alternating bytes. Only used by the sound driver.
         return "m.movep(%s); %s" % ("0", s)
     if b == "link" and len(ops) == 2:
-        d = num(ops[1].lstrip("#"))
+        # the displacement is a SIGNED 16-bit value: #$fffc means -4, and
+        # reading it unsigned grows the stack by 65532 instead of shrinking
+        # it by 4, which corrupts every frame the routine builds
+        d = num(ops[1].lstrip("#")) & 0xFFFF
+        if d & 0x8000:
+            d -= 0x10000
         r = ops[0].strip()
         return ("m.storePre('a7', 4, m.%s, 32); m.%s = m.a7; "
-                "m.a7 = (m.a7 + %d) >>> 0; %s") % (r, r, d, s)
+                "m.a7 = (m.a7 + (%d)) >>> 0; %s") % (r, r, d, s)
     if b == "unlk" and len(ops) == 1:
         r = ops[0].strip()
         return "m.a7 = m.%s; m.%s = m.loadPost('a7', 4, 32); %s" % (r, r, s)

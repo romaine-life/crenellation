@@ -60,8 +60,10 @@ def emit_function(entry, end, label):
                     % (ins.mnemonic, (ins.op_str or "").replace("'", ""), addr))
         lines.append("      case 0x%05x: { %s } break;" % (addr, body))
         addr = nxt
-    lines.append("      default: throw new Error("
-                 "'pc left routine 0x%05x: 0x' + pc.toString(16));" % entry)
+    # Falling out of a routine's range is normal: the boundaries come from call
+    # targets, so a "routine" is often a label inside a longer stretch of code
+    # that simply runs on. Continue in whichever routine covers the address.
+    lines.append("      default: call(pc, m); return;")
     lines.append("    }")
     lines.append("  }")
     lines.append("}")
