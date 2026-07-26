@@ -51,6 +51,16 @@ Register note: MAME's m68k state exposes the stack as `SP`, not `A7`.
 - This is the routine that paints terrain, which is why patching `0x3A480`
   earlier flattened the ground texture.
 
+### Block recolour - `0x11FF8`
+- **Port:** `romlab/compare_recolor.py` (`recolor_block`)
+- **Signature:** `recolor_block(long dest @+4, long palette_base @+8)` - the
+  word at +10 is what it actually reads, i.e. the low half of a pushed int.
+- **Behaviour:** for each of 8 rows, take 8 pixels, keep the low nibble and add
+  the palette base, then advance a full row (+0x1F8). This is the primitive
+  that re-tints a sealed region, which is how territory shading works.
+- **Evidence:** `romlab/compare_recolor.py` - 6 cases over seeded input blocks,
+  all 64 pixels identical, palette bases 0x00 through 0xF0.
+
 ## Method notes
 
 - `PC` during a memory tap is the *next* instruction; use **`CURPC`** for the
