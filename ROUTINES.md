@@ -12,23 +12,24 @@ plausible the current implementation looks.
 
 Measured, not asserted. Every routine is run on the real 68000 under MAME and
 again in the TypeScript port from byte-identical starting state, and all
-registers plus a hash of the memory window it works in are compared. Two
-harnesses do this: one drives each routine with generated arguments, the other
-replays the arguments the game itself passed during play.
+registers plus a hash of the memory window it works in are compared. Three
+harnesses do this: one drives each routine with three argument shapes in a
+single pass, one drives every routine with a single shape per run of the
+emulator, and one replays the arguments the game itself passed during play.
 
 | | |
 |---|---|
-| Routines in the overlay | 754 |
-| Verified against hardware | 473 |
-| Failing | 32 |
-| Passing one harness, failing the other | 8 |
-| Never exercised (hardware never returned) | 241 |
+| Routines in the overlay | 763 |
+| Verified against hardware | 480 |
+| Failing | 23 |
+| Passing under some inputs, failing under others | 21 |
+| Never exercised (hardware never returned) | 239 |
 
 The routine count rose from the original 593 because executable code kept
 turning up that had been filed as data or merged into a neighbour: 66 `jmp`
 trampolines below the first ordinary routine, the cases reached through
 pc-relative jump tables, and the handlers whose addresses live in tables of
-32-bit function pointers - those often point into the *middle* of an existing
+32-bit function pointers - those often point into the middle of an existing
 function, so several handlers were being measured as one block that nothing
 ever calls as a whole. Coverage of the overlay is 100% with no function
 labelled unknown.
@@ -44,7 +45,7 @@ it: instructions that write the status register, because writing it unmasks
 interrupts and the case then measures the game's interrupt handler; and
 pc-relative operands, because the harness relocates each encoding to a scratch
 address so the operand resolves against the wrong base. There are 93 of the
-latter, and `romlab/pcrelcheck.py` checks each against its encoding instead -
+latter and `romlab/pcrelcheck.py` checks each against its encoding instead -
 the displacement is measured from the address of the extension word. All 93
 agree.
 
@@ -71,37 +72,47 @@ from the value they had already written; an arithmetic right shift past the
 operand width dropping the sign bit out of C; and `movep`, `roxl`/`roxr` and
 status-register access having no rules at all.
 
-### What the remaining failures are
+### The ceiling of this method, stated exactly
 
-Of the 32 failing, most read the input ports or the sound chips, which the port
-does not model. A few unmask interrupts - `0x656` is `move.w $3e0804.l, sr;
-rts` - and cannot be held still long enough to compare. One is a boundary worth
-naming rather than a bug: the routine at `0xEDEA` calls `$140010`, an address
-the board does not decode at all, so what the hardware does there cannot be
-reproduced from the ROM. The 8 that pass one harness and fail the other fail
-the same way, on hardware reads.
+Every harness here judges a routine by calling it and waiting for it to come
+back to a sentinel return address.
 
-The 241 never exercised do not return on the hardware side. The harness calls
-them out of context, and one that expects a live entity or a valid pointer runs
-until the frame ends. Of them, 156 have no direct caller anywhere in the ROM -
-they are reached only through pointers - 73 sit under another never-exercised
-routine, and 15 have a caller the game does run but on a branch it never took.
+**111 of the 239 never-exercised routines contain no `rts` at all.** They end by
+jumping elsewhere, or they are loops the game only leaves by interrupt. None of
+them returned under any of the eleven argument shapes tried. Verifying those
+needs a different method - comparing execution as it happens rather than a
+result at the end - not more arguments.
 
-What was tried, and what it was worth:
+The other 128 have an `rts`; the arguments simply never reached it. Of the 239
+altogether, 156 have no direct caller anywhere in the ROM and are reached only
+through pointers the game fills in at run time.
+
+What was tried against them, and what each was worth:
 
 - Starting a real game before taking the memory baseline, and handing later
-  trials the structures the game actually passes: moved 66 into range.
-- Driving every input the board has, across three capture passes including one
-  with the service switch held from frame 1 (setting it later does nothing -
-  the game reads it during the power-on check): took the routines the game
-  executes from 330 to 421, but nearly all of those were already covered by the
-  other harness.
+  trials the structures the game actually passes: 66 routines.
+- Eleven argument shapes rather than three, one shape per run of the emulator:
+  10 routines, plus 22 that turned out to pass under one set of inputs and fail
+  under another, and 9 more missing entry points. Running the shapes in a
+  single pass loses everything after whichever shape kills MAME.
+- Three capture passes driving every input the board has, including one with
+  the service switch held from frame 1 - setting it later does nothing, the
+  game reads it during the power-on check: took the routines the game executes
+  from 330 to 421, nearly all already covered by another harness.
 - Borrowing arguments from a routine's siblings in the same pointer table, on
   the grounds that a dispatcher calls all its handlers the same way: 19
   routines.
-- Trying eight argument shapes instead of three: rejected. Some shape drives a
-  routine into a state that kills the emulator, and the run stops after 211 of
-  754 entries, losing far more than it gains.
+
+### What the remaining failures are
+
+Of the 23 failing, most read the input ports or the sound chips, which the port
+does not model. A few unmask interrupts - `0x656` is `move.w $3e0804.l, sr;
+rts` - and cannot be held still long enough to compare. One is a boundary
+rather than a bug: `0xEDEA` calls `$140010`, an address the board does not
+decode at all.
+
+The 21 that pass under some inputs and fail under others were not made wrong by
+the new shapes; nothing had asked them the right question before.
 
 
 ## Harness
