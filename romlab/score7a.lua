@@ -1,0 +1,77 @@
+-- Force a real scoring event by posting the enclosure the way the game does.
+--
+-- Writing a sealed wall onto the board does nothing, because sealing is not
+-- detected by scanning: placing a wall runs the enclosure test, and on success
+-- 0x5E38 POSTS AN EVENT carrying the coordinate. The fill and the score happen
+-- later, when the dispatcher processes that event.
+--
+-- So: stamp the wall, then inject a call to 0x5E38 by pushing the game's own PC
+-- as the return address, letting the routine run and return where it came from.
+local STAMP = true
+local OUT = "D:/repos/crenellation/romlab/out/score7/"
+local TAG = STAMP and "a" or "b"
+local log = io.open(OUT .. "s" .. TAG .. ".log", "w")
+local NL = string.char(10)
+local cpu = manager.machine.devices[":maincpu"]
+local space = cpu.spaces["program"]
+local BOARD = 0x3E0864
+local frame, tx, ty = 0, 0, 0
+local injected = false
+
+local function fld(p,f) local q=manager.machine.ioport.ports[p]; return q and q.fields[f] or nil end
+local function set(p,f,v) local q=fld(p,f); if q then pcall(function() q:set_value(v) end) end end
+local function cell(x,y) return BOARD + x*32 + y end
+
+local function snap(tag)
+  local t = {}
+  for a = 0x3E0000, 0x3EFFFF, 2 do
+    local v = space:read_u16(a)
+    t[#t+1] = string.char(math.floor(v/256)%256, v%256)
+  end
+  local fh = io.open(OUT.."ram-"..TAG.."-"..tag..".bin","wb"); fh:write(table.concat(t)); fh:close()
+  log:write("SNAP "..tag.." frame "..frame..NL); log:flush()
+end
+
+emu.register_frame_done(function()
+  frame = frame + 1
+  if frame > 600 and frame < 12000 then
+    local c = frame % 240
+    if c == 0 then set(":IN1","Coin 1",1) end
+    if c == 20 then set(":IN1","Coin 1",0) end
+    if c == 40 then set(":IN1","P1 Button 1",1) end
+    if c == 50 then set(":IN1","P1 Button 1",0) end
+  end
+  if frame > 900 then
+    tx=(tx+7)%256; ty=(ty+11)%256
+    set(":TRACK3","Trackball X",tx); set(":TRACK2","Trackball Y",ty)
+    local q = frame % 45
+    if q == 0 then set(":IN1","P1 Button 1",1) end
+    if q == 6 then set(":IN1","P1 Button 1",0) end
+  end
+
+  if frame == 2039 then
+    if STAMP then
+      for x = 17, 22 do space:write_u8(cell(x,15), 0x41); space:write_u8(cell(x,20), 0x41) end
+      for y = 15, 20 do space:write_u8(cell(17,y), 0x41); space:write_u8(cell(22,y), 0x41) end
+    end
+    snap("pre")
+  end
+
+  -- inject the event post one frame later, so the wall is already in place
+  if frame == 2041 and STAMP and not injected then
+    injected = true
+    local pc = cpu.state["PC"].value
+    local sp = cpu.state["SP"].value
+    sp = sp - 4; space:write_u32(sp, cell(19, 17))   -- a cell inside the sealed ring
+    sp = sp - 4; space:write_u32(sp, pc)             -- return where we came from
+    cpu.state["SP"].value = sp
+    cpu.state["PC"].value = 0x5E38
+    log:write(string.format("injected 0x5E38 at frame %d, returning to %06X", frame, pc)..NL)
+    log:flush()
+  end
+
+  if frame == 2100 then snap("after") end
+  if frame == 3093 then snap("at") end
+  if frame == 3200 then snap("post") end
+  if frame == 3400 then snap("late"); log:write("done"..NL); log:flush(); manager.machine:exit() end
+end)

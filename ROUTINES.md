@@ -384,28 +384,42 @@ above is part of this system rather than a utility.
 What remains is porting the dispatcher itself, which is a long C-style state
 machine rather than a self-contained routine.
 
-## Scoring - still unlocated
+## How sealing actually works - and why scoring is still unlocated
 
-Four searches came up empty, which is worth recording so they are not repeated:
+The important finding this round is architectural: **sealing is not detected by
+scanning the board.** The chain is
 
-- No long in work RAM increases monotonically by round amounts over a 601-sample
-  capture of the whole 64KB.
-- No digit array either: every run of consecutive cells holding only 0-9 turned
-  out to be board terrain, inside `0x3E0864`'s 42x30 extent.
-- The fields of the player struct that do only increase hold coordinate-like
-  values, not a running total.
+1. a wall is placed, and the placement path checks the cells around it
+   (`0xA20` and a second routine near `0xCEC`, both calling the enclosure test
+   at four offsets each);
+2. on success it calls **`0x5E38`**, which converts the cell pointer back to a
+   coordinate - `x = (ptr - 0x3E0864) >> 5`, `y = (ptr - 0x3E0864) & 0x1F`, a
+   third independent confirmation of the board layout - and **posts an event**
+   through `0xEE90`;
+3. the fill and the score happen later, when the dispatcher processes that
+   event. `0xEFFA` (ported and verified) is the matching "has this event fired"
+   test.
 
-- A **differential run** (`romlab/score5.lua`): two otherwise identical
-  sessions, one with a sealed 10x10 wall written onto the board at a fixed
-  frame and one without, diffed across the phase change. The runs do diverge -
-  234 bytes outside the board by the end - but the differences are entity and
-  sprite state, and no value anywhere differs by a round award amount.
+That explains why the score could not be found by any amount of watching RAM:
 
-The likely reason the differential failed is that the stamped wall enclosed
-**empty ground**. Rampart scores territory that contains a castle, so sealing a
-patch of bare land is not a scoring event at all. The next attempt should locate
-a castle on the board first - the terrain codes are readable now - and seal
-around that instead.
+- No long in work RAM increases monotonically by round amounts over a
+  601-sample capture of the whole 64KB, and no digit array exists - every run
+  of cells holding only 0-9 was board terrain.
+- The player-struct fields that only increase hold coordinate-like values.
+- A **differential run** with a sealed 10x10 wall written onto the board
+  produced no score anywhere, because the wall enclosed bare ground.
+- A **second differential** sealing a real castle (terrain type `0x02`) also
+  produced nothing - and the board dump shows why: the ring was correctly
+  sealed around the castle, but **the interior cells stayed unowned**. The game
+  never noticed, because nothing posted an event.
+- **Injecting a call to `0x5E38`** mid-frame, pushing the game's own PC as the
+  return address, did fire - 650 board cells changed - but it destabilised the
+  game rather than cleanly scoring, so it is not a usable trigger.
+
+The workable approach is now clear and is the next thing to try: drive a real
+piece placement that seals a castle, rather than writing the board behind the
+game's back. The piece walker and the piece table are both verified, so a
+placement can be constructed rather than waited for.
 
 ## Correction: the scoring measurement was wrong
 
