@@ -18,16 +18,16 @@ plausible the current implementation looks.
 4. A read tap on the sentinel fires when the routine returns to it; the output
    buffer is dumped and the CPU state restored.
 
-The destination buffer is zeroed first, so the whole buffer can be compared —
+The destination buffer is zeroed first, so the whole buffer can be compared â€”
 including cases where the correct answer is "write nothing".
 
 Register note: MAME's m68k state exposes the stack as `SP`, not `A7`.
 
 ## Verified
 
-### Graphics decompressor — `0x11F2A`
+### Graphics decompressor â€” `0x11F2A`
 - **Port:** `romlab/unpack.py` (`decode_strip`)
-- **Evidence:** `romlab/compare_decomp.py` — 12 cases, 8192-byte buffers
+- **Evidence:** `romlab/compare_decomp.py` â€” 12 cases, 8192-byte buffers
   compared in full, all identical. Cases cover the four literal modes, an
   all-skip stream, three data banks, and two palette-base offsets.
 - **Bug the verification caught:** in nibble mode the count is *pixels*, not
@@ -37,7 +37,34 @@ Register note: MAME's m68k state exposes the stack as `SP`, not `A7`.
   run. Two of five early cases mismatched by 18 and 37 bytes; after the fix all
   cases match exactly.
 
-## Outstanding — not ported, not verified
+### Terrain painter / second decompressor - `0x124BE`
+- **Port:** `romlab/unpack2.py` (`decode`)
+- **Evidence:** `romlab/compare_terrain.py` - 10 cases, full buffers identical,
+  and the routine's stateful rotation counter matches after every call.
+- **Differences from the first decoder:** literal mode copies 8-bit bytes
+  straight through rather than expanding nibbles; the palette base is reloaded
+  from the high nibble of the last byte read; and a control byte with bit 7
+  clear selects TEXTURE mode, copying from a 128-byte pattern block in the
+  table at `0x3A390`. Texture mode is **stateful** - a rotating offset at
+  `0x3E0E76` advances by 13 (mod 64) on every use, so verification must set
+  that state identically before each call.
+- This is the routine that paints terrain, which is why patching `0x3A480`
+  earlier flattened the ground texture.
+
+## Method notes
+
+- `PC` during a memory tap is the *next* instruction; use **`CURPC`** for the
+  instruction actually executing. Writer addresses collected via `PC` do not
+  disassemble.
+- `0x11F2A` is the decompressor's **loop head**, not its entry - the routine
+  branches back to it, so tapping it captures mid-loop states rather than
+  calls. The real call site is `0x11F1C`.
+- Replaying only the decompressor's calls does **not** reproduce the
+  framebuffer (~8% of bytes differ): several other routines draw into it too -
+  `0x125C4`, `0x11E44`, `0x12350`, `0x1E7EE`, `0x122AE`, `0x1E79A`, `0x12010`,
+  `0x18EC4`, `0x2320`-`0x232C`. Whole-screen reproduction needs those ported.
+
+## Outstanding â€” not ported, not verified
 
 Each of these is currently **original code informed by observing the running
 game**, not a port of the ROM's logic. Numbers were inferred from measurements

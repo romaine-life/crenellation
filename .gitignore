@@ -29,4 +29,10 @@ frontend/public/assets/
 
 # Rampart ROM + extraction workspace — local study only, never committed.
 /rampart.zip
-/romlab/
+/rampart.zip
+/romlab/rom/
+/romlab/roms/
+/romlab/out/
+/romlab/nvram_clean/
+/romlab/*.bin
+romlab/__pycache__/
