@@ -15,12 +15,12 @@ again in the TypeScript port from byte-identical starting state, and compared.
 
 | | |
 |---|---|
-| Routines in the overlay | 745 |
-| **Verified against hardware** | **556** |
-| Failing | 19 |
-| Passing under some inputs, failing under others | 28 |
-| Judged only by a stopping-point mismatch | 41 |
-| Never judged | 99 |
+| Routines in the overlay | 753 |
+| **Verified against hardware** | **570** |
+| Failing | 16 |
+| Passing under some inputs, failing under others | 26 |
+| Judged only by a stopping-point mismatch | 36 |
+| Never judged | 105 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -99,6 +99,19 @@ setting X; `asl` never setting V; multiply, swap and rotate computing flags
 from the value they had already written; an arithmetic right shift past the
 operand width dropping the sign bit out of C; and `movep`, `roxl`/`roxr` and
 status-register access having no rules at all.
+
+### How the entry points were found
+
+Not by reading the ROM. Every harness reports the address it died at when the
+dispatcher has no routine covering it, those addresses are collected, filtered
+against the jump-table bases (landing on one means a routine computed an offset
+of zero, which is a divergence rather than a missing entry), given an extent by
+following their basic blocks to a terminator, and fed back into the map. Then
+everything is re-captured and the loop runs again.
+
+It converges. The last pass added six - 0x3EA, 0xC4CA, 0x120A2, 0x12306,
+0x13E0A, 0x1829C - and took failing from 19 to 16, input-dependent from 28 to
+26, and unexplained mismatches from 41 to 36.
 
 ### What is left
 
