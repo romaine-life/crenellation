@@ -527,6 +527,24 @@ for each of (count + 1) records:
   later cases in the same session fail for reasons unrelated to the routine -
   which is exactly what happened on the first attempt.
 
+### Piece selection wrapper - `0x5948`
+- **Evidence:** `romlab/verify26.lua`
+- **Bag kind comes from the player's own state**, not from a seat number: word0
+  bit `0x4000` selects kind 2, otherwise byte `+0x14` nonzero *or* byte `+0x1F`
+  >= 4 selects kind 1, else kind 0. Each case advanced exactly the cursor for
+  its kind and no other.
+- **The bag cursor is indexed by kind**, at `0x3E1F0A + kind*4`. It is not
+  per-player, so two players whose state puts them in the same kind draw
+  alternately from one shared bag.
+- **Anti-repeat:** a drawn group equal to the player's previous one (`+0x28`) is
+  rejected and another drawn - **unless** it is the single-cell piece, which may
+  repeat. Both confirmed: a bag of `[bar, bar, L]` against a previous bar
+  returned the L, and a forced single against a previous single was accepted.
+- **Rejected pieces are consumed, not returned.** The redraw advanced the cursor
+  from 0 to 3 to skip the two bars, so a run of repeats eats through the bag
+  early and forces an earlier refill. The distribution guarantee is therefore
+  weaker than a clean bag.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
