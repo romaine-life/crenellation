@@ -205,6 +205,29 @@ alone explains 97.8-99.9% of it. `romart.py` and `screens.py` were corrected.
   the failure was exactly the -32768 case, and both details above came out of
   chasing it. **18/18 after the fix.**
 
+### Enclosure test - `0xBC2`
+- **Port:** `romlab/compare_enclose.py` (`enclosed`)
+- **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
+- **It is not a flood fill.** The routine follows the wall like a maze runner
+  and counts turns: if the cell to the side is wall it turns toward it and
+  steps, otherwise if the cell ahead is wall it carries straight on, otherwise
+  it turns away and stays put. When it returns to the cell it started from
+  having accumulated four quarter-turns, the boundary closed. The **sign** of
+  the turn count says which way round it went, and only the negative winding
+  counts as an enclosure - which is how the game distinguishes the inside of
+  your wall from the outside of someone else's.
+- A cell counts as wall if it is `owner | 1` **or** `owner | 3`, so a decorated
+  cell still forms part of the boundary.
+- The routine has no bound: a wall that never closes makes it loop forever. The
+  port reproduces that rather than papering over it.
+- **Evidence:** `romlab/verify9.lua` - 18 crafted boards, **18/18 identical**.
+  Closed rectangles from 2x2 to 12x9, at the board edge and the far corner, a
+  concave outline, a board with a second player's wall present, and one with a
+  `0x43` variant cell in the boundary all return **1**. A rectangle with a
+  **single cell removed returns 0**, as do a lone cell and a mid-edge start.
+  Three start/direction combinations never terminate on hardware and the port
+  fails to terminate on exactly those three.
+
 ## The board
 
 Rampart keeps no tilemap and does not read the screen to decide what is walled.
@@ -297,7 +320,7 @@ rather than read from the routine that produces them.
 
 | System | Current implementation | What verification requires |
 | --- | --- | --- |
-| Enclosure / flood fill | `enclosure.ts`, written from the rules as I understand them | **Board located** (`0x3E0864`, 42x30, column major). Craft a board, call the fill, compare all 1344 cells |
+| ~~Enclosure test~~ | **Ported and verified** - `compare_enclose.py`, 18/18 crafted boards | Done; remaining work is replacing `enclosure.ts` with the port |
 | Piece generation | `pieces.ts`, shapes and weights inferred from 292 observed placements | **Pieces are direction scripts** walked by `0x8B4`; RNG at `0x11E58` already verified. Find the script table, compare placements |
 | Scoring | `game.ts` constants, inferred from grouping score-counter ticks into bursts | Find the routine that adds to the score word; call it per event type; compare awards |
 | Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
