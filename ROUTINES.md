@@ -278,6 +278,26 @@ selection reaches them some other way and is not yet located.
 - **Evidence:** 15 cases - corners, edges, interior, and out-of-range
   coordinates chosen to exercise the byte-sized add. **15/15 identical.**
 
+### Territory scoring - `0x865E`
+- **Port:** `romlab/verify14.lua` companion (`award`)
+- **Signature:** `score(player_struct @+8)`. It reads the claimed-cell count
+  from `player+0x58`, finds the first entry in the threshold table at `0x117CE`
+  that is `>=` that count, and adds the award at the same index in `0x117E2` to
+  **`player+0x56` - the score**.
+- **The thresholds are perfect squares:** 9, 16, 25, 36, 49, 64, 81, 100, 121
+  (3^2 through 11^2), then 999. The awards are 100, 200, 300, 400, 500, 600,
+  700, 800, 900, 1000, and 6420 past the end. **Territory scores by side
+  length, not by area** - enclosing a 5x5 pays 300, a 10x10 pays 800.
+- **This settles the earlier bad measurement.** The 150/200/300 figures reported
+  long ago came from grouping allocator activity into bursts and were wrong;
+  these values are read from the table the routine actually indexes.
+- **Evidence:** 28 cases spanning every threshold boundary and both sides of it
+  (0, 1, 8/9/10, 15/16/17, 24/25/26, 35/36, 49, 63/64, 80/81, 99/100, 120/121/
+  122, 500, 998/999). **26/26 identical.** The two cases past the final
+  threshold (1000 and 5000 cells) do not return in the harness - they take the
+  6420 branch, which calls into display code needing state the harness does not
+  set up. A 42x30 board makes those counts unreachable in play.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -384,42 +404,32 @@ above is part of this system rather than a utility.
 What remains is porting the dispatcher itself, which is a long C-style state
 machine rather than a self-contained routine.
 
-## How sealing actually works - and why scoring is still unlocated
+## How sealing and scoring actually work
 
-The important finding this round is architectural: **sealing is not detected by
-scanning the board.** The chain is
+Sealing is **not** detected by scanning the board. The chain is:
 
-1. a wall is placed, and the placement path checks the cells around it
-   (`0xA20` and a second routine near `0xCEC`, both calling the enclosure test
-   at four offsets each);
-2. on success it calls **`0x5E38`**, which converts the cell pointer back to a
-   coordinate - `x = (ptr - 0x3E0864) >> 5`, `y = (ptr - 0x3E0864) & 0x1F`, a
-   third independent confirmation of the board layout - and **posts an event**
-   through `0xEE90`;
-3. the fill and the score happen later, when the dispatcher processes that
-   event. `0xEFFA` (ported and verified) is the matching "has this event fired"
-   test.
+1. a wall is placed, and the placement path checks around it (`0xA20` and a
+   routine near `0xCEC`, each calling the enclosure test at four offsets);
+2. on success `0x5E38` converts the cell pointer back to a coordinate -
+   `x = (ptr - 0x3E0864) >> 5`, `y = (ptr - 0x3E0864) & 0x1F`, a third
+   independent confirmation of the board layout - and **posts an event**;
+3. the queued handler `0x5EA2` runs a scanline flood fill, claiming cells and
+   counting them into `player+0x58`;
+4. when the fill runs dry it removes its own event and calls **`0x865E`**,
+   which converts the count into points. **Ported and verified above.**
 
-That explains why the score could not be found by any amount of watching RAM:
+The event queue itself is three routines, all now ported and verified:
+`0xEE90` post, `0xEEEE` remove, `0xEFFA` test. A record is 12 bytes and the key
+is a **function pointer** - `0x5EA2` in this case - so the queue is a list of
+(handler, parameter) pairs and the dispatcher simply calls them.
 
-- No long in work RAM increases monotonically by round amounts over a
-  601-sample capture of the whole 64KB, and no digit array exists - every run
-  of cells holding only 0-9 was board terrain.
-- The player-struct fields that only increase hold coordinate-like values.
-- A **differential run** with a sealed 10x10 wall written onto the board
-  produced no score anywhere, because the wall enclosed bare ground.
-- A **second differential** sealing a real castle (terrain type `0x02`) also
-  produced nothing - and the board dump shows why: the ring was correctly
-  sealed around the castle, but **the interior cells stayed unowned**. The game
-  never noticed, because nothing posted an event.
-- **Injecting a call to `0x5E38`** mid-frame, pushing the game's own PC as the
-  return address, did fire - 650 board cells changed - but it destabilised the
-  game rather than cleanly scoring, so it is not a usable trigger.
-
-The workable approach is now clear and is the next thing to try: drive a real
-piece placement that seals a castle, rather than writing the board behind the
-game's back. The piece walker and the piece table are both verified, so a
-placement can be constructed rather than waited for.
+**A confounded experiment, recorded so it is not repeated.** Three attempts to
+catch the score by watching RAM all failed: writing a sealed wall onto the board
+does nothing (nothing posts an event), and two differential runs - one sealing
+bare ground, one sealing a real castle - showed no award anywhere. The
+differential is **confounded at the root**: changing the board changes what the
+computer player does, so the two runs diverge by hundreds of cells for reasons
+unrelated to scoring. Reading the routine was what worked.
 
 ## Correction: the scoring measurement was wrong
 
@@ -476,7 +486,7 @@ rather than read from the routine that produces them.
 | --- | --- | --- |
 | ~~Enclosure test~~ | **Ported and verified** - `compare_enclose.py`, 18/18 crafted boards | Done; remaining work is replacing `enclosure.ts` with the port |
 | Piece shapes and placement | **Ported and verified** - all 40 pieces from the table at `0xFE4E`, walker `0x8B4`, 40/40 boards identical | Remaining: which piece the game *picks* (the selection is still unlocated) |
-| Scoring | `game.ts` constants, inferred from grouping score-counter ticks into bursts | Find the routine that adds to the score word; call it per event type; compare awards |
+| ~~Scoring~~ | **Ported and verified** - `0x865E`, 26/26 across every threshold boundary | Done; remaining work is replacing the guessed constants in `game.ts` |
 | Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
 | Damage / blast footprint | `game.ts`, inferred from captured battle frames | Find the impact routine; call it against a crafted wall layout; compare which cells are destroyed |
 | Phase control | `phases.ts`, durations read from the countdown word in RAM | **Dispatcher located** (`0x9300`-`0xA7DA`); its event predicate `0xEFFA` ported and verified 12/12. Remaining: the dispatcher itself |
