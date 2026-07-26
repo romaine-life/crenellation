@@ -212,8 +212,12 @@ def emit(ins, nxt):
         # once to store, once for the flags - applies a postincrement or
         # predecrement twice, which silently corrupts every pointer walk.
         if b == "movea":
+            # the destination is an address register, so the write is always
+            # 32-bit no matter the mnemonic's size - movea.w #$40,a1 sets the
+            # whole register, it does not merge into its low half
+            L = Operand(ops[1], "l")
             return "{ const _s = %s; %s; } %s" % (
-                O[0].read, O[1].write % ("m.sx(_s, %d)" % bits), s)
+                O[0].read, L.write % ("m.sx(_s, %d)" % bits), s)
         return "{ const _s = %s; %s; m.logicFlags(_s, %d); } %s" % (
             O[0].read, O[1].write % "_s", bits, s)
     if b == "moveq" and len(ops) == 2:
@@ -249,8 +253,9 @@ def emit(ins, nxt):
         return "{ const _a = %s; const _b = %s; %s; } %s" % (
             O[0].read, O[1].read, O[1].write % ("m.addFlags(_b, _a, %d)" % bits), s)
     if b == "adda" and len(O) == 2 and O[0].read and O[1].write:
+        L = Operand(ops[1], "l")
         return "{ const _a = m.sx(%s, %d); %s; } %s" % (
-            O[0].read, bits, O[1].write % ("(%s + _a)" % O[1].read), s)
+            O[0].read, bits, L.write % ("(%s + _a)" % L.read), s)
     if b in ("sub", "subi", "subq") and len(O) == 2 and O[0].read and O[1].write:
         if is_addr_reg(ops[1]):
             L = Operand(ops[1], "l")
@@ -259,8 +264,9 @@ def emit(ins, nxt):
         return "{ const _a = %s; const _b = %s; %s; } %s" % (
             O[0].read, O[1].read, O[1].write % ("m.subFlags(_b, _a, %d)" % bits), s)
     if b == "suba" and len(O) == 2 and O[0].read and O[1].write:
+        L = Operand(ops[1], "l")
         return "{ const _a = m.sx(%s, %d); %s; } %s" % (
-            O[0].read, bits, O[1].write % ("(%s - _a)" % O[1].read), s)
+            O[0].read, bits, L.write % ("(%s - _a)" % L.read), s)
     if b in ("cmp", "cmpi", "cmpa") and len(O) == 2 and O[0].read and O[1].read:
         if b == "cmpa":
             # a word source is sign-extended to 32 bits before the comparison

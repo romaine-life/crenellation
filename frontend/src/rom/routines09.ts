@@ -1077,7 +1077,7 @@ export function fn_14eca(m: Machine, at = 0x14eca): void {
       case 0x14ee2: { pc = 0x14ef6; break; } break;
       case 0x14ee4: { m.d0 = m.wr(m.d0, ((((m.rd(m.d0, 16)) & 0xffff) * ((20) & 0xffff)) >>> 0), 32); m.logicFlags(((((m.rd(m.d0, 16)) & 0xffff) * ((20) & 0xffff)) >>> 0), 32); pc = 0x14ee8; } break;
       case 0x14ee8: { { const _s = 4076628; m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x14eee; } break;
-      case 0x14eee: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 16) + _a), 16); } pc = 0x14ef0; } break;
+      case 0x14eee: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) + _a), 32); } pc = 0x14ef0; } break;
       case 0x14ef0: { m.d0 = m.wr(m.d0, (0 >>> 0), 32); m.logicFlags(0, 32); pc = 0x14ef2; } break;
       case 0x14ef2: { { const _s = m.load(m.a0 + m.sx(m.d1, 16), 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x14ef6; } break;
       case 0x14ef6: { return; } break;
@@ -1105,7 +1105,7 @@ export function fn_14ef8(m: Machine, at = 0x14ef8): void {
       case 0x14f1a: { { const _s = m.rd(m.d1, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x14f1c; } break;
       case 0x14f1c: { m.d0 = m.wr(m.d0, ((((m.rd(m.d0, 16)) & 0xffff) * ((20) & 0xffff)) >>> 0), 32); m.logicFlags(((((m.rd(m.d0, 16)) & 0xffff) * ((20) & 0xffff)) >>> 0), 32); pc = 0x14f20; } break;
       case 0x14f20: { { const _s = 4076628; m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x14f26; } break;
-      case 0x14f26: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 16) + _a), 16); } pc = 0x14f28; } break;
+      case 0x14f26: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) + _a), 32); } pc = 0x14f28; } break;
       case 0x14f28: { { const _s = m.rd(m.a0, 32); m.a1 = m.wr(m.a1, m.sx(_s, 32), 32); } pc = 0x14f2a; } break;
       case 0x14f2a: { m.d0 = m.wr(m.d0, (0 >>> 0), 32); m.logicFlags(0, 32); pc = 0x14f2c; } break;
       case 0x14f2c: { { const _s = m.rd(m.d3, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x14f2e; } break;
@@ -1158,7 +1158,7 @@ export function fn_14f7a(m: Machine, at = 0x14f7a): void {
       case 0x14f8c: { { const _s = m.rd(m.d1, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x14f8e; } break;
       case 0x14f8e: { m.d0 = m.wr(m.d0, ((((m.rd(m.d0, 16)) & 0xffff) * ((20) & 0xffff)) >>> 0), 32); m.logicFlags(((((m.rd(m.d0, 16)) & 0xffff) * ((20) & 0xffff)) >>> 0), 32); pc = 0x14f92; } break;
       case 0x14f92: { { const _s = 4076628; m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x14f98; } break;
-      case 0x14f98: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 16) + _a), 16); } pc = 0x14f9a; } break;
+      case 0x14f98: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) + _a), 32); } pc = 0x14f9a; } break;
       case 0x14f9a: { { const _s = m.rd(m.a0, 32); m.a2 = m.wr(m.a2, m.sx(_s, 32), 32); } pc = 0x14f9c; } break;
       case 0x14f9c: { m.d2 = m.wr(m.d2, (19 >>> 0), 32); m.logicFlags(19, 32); pc = 0x14f9e; } break;
       case 0x14f9e: { { const _s = m.load(m.a2, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x14fa0; } break;
@@ -1213,7 +1213,7 @@ export function fn_14ff2(m: Machine, at = 0x14ff2): void {
       case 0x15004: { { const _s = m.rd(m.d2, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x15006; } break;
       case 0x15006: { m.d0 = m.wr(m.d0, ((((m.rd(m.d0, 16)) & 0xffff) * ((20) & 0xffff)) >>> 0), 32); m.logicFlags(((((m.rd(m.d0, 16)) & 0xffff) * ((20) & 0xffff)) >>> 0), 32); pc = 0x1500a; } break;
       case 0x1500a: { { const _s = 4076628; m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x15010; } break;
-      case 0x15010: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 16) + _a), 16); } pc = 0x15012; } break;
+      case 0x15010: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) + _a), 32); } pc = 0x15012; } break;
       case 0x15012: { { const _s = m.rd(m.a0, 32); m.a2 = m.wr(m.a2, m.sx(_s, 32), 32); } pc = 0x15014; } break;
       case 0x15014: { m.storePre('a7', 4, 0x14, 32); pc = 0x15018; } break;
       case 0x15018: { m.storePre('a7', 4, 0, 32); m.logicFlags(0, 32); pc = 0x1501a; } break;
@@ -2743,7 +2743,7 @@ export function fn_1798c(m: Machine, at = 0x1798c): void {
       case 0x17b54: { { const _a = 1; const _b = m.rd(m.d3, 16); m.d3 = m.wr(m.d3, m.addFlags(_b, _a, 16), 16); } pc = 0x17b56; } break;
       case 0x17b56: { { const _c = (3) & 63; const _v = m.rd(m.d0, 16); const _r = _v << _c; m.d0 = m.wr(m.d0, _r, 16); m.shiftFlags(_r, _v, _c, 16, true); } pc = 0x17b58; } break;
       case 0x17b58: { { const _s = m.rd(m.a3, 32); m.a2 = m.wr(m.a2, m.sx(_s, 32), 32); } pc = 0x17b5a; } break;
-      case 0x17b5a: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a2 = m.wr(m.a2, (m.rd(m.a2, 16) + _a), 16); } pc = 0x17b5c; } break;
+      case 0x17b5a: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a2 = m.wr(m.a2, (m.rd(m.a2, 32) + _a), 32); } pc = 0x17b5c; } break;
       case 0x17b5c: { { const _s = m.rd(m.a2, 32); m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x17b5e; } break;
       case 0x17b5e: { { const _a = m.sx(8, 32); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) + _a), 32); } pc = 0x17b60; } break;
       case 0x17b60: { { const _s = m.rd(m.d3, 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x17b62; } break;
@@ -2764,7 +2764,7 @@ export function fn_1798c(m: Machine, at = 0x1798c): void {
       case 0x17b8e: { { const _s = m.rd(m.d3, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x17b90; } break;
       case 0x17b90: { { const _c = (3) & 63; const _v = m.rd(m.d0, 16); const _r = _v << _c; m.d0 = m.wr(m.d0, _r, 16); m.shiftFlags(_r, _v, _c, 16, true); } pc = 0x17b92; } break;
       case 0x17b92: { { const _s = m.rd(m.a3, 32); m.a2 = m.wr(m.a2, m.sx(_s, 32), 32); } pc = 0x17b94; } break;
-      case 0x17b94: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a2 = m.wr(m.a2, (m.rd(m.a2, 16) + _a), 16); } pc = 0x17b96; } break;
+      case 0x17b94: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a2 = m.wr(m.a2, (m.rd(m.a2, 32) + _a), 32); } pc = 0x17b96; } break;
       case 0x17b96: { { const _s = m.rd(m.d4, 32); m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x17b98; } break;
       case 0x17b98: { { const _t = m.d1; m.d1 = m.a0; m.a0 = _t; } pc = 0x17b9a; } break;
       case 0x17b9a: { { const _a = 33554432; const _b = m.rd(m.d1, 32); const _r = (_b & _a); m.d1 = m.wr(m.d1, _r, 32); m.logicFlags(_r, 32); } pc = 0x17ba0; } break;
@@ -2822,10 +2822,10 @@ export function fn_1798c(m: Machine, at = 0x1798c): void {
       case 0x17c56: { { const _s = m.load(m.a2 + 2, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x17c5a; } break;
       case 0x17c5a: { { const _s = m.rd(m.d0, 32); m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x17c5c; } break;
       case 0x17c5c: { { const _r = m.sx(m.rd(m.d6, 32), 16); m.d6 = m.wr(m.d6, _r, 32); m.logicFlags(_r, 32); } pc = 0x17c5e; } break;
-      case 0x17c5e: { { const _a = m.sx(m.rd(m.d6, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 16) + _a), 16); } pc = 0x17c60; } break;
+      case 0x17c5e: { { const _a = m.sx(m.rd(m.d6, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) + _a), 32); } pc = 0x17c60; } break;
       case 0x17c60: { { const _s = m.rd(m.a0, 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x17c62; } break;
       case 0x17c62: { { const _a = 32767; const _b = m.rd(m.d1, 16); const _r = (_b & _a); m.d1 = m.wr(m.d1, _r, 16); m.logicFlags(_r, 16); } pc = 0x17c66; } break;
-      case 0x17c66: { { const _s = m.rd(m.d1, 16); m.a0 = m.wr(m.a0, m.sx(_s, 16), 16); } pc = 0x17c68; } break;
+      case 0x17c66: { { const _s = m.rd(m.d1, 16); m.a0 = m.wr(m.a0, m.sx(_s, 16), 32); } pc = 0x17c68; } break;
       case 0x17c68: { { const _s = m.rd(m.a0, 16); m.store(m.a2 + 2, _s, 16); m.logicFlags(_s, 16); } pc = 0x17c6c; } break;
       case 0x17c6c: { { const _n = 6; const _v = m.rd(m.d5, 8); m.z = ((_v >>> (_n & 31)) & 1) === 0; } pc = 0x17c70; } break;
       case 0x17c70: { if (m.cond('eq')) { pc = 0x17c8a; } else { pc = 0x17c72; } } break;
@@ -2833,10 +2833,10 @@ export function fn_1798c(m: Machine, at = 0x1798c): void {
       case 0x17c74: { { const _s = m.load(m.a2 + 2, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x17c78; } break;
       case 0x17c78: { { const _s = m.rd(m.d0, 32); m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x17c7a; } break;
       case 0x17c7a: { { const _r = m.sx(m.rd(m.d6, 32), 16); m.d6 = m.wr(m.d6, _r, 32); m.logicFlags(_r, 32); } pc = 0x17c7c; } break;
-      case 0x17c7c: { { const _a = m.sx(m.rd(m.d6, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 16) - _a), 16); } pc = 0x17c7e; } break;
+      case 0x17c7c: { { const _a = m.sx(m.rd(m.d6, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) - _a), 32); } pc = 0x17c7e; } break;
       case 0x17c7e: { { const _s = m.rd(m.a0, 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x17c80; } break;
       case 0x17c80: { { const _a = 32767; const _b = m.rd(m.d1, 16); const _r = (_b & _a); m.d1 = m.wr(m.d1, _r, 16); m.logicFlags(_r, 16); } pc = 0x17c84; } break;
-      case 0x17c84: { { const _s = m.rd(m.d1, 16); m.a0 = m.wr(m.a0, m.sx(_s, 16), 16); } pc = 0x17c86; } break;
+      case 0x17c84: { { const _s = m.rd(m.d1, 16); m.a0 = m.wr(m.a0, m.sx(_s, 16), 32); } pc = 0x17c86; } break;
       case 0x17c86: { { const _s = m.rd(m.a0, 16); m.store(m.a2 + 2, _s, 16); m.logicFlags(_s, 16); } pc = 0x17c8a; } break;
       case 0x17c8a: { { const _n = 4; const _v = m.rd(m.d5, 8); m.z = ((_v >>> (_n & 31)) & 1) === 0; } pc = 0x17c8e; } break;
       case 0x17c8e: { if (m.cond('eq')) { pc = 0x17c9e; } else { pc = 0x17c90; } } break;
@@ -2932,7 +2932,7 @@ export function fn_1798c(m: Machine, at = 0x1798c): void {
       case 0x17d94: { { const _s = m.rd(m.d3, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x17d96; } break;
       case 0x17d96: { { const _c = (3) & 63; const _v = m.rd(m.d0, 16); const _r = _v << _c; m.d0 = m.wr(m.d0, _r, 16); m.shiftFlags(_r, _v, _c, 16, true); } pc = 0x17d98; } break;
       case 0x17d98: { { const _s = m.rd(m.a3, 32); m.a2 = m.wr(m.a2, m.sx(_s, 32), 32); } pc = 0x17d9a; } break;
-      case 0x17d9a: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a2 = m.wr(m.a2, (m.rd(m.a2, 16) + _a), 16); } pc = 0x17d9c; } break;
+      case 0x17d9a: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a2 = m.wr(m.a2, (m.rd(m.a2, 32) + _a), 32); } pc = 0x17d9c; } break;
       case 0x17d9c: { m.storePre('a7', 4, 0x2000, 32); pc = 0x17da0; } break;
       case 0x17da0: { m.storePre('a7', 4, 0, 32); m.logicFlags(0, 32); pc = 0x17da2; } break;
       case 0x17da2: { m.storePre('a7', 4, 0x3, 32); pc = 0x17da6; } break;
@@ -2969,7 +2969,7 @@ export function fn_1798c(m: Machine, at = 0x1798c): void {
       case 0x17e10: { m.d4 = m.wr(m.d4, (0 >>> 0), 32); m.logicFlags(0, 32); pc = 0x17e12; } break;
       case 0x17e12: { { const _s = m.load(m.a2 + 4, 16); m.d4 = m.wr(m.d4, _s, 16); m.logicFlags(_s, 16); } pc = 0x17e16; } break;
       case 0x17e16: { { const _c = (7) & 63; const _v = (m.rd(m.d4, 32)) & 4294967295; const _r = _v >>> _c; m.d4 = m.wr(m.d4, _r, 32); m.shiftFlags(_r, _v, _c, 32, false); } pc = 0x17e18; } break;
-      case 0x17e18: { { const _s = m.rd(m.d4, 16); m.a0 = m.wr(m.a0, m.sx(_s, 16), 16); } pc = 0x17e1a; } break;
+      case 0x17e18: { { const _s = m.rd(m.d4, 16); m.a0 = m.wr(m.a0, m.sx(_s, 16), 32); } pc = 0x17e1a; } break;
       case 0x17e1a: { m.d0 = m.wr(m.d0, (0 >>> 0), 32); m.logicFlags(0, 32); pc = 0x17e1c; } break;
       case 0x17e1c: { { const _s = m.rd(m.a0, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x17e1e; } break;
       case 0x17e1e: { { const _s = m.rd(m.d0, 32); m.storePre('a7', 4, _s, 32); m.logicFlags(_s, 32); } pc = 0x17e20; } break;
@@ -2982,7 +2982,7 @@ export function fn_1798c(m: Machine, at = 0x1798c): void {
       case 0x17e34: { m.d4 = m.wr(m.d4, (0 >>> 0), 32); m.logicFlags(0, 32); pc = 0x17e36; } break;
       case 0x17e36: { { const _s = m.load(m.a2 + 6, 16); m.d4 = m.wr(m.d4, _s, 16); m.logicFlags(_s, 16); } pc = 0x17e3a; } break;
       case 0x17e3a: { { const _c = (7) & 63; const _v = (m.rd(m.d4, 32)) & 4294967295; const _r = _v >>> _c; m.d4 = m.wr(m.d4, _r, 32); m.shiftFlags(_r, _v, _c, 32, false); } pc = 0x17e3c; } break;
-      case 0x17e3c: { { const _s = m.rd(m.d4, 16); m.a0 = m.wr(m.a0, m.sx(_s, 16), 16); } pc = 0x17e3e; } break;
+      case 0x17e3c: { { const _s = m.rd(m.d4, 16); m.a0 = m.wr(m.a0, m.sx(_s, 16), 32); } pc = 0x17e3e; } break;
       case 0x17e3e: { m.d0 = m.wr(m.d0, (0 >>> 0), 32); m.logicFlags(0, 32); pc = 0x17e40; } break;
       case 0x17e40: { { const _s = m.rd(m.a0, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x17e42; } break;
       case 0x17e42: { { const _s = m.rd(m.d0, 32); m.storePre('a7', 4, _s, 32); m.logicFlags(_s, 32); } pc = 0x17e44; } break;

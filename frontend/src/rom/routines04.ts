@@ -2588,7 +2588,7 @@ export function fn_08008(m: Machine, at = 0x08008): void {
       case 0x08058: { { const _s = m.load(m.a4 + 3, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x0805c; } break;
       case 0x0805c: { { const _a = m.rd(m.d0, 16); const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x0805e; } break;
       case 0x0805e: { m.a0 = m.wr(m.a0, (m.a0 + 12), 32); pc = 0x08062; } break;
-      case 0x08062: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 16) + _a), 16); } pc = 0x08064; } break;
+      case 0x08062: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) + _a), 32); } pc = 0x08064; } break;
       case 0x08064: { m.a1 = m.wr(m.a1, (m.a6 + -4), 32); pc = 0x08068; } break;
       case 0x08068: { { const _s = m.loadPost('a0', 1, 8); m.storePost('a1', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x0806a; } break;
       case 0x0806a: { { const _s = m.loadPost('a0', 1, 8); m.storePost('a1', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x0806c; } break;
@@ -2744,7 +2744,7 @@ export function fn_08200(m: Machine, at = 0x08200): void {
       case 0x08212: { { const _s = m.load(m.a2 + 3, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x08216; } break;
       case 0x08216: { { const _a = m.rd(m.d0, 16); const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x08218; } break;
       case 0x08218: { m.a1 = m.wr(m.a1, (m.a0 + 12), 32); pc = 0x0821c; } break;
-      case 0x0821c: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 16) + _a), 16); } pc = 0x0821e; } break;
+      case 0x0821c: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 32) + _a), 32); } pc = 0x0821e; } break;
       case 0x0821e: { m.a0 = m.wr(m.a0, (m.a6 + -2), 32); pc = 0x08222; } break;
       case 0x08222: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x08224; } break;
       case 0x08224: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x08226; } break;
@@ -2770,7 +2770,7 @@ export function fn_08200(m: Machine, at = 0x08200): void {
       case 0x08266: { { const _s = m.load(m.a2 + 3, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x0826a; } break;
       case 0x0826a: { { const _a = m.rd(m.d0, 16); const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x0826c; } break;
       case 0x0826c: { m.a1 = m.wr(m.a1, (m.a0 + 12), 32); pc = 0x08270; } break;
-      case 0x08270: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 16) + _a), 16); } pc = 0x08272; } break;
+      case 0x08270: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 32) + _a), 32); } pc = 0x08272; } break;
       case 0x08272: { m.a0 = m.wr(m.a0, (m.a6 + -2), 32); pc = 0x08276; } break;
       case 0x08276: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x08278; } break;
       case 0x08278: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x0827a; } break;
@@ -2804,7 +2804,7 @@ export function fn_08200(m: Machine, at = 0x08200): void {
       case 0x082ce: { { const _s = m.load(m.a2 + 3, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x082d2; } break;
       case 0x082d2: { { const _a = m.rd(m.d0, 16); const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x082d4; } break;
       case 0x082d4: { m.a1 = m.wr(m.a1, (m.a0 + 12), 32); pc = 0x082d8; } break;
-      case 0x082d8: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 16) + _a), 16); } pc = 0x082da; } break;
+      case 0x082d8: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 32) + _a), 32); } pc = 0x082da; } break;
       case 0x082da: { m.a0 = m.wr(m.a0, (m.a6 + -2), 32); pc = 0x082de; } break;
       case 0x082de: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x082e0; } break;
       case 0x082e0: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x082e2; } break;

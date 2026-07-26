@@ -874,7 +874,7 @@ export function fn_041be(m: Machine, at = 0x041be): void {
       case 0x041f2: { { const _s = m.load(m.a2 + 3, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x041f6; } break;
       case 0x041f6: { { const _a = m.rd(m.d0, 16); const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x041f8; } break;
       case 0x041f8: { m.a1 = m.wr(m.a1, (m.a0 + 12), 32); pc = 0x041fc; } break;
-      case 0x041fc: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 16) + _a), 16); } pc = 0x041fe; } break;
+      case 0x041fc: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 32) + _a), 32); } pc = 0x041fe; } break;
       case 0x041fe: { m.a0 = m.wr(m.a0, (m.a6 + -2), 32); pc = 0x04202; } break;
       case 0x04202: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x04204; } break;
       case 0x04204: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x04206; } break;
@@ -938,7 +938,7 @@ export function fn_0427e(m: Machine, at = 0x0427e): void {
       case 0x04294: { { const _s = m.load(m.a2 + 3, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x04298; } break;
       case 0x04298: { { const _a = m.rd(m.d0, 16); const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x0429a; } break;
       case 0x0429a: { m.a1 = m.wr(m.a1, (m.a0 + 12), 32); pc = 0x0429e; } break;
-      case 0x0429e: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 16) + _a), 16); } pc = 0x042a0; } break;
+      case 0x0429e: { { const _a = m.sx(m.rd(m.d0, 16), 16); m.a1 = m.wr(m.a1, (m.rd(m.a1, 32) + _a), 32); } pc = 0x042a0; } break;
       case 0x042a0: { m.a0 = m.wr(m.a0, (m.a6 + -2), 32); pc = 0x042a4; } break;
       case 0x042a4: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x042a6; } break;
       case 0x042a6: { { const _s = m.loadPost('a1', 1, 8); m.storePost('a0', 1, _s, 8); m.logicFlags(_s, 8); } pc = 0x042a8; } break;
