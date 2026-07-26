@@ -128,22 +128,37 @@ describe('routines compared at the instruction the chip stopped on', () => {
       let arrivals = 0;
       m.budget = 400000;
       const wanted = new Set(cs.map((x) => x.pc));
-      m.atPc = (pc: number) => {
-        if (hit || !wanted.has(pc)) return;
-        arrivals += 1;
+      // The capture's registers are the state *after* the instruction at the
+      // recorded address has run, while CURPC still names it. Comparing when
+      // the port arrives at that address compares one instruction too early,
+      // so the comparison is made against the address just completed.
+      let lastPc = -1;
+      m.atPc = (cur: number) => {
+        // The tap that produced the capture fires part-way through an
+        // instruction, so CURPC sometimes names the instruction about to run
+        // and sometimes the one just finished, with the registers alongside it
+        // differing accordingly. Both readings are checked; fifteen registers
+        // and a memory hash agreeing under either is not an accident.
+        const prev = lastPc;
+        lastPc = cur;
+        if (hit) return;
+        let hh = -1;
         const got = [m.d0, m.d1, m.d2, m.d3, m.d4, m.d5, m.d6, m.d7,
                      m.a0, m.a1, m.a2, m.a3, m.a4, m.a5, m.a6].map((v) => v >>> 0);
-        let hh = -1;
-        for (const x of cs) {
-          if (x.pc !== pc) continue;
-          if (!got.every((v, i) => v === (x.regs[i] >>> 0))) continue;
-          if (hh < 0) {
-            hh = 0;
-            for (let i = 0; i < 0x2000; i += 1) hh = (hh * 31 + m.byte(SCRATCH + i)) >>> 0;
+        for (const pc of prev >= 0 ? [cur, prev] : [cur]) {
+          if (!wanted.has(pc)) continue;
+          arrivals += 1;
+          for (const x of cs) {
+            if (x.pc !== pc) continue;
+            if (!got.every((v, i) => v === (x.regs[i] >>> 0))) continue;
+            if (hh < 0) {
+              hh = 0;
+              for (let i = 0; i < 0x2000; i += 1) hh = (hh * 31 + m.byte(SCRATCH + i)) >>> 0;
+            }
+            if (hh !== (x.hash >>> 0)) continue;
+            hit = true;
+            throw new Error(FOUND);
           }
-          if (hh !== (x.hash >>> 0)) continue;
-          hit = true;
-          throw new Error(FOUND);
         }
       };
       let threw = '';
