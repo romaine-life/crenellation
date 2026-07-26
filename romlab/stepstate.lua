@@ -14,7 +14,8 @@
 -- executed. The tap fires several times per instruction because of prefetch, so
 -- only a change of CURPC counts.
 local OUT = "D:/repos/crenellation/romlab/out/step/"
-local log = io.open(OUT .. "s.log", "w")
+local STEPS_ENV = os.getenv("STEPN") or "200"
+local log = io.open(OUT .. "s-" .. STEPS_ENV .. ".log", "w")
 local NL = string.char(10)
 local cpu = manager.machine.devices[":maincpu"]
 local space = cpu.spaces["program"]
@@ -28,7 +29,7 @@ local SCRATCH = 0x3E4000
 local SCRATCH_LEN = 0x400
 local STACK = 0x3E5000
 local START = 2400
-local STEPS = tonumber(os.getenv("STEPN") or "200")
+local STEPS = tonumber(STEPS_ENV)
 
 local STRUCTS = {
   0x3E0864, 0x3E1968, 0x3E1CF6, 0x3E1BC6, 0x3E0F48, 0x3E02D8, 0x3E4000,

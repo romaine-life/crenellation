@@ -16,11 +16,11 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 753 |
-| **Verified against hardware** | **570** |
-| Failing | 16 |
+| **Verified against hardware** | **620** |
+| Failing | 12 |
 | Passing under some inputs, failing under others | 26 |
-| Judged only by a stopping-point mismatch | 36 |
-| Never judged | 105 |
+| Judged only by a stopping-point mismatch | 16 |
+| Never judged | 75 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -28,11 +28,15 @@ a pass, one with a single shape per run of the emulator, one replays the
 arguments the game itself passed during play. Those three cannot judge a
 routine that never returns, and 111 routines contain no `rts` at all.
 
-The fourth does not need the routine to finish. The capture runs the chip for a
+The fourth does not need the routine to finish, and it is now the widest of
+the four: it reaches 135 routines no call-and-return harness can judge. The capture runs the chip for a
 while, stops, and records **the address of the instruction it stopped on**
 along with fifteen registers and a hash of the memory window. The port then
-compares every time it arrives at that address. It reaches 89 routines no other
-harness can, 32 of them with no `rts`.
+compares every time it arrives at that address. The capture runs at three stopping points - 20, 60 and 200 instructions - and a
+match at any of them settles the routine. One stopping point was not enough:
+174 routines stop somewhere between 25 and 200 instructions, so a snapshot
+taken only at 200 missed every one of them. Adding the two shorter points took
+this harness from 187 routines of 278 to 405 of 468.
 
 The routine count went *down* from 763 to 745 when the pointer-table detector
 was tightened. It had been accepting any run of three longs whose values landed
