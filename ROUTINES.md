@@ -298,6 +298,21 @@ selection reaches them some other way and is not yet located.
   6420 branch, which calls into display code needing state the harness does not
   set up. A 42x30 board makes those counts unreachable in play.
 
+### Aiming direction - `0x11CF8`
+- **Port:** `romlab/verify15.lua` companion (`direction`)
+- **Signature:** `direction(long dx @+4, long dy @+8) -> 0..7`
+- **Behaviour:** compares `|dx|` and `|dy|` against a **7/16 ratio** - roughly
+  23.6 degrees - to sort the vector into one of three classes (mostly
+  horizontal, diagonal, mostly vertical), then reflects that by the signs.
+- **A detail worth pinning:** the final `& 7` is applied **only** on the
+  negative-dy branch, so a result of 4 comes back unmasked.
+- This is what the cannon aiming handler `0x6C20` uses: it takes the direction
+  to the target, compares it with the cannon's current facing at record+4, and
+  rotates one step the short way round.
+- **Evidence:** 35 cases - all eight compass directions, the exact 7:16 and
+  16:7 boundary ratios and both sides of them, zero, every sign combination,
+  and the 16-bit extremes. **35/35 identical.**
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -430,6 +445,27 @@ bare ground, one sealing a real castle - showed no award anywhere. The
 differential is **confounded at the root**: changing the board changes what the
 computer player does, so the two runs diverge by hundreds of cells for reasons
 unrelated to scoring. Reading the routine was what worked.
+
+## The dispatcher is an event loop
+
+The phase machine is not a switch statement. The queue key is a **function
+pointer**, and the handler table at `0x11AC4`-`0x11B5A` holds **26 handlers**,
+each a 6-byte record of `(function, priority byte, flag byte)`. The dispatcher
+simply runs queued `(handler, parameter)` pairs. Handlers recovered so far:
+
+| Handler struct | Function | Role |
+| --- | --- | --- |
+| `0x11AE2` | `0x5EA2` | territory flood fill, then scoring |
+| `0x11AEE` | `0x6C20` | cannon aiming - **uses the verified `0x11CF8`** |
+| `0x11AF4` | `0x6CAE` | removed when a shot is fired |
+| `0x11AFA` | `0x6FB4` | projectile scheduler |
+| `0x11B00` | `0x7A24` | phase countdown |
+| `0x11B54` | `0xB032` | the computer player |
+
+Projectiles are a ring of **0x1A-byte records** at `player+0x6A`, with
+`player+0x6E` and `+0x72` as cursors. Firing computes velocity from the
+verified distance routine and a speed table at `0x11774` (64, 80, 96, 96, 96),
+writing x velocity to record+6, y velocity to +0xA and an arc term to +0xE.
 
 ## Correction: the scoring measurement was wrong
 
