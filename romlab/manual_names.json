@@ -1,0 +1,810 @@
+{
+ "0x9266": [
+  "main game state machine",
+  "2832 bytes, entered by pointer; drives round flow and calls the phase helpers"
+ ],
+ "0xd04e": [
+  "battle phase controller",
+  "waits on event 0x11B1E and reads the phase countdown at 0x3E1870"
+ ],
+ "0xe4e": [
+  "board cell run renderer",
+  "converts a coordinate to both cell and screen address, then draws through 0x11EFE"
+ ],
+ "0xf5f6": [
+  "motion-object display list builder",
+  "fills the sprite link table at 0x3E0738"
+ ],
+ "0x5948": [
+  "player flag handler",
+  "tests bit 0x4000 of the player word and branches on it"
+ ],
+ "0x450c": [
+  "palette fade step",
+  "calls the colour ramp helper 0xC7BC then the palette writer"
+ ],
+ "0x452e": [
+  "palette fade step with flag",
+  "as 0x450C but passes 1 to the ramp helper"
+ ],
+ "0x143b0": [
+  "sound channel state update",
+  "walks the channel table at 0x3E3528"
+ ],
+ "0x144d0": [
+  "sound channel dispatch",
+  "per-channel entry called from the driver"
+ ],
+ "0x14578": [
+  "sound sequence player",
+  "steps the sequence state at 0x3E3536 through 0x143B0"
+ ],
+ "0x14c3c": [
+  "sound envelope step",
+  "per-channel envelope maths"
+ ],
+ "0x15064": [
+  "sound parameter scaler",
+  "scales three word parameters for the driver"
+ ],
+ "0x156ac": [
+  "sound cue selector",
+  "selects from the cue table at 0x3E3632"
+ ],
+ "0x1520e": [
+  "title screen renderer",
+  "draws through 0x18E66 from the table at 0x1D6A0"
+ ],
+ "0x2988": [
+  "cell type test",
+  "reads a cell and compares its low 6 bits against 3"
+ ],
+ "0x2338": [
+  "cell sprite draw",
+  "draws a stamped cell using the tables at 0x25C2 and 0x24C8"
+ ],
+ "0x35ee": [
+  "draw parameter marshaller",
+  "repacks stack arguments for a draw call"
+ ],
+ "0xe824": [
+  "attract mode controller",
+  "reads 0x3E1CB4 and 0x3E1954 to sequence the demo"
+ ],
+ "0x2f18": [
+  "cell overlay draw",
+  "screen address plus the overlay table at 0x11EF2"
+ ],
+ "0x686": [
+  "current piece draw",
+  "reads player->0x24 and walks the piece through 0x8B4"
+ ],
+ "0x5c60": [
+  "entity redraw flag set",
+  "sets bit 4 of the entity flag word"
+ ],
+ "0x56f4": [
+  "status panel draw",
+  "draws at fixed screen offsets 0x38, 0x50"
+ ],
+ "0x53a6": [
+  "entity list scan",
+  "walks the entity link table at 0x3E0EC2"
+ ],
+ "0xf540": [
+  "sprite slot link",
+  "links a slot in the 0x3E0000 sprite table"
+ ],
+ "0x2d78": [
+  "cell neighbour read",
+  "reads a cell and the one 0x20 beyond it"
+ ],
+ "0x25f4": [
+  "cell pair draw",
+  "resolves two coordinates to screen addresses and draws"
+ ],
+ "0x272e": [
+  "cell owner read",
+  "reads a cell's owner byte for a coordinate"
+ ],
+ "0x2698": [
+  "cell redraw",
+  "re-draws a single cell from its board value"
+ ],
+ "0x4bfa": [
+  "level intro sequence",
+  "queues the intro steps from 0x1F7E8"
+ ],
+ "0x12ca": [
+  "phase-gated board update",
+  "only runs once the phase at 0x3E195C reaches 2"
+ ],
+ "0x16bda": [
+  "high score table renderer",
+  "draws from 0x1851C and 0x17EDE"
+ ],
+ "0x18b76": [
+  "bitfield extract",
+  "packs two byte arguments into a shifted field"
+ ],
+ "0x1869e": [
+  "dual divide helper",
+  "divides two words by a common divisor"
+ ],
+ "0x38b0": [
+  "unit spawn placement",
+  "reads a unit record and places it on the board"
+ ],
+ "0x5622": [
+  "entity spawn and queue",
+  "allocates an entity then posts its event"
+ ],
+ "0xe98c": [
+  "phase advance helper",
+  "updates 0x3E195C and 0x3E0DD2"
+ ],
+ "0xcdf6": [
+  "message selector",
+  "picks a message id pair from a phase argument"
+ ],
+ "0x86ae": [
+  "cursor coordinate read",
+  "copies the player's cursor at +0x46"
+ ],
+ "0x3728": [
+  "framebuffer band clear",
+  "clears a band at 0x200004 + 0xF000"
+ ],
+ "0xedea": [
+  "difficulty clamp",
+  "clamps 0x3E0DE4 to at most 4 into 0x3E0DE2"
+ ],
+ "0x18f10": [
+  "character glyph select",
+  "selects a glyph from the table at 0x19182"
+ ],
+ "0x255c": [
+  "wall cell set",
+  "writes owner|1 into a cell"
+ ],
+ "0x6b10": [
+  "unit step wrapper",
+  "calls the unit advance at 0x69E2 and checks the result"
+ ],
+ "0x18652": [
+  "exception reporter",
+  "shared tail of the exception stubs; prints the name that follows the call"
+ ],
+ "0xf922": [
+  "sprite depth key",
+  "reads entity+6 and subtracts 0x4000 when the flag bit is set - the sort key"
+ ],
+ "0xf26a": [
+  "motion-object word pack",
+  "packs entity x/y into the hardware's 0xff80>>7 sprite words"
+ ],
+ "0xf1fa": [
+  "motion-object entry write",
+  "writes a built sprite entry into the display list"
+ ],
+ "0xf4ca": [
+  "sprite slot address",
+  "indexes the 0x3E0000 sprite table by slot"
+ ],
+ "0xdc3a": [
+  "round summary sequence",
+  "steps the between-round display"
+ ],
+ "0x14a36": [
+  "sound channel key-on",
+  "writes the channel state at 0x3E34ED"
+ ],
+ "0x155a0": [
+  "sound tempo update",
+  "advances the tempo counters at 0x3E365A"
+ ],
+ "0x141d4": [
+  "sound enable check",
+  "gates on the flag at 0x3E344A"
+ ],
+ "0x183f2": [
+  "sound flag clear",
+  "clears the top bit of 0x3E3D8E"
+ ],
+ "0x2fb6": [
+  "cell block draw",
+  "draws a run of cells through 0x272E and the overlay table"
+ ],
+ "0x778": [
+  "cursor move",
+  "reads the player cursor at +0x46 and resolves it to a cell"
+ ],
+ "0x427e": [
+  "entity draw dispatch",
+  "dispatches a draw for a live entity"
+ ],
+ "0x463c": [
+  "palette sequence - table 0x1ED20",
+  "runs a fade using the ramp at 0x1ED20"
+ ],
+ "0x4552": [
+  "palette sequence - table 0x1EE60",
+  "runs a fade using the ramp at 0x1EE60"
+ ],
+ "0x45ca": [
+  "palette sequence - tables 0x1ECA0/0x1ECC0",
+  "runs two fades in succession"
+ ],
+ "0x4ab8": [
+  "palette sequence - table 0x1EDA0",
+  "runs a fade using the ramp at 0x1EDA0"
+ ],
+ "0x469e": [
+  "palette sequence - table 0x1F140",
+  "runs a fade using the ramp at 0x1F140"
+ ],
+ "0x4d44": [
+  "palette sequence - table 0xFE18",
+  "runs a fade using the ramp at 0xFE18"
+ ],
+ "0xdb7e": [
+  "text line draw",
+  "draws one line through the glyph routine at 0x206"
+ ],
+ "0xdc10": [
+  "text width measure",
+  "measures a string through 0x200"
+ ],
+ "0x3802": [
+  "level data load",
+  "reads the level pointer at 0x3E0DCA and copies its header"
+ ],
+ "0x3666": [
+  "draw argument repack",
+  "repacks stack arguments for a draw call"
+ ],
+ "0x4332": [
+  "screen row address",
+  "resolves a coordinate to a screen address plus 0xC0"
+ ],
+ "0x79b6": [
+  "phase timer set",
+  "loads 0x3E1870 and ticks it once"
+ ],
+ "0x7a02": [
+  "phase timer stop",
+  "removes the countdown event 0x11B00"
+ ],
+ "0x7a12": [
+  "phase timer start",
+  "posts the countdown event 0x11B00"
+ ],
+ "0x79ce": [
+  "phase timer start with value",
+  "loads 0x3E1870 then posts the countdown event"
+ ],
+ "0xca88": [
+  "pause handler",
+  "compares the pause flag at 0x3E1950 against 0x46"
+ ],
+ "0xab12": [
+  "round teardown",
+  "removes the round events 0x11B60 and 0x11B4E"
+ ],
+ "0xfc9c": [
+  "option bit test",
+  "compares the option words at 0x3E0DE6 and 0x3E0DE2"
+ ],
+ "0xb5b8": [
+  "cell write helper",
+  "writes a cell from two byte arguments"
+ ],
+ "0x438": [
+  "dispatcher gate check",
+  "tests the gate word at 0x3E0802"
+ ],
+ "0x435a": [
+  "conditional draw",
+  "branches on a byte argument before drawing"
+ ],
+ "0x34b2": [
+  "cell region draw",
+  "walks a region resolving each cell to screen"
+ ],
+ "0x2aae": [
+  "cell overlay walk",
+  "walks cells applying the overlay table"
+ ],
+ "0x33f4": [
+  "cell row draw",
+  "draws a row of cells"
+ ],
+ "0x3cee": [
+  "cell value draw",
+  "draws a cell selected by its board value"
+ ],
+ "0x2eb8": [
+  "cell address pair",
+  "resolves a coordinate to both cell and screen"
+ ],
+ "0x31ba": [
+  "cell overlay apply",
+  "applies the overlay to one cell"
+ ],
+ "0x53f8": [
+  "entity list walk",
+  "walks the entity list at 0x3E0EC2 from the count at 0x3E0EBE"
+ ],
+ "0x3f94": [
+  "cell owner and type read",
+  "reads both fields of a cell for a caller"
+ ],
+ "0xd7a0": [
+  "round event wait",
+  "waits on event 0x11B1E before proceeding"
+ ],
+ "0x1684c": [
+  "audio and video reset",
+  "calls the sound reset 0x19366 and the video reset 0x17500"
+ ],
+ "0x168f8": [
+  "audio and video reset (variant)",
+  "same pair with an extra flag test at 0x372"
+ ],
+ "0x12222": [
+  "RLE decoder - variant A",
+  "byte stream with a 0x1F run mask, high bit terminates"
+ ],
+ "0x124e2": [
+  "RLE decoder - variant B",
+  "byte stream with a 0x1F run mask and a second counter"
+ ],
+ "0x1e720": [
+  "RLE decoder - variant C",
+  "byte stream with a 0x1F run mask"
+ ],
+ "0x9080": [
+  "credit compare",
+  "compares the credit counters at 0x3E1942 and 0x3E1944"
+ ],
+ "0x5168": [
+  "cursor entity draw",
+  "draws the player's cursor entity from +0x42"
+ ],
+ "0x6988": [
+  "cell owner test",
+  "reads a cell and masks its owner bits"
+ ],
+ "0xfbc6": [
+  "stack probe",
+  "offsets the stack pointer by a value from 0x3E0800"
+ ],
+ "0xdda": [
+  "counter step",
+  "advances the counter at 0x3E0DC4"
+ ],
+ "0x3f22": [
+  "slot table walk",
+  "walks the 8-byte records at 0x3E0DF6"
+ ],
+ "0x534": [
+  "negate and store",
+  "negates a byte and writes it back with its neighbour"
+ ],
+ "0x580": [
+  "vblank gate tick",
+  "increments the dispatcher gate at 0x3E0802 and wraps it at 0x78"
+ ],
+ "0xd9a": [
+  "counter reset",
+  "reloads the counter at 0x3E0DC4"
+ ],
+ "0x2b74": [
+  "framebuffer pair draw",
+  "draws a cell pair at the fixed address 0x2064A"
+ ],
+ "0x3194": [
+  "rubble draw",
+  "draws the rubble tile - called by the verified damage handler"
+ ],
+ "0x3a08": [
+  "event id dispatch",
+  "branches on an event id against 0x11 and 0x1A"
+ ],
+ "0x45fa": [
+  "palette sequence - table 0x1EE20",
+  "runs a fade using the ramp at 0x1EE20"
+ ],
+ "0x4f9e": [
+  "attract text sequence",
+  "queues attract text through 0xC95E"
+ ],
+ "0x4fea": [
+  "palette sequence - table 0xFDE2",
+  "runs a fade using the ramp at 0xFDE2"
+ ],
+ "0x5474": [
+  "entity list bound check",
+  "compares the entity list head against 0x10E"
+ ],
+ "0x58e6": [
+  "player flag set",
+  "sets a player flag through 0x5948"
+ ],
+ "0x5908": [
+  "player flag clear",
+  "clears a player flag through 0x5948"
+ ],
+ "0x90be": [
+  "credit add",
+  "adds to the credit counter at 0x3E1942"
+ ],
+ "0xc2bc": [
+  "cell sign test",
+  "tests the high bit of a cell byte"
+ ],
+ "0xc4ae": [
+  "list node insert",
+  "links a node into an allocator list"
+ ],
+ "0xc4e8": [
+  "list node unlink",
+  "unlinks a node from an allocator list"
+ ],
+ "0xdbe6": [
+  "text line measure",
+  "measures a line through the glyph routines"
+ ],
+ "0xecb0": [
+  "two-player draw gate",
+  "only draws when 0x3E1954 says two players"
+ ],
+ "0xf3b2": [
+  "sprite depth sort",
+  "orders the display list by the depth key from 0xF922"
+ ],
+ "0xfc4a": [
+  "option bit test (variant)",
+  "second form of the 0x3E0DE2 option compare"
+ ],
+ "0x122c6": [
+  "decompressor inner loop",
+  "run expansion using the table at 0x12350"
+ ],
+ "0x1231a": [
+  "decompressor nibble split",
+  "splits a control byte into count and value"
+ ],
+ "0x133b2": [
+  "sound IRQ acknowledge",
+  "reads the interrupt latch at 0x640000"
+ ],
+ "0x133ec": [
+  "sound command latch",
+  "gates on 0x3E340C and reads 0x640002"
+ ],
+ "0x1354c": [
+  "sound register preset",
+  "writes the fixed register list into 0x3E3F00"
+ ],
+ "0x13cda": [
+  "coin counter pulse",
+  "pulses 0x6C0000 and sets a bit in 0x3E3D8E"
+ ],
+ "0x13e6a": [
+  "sound call marshaller",
+  "builds a stack frame for a driver call"
+ ],
+ "0x13f98": [
+  "sound enable check (variant)",
+  "second gate on 0x3E344A"
+ ],
+ "0x14492": [
+  "sequence advance",
+  "bumps 0x3E3532 and steps the sequence at 0x3E3536"
+ ],
+ "0x144ae": [
+  "sequence wrap test",
+  "compares the sequence cursor against its base"
+ ],
+ "0x15672": [
+  "bit set helper",
+  "builds a one-bit mask from a byte argument"
+ ],
+ "0x1568e": [
+  "bit clear helper",
+  "builds an inverted one-bit mask"
+ ],
+ "0x15830": [
+  "voice index clamp",
+  "clamps a voice number to at most 0x13"
+ ],
+ "0x160ba": [
+  "audio reset wrapper",
+  "calls the sound reset then the shared init"
+ ],
+ "0x1815a": [
+  "sound table init",
+  "initialises from the table at 0x18040"
+ ],
+ "0x18548": [
+  "exception stub - bus error",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x18556": [
+  "exception stub - address error",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x18564": [
+  "exception stub - illegal instruction",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x18576": [
+  "exception stub - divide by zero",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x18588": [
+  "exception stub - CHK failure",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x18598": [
+  "exception stub - TRAPV overflow",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x185aa": [
+  "exception stub - privilege violation",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x185b6": [
+  "exception stub - trace",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x185cc": [
+  "exception stub - line-A emulation",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x185dc": [
+  "exception stub - line-F emulation",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x185ee": [
+  "exception stub - format error",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x18600": [
+  "exception stub - uninitialised vector",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x18614": [
+  "exception stub - spurious interrupt",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x18626": [
+  "exception stub - unassigned vector",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x1863e": [
+  "exception stub - initialised vector",
+  "calls the common reporter at 0x18652; the exception's name string follows inline"
+ ],
+ "0x1890c": [
+  "sound gate on 0x3E340E",
+  "skips the call when the flag is set"
+ ],
+ "0x18afe": [
+  "sound call - two long args",
+  "marshals two longs for the driver"
+ ],
+ "0x18b5c": [
+  "sound call - three long args",
+  "marshals three longs for the driver"
+ ],
+ "0x18d88": [
+  "sound state copy",
+  "copies into the driver state block at 0x3E3400"
+ ],
+ "0x18dc4": [
+  "sound voice select",
+  "loads 0x3E340A and clears 0x3E3406"
+ ],
+ "0x5488": [
+  "round entity teardown",
+  "clears the entity count at 0x3E0EBE and removes event 0x11B1E"
+ ],
+ "0x15a0": [
+  "interrupt mask set",
+  "raises then lowers the mask through 0x1592 and 0x1578"
+ ],
+ "0x2c5c": [
+  "fixed panel draw",
+  "draws at the fixed framebuffer address 0x211DE"
+ ],
+ "0x2e28": [
+  "cell state draw",
+  "resolves a coordinate to cell and screen and draws its state"
+ ],
+ "0x408e": [
+  "screen row address (+0xB0)",
+  "resolves a coordinate then offsets by 0xB0"
+ ],
+ "0x44a2": [
+  "round display teardown",
+  "removes the round's display event"
+ ],
+ "0x4d6c": [
+  "palette clear",
+  "writes a zeroed palette"
+ ],
+ "0x50c6": [
+  "entity redraw walk",
+  "recursively redraws an entity and its children"
+ ],
+ "0x5280": [
+  "current player lookup",
+  "reads the current player pointer at 0x3E1960"
+ ],
+ "0x6f80": [
+  "cannon fire gate",
+  "checks the current player before firing"
+ ],
+ "0x76ee": [
+  "player pair setup",
+  "prepares two player pointers for a shared operation"
+ ],
+ "0x7b14": [
+  "all-player iterate",
+  "walks the three player structs at stride 0x7E"
+ ],
+ "0x7cb0": [
+  "player field read",
+  "reads a word field from a player struct"
+ ],
+ "0x7f5a": [
+  "entity field update",
+  "updates a field on a passed entity"
+ ],
+ "0x8200": [
+  "level teardown",
+  "reads the level pointer and removes its events"
+ ],
+ "0x8f2e": [
+  "castle list access",
+  "reads the castle list at player+0x4A"
+ ],
+ "0xc150": [
+  "computer player targeting",
+  "scans 0x3E1900 with a 0x3E7 bound and takes a bearing"
+ ],
+ "0xce48": [
+  "damage skip count read",
+  "reads player+0x1D, the damage sub-list selector"
+ ],
+ "0xcf40": [
+  "computer player fire decision",
+  "checks the score field at player+0x22 before firing"
+ ],
+ "0xe000": [
+  "service mode entry",
+  "enters the operator menu through 0x18A"
+ ],
+ "0xe3b0": [
+  "operator menu",
+  "358 bytes of menu handling built on a large stack frame"
+ ],
+ "0xeaba": [
+  "phase reset wrapper",
+  "sets the phase then calls the reset at 0xC2DC"
+ ],
+ "0x1238c": [
+  "RLE decoder - variant D",
+  "byte stream with a high-bit terminator"
+ ],
+ "0x14ff2": [
+  "sound channel bound",
+  "rejects channel numbers of 6 and above"
+ ],
+ "0x17ef4": [
+  "blit parameter setup",
+  "marshals width, height and stride for a blit"
+ ],
+ "0x17f42": [
+  "text blit - table 0x1DFB2",
+  "blits from 0x1DFB2 at mode 0x2040"
+ ],
+ "0x17f70": [
+  "text blit - table 0x1DF8A",
+  "blits from 0x1DF8A at mode 0x2040"
+ ],
+ "0x18c48": [
+  "script interpreter - step",
+  "walks a byte script adding to an index"
+ ],
+ "0x18caa": [
+  "script interpreter - test",
+  "same walk, testing the indexed byte"
+ ],
+ "0x2b88": [
+  "cell owner draw",
+  "shifts a cell's owner bits down and draws through 0x11EFE"
+ ],
+ "0xc2dc": [
+  "round state reset",
+  "clears the 32-entry state block at 0x3E1C44"
+ ],
+ "0x551c": [
+  "pause and sound gate",
+  "checks the pause flag at 0x3E1950 and the entity list before calling 0x90E6"
+ ],
+ "0x1753c": [
+  "self-test string draw",
+  "draws a message with a width and a colour argument"
+ ],
+ "0x177e8": [
+  "self-test banner",
+  "draws the banner from 0x1E152 then a text line"
+ ],
+ "0x17800": [
+  "self-test main",
+  "runs the power-on checks against the table at 0x1851C"
+ ],
+ "0x1796e": [
+  "self-test result branch",
+  "branches on the accumulated result mask"
+ ],
+ "0x1798c": [
+  "self-test detail screen",
+  "1362 bytes of per-subsystem reporting"
+ ],
+ "0x1851c": [
+  "self-test result accumulate",
+  "folds a result into the words at 0x3E3D82/0x3E3D86"
+ ],
+ "0x27c2": [
+  "board region redraw",
+  "resolves a region through 0x3BA4 and redraws its cells"
+ ],
+ "0x2a5c": [
+  "cell draw at 0x2065A",
+  "draws a cell to the fixed framebuffer address 0x2065A"
+ ],
+ "0x2c86": [
+  "cell overlay draw (second form)",
+  "cell address plus the overlay table at 0x11EFE"
+ ],
+ "0x3a4a": [
+  "cell owner branch",
+  "shifts a cell's owner bits down and branches on them"
+ ],
+ "0x61c2": [
+  "placement validate",
+  "checks a placement through 0x6BC0 before committing"
+ ],
+ "0x6460": [
+  "placement commit",
+  "draws the committed cell through 0x2B88"
+ ],
+ "0xcc3a": [
+  "computer player parity",
+  "masks bit 0 of the AI state byte at +0x19"
+ ],
+ "0xf13e": [
+  "display list build",
+  "walks the entity table into the sprite table at 0x3E0000"
+ ],
+ "0x1259c": [
+  "decompressor nibble expand",
+  "splits a byte into two 4-bit values and scales"
+ ],
+ "0x13350": [
+  "sound cold start",
+  "sets 0x3E340C, resets the driver and lowers the interrupt mask"
+ ],
+ "0x16bc8": [
+  "sound ready wait",
+  "spins on 0x144AE until the driver reports ready"
+ ],
+ "0x3354": [
+  "cell draw by coordinate",
+  "resolves the same coordinate to screen and cell address, then draws"
+ ]
+}
