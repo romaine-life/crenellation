@@ -61,6 +61,22 @@ Register note: MAME's m68k state exposes the stack as `SP`, not `A7`.
 - **Evidence:** `romlab/compare_recolor.py` - 6 cases over seeded input blocks,
   all 64 pixels identical, palette bases 0x00 through 0xF0.
 
+### Rectangle palette remap - `0x1217E`
+- **Port:** `romlab/compare_remap.py` (`remap_rect`)
+- **Signature:** `remap_rect(long dest @+4, long table @+8, long width @+12,
+  long height @+16)`
+- **Behaviour:** for each pixel in the rectangle, split it into palette bank
+  (high nibble) and colour (low nibble), look the bank up in a 16-entry table
+  and add that to the colour. Rows advance by 0x200. This is the generalised
+  form of the 8x8 recolour - the mechanism behind re-tinting a claimed region.
+- **Evidence:** `romlab/compare_remap.py` - 6 cases across sizes 8x8, 16x4,
+  4x16, 12x12 and 32x2 with different remap tables, all pixels identical.
+
+### Screen dissolve - `0x11E10` (identified, not yet ported)
+Clears the framebuffer in pseudo-random order using an LFSR (`#$b400`
+polynomial, rejecting values >= 0xF000) - the static-wipe transition. Listed
+here because it explains the largest framebuffer reader; still outstanding.
+
 ## Correction: the scoring measurement was wrong
 
 Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
