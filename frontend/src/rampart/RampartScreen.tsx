@@ -8,6 +8,8 @@ import {
   BATTLEFIELDS,
   Jukebox,
   MUSIC,
+  SFX,
+  SoundBank,
   artUrl,
   attractFrameAt,
   type Screen,
@@ -160,6 +162,7 @@ export function Rampart() {
       let hoverCol = Math.floor(GRID_COLS / 2);
       let hoverRow = Math.floor(GRID_ROWS / 2);
       const jukebox = new Jukebox();
+      const sfx = new SoundBank();
 
       const setBackdrop = (name: string | null) => {
         const tex = name ? textures.get(name) : undefined;
@@ -221,9 +224,13 @@ export function Rampart() {
           screenMs = 0;
           return;
         }
-        if (game.phase.phase === 'build') placePiece(game, p.col, p.row);
-        else if (game.phase.phase === 'place') placeCannon(game, p.col, p.row);
-        else fireAt(game, p.fx, p.fy);
+        if (game.phase.phase === 'build') {
+          if (placePiece(game, p.col, p.row)) sfx.play(SFX.place);
+        } else if (game.phase.phase === 'place') {
+          if (placeCannon(game, p.col, p.row)) sfx.play(SFX.blip);
+        } else if (fireAt(game, p.fx, p.fy)) {
+          sfx.play(SFX.fire);
+        }
       };
 
       const onWheel = (ev: WheelEvent) => {

@@ -78,3 +78,47 @@ export class Jukebox {
     this.el?.pause();
   }
 }
+
+// Sound effects, mapped by watching which OKI sample the driver latches when a
+// sound id is queued during play (romlab/sfxpair.lua):
+//   id 94 (the cannon launch cue) -> sample 1
+//   id 100 -> samples 7 / 38, the frequent cursor and placement ticks
+export const SFX = {
+  fire: 'fire',
+  place: 'place',
+  tick: 'tick',
+  blip: 'blip',
+} as const;
+
+export function sfxUrl(name: string): string {
+  return `${ART_BASE}/${name}.mp3`;
+}
+
+/** Small pool per effect so rapid repeats overlap instead of cutting off. */
+export class SoundBank {
+  private pools = new Map<string, HTMLAudioElement[]>();
+  private idx = new Map<string, number>();
+
+  play(name: string, volume = 0.6): void {
+    let pool = this.pools.get(name);
+    if (!pool) {
+      pool = Array.from({ length: 3 }, () => {
+        const a = new Audio(sfxUrl(name));
+        a.preload = 'auto';
+        return a;
+      });
+      this.pools.set(name, pool);
+      this.idx.set(name, 0);
+    }
+    const i = (this.idx.get(name) ?? 0) % pool.length;
+    this.idx.set(name, i + 1);
+    const el = pool[i];
+    el.volume = volume;
+    try {
+      el.currentTime = 0;
+    } catch {
+      /* not loaded yet */
+    }
+    void el.play().catch(() => undefined);
+  }
+}
