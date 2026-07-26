@@ -27,7 +27,7 @@ local TAPS = {}
 -- runs before the next case starts. In ROM that was arbitrary data - it was
 -- adding 8 to d0 - so the sentinel lives in RAM with a nop written into it.
 local SENTINEL = 0x3E6000
-local NOP = 0x4E71
+local PARK = 0x60FE   -- bra to self: the CPU spins here between cases
 local RAM_LO, RAM_HI = 0x3E0000, 0x3EFFFF
 local SCRATCH, SCRATCH_LEN = 0x3E4000, 0x400
 local STACK = 0x3E5000
@@ -60,7 +60,9 @@ local frame = 0
 local running = false
 local startedFrame = 0
 local inregs = {}
+local stackargs = {}
 local finished = false
+local finishedOk = false
 local dirty = {}
 
 local function dump_baseline()
@@ -98,7 +100,7 @@ local function begin_case()
     return
   end
   restore_ram()
-  space:write_u16(SENTINEL, NOP)
+  space:write_u16(SENTINEL, PARK)
   for i = 0, SCRATCH_LEN - 1 do space:write_u8(SCRATCH + i, rnd() % 256) end
   inregs = {}
   for k = 0, 7 do
@@ -112,10 +114,13 @@ local function begin_case()
     cpu.state["A" .. k].value = v
   end
   local sp = STACK
+  stackargs = {}
   for k = 1, 4 do
     sp = sp - 4
-    space:write_u32(sp, (k % 2 == 0) and (rnd() % 0x100)
-                    or (SCRATCH + (rnd() % (SCRATCH_LEN - 0x80))))
+    local v = (k % 2 == 0) and (rnd() % 0x100)
+              or (SCRATCH + (rnd() % (SCRATCH_LEN - 0x80)))
+    space:write_u32(sp, v)
+    stackargs[k] = v
   end
   sp = sp - 4
   space:write_u32(sp, SENTINEL)
@@ -131,6 +136,7 @@ local function record(kind)
   local ins = {}
   for k = 0, 7 do ins[#ins + 1] = string.format("%04X", inregs["D" .. k]) end
   for k = 0, 5 do ins[#ins + 1] = string.format("%06X", inregs["A" .. k]) end
+  for k = 1, 4 do ins[#ins + 1] = string.format("%08X", stackargs[k] or 0) end
   if kind == "R" then
     local parts = {}
     for _, r in ipairs({ "D0","D1","D2","D3","D4","D5","D6","D7","A0","A1","A2","A3" }) do
@@ -154,10 +160,15 @@ end
 local function install()
   TAPS[#TAPS + 1] = space:install_read_tap(SENTINEL, SENTINEL + 1, "sent",
     function(o, d, mask)
+      -- only note the return here. Starting the next case from inside the tap
+      -- does not work: the CPU finishes its fetch at the sentinel first, and
+      -- that fetch re-enters this tap and completes the next case before it has
+      -- executed anything. Parking at the sentinel lets the frame handler take
+      -- over safely.
       if running then
         running = false
+        finishedOk = true
         record("R")
-        begin_case()
       end
       return d
     end)
@@ -171,7 +182,7 @@ end
 emu.register_frame_done(function()
   frame = frame + 1
   if frame == 400 then
-    space:write_u16(SENTINEL, NOP)
+    space:write_u16(SENTINEL, PARK)
     dump_baseline()
     install()
     log:write("baseline dumped" .. NL)
@@ -180,8 +191,13 @@ emu.register_frame_done(function()
     return
   end
   if frame < 400 then return end
+  if finishedOk then
+    finishedOk = false
+    begin_case()
+    return
+  end
   -- a case still running after a whole frame is hung on its random input
-  if running and frame > startedFrame + 1 then
+  if running and frame > startedFrame then
     running = false
     record("N")
     log:flush()
