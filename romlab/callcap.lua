@@ -63,28 +63,53 @@ end
 emu.register_frame_done(function()
   frame = frame + 1
   if frame == 300 then install() end
-  if frame > 300 and frame < 48000 then
+  -- Drive every input the board has, not the two that were guessed at. A
+  -- routine is only recorded if the game calls it, and most of the ones that
+  -- were never exercised are ordinary play code the previous run simply never
+  -- reached: second and third player, the other buttons, all four trackball
+  -- axes, and the self-test that only runs with the service switch held.
+  if frame > 300 and frame < 60000 then
     local c = frame % 240
-    if c == 0 then set(":IN1", "Coin 1", 1) end
-    if c == 20 then set(":IN1", "Coin 1", 0) end
-    if c == 40 then set(":IN1", "P1 Button 1", 1) end
-    if c == 50 then set(":IN1", "P1 Button 1", 0) end
+    if c == 0 then set(":IN1", "Coin 1", 1); set(":IN1", "Coin 2", 1) end
+    if c == 20 then set(":IN1", "Coin 1", 0); set(":IN1", "Coin 2", 0) end
+    if c == 40 then set(":IN1", "P1 Button 1", 1); set(":IN0", "P2 Button 1", 1) end
+    if c == 50 then set(":IN1", "P1 Button 1", 0); set(":IN0", "P2 Button 1", 0) end
+    if c == 60 then set(":P3", "P3 Button 1", 1) end
+    if c == 70 then set(":P3", "P3 Button 1", 0) end
   end
+  -- a spell in service mode, which is the only way into the self-test
+  if frame == 60000 then set(":IN1", "Service Mode", 1) end
+  if frame == 64000 then set(":IN1", "Service Mode", 0) end
+  if frame > 64200 and frame % 900 == 0 then set(":IN1", "Service 1", 1) end
+  if frame > 64200 and frame % 900 == 30 then set(":IN1", "Service 1", 0) end
   if frame > 500 then
-    tx = (tx + 7) % 256; ty = (ty + 11) % 256
+    -- vary the direction as well as the speed, so the cursor sweeps the board
+    -- instead of drifting one way forever
+    local phase = (frame // 600) % 4
+    local dx = (phase == 0 and 7) or (phase == 1 and -5) or (phase == 2 and 13) or -11
+    local dy = (phase == 0 and 11) or (phase == 1 and 9) or (phase == 2 and -7) or -3
+    tx = (tx + dx) % 256; ty = (ty + dy) % 256
     set(":TRACK3", "Trackball X", tx); set(":TRACK2", "Trackball Y", ty)
+    set(":TRACK1", "Trackball X 2", ty); set(":TRACK0", "Trackball Y 2", tx)
+    set(":TRACK1", "Trackball X 3", tx); set(":TRACK0", "Trackball Y 3", ty)
     local q = frame % 45
     if q == 0 then set(":IN1", "P1 Button 1", 1) end
     if q == 6 then set(":IN1", "P1 Button 1", 0) end
-    if q == 22 then set(":IN1", "P2 Button 1", 1) end
-    if q == 28 then set(":IN1", "P2 Button 1", 0) end
+    if q == 12 then set(":IN1", "P1 Button 2", 1) end
+    if q == 16 then set(":IN1", "P1 Button 2", 0) end
+    if q == 22 then set(":IN0", "P2 Button 1", 1) end
+    if q == 28 then set(":IN0", "P2 Button 1", 0) end
+    if q == 33 then set(":IN0", "P2 Button 2", 1); set(":P3", "P3 Button 2", 1) end
+    if q == 38 then set(":IN0", "P2 Button 2", 0); set(":P3", "P3 Button 2", 0) end
+    if q == 41 then set(":P3", "P3 Button 1", 1) end
+    if q == 44 then set(":P3", "P3 Button 1", 0) end
   end
   -- capture in short windows: the tap fires on every instruction fetch, which
   -- is far too slow to leave on continuously
   local m = frame % 30
   if m == 0 and frame > 400 then capturing = true
   elseif m == 4 then capturing = false end
-  if frame == 48000 then
+  if frame == 90000 then
     local covered = 0
     for _, c in pairs(seen) do if c > 0 then covered = covered + 1 end end
     log:write(string.format("# samples %d routines %d", n, covered) .. NL)

@@ -138,7 +138,11 @@ def main():
     obs = HERE / "out" / "missing-entries.json"
     if obs.exists():
         for tgt in json.loads(obs.read_text()):
-            if tgt % 2 or covered(tgt):
+            # A jump-table base is data by construction. The port reaching one
+            # means it computed an offset of zero and landed on the table
+            # itself, which is a routine diverging earlier - not a missing
+            # entry point. Injecting it would turn the table into code.
+            if tgt % 2 or covered(tgt) or tgt in found:
                 continue
             region_end = LIMIT
             for a, b in funcs:
@@ -157,6 +161,8 @@ def main():
     merged = {}
     if out.exists():
         for r in json.loads(out.read_text()):
+            if r[2] == 0 and (r[0] in found or r[0] % 2):
+                continue        # drop a table base recorded by an earlier pass
             merged[r[0]] = r
     added = 0
     for r in spans:
