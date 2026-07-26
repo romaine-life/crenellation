@@ -17,8 +17,10 @@ export function floodFromEdges(board: Board): boolean[] {
     const i = idx(c, r);
     if (open[i]) return;
     const cell = board.cells[i];
-    // Walls and castles block; rubble does not (a broken wall leaks).
-    if (cell.occupant === 'wall' || cell.occupant === 'castle') return;
+    // ONLY walls block. A castle must not, or the flood can never reach it and
+    // every castle reads as sealed from the start — which defeats the whole
+    // game. Rubble does not block either: a broken wall leaks.
+    if (cell.occupant === 'wall') return;
     open[i] = true;
     stack.push(i);
   };

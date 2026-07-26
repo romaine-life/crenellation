@@ -96,11 +96,15 @@ export function rotatePiece(game: GameState): void {
   game.pieceCells = rotate(game.pieceCells);
 }
 
-/** Can this piece drop here? Every covered cell must be bare land. */
+/**
+ * Can this piece drop here? Every covered cell must be land that is clear or
+ * rubble — rebuilding over the wreckage of a blown-up wall is the whole point
+ * of the rebuild phase, and forbidding it makes a damaged game unwinnable.
+ */
 export function canPlace(game: GameState, col: number, row: number): boolean {
   return game.pieceCells.every(([dx, dy]) => {
     const cell = cellAt(game.board, col + dx, row + dy);
-    return !!cell && cell.terrain === 'land' && cell.occupant === 'empty';
+    return !!cell && cell.terrain === 'land' && (cell.occupant === 'empty' || cell.occupant === 'rubble');
   });
 }
 
