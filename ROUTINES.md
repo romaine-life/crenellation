@@ -267,6 +267,17 @@ selection reaches them some other way and is not yet located.
   last of four, a key past the count, a key exactly at it, a zero key,
   duplicates, and a longer table. **12/12 identical.**
 
+### Board coordinate to screen address - `0x11BEC`
+- **Port:** `romlab/verify12.lua` companion (`screen_address`)
+- **Behaviour:** `0x200004 + ((y << 9) + x) << 3`, where x is added as a **byte**
+  so it wraps into the low 8 bits rather than carrying. Net effect: each board
+  cell is 8 pixels wide and 8 rows tall in a 512-byte-per-row bitmap, which is
+  what makes 42x30 cells cover the 336x240 screen exactly.
+- Sits immediately after the cell-address routine `0x11BD8`: one maps a
+  coordinate to the board array, the other to the pixels it is drawn at.
+- **Evidence:** 15 cases - corners, edges, interior, and out-of-range
+  coordinates chosen to exercise the byte-sized add. **15/15 identical.**
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -375,7 +386,7 @@ machine rather than a self-contained routine.
 
 ## Scoring - still unlocated
 
-Three searches came up empty, which is worth recording so they are not repeated:
+Four searches came up empty, which is worth recording so they are not repeated:
 
 - No long in work RAM increases monotonically by round amounts over a 601-sample
   capture of the whole 64KB.
@@ -384,9 +395,17 @@ Three searches came up empty, which is worth recording so they are not repeated:
 - The fields of the player struct that do only increase hold coordinate-like
   values, not a running total.
 
-The likeliest reason is that the driven bot never actually scores during
-capture. Reaching the scoring routine probably needs a session that completes an
-enclosure on purpose - which the now-verified enclosure test makes constructible.
+- A **differential run** (`romlab/score5.lua`): two otherwise identical
+  sessions, one with a sealed 10x10 wall written onto the board at a fixed
+  frame and one without, diffed across the phase change. The runs do diverge -
+  234 bytes outside the board by the end - but the differences are entity and
+  sprite state, and no value anywhere differs by a round award amount.
+
+The likely reason the differential failed is that the stamped wall enclosed
+**empty ground**. Rampart scores territory that contains a castle, so sealing a
+patch of bare land is not a scoring event at all. The next attempt should locate
+a castle on the board first - the terrain codes are readable now - and seal
+around that instead.
 
 ## Correction: the scoring measurement was wrong
 
