@@ -103,14 +103,23 @@ describe('every routine against the real 68000', () => {
         // trial 0 is noise; later trials hand the routine the structures the
         // game really passes and indices small enough to be in range, which is
         // the difference between a routine returning and wandering off
+        // Several argument shapes: a routine that never returns yields nothing
+        // to compare, and verification needs identical inputs on both sides,
+        // not plausible ones. Same number of draws in every shape.
         for (let k = 0; k < 8; k += 1) {
           const r = rand.next();
-          d.push(trial === 0 ? r % 0x10000 : trial === 1 ? r % 32 : r % 256);
+          d.push(trial === 0 ? r % 0x10000 : trial === 1 ? r % 32
+            : trial === 2 ? r % 256 : trial === 3 ? 0 : trial === 4 ? 1
+            : trial === 5 ? r % 8 : trial === 6 ? 0xffff : r % 4);
         }
         const a: number[] = [];
         for (let k = 0; k < 6; k += 1) {
           const r = rand.next();
-          a.push(trial === 0 ? SCRATCH + (r % (SCRATCH_LEN - 0x80)) : STRUCTS[r % STRUCTS.length]);
+          a.push(trial === 0 ? SCRATCH + (r % (SCRATCH_LEN - 0x80))
+            : trial === 3 || trial === 6 ? SCRATCH + 0x40 * k
+            : trial === 4 ? STRUCTS[0]
+            : trial === 7 ? STRUCTS[k % STRUCTS.length]
+            : STRUCTS[r % STRUCTS.length]);
         }
         let sp = STACK;
         for (let k = 1; k <= 4; k += 1) {

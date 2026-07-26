@@ -18,89 +18,90 @@ replays the arguments the game itself passed during play.
 
 | | |
 |---|---|
-| Routines in the overlay | 722 |
-| Verified against hardware | 462 |
-| Failing | 30 |
-| Passing one harness, failing the other | 9 |
-| Never exercised (hardware never returned) | 221 |
+| Routines in the overlay | 754 |
+| Verified against hardware | 473 |
+| Failing | 32 |
+| Passing one harness, failing the other | 8 |
+| Never exercised (hardware never returned) | 241 |
 
-The routine count rose from the original 593 because executable code had been
-filed as data: 66 `jmp` trampolines below the first ordinary routine, and the
-cases reached through pc-relative jump tables. Coverage of the overlay is still
-100% with no function labelled unknown.
+The routine count rose from the original 593 because executable code kept
+turning up that had been filed as data or merged into a neighbour: 66 `jmp`
+trampolines below the first ordinary routine, the cases reached through
+pc-relative jump tables, and the handlers whose addresses live in tables of
+32-bit function pointers - those often point into the *middle* of an existing
+function, so several handlers were being measured as one block that nothing
+ever calls as a whole. Coverage of the overlay is 100% with no function
+labelled unknown.
 
 ### Instruction rules
-
-Routine-level differences say a routine is wrong, not which rule is wrong, and
-one bad rule spreads across every routine that uses it. Each distinct
-instruction encoding inside a function is therefore also run on its own, with
-known registers, at a fixed address.
 
 **9,149 of 9,153 comparable cases reproduce exactly, condition codes included.**
 204 further cases are not comparable because they read the playfield, the input
 ports or the sound chips.
 
-Two classes cannot be measured that way at all, and are not claimed as verified
-on the strength of it:
+Two classes cannot be measured that way and are not claimed on the strength of
+it: instructions that write the status register, because writing it unmasks
+interrupts and the case then measures the game's interrupt handler; and
+pc-relative operands, because the harness relocates each encoding to a scratch
+address so the operand resolves against the wrong base. There are 93 of the
+latter, and `romlab/pcrelcheck.py` checks each against its encoding instead -
+the displacement is measured from the address of the extension word. All 93
+agree.
 
-- **Instructions that write the status register.** Writing it unmasks
-  interrupts, so the case measures the game's interrupt handler running before
-  the instruction finishes, not the instruction.
-- **pc-relative operands.** The harness writes each encoding to a scratch
-  address and runs it there, so the operand resolves against that address
-  instead of the one it has in the ROM - the two sides disagree by
-  construction. There are only 93 in the program and the rule is fixed, so
-  `romlab/pcrelcheck.py` checks each against its encoding instead: the
-  displacement is measured from the address of the extension word. All 93 agree.
-
-### Defects this found
-
-Every one was found by comparison against the chip, not by reading the code.
+### The two defects that mattered most
 
 - `jsr`/`bsr` did not push a return address, so every callee read its stack
-  arguments four bytes off. This alone took the routines that reproduce from
-  172 to 346, and explains why leaf routines had always matched far more often
-  than the routines calling them.
+  arguments four bytes off. Routines reproducing went from 172 to 346, and it
+  explains why leaf routines had always matched far more often than the
+  routines calling them.
 - A jump target was matched with an unanchored pattern, so `$d00e(pc, d0.w)`
   was read as the fixed address `$d00e`. Every table-driven dispatch in the
-  program jumped to the base of its own jump table instead of to the case the
-  table selected.
-- Absolute short addressing did not sign-extend: `$fff4.w` is 0xFFFFFFF4, not
-  0x0000FFF4, so every high short address named a different location.
-- Pre-decrement and post-increment applied twice on read-modify-write operands
-  (`neg.b -(a0)`, `eor.b d0,(a0)+`), walking pointers off by an operand.
-- A byte access through `a7` stepped by one; the 68000 steps by two to keep the
-  stack word-aligned.
-- Shift counts come from a register modulo 64, but JavaScript takes shift
-  counts modulo 32, so "shift everything out" became "shift by a few".
-- Bit instructions took their width from the mnemonic; the destination decides
-  it - a data register is 32 bits modulo 32, memory is 8 bits modulo 8.
-- `divu` used the signed overflow bound, rejecting every quotient over 32767.
-- `cmp` set X, which it must not.
-- `asl` never set V, which needs its own rule: the sign bit changing during the
-  shift, not the result being negative.
-- Multiply, swap and rotate evaluated their result expression twice - once to
-  store, once for the flags - so the flags described the value already written.
-- An arithmetic right shift past the operand width cleared C instead of keeping
-  the sign bit.
-- `movep`, `roxl`/`roxr`, and reading or writing the status register had no
-  rules at all.
+  program jumped to the base of its own jump table instead of the case the
+  table selected - and that made four table bases look like missing entry
+  points, so an earlier pass had injected them as functions and turned data
+  into code.
+
+Thirteen more: absolute short addressing not sign-extending; pre-decrement and
+post-increment applied twice on read-modify-write operands; a byte access
+through `a7` stepping by one instead of two; shift counts silently reduced
+modulo 32 by JavaScript; bit instructions taking their width from the mnemonic
+rather than the destination; `divu` using the signed overflow bound; `cmp`
+setting X; `asl` never setting V; multiply, swap and rotate computing flags
+from the value they had already written; an arithmetic right shift past the
+operand width dropping the sign bit out of C; and `movep`, `roxl`/`roxr` and
+status-register access having no rules at all.
 
 ### What the remaining failures are
 
-Of the 30 failing routines, most read the input ports or the sound chips, which
-the port does not model. A few unmask interrupts - `0x656` is
-`move.w $3e0804.l, sr; rts` - and any routine that does cannot be held still
-long enough to compare.
+Of the 32 failing, most read the input ports or the sound chips, which the port
+does not model. A few unmask interrupts - `0x656` is `move.w $3e0804.l, sr;
+rts` - and cannot be held still long enough to compare. One is a boundary worth
+naming rather than a bug: the routine at `0xEDEA` calls `$140010`, an address
+the board does not decode at all, so what the hardware does there cannot be
+reproduced from the ROM. The 8 that pass one harness and fail the other fail
+the same way, on hardware reads.
 
-The 221 never exercised are routines that do not return on the hardware side.
-The harness calls them out of context, and one that expects a live entity or a
-valid pointer runs until the frame ends. Starting a real game before taking the
-memory baseline and handing later trials the structures the game actually uses
-moved 66 of them into range. The rest need the game to reach the state that
-calls them: a capture driving every input the board has - three players, both
-coins, all four trackball axes - still executes only 330 distinct routines,
-because service mode is read at boot and the later levels were never reached.
+The 241 never exercised do not return on the hardware side. The harness calls
+them out of context, and one that expects a live entity or a valid pointer runs
+until the frame ends. Of them, 156 have no direct caller anywhere in the ROM -
+they are reached only through pointers - 73 sit under another never-exercised
+routine, and 15 have a caller the game does run but on a branch it never took.
+
+What was tried, and what it was worth:
+
+- Starting a real game before taking the memory baseline, and handing later
+  trials the structures the game actually passes: moved 66 into range.
+- Driving every input the board has, across three capture passes including one
+  with the service switch held from frame 1 (setting it later does nothing -
+  the game reads it during the power-on check): took the routines the game
+  executes from 330 to 421, but nearly all of those were already covered by the
+  other harness.
+- Borrowing arguments from a routine's siblings in the same pointer table, on
+  the grounds that a dispatcher calls all its handlers the same way: 19
+  routines.
+- Trying eight argument shapes instead of three: rejected. Some shape drives a
+  routine into a state that kills the emulator, and the run stops after 211 of
+  754 entries, losing far more than it gains.
 
 
 ## Harness
