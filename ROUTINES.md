@@ -508,6 +508,24 @@ for each of (count + 1) records:
   reproduce every board. **120/120 identical**, 40 for each of owner `0x40`,
   `0x80` and `0xC0`.
 
+### Damage script selection - `0x8598`
+- **Port:** `romlab/compare_blast.py` (`select`)
+- **Blast patterns are a list of sub-lists.** A player's script comes from the
+  level descriptor at `0x3E0DCA`, offset `0x22 + player[3]*4`. The routine then
+  skips forward past `player[0x1D]` sub-lists - each a run of packed (x, y)
+  words ending on a byte with the high bit set - parks the cursor at
+  `player+0x3E` and queues the verified handler `0x8606`.
+- A player whose word0 lacks bit `0x8000` is skipped, as is one whose descriptor
+  slot is null; neither posts an event.
+- **Evidence:** `romlab/verify25.lua` - 8 cases with the descriptor, pointer
+  table and scripts all crafted: three skip depths, each player in turn, no
+  player flagged, all three flagged, and a null descriptor slot. **8/8
+  identical** in both the parked cursors and the resulting queue count.
+- **Each case runs in a fresh emulator instance.** `0x8598` hardcodes the live
+  player array at `0x3E1968`, so crafting inputs corrupts the running game and
+  later cases in the same session fail for reasons unrelated to the routine -
+  which is exactly what happened on the first attempt.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -780,12 +798,15 @@ more.
 
 These are **not** unported systems; they are the honest remainder.
 
-- **Blast script data.** The damage handler `0x8606` is verified, but the
-  coordinate lists it consumes are still unextracted. They are reached through
-  `0x3E0DCA` -> `+0x22 + index*4` and are a **list of sub-lists**, each ending
-  on a negative byte, with `player+0x1D` selecting which. Indices 3-5 point into
-  main-ROM data; a first read produced values above the board's 42x30 range, so
-  the structure is not yet correctly interpreted.
+- **Blast script contents.** Both the selector (`0x8598`) and the handler
+  (`0x8606`) are ported and verified, and the format is established: a list of
+  sub-lists of packed (x, y) words, each ending on a high-bit byte. What is not
+  captured is the **specific coordinate data for each level**, because it is
+  reached through a descriptor pointer that is set when a level loads, and the
+  driven bot never takes damage - so no real cursor was ever observed. Reading
+  the descriptor statically gave slots pointing into main-ROM data whose values
+  fall outside the board's 42x30 range, so that read is not yet trustworthy.
+  The code path is complete; only the level data is unread.
 - **Front-end work in `crenellation`.** The ports exist; `enclosure.ts`,
   `pieces.ts`, `phases.ts` and `game.ts` still contain the original guessed
   code and need replacing with them. Placing more than one castle and hot-seat
