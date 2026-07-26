@@ -332,6 +332,18 @@ selection reaches them some other way and is not yet located.
   corners, and immediate termination. **8/8 identical** across all 1344 board
   cells, the cursor, and the event count.
 
+### Piece rotation - `0x5AFC`
+- **Port:** `romlab/verify17.lua` companion (`rotate`)
+- **Signature:** `rotate(long *slot) -> 0 or 1`, where `slot` is `&player->0x24`
+- **Behaviour:** advance the piece pointer by one entry. If the new entry is the
+  group's `0` terminator, step past it and load the wrap-back pointer stored
+  immediately after, returning **1** to signal the rotation wrapped. Otherwise
+  return 0. This is the mechanism the rotation groups were built for.
+- **Evidence:** starting from **every** slot in the table, `0x11636`-`0x1173A`:
+  **131/131 identical**, and **exactly 13 of them wrapped** - one per rotation
+  group. That count is an independent confirmation of the group structure,
+  since nothing in the test told it how many groups to expect.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -545,7 +557,7 @@ rather than read from the routine that produces them.
 | System | Current implementation | What verification requires |
 | --- | --- | --- |
 | ~~Enclosure test~~ | **Ported and verified** - `compare_enclose.py`, 18/18 crafted boards | Done; remaining work is replacing `enclosure.ts` with the port |
-| Piece shapes and placement | **Ported and verified** - all 40 pieces from the table at `0xFE4E`, walker `0x8B4`, 40/40 boards identical | Remaining: which piece the game *picks* (the selection is still unlocated) |
+| Piece shapes, placement, rotation | **Ported and verified** - 40 shapes (`0x8B4`, 40/40 boards), rotation (`0x5AFC`, 131/131) | Remaining: which *group* a new piece is drawn from |
 | ~~Scoring~~ | **Ported and verified** - `0x865E`, 26/26 across every threshold boundary | Done; remaining work is replacing the guessed constants in `game.ts` |
 | Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
 | ~~Damage~~ | **Ported and verified** - `0x8606`, 8/8 crafted boards | Done; the blast *scripts* themselves still need extracting from the table at `0x3E0DCA` |
