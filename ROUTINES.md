@@ -255,6 +255,18 @@ pointers in the ROM in either 32- or 16-bit form - the only references to the
 group starts are the 13 wrap-around pointers inside the groups themselves - so
 selection reaches them some other way and is not yet located.
 
+### Event-table membership - `0xEFFA`
+- **Port:** `romlab/verify11.lua` companion in the same file (`event_pending`)
+- **Behaviour:** the phase machine asks "has this event fired?" by scanning a
+  table of 12-byte records at `0x3E1CF6`, count in the word at `0x3E1CF4`,
+  comparing the long at record+4. A negative count short-circuits to 0.
+- **The loop is a `dbra`, so it inspects count+1 records, not count.** That
+  off-by-one is the kind of thing a port guesses wrong, so it was tested
+  directly: a key sitting one past the count is found, one two past is not.
+- **Evidence:** 12 cases - negative count, single hit and miss, first/middle/
+  last of four, a key past the count, a key exactly at it, a zero key,
+  duplicates, and a longer table. **12/12 identical.**
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -342,6 +354,40 @@ event id, it fires the event only when `0x3E195C` and `0x3E1870` both match and
 search for the 32-bit address cannot find them. They pass
 `*(player->0x24) + 1`, which is how the piece script table was located.
 
+## Phase control - located, not yet ported
+
+The phase machine is a large dispatcher spanning roughly `0x9300`-`0xA7DA`. It
+holds its state in a local rather than a global, and drives progress by asking
+`0xEFFA` whether a given event has fired - which is why the event-table test
+above is part of this system rather than a utility.
+
+| Address | Role |
+| --- | --- |
+| `0x9300`-`0xA7DA` | the dispatcher itself |
+| `0xEFFA` | "has this event fired" predicate - **ported and verified** |
+| `0x3E195C` | round counter within a sequence; cleared at `0x93C0` and `0xE80E`, incremented at `0x9BBA`, and set from `0x118AA` at `0xEADA` |
+| `0x3E1870` | the countdown, decremented by `0x7A24` |
+| `0x3E1950` | pause flag |
+| `0xCAE2` | fires an event when phase and countdown both match and the game is not paused |
+
+What remains is porting the dispatcher itself, which is a long C-style state
+machine rather than a self-contained routine.
+
+## Scoring - still unlocated
+
+Three searches came up empty, which is worth recording so they are not repeated:
+
+- No long in work RAM increases monotonically by round amounts over a 601-sample
+  capture of the whole 64KB.
+- No digit array either: every run of consecutive cells holding only 0-9 turned
+  out to be board terrain, inside `0x3E0864`'s 42x30 extent.
+- The fields of the player struct that do only increase hold coordinate-like
+  values, not a running total.
+
+The likeliest reason is that the driven bot never actually scores during
+capture. Reaching the scoring routine probably needs a session that completes an
+enclosure on purpose - which the now-verified enclosure test makes constructible.
+
 ## Correction: the scoring measurement was wrong
 
 Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
@@ -400,7 +446,7 @@ rather than read from the routine that produces them.
 | Scoring | `game.ts` constants, inferred from grouping score-counter ticks into bursts | Find the routine that adds to the score word; call it per event type; compare awards |
 | Ship movement and firing | `game.ts`, derived from motion-object tracking and spawn rates | Find the ship update routine; step it with a fixed ship state; compare positions and fire timing |
 | Damage / blast footprint | `game.ts`, inferred from captured battle frames | Find the impact routine; call it against a crafted wall layout; compare which cells are destroyed |
-| Phase control | `phases.ts`, durations read from the countdown word in RAM | Find the phase state machine; compare transition frames |
+| Phase control | `phases.ts`, durations read from the countdown word in RAM | **Dispatcher located** (`0x9300`-`0xA7DA`); its event predicate `0xEFFA` ported and verified 12/12. Remaining: the dispatcher itself |
 | ~~Object composition (art)~~ | **Decoded from ROM** - `extract_sprites.py` + `mobrender.py`, 13/40 frames pixel-exact | Done; remaining work is wiring the sprites into the game |
 | ~~Terrain plates (art)~~ | **Decoded from ROM** - `extract_tiles.py`, 5907 tiles verified against 11614 live draws | Done; remaining work is wiring the tileset into the game |
 | ~~Attract screens (art)~~ | **Decoded from ROM** - same tileset; screens are placement maps over it | Done; remaining work is wiring the tileset into the game |
