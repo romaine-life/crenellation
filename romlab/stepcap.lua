@@ -35,6 +35,8 @@ do
 end
 
 local frame, steps = 0, 0
+local trace = {}
+local errors = 0
 local tracing = false
 
 local function install()
@@ -43,12 +45,23 @@ local function install()
       if not tracing then return d end
       local pc = cpu.state["CURPC"].value
       if pc == SENTINEL then tracing = false; return d end
+      -- Only the opcode fetch is an instruction boundary. Extension words are
+      -- read past the program counter, and prefetch reads ahead of it, so both
+      -- give register states from partway through an instruction.
+      if steps < 6 then
+        trace[#trace + 1] = string.format("# offset=%X pc=%X", offset, pc)
+      end
       steps = steps + 1
       if steps > MAXSTEPS then tracing = false; return d end
-      local p = {}
-      for k = 0, 7 do p[#p + 1] = string.format("%08X", cpu.state["D" .. k].value % 0x100000000) end
-      for k = 0, 7 do p[#p + 1] = string.format("%08X", cpu.state["A" .. k].value % 0x100000000) end
-      log:write(string.format("%05X %s", pc, table.concat(p, " ")) .. NL)
+      local ok = pcall(function()
+        local p = {}
+        for k = 0, 7 do p[#p + 1] = string.format("%08X", cpu.state["D" .. k].value % 0x100000000) end
+        -- MAME exposes the eighth address register as SP, not A7
+        for k = 0, 6 do p[#p + 1] = string.format("%08X", cpu.state["A" .. k].value % 0x100000000) end
+        p[#p + 1] = string.format("%08X", cpu.state["SP"].value % 0x100000000)
+        trace[#trace + 1] = string.format("%05X %s", pc, table.concat(p, " "))
+      end)
+      if not ok then errors = errors + 1 end
       return d
     end)
 end
@@ -57,7 +70,8 @@ emu.register_frame_done(function()
   frame = frame + 1
   if frame ~= 400 then
     if frame > 402 then
-      log:write("# steps " .. steps .. NL)
+      for _, line in ipairs(trace) do log:write(line .. NL) end
+      log:write(string.format("# steps %d traced %d errors %d", steps, #trace, errors) .. NL)
       log:flush()
       manager.machine:exit()
     end
