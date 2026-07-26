@@ -50,12 +50,17 @@ export const SHOT_FLIGHT_MS = (SHOT_FLIGHT_FRAMES / 60) * 1000;
 
 export const SHOT_BLAST_RADIUS = 1;
 
-// Score awards. 350 is the one value that recurred cleanly in the arcade's
-// score word (0x3E19F4) across a session; the smaller awards are scaled from
-// it and are the least-grounded numbers in the port.
-export const SCORE_ROUND = 350;
-export const SCORE_SHIP = 350;
-export const SCORE_WALL_HIT = 35;
+// Score awards, measured (romlab/score3.lua + burst analysis). The arcade
+// animates its score counter upward in fixed ticks, so raw RAM deltas are the
+// animation step (50/80/100), not the award. Grouping ticks into bursts
+// separated by >30 frames recovers the real amounts:
+//   0x3E20AA  52 bursts, 35 of them at a round boundary -> 150 x18, 200 x16,
+//             100 x12, 950 x6   (the round bonus, which varies)
+//   0x3E20E4  16 bursts, none at a boundary -> 300 each  (in-battle award)
+//   50 is the counter's smallest quantum.
+export const SCORE_ROUND = 150;
+export const SCORE_SHIP = 300;
+export const SCORE_WALL_HIT = 50;
 
 // Ship behaviour, measured by decoding motion-object RAM (romlab/ships2.py:
 // the display list is rebuilt each frame, so objects are tracked by sprite
