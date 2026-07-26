@@ -28,7 +28,11 @@ local TAPS = {}
 -- adding 8 to d0 - so the sentinel lives in RAM with a nop written into it.
 local SENTINEL = 0x3E6000
 local PARK = 0x60FE   -- bra to self: the CPU spins here between cases
-local RAM_LO, RAM_HI = 0x3E0000, 0x3EFFFF
+-- Probed from the board: work RAM is 128 KiB and the playfield bitmap is
+-- ordinary memory. Modelling half of one and none of the other made every
+-- routine that touched them compare real data against zeroes.
+local RAM_LO, RAM_HI = 0x3E0000, 0x3FFFFF
+local PF_LO, PF_HI = 0x200000, 0x21FFFF
 local SCRATCH, SCRATCH_LEN = 0x3E4000, 0x400
 local STACK = 0x3E5000
 local DIGEST_LO, DIGEST_LEN = 0x3E4000, 0x2000
@@ -75,6 +79,8 @@ local finished = false
 local finishedOk = false
 local dirty = {}
 
+local pfbase = {}
+
 local function dump_baseline()
   local t = {}
   for a = RAM_LO, RAM_HI do
@@ -85,6 +91,16 @@ local function dump_baseline()
   local fh = io.open(OUT .. "ram-baseline.bin", "wb")
   fh:write(table.concat(t))
   fh:close()
+  -- the playfield too: routines that draw read it back
+  local u = {}
+  for a = PF_LO, PF_HI do
+    local b = space:read_u8(a)
+    pfbase[a] = b
+    u[#u + 1] = string.char(b)
+  end
+  local gh = io.open(OUT .. "pf-baseline.bin", "wb")
+  gh:write(table.concat(u))
+  gh:close()
 end
 
 local function restore_ram()
@@ -96,6 +112,9 @@ local function restore_ram()
   -- 64KB a case is affordable because the game is frozen while this runs.
   for a = RAM_LO, RAM_HI do
     space:write_u8(a, baseline[a])
+  end
+  for a = PF_LO, PF_HI do
+    space:write_u8(a, pfbase[a])
   end
 end
 

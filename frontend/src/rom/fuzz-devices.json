@@ -1,0 +1,178 @@
+[
+ {
+  "device": "0x140000",
+  "accesses": 91
+ },
+ {
+  "device": "0x2f0000",
+  "accesses": 60
+ },
+ {
+  "device": "0x640000",
+  "accesses": 53
+ },
+ {
+  "device": "0x230000",
+  "accesses": 38
+ },
+ {
+  "device": "0x3d0000",
+  "accesses": 25
+ },
+ {
+  "device": "0x-7ab80000",
+  "accesses": 17
+ },
+ {
+  "device": "0x4eb90000",
+  "accesses": 15
+ },
+ {
+  "device": "0x-10000",
+  "accesses": 12
+ },
+ {
+  "device": "0x720000",
+  "accesses": 8
+ },
+ {
+  "device": "0x2c0000",
+  "accesses": 8
+ },
+ {
+  "device": "0x2e0000",
+  "accesses": 8
+ },
+ {
+  "device": "0x460000",
+  "accesses": 8
+ },
+ {
+  "device": "0x75750000",
+  "accesses": 6
+ },
+ {
+  "device": "0x7e0000",
+  "accesses": 5
+ },
+ {
+  "device": "0x300000",
+  "accesses": 4
+ },
+ {
+  "device": "0xa50000",
+  "accesses": 4
+ },
+ {
+  "device": "0xa40000",
+  "accesses": 4
+ },
+ {
+  "device": "0x240000",
+  "accesses": 4
+ },
+ {
+  "device": "0x1f010000",
+  "accesses": 4
+ },
+ {
+  "device": "0x-7a000000",
+  "accesses": 4
+ },
+ {
+  "device": "0x494e0000",
+  "accesses": 4
+ },
+ {
+  "device": "0x4ef90000",
+  "accesses": 4
+ },
+ {
+  "device": "0x400000",
+  "accesses": 4
+ },
+ {
+  "device": "0x280000",
+  "accesses": 4
+ },
+ {
+  "device": "0x2a0000",
+  "accesses": 4
+ },
+ {
+  "device": "0x220000",
+  "accesses": 4
+ },
+ {
+  "device": "0xda60000",
+  "accesses": 4
+ },
+ {
+  "device": "0x290000",
+  "accesses": 4
+ },
+ {
+  "device": "0x2b0000",
+  "accesses": 4
+ },
+ {
+  "device": "0x48e70000",
+  "accesses": 4
+ },
+ {
+  "device": "0x1e0000",
+  "accesses": 4
+ },
+ {
+  "device": "0x46fc0000",
+  "accesses": 4
+ },
+ {
+  "device": "0x480000",
+  "accesses": 4
+ },
+ {
+  "device": "0x260000",
+  "accesses": 4
+ },
+ {
+  "device": "0x131b0000",
+  "accesses": 3
+ },
+ {
+  "device": "0x3c0000",
+  "accesses": 3
+ },
+ {
+  "device": "0x6c0000",
+  "accesses": 3
+ },
+ {
+  "device": "0xb00000",
+  "accesses": 2
+ },
+ {
+  "device": "0x7f0000",
+  "accesses": 2
+ },
+ {
+  "device": "0x-79a80000",
+  "accesses": 2
+ },
+ {
+  "device": "0x180000",
+  "accesses": 1
+ },
+ {
+  "device": "0x510000",
+  "accesses": 1
+ },
+ {
+  "device": "0xbd0000",
+  "accesses": 1
+ },
+ {
+  "device": "0x3c1f0000",
+  "accesses": 1
+ }
+]

@@ -9,7 +9,7 @@ that cite the evidence they used.
 ## Coverage
 
 - **Bytes accounted for: 131072 of 131072 - 100.0%**
-- Code: 80350 bytes in **593 functions**
+- Code: 80746 bytes in **659 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -30,6 +30,72 @@ the hardware a routine writes, the table it indexes, or its only caller.
 
 | Address | Size | Callers | Name | Why |
 | --- | --- | --- | --- | --- |
+| `00118` | 6 | 0 | trampoline to 0x18df6 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0011E` | 6 | 0 | trampoline to 0x19614 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00124` | 6 | 0 | trampoline to 0x195b4 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0012A` | 6 | 0 | trampoline to 0x1946e | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00130` | 6 | 0 | trampoline to 0x18d88 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00136` | 6 | 0 | trampoline to 0x18dea | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0013C` | 6 | 0 | trampoline to 0x18db6 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00142` | 6 | 0 | trampoline to 0x18dfc | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00148` | 6 | 0 | trampoline to 0x18e00 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0014E` | 6 | 0 | trampoline to 0x18dc4 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00154` | 6 | 2 | trampoline to 0x18a5e | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0015A` | 6 | 0 | trampoline to 0x18764 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00160` | 6 | 1 | trampoline to 0x19366 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00166` | 6 | 0 | trampoline to 0x1939c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0016C` | 6 | 0 | trampoline to 0x193da | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00172` | 6 | 0 | trampoline to 0x13e94 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00178` | 6 | 2 | trampoline to 0x14a36 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0017E` | 6 | 1 | trampoline to 0x14578 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00184` | 6 | 1 | trampoline to 0x14772 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0018A` | 6 | 3 | trampoline to 0x1485c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00190` | 6 | 2 | trampoline to 0x14b8a | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00196` | 6 | 2 | trampoline to 0x14c3c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0019C` | 6 | 2 | trampoline to 0x14d48 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001A2` | 6 | 0 | trampoline to 0x15064 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001A8` | 6 | 0 | trampoline to 0x155a0 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001AE` | 6 | 2 | trampoline to 0x15672 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001B4` | 6 | 0 | trampoline to 0x1568e | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001BA` | 6 | 4 | trampoline to 0x156ac | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001C0` | 6 | 0 | trampoline to 0x160ba | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001CA` | 6 | 0 | trampoline to 0x18e66 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001D0` | 6 | 0 | trampoline to 0x190f6 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001D6` | 6 | 0 | trampoline to 0x19032 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001DC` | 6 | 0 | trampoline to 0x19010 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001E2` | 6 | 0 | trampoline to 0x18cce | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001E8` | 6 | 0 | trampoline to 0x193c6 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001EE` | 6 | 0 | trampoline to 0x1890c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001F4` | 6 | 0 | trampoline to 0x16bc8 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `001FA` | 6 | 1 | trampoline to 0x13f40 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00200` | 6 | 2 | trampoline to 0x13f60 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00206` | 6 | 3 | trampoline to 0x13f98 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0020C` | 6 | 1 | trampoline to 0x1418a | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00212` | 6 | 1 | trampoline to 0x14044 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00218` | 6 | 0 | trampoline to 0x14104 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0021E` | 6 | 1 | trampoline to 0x14138 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00224` | 6 | 0 | trampoline to 0x141c4 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0022A` | 6 | 0 | trampoline to 0x141d4 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00230` | 6 | 0 | trampoline to 0x14230 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00236` | 6 | 1 | trampoline to 0x1a0cc | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0023C` | 6 | 1 | trampoline to 0x19f3e | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00242` | 6 | 0 | trampoline to 0x1684c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00248` | 6 | 0 | trampoline to 0x18b76 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0024E` | 6 | 2 | trampoline to 0x18b26 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00254` | 6 | 0 | trampoline to 0x18b5c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0025A` | 6 | 2 | trampoline to 0x190da | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00260` | 6 | 1 | trampoline to 0x1908a | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00266` | 6 | 0 | trampoline to 0x190c0 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0026C` | 6 | 1 | trampoline to 0x183f2 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00272` | 6 | 3 | trampoline to 0x15830 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00278` | 6 | 1 | trampoline to 0x15858 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0027E` | 6 | 0 | trampoline to 0x19c2e | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00286` | 6 | 1 | trampoline to 0x18afe | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0028C` | 6 | 2 | trampoline to 0x19054 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00292` | 6 | 0 | trampoline to 0x13cda | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00300` | 6 | 0 | trampoline to 0x003ea | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `00306` | 6 | 1 | trampoline to 0x00580 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
+| `0042A` | 6 | 0 | trampoline to 0x09188 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00430` | 8 | 1 | small leaf utility | 8 bytes, no calls, no state access |
 | `00438` | 218 | 0 | dispatcher gate check | tests the gate word at 0x3E0802 |
 | `00512` | 24 | 4 | small leaf utility | 24 bytes, no calls, no state access |
@@ -540,7 +606,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `18626` | 8 | 0 | exception stub - unassigned vector | calls the common reporter at 0x18652; the exception's name string follows inline |
 | `1863E` | 10 | 0 | exception stub - initialised vector | calls the common reporter at 0x18652; the exception's name string follows inline |
 | `18652` | 6 | 15 | exception reporter | shared tail of the exception stubs; prints the name that follows the call |
-| `18658` | 6 | 0 | small leaf utility | 6 bytes, no calls, no state access |
+| `18658` | 6 | 0 | trampoline to 0x1e8d2 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `1865E` | 14 | 1 | helper for title screen renderer | only caller is 0x1520e |
 | `1866C` | 16 | 1 | helper for title screen renderer | only caller is 0x1520e |
 | `1867C` | 16 | 0 | small leaf utility | 16 bytes, no calls, no state access |

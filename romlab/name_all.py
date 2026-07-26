@@ -49,6 +49,18 @@ def setname(a, name, why):
         WHY[a] = why
 
 
+# A six-byte function that is nothing but `jmp <abs>.l` is a trampoline. The
+# whole block of them sits below the first ordinary routine and is reached by
+# absolute-short calls and pointer tables, so each one is named for where it
+# goes rather than left unknown.
+for a, b in funcs:
+    if b - a == 6 and UP[a] == 0x4E and UP[a + 1] == 0xF9:
+        target = int.from_bytes(UP[a + 2:a + 6], "big")
+        setname(a, "trampoline to 0x%05x" % target,
+                "six-byte jmp stub; the whole run below the first routine is "
+                "reached by absolute-short calls and pointer tables")
+
+
 # hand-read names take precedence over every rule
 MANUAL = {}
 mp = HERE / "manual_names.json"

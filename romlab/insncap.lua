@@ -14,6 +14,7 @@ local TAPS = {}
 
 local CODE = 0x3E6000          -- the instruction under test is written here
 local PARK = 0x3E6100          -- branch-to-self, where the CPU comes to rest
+local RAM_LO = 0x3E0000
 local SCRATCH = 0x3E4000
 local SCRATCH_LEN = 0x400
 local STACK = 0x3E5000
@@ -54,15 +55,33 @@ local dirty = {}
 -- instructions accumulate on the hardware side while the port starts clean, and
 -- every instruction that reads memory disagrees for reasons unrelated to its
 -- rule.
+-- Dirty state is tracked by 256-byte page, not by address. A write tap reports
+-- only the base of an access, so restoring "the address and the next few bytes"
+-- guesses at the width and undercounts anything wider - movep writes four bytes
+-- spread across seven. Restoring whole pages cannot undercount, and the handful
+-- of pages one instruction touches is cheap to rewrite.
+local PAGE = 256
+local npages = 0
+local restoring = false
 local function restore_ram()
-  -- guard the lookup: marking the full write width can push an address past
-  -- the baseline's end, and a nil there aborts the loop and leaves everything
-  -- after it un-restored
-  for addr in pairs(dirty) do
-    local b = baseline[addr]
-    if b ~= nil then space:write_u8(addr, b) end
-  end
+  -- Take the page list first and clear the set before writing anything. The
+  -- write tap fires on these very writes and inserts into `dirty`, and adding
+  -- keys to a table part-way through pairs() is undefined in Lua: the
+  -- traversal silently skipped pages, so some corruption was never repaired
+  -- and then never marked again.
+  local pages = {}
+  for page in pairs(dirty) do pages[#pages + 1] = page end
   dirty = {}
+  npages = #pages
+  restoring = true
+  for _, page in ipairs(pages) do
+    local base = RAM_LO + page * PAGE
+    for i = 0, PAGE - 1 do
+      local b = baseline[base + i]
+      if b ~= nil then space:write_u8(base + i, b) end
+    end
+  end
+  restoring = false
 end
 
 local function write_case(hex)
@@ -83,7 +102,18 @@ local function begin_case()
     end
     return
   end
+  local before = space:read_u16(0x3E0802)
+  local had8 = dirty[8] ~= nil
   restore_ram()
+  -- One address kept differing from the baseline on the hardware side. Report
+  -- when it is wrong right after a restore, and how many pages the restore
+  -- covered, so the cause is observed rather than guessed at.
+  local probe = space:read_u16(0x3E0802)
+  local want = baseline[0x3E0802] * 256 + baseline[0x3E0803]
+  if probe ~= want then
+    log:write(string.format("P %d before=%04X after=%04X want=%04X pages=%d page8dirty=%s",
+      idx, before, probe, want, npages, tostring(had8)) .. NL)
+  end
   for i = 0, SCRATCH_LEN - 1 do space:write_u8(SCRATCH + i, rnd() % 256) end
   inregs = {}
   for k = 0, 7 do
@@ -96,9 +126,12 @@ local function begin_case()
     inregs["A" .. k] = v
     cpu.state["A" .. k].value = v
   end
-  cpu.state["A6"].value = STACK + 0x200
+  -- Point a6 and the stack into scratch too. Scratch is rewritten in full
+  -- every case, so no instruction can read memory that leaked from an earlier
+  -- one - which is what made the previous readings meaningless.
+  cpu.state["A6"].value = SCRATCH + 0x300
   a6set = cpu.state["A6"].value
-  cpu.state["SP"].value = STACK - 0x40
+  cpu.state["SP"].value = SCRATCH + 0x380
   cpu.state["SR"].value = 0x2700
   write_case(cases[idx])
   cpu.state["PC"].value = CODE
@@ -137,12 +170,11 @@ local function install()
     end)
   TAPS[#TAPS + 1] = space:install_write_tap(0x3E0000, 0x3EFFFF, "w",
     function(offset, d, mask)
-      -- a tap reports the base address of an access, so a word or long write
-      -- dirties bytes beyond it; mark the whole width or the tail is never
-      -- restored and leaks into later cases
-      for i = 0, 3 do
-        if dirty[offset + i] == nil then dirty[offset + i] = true end
-      end
+      if restoring then return d end
+      local page = (offset - RAM_LO) // PAGE
+      dirty[page] = true
+      -- an access can straddle the page boundary, so mark the next one too
+      dirty[page + 1] = true
       return d
     end)
 end

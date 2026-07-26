@@ -61,6 +61,39 @@ entries = sorted(set(M["entries"]))
 code_runs = [(a, b) for a, b in M["code"]]
 data_runs = [(a, b) for a, b in M["data"]]
 
+
+def thunks_below_first_function():
+    """The jmp trampolines that sit before the first ordinary routine.
+
+    Between the exception vectors and the first real function is a run of
+    six-byte `jmp <abs>.l` stubs. The classifier read them as data because
+    nothing branches into them from nearby code - they are reached by absolute
+    short calls and through pointer tables, neither of which the scan followed.
+    They are executed: 74 call sites name one directly and 108 pointer slots
+    hold their addresses. Left as data they are not ported, and every call
+    through one dies with no routine covering the address.
+    """
+    out = []
+    a = 0x100
+    while a < 0x430:
+        if UP[a] == 0x4E and UP[a + 1] == 0xF9:
+            out.append((a, a + 6))
+            a += 6
+        else:
+            a += 2
+    return out
+
+
+THUNKS = thunks_below_first_function()
+for a, b in THUNKS:
+    entries.append(a)
+    code_runs.append((a, b))
+    data_runs = [(x, y) for x, y in data_runs if not (x < b and a < y)] +                 [(x, y) for x, y in data_runs if x < b and a < y
+                 for (x, y) in ([(x, a)] if x < a else []) + ([(b, y)] if y > b else [])]
+entries = sorted(set(entries))
+code_runs = sorted(set(code_runs))
+data_runs = sorted({(x, y) for x, y in data_runs if y > x})
+
 # map each function to its extent (entry -> next entry within the same code run)
 funcs = []
 for a, b in code_runs:

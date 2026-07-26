@@ -65,6 +65,17 @@ class Operand:
         self.write = None
         self._build()
 
+    def _step(self, r):
+        """How far a pre-decrement or post-increment moves the register.
+
+        A byte access through the stack pointer moves it by two, not one: the
+        68000 keeps the stack word-aligned, so a7 never lands on an odd
+        address. Every other address register steps by the operand size.
+        """
+        if r == "a7" and self.bits == 8:
+            return 2
+        return self.bits // 8
+
     @staticmethod
     def _reg(r):
         # capstone prints pc-relative operands with the displacement already
@@ -99,14 +110,14 @@ class Operand:
         m = POST.match(t)
         if m:
             r = "a7" if m.group(1) == "sp" else m.group(1)
-            step = self.bits // 8
+            step = self._step(r)
             self.read = "m.loadPost('%s', %d, %d)" % (r, step, self.bits)
             self.write = "m.storePost('%s', %d, %%s, %d)" % (r, step, self.bits)
             return
         m = PRE.match(t)
         if m:
             r = "a7" if m.group(1) == "sp" else m.group(1)
-            step = self.bits // 8
+            step = self._step(r)
             self.read = "m.loadPre('%s', %d, %d)" % (r, step, self.bits)
             self.write = "m.storePre('%s', %d, %%s, %d)" % (r, step, self.bits)
             return
@@ -132,6 +143,38 @@ class Operand:
             self.read = "m.load(%s + %d, %d)" % (r, d, self.bits)
             self.write = "m.store(%s + %d, %%s, %d)" % (r, d, self.bits)
             return
+
+    def rmw(self):
+        """Read and write one operand, applying its side effect exactly once.
+
+        An operand that is both source and destination - `neg.b -(a0)`,
+        `eor.b d0, (a0)+`, `bset d1, (a2)+` - has a single effective address.
+        Emitting the read expression and the write expression separately makes
+        the pre-decrement or post-increment happen twice, which walks the
+        pointer off by a whole operand and corrupts every structure it steps
+        through. Returns (setup, read, write) with the address bound first.
+        """
+        t = self.tok
+        if REG.match(t) or t in ("sp", "a7") or IMM.match(t):
+            return "", self.read, self.write
+        m = POST.match(t)
+        if m:
+            r = "a7" if m.group(1) == "sp" else m.group(1)
+            setup = "const _ea = m.%s >>> 0; m.%s = (m.%s + %d) >>> 0;" % (
+                r, r, r, self._step(r))
+        else:
+            m = PRE.match(t)
+            if m:
+                r = "a7" if m.group(1) == "sp" else m.group(1)
+                setup = "m.%s = (m.%s - %d) >>> 0; const _ea = m.%s;" % (
+                    r, r, self._step(r), r)
+            else:
+                ea = self.ea()
+                if ea is None:
+                    return None
+                setup = "const _ea = (%s) >>> 0;" % ea
+        return (setup, "m.load(_ea, %d)" % self.bits,
+                "m.store(_ea, %%s, %d)" % self.bits)
 
     def ea(self):
         """Effective address expression, for lea and pea."""
@@ -204,7 +247,11 @@ def emit(ins, nxt):
     s = "pc = 0x%05x;" % nxt
 
     if b == "rts":
-        return "return;"
+        # Pop the return address the matching jsr pushed. Control returns
+        # through the JavaScript call rather than through this value, but the
+        # stack pointer has to come back or every caller's frame is off by
+        # four for the rest of the routine.
+        return "m.a7 = (m.a7 + 4) >>> 0; return;"
     if b == "nop":
         return s
     if b in ("move", "movea") and len(O) == 2 and O[0].read and O[1].write:
@@ -250,8 +297,12 @@ def emit(ins, nxt):
             L = Operand(ops[1], "l")
             return "{ const _a = m.sx(%s, %d); %s; } %s" % (
                 O[0].read, bits, L.write % ("(m.rd(%s, 32) + _a)" % L._reg(ops[1].strip())), s)
-        return "{ const _a = %s; const _b = %s; %s; } %s" % (
-            O[0].read, O[1].read, O[1].write % ("m.addFlags(_b, _a, %d)" % bits), s)
+        rw = O[1].rmw()
+        if rw is None:
+            return None
+        setup, rd, wr = rw
+        return "{ const _a = %s; %s const _b = %s; %s; } %s" % (
+            O[0].read, setup, rd, wr % ("m.addFlags(_b, _a, %d)" % bits), s)
     if b == "adda" and len(O) == 2 and O[0].read and O[1].write:
         L = Operand(ops[1], "l")
         return "{ const _a = m.sx(%s, %d); %s; } %s" % (
@@ -261,8 +312,12 @@ def emit(ins, nxt):
             L = Operand(ops[1], "l")
             return "{ const _a = m.sx(%s, %d); %s; } %s" % (
                 O[0].read, bits, L.write % ("(m.rd(%s, 32) - _a)" % L._reg(ops[1].strip())), s)
-        return "{ const _a = %s; const _b = %s; %s; } %s" % (
-            O[0].read, O[1].read, O[1].write % ("m.subFlags(_b, _a, %d)" % bits), s)
+        rw = O[1].rmw()
+        if rw is None:
+            return None
+        setup, rd, wr = rw
+        return "{ const _a = %s; %s const _b = %s; %s; } %s" % (
+            O[0].read, setup, rd, wr % ("m.subFlags(_b, _a, %d)" % bits), s)
     if b == "suba" and len(O) == 2 and O[0].read and O[1].write:
         L = Operand(ops[1], "l")
         return "{ const _a = m.sx(%s, %d); %s; } %s" % (
@@ -271,21 +326,33 @@ def emit(ins, nxt):
         if b == "cmpa":
             # a word source is sign-extended to 32 bits before the comparison
             return ("{ const _a = m.sx(%s, %d); const _b = %s; "
-                    "m.subFlags(_b, _a, 32); } %s") % (
+                    "m.subFlags(_b, _a, 32, false); } %s") % (
                 O[0].read, bits, Operand(ops[1], "l").read, s)
-        return "{ const _a = %s; const _b = %s; m.subFlags(_b, _a, %d); } %s" % (
+        return "{ const _a = %s; const _b = %s; m.subFlags(_b, _a, %d, false); } %s" % (
             O[0].read, O[1].read, bits, s)
     for name, op in BITWISE:
         if b == name and len(O) == 2 and O[0].read and O[1].write:
-            return ("{ const _a = %s; const _b = %s; const _r = (_b %s _a); "
+            rw = O[1].rmw()
+            if rw is None:
+                return None
+            setup, rd, wr = rw
+            return ("{ const _a = %s; %s const _b = %s; const _r = (_b %s _a); "
                     "%s; m.logicFlags(_r, %d); } %s") % (
-                O[0].read, O[1].read, op, O[1].write % "_r", bits, s)
+                O[0].read, setup, rd, op, wr % "_r", bits, s)
     if b == "not" and len(O) == 1 and O[0].write:
-        return "{ const _r = (~%s); %s; m.logicFlags(_r, %d); } %s" % (
-            O[0].read, O[0].write % "_r", bits, s)
+        rw = O[0].rmw()
+        if rw is None:
+            return None
+        setup, rd, wr = rw
+        return "{ %s const _r = (~%s); %s; m.logicFlags(_r, %d); } %s" % (
+            setup, rd, wr % "_r", bits, s)
     if b == "neg" and len(O) == 1 and O[0].write:
-        return "{ const _v = %s; %s; } %s" % (
-            O[0].read, O[0].write % ("m.subFlags(0, _v, %d)" % bits), s)
+        rw = O[0].rmw()
+        if rw is None:
+            return None
+        setup, rd, wr = rw
+        return "{ %s const _v = %s; %s; } %s" % (
+            setup, rd, wr % ("m.subFlags(0, _v, %d)" % bits), s)
     if b == "ext" and len(O) == 1 and O[0].write:
         src = 8 if size == "w" else 16
         return "{ const _r = m.sx(%s, %d); %s; m.logicFlags(_r, %d); } %s" % (
@@ -297,32 +364,82 @@ def emit(ins, nxt):
         if not L.write:
             return None
         e = "((((%s) >>> 16) | ((%s) << 16)) >>> 0)" % (L.read, L.read)
-        return "%s; m.logicFlags(%s, 32); %s" % (L.write % e, e, s)
-    if b in ("asl", "lsl") and O and O[-1].write:
+        return "{ const _r = %s; %s; m.logicFlags(_r, 32); } %s" % (e, L.write % "_r", s)
+    # A shift count comes from a register modulo 64, so it can exceed the
+    # operand width. JavaScript's shift operators take the count modulo 32,
+    # which turns "shift everything out" into "shift by a few" - the result has
+    # to be forced to zero (or to the sign, for an arithmetic right shift).
+    if b in ("asl", "lsl", "lsr", "asr") and O and O[-1].write:
         cnt = O[0].read if len(O) == 2 else "1"
-        return ("{ const _c = (%s) & 63; const _v = %s; const _r = _v << _c; %s; "
-                "m.shiftFlags(_r, _v, _c, %d, true); } %s") % (
-            cnt, O[-1].read, O[-1].write % "_r", bits, s)
-    if b == "lsr" and O and O[-1].write:
-        cnt = O[0].read if len(O) == 2 else "1"
-        mask = (1 << bits) - 1 if bits < 32 else 0xFFFFFFFF
-        return ("{ const _c = (%s) & 63; const _v = (%s) & %d; const _r = _v >>> _c; "
-                "%s; m.shiftFlags(_r, _v, _c, %d, false); } %s") % (
-            cnt, O[-1].read, mask, O[-1].write % "_r", bits, s)
-    if b == "asr" and O and O[-1].write:
-        cnt = O[0].read if len(O) == 2 else "1"
-        return ("{ const _c = (%s) & 63; const _v = m.sx(%s, %d); const _r = _v >> _c; "
-                "%s; m.shiftFlags(_r, _v, _c, %d, false); } %s") % (
-            cnt, O[-1].read, bits, O[-1].write % "_r", bits, s)
-    if b == "btst" and len(O) == 2 and O[0].read and O[1].read:
-        return ("{ const _n = %s; const _v = %s; "
-                "m.z = ((_v >>> (_n & 31)) & 1) === 0; } %s") % (
-            O[0].read, O[1].read, s)
-    if b in ("bset", "bclr", "bchg") and len(O) == 2 and O[1].write:
+        rw = O[-1].rmw()
+        if rw is None:
+            return None
+        setup, rd, wr = rw
+        if b in ("asl", "lsl"):
+            val, expr, left = rd, "(_c >= %d ? 0 : (_v << _c))" % bits, "true"
+            arith = "true" if b == "asl" else "false"
+        elif b == "lsr":
+            mask = (1 << bits) - 1 if bits < 32 else 0xFFFFFFFF
+            val = "(%s) & %d" % (rd, mask)
+            expr, left, arith = "(_c >= %d ? 0 : (_v >>> _c))" % bits, "false", "false"
+        else:
+            val = "m.sx(%s, %d)" % (rd, bits)
+            expr = "(_c >= %d ? (_v >> %d) : (_v >> _c))" % (bits, bits - 1)
+            left, arith = "false", "true"
+        return ("{ const _c = (%s) & 63; %s const _v = %s; const _r = %s; %s; "
+                "m.shiftFlags(_r, _v, _c, %d, %s, %s); } %s") % (
+            cnt, setup, val, expr, wr % "_r", bits, left, arith, s)
+    # A bit instruction takes its width from the destination, not the
+    # mnemonic: a data register is a 32-bit operand and the bit number is taken
+    # modulo 32, while any memory destination is a single byte and the number
+    # is taken modulo 8. capstone prints both as ".b", so trusting the mnemonic
+    # silently addresses the wrong bit on every register form.
+    if b in ("btst", "bset", "bclr", "bchg") and len(O) == 2:
+        dreg = REG.match(ops[1].strip()) and ops[1].strip()[0] == "d"
+        D = Operand(ops[1], "l" if dreg else "b")
+        mask = 31 if dreg else 7
+        if b == "btst":
+            if not D.read:
+                return None
+            return ("{ const _n = (%s) & %d; const _v = %s; "
+                    "m.z = ((_v >>> _n) & 1) === 0; } %s") % (
+                O[0].read, mask, D.read, s)
+        if not D.write:
+            return None
+        rw = D.rmw()
+        if rw is None:
+            return None
+        setup, rd, wr = rw
         tmpl = {"bset": "(_v | _bit)", "bclr": "(_v & ~_bit)", "bchg": "(_v ^ _bit)"}[b]
-        return ("{ const _n = %s; const _v = %s; const _bit = 1 << (_n & 31); "
-                "m.z = ((_v >>> (_n & 31)) & 1) === 0; %s; } %s") % (
-            O[0].read, O[1].read, O[1].write % tmpl, s)
+        return ("{ const _n = (%s) & %d; %s const _v = %s; const _bit = (1 << _n) >>> 0; "
+                "m.z = ((_v >>> _n) & 1) === 0; %s; } %s") % (
+            O[0].read, mask, setup, rd, wr % tmpl, s)
+    if b == "movep" and len(ops) == 2:
+        # movep moves a register through every other byte of memory, for
+        # peripherals wired to one half of the data bus. It is the only
+        # instruction whose bytes are not contiguous, so nothing else in the
+        # translator produces the right addresses for it.
+        n = bits // 8
+        src, dst = ops[0].strip(), ops[1].strip()
+        if REG.match(src) and src[0] == "d":
+            A = Operand(dst, "b")
+            ea = A.ea()
+            if ea is None:
+                return None
+            parts = " ".join(
+                "m.setByte(_ea + %d, _v >>> %d);" % (i * 2, (n - 1 - i) * 8)
+                for i in range(n))
+            return "{ const _ea = (%s) >>> 0; const _v = m.%s >>> 0; %s } %s" % (
+                ea, src, parts, s)
+        A = Operand(src, "b")
+        ea = A.ea()
+        if ea is None or not REG.match(dst) or dst[0] != "d":
+            return None
+        parts = " + ".join("(m.byte(_ea + %d) << %d)" % (i * 2, (n - 1 - i) * 8)
+                           for i in range(n))
+        keep = "" if n == 4 else "(m.%s & 0xffff0000) | " % dst
+        return "{ const _ea = (%s) >>> 0; m.%s = (%s(%s)) >>> 0; } %s" % (
+            ea, dst, keep, parts, s)
     if b in BRANCH_CC and len(ops) == 1:
         t = target_addr(ops[0])
         if t is None:
@@ -344,15 +461,22 @@ def emit(ins, nxt):
         e = "(m.cond('%s') ? 0xff : 0)" % SET_CC[b]
         return "%s; %s" % (O[0].write % e, s)
     if b in ("jsr", "bsr") and len(ops) == 1:
+        # Push the return address before calling, as the chip does. Without it
+        # the callee's stack is four bytes shallower than it expects, so every
+        # routine that reads an argument at 4(a7) or 8(a7) reads the wrong
+        # slot - which is why leaf routines matched far more often than the
+        # routines that call them.
+        push = "m.storePre('a7', 4, 0x%05x, 32); " % nxt
         t = target_addr(ops[0])
         if t is not None:
-            return "call(0x%05x, m); %s" % (t, s)
+            return "%scall(0x%05x, m); %s" % (push, t, s)
         # jsr (an): the target is whatever the register holds
         mi = re.match(r"^\((a\d|sp)\)$", ops[0].strip())
         if mi:
-            return "call(%s, m); %s" % (Operand._reg(mi.group(1)), s)
+            return "{ const _t = %s; %scall(_t, m); } %s" % (
+                Operand._reg(mi.group(1)), push, s)
         ea = O[0].ea()
-        return "call(%s, m); %s" % (ea, s) if ea else None
+        return "{ const _t = (%s) >>> 0; %scall(_t, m); } %s" % (ea, push, s) if ea else None
     if b == "jmp" and len(ops) == 1:
         t = target_addr(ops[0])
         if t is not None:
@@ -366,25 +490,33 @@ def emit(ins, nxt):
         ea = O[0].ea()
         return "pc = (%s) >>> 0; break;" % ea if ea else None
     if b in ("mulu", "muls") and len(O) == 2 and O[0].read and O[1].write:
-        a = "m.rd(%s, 16)" % O[1].read if False else O[1].read
         if b == "muls":
             e = "((m.sx(%s, 16) * m.sx(%s, 16)) >>> 0)" % (O[1].read, O[0].read)
         else:
             e = "((((%s) & 0xffff) * ((%s) & 0xffff)) >>> 0)" % (O[1].read, O[0].read)
         w = Operand(ops[1], "l").write
-        return "%s; m.logicFlags(%s, 32); %s" % (w % e, e, s)
+        return "{ const _r = %s; %s; m.logicFlags(_r, 32); } %s" % (e, w % "_r", s)
     if b in ("divu", "divs") and len(O) == 2 and O[0].read and O[1].write:
         # 32 / 16: quotient in the low word, remainder in the high word. On
         # overflow the 68000 leaves the destination untouched and sets V.
-        src = "m.sx(%s, 16)" % O[0].read if b == "divs" else "((%s) & 0xffff)" % O[0].read
-        dst = "m.rd(%s, 32)" % O[1].read if False else Operand(ops[1], "l").read
+        signed = b == "divs"
+        src = "m.sx(%s, 16)" % O[0].read if signed else "((%s) & 0xffff)" % O[0].read
+        dst = Operand(ops[1], "l").read
         w = Operand(ops[1], "l").write
-        num_ = "m.sx(%s, 32)" % dst if b == "divs" else "(%s >>> 0)" % dst
+        num_ = "m.sx(%s, 32)" % dst if signed else "(%s >>> 0)" % dst
+        # The quotient has to fit in 16 bits, and what "fit" means differs:
+        # divu overflows above 65535, divs outside -32768..32767. Using the
+        # signed bound for divu rejects every quotient over 32767 and leaves
+        # the destination untouched, which is the opposite of the right answer.
+        over = "_q > 32767 || _q < -32768" if signed else "_q > 0xffff"
+        trunc = "Math.trunc(_n / _d)" if signed else "Math.floor(_n / _d)"
         return ("{ const _d = %s; const _n = %s; if (_d === 0) { throw new Error("
-                "'divide by zero at 0x%05x'); } const _q = (_n / _d) | 0; "
-                "const _r = _n %% _d; if (_q > 32767 || _q < -32768) { m.v = true; } "
+                "'divide by zero at 0x%05x'); } const _q = %s; "
+                "const _r = _n %% _d; if (%s) { m.v = true; m.n = true; "
+                "m.z = false; m.c = false; } "
                 "else { m.v = false; %s; m.logicFlags(_q, 16); } } %s") % (
-            src, num_, ins.address, w % "(((_r & 0xffff) << 16) | (_q & 0xffff)) >>> 0", s)
+            src, num_, ins.address, trunc, over,
+            w % "(((_r & 0xffff) << 16) | (_q & 0xffff)) >>> 0", s)
     if b == "exg" and len(ops) == 2:
         r0, r1 = ops[0].strip(), ops[1].strip()
         return "{ const _t = m.%s; m.%s = m.%s; m.%s = _t; } %s" % (r0, r0, r1, r1, s)
@@ -412,7 +544,14 @@ def emit(ins, nxt):
         else:
             e = "(((%s >>> ((%s) %% %d)) | (%s << (%d - ((%s) %% %d)))) >>> 0)" % (
                 v, cnt, bits, v, bits, cnt, bits)
-        return "%s; m.logicFlags(%s, %d); %s" % (O[-1].write % e, e, bits, s)
+        # The result expression was emitted twice - once to store and once for
+        # the flags - so the flags were computed from the already-rotated
+        # register. C comes from the bit that wrapped around, and a zero count
+        # clears it; X is not touched by a rotate at all.
+        cbit = "(_r & 1) === 1" if b == "rol" else "((_r >>> %d) & 1) === 1" % (bits - 1)
+        return ("{ const _am = ((%s) & 63) %% %d; const _r = %s; %s; "
+                "m.logicFlags(_r, %d); if (_am !== 0) m.c = %s; } %s") % (
+            cnt, bits, e, O[-1].write % "_r", bits, cbit, s)
     if b in ("ori", "andi", "eori") and len(ops) == 2 and ops[1].strip() in ("sr", "ccr"):
         op = {"ori": "|", "andi": "&", "eori": "^"}[b]
         return "m.sr = (m.sr %s %s) >>> 0; %s" % (op, O[0].read, s)

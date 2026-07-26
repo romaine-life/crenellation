@@ -14,7 +14,7 @@ for (const l of readFileSync(join(here, 'encodings.txt'), 'utf8').split('\n')) {
 }
 const cases = new Map();
 for (const l of readFileSync(join(here, 'insn.log'), 'utf8').split('\n')) {
-  const m = /^I ([0-9A-F]+) (\d) (.+) \| (.+)$/.exec(l.trim());
+  const m = /^I ([0-9A-F]+) (\d) ([^|]+)\| ([^|]+)/.exec(l.trim());
   if (m) cases.set(`${m[1]}:${m[2]}`, {
     din: m[3].trim().split(/\s+/).slice(0,8).map(x=>parseInt(x,16)),
     ain: m[3].trim().split(/\s+/).slice(8,14).map(x=>parseInt(x,16)),
@@ -36,7 +36,7 @@ for (const hex of labels.keys()) {
     if(hex!==want) continue;
     for(let k=0;k<8;k++) m[`d${k}`]=d[k];
     for(let k=0;k<6;k++) m[`a${k}`]=a[k];
-    m.a6=STACK+0x200; m.a7=STACK-0x40;
+    m.a6=SCRATCH+0x300; m.a7=SCRATCH+0x380;
     for(let i=0;i<hex.length/2;i++) m.setByte(CODE+i, parseInt(hex.slice(i*2,i*2+2),16));
     console.log(`${hex}  ${labels.get(hex)}  trial ${trial}`);
     console.log('  in d (port):', d.map(x=>x.toString(16)).join(' '));

@@ -8,6 +8,72 @@ original routine and the port have been fed *identical inputs* and produced
 Anything not meeting that bar is listed as outstanding, regardless of how
 plausible the current implementation looks.
 
+## Verification state
+
+Measured, not asserted. Two harnesses run every routine on the real 68000 under
+MAME and again in the TypeScript port from byte-identical starting state, and
+compare all registers plus a hash of the memory window the routine works in.
+
+| | |
+|---|---|
+| Routines in the overlay | 659 |
+| Verified against hardware | 410 |
+| Failing | 48 |
+| Passing one harness, failing the other | 9 |
+| Never exercised (hardware never returned) | 192 |
+
+The routine count rose from 593 because 66 `jmp` trampolines below the first
+ordinary routine had been classified as data. They are executed - 74 call sites
+name one directly and 108 pointer-table slots hold their addresses - so they are
+now functions, ported and dispatchable.
+
+### Instruction rules
+
+Routine-level differences say a routine is wrong, not which rule is wrong, and
+one bad rule spreads across every routine that uses it. Each of the 4,680
+distinct instruction encodings in the ROM is therefore also run on its own, with
+known registers, at a fixed address.
+
+**7,191 of 7,192 comparable cases reproduce exactly, condition codes included.**
+The one exclusion is encoding `3131313120455843` - the ASCII bytes `"1111 EXC"`
+from the exception-message table, which capstone reads as a 68020
+memory-indirect form the 68000 does not have. It is data, not an instruction.
+A further 204 cases are not comparable because they read the playfield, the
+input ports or the sound chips, which the port does not model.
+
+### Defects this found
+
+Every one was found by comparison against the chip, not by reading the code.
+
+- `jsr`/`bsr` did not push a return address, so every callee read its stack
+  arguments four bytes off. This alone was 174 routines.
+- Pre-decrement and post-increment applied twice on read-modify-write operands
+  (`neg.b -(a0)`, `eor.b d0,(a0)+`), walking pointers off by an operand.
+- A byte access through `a7` stepped by one; the 68000 steps by two to keep the
+  stack word-aligned.
+- Shift counts come from a register modulo 64, but JavaScript takes shift counts
+  modulo 32, so "shift everything out" became "shift by a few".
+- Bit instructions took their width from the mnemonic; the destination decides
+  it - a data register is 32 bits modulo 32, memory is 8 bits modulo 8.
+- `divu` used the signed overflow bound, rejecting every quotient over 32767.
+- `cmp` set X, which it must not; an `addx` after a `cmp` then read the wrong
+  carry.
+- `asl` never set V, which needs its own rule: the sign bit changing during the
+  shift, not the result being negative.
+- Multiply, swap and rotate evaluated their result expression twice - once to
+  store, once for the flags - so the flags described the value already written.
+- An arithmetic right shift past the operand width cleared C instead of keeping
+  the sign bit.
+- `movep` had no rule at all.
+
+### What the remaining failures are
+
+Of the 48 failing routines, 28 reach a computed jump whose target table is
+classified as data, so the port has no case for the address; 11 read the input
+ports; the rest differ in memory. The 192 never exercised are routines the
+hardware harness could not make return - it drives them with random arguments,
+and a routine that expects a valid pointer does not come back.
+
 ## Harness
 
 `romlab/verify.lua` calls a ROM routine directly inside MAME:

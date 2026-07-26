@@ -19,6 +19,9 @@ import { call } from './dispatch';
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const baseline = new Uint8Array(readFileSync(join(here, 'replay-baseline.bin')));
+// The playfield bitmap is ordinary memory on the board; routines read it back.
+const pfBaseline = new Uint8Array(readFileSync(join(here, 'replay-pf-baseline.bin')));
+const PF_LO = 0x200000;
 const cases = JSON.parse(readFileSync(join(here, 'replay.json'), 'utf8')) as Array<{
   entry: number;
   din: number[];
@@ -54,6 +57,7 @@ describe('routines replayed with the arguments the game passed', () => {
     for (const c of cases) {
       const m = new Machine(rom);
       for (let i = 0; i < baseline.length; i += 1) m.setByte(RAM_LO + i, baseline[i]);
+    for (let i = 0; i < pfBaseline.length; i += 1) m.setByte(PF_LO + i, pfBaseline[i]);
       m.store(SENTINEL, 0x60fe, 16);
 
       let sp = STACK;

@@ -21,6 +21,10 @@ const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 // running game against zeroes.
 const ramBaseline = new Uint8Array(readFileSync(join(here, 'ram-baseline.bin')));
 const RAM_LO = 0x3e0000;
+// The playfield bitmap is ordinary memory on the board, and routines read it.
+// Without it, every drawing routine compared real pixels against zeroes.
+const pfBaseline = new Uint8Array(readFileSync(join(here, 'pf-baseline.bin')));
+const PF_LO = 0x200000;
 const fuzz = JSON.parse(readFileSync(join(here, 'fuzz.json'), 'utf8')) as {
   cases: Array<{
     entry: number;
@@ -90,6 +94,7 @@ describe('every routine against the real 68000', () => {
         // case produced output, so later cases stay aligned
         const m = new Machine(rom);
         for (let i = 0; i < ramBaseline.length; i += 1) m.setByte(RAM_LO + i, ramBaseline[i]);
+    for (let i = 0; i < pfBaseline.length; i += 1) m.setByte(PF_LO + i, pfBaseline[i]);
         for (let i = 0; i < SCRATCH_LEN; i += 1) m.setByte(SCRATCH + i, rand.next() % 256);
         const d: number[] = [];
         for (let k = 0; k < 8; k += 1) d.push(rand.next() % 0x10000);

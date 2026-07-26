@@ -75,14 +75,45 @@ export class Machine {
 
   // ---- memory -----------------------------------------------------------
 
+  /**
+   * Whether any access left the memory the port models.
+   *
+   * The port models ROM and work RAM. The board also has a playfield bitmap,
+   * a palette, sound chips and input ports, and an instruction pointed at
+   * those reads something the port cannot know. Tests set `trackOffMap` so
+   * they can tell "this rule is wrong" apart from "this case asked about
+   * hardware the port does not implement".
+   */
+  trackOffMap = false;
+  offMap = false;
+
+  /** Where the off-map accesses went, so the gap can be named rather than
+   *  guessed at. Only the first few are kept; the address is rounded to the
+   *  device, not the byte. */
+  readonly offMapAt: number[] = [];
+
+  private note(addr: number): void {
+    if (addr < this.rom.length) return;
+    // Probed from the board: work RAM runs to 0x3FFFFF, and the playfield
+    // bitmap is ordinary memory rather than a device. Both are modelled, so
+    // reaching them is not a gap.
+    if (addr >= 0x3e0000 && addr <= 0x3fffff) return;
+    if (addr >= 0x200000 && addr <= 0x21ffff) return;
+    this.offMap = true;
+    if (this.offMapAt.length < 4) this.offMapAt.push(addr);
+  }
+
   byte(addr: number): number {
     addr >>>= 0;
+    if (this.trackOffMap) this.note(addr);
     if (addr < this.rom.length) return this.rom[addr];
     return this.ram.get(addr) ?? 0;
   }
 
   setByte(addr: number, v: number): void {
-    this.ram.set(addr >>> 0, v & 0xff);
+    addr >>>= 0;
+    if (this.trackOffMap) this.note(addr);
+    this.ram.set(addr, v & 0xff);
   }
 
   load(addr: number, bits: number): number {
@@ -168,11 +199,19 @@ export class Machine {
    * which a following bcs/bcc depends on; leaving them clear silently takes
    * the wrong branch.
    */
-  shiftFlags(result: number, value: number, count: number, bits: number, left: boolean): void {
+  shiftFlags(result: number, value: number, count: number, bits: number,
+             left: boolean, arith = false): void {
     this.logicFlags(result, bits);
+    if (arith && left) this.v = this.aslOverflow(value, count, bits);
     if (count === 0) return; // a zero-count shift leaves C alone and clears V
     const bit = left ? bits - count : count - 1;
-    const c = bit >= 0 && bit < 32 ? ((value >>> bit) & 1) === 1 : false;
+    // Past the operand width every bit has already gone. A left shift or a
+    // logical right shift is then shifting in zeroes, so C is clear; an
+    // arithmetic right shift keeps feeding the sign bit out, so C is the sign.
+    let c: boolean;
+    if (bit >= 0 && bit < bits) c = ((value >>> bit) & 1) === 1;
+    else if (!left && arith) c = ((value >>> (bits - 1)) & 1) === 1;
+    else c = false;
     this.c = c;
     this.x = c;
   }
@@ -187,7 +226,20 @@ export class Machine {
   }
 
   /** Flags for a subtraction a - b, as cmp and sub produce them. */
-  subFlags(a: number, b: number, bits: number): number {
+  /**
+   * V for an arithmetic left shift: set if the sign bit changed at any point
+   * during the shift, which is not the same as the result simply being
+   * negative. Nothing else in the flag set has this shape.
+   */
+  aslOverflow(value: number, count: number, bits: number): boolean {
+    if (count === 0) return false;
+    const sv = this.sx(value, bits);
+    if (count >= bits) return sv !== 0;
+    const top = sv >> (bits - 1 - count);
+    return top !== 0 && top !== -1;
+  }
+
+  subFlags(a: number, b: number, bits: number, setX = true): number {
     const sa = this.sx(a, bits);
     const sb = this.sx(b, bits);
     const r = sa - sb;
@@ -195,7 +247,10 @@ export class Machine {
     this.z = this.sx(r, bits) === 0;
     this.v = (sa < 0) !== (sb < 0) && (this.sx(r, bits) < 0) !== (sa < 0);
     this.c = (a >>> 0) < (b >>> 0);
-    this.x = this.c;          // addx/subx read X, and nothing else set it
+    // cmp is the one subtraction that leaves X alone: it is a comparison, not
+    // an arithmetic result, and an addx or subx after it must still see the X
+    // the earlier arithmetic left behind.
+    if (setX) this.x = this.c;
     return r;
   }
 

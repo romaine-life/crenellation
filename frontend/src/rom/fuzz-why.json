@@ -1,0 +1,55 @@
+[
+ {
+  "cause": "threw",
+  "routines": 28,
+  "sample": "no routine covers 0x2768",
+  "entries": [
+   "0x272e",
+   "0x4f9e",
+   "0x7ea4",
+   "0x7f5a",
+   "0x8200",
+   "0x9208",
+   "0xa80c",
+   "0xa90e",
+   "0xc240",
+   "0xc568"
+  ]
+ },
+ {
+  "cause": "off-map hardware",
+  "routines": 11,
+  "sample": "0x640001",
+  "entries": [
+   "0x5b4",
+   "0x3242",
+   "0x44a2",
+   "0x744e",
+   "0x74fa",
+   "0xa7e6",
+   "0x11f2a",
+   "0x133ec",
+   "0x18cce",
+   "0x18cde"
+  ]
+ },
+ {
+  "cause": "memory",
+  "routines": 4,
+  "sample": "",
+  "entries": [
+   "0x620",
+   "0x656",
+   "0x14dc",
+   "0x900a"
+  ]
+ },
+ {
+  "cause": "stubbed call",
+  "routines": 1,
+  "sample": "0x140010",
+  "entries": [
+   "0xedea"
+  ]
+ }
+]

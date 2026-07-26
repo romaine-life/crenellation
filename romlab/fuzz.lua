@@ -28,7 +28,12 @@ local TAPS = {}
 -- adding 8 to d0 - so the sentinel lives in RAM with a nop written into it.
 local SENTINEL = 0x3E6000
 local PARK = 0x60FE   -- bra to self: the CPU spins here between cases
-local RAM_LO, RAM_HI = 0x3E0000, 0x3EFFFF
+-- Probed from the board, not assumed: work RAM is 0x3E0000-0x3FFFFF and the
+-- playfield bitmap at 0x200000 is ordinary memory. Modelling only the first
+-- 64 KiB left every routine that touched the rest comparing real data against
+-- zeroes, which reads as a translation fault and is not one.
+local RAM_LO, RAM_HI = 0x3E0000, 0x3FFFFF
+local PF_LO, PF_HI = 0x200000, 0x21FFFF
 local SCRATCH, SCRATCH_LEN = 0x3E4000, 0x400
 local STACK = 0x3E5000
 local DIGEST_LO, DIGEST_LEN = 0x3E4000, 0x2000
@@ -65,16 +70,23 @@ local finished = false
 local finishedOk = false
 local dirty = {}
 
-local function dump_baseline()
+local pfbase = {}
+
+local function dump_range(lo, hi, store, name)
   local t = {}
-  for a = RAM_LO, RAM_HI do
+  for a = lo, hi do
     local b = space:read_u8(a)
-    baseline[a] = b
+    store[a] = b
     t[#t + 1] = string.char(b)
   end
-  local fh = io.open(OUT .. "ram-baseline.bin", "wb")
+  local fh = io.open(OUT .. name, "wb")
   fh:write(table.concat(t))
   fh:close()
+end
+
+local function dump_baseline()
+  dump_range(RAM_LO, RAM_HI, baseline, "ram-baseline.bin")
+  dump_range(PF_LO, PF_HI, pfbase, "pf-baseline.bin")
 end
 
 local function restore_ram()
@@ -86,6 +98,9 @@ local function restore_ram()
   -- 64KB a case is affordable because the game is frozen while this runs.
   for a = RAM_LO, RAM_HI do
     space:write_u8(a, baseline[a])
+  end
+  for a = PF_LO, PF_HI do
+    space:write_u8(a, pfbase[a])
   end
 end
 
