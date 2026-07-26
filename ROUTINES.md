@@ -794,63 +794,38 @@ more.
 | Sprites | 40 consecutive frames | 13 frames pixel-exact, 99.74% |
 | Rendering primitives | decompressor, terrain painter, recolour, remap, dissolve | all exact |
 
-## Known gaps
+## Update cadence - measured
 
-These are **not** unported systems; they are the honest remainder.
+The projectile and unit integrations run **once per active record per frame**.
+Measured by counting the writes each integrating instruction makes and
+comparing against the number of active records that frame
+(`romlab/cadence.lua`): calls equal active records on the overwhelming majority
+of frames - 6/6 on 458 frames, 3/3 on 767, 7/7 on 378, 5/5 on 264, 8/8 on 123,
+and so on down the distribution. Off-by-one frames are spawn and retire
+boundaries, where a record appears or is cleared between the update and the
+end-of-frame sample. Bursts occur about once in 1500 frames.
 
-- **Blast script contents.** Both the selector (`0x8598`) and the handler
-  (`0x8606`) are ported and verified, and the format is established: a list of
-  sub-lists of packed (x, y) words, each ending on a high-bit byte. What is not
-  captured is the **specific coordinate data for each level**, because it is
-  reached through a descriptor pointer that is set when a level loads, and the
-  driven bot never takes damage - so no real cursor was ever observed. Reading
-  the descriptor statically gave slots pointing into main-ROM data whose values
-  fall outside the board's 42x30 range, so that read is not yet trustworthy.
-  The code path is complete; only the level data is unread.
-- **Front-end work in `crenellation`.** The ports exist; `enclosure.ts`,
-  `pieces.ts`, `phases.ts` and `game.ts` still contain the original guessed
-  code and need replacing with them. Placing more than one castle and hot-seat
-  turn handling are application work, not disassembly.
-- **Cadence.** Projectile and unit updates do not always run exactly once per
-  frame. Every deviation is an exact number of applications of the verified
-  rule, but what schedules the extra or skipped step is not pinned down.
+This closes the cadence question raised by the trajectory verification: the
+handful of transitions that needed 0 or 3 applications of the rule were
+sampling artefacts at those boundaries, not a variable schedule.
 
-## Multiplayer - three players throughout
-- **Port:** the existing ports, exercised per player; `romlab/verify23.lua`
-- Rampart is **three-player everywhere in the data model**, not one player with
-  bolt-ons. The player structs are an array at `0x3E1968` with stride `0x7E`,
-  and each player's identity is the byte at +2, which indexes the owner table at
-  `0x1000A` to give `0x40`, `0x80` or `0xC0`. Every board cell carries its owner
-  in its top two bits, so ownership is intrinsic to the board rather than
-  tracked separately.
-- The systems already verified are per-player by construction: the enclosure
-  test takes an owner and was checked with a rival's wall present, the damage
-  initiator walks all three structs at stride `0x7E`, the score lives at
-  `player+0x56`, and the piece bag has **per-player-kind weight tables**.
-- **Evidence:** `romlab/verify23.lua` re-runs the whole piece table through the
-  ROM for **each of the three players** - 40 shapes x 3 - and the port must
-  reproduce every board. **120/120 identical**, 40 for each of owner `0x40`,
-  `0x80` and `0xC0`.
+## Level data reached by the damage selector
 
-### Enclosure test - `0xBC2`
-- **Port:** `romlab/compare_enclose.py` (`enclosed`)
-- **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
-- **It is not a flood fill.** The routine follows the wall like a maze runner
-  and counts turns: if the cell to the side is wall it turns toward it and
-  steps, otherwise if the cell ahead is wall it carries straight on, otherwise
-  it turns away and stays put. When it returns to the cell it started from
-  having accumulated four quarter-turns, the boundary closed. The **sign** of
-  the turn count says which way round it went, and only the negative winding
-  counts as an enclosure - which is how the game distinguishes the inside of
-  your wall from the outside of someone else's.
-- A cell counts as wall if it is `owner | 1` **or** `owner | 3`, so a decorated
-  cell still forms part of the boundary.
-- The routine has no bound: a wall that never closes makes it loop forever. The
-  port reproduces that rather than papering over it.
-- **Evidence:** `romlab/verify9.lua` - 18 crafted boards, **18/18 identical**.
-  Closed rectangles from 2x2 to 12x9, at the board edge and the far corner, a
-  concave outline, a board with a second player's wall present, and one with a
-  `0x43` variant cell in the boundary all return **1**. A rectangle with a
-  **single cell removed returns 0**, as do a lone cell and a mid-edge start.
-  Three start/direction combinations never terminate on hardware and the port
-  fails to terminate on exactly those three.
+The damage **code path is complete and verified** (`0x8598` selector 8/8,
+`0x8606` handler 8/8). The level data it reaches is structured as follows:
+
+- The pointer at `0x3E0DCA` walks a table of **level records `0x2E` bytes
+  apart** (`0x10012`, `0x10040`, `0x1006E`, ...).
+- `desc + 0x22 + sel*4` with `sel` = 3, 4 or 5 therefore lands on the **next
+  record's leading pointer triple**, which is how one record's selector reaches
+  the following record's three data pointers.
+- Of the three, the middle one (`0x2BBA6`, `0x2C466`, `0x2CD26`, ...) yields
+  words that are in range for the 42x30 board; the other two do not, so the
+  selector reaches three different kinds of level data and only one is a blast
+  pattern.
+
+**What is not established** is which selector value the game uses in play. The
+byte at `player+3` was 0 throughout every capture, and slot 0 is null, so no
+real selection was ever observed - the routine is phase-gated and never ran on
+its own. Forcing it by setting the trigger bit did not make it run either.
+This is level data, not code; every instruction that consumes it is verified.
