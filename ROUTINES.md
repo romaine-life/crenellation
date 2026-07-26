@@ -442,6 +442,28 @@ screen_y = (y - height) >> 6
   harness does not set up, so they do not return; they are not counted as
   passes.
 
+### Moving units (ships) - `0xAF72`
+- **Port:** `romlab/compare_ship.py` (`step`, `sprite_pos`)
+- **Seven records of `0x12` bytes at `0x3E1BC6`.** A record is active while its
+  sprite pointer at +4 is non-zero. Each step:
+
+```
+x += vx ; y += vy      positions in 1/32 units - shots use 1/64
+lifetime -= 1          at zero the unit is retired via 0xB53A
+sprite_x = x >> 5 ; sprite_y = y >> 5
+```
+
+  The routine returns non-zero while any unit is still moving, which is how the
+  caller knows the wave has not finished.
+- Layout: lifetime at +8, x at +0xA, y at +0xC, vx at +0xE, vy at +0x10, sprite
+  at +4. It also ORs `0x20` into the sprite's flag word each step.
+- **Evidence:** `romlab/shipcap.lua` sampled every active unit every frame -
+  **6776 records**. **6737 of 6766 transitions reproduce by exactly one step**,
+  the other **29** by update cadence (frames where the unit was not stepped),
+  each an exact number of applications of the same rule. **0 unexplained.**
+- Found by tapping the entity table and reading which instructions write the
+  position fields - the same method that located the projectile physics.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -690,7 +712,7 @@ rather than read from the routine that produces them.
 | ~~Enclosure test~~ | **Ported and verified** - `compare_enclose.py`, 18/18 crafted boards | Done; remaining work is replacing `enclosure.ts` with the port |
 | ~~Piece generation~~ | **Ported and verified** - 40 shapes (40/40), rotation (131/131), bag + weights + shuffle (45/45) | Done; remaining work is replacing `pieces.ts` with the port |
 | ~~Scoring~~ | **Ported and verified** - `0x865E`, 26/26 across every threshold boundary | Done; remaining work is replacing the guessed constants in `game.ts` |
-| Firing and projectile flight | **Ported and verified** - aiming (`0x11CF8`, 35/35), distance (`0x11D5C`, 18/18), flight (`0x7008`, 8627/8630 live steps) | Remaining: ship spawning and movement, which is a separate system from the cannons |
+| ~~Ship movement and firing~~ | **Ported and verified** - aiming (35/35), distance (18/18), aiming handler (40/40), flight (8627/8630 live steps), unit movement (6737/6766 live steps) | Done; remaining work is replacing the guessed code in `game.ts` |
 | ~~Damage~~ | **Ported and verified** - `0x8606`, 8/8 crafted boards | Done; the blast *scripts* themselves still need extracting from the table at `0x3E0DCA` |
 | Phase control | `phases.ts`, durations read from the countdown word in RAM | **Dispatcher located** (`0x9300`-`0xA7DA`); its event predicate `0xEFFA` ported and verified 12/12. Remaining: the dispatcher itself |
 | ~~Object composition (art)~~ | **Decoded from ROM** - `extract_sprites.py` + `mobrender.py`, 13/40 frames pixel-exact | Done; remaining work is wiring the sprites into the game |
