@@ -378,6 +378,24 @@ selection reaches them some other way and is not yet located.
   shuffle's intermediate copy lands inside the bag's own buffer. Modelling flat
   memory at the true addresses reproduces it exactly.
 
+### Flood-fill span scanner - `0x65AA`
+- **Port:** `romlab/compare_span.py` (`scan_span`)
+- **Signature:** `scan_span(word start @+8, word end @+0xA, byte value @+0xF)`
+- **Behaviour:** walks a **column** of the board (cells are `x*32 + y`, so
+  advancing the pointer by one steps in y) between two coordinates, and pushes
+  the **start of every run of cells that differ from `value`** onto the
+  coordinate stack. Cells matching the value are the boundary; everything else
+  is territory still to claim. This is the seeding step of the scanline fill in
+  `0x5EA2`.
+- The coordinate stack lives at `0x3E209C` and is **pre-incremented**, so the
+  first entry lands two bytes above the base rather than at it. `0x663C` pushes,
+  `0x661A` pops into a fixed slot at `0x3E1F1A`.
+- **Evidence:** `romlab/verify19.lua` - 10 crafted columns: uniform, wholly
+  differing, a single run, two runs, runs touching the start and the end, five
+  alternating single cells, a one-cell span both matching and differing, and a
+  different column entirely. **10/10 identical** in both the queued coordinates
+  and the final stack pointer.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
