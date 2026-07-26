@@ -464,6 +464,33 @@ sprite_x = x >> 5 ; sprite_y = y >> 5
 - Found by tapping the entity table and reading which instructions write the
   position fields - the same method that located the projectile physics.
 
+### Phase dispatcher - `0xEE44`
+- **Port:** `romlab/compare_dispatch.py` (`dispatch`)
+- **This is what "phase control" actually is.** There is no state machine
+  switching on a phase number. There is a queue of **periodic timers**, and the
+  dispatcher runs it once per pass:
+
+```
+for each of (count + 1) records:
+    record.countdown -= 1
+    if countdown > 0:                     skip - not due yet
+    if gate set and record.flag == 0:     skip - gated out
+    countdown = record.period             reload
+    call record.handler(record.parameter)
+```
+
+- The count at `0x3E1CF4` is -1 when empty and is tested **signed** before the
+  table is touched. A record whose countdown is already zero or negative still
+  fires, because the test is `> 0` **after** decrementing rather than `== 0`.
+  The gate is the word at `0x3E0802`; byte +3 of a record marks it as running
+  even while gated.
+- **Evidence:** `romlab/verify22.lua` - 10 cases: an empty queue, a timer not
+  yet due, one firing, one already at zero, one already negative, gated on and
+  off, the gate clear with the flag clear, and two multi-record queues mixing
+  all of it. **10/10 identical.** Handlers point at a bare `rts`, and whether a
+  record fired is read from its countdown - a fired record reloads, an unfired
+  one keeps the decremented value.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
@@ -714,7 +741,7 @@ rather than read from the routine that produces them.
 | ~~Scoring~~ | **Ported and verified** - `0x865E`, 26/26 across every threshold boundary | Done; remaining work is replacing the guessed constants in `game.ts` |
 | ~~Ship movement and firing~~ | **Ported and verified** - aiming (35/35), distance (18/18), aiming handler (40/40), flight (8627/8630 live steps), unit movement (6737/6766 live steps) | Done; remaining work is replacing the guessed code in `game.ts` |
 | ~~Damage~~ | **Ported and verified** - `0x8606`, 8/8 crafted boards | Done; the blast *scripts* themselves still need extracting from the table at `0x3E0DCA` |
-| Phase control | `phases.ts`, durations read from the countdown word in RAM | **Dispatcher located** (`0x9300`-`0xA7DA`); its event predicate `0xEFFA` ported and verified 12/12. Remaining: the dispatcher itself |
+| ~~Phase control~~ | **Ported and verified** - dispatcher (`0xEE44`, 10/10), queue post/remove/test (12/12, 12/12), countdown timer, scheduled-event trigger | Done; remaining work is replacing `phases.ts` with the port |
 | ~~Object composition (art)~~ | **Decoded from ROM** - `extract_sprites.py` + `mobrender.py`, 13/40 frames pixel-exact | Done; remaining work is wiring the sprites into the game |
 | ~~Terrain plates (art)~~ | **Decoded from ROM** - `extract_tiles.py`, 5907 tiles verified against 11614 live draws | Done; remaining work is wiring the tileset into the game |
 | ~~Attract screens (art)~~ | **Decoded from ROM** - same tileset; screens are placement maps over it | Done; remaining work is wiring the tileset into the game |
