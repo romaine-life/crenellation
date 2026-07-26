@@ -227,6 +227,34 @@ alone explains 97.8-99.9% of it. `romart.py` and `screens.py` were corrected.
   `compare_pieces.py` reproduces **40/40 - every one of the 1344 board cells
   and the return value identical for every piece.**
 
+### Rotation groups - table at `0x1163A`-`0x11739`
+The 40 shapes are not 40 independent pieces. They are **13 rotation groups**,
+each a run of pointers to shape entries, terminated by a `0` and then a pointer
+back to the group's own start. Rotating a piece is simply advancing that pointer
+and wrapping when it hits the terminator - which is why `player->0x24` points
+into ROM rather than RAM.
+
+| Group | Shapes | What it is |
+| --- | --- | --- |
+| `0x11736` | 01 | single cell |
+| `0x11726` | 02, 03 | 3-bar, two rotations |
+| `0x1170E` | 04-07 | L corner, four rotations |
+| `0x116F6` | 08-0B | J, four rotations |
+| `0x116DE` | 0C-0F | L, four rotations |
+| `0x116C6` | 10-13 | U, four rotations |
+| `0x116AE` | 14-17 | S, four rotations |
+| `0x11696` | 18-1B | Z, four rotations |
+| `0x11686` | 1C, 1D | diagonal, two rotations |
+| `0x11676` | 1E, 1F | diagonal, two rotations |
+| `0x1165E` | 20-23 | T, four rotations |
+| `0x11652` | 24 | plus |
+| `0x1163A` | 25-28 | domino, four entries |
+
+**Still open:** which group the game *picks*. There is no table of group
+pointers in the ROM in either 32- or 16-bit form - the only references to the
+group starts are the 13 wrap-around pointers inside the groups themselves - so
+selection reaches them some other way and is not yet located.
+
 ### Enclosure test - `0xBC2`
 - **Port:** `romlab/compare_enclose.py` (`enclosed`)
 - **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
