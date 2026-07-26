@@ -72,10 +72,17 @@ Register note: MAME's m68k state exposes the stack as `SP`, not `A7`.
 - **Evidence:** `romlab/compare_remap.py` - 6 cases across sizes 8x8, 16x4,
   4x16, 12x12 and 32x2 with different remap tables, all pixels identical.
 
-### Screen dissolve - `0x11E10` (identified, not yet ported)
-Clears the framebuffer in pseudo-random order using an LFSR (`#$b400`
-polynomial, rejecting values >= 0xF000) - the static-wipe transition. Listed
-here because it explains the largest framebuffer reader; still outstanding.
+### Screen dissolve - `0x11E10`
+- **Port:** `romlab/compare_dissolve.py` (`dissolve_sequence`)
+- **Behaviour:** clears the framebuffer in pseudo-random order with an LFSR:
+  seed and polynomial both `0xB400`; each step is `lsr.l #1` and, on carry,
+  `eor` with the polynomial, repeating while the value is >= 0xF000; the word
+  at `base + value*2` is then cleared, for 61441 iterations. The base is
+  `0x200004`, not `0x200000` - that +4 was the only initial mismatch.
+- **Verified by sequence, not by call.** The routine ends in `jmp $52a.l`
+  rather than `rts`, so the sentinel-return harness cannot catch it. Instead
+  the addresses it clears were recorded in order and compared against the port:
+  **61441 leading entries identical**, an entire dissolve pass.
 
 ## Correction: the scoring measurement was wrong
 
