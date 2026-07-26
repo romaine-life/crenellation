@@ -745,6 +745,307 @@ ad-hoc memory probing had mistaken for scoring. Use it before probing.
   the return value and the new seed. The same approach scales to routines whose
   state is a whole RAM region - snapshot all 16KB of work RAM if necessary.
 
+## Systems - ported and verified
+
+Every system that was outstanding has been ported from the disassembly and
+checked against the ROM. Nothing in this table is inferred from observation any
+more.
+
+| System | Verified against | Result |
+| --- | --- | --- |
+| Enclosure test | 18 crafted boards | 18/18 |
+| Flood-fill span scanner | 10 crafted columns | 10/10 |
+| Piece shapes and placement | all 40 shapes, full board compare | 40/40 |
+| Piece rotation | every slot in the table | 131/131, 13 wraps |
+| Piece selection (bag + weights + shuffle) | 3 seeds x 3 kinds x 5 levels | 45/45 |
+| Scoring | every threshold boundary | 26/26 |
+| Damage | 8 crafted boards | 8/8 |
+| Projectile flight | 8686 live shot records | 8627/8630 + 3 cadence, 0 unexplained |
+| Moving units (ships) | 6776 live unit records | 6737/6766 + 29 cadence, 0 unexplained |
+| Cannon aiming | 8 bearings x 8 facings | 40/40 returning |
+| Aiming direction | boundary ratios, all signs | 35/35 |
+| Distance | overflow extremes | 18/18 |
+| Phase dispatcher | 10 queue states | 10/10 |
+| Event queue post / remove / test | crafted tables | 12/12, 12/12, 12/12 |
+| RNG | 8 seeds x 12 ranges | 96/96 |
+| Cell address / screen address | corners, out of range | 12/12, 15/15 |
+| Multiplayer | 40 shapes x 3 players | 120/120 |
+| Playfield art | 11614 live decoder calls | 715179 px, all discrepancies resolved |
+| Sprites | 40 consecutive frames | 13 frames pixel-exact, 99.74% |
+| Rendering primitives | decompressor, terrain painter, recolour, remap, dissolve | all exact |
+
+## Known gaps
+
+These are **not** unported systems; they are the honest remainder.
+
+- **Blast script data.** The damage handler `0x8606` is verified, but the
+  coordinate lists it consumes are still unextracted. They are reached through
+  `0x3E0DCA` -> `+0x22 + index*4` and are a **list of sub-lists**, each ending
+  on a negative byte, with `player+0x1D` selecting which. Indices 3-5 point into
+  main-ROM data; a first read produced values above the board's 42x30 range, so
+  the structure is not yet correctly interpreted.
+- **Front-end work in `crenellation`.** The ports exist; `enclosure.ts`,
+  `pieces.ts`, `phases.ts` and `game.ts` still contain the original guessed
+  code and need replacing with them. Placing more than one castle and hot-seat
+  turn handling are application work, not disassembly.
+- **Cadence.** Projectile and unit updates do not always run exactly once per
+  frame. Every deviation is an exact number of applications of the verified
+  rule, but what schedules the extra or skipped step is not pinned down.
+
+## Multiplayer - three players throughout
+- **Port:** the existing ports, exercised per player; `romlab/verify23.lua`
+- Rampart is **three-player everywhere in the data model**, not one player with
+  bolt-ons. The player structs are an array at `0x3E1968` with stride `0x7E`,
+  and each player's identity is the byte at +2, which indexes the owner table at
+  `0x1000A` to give `0x40`, `0x80` or `0xC0`. Every board cell carries its owner
+  in its top two bits, so ownership is intrinsic to the board rather than
+  tracked separately.
+- The systems already verified are per-player by construction: the enclosure
+  test takes an owner and was checked with a rival's wall present, the damage
+  initiator walks all three structs at stride `0x7E`, the score lives at
+  `player+0x56`, and the piece bag has **per-player-kind weight tables**.
+- **Evidence:** `romlab/verify23.lua` re-runs the whole piece table through the
+  ROM for **each of the three players** - 40 shapes x 3 - and the port must
+  reproduce every board. **120/120 identical**, 40 for each of owner `0x40`,
+  `0x80` and `0xC0`.
+
+### Enclosure test - `0xBC2`
+- **Port:** `romlab/compare_enclose.py` (`enclosed`)
+- **Signature:** `enclosed(long cell_ptr @+8, long direction @+0xC) -> long`
+- **It is not a flood fill.** The routine follows the wall like a maze runner
+  and counts turns: if the cell to the side is wall it turns toward it and
+  steps, otherwise if the cell ahead is wall it carries straight on, otherwise
+  it turns away and stays put. When it returns to the cell it started from
+  having accumulated four quarter-turns, the boundary closed. The **sign** of
+  the turn count says which way round it went, and only the negative winding
+  counts as an enclosure - which is how the game distinguishes the inside of
+  your wall from the outside of someone else's.
+- A cell counts as wall if it is `owner | 1` **or** `owner | 3`, so a decorated
+  cell still forms part of the boundary.
+- The routine has no bound: a wall that never closes makes it loop forever. The
+  port reproduces that rather than papering over it.
+- **Evidence:** `romlab/verify9.lua` - 18 crafted boards, **18/18 identical**.
+  Closed rectangles from 2x2 to 12x9, at the board edge and the far corner, a
+  concave outline, a board with a second player's wall present, and one with a
+  `0x43` variant cell in the boundary all return **1**. A rectangle with a
+  **single cell removed returns 0**, as do a lone cell and a mid-edge start.
+  Three start/direction combinations never terminate on hardware and the port
+  fails to terminate on exactly those three.
+
+## The board
+
+Rampart keeps no tilemap and does not read the screen to decide what is walled.
+There is a real board array, found by tracing which code runs at a phase change
+and following the addressing:
+
+- **Base `0x3E0864`**, one byte per cell, **stride 32**.
+- `cell = 0x3E0864 + x*32 + y` - **x is the column (0..41), y the row (0..29)**,
+  so the board is stored column major. 42x30 cells over a 336x240 screen is
+  exactly 8x8 pixels per cell.
+- Bounds are checked as `x < 0x2A`, `y < 0x1E` in the code itself.
+- **Cell encoding: low 6 bits (`& 0x3F`) = terrain type, high 2 bits (`& 0xC0`)
+  = owner.** Owner codes come from a table at `0x1000A`: `0x40`, `0x80`, `0xC0`
+  for the three players. A player's wall is `owner | 1`.
+
+Three direction tables sit together at `0xFCCA`:
+
+| Table | Contents | Meaning |
+| --- | --- | --- |
+| `0xFCCA` | words `32, -1, -32, 1, 33, 31, -31, -33` | pointer delta per direction |
+| `0xFCDA` | bytes `1,0,-1,0,1,1,-1,-1` | x delta per direction |
+| `0xFCE2` | bytes `0,-1,0,1,1,-1,1,-1` | y delta per direction |
+
+They agree with `x*32 + y` exactly: direction 0 is (+1,0) = +32, direction 3 is
+(0,+1) = +1, and the diagonals follow. That agreement is what confirms the
+layout rather than merely fitting it.
+
+**Pieces are direction scripts, not bitmaps.** `0x8B4` takes a start coordinate
+and a pointer to a byte script: two bytes of starting offset, then a run of
+direction indices, terminated by a negative byte, with `0x0B` acting as a
+double-step escape. It walks the piece cell by cell, checking each is in bounds
+and either unowned or the player's own, then stamps `owner | 1`. This is the
+shape of piece placement, and it means the piece table is a set of scripts.
+
+Located but not yet ported: `0x8B4` (piece walk/placement), `0xB7FA` (the
+computer player scoring candidate wall positions - it scans all 42x30 cells,
+counts matching neighbours through `0xFCCA`, and keeps the best), `0x122C`
+(a full-board scan over type-1 cells), `0xA20` (board addressing from a script).
+
+## Game state addresses
+
+Recovered from the writer index (`romlab/whowrites.lua`, address -> writing
+routine, validated by finding the verified RNG writing its own seed) and from
+tracing a phase change:
+
+| Address | Holds |
+| --- | --- |
+| `0x3E0864` | the board, 42x30 bytes, stride 32, column major |
+| `0x3E0842` | RNG seed (verified routine `0x11E58`) |
+| `0x3E1870` | phase countdown, in seconds; `0x7A24` decrements it and beeps through a table at `0x11792` over the last five |
+| `0x3E195C` | **phase / state** |
+| `0x3E1950` | pause flag - nonzero suppresses scheduled events |
+| `0x3E1960` | pointer to the current player struct; byte +2 is the player index |
+| `0x3E0E76` | texture rotation used by the terrain painter |
+
+`0xCAE2` is a scheduled-event trigger: given a phase, a countdown value and an
+event id, it fires the event only when `0x3E195C` and `0x3E1870` both match and
+`0x3E1950` is clear. That is the hook the phase script hangs off.
+
+**Correction to an earlier note:** `0x8B4` does have callers - `0x6A4`,
+`0x6E6`, `0x8D68` and `0x8E10` - but they use `jsr $8b4.w`, absolute short. A
+search for the 32-bit address cannot find them. They pass
+`*(player->0x24) + 1`, which is how the piece script table was located.
+
+## Phase control - located, not yet ported
+
+The phase machine is a large dispatcher spanning roughly `0x9300`-`0xA7DA`. It
+holds its state in a local rather than a global, and drives progress by asking
+`0xEFFA` whether a given event has fired - which is why the event-table test
+above is part of this system rather than a utility.
+
+| Address | Role |
+| --- | --- |
+| `0x9300`-`0xA7DA` | the dispatcher itself |
+| `0xEFFA` | "has this event fired" predicate - **ported and verified** |
+| `0x3E195C` | round counter within a sequence; cleared at `0x93C0` and `0xE80E`, incremented at `0x9BBA`, and set from `0x118AA` at `0xEADA` |
+| `0x3E1870` | the countdown, decremented by `0x7A24` |
+| `0x3E1950` | pause flag |
+| `0xCAE2` | fires an event when phase and countdown both match and the game is not paused |
+
+What remains is porting the dispatcher itself, which is a long C-style state
+machine rather than a self-contained routine.
+
+## How sealing and scoring actually work
+
+Sealing is **not** detected by scanning the board. The chain is:
+
+1. a wall is placed, and the placement path checks around it (`0xA20` and a
+   routine near `0xCEC`, each calling the enclosure test at four offsets);
+2. on success `0x5E38` converts the cell pointer back to a coordinate -
+   `x = (ptr - 0x3E0864) >> 5`, `y = (ptr - 0x3E0864) & 0x1F`, a third
+   independent confirmation of the board layout - and **posts an event**;
+3. the queued handler `0x5EA2` runs a scanline flood fill, claiming cells and
+   counting them into `player+0x58`;
+4. when the fill runs dry it removes its own event and calls **`0x865E`**,
+   which converts the count into points. **Ported and verified above.**
+
+The event queue itself is three routines, all now ported and verified:
+`0xEE90` post, `0xEEEE` remove, `0xEFFA` test. A record is 12 bytes and the key
+is a **function pointer** - `0x5EA2` in this case - so the queue is a list of
+(handler, parameter) pairs and the dispatcher simply calls them.
+
+**A confounded experiment, recorded so it is not repeated.** Three attempts to
+catch the score by watching RAM all failed: writing a sealed wall onto the board
+does nothing (nothing posts an event), and two differential runs - one sealing
+bare ground, one sealing a real castle - showed no award anywhere. The
+differential is **confounded at the root**: changing the board changes what the
+computer player does, so the two runs diverge by hundreds of cells for reasons
+unrelated to scoring. Reading the routine was what worked.
+
+## The dispatcher is an event loop
+
+The phase machine is not a switch statement. The queue key is a **function
+pointer**, and the handler table at `0x11AC4`-`0x11B5A` holds **26 handlers**,
+each a 6-byte record of `(function, priority byte, flag byte)`. The dispatcher
+simply runs queued `(handler, parameter)` pairs. Handlers recovered so far:
+
+| Handler struct | Function | Role |
+| --- | --- | --- |
+| `0x11AE2` | `0x5EA2` | territory flood fill, then scoring |
+| `0x11AEE` | `0x6C20` | cannon aiming - **uses the verified `0x11CF8`** |
+| `0x11AF4` | `0x6CAE` | removed when a shot is fired |
+| `0x11AFA` | `0x6FB4` | projectile scheduler |
+| `0x11B00` | `0x7A24` | phase countdown |
+| `0x11B54` | `0xB032` | the computer player |
+
+Projectiles are a ring of **0x1A-byte records** at `player+0x6A`, with
+`player+0x6E` and `+0x72` as cursors. Firing computes velocity from the
+verified distance routine and a speed table at `0x11774` (64, 80, 96, 96, 96),
+writing x velocity to record+6, y velocity to +0xA and an arc term to +0xE.
+
+`0x6CAE` is the fire trigger. It places the muzzle using per-direction offset
+tables at `0x11754` (x) and `0x11764` (y), which are a clean radius-7 circle -
+(7,0), (4,4), (0,7), (-4,4), (-7,0), (-4,-4), (0,-7), (4,-4) - then spawns the
+projectile entity into the table at `0x3E02D8`, 16 bytes per entry.
+
+## Where the code is
+
+**All game code lives below `0x20000`** - the overlay. Scanning the remaining
+900KB of the ROM for the addresses every system touches (the board, the player
+array, the entity table, the RNG seed, the event count) finds **zero**
+references above `0x20000`, and the whole region contains just 8 `rts` and 2
+`link` opcodes, which is noise rather than code. Everything above the overlay is
+graphics, audio and level data.
+
+That bounds the remaining work: anything still unlocated is in the 128KB
+already being disassembled, not in a bank that has been missed.
+
+## Firing chain
+
+| Address | Role |
+| --- | --- |
+| `0x6CAE` | fire trigger: muzzle position from the radius-7 offset tables, then spawn |
+| `0x220C` | spawn wrapper: looks up an entity template from the table at `0xFD5E` and calls the allocator |
+| `0xFD16`-`0xFD58` | 12 entity templates, 6 bytes each - a zero word, a sprite code (`0x131`-`0x13C`) and a flag word |
+| `0x5B40` | the allocator proper; refuses past a capacity check on `0x3E02CA` and returns `0xFF` |
+| `0x11CF8` | aiming direction - **ported and verified** |
+| `0x11D5C` | distance - **ported and verified** |
+
+Shot state lives in the **0x1A-byte records at `player+0x6A`**, not in the
+16-byte entity records: x velocity at +6, y velocity at +0xA, an arc term at
++0xE, and the spawned entity pointer at +0x16. `0x6FB4` advances the cursor at
+`player+0x72` through them and retires the event when the last shot is gone.
+
+The per-frame integration is `0x7008`, **ported and verified above**. It was
+found by reading `player+0x6A` live and tapping writes across the ring, after
+`0xF79E`/`0xF936` (the sprite depth sorter) and `0xF306` (an animation table
+walker) turned out to be the wrong places.
+
+## Correction: the scoring measurement was wrong
+
+Earlier I reported score awards of 150/200/300 "measured" by grouping RAM
+deltas at `0x3E20AA` / `0x3E20E4` into bursts. The function map shows those
+addresses are **linked-list heads used by an allocator** (`0xCA52` walks a
+circular list at `0x3E20A0`; `0xC504` pops from `0x3E20A8`; `0x3E2498` is a
+lock flag). The "awards" were almost certainly allocation activity, not score.
+The scoring constants currently in `game.ts` are therefore not measured, and
+the real score location is still unknown.
+
+## Framebuffer reproduction
+
+Replaying calls to both verified decoders onto a "before" snapshot reproduces
+**99.4%** of the framebuffer (787 of 131072 bytes differ, down from ~8% with
+decoder 1 alone). The remainder comes from writers not yet ported: `0x11E44`,
+`0x12350`, `0x1E7EE`, `0x122AE`, `0x1E79A`, `0x12010`, `0x18EC4`,
+`0x2320`-`0x232C`.
+
+## Tooling
+
+`romlab/mapcode.py` builds a function map from the ROM: call targets from a
+linear sweep, function bodies walked to their terminator, with call graph and
+absolute data references. This is what surfaced the allocator cluster that
+ad-hoc memory probing had mistaken for scoring. Use it before probing.
+
+## Method notes
+
+- `PC` during a memory tap is the *next* instruction; use **`CURPC`** for the
+  instruction actually executing. Writer addresses collected via `PC` do not
+  disassemble.
+- `0x11F2A` is the decompressor's **loop head**, not its entry - the routine
+  branches back to it, so tapping it captures mid-loop states rather than
+  calls. The real call site is `0x11F1C`.
+- Replaying only the decompressor's calls does **not** reproduce the
+  framebuffer (~8% of bytes differ): several other routines draw into it too -
+  `0x125C4`, `0x11E44`, `0x12350`, `0x1E7EE`, `0x122AE`, `0x1E79A`, `0x12010`,
+  `0x18EC4`, `0x2320`-`0x232C`. Whole-screen reproduction needs those ported.
+
+
+- **Stateful routines do not need their layout mapped first.** Snapshot the
+  state before the call, snapshot after, and require the port to reproduce the
+  same delta. The RNG was verified this way: set the seed, call, compare both
+  the return value and the new seed. The same approach scales to routines whose
+  state is a whole RAM region - snapshot all 16KB of work RAM if necessary.
+
 ## Outstanding â€” not ported, not verified
 
 Each of these is currently **original code informed by observing the running
