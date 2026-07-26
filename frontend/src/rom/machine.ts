@@ -163,6 +163,20 @@ export class Machine {
     return v | 0;
   }
 
+  /**
+   * Flags for a shift. The 68000 sets C (and X) from the last bit shifted out,
+   * which a following bcs/bcc depends on; leaving them clear silently takes
+   * the wrong branch.
+   */
+  shiftFlags(result: number, value: number, count: number, bits: number, left: boolean): void {
+    this.logicFlags(result, bits);
+    if (count === 0) return; // a zero-count shift leaves C alone and clears V
+    const bit = left ? bits - count : count - 1;
+    const c = bit >= 0 && bit < 32 ? ((value >>> bit) & 1) === 1 : false;
+    this.c = c;
+    this.x = c;
+  }
+
   /** Set N and Z from a result of the given width; clear V and C. */
   logicFlags(v: number, bits: number): void {
     const s = this.sx(v, bits);
@@ -181,6 +195,7 @@ export class Machine {
     this.z = this.sx(r, bits) === 0;
     this.v = (sa < 0) !== (sb < 0) && (this.sx(r, bits) < 0) !== (sa < 0);
     this.c = (a >>> 0) < (b >>> 0);
+    this.x = this.c;          // addx/subx read X, and nothing else set it
     return r;
   }
 
@@ -193,6 +208,7 @@ export class Machine {
     this.v = (sa < 0) === (sb < 0) && (this.sx(r, bits) < 0) !== (sa < 0);
     const mask = bits === 32 ? 0x100000000 : 1 << bits;
     this.c = (a >>> 0) + (b >>> 0) >= mask;
+    this.x = this.c;
     return r;
   }
 

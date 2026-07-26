@@ -1817,7 +1817,11 @@ export function call(addr: number, m: Machine): void {
     if (STARTS[mid] <= a) { found = mid; lo = mid + 1; } else { hi = mid - 1; }
   }
   if (found < 0 || a >= ENDS[found]) {
-    if (m.stubMissing) { m.missingCalls.push(a); return; }
+    // stubbing only ever applies outside the overlay - a call
+    // through an uninitialised pointer into hardware space. An
+    // address inside the overlay is real code that failed to get
+    // ported, and swallowing it hides the gap.
+    if (m.stubMissing && a >= 0x20000) { m.missingCalls.push(a); return; }
     throw new Error('no routine covers 0x' + a.toString(16));
   }
   FNS[found](m, a);

@@ -70,6 +70,12 @@ for (const entry of entries) {
     m.stubMissing = true;
 
     let err = null;
+    if (process.env.TRACE) {
+      const seen = [];
+      const origTick = m.tick.bind(m);
+      m.tick = () => { origTick(); };
+      m.traceLog = seen;
+    }
     try { call(entry, m); } catch (e) { err = e.message; }
     const got = [m.d0, m.d1, m.d2, m.d3, m.d4, m.d5, m.d6, m.d7,
                  m.a0, m.a1, m.a2, m.a3].map((v) => (v >>> 0));

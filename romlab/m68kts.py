@@ -179,6 +179,13 @@ ADDR_SIZED = ("lea", "pea", "movea", "adda", "suba", "cmpa", "jsr", "bsr",
               "link", "unlk")
 
 
+def is_addr_reg(tok):
+    """Is this operand an address register? Their arithmetic ignores size and
+    leaves the condition codes alone, unlike a data register."""
+    t = tok.strip()
+    return bool(re.fullmatch(r"a\d", t)) or t in ("sp", "a7")
+
+
 def target_addr(tok):
     m = re.match(r"^\$([0-9a-fA-F]+)", tok.strip())
     return int(m.group(1), 16) if m else None
@@ -232,12 +239,23 @@ def emit(ins, nxt):
     if b == "tst" and len(O) == 1 and O[0].read:
         return "m.logicFlags(%s, %d); %s" % (O[0].read, bits, s)
     if b in ("add", "addi", "addq") and len(O) == 2 and O[0].read and O[1].write:
+        if is_addr_reg(ops[1]):
+            # an address-register destination is always 32-bit and sets no
+            # flags at all - and `addq.l #8,a7` for stack cleanup is everywhere,
+            # so getting this wrong corrupts the next conditional branch
+            L = Operand(ops[1], "l")
+            return "{ const _a = m.sx(%s, %d); %s; } %s" % (
+                O[0].read, bits, L.write % ("(m.rd(%s, 32) + _a)" % L._reg(ops[1].strip())), s)
         return "{ const _a = %s; const _b = %s; %s; } %s" % (
             O[0].read, O[1].read, O[1].write % ("m.addFlags(_b, _a, %d)" % bits), s)
     if b == "adda" and len(O) == 2 and O[0].read and O[1].write:
         return "{ const _a = m.sx(%s, %d); %s; } %s" % (
             O[0].read, bits, O[1].write % ("(%s + _a)" % O[1].read), s)
     if b in ("sub", "subi", "subq") and len(O) == 2 and O[0].read and O[1].write:
+        if is_addr_reg(ops[1]):
+            L = Operand(ops[1], "l")
+            return "{ const _a = m.sx(%s, %d); %s; } %s" % (
+                O[0].read, bits, L.write % ("(m.rd(%s, 32) - _a)" % L._reg(ops[1].strip())), s)
         return "{ const _a = %s; const _b = %s; %s; } %s" % (
             O[0].read, O[1].read, O[1].write % ("m.subFlags(_b, _a, %d)" % bits), s)
     if b == "suba" and len(O) == 2 and O[0].read and O[1].write:
@@ -276,19 +294,19 @@ def emit(ins, nxt):
         return "%s; m.logicFlags(%s, 32); %s" % (L.write % e, e, s)
     if b in ("asl", "lsl") and O and O[-1].write:
         cnt = O[0].read if len(O) == 2 else "1"
-        return ("{ const _c = (%s) & 63; const _r = (%s) << _c; %s; "
-                "m.logicFlags(_r, %d); } %s") % (
+        return ("{ const _c = (%s) & 63; const _v = %s; const _r = _v << _c; %s; "
+                "m.shiftFlags(_r, _v, _c, %d, true); } %s") % (
             cnt, O[-1].read, O[-1].write % "_r", bits, s)
     if b == "lsr" and O and O[-1].write:
         cnt = O[0].read if len(O) == 2 else "1"
         mask = (1 << bits) - 1 if bits < 32 else 0xFFFFFFFF
-        return ("{ const _c = (%s) & 63; const _r = ((%s) & %d) >>> _c; %s; "
-                "m.logicFlags(_r, %d); } %s") % (
+        return ("{ const _c = (%s) & 63; const _v = (%s) & %d; const _r = _v >>> _c; "
+                "%s; m.shiftFlags(_r, _v, _c, %d, false); } %s") % (
             cnt, O[-1].read, mask, O[-1].write % "_r", bits, s)
     if b == "asr" and O and O[-1].write:
         cnt = O[0].read if len(O) == 2 else "1"
-        return ("{ const _c = (%s) & 63; const _r = m.sx(%s, %d) >> _c; %s; "
-                "m.logicFlags(_r, %d); } %s") % (
+        return ("{ const _c = (%s) & 63; const _v = m.sx(%s, %d); const _r = _v >> _c; "
+                "%s; m.shiftFlags(_r, _v, _c, %d, false); } %s") % (
             cnt, O[-1].read, bits, O[-1].write % "_r", bits, s)
     if b == "btst" and len(O) == 2 and O[0].read and O[1].read:
         return ("{ const _n = %s; const _v = %s; "
