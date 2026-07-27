@@ -41,7 +41,7 @@ export const IN1 = 0x640002;
  * waits for the interrupt rather than counting - but too few and it never
  * finishes its work, too many and it idles in the wait loop.
  */
-export const INSTRUCTIONS_PER_FRAME = 20_000;
+export const INSTRUCTIONS_PER_FRAME = 5_454;
 
 export class System {
   readonly m: Machine;

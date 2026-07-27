@@ -70,6 +70,7 @@ describe('the boot instruction sequence against the chip', () => {
     };
     void unusedPacing;
 
+
     try {
       sys.run((s) => { if (s.frames >= 900) throw new Error('enough'); });
     } catch { /* the stop, or a real failure */ }

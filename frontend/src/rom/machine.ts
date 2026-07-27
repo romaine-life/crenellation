@@ -82,10 +82,12 @@ export class Machine {
     // here, the instruction about to run has not started, so the address to
     // return to is this one - which `next` already holds, because the
     // instruction before it set `next` to its own successor.
+    // The line stays asserted until the device is acknowledged - taking the
+    // interrupt does not clear it. The mask the exception raises is what stops
+    // it firing again immediately, and if the handler returns without
+    // acknowledging, it fires again, which is what the chip does.
     if (this.irqPending && ((this.sr >> 8) & 7) < this.irqPending) {
-      const lvl = this.irqPending;
-      this.irqPending = 0;
-      throw new PendingInterrupt(lvl);
+      throw new PendingInterrupt(this.irqPending);
     }
     if (this.steps > this.budget) {
       throw new Error('instruction budget exhausted after ' + this.steps + ' steps');
@@ -246,6 +248,9 @@ export class Machine {
 
   setByte(addr: number, v: number): void {
     addr = this.fold((addr >>> 0) & 0xffffff);
+    // The frame handler acknowledges the interrupt by clearing this, which is
+    // what drops the line. Until then it stays asserted.
+    if (addr >= 0x7efffe && addr <= 0x7effff) this.irqPending = 0;
     if (this.onWrite && addr >= this.watchLo && addr <= this.watchHi) {
       this.onWrite(addr, v & 0xff, this.pc);
     }
@@ -414,9 +419,7 @@ export class Machine {
     this.v = (v & 2) !== 0;
     this.c = (v & 1) !== 0;
     if (this.irqPending && ((v >> 8) & 7) < this.irqPending) {
-      const lvl = this.irqPending;
-      this.irqPending = 0;
-      throw new PendingInterrupt(lvl, true);
+      throw new PendingInterrupt(this.irqPending, true);
     }
   }
 
