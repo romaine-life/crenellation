@@ -14,6 +14,18 @@ a2 entering the handler: 0x3e3536   leaving it: 0x3e3536
 a2 changed at: 0xfcfe@1538 0xfd02@1538 0xfd06@1538 0xfd0a@1538 0xfd0e@1538 0xfd12@1538 0xfd16@1538 0xfd1a@1538 0xfd1e@1538 0xfd22@1538 0xfd26@1538 0xfd2a@1538 0xfd2e@1538 0x3e3536@156a
 stack drift across the handler: entry 0x3e32f4 -> rte 0x3e32fa
 a7 never rose above the frame inside the handler
+   0x580 reached 242 times
+   0x596 reached 120 times
+   0x618 reached 123 times
+   0x125da reached 120 times
+   0x1512 reached 120 times
+   0x53f8 reached 120 times
+   0x512 reached 0 times
+   0x51a reached 0 times
+   0x522 reached 0 times
+sound queue: 0x3E3528=3 0x3E352A=3
+routines that write them: 0x1425c 22, 0x143b0 7, 0x144ae 0, 0x144d0 7
+sound driver 0x196ac reached 121; channel work 8(a2) still pending: 0
 busiest addresses:
    0x594  5740020
    0x1311c  984063

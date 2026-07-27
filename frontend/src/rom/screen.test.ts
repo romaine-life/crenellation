@@ -140,6 +140,12 @@ describe('what the booted machine draws', () => {
     notes.push('a2 changed at: ' + a2Writes.join(' '));
     notes.push('stack drift across the handler: ' + (spDrift.length ? spDrift.join(', ') : 'none'));
     notes.push(firstAbove || 'a7 never rose above the frame inside the handler');
+    for (const a of [0x580, 0x596, 0x618, 0x125da, 0x1512, 0x53f8, 0x512, 0x51a, 0x522]) {
+      notes.push(`   0x${a.toString(16)} reached ${visits.get(a) ?? 0} times`);
+    }
+    notes.push(`sound queue: 0x3E3528=${sys.m.load(0x3e3528,16)} 0x3E352A=${sys.m.load(0x3e352a,16)}`);
+    notes.push(`routines that write them: 0x1425c ${visits.get(0x1425c) ?? 0}, 0x143b0 ${visits.get(0x143b0) ?? 0}, 0x144ae ${visits.get(0x144ae) ?? 0}, 0x144d0 ${visits.get(0x144d0) ?? 0}`);
+    notes.push(`sound driver 0x196ac reached ${visits.get(0x196ac) ?? 0}; channel work 8(a2) still pending: ${sys.m.load(0x3e3536 + 8, 32)}`);
     notes.push('busiest addresses:');
     for (const [a, n] of [...visits.entries()].sort((x, y) => y[1] - x[1]).slice(0, 10)) {
       notes.push(`   0x${a.toString(16)}  ${n}`);

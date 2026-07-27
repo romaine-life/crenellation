@@ -56,6 +56,7 @@ export class System {
     // the devices below are all real memory or handled reads, so nothing here
     // is "off the map"
     this.m.ioModelled = true;
+    this.m.sound = true;
     this.m.budget = Number.MAX_SAFE_INTEGER;
     this.m.inputAt = (addr: number): number => this.inputs[(addr - IN0) & 3];
   }

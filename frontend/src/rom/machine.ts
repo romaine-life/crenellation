@@ -208,6 +208,8 @@ export class Machine {
    * routine, so the read has to be answered here.
    */
   inputAt: ((addr: number) => number) | null = null;
+  /** Whether to answer sound-chip reads rather than replay a snapshot. */
+  sound = false;
 
   byte(addr: number): number {
     // The 68000 has a 24-bit address bus - A24 to A31 do not exist - so an
@@ -219,6 +221,11 @@ export class Machine {
     if (this.trackOffMap) this.note(addr);
     if (addr < this.rom.length) return this.rom[addr];
     if (this.inputAt && addr >= 0x640000 && addr <= 0x640003) return this.inputAt(addr);
+    // The sound chip status. A frozen snapshot says the voices are busy for
+    // ever, and the driver waits for one to free before it advances its queue -
+    // which is what the main loop is waiting on in turn. Nothing here plays
+    // sound yet, so report every voice idle.
+    if (this.sound && addr >= 0x460000 && addr <= 0x460fff) return 0;
     return this.ram.get(addr) ?? 0;
   }
 
