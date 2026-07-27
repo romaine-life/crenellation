@@ -52,6 +52,7 @@ export function fn_044a2(m: Machine, at = 0x044a2): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -79,6 +80,7 @@ export function fn_0450c(m: Machine, at = 0x0450c): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -106,6 +108,7 @@ export function fn_0452e(m: Machine, at = 0x0452e): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -154,6 +157,7 @@ export function fn_04552(m: Machine, at = 0x04552): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -182,6 +186,7 @@ export function fn_045ca(m: Machine, at = 0x045ca): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -217,6 +222,7 @@ export function fn_045fa(m: Machine, at = 0x045fa): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -260,6 +266,7 @@ export function fn_0463c(m: Machine, at = 0x0463c): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -282,6 +289,7 @@ export function fn_0469e(m: Machine, at = 0x0469e): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -304,6 +312,7 @@ export function fn_046b0(m: Machine, at = 0x046b0): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -329,6 +338,7 @@ export function fn_046c2(m: Machine, at = 0x046c2): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -366,6 +376,7 @@ export function fn_046e0(m: Machine, at = 0x046e0): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -401,6 +412,7 @@ export function fn_0472a(m: Machine, at = 0x0472a): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -447,6 +459,7 @@ export function fn_04760(m: Machine, at = 0x04760): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -504,6 +517,7 @@ export function fn_047c6(m: Machine, at = 0x047c6): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -546,6 +560,7 @@ export function fn_0482e(m: Machine, at = 0x0482e): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -569,6 +584,7 @@ export function fn_04880(m: Machine, at = 0x04880): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -741,6 +757,7 @@ export function fn_048ae(m: Machine, at = 0x048ae): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -786,6 +803,7 @@ export function fn_04a6a(m: Machine, at = 0x04a6a): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -823,6 +841,7 @@ export function fn_04ab8(m: Machine, at = 0x04ab8): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -905,6 +924,7 @@ export function fn_04b0a(m: Machine, at = 0x04b0a): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -959,6 +979,7 @@ export function fn_04bfa(m: Machine, at = 0x04bfa): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1036,6 +1057,7 @@ export function fn_04c80(m: Machine, at = 0x04c80): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1063,6 +1085,7 @@ export function fn_04d44(m: Machine, at = 0x04d44): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1091,6 +1114,7 @@ export function fn_04d6c(m: Machine, at = 0x04d6c): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1130,6 +1154,7 @@ export function fn_04d90(m: Machine, at = 0x04d90): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1176,6 +1201,7 @@ export function fn_04dd2(m: Machine, at = 0x04dd2): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1221,6 +1247,7 @@ export function fn_04e20(m: Machine, at = 0x04e20): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1311,6 +1338,7 @@ export function fn_04e82(m: Machine, at = 0x04e82): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1334,6 +1362,7 @@ export function fn_04f8c(m: Machine, at = 0x04f8c): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1376,6 +1405,7 @@ export function fn_04f9e(m: Machine, at = 0x04f9e): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1400,6 +1430,7 @@ export function fn_04fea(m: Machine, at = 0x04fea): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1427,6 +1458,7 @@ export function fn_05000(m: Machine, at = 0x05000): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1461,6 +1493,7 @@ export function fn_05020(m: Machine, at = 0x05020): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1515,6 +1548,7 @@ export function fn_05056(m: Machine, at = 0x05056): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1569,6 +1603,7 @@ export function fn_050c6(m: Machine, at = 0x050c6): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1606,6 +1641,7 @@ export function fn_0512a(m: Machine, at = 0x0512a): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1635,6 +1671,7 @@ export function fn_05168(m: Machine, at = 0x05168): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1705,6 +1742,7 @@ export function fn_05192(m: Machine, at = 0x05192): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1748,6 +1786,7 @@ export function fn_0522e(m: Machine, at = 0x0522e): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1794,6 +1833,7 @@ export function fn_05280(m: Machine, at = 0x05280): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1842,6 +1882,7 @@ export function fn_052e2(m: Machine, at = 0x052e2): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1889,6 +1930,7 @@ export function fn_05346(m: Machine, at = 0x05346): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1934,6 +1976,7 @@ export function fn_053a6(m: Machine, at = 0x053a6): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -1980,6 +2023,7 @@ export function fn_053f8(m: Machine, at = 0x053f8): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2005,6 +2049,7 @@ export function fn_0545a(m: Machine, at = 0x0545a): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2027,6 +2072,7 @@ export function fn_05474(m: Machine, at = 0x05474): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2052,6 +2098,7 @@ export function fn_05488(m: Machine, at = 0x05488): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2099,6 +2146,7 @@ export function fn_054a8(m: Machine, at = 0x054a8): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2186,6 +2234,7 @@ export function fn_0551c(m: Machine, at = 0x0551c): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2268,6 +2317,7 @@ export function fn_05622(m: Machine, at = 0x05622): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2377,6 +2427,7 @@ export function fn_056f4(m: Machine, at = 0x056f4): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2435,6 +2486,7 @@ export function fn_05818(m: Machine, at = 0x05818): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2482,6 +2534,7 @@ export function fn_05892(m: Machine, at = 0x05892): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2509,6 +2562,7 @@ export function fn_058e6(m: Machine, at = 0x058e6): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2536,6 +2590,7 @@ export function fn_05908(m: Machine, at = 0x05908): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2560,6 +2615,7 @@ export function fn_0592a(m: Machine, at = 0x0592a): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2635,6 +2691,7 @@ export function fn_05948(m: Machine, at = 0x05948): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2715,6 +2772,7 @@ export function fn_059ee(m: Machine, at = 0x059ee): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2763,6 +2821,7 @@ export function fn_05ab0(m: Machine, at = 0x05ab0): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2792,6 +2851,7 @@ export function fn_05afc(m: Machine, at = 0x05afc): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2820,6 +2880,7 @@ export function fn_05b16(m: Machine, at = 0x05b16): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2926,6 +2987,7 @@ export function fn_05b40(m: Machine, at = 0x05b40): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }
@@ -2952,6 +3014,7 @@ export function fn_05c60(m: Machine, at = 0x05c60): void {
     }
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
+      if (e.afterInstruction) pc = m.next;
       call(m.interruptFrame(e.level), m);
     }
   }

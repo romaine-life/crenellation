@@ -15,7 +15,15 @@
  * compared at all.
  */
 export class PendingInterrupt extends Error {
-  constructor(readonly level: number) {
+  /**
+   * `afterInstruction` says where to resume. An interrupt noticed between
+   * instructions returns to the one that had not started. But an instruction
+   * that lowers the mask - `move.w #$2000, sr` - lets the interrupt in as part
+   * of its own execution, and it has already happened, so the chip returns to
+   * the instruction after it. Resuming at the wrong one re-runs the unmask
+   * every time an interrupt arrives.
+   */
+  constructor(readonly level: number, readonly afterInstruction = false) {
     super('interrupt');
   }
 }
@@ -408,7 +416,7 @@ export class Machine {
     if (this.irqPending && ((v >> 8) & 7) < this.irqPending) {
       const lvl = this.irqPending;
       this.irqPending = 0;
-      throw new PendingInterrupt(lvl);
+      throw new PendingInterrupt(lvl, true);
     }
   }
 

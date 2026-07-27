@@ -55,6 +55,8 @@ export class System {
 
   frames = 0;
   private statusToggle = 0;
+  /** Set to drive interrupts from an external schedule. */
+  pacedIrq: ((steps: number) => boolean) | null = null;
 
   constructor(rom: Uint8Array) {
     this.m = new Machine(rom);
@@ -104,6 +106,12 @@ export class System {
     let next = INSTRUCTIONS_PER_FRAME;
     m.atPc = (pc: number) => {
       if (this.m.atPcExtra) this.m.atPcExtra(pc);
+      // a caller can take over the timing entirely, to deliver interrupts
+      // where the chip delivered them rather than on a schedule of our own
+      if (this.pacedIrq) {
+        if (this.pacedIrq(m.steps)) { this.frames += 1; m.irqPending = 4; onFrame(this); }
+        return;
+      }
       if (m.steps < next) return;
       next = m.steps + INSTRUCTIONS_PER_FRAME;
       this.frames += 1;

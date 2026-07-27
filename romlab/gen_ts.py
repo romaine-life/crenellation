@@ -87,6 +87,7 @@ def emit_function(entry, end, label):
     # again with pc unchanged.
     lines.append("    } catch (e) {")
     lines.append("      if (!(e instanceof PendingInterrupt)) throw e;")
+    lines.append("      if (e.afterInstruction) pc = m.next;")
     lines.append("      call(m.interruptFrame(e.level), m);")
     lines.append("    }")
     lines.append("  }")
