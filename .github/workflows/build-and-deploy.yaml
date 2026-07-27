@@ -149,24 +149,36 @@ jobs:
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE }}-build-cache:app
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE }}-build-cache:app,mode=max
 
-      - name: Bump image tag in k8s/values.yaml
+      - name: Publish the image tag to the prod deploy branch
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          # Quote the tag so YAML never reinterprets image tag characters.
-          sed -i "s|^  tag: .*|  tag: \"${TAG}\"|" k8s/values.yaml
-          grep -qx "  tag: \"${TAG}\"" k8s/values.yaml \
-            || { echo "::error::k8s/values.yaml image tag was not updated"; exit 1; }
-
-      - name: Commit and push tag bump
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
+          # Deploy state goes to the long-lived `prod` branch, because that is what
+          # the ArgoCD Application tracks - not main. prod carries k8s/, so main's
+          # chart is synced onto it (template and values edits from PRs flow
+          # through) and the image tag is pinned there.
+          #
+          # This is the shape chess-tactics uses, which this repo's engine came
+          # from. crenellation was left committing the bump to main instead, where
+          # nothing watches it, so a green build changed nothing on the cluster
+          # until someone moved prod by hand - which is exactly what happened.
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add k8s/values.yaml
-          if git diff --cached --quiet; then
-            echo "No image tag changes to commit"
-            exit 0
+          gh auth setup-git
+          git fetch --force origin '+refs/heads/prod:refs/remotes/origin/prod'
+          git worktree add --detach prod-deploy origin/prod
+          rm -rf prod-deploy/k8s
+          cp -r k8s prod-deploy/k8s
+          # Quote the tag so YAML never reinterprets image tag characters.
+          sed -i "s|^  tag: .*|  tag: \"${TAG}\"|" prod-deploy/k8s/values.yaml
+          grep -qx "  tag: \"${TAG}\"" prod-deploy/k8s/values.yaml             || { echo "::error::prod values.yaml image tag was not set"; exit 1; }
+          git -C prod-deploy add k8s
+          if git -C prod-deploy diff --cached --quiet; then
+            echo "No deploy change to publish to prod"
+          else
+            git -C prod-deploy commit -m "deploy: crenellation image ${TAG}"
+            git -C prod-deploy push origin HEAD:prod
           fi
-          git commit -m "chore: bump crenellation image to fingerprint ${{ env.TAG }} [skip ci]"
-          git push origin HEAD:main
+          git worktree remove --force prod-deploy
