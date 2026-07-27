@@ -16,11 +16,11 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 757 |
-| *of the 593 the map held before trampolines and table cases were found* | *540 verified, 53 not* |
-| **Verified against hardware** | **681** |
+| *of the 593 the map held before trampolines and table cases were found* | *553 verified, 40 not* |
+| **Verified against hardware** | **694** |
 | Failing | 4 |
 | Passing under some inputs, failing under others | 13 |
-| Judged only by a stopping-point mismatch | 18 |
+| Judged only by a stopping-point mismatch | 6 |
 | Reproduces mid-run but not end to end | 8 |
 | Never judged | 32 |
 
@@ -89,8 +89,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**540 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 53 are not.
+**553 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 40 are not.
 
 ### Instruction rules
 
@@ -153,6 +153,21 @@ faulted and the snapshot describes the handler. Those are discarded now, along
 with the reset-code ones.
 
 Nine divergences remain bracketed to between one and forty instructions each.
+
+### A trap is not a no-op
+
+Thirteen of the remaining stopping-point mismatches were the exception stubs at
+0x18548, all failing identically. Each is `jsr $18652` followed by its message
+text; 0x18652 calls 0x19C2E; and 0x19C2E is `trap #$0`.
+
+The port recorded the trap and carried straight on. The chip stacks the return
+address and the status register and vectors through the table - and TRAP #0
+vectors to 0x18658, which is the instruction *after* the jsr that reached it,
+so the handler is the continuation and the path ends at `stop`. Two completely
+different routes from the same instruction.
+
+Implementing the vector took this harness from 2,445 of 2,532 to 2,497, and the
+unexplained stopping-point mismatches from 19 to 6.
 
 ### The chip was not crashing; it was being handed rubbish
 

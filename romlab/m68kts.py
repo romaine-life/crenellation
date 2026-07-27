@@ -562,8 +562,15 @@ def emit(ins, nxt):
     if b == "reset":
         return s
     if b == "trap":
+        # A trap is not a no-op. The 68000 stacks the return address and the
+        # status register and vectors through the table, and the game uses that
+        # - TRAP #0 vectors to 0x18658, which is the instruction after the jsr
+        # that reached it, so the handler is the continuation. Recording the
+        # trap and carrying straight on took a completely different path.
         n = num(ops[0].lstrip("#")) if ops else 0
-        return "m.trap(%d); %s" % (n, s)
+        return ("{ m.trap(%d); m.storePre('a7', 4, 0x%05x, 32); "
+                "m.storePre('a7', 2, m.getSR(), 16); "
+                "pc = m.load(0x%x, 32); } break;") % (n, nxt, (32 + n) * 4)
     if b in ("roxl", "roxr") and O and O[-1].write:
         cnt = O[0].read if len(O) == 2 else "1"
         rw = O[-1].rmw()

@@ -1819,7 +1819,7 @@ export function fn_13d1e(m: Machine, at = 0x13d1e): void {
       case 0x13dd0: { m.d2 = m.loadPost('a7', 4, 32); m.d3 = m.loadPost('a7', 4, 32); m.d4 = m.loadPost('a7', 4, 32); pc = 0x13dd4; } break;
       case 0x13dd4: { pc = 0x13e0a; break; } break;
       case 0x13dd6: { m.logicFlags(m.rd(m.d1, 16), 16); pc = 0x13dd8; } break;
-      case 0x13dd8: { m.trap(6); pc = 0x13dda; } break;
+      case 0x13dd8: { { m.trap(6); m.storePre('a7', 4, 0x13dda, 32); m.storePre('a7', 2, m.getSR(), 16); pc = m.load(0x98, 32); } break; } break;
       default: call(pc, m); return;
     }
   }

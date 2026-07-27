@@ -2138,7 +2138,7 @@ export function fn_19c2e(m: Machine, at = 0x19c2e): void {
     m.tick(pc);
     if (m.stopped) return;
     switch (pc) {
-      case 0x19c2e: { m.trap(0); pc = 0x19c30; } break;
+      case 0x19c2e: { { m.trap(0); m.storePre('a7', 4, 0x19c30, 32); m.storePre('a7', 2, m.getSR(), 16); pc = m.load(0x80, 32); } break; } break;
       case 0x19c30: { m.stopped = true; return; } break;
       case 0x19c34: { pc = 0x19c36; } break;
       case 0x19c36: { { const _a = m.sx(m.rd(m.a0, 32), 32); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) - _a), 32); } pc = 0x19c38; } break;
