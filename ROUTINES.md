@@ -154,7 +154,20 @@ chip has a0 = 0x00011AE2 and the port has what the memory baseline says,
 0x003E1AE2. a0 comes from `movea.l $3e1960.l, a0`, so the two sides are reading
 different things rather than reading the same thing differently.
 
-Probing the capture shows 0x3E1960 holds the baseline value both when the case
+Reading the chip directly at the instant of the snapshot settles it and raises
+a different question. At CURPC 0x8E8 the chip has a0 = 0x00011AE2 while the
+memory at 0x3E1960 - the location the instruction four back loads a0 from -
+holds 0x003E1AE2. Both read from the machine, not inferred. And 0x11BD8, the
+call in between, writes nothing at all: it is five arithmetic instructions and
+an rts.
+
+So a0 did not come from that load, and CURPC 0x8E8 does not mean what a
+straight-line reading of the disassembly says it means. Either the tap's CURPC
+lags further than a single instruction here, or the chip reached 0x8E8 by
+another route. That is a question about the capture, not about the port, and it
+is where this stands.
+
+The earlier probes showed 0x3E1960 holds the baseline value both when the case
 starts *and* when it ends - checked on every case, never once different. So the
 chip reads 0x11AE2 out of a location that holds 0x3E1AE2 before and after, which
 leaves the write happening inside the nested call to 0x11BD8 and being undone
