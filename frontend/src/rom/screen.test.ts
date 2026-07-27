@@ -66,7 +66,7 @@ function png(w: number, h: number, rgba: Uint32Array): Buffer {
 describe('what the booted machine draws', () => {
   it('writes the screen out', () => {
     const sys = new System(rom);
-    const STOP_AFTER = 600;          // ten seconds of game time
+    const STOP_AFTER = 6000;          // ten seconds of game time
     let done = false;
     const notes: string[] = [];
 
@@ -85,7 +85,7 @@ describe('what the booted machine draws', () => {
     let waitOn = -1; let waitFrame = -1; let setFrame = -1;
     const chanTrace: string[] = [];
     const writers = new Map<number, number>();
-    sys.m.watchLo = 0x3e3536; sys.m.watchHi = 0x3e3539;
+    sys.m.watchLo = 0x3e0804; sys.m.watchHi = 0x3e0805;
     const order: string[] = [];
     sys.m.onWrite = (a, v, pc) => {
       writers.set(pc, (writers.get(pc) ?? 0) + 1);
@@ -218,6 +218,8 @@ describe('what the booted machine draws', () => {
       notes.push('   ' + diffs.join(' | '));
     }
     notes.push(`first entered the wait at frame ${waitFrame}; first set the channel at frame ${setFrame}`);
+    notes.push(`port 0x3E0804 = 0x${sys.m.load(0x3e0804,16).toString(16)} (mask ${(sys.m.load(0x3e0804,16)>>8)&7}); `
+      + `0x3E0802 = 0x${sys.m.load(0x3e0802,16).toString(16)}; 0x3E0800 = 0x${sys.m.load(0x3e0800,16).toString(16)}`);
     notes.push('busiest addresses:');
     for (const [a, n] of [...visits.entries()].sort((x, y) => y[1] - x[1]).slice(0, 10)) {
       notes.push(`   0x${a.toString(16)}  ${n}`);

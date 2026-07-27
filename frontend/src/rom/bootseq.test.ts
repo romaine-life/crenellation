@@ -30,13 +30,18 @@ describe('the boot instruction sequence against the chip', () => {
   it('finds the first instruction that differs', () => {
     const sys = new System(rom);
     const port: number[] = [];
-    const LIMIT = 12_000_000;
+    let state = '(not reached)';
+    const LIMIT = 40_000_000;
     // Collapse consecutive repeats, because the chip's capture has to: its tap
     // fires once per fetch, so an instruction with extension words reports the
     // same address several times. That also collapses a genuine one-instruction
     // self-loop, so the port's trace has to be collapsed identically or the two
     // cannot be compared at all.
     sys.m.atPcExtra = (pc: number) => {
+      if (port.length === 12096 + 3868898 - 1336) {
+        state = `at the divergence: sr=0x${sys.m.sr.toString(16)} mask=${(sys.m.sr >> 8) & 7}`
+          + ` irqPending=${sys.m.irqPending} cycles=${sys.m.cycles} nextIrqAt=${(sys as unknown as {nextIrq?: number}).nextIrq ?? -1}`;
+      }
       if (port.length >= LIMIT) return;
       if (port.length && port[port.length - 1] === pc) return;
       port.push(pc);
@@ -72,7 +77,7 @@ describe('the boot instruction sequence against the chip', () => {
 
 
     try {
-      sys.run((s) => { if (s.frames >= 900) throw new Error('enough'); });
+      sys.run((s) => { if (s.frames >= 6000) throw new Error('enough'); });
     } catch { /* the stop, or a real failure */ }
 
     // The anchor has to be a stretch with no repeats in it. The chip's trace
@@ -99,6 +104,9 @@ describe('the boot instruction sequence against the chip', () => {
 
     const notes: string[] = [
       `chip sequence: ${chip.length} addresses; port: ${port.length}`,
+      'port runs the mask-setters: ' + [0xf77e, 0xf902, 0xfb4e, 0x650, 0x64a, 0x656, 0x620]
+        .map((a) => `0x${a.toString(16)}:${port.includes(a)}`).join(' '),
+      state,
     ];
     if (start < 0) {
       notes.push('the port never runs the chip\'s opening sequence, so there is'

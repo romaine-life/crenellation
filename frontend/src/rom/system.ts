@@ -43,6 +43,14 @@ export const IN1 = 0x640002;
  */
 export const INSTRUCTIONS_PER_FRAME = 5_454;
 
+/**
+ * Cycles in a frame: a 7.16 MHz 68000 against a 60 Hz screen. This is what
+ * paces the interrupt now - the chip interrupts on wall clock, and an
+ * instruction count drifts from that because instructions differ so widely in
+ * cost.
+ */
+export const CYCLES_PER_FRAME = 27_774;
+
 export class System {
   readonly m: Machine;
 
@@ -103,7 +111,7 @@ export class System {
   run(onFrame: (sys: System) => void): void {
     const pc = this.reset();
     const m = this.m;
-    let next = INSTRUCTIONS_PER_FRAME;
+    let next = CYCLES_PER_FRAME;
     m.atPc = (pc: number) => {
       if (this.m.atPcExtra) this.m.atPcExtra(pc);
       // a caller can take over the timing entirely, to deliver interrupts
@@ -112,8 +120,8 @@ export class System {
         if (this.pacedIrq(m.steps)) { this.frames += 1; m.irqPending = 4; onFrame(this); }
         return;
       }
-      if (m.steps < next) return;
-      next = m.steps + INSTRUCTIONS_PER_FRAME;
+      if (m.cycles < next) return;
+      next = m.cycles + CYCLES_PER_FRAME;
       this.frames += 1;
       m.irqPending = 4;      // taken at the next instruction boundary
       onFrame(this);

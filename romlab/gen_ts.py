@@ -73,8 +73,8 @@ def emit_function(entry, end, label):
                     % (ins.mnemonic, (ins.op_str or "").replace("'", ""), addr))
         # the address after this instruction, which an address-error frame
         # has to push - the chip stacks the next instruction, not this one
-        lines.append("      case 0x%05x: { m.next = 0x%05x; %s } break;"
-                     % (addr, addr + ins.size, body))
+        lines.append("      case 0x%05x: { m.next = 0x%05x; m.cycles += %d; %s } break;"
+                     % (addr, addr + ins.size, m68kts.cycles(ins), body))
         addr = nxt
     # Falling out of a routine's range is normal: the boundaries come from call
     # targets, so a "routine" is often a label inside a longer stretch of code

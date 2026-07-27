@@ -59,6 +59,13 @@ export class Machine {
   budget = 2_000_000;
 
   /**
+   * Cycles the chip would have spent. The board interrupts on wall clock, so
+   * counting instructions puts the interrupt in the wrong place - a `divu` and
+   * a `moveq` are one instruction each and thirty-five times apart in cost.
+   */
+  cycles = 0;
+
+  /**
    * Called once per instruction, with the address of the instruction about to
    * run. A test that needs to stop at a particular point can then recognise it
    * by address, which is exact, instead of counting instructions on both sides

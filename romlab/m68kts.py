@@ -256,6 +256,87 @@ def target_addr(tok):
     return abs_addr(m) if m else None
 
 
+# ---------------------------------------------------------------------------
+# Cycle costs.
+#
+# The board interrupts on wall clock - 60 Hz against a 7.16 MHz clock - and the
+# port was interrupting on an instruction count, so where an interrupt landed
+# drifted from where the chip put it. Counting cycles instead needs only to be
+# close: what matters is that a frame's worth of work costs about what it costs
+# on the chip, not that any one instruction is exact.
+#
+# Base costs are the common cases from the 68000 timings, plus the cost of
+# working out each memory operand's address.
+
+_EA_COST = {
+    "reg": 0, "imm": 0,
+    "ind": 4,          # (an)
+    "post": 4,         # (an)+
+    "pre": 6,          # -(an)
+    "disp": 8,         # d(an)
+    "idx": 10,         # d(an,ix)
+    "abs": 12,         # $xxxxxxxx.l - the short form is 8, close enough
+}
+
+_BASE = {
+    "nop": 4, "moveq": 4, "move": 4, "movea": 4, "lea": 4, "pea": 12,
+    "add": 4, "adda": 8, "addi": 8, "addq": 4, "sub": 4, "suba": 8,
+    "subi": 8, "subq": 4, "cmp": 4, "cmpa": 6, "cmpi": 8, "cmpm": 12,
+    "and": 4, "andi": 8, "or": 4, "ori": 8, "eor": 4, "eori": 8,
+    "not": 4, "neg": 4, "negx": 4, "clr": 4, "tst": 4, "ext": 4,
+    "swap": 4, "exg": 6, "link": 16, "unlk": 12,
+    "asl": 6, "asr": 6, "lsl": 6, "lsr": 6, "rol": 6, "ror": 6,
+    "roxl": 6, "roxr": 6,
+    "btst": 4, "bset": 8, "bclr": 10, "bchg": 8,
+    "mulu": 70, "muls": 70, "divu": 140, "divs": 158,
+    "jmp": 8, "jsr": 16, "bsr": 18, "rts": 16, "rte": 20, "rtr": 20,
+    "trap": 34, "stop": 4, "reset": 132, "movem": 12, "movep": 16,
+    "abcd": 6, "sbcd": 6, "nbcd": 6, "addx": 4, "subx": 4, "tas": 14,
+}
+
+
+def _ea_kind(tok):
+    tok = tok.strip()
+    if REG.match(tok) or tok in ("sp", "a7"):
+        return "reg"
+    if IMM.match(tok):
+        return "imm"
+    if POST.match(tok):
+        return "post"
+    if PRE.match(tok):
+        return "pre"
+    if IND.match(tok):
+        return "ind"
+    if IDX.match(tok) or NOIDX.match(tok):
+        return "idx"
+    if DISP.match(tok):
+        return "disp"
+    if ABS.match(tok):
+        return "abs"
+    return "reg"
+
+
+def cycles(ins):
+    """Roughly what this instruction costs the chip."""
+    b = ins.mnemonic.split(".")[0]
+    size = ins.mnemonic.rsplit(".", 1)[1] if "." in ins.mnemonic else "w"
+    n = _BASE.get(b, 8)
+    if b in BRANCH_CC or b in DB_CC:
+        # a taken branch costs more than one that falls through; assume taken,
+        # which is what a loop does
+        return 10
+    for tok in split_ops(ins.op_str or ""):
+        n += _EA_COST.get(_ea_kind(tok), 0)
+    if size == "l" and b not in ("mulu", "muls", "divu", "divs", "jsr", "bsr",
+                                 "rts", "rte", "trap", "reset"):
+        n += 2
+    if b == "movem":
+        # four cycles a register for words, eight for longs
+        regs = (ins.op_str or "").count("/") + (ins.op_str or "").count("-") + 1
+        n += regs * (8 if size == "l" else 4)
+    return n
+
+
 def emit(ins, nxt):
     """TypeScript for one instruction; None if the form has no rule."""
     mn = ins.mnemonic
