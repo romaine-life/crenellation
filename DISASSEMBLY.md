@@ -9,7 +9,7 @@ that cite the evidence they used.
 ## Coverage
 
 - **Bytes accounted for: 131072 of 131072 - 100.0%**
-- Code: 87136 bytes in **753 functions**
+- Code: 87662 bytes in **757 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -478,6 +478,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0E98C` | 186 | 1 | phase advance helper | updates 0x3E195C and 0x3E0DD2 |
 | `0EA46` | 34 | 1 | helper for main game state machine | only caller is 0x9266 |
 | `0EA68` | 18 | 1 | helper for main game state machine | only caller is 0x9266 |
+| `0EA7A` | 64 | 0 | computed-jump entry at 0x0ea7a | observed as a jump target during the differential run with no function covering it |
 | `0EABA` | 14 | 1 | phase reset wrapper | sets the phase then calls the reset at 0xC2DC |
 | `0EAC8` | 38 | 1 | helper for moving-unit access | only caller is 0xa80c |
 | `0EBBA` | 10 | 0 | small leaf utility | 10 bytes, no calls, no state access |
@@ -568,6 +569,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `133EC` | 28 | 0 | sound command latch | gates on 0x3E340C and reads 0x640002 |
 | `1354C` | 48 | 1 | sound register preset | writes the fixed register list into 0x3E3F00 |
 | `1357C` | 224 | 1 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `13662` | 140 | 0 | computed-jump entry at 0x13662 | observed as a jump target during the differential run with no function covering it |
 | `1378E` | 492 | 0 | computed-jump entry at 0x1378e | observed as a jump target during the differential run with no function covering it |
 | `1397A` | 484 | 0 | computed-jump entry at 0x1397a | observed as a jump target during the differential run with no function covering it |
 | `13CDA` | 64 | 0 | coin counter pulse | pulses 0x6C0000 and sets a bit in 0x3E3D8E |
@@ -609,6 +611,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `160BA` | 34 | 1 | audio reset wrapper | calls the sound reset then the shared init |
 | `1684C` | 172 | 1 | audio and video reset | calls the sound reset 0x19366 and the video reset 0x17500 |
 | `168F8` | 96 | 1 | audio and video reset (variant) | same pair with an extra flag test at 0x372 |
+| `169C8` | 304 | 0 | computed-jump entry at 0x169c8 | observed as a jump target during the differential run with no function covering it |
 | `16BC8` | 18 | 0 | sound ready wait | spins on 0x144AE until the driver reports ready |
 | `16BDA` | 332 | 1 | high score table renderer | draws from 0x1851C and 0x17EDE |
 | `16D3E` | 16 | 0 | jump-table case at 0x16d3e | reached from the table at 0x16d26 used by the jmp at 0x16d22 |
@@ -642,10 +645,11 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `18000` | 64 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `18040` | 282 | 0 | computed-jump entry at 0x18040 | observed as a jump target during the differential run with no function covering it |
 | `1815A` | 74 | 0 | sound table init | initialises from the table at 0x18040 |
+| `181A4` | 18 | 0 | computed-jump entry at 0x181a4 | observed as a jump target during the differential run with no function covering it |
 | `1829C` | 56 | 0 | computed-jump entry at 0x1829c | observed as a jump target during the differential run with no function covering it |
 | `183F2` | 38 | 2 | sound flag clear | clears the top bit of 0x3E3D8E |
 | `18418` | 38 | 1 | helper for sound sequence player | only caller is 0x14578 |
-| `1851C` | 40 | 4 | self-test result accumulate | folds a result into the words at 0x3E3D82/0x3E3D86 |
+| `1851C` | 40 | 5 | self-test result accumulate | folds a result into the words at 0x3E3D82/0x3E3D86 |
 | `18544` | 4 | 0 | small leaf utility | 4 bytes, no calls, no state access |
 | `18548` | 10 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `18556` | 10 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |

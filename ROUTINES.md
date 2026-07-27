@@ -15,13 +15,13 @@ again in the TypeScript port from byte-identical starting state, and compared.
 
 | | |
 |---|---|
-| Routines in the overlay | 753 |
-| *of the 593 the map held before trampolines and table cases were found* | *515 verified, 2 partly, 76 not* |
-| **Verified against hardware** | **651** |
+| Routines in the overlay | 757 |
+| *of the 593 the map held before trampolines and table cases were found* | *519 verified, 1 partly, 73 not* |
+| **Verified against hardware** | **659** |
 | Failing | 5 |
-| Passing under some inputs, failing under others | 26 |
-| Judged only by a stopping-point mismatch | 21 |
-| Reproduces mid-run but not end to end | 11 |
+| Passing under some inputs, failing under others | 24 |
+| Judged only by a stopping-point mismatch | 18 |
+| Reproduces mid-run but not end to end | 12 |
 | Never judged | 39 |
 
 Four harnesses. Three call the routine and compare everything when it comes
@@ -89,8 +89,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**515 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 2 are partly verified, 76 are not.
+**519 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 1 is partly verified, 73 are not.
 
 ### Instruction rules
 
