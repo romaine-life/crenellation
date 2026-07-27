@@ -146,6 +146,20 @@ for a, b in code_runs:
         end = inside[i + 1] if i + 1 < len(inside) else b
         funcs.append((e, end))
 
+# An entry has to be somewhere an instruction starts. Two in the map are not:
+# 0x404, a split point injected inside a jump-table case, and 0xFBE2, which
+# comes from the original classifier. Both are data - one does not disassemble
+# at all and the other only as a dc.w - so a "routine" starting there can only
+# ever throw. Dropping them folds their bytes into the function before them,
+# which is where they belong; coverage does not change.
+_ok = []
+for _a, _b in funcs:
+    _i = next(md.disasm(UP[_a:_a + 16], _a, 1), None)
+    if _i is None or _i.mnemonic.startswith("dc."):
+        continue
+    _ok.append((_a, _b))
+funcs = _ok
+
 # The injected spans overlap the runs they were carved out of, so one address
 # can start a function twice. The translator names a function after its start,
 # so a duplicate is a duplicate declaration and the whole module fails to

@@ -8,8 +8,8 @@ that cite the evidence they used.
 
 ## Coverage
 
-- **Bytes accounted for: 131072 of 131072 - 100.0%**
-- Code: 87754 bytes in **758 functions**
+- **Bytes accounted for: 131070 of 131072 - 100.0%**
+- Code: 87714 bytes in **756 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -97,7 +97,6 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `00306` | 6 | 1 | trampoline to 0x00580 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `003EA` | 24 | 0 | computed-jump entry at 0x003ea | observed as a jump target during the differential run with no function covering it |
 | `00402` | 2 | 0 | helper inside the jump-table case at 0x003ea | lies within the case reached from the table at 0x00000 |
-| `00404` | 38 | 0 | helper inside the jump-table case at 0x003ea | lies within the case reached from the table at 0x00000 |
 | `0042A` | 6 | 0 | trampoline to 0x09188 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00430` | 8 | 1 | helper for accessor for the state block at 0x3E1946 | only caller is 0x9150 |
 | `00438` | 218 | 0 | dispatcher gate check | tests the gate word at 0x3E0802 |
@@ -513,7 +512,6 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0FB74` | 12 | 0 | small leaf utility | 12 bytes, no calls, no state access |
 | `0FB80` | 70 | 0 | arithmetic helper | multiply/divide with no state access |
 | `0FBC6` | 28 | 1 | stack probe | offsets the stack pointer by a value from 0x3E0800 |
-| `0FBE2` | 2 | 0 | small leaf utility | 2 bytes, no calls, no state access |
 | `0FBE4` | 34 | 1 | power-on probe of the 0x140000 address space | tst.w at 0x140000 and 0x1400A8, which are outside the program ROM and outside every RAM the board decodes; bracketed by calls to the trampolines at 0x64A and 0x656 |
 | `0FC06` | 8 | 2 | helper used by player state access | 2 of 2 callers are player state access |
 | `0FC0E` | 2 | 0 | small leaf utility | 2 bytes, no calls, no state access |

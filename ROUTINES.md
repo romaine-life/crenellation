@@ -15,13 +15,13 @@ again in the TypeScript port from byte-identical starting state, and compared.
 
 | | |
 |---|---|
-| Routines in the overlay | 757 |
-| *of the 593 the map held before trampolines and table cases were found* | *570 verified, 23 not* |
+| Routines in the overlay | 756 |
+| *of the 593 the map held before trampolines and table cases were found* | *570 verified, 1 partly, 22 not* |
 | **Verified against hardware** | **725** |
 | Failing | 2 |
 | Passing under some inputs, failing under others | 14 |
-| Judged only by a stopping-point mismatch | 4 |
-| Reproduces mid-run but not end to end | 9 |
+| Judged only by a stopping-point mismatch | 1 |
+| Reproduces mid-run but not end to end | 10 |
 | Never judged | 4 |
 
 Four harnesses. Three call the routine and compare everything when it comes
@@ -140,6 +140,20 @@ everything is re-captured and the loop runs again.
 It converges. The last pass added six - 0x3EA, 0xC4CA, 0x120A2, 0x12306,
 0x13E0A, 0x1829C - and took failing from 19 to 16, input-dependent from 28 to
 26, and unexplained mismatches from 41 to 36.
+
+### Four routines that nothing can judge
+
+0x62E, 0x642, 0x1E8D2 and 0x18658 all reach `stop #$2700` immediately - the
+first two open with it, the others are one jump away. A halted chip fetches
+nothing more, so no tap fires and no snapshot exists after the instruction.
+There is no argument, no stopping point and no harness that produces a
+comparable moment for them. That is a real and permanent boundary, and it is
+four routines wide.
+
+Two more entries were not instructions at all. 0x404 does not disassemble and
+0xFBE2 only as a `dc.w`; a routine starting at either could only ever throw.
+They are dropped from the map and their bytes fold into the function before
+them.
 
 ### How far the capture's program counter can be trusted
 
