@@ -42,6 +42,12 @@ export function fn_003ea(m: Machine, at = 0x003ea): void {
       case 0x003f6: { m.next = 0x003fa; { const _s = 9; m.storePost('a0', 2, _s, 16); m.logicFlags(_s, 16); } pc = 0x003fa; } break;
       case 0x003fa: { m.next = 0x003fe; { const _s = 13; m.storePost('a0', 2, _s, 16); m.logicFlags(_s, 16); } pc = 0x003fe; } break;
       case 0x003fe: { m.next = 0x00402; { const _s = 10; m.storePost('a0', 2, _s, 16); m.logicFlags(_s, 16); } pc = 0x00402; } break;
+      case 0x00402: { m.next = 0x00406; { const _s = 14; m.storePost('a0', 2, _s, 16); m.logicFlags(_s, 16); } pc = 0x00406; } break;
+      case 0x00406: { m.next = 0x0040e; { const _s = 23445; m.store(0x3e3f08, _s, 16); m.logicFlags(_s, 16); } pc = 0x0040e; } break;
+      case 0x0040e: { m.next = 0x00416; { const _s = 4118; m.store(0x3e3f0a, _s, 16); m.logicFlags(_s, 16); } pc = 0x00416; } break;
+      case 0x00416: { m.next = 0x0041e; { const _s = 45191; m.store(0x3e3f0c, _s, 16); m.logicFlags(_s, 16); } pc = 0x0041e; } break;
+      case 0x0041e: { m.next = 0x00424; m.store(0x3e0802, 0, 16); m.logicFlags(0, 16); pc = 0x00424; } break;
+      case 0x00424: { m.next = 0x0042a; m.store(0x3e0800, 0, 16); m.logicFlags(0, 16); pc = 0x0042a; } break;
       default: call(pc, m); return;
     }
   }

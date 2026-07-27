@@ -1,1 +1,1 @@
-{"matched":9149,"compared":9153,"offMap":204,"noRule":2,"failing":[{"hex":"007200F601A001A0","asm":"ori.w #$f6, $1a0(d0.w)"},{"hex":"E034","asm":"roxr.l #$8, d4"}]}
+{"matched":9169,"compared":9173,"offMap":184,"noRule":2,"failing":[{"hex":"007200F601A001A0","asm":"ori.w #$f6, $1a0(d0.w)"},{"hex":"E034","asm":"roxr.l #$8, d4"}]}

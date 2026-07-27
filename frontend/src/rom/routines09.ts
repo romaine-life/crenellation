@@ -3034,6 +3034,7 @@ export function fn_1851c(m: Machine, at = 0x1851c): void {
       case 0x1853e: { m.next = 0x18540; { const _a = m.rd(m.d2, 32);  const _b = m.rd(m.d0, 32); const _r = (_b | _a); m.d0 = m.wr(m.d0, _r, 32); m.logicFlags(_r, 32); } pc = 0x18540; } break;
       case 0x18540: { m.next = 0x18542; { const _s = m.rd(m.a0, 32); m.d2 = m.wr(m.d2, _s, 32); m.logicFlags(_s, 32); } pc = 0x18542; } break;
       case 0x18542: { m.next = 0x18544; m.a7 = (m.a7 + 4) >>> 0; return; } break;
+      case 0x18544: { m.next = 0x1854a; { const _s = m.load(m.a5 + 3875, 32); m.store(m.a3 + 20153, _s, 32); m.logicFlags(_s, 32); } pc = 0x1854a; } break;
       default: call(pc, m); return;
     }
   }

@@ -165,6 +165,15 @@ for _a, _b in funcs:
     if any(_a < s < _a + _i.size for s in _starts):
         continue
     _ok.append((_a, _b))
+# Dropping an entry leaves its bytes belonging to nothing, because the extents
+# were worked out before the drop. Give them to the function before them, which
+# is where padding after an rts belongs anyway.
+_ok.sort()
+for _i in range(len(_ok) - 1):
+    _a, _b = _ok[_i]
+    _n = _ok[_i + 1][0]
+    if _b < _n and any(x <= _a and _n <= y for x, y in code_runs):
+        _ok[_i] = (_a, _n)
 funcs = _ok
 
 # The injected spans overlap the runs they were carved out of, so one address

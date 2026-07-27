@@ -1749,6 +1749,7 @@ export function fn_0fbc6(m: Machine, at = 0x0fbc6): void {
       case 0x0fbda: { m.next = 0x0fbde; { const _a = 6;  const _b = m.rd(m.d0, 16); const _r = (_b & _a); m.d0 = m.wr(m.d0, _r, 16); m.logicFlags(_r, 16); } pc = 0x0fbde; } break;
       case 0x0fbde: { m.next = 0x0fbe0; { const _n = (m.rd(m.d0, 8)) & 7; const _ea = (m.a0) >>> 0; const _v = m.load(_ea, 8); const _bit = (1 << _n) >>> 0; m.z = ((_v >>> _n) & 1) === 0; m.store(_ea, (_v | _bit), 8); } pc = 0x0fbe0; } break;
       case 0x0fbe0: { m.next = 0x0fbe2; m.a7 = (m.a7 + 4) >>> 0; return; } break;
+      case 0x0fbe2: { m.next = 0x0fbe4; throw new Error('reached data at 0x0fbe2'); } break;
       default: call(pc, m); return;
     }
   }
@@ -1855,6 +1856,7 @@ export function fn_0fc3a(m: Machine, at = 0x0fc3a): void {
       case 0x0fc3a: { m.next = 0x0fc3e; { const _a = 3;  const _b = m.rd(m.d0, 16); const _r = (_b & _a); m.d0 = m.wr(m.d0, _r, 16); m.logicFlags(_r, 16); } pc = 0x0fc3e; } break;
       case 0x0fc3e: { m.next = 0x0fc44; { const _s = m.rd(m.d0, 8); m.store(0x3e0de2, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fc44; } break;
       case 0x0fc44: { m.next = 0x0fc46; m.a7 = (m.a7 + 4) >>> 0; return; } break;
+      case 0x0fc46: { m.next = 0x0fc4c; { const _s = m.load(0x3e0de6, 8); m.d1 = m.wr(m.d1, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fc4c; } break;
       default: call(pc, m); return;
     }
   }

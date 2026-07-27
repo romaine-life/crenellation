@@ -5,6 +5,8 @@
   560,
   632,
   1332,
+  1568,
+  1622,
   2228,
   5340,
   34936,
@@ -22,10 +24,7 @@
   105532,
   111058
  ],
- "fail": [
-  1568,
-  1622
- ],
+ "fail": [],
  "detail": [
   {
    "entry": "0x534",
@@ -175,37 +174,37 @@
    "entry": "0x620",
    "shape": 0,
    "steps": 4,
-   "what": "memory"
+   "what": "a0 rom=3e4252 port=3e3672"
   },
   {
    "entry": "0x620",
    "shape": 0,
    "steps": 5,
-   "what": "a0 rom=3e3672 port=3e4252"
-  },
-  {
-   "entry": "0x620",
-   "shape": 0,
-   "steps": 6,
-   "what": "d2 rom=ffffffff port=499f"
-  },
-  {
-   "entry": "0x620",
-   "shape": 0,
-   "steps": 8,
-   "what": "d2 rom=ffffffff port=499f"
+   "what": "d2 rom=499f port=ffffffff"
   },
   {
    "entry": "0x620",
    "shape": 0,
    "steps": 10,
-   "what": "d2 rom=ffffffe0 port=499f"
+   "what": "d0 rom=3bba port=0"
   },
   {
    "entry": "0x620",
    "shape": 0,
    "steps": 12,
-   "what": "d0 rom=0 port=3bba"
+   "what": "d1 rom=a832 port=a800"
+  },
+  {
+   "entry": "0x620",
+   "shape": 1,
+   "steps": 1,
+   "what": "memory"
+  },
+  {
+   "entry": "0x620",
+   "shape": 1,
+   "steps": 2,
+   "what": "memory"
   }
  ]
 }

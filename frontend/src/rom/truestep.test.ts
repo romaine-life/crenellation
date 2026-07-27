@@ -117,6 +117,10 @@ describe('routines compared at a single-stepped boundary', () => {
       m.a6 = STACK + 0x200;
       m.sr = 0x2700;
       m.stubMissing = true;
+      // the board asserts level 4 every frame and the harness holds the
+      // machine mid-frame, so one is waiting when a routine unmasks - which is
+      // the entire purpose of the two routines this was built to settle
+      m.irqPending = 4;
       // The tick that counts an instruction happens before it runs, so a
       // budget of N leaves N-1 completed. The chip'''s N steps complete N.
       m.budget = c.steps + 1;

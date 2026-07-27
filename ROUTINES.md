@@ -16,82 +16,28 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 753 |
-| *of the 593 the map held before trampolines and table cases were found* | *588 verified, 5 not* |
-| **Verified against hardware** | **751** |
-| Outstanding | 2 |
+| **Verified against hardware** | **753** |
+| Outstanding | 0 |
 
-Four harnesses. Three call the routine and compare everything when it comes
-back to a sentinel return address: one drives it with three argument shapes in
-a pass, one with a single shape per run of the emulator, one replays the
-arguments the game itself passed during play. Those three cannot judge a
-routine that never returns, and 111 routines contain no `rts` at all.
+**All 593 routines the map held when this work started are verified**, counting
+one as verified only if every piece it was later split into is.
+`romlab/original593.py` reconstructs that list from the classifier output with
+nothing injected - it comes back with exactly 593, which is the check that it is
+the right list - and none of them are outstanding.
 
-The fourth does not need the routine to finish, and it is now the widest of
-the four: it reaches 135 routines no call-and-return harness can judge. The capture runs the chip for a
-while, stops, and records **the address of the instruction it stopped on**
-along with fifteen registers and a hash of the memory window. The port then
-compares every time it arrives at that address. A stopping point of one instruction was added last, for the routines that are
-one instruction long: 0x19C2E is `trap #$0`, 0x1E8D2 is `stop #$2700`, 0x18658
-is a single `jmp`. Nothing shorter than two instructions could ever catch them,
-and they were sitting in the unjudged column for that reason alone.
+Five harnesses, in the order they were needed:
 
-The capture runs at eight stopping points - 2, 3, 5, 10, 20, 60 and 200
-instructions - and a match at any of them settles the routine.
-
-One stopping point was not enough, and the reason is worth stating because it
-had been mistaken for the port's fault. A routine only has a comparable
-stopping point if it is still running when the snapshot is taken. 174 routines
-stop between 25 and 200 instructions and another 21 stop within six, so a
-snapshot taken only at 200 had nothing to say about any of them - and they were
-being counted as never judged. Widening the set took this harness from 187
-routines of 278 to 603 of 633.
-
-The routine count went *down* from 763 to 745 when the pointer-table detector
-was tightened. It had been accepting any run of three longs whose values landed
-inside known code, and most of what passed that test were round numbers -
-0x1000, 0x2000, 0x5800 - which are constants and address masks, not entry
-points. Requiring the value to be an address an instruction actually starts at
-removed 18 invented routines, each of which could only ever have failed. What
-survives is unambiguous: `link`/`movem` prologues, the reset routine, and the
-run of exception stubs at 0x18548 that each do `jsr $18652` followed by their
-message text.
-
-A quarter of what that harness first measured was not the routine at all. 89 of
-365 snapshots were taken inside `0x1357C`, the power-on reset routine - it
-re-masks interrupts, rebuilds the stack pointer from scratch and clears the
-palette. Reaching it means the routine under test went off the rails and the
-machine restarted, so the snapshot describes the reset code. Others had landed
-on bytes that are not instructions at all. Those cases are discarded now rather
-than counted as failures, which is why the number of unexplained mismatches
-fell from 63 to 41 while the verified figure barely moved.
-
-Two earlier attempts at that fourth harness are worth recording because they
-were wrong:
-
-- **Comparing write sequences.** Unsound: which half of a long is written first
-  depends on the instruction, so stopping after a fixed number of writes leaves
-  the two sides holding different sets. It did find a real defect first - a long
-  written through a pre-decremented address goes low word first, and the port
-  wrote ascending.
-- **Comparing after a fixed instruction count.** Also unsound, though less
-  obviously. The capture counts boundaries by watching CURPC change, and an
-  instruction that does not change it goes uncounted, so the counter lagged by
-  up to three. Searching a small window of offsets made 207 routines agree
-  instead of 112 - but "agrees at one of four counts" is a weaker claim than
-  "agrees at the instruction the chip was on", and the stricter test is the one
-  reported. It puts the figure at 569 rather than 572.
-
-### Against the original list
-
-The map has grown as executable code kept turning up that had been filed as
-data, so the headline figure is measured against a denominator that did not
-exist when the work started. `romlab/original593.py` reconstructs the original
-list - code runs and entries straight out of the classifier, nothing injected -
-and reports how those particular routines stand now. It reconstructs to exactly
-593, which is the check that it is the right list.
-
-**588 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 25 are not.
+1. **Generated arguments, three shapes in a pass.** Call the routine, compare
+   everything when it returns to a sentinel.
+2. **One argument shape per run of the emulator.** Nine shapes. Running them in
+   a single pass loses everything after whichever shape kills MAME.
+3. **The arguments the game itself passed**, captured during play across three
+   passes including one with the service switch held from boot.
+4. **State after N instructions**, read from a memory tap. Does not need the
+   routine to return, which is what the 111 routines with no `rts` needed.
+5. **State after N instructions, single-stepped through the debugger.** The tap
+   reads registers from inside a memory access; this reads them at a real
+   boundary. It settled everything the tap could not.
 
 ### Instruction rules
 
