@@ -50,12 +50,63 @@ describe('the boot path against the chip', () => {
     const context = chip.slice(Math.max(0, atIndex - 8), atIndex + 4)
       .map((a) => '0x' + a.toString(16)).join(' ');
 
+    // the same comparison at routine granularity, which names a subsystem
+    // rather than an instruction
+    const starts: number[] = readFileSync(join(here, 'entries.txt'), 'utf8')
+      .split(/\s+/).map((s) => s.trim()).filter(Boolean).map((s) => parseInt(s, 16));
+    starts.sort((a, b) => a - b);
+    const owner = (a: number): number => {
+      let lo = 0; let hi = starts.length - 1; let f = -1;
+      while (lo <= hi) { const mid = (lo + hi) >> 1;
+        if (starts[mid] <= a) { f = mid; lo = mid + 1; } else { hi = mid - 1; } }
+      return f < 0 ? -1 : starts[f];
+    };
+    const portFns = new Set(order.map(owner));
+    let firstFn = -1; let fnIndex = -1;
+    for (let i = 0; i < chip.length; i += 1) {
+      const f = owner(chip[i]);
+      if (f >= 0 && !portFns.has(f)) { firstFn = f; fnIndex = i; break; }
+    }
+    // Where the two orders part, not just what is missing. A path taken in a
+    // different order - playing a sound sequence before the routine that loads
+    // it - looks identical to a set comparison and is exactly the failure here.
+    const chipFns = new Set(chip.map(owner));
+    // The chip's trace starts once the machine is up, part way through boot,
+    // so the port's is skipped forward to the same address before the orders
+    // are compared. Without this they part at step zero every time, on the
+    // reset code the chip's trace never saw.
+    const chipFirst = chip.length ? chip[0] : -1;
+    const from = Math.max(0, order.indexOf(chipFirst));
+    const portOrderFns: number[] = [];
+    for (const a of order.slice(from)) {
+      const f = owner(a);
+      if (f >= 0 && portOrderFns[portOrderFns.length - 1] !== f) portOrderFns.push(f);
+    }
+    const chipOrderFns: number[] = [];
+    for (const a of chip) {
+      const f = owner(a);
+      if (f >= 0 && chipOrderFns[chipOrderFns.length - 1] !== f) chipOrderFns.push(f);
+    }
+    let firstOrderDiff = -1;
+    for (let i = 0; i < Math.min(chipOrderFns.length, portOrderFns.length); i += 1) {
+      if (chipOrderFns[i] !== portOrderFns[i]) { firstOrderDiff = i; break; }
+    }
+    const orderNote = firstOrderDiff < 0
+      ? 'the routine orders agree as far as they go'
+      : `routine order parts at step ${firstOrderDiff}: chip goes to 0x`
+        + `${chipOrderFns[firstOrderDiff].toString(16)}, port goes to 0x`
+        + `${portOrderFns[firstOrderDiff].toString(16)}`
+        + ` (both had just been in 0x${(chipOrderFns[firstOrderDiff - 1] ?? 0).toString(16)})`;
     const extra = order.filter((a) => !chip.includes(a)).slice(0, 10);
     const notes = [
       `chip reached ${chip.length} distinct addresses; port reached ${order.length}`,
       `first address the chip reached and the port never did: `
         + (firstMissing < 0 ? 'none' : `0x${firstMissing.toString(16)} (chip's ${atIndex}th)`),
       `chip's path around it: ${context}`,
+      `routines: chip entered ${chipFns.size}, port entered ${portFns.size}`,
+      orderNote,
+      `first routine the chip entered and the port never did: `
+        + (firstFn < 0 ? 'none' : `0x${firstFn.toString(16)} (at the chip's ${fnIndex}th address)`),
       `addresses the port reached that the chip never did: `
         + (extra.length ? extra.map((a) => '0x' + a.toString(16)).join(' ') : 'none'),
     ];

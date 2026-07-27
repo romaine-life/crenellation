@@ -85,7 +85,7 @@ describe('what the booted machine draws', () => {
     let waitOn = -1;
     const chanTrace: string[] = [];
     const writers = new Map<number, number>();
-    sys.m.watchLo = 0x3e34ea; sys.m.watchHi = 0x3e34ed;
+    sys.m.watchLo = 0x3e3440; sys.m.watchHi = 0x3e34a0;
     const order: string[] = [];
     sys.m.onWrite = (a, v, pc) => {
       writers.set(pc, (writers.get(pc) ?? 0) + 1);
@@ -174,6 +174,43 @@ describe('what the booted machine draws', () => {
     notes.push('who writes it: ' + ([...writers.entries()]
       .sort((a, b) => b[1] - a[1]).slice(0, 8)
       .map(([p, n]) => `0x${p.toString(16)}x${n}`).join(' ') || 'nobody'));
+    {
+      const chipRam = new Uint8Array(readFileSync(join(here, 'chip-ram900.bin')));
+      const regions = new Map<number, number>();
+      for (let i = 0; i < chipRam.length; i += 1) {
+        if (sys.m.byte(0x3e0000 + i) !== chipRam[i]) {
+          const k = (0x3e0000 + i) & 0xffff00;
+          regions.set(k, (regions.get(k) ?? 0) + 1);
+        }
+      }
+      let total = 0; for (const v of regions.values()) total += v;
+      notes.push(`work RAM differs in ${total} of 65536 bytes across ${regions.size} pages`);
+      notes.push('   worst pages: ' + [...regions.entries()].sort((a, b) => b[1] - a[1])
+        .slice(0, 8).map(([k, n]) => `0x${k.toString(16)}:${n}`).join(' '));
+      {
+        const firsts: string[] = [];
+        for (let i = 0; i < chipRam.length && firsts.length < 10; i += 1) {
+          const mine = sys.m.byte(0x3e0000 + i);
+          if (mine !== chipRam[i]) firsts.push(`0x${(0x3e0000 + i).toString(16)}: chip ${chipRam[i]} port ${mine}`);
+        }
+        notes.push('   first differing bytes: ' + firsts.join(' | '));
+      }
+      const chipSound = new Uint8Array(readFileSync(join(here, 'chip-sound.bin')));
+      const diffs: string[] = [];
+      for (let i = 0; i < chipSound.length; i += 1) {
+        const a = 0x3e3400 + i;
+        const mine = sys.m.byte(a);
+        if (mine !== chipSound[i] && diffs.length < 14) {
+          diffs.push(`0x${a.toString(16)}: chip ${chipSound[i]} port ${mine}`);
+        }
+      }
+      let n = 0;
+      for (let i = 0; i < chipSound.length; i += 1) {
+        if (sys.m.byte(0x3e3400 + i) !== chipSound[i]) n += 1;
+      }
+      notes.push(`sound area differs in ${n} of ${chipSound.length} bytes`);
+      notes.push('   ' + diffs.join(' | '));
+    }
     notes.push('busiest addresses:');
     for (const [a, n] of [...visits.entries()].sort((x, y) => y[1] - x[1]).slice(0, 10)) {
       notes.push(`   0x${a.toString(16)}  ${n}`);
