@@ -186,8 +186,13 @@ memory tap, not a defect in the translation, and the routines whose only
 evidence against them is a snapshot of this kind are not shown to be wrong by
 it.
 
-Fixing it needs a capture that can stop the chip between instructions, which
-means driving MAME's debugger rather than a tap.
+Fixing it needs a capture that can stop the chip between instructions. MAME run
+with `-debug -debugger none` does expose one: `cpu.debug` becomes a real
+`device_debug` with `bpset`, `step` and `go`, and a breakpoint stops the chip
+before an instruction executes, which is exactly the boundary the port compares
+at. `romlab/bpcap.lua` is an attempt at that capture and it crashes MAME during
+the first case - with three cases or with four hundred - so the fault is in how
+the debugger is being driven. It is committed unfinished and labelled as such.
 
 ### Why the unjudged are unjudged
 
