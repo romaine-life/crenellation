@@ -16,13 +16,13 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 757 |
-| *of the 593 the map held before trampolines and table cases were found* | *536 verified, 1 partly, 56 not* |
-| **Verified against hardware** | **676** |
-| Failing | 5 |
+| *of the 593 the map held before trampolines and table cases were found* | *541 verified, 52 not* |
+| **Verified against hardware** | **682** |
+| Failing | 4 |
 | Passing under some inputs, failing under others | 13 |
 | Judged only by a stopping-point mismatch | 18 |
-| Reproduces mid-run but not end to end | 6 |
-| Never judged | 39 |
+| Reproduces mid-run but not end to end | 7 |
+| Never judged | 32 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -89,8 +89,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**536 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 1 is partly verified, 56 are not.
+**541 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 52 are not.
 
 ### Instruction rules
 
@@ -153,6 +153,20 @@ faulted and the snapshot describes the handler. Those are discarded now, along
 with the reset-code ones.
 
 Nine divergences remain bracketed to between one and forty instructions each.
+
+### The chip was not crashing; it was being handed rubbish
+
+For a long time the largest unjudged group was "every snapshot was taken after
+the chip faulted" - 31 routines the harness could say nothing about because,
+called out of context, the machine ended up in its own reset code. That was
+recorded as a hard boundary needing the game to reach the state that calls
+them.
+
+It was not. Those routines take a structure pointer as a *stack* argument, and
+the harness was pushing random numbers there while carefully handing the
+address registers real structures. Pushing structures on the stack as well -
+one more argument shape - produced 4,223 snapshots with **not one** taken after
+a fault, where the earlier shapes produced hundreds.
 
 ### The address bus is 24 bits
 

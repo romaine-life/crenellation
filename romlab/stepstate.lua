@@ -133,7 +133,7 @@ local function begin_case()
     local r = rnd()
     local v
     if SHAPE == 0 then v = r % 0x10000
-    elseif SHAPE == 1 then v = r % 32
+    elseif SHAPE == 1 or SHAPE == 3 then v = r % 32
     else v = r % 256 end
     cpu.state["D" .. k].value = v
   end
@@ -148,8 +148,19 @@ local function begin_case()
   local sp = STACK
   for k = 1, 4 do
     sp = sp - 4
-    local v = (k % 2 == 0) and (rnd() % 0x100)
-              or (SCRATCH + (rnd() % (SCRATCH_LEN - 0x80)))
+    local r = rnd()
+    local v
+    if SHAPE == 3 then
+      -- Most of the routines that fault take a structure pointer as a stack
+      -- argument and were being handed a random number. The chip then walks
+      -- off into nothing and lands in its own reset code, and the case is
+      -- thrown away as "the chip crashed" - which says nothing about the port.
+      v = STRUCTS[(r % #STRUCTS) + 1]
+    elseif k % 2 == 0 then
+      v = r % 0x100
+    else
+      v = SCRATCH + (r % (SCRATCH_LEN - 0x80))
+    end
     space:write_u32(sp, v)
   end
   sp = sp - 4

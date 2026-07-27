@@ -91,7 +91,7 @@ describe('routines compared at the instruction the chip stopped on', () => {
     const fail = new Set<number>();
     const detail: Array<{ entry: string; what: string }> = [];
 
-    for (const SHAPE of [0, 1, 2]) {
+    for (const SHAPE of [0, 1, 2, 3]) {
     const rand = new Rand();   // each capture run started the generator afresh
     for (const entry of entries) {
       const m = new Machine(rom);
@@ -108,7 +108,7 @@ describe('routines compared at the instruction the chip stopped on', () => {
       const d: number[] = [];
       for (let k = 0; k < 8; k += 1) {
         const r = rand.next();
-        d.push(SHAPE === 0 ? r % 0x10000 : SHAPE === 1 ? r % 32 : r % 256);
+        d.push(SHAPE === 0 ? r % 0x10000 : (SHAPE === 1 || SHAPE === 3) ? r % 32 : r % 256);
       }
       const a: number[] = [];
       for (let k = 0; k < 6; k += 1) {
@@ -119,8 +119,13 @@ describe('routines compared at the instruction the chip stopped on', () => {
       let sp = STACK;
       for (let k = 1; k <= 4; k += 1) {
         sp -= 4;
-        const v = k % 2 === 0 ? rand.next() % 0x100
-          : SCRATCH + (rand.next() % (SCRATCH_LEN - 0x80));
+        const r = rand.next();
+        // shape 3 puts real structures on the stack too. Most routines that
+        // faulted took a structure pointer as a stack argument and were being
+        // handed a random number.
+        const v = SHAPE === 3 ? STRUCTS[r % STRUCTS.length]
+          : k % 2 === 0 ? r % 0x100
+          : SCRATCH + (r % (SCRATCH_LEN - 0x80));
         m.store(sp, v, 32);
       }
       sp -= 4;
