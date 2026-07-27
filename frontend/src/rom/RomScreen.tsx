@@ -17,20 +17,28 @@ const SCREEN_H = 240;
  * Which input bit each key holds low.
  *
  * The board presents the ports active-low: a bit reads clear while its button
- * is held. Bit 3 of the first byte is not a button - the board reads it clear
- * anyway - so nothing is mapped to it.
+ * is held. Nothing here was guessed - each was found by running the machine
+ * twice from the same boot, once idle and once holding the bit, and comparing
+ * the screen. Only these bits change what the game shows.
+ *
+ *   byte 3 bits 0-2   the three coin slots
+ *   byte 0/1/2 bit 0  each player station's first button
+ *   byte 0/1/2 bit 1  each player station's second button
+ *   byte 2 bit 3      service; holding it takes the machine back through reset
+ *
+ * Byte 0 bit 0 is the middle station: pressing it at the join screen is what
+ * puts RED PLAYER into PLEASE WAIT.
  */
 const KEYS: Record<string, [byte: number, bit: number]> = {
-  Digit5: [0, 0],      // coin
-  Digit1: [0, 1],      // one player start
-  Digit2: [0, 2],      // two player start
-  ArrowUp: [1, 0],
-  ArrowDown: [1, 1],
-  ArrowLeft: [1, 2],
-  ArrowRight: [1, 3],
-  KeyZ: [1, 4],
-  KeyX: [1, 5],
-  Space: [1, 6],
+  Digit5: [3, 0],      // coin
+  Digit6: [3, 1],      // second coin slot
+  KeyZ: [0, 0],        // middle station, button one - joins as red
+  KeyX: [0, 1],        // middle station, button two
+  KeyA: [1, 0],        // left station
+  KeyS: [1, 1],
+  KeyK: [2, 0],        // right station
+  KeyL: [2, 1],
+  F2: [2, 3],          // service
 };
 
 export function Rampart() {
