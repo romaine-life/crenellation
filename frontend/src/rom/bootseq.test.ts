@@ -141,14 +141,7 @@ describe('the boot instruction sequence against the chip', () => {
       }
     }
 
-    if (start >= 0) {
-      const offset = start - anchorAt;
-      const pa = portMask.filter((e) => e.at >= offset);
-      maskNote += '
-   chip: ' + chipMask.slice(1, 11).map((e) => `0x${e.pc.toString(16)}->${e.mask}`).join(' ');
-      maskNote += '
-   port: ' + pa.slice(0, 10).map((e) => `0x${e.pc.toString(16)}->${e.mask}`).join(' ');
-    }
+
 
     const notes: string[] = [
       `chip sequence: ${chip.length} addresses; port: ${port.length}`,
@@ -190,5 +183,10 @@ describe('the boot instruction sequence against the chip', () => {
     // eslint-disable-next-line no-console
     console.log(notes.join('\n'));
     writeFileSync(join(here, 'bootseq.txt'), notes.join('\n'));
+    // the port's own mask history, complete - nothing samples it
+    writeFileSync(join(here, 'portmask.json'), JSON.stringify({
+      alignOffset: start >= 0 ? start - anchorAt : null,
+      changes: portMask.map((e) => ({ at: e.at, pc: '0x' + e.pc.toString(16), mask: e.mask })),
+    }));
   }, 600000);
 });
