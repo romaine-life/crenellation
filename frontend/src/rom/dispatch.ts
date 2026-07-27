@@ -149,6 +149,7 @@ const STARTS: number[] = [
   0x022ba,
   0x02300,
   0x02338,
+  0x024c8,
   0x0255c,
   0x025f4,
   0x02698,
@@ -354,6 +355,7 @@ const STARTS: number[] = [
   0x086ae,
   0x0875e,
   0x08878,
+  0x088b0,
   0x08a70,
   0x08a9c,
   0x08b0c,
@@ -478,9 +480,11 @@ const STARTS: number[] = [
   0x0ea7a,
   0x0eaba,
   0x0eac8,
+  0x0eaee,
   0x0ebba,
   0x0ec3a,
   0x0ecb0,
+  0x0ecfa,
   0x0edea,
   0x0ee22,
   0x0ee3a,
@@ -918,6 +922,7 @@ const ENDS: number[] = [
   0x02300,
   0x02338,
   0x024c8,
+  0x0255c,
   0x025f4,
   0x02698,
   0x0272e,
@@ -1123,6 +1128,7 @@ const ENDS: number[] = [
   0x0875e,
   0x08878,
   0x088b0,
+  0x08a70,
   0x08a9c,
   0x08b0c,
   0x08bb2,
@@ -1247,9 +1253,11 @@ const ENDS: number[] = [
   0x0eaba,
   0x0eac8,
   0x0eaee,
+  0x0ebba,
   0x0ebc4,
   0x0ecb0,
   0x0ecfa,
+  0x0ed8e,
   0x0ee22,
   0x0ee3a,
   0x0ee44,
@@ -1619,7 +1627,7 @@ const FNS: Routine[] = [
   r00.fn_0028c,
   r00.fn_00292,
   r00.fn_00300,
-  r01.fn_00306,
+  r00.fn_00306,
   r01.fn_003ea,
   r01.fn_0042a,
   r01.fn_00430,
@@ -1683,10 +1691,11 @@ const FNS: Routine[] = [
   r01.fn_0200a,
   r01.fn_0219a,
   r01.fn_0220c,
-  r02.fn_02248,
-  r02.fn_022ba,
+  r01.fn_02248,
+  r01.fn_022ba,
   r02.fn_02300,
   r02.fn_02338,
+  r02.fn_024c8,
   r02.fn_0255c,
   r02.fn_025f4,
   r02.fn_02698,
@@ -1747,8 +1756,8 @@ const FNS: Routine[] = [
   r02.fn_044a2,
   r02.fn_0450c,
   r02.fn_0452e,
-  r03.fn_04552,
-  r03.fn_045ca,
+  r02.fn_04552,
+  r02.fn_045ca,
   r03.fn_045fa,
   r03.fn_0463c,
   r03.fn_0469e,
@@ -1811,9 +1820,9 @@ const FNS: Routine[] = [
   r03.fn_05cb0,
   r03.fn_05cce,
   r03.fn_05d8c,
-  r04.fn_05dea,
-  r04.fn_05dec,
-  r04.fn_05dfe,
+  r03.fn_05dea,
+  r03.fn_05dec,
+  r03.fn_05dfe,
   r04.fn_05e00,
   r04.fn_05e02,
   r04.fn_05e08,
@@ -1875,10 +1884,10 @@ const FNS: Routine[] = [
   r04.fn_07cf0,
   r04.fn_07d50,
   r04.fn_07d80,
-  r05.fn_07dce,
-  r05.fn_07e7a,
-  r05.fn_07ea4,
-  r05.fn_07f5a,
+  r04.fn_07dce,
+  r04.fn_07e7a,
+  r04.fn_07ea4,
+  r04.fn_07f5a,
   r05.fn_08008,
   r05.fn_08200,
   r05.fn_08326,
@@ -1892,6 +1901,7 @@ const FNS: Routine[] = [
   r05.fn_086ae,
   r05.fn_0875e,
   r05.fn_08878,
+  r05.fn_088b0,
   r05.fn_08a70,
   r05.fn_08a9c,
   r05.fn_08b0c,
@@ -1939,10 +1949,10 @@ const FNS: Routine[] = [
   r05.fn_0b7fa,
   r05.fn_0b958,
   r05.fn_0b9c8,
-  r06.fn_0bb38,
-  r06.fn_0bb7c,
-  r06.fn_0c150,
-  r06.fn_0c1ee,
+  r05.fn_0bb38,
+  r05.fn_0bb7c,
+  r05.fn_0c150,
+  r05.fn_0c1ee,
   r06.fn_0c206,
   r06.fn_0c240,
   r06.fn_0c2bc,
@@ -2003,11 +2013,11 @@ const FNS: Routine[] = [
   r06.fn_0e000,
   r06.fn_0e020,
   r06.fn_0e0ee,
-  r07.fn_0e332,
-  r07.fn_0e3b0,
-  r07.fn_0e516,
-  r07.fn_0e546,
-  r07.fn_0e554,
+  r06.fn_0e332,
+  r06.fn_0e3b0,
+  r06.fn_0e516,
+  r06.fn_0e546,
+  r06.fn_0e554,
   r07.fn_0e7a8,
   r07.fn_0e824,
   r07.fn_0e98c,
@@ -2016,9 +2026,11 @@ const FNS: Routine[] = [
   r07.fn_0ea7a,
   r07.fn_0eaba,
   r07.fn_0eac8,
+  r07.fn_0eaee,
   r07.fn_0ebba,
   r07.fn_0ec3a,
   r07.fn_0ecb0,
+  r07.fn_0ecfa,
   r07.fn_0edea,
   r07.fn_0ee22,
   r07.fn_0ee3a,
@@ -2067,10 +2079,10 @@ const FNS: Routine[] = [
   r07.fn_11d5c,
   r07.fn_11d96,
   r07.fn_11e10,
-  r08.fn_11e58,
-  r08.fn_11eda,
-  r08.fn_11ef2,
-  r08.fn_11efe,
+  r07.fn_11e58,
+  r07.fn_11eda,
+  r07.fn_11ef2,
+  r07.fn_11efe,
   r08.fn_11f2a,
   r08.fn_11ff8,
   r08.fn_12026,
@@ -2131,11 +2143,11 @@ const FNS: Routine[] = [
   r08.fn_14dd2,
   r08.fn_14e5c,
   r08.fn_14eca,
-  r09.fn_14ef8,
-  r09.fn_14f7a,
-  r09.fn_14ff2,
-  r09.fn_15064,
-  r09.fn_15100,
+  r08.fn_14ef8,
+  r08.fn_14f7a,
+  r08.fn_14ff2,
+  r08.fn_15064,
+  r08.fn_15100,
   r09.fn_1520e,
   r09.fn_155a0,
   r09.fn_15672,
@@ -2195,12 +2207,12 @@ const FNS: Routine[] = [
   r09.fn_185cc,
   r09.fn_185dc,
   r09.fn_185ee,
-  r10.fn_18600,
-  r10.fn_18614,
-  r10.fn_18626,
-  r10.fn_1863e,
-  r10.fn_18652,
-  r10.fn_18658,
+  r09.fn_18600,
+  r09.fn_18614,
+  r09.fn_18626,
+  r09.fn_1863e,
+  r09.fn_18652,
+  r09.fn_18658,
   r10.fn_1865e,
   r10.fn_1866c,
   r10.fn_1867c,
@@ -2259,13 +2271,13 @@ const FNS: Routine[] = [
   r10.fn_198c0,
   r10.fn_1997a,
   r10.fn_19a24,
-  r11.fn_19bb8,
-  r11.fn_19bd8,
-  r11.fn_19c00,
-  r11.fn_19c22,
-  r11.fn_19c2e,
-  r11.fn_19c3c,
-  r11.fn_19c70,
+  r10.fn_19bb8,
+  r10.fn_19bd8,
+  r10.fn_19c00,
+  r10.fn_19c22,
+  r10.fn_19c2e,
+  r10.fn_19c3c,
+  r10.fn_19c70,
   r11.fn_19ccc,
   r11.fn_19cd0,
   r11.fn_19f3e,
@@ -2332,8 +2344,12 @@ const FNS: Routine[] = [
 export function call(addr: number, m: Machine): void {
   // a halted chip does not start another routine
   if (m.stopped) return;
+  let at = addr >>> 0;
+  // A routine that runs off its own end has jumped, not called.
+  // Continuing here keeps that flat, the way it is on the chip.
+  for (;;) {
   try {
-  const a = addr >>> 0;
+  const a = at;
   let lo = 0;
   let hi = STARTS.length - 1;
   let found = -1;
@@ -2349,13 +2365,17 @@ export function call(addr: number, m: Machine): void {
     if (m.stubMissing && a >= 0x20000) { m.missingCalls.push(a); return; }
     throw new Error('no routine covers 0x' + a.toString(16));
   }
+  m.jump = 0;
   if (m.onCall) {
     const before = m.a7 >>> 0;
     FNS[found](m, a);
     m.onCall(a, before, m.a7 >>> 0);
-    return;
+  } else {
+    FNS[found](m, a);
   }
-  FNS[found](m, a);
+  if (!m.jump) return;
+  at = m.jump; m.jump = 0;
+  continue;
   } catch (e) {
     // An odd word access is an address error: the chip stacks a
     // seven-word frame and vectors through 0x0C. The transfer of
@@ -2364,7 +2384,9 @@ export function call(addr: number, m: Machine): void {
     if (e instanceof PendingInterrupt) throw e;
     if (!(e instanceof AddressError)) throw e;
     call(m.addressErrorFrame(), m);
+    return;
+  }
   }
 }
 
-export const ROUTINE_COUNT = 767;
+export const ROUTINE_COUNT = 771;

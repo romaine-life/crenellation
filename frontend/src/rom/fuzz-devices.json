@@ -20,12 +20,12 @@
   "accesses": 45
  },
  {
-  "device": "0x220000",
-  "accesses": 32
+  "device": "0x400000",
+  "accesses": 38
  },
  {
-  "device": "0x400000",
-  "accesses": 30
+  "device": "0x220000",
+  "accesses": 32
  },
  {
   "device": "0x3d0000",

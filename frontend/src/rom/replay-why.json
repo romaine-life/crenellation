@@ -33,7 +33,7 @@
  },
  {
   "entry": "0xedea",
-  "why": "d0,a2 first d0 rom=2 port=1"
+  "why": "d0 first d0 rom=2 port=0"
  },
  {
   "entry": "0x19c3c",

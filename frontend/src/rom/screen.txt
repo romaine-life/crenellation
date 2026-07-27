@@ -30,51 +30,69 @@ frame 3360: 69888 playfield bytes set, 675 palette entries set
 frame 3480: 75264 playfield bytes set, 675 palette entries set
 frame 3600: 80640 playfield bytes set, 675 palette entries set
 frame 3720: 80640 playfield bytes set, 675 palette entries set
-stopped early: no routine covers 0xdad6
-frames run: 3805   instructions: 9735039
+frame 3840: 80640 playfield bytes set, 700 palette entries set
+frame 3960: 80640 playfield bytes set, 753 palette entries set
+frame 4080: 80640 playfield bytes set, 753 palette entries set
+frame 4200: 80640 playfield bytes set, 753 palette entries set
+frame 4320: 80640 playfield bytes set, 753 palette entries set
+frame 4440: 80640 playfield bytes set, 753 palette entries set
+frame 4560: 80640 playfield bytes set, 753 palette entries set
+frame 4680: 80640 playfield bytes set, 753 palette entries set
+frame 4800: 80640 playfield bytes set, 753 palette entries set
+frame 4920: 80640 playfield bytes set, 753 palette entries set
+frame 5040: 80640 playfield bytes set, 753 palette entries set
+frame 5160: 80640 playfield bytes set, 753 palette entries set
+frame 5280: 80640 playfield bytes set, 753 palette entries set
+frame 5400: 80640 playfield bytes set, 753 palette entries set
+frame 5520: 80640 playfield bytes set, 753 palette entries set
+frame 5640: 80640 playfield bytes set, 753 palette entries set
+frame 5760: 80640 playfield bytes set, 753 palette entries set
+frame 5880: 80640 playfield bytes set, 753 palette entries set
+frame 6000: 80640 playfield bytes set, 753 palette entries set
+frames run: 6000   instructions: 14375162
 missing routines: 0
-interrupt handler 0x133b2 entered: 2621 times
-rte at handler exit reached: 2621
-interrupt mask the machine runs at: level 7: 4078784, level 3: 3605972, level 0: 1226267, level 4: 818506, level 5: 5510
-last addresses before it stopped: 0x18c00 0x18c04 0x18c06 0x18c0c 0x18c0e 0x18c10 0x18c32 0x18c34 0x18c36 0x18c3a 0x18ae2 0x18ae4 0x18ae6 0x18aec 0x18aee 0x18af8 0x18afc 0x18b58 0x18b5a 0xde0c 0xde10 0xde16 0xde18 0xd0d2
-a2 entering the handler: 0x355c8   leaving it: 0x355c8
-a2 changed at: 0x355bc@35b8 0x355be@35b8 0x355c0@35b8 0x355c2@35b8 0x355c4@35b8 0x355c6@35b8 0x355c8@35b8 0x355ca@35b8 0x3e194c@35ea 0x3e324e@18a6c 0x3e324f@18a72 0x3e3250@18a7a 0x3e3254@18adc 0x3e194c@18afc
+interrupt handler 0x133b2 entered: 4815 times
+rte at handler exit reached: 4815
+interrupt mask the machine runs at: level 3: 7561194, level 7: 4141288, level 4: 1440904, level 0: 1226267, level 5: 5510
+last addresses before it stopped: 0x470 0x472 0x474 0x476 0x444 0x44a 0x44e 0x452 0x454 0x456 0x45a 0x45c 0x460 0x462 0x466 0x468 0x46c 0x46e 0x470 0x472 0x474 0x476 0x444 0x44a
+a2 entering the handler: 0x21fffe   leaving it: 0x21fffe
+a2 changed at: 0x3e1cf6@ee58 0x3e1d02@ee86 0x3e1d0e@ee86 0x3e1d1a@ee86 0x3e1d26@ee86 0x3e19e6@d7a8 0x3e1960@786 0x3e19e6@8b0 0x3e1960@519c 0x3e19e6@522c 0x3e1d26@d852 0x3e1d32@ee86 0x3e1d3e@ee86 0x21fffe@ee8e
 stack drift across the handler: none
 a7 never rose above the frame inside the handler
-   0x580 reached 726 times
-   0x596 reached 363 times
-   0x618 reached 366 times
-   0x125da reached 363 times
-   0x1512 reached 363 times
-   0x53f8 reached 363 times
-   0x512 reached 46 times
-   0x51a reached 346481 times
-   0x522 reached 46 times
+   0x580 reached 1350 times
+   0x596 reached 675 times
+   0x618 reached 678 times
+   0x125da reached 675 times
+   0x1512 reached 675 times
+   0x53f8 reached 675 times
+   0x512 reached 60 times
+   0x51a reached 448259 times
+   0x522 reached 60 times
 sound queue: 0x3E3528=0 0x3E352A=0
-routines that write them: 0x1425c 363, 0x143b0 0, 0x144ae 0, 0x144d0 28
-sound driver 0x196ac reached 2621; channel work 8(a2) still pending: 0
+routines that write them: 0x1425c 675, 0x143b0 0, 0x144ae 0, 0x144d0 28
+sound driver 0x196ac reached 4815; channel work 8(a2) still pending: 0
 the spin at 0x14562 waits on a2=0xffffffff
-channel pointer over time: f1:0x0 f2:0x0 f3:0x0 f4:0x0 f5:0x0 f6:0x0 f7:0x0 f8:0x0 f120:0x0 f240:0x0 f360:0x0 f480:0x0 f600:0x0 f720:0x0 f840:0x0 f960:0x0 f1080:0x0 f1200:0x0 f1320:0x0 f1440:0x0 f1560:0x0 f1680:0x0 f1800:0x0 f1920:0x0 f2040:0x0 f2160:0x0 f2280:0x0 f2400:0x0 f2520:0x0 f2640:0x0 f2760:0x0 f2880:0x0 f3000:0x0 f3120:0x0 f3240:0x0 f3360:0x0 f3480:0x0 f3600:0x0 f3720:0x0
+channel pointer over time: f1:0x0 f2:0x0 f3:0x0 f4:0x0 f5:0x0 f6:0x0 f7:0x0 f8:0x0 f120:0x0 f240:0x0 f360:0x0 f480:0x0 f600:0x0 f720:0x0 f840:0x0 f960:0x0 f1080:0x0 f1200:0x0 f1320:0x0 f1440:0x0 f1560:0x0 f1680:0x0 f1800:0x0 f1920:0x0 f2040:0x0 f2160:0x0 f2280:0x0 f2400:0x0 f2520:0x0 f2640:0x0 f2760:0x0 f2880:0x0 f3000:0x0 f3120:0x0 f3240:0x0 f3360:0x0 f3480:0x0 f3600:0x0 f3720:0x0 f3840:0x0 f3960:0x0 f4080:0x0 f4200:0x0 f4320:0x0 f4440:0x0 f4560:0x0 f4680:0x0 f4800:0x0 f4920:0x0 f5040:0x0 f5160:0x0 f5280:0x0 f5400:0x0 f5520:0x0 f5640:0x0 f5760:0x0 f5880:0x0 f6000:0x0
 sequence around 0x0: 00 00 00 00 00 3e 32 fe 00 01 35 7c 00 01 85 56
 channel struct at 0x3E3536: 0 4 0 3e32a5 19ffff 0 0 1008713
 writes to 0x3E34EA: f259 0x3e3528=0 by 0x13096 | f259 0x3e3529=0 by 0x13096 | f259 0x3e352a=0 by 0x13096 | f259 0x3e352b=0 by 0x13096
 who writes it: 0x13096x4
-work RAM differs in 680 of 65536 bytes across 27 pages
-   worst pages: 0x3e3200:173 0x3e3100:115 0x3e1d00:62 0x3e1c00:57 0x3e1a00:38 0x3e0000:33 0x3e0200:33 0x3e0900:23
-   first differing bytes: 0x3e0013: chip 66 port 26 | 0x3e0014: chip 64 port 0 | 0x3e0016: chip 240 port 252 | 0x3e0017: chip 33 port 17 | 0x3e0021: chip 5 port 4 | 0x3e0022: chip 0 port 7 | 0x3e0023: chip 0 port 106 | 0x3e0026: chip 0 port 113 | 0x3e0027: chip 0 port 116 | 0x3e0029: chip 6 port 4
-sound area differs in 7 of 1024 bytes
-   0x3e34f4: chip 38 port 118 | 0x3e3501: chip 212 port 222 | 0x3e3503: chip 145 port 155 | 0x3e3534: chip 2 port 1 | 0x3e3535: chip 150 port 107 | 0x3e367b: chip 4 port 3 | 0x3e36d4: chip 44 port 214
+work RAM differs in 254 of 65536 bytes across 15 pages
+   worst pages: 0x3e3200:130 0x3e3100:88 0x3e1a00:5 0x3e0000:4 0x3e0300:4 0x3e1d00:4 0x3e0800:3 0x3e0d00:3
+   first differing bytes: 0x3e0013: chip 66 port 72 | 0x3e0014: chip 64 port 80 | 0x3e0016: chip 240 port 224 | 0x3e0017: chip 33 port 18 | 0x3e02f9: chip 26 port 28 | 0x3e02ff: chip 28 port 52 | 0x3e0301: chip 140 port 164 | 0x3e0304: chip 250 port 254 | 0x3e0306: chip 254 port 250 | 0x3e0307: chip 33 port 18
+sound area differs in 6 of 1024 bytes
+   0x3e34f4: chip 38 port 118 | 0x3e3501: chip 212 port 222 | 0x3e3503: chip 145 port 155 | 0x3e3535: chip 150 port 163 | 0x3e367b: chip 4 port 1 | 0x3e36d4: chip 44 port 68
 first entered the wait at frame -1; first set the channel at frame -1
 port 0x3E0DC8 = 0x4000 (the handler bitmask)
-port 0x3E0804 = 0x2300 (mask 3); 0x3E0802 = 0x1; 0x3E0800 = 0x120
+port 0x3E0804 = 0x2300 (mask 3); 0x3E0802 = 0x0; 0x3E0800 = 0x249
 busiest addresses:
    0x1311c  984063
    0x1311e  984063
    0x13120  984063
-   0x520  346490
-   0x51a  346481
-   0x14514  250197
-   0x14510  250194
-   0x44a  160920
-   0x444  160897
-   0x452  160696
+   0x520  448294
+   0x51a  448259
+   0x44a  350796
+   0x444  350768
+   0x452  350365
+   0x46c  350322
+   0x456  350292

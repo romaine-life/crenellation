@@ -1,7 +1,7 @@
 [
  {
   "cause": "registers and memory",
-  "routines": 314,
+  "routines": 316,
   "sample": "",
   "entries": [
    "0x118",
@@ -18,7 +18,7 @@
  },
  {
   "cause": "off-map hardware",
-  "routines": 90,
+  "routines": 91,
   "sample": "0x980001 0x980001 0x16494c 0x16494d",
   "entries": [
    "0x142",
@@ -35,7 +35,7 @@
  },
  {
   "cause": "registers",
-  "routines": 82,
+  "routines": 83,
   "sample": "d2 rom=0 port=e480",
   "entries": [
    "0x160",
@@ -61,24 +61,6 @@
    "0x14dc",
    "0xf630",
    "0xf936"
-  ]
- },
- {
-  "cause": "threw",
-  "routines": 3,
-  "sample": "no routine covers 0x88b0",
-  "entries": [
-   "0x8878",
-   "0x124e2",
-   "0x12574"
-  ]
- },
- {
-  "cause": "stubbed call",
-  "routines": 1,
-  "sample": "0x140010",
-  "entries": [
-   "0xedea"
   ]
  }
 ]

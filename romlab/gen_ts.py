@@ -83,7 +83,13 @@ def emit_function(entry, end, label):
     # Falling out of a routine's range is normal: the boundaries come from call
     # targets, so a "routine" is often a label inside a longer stretch of code
     # that simply runs on. Continue in whichever routine covers the address.
-    lines.append("      default: call(pc, m); return;")
+    # Not a call. An address this routine has no case for is one the game
+    # jumped to, and a jump pushes nothing - the chip's stack does not
+    # grow. Calling would grow JavaScript's, and JavaScript does not
+    # eliminate tail calls, so a loop that jumps between two routines
+    # runs the stack out while the 68000's stays flat. Hand the address
+    # back to the dispatcher, which loops.
+    lines.append("      default: m.jump = pc; return;")
     lines.append("    }")
     # An interrupt raised by the tick above is taken here, not at the
     # dispatcher: the routine has to carry on afterwards. The chip resumes the
@@ -166,8 +172,12 @@ def main():
     d.append("export function call(addr: number, m: Machine): void {")
     d.append("  // a halted chip does not start another routine")
     d.append("  if (m.stopped) return;")
+    d.append("  let at = addr >>> 0;")
+    d.append("  // A routine that runs off its own end has jumped, not called.")
+    d.append("  // Continuing here keeps that flat, the way it is on the chip.")
+    d.append("  for (;;) {")
     d.append("  try {")
-    d.append("  const a = addr >>> 0;")
+    d.append("  const a = at;")
     d.append("  let lo = 0;")
     d.append("  let hi = STARTS.length - 1;")
     d.append("  let found = -1;")
@@ -187,13 +197,17 @@ def main():
     # the way in and on the way out. A routine that does not balance it shows
     # up here by name instead of as a wrong value several thousand
     # instructions later.
+    d.append("  m.jump = 0;")
     d.append("  if (m.onCall) {")
     d.append("    const before = m.a7 >>> 0;")
     d.append("    FNS[found](m, a);")
     d.append("    m.onCall(a, before, m.a7 >>> 0);")
-    d.append("    return;")
+    d.append("  } else {")
+    d.append("    FNS[found](m, a);")
     d.append("  }")
-    d.append("  FNS[found](m, a);")
+    d.append("  if (!m.jump) return;")
+    d.append("  at = m.jump; m.jump = 0;")
+    d.append("  continue;")
     d.append("  } catch (e) {")
     d.append("    // An odd word access is an address error: the chip stacks a")
     d.append("    // seven-word frame and vectors through 0x0C. The transfer of")
@@ -205,6 +219,8 @@ def main():
     d.append("    if (e instanceof PendingInterrupt) throw e;")
     d.append("    if (!(e instanceof AddressError)) throw e;")
     d.append("    call(m.addressErrorFrame(), m);")
+    d.append("    return;")
+    d.append("  }")
     d.append("  }")
     d.append("}")
     d.append("")

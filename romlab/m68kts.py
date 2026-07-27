@@ -432,7 +432,11 @@ def emit(ins, nxt):
         L = Operand(ops[1], "l")
         return "{ const _a = m.sx(%s, %d); %s; } %s" % (
             O[0].read, bits, L.write % ("(%s - _a)" % L.read), s)
-    if b in ("cmp", "cmpi", "cmpa") and len(O) == 2 and O[0].read and O[1].read:
+    # cmpm compares through two post-incrementing pointers. Both operands
+    # step, and the flags are the destination minus the source, exactly as
+    # cmp - the only difference is where the two values come from, which
+    # the operands already handle.
+    if b in ("cmp", "cmpi", "cmpa", "cmpm") and len(O) == 2 and O[0].read and O[1].read:
         if b == "cmpa":
             # a word source is sign-extended to 32 bits before the comparison
             return ("{ const _a = m.sx(%s, %d); const _b = %s; "

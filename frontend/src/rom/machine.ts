@@ -408,6 +408,15 @@ export class Machine {
       | (this.v ? 2 : 0) | (this.c ? 1 : 0)) >>> 0;
   }
 
+  /**
+   * Where a routine ran off its own end.
+   *
+   * That is a jump, not a call: the chip pushes nothing and its stack does not
+   * grow. The routine hands the address back here and the dispatcher continues
+   * there, so a loop that jumps between routines costs no JavaScript stack.
+   */
+  jump = 0;
+
   /** Whether the board has an interrupt waiting. The harness sets this. */
   irqPending = 0;
   /** Whether taking the interrupt drops the line. The board holds it until
