@@ -94,7 +94,9 @@ export class Machine {
     // it firing again immediately, and if the handler returns without
     // acknowledging, it fires again, which is what the chip does.
     if (this.irqPending && ((this.sr >> 8) & 7) < this.irqPending) {
-      throw new PendingInterrupt(this.irqPending);
+      const lvl = this.irqPending;
+      if (this.clearOnTake) this.irqPending = 0;
+      throw new PendingInterrupt(lvl);
     }
     if (this.steps > this.budget) {
       throw new Error('instruction budget exhausted after ' + this.steps + ' steps');
@@ -408,6 +410,10 @@ export class Machine {
 
   /** Whether the board has an interrupt waiting. The harness sets this. */
   irqPending = 0;
+  /** Whether taking the interrupt drops the line. The board holds it until
+   *  acknowledged, but a handler that unmasks before acknowledging is then
+   *  re-entered at once, which is worth being able to test against. */
+  clearOnTake = true;
 
   /** Stack an interrupt frame and give back the handler address. */
   interruptFrame(level: number): number {
@@ -426,7 +432,9 @@ export class Machine {
     this.v = (v & 2) !== 0;
     this.c = (v & 1) !== 0;
     if (this.irqPending && ((v >> 8) & 7) < this.irqPending) {
-      throw new PendingInterrupt(this.irqPending, true);
+      const lvl = this.irqPending;
+      if (this.clearOnTake) this.irqPending = 0;
+      throw new PendingInterrupt(lvl, true);
     }
   }
 
