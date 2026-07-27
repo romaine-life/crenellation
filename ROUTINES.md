@@ -16,11 +16,11 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 753 |
-| **Verified against hardware** | **649** |
+| **Verified against hardware** | **651** |
 | Failing | 5 |
 | Passing under some inputs, failing under others | 26 |
-| Judged only by a stopping-point mismatch | 26 |
-| Never judged | 36 |
+| Judged only by a stopping-point mismatch | 23 |
+| Never judged | 37 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -121,6 +121,24 @@ everything is re-captured and the loop runs again.
 It converges. The last pass added six - 0x3EA, 0xC4CA, 0x120A2, 0x12306,
 0x13E0A, 0x1829C - and took failing from 19 to 16, input-dependent from 28 to
 26, and unexplained mismatches from 41 to 36.
+
+### Bracketing a divergence
+
+`localise.test.ts` uses the stopping points as a bisection. A routine that
+matches at three instructions and not at five has something wrong in those two,
+which is a far smaller thing to read than a whole routine. It reports the last
+point that matched and the first that did not.
+
+That is what found the pairing problem above: 0x141D4 clean at two instructions
+and wrong at three, with d3 changing across a boundary where nothing writes d3.
+
+It also showed that two of the remaining mismatches are not mismatches. 0xB738
+and 0x69E2 stop inside the exception stubs at 0x18548 - each is `jsr $18652`
+followed by its message text, "ADDRESS ERR" and the rest - so the chip had
+faulted and the snapshot describes the handler. Those are discarded now, along
+with the reset-code ones.
+
+Nine divergences remain bracketed to between one and forty instructions each.
 
 ### What is left
 

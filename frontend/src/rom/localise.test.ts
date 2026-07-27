@@ -92,7 +92,7 @@ describe('where each divergence starts', () => {
 
       const all = byEntry.get(entry);
       if (!all || !TARGETS.has(entry)) continue;
-      const cs = all.filter((x) => !(x.pc >= 0x1357c && x.pc < 0x1365c))
+      const cs = all.filter((x) => !((x.pc >= 0x1357c && x.pc < 0x1365c) || (x.pc >= 0x18548 && x.pc < 0x18680)))
         .sort((x, y) => x.steps - y.steps);
       if (cs.length < 2) continue;
 
@@ -116,10 +116,13 @@ describe('where each divergence starts', () => {
       // so the comparison is made against the address just completed.
       let lastPc = -1;
       m.atPc = (cur: number) => {
-        const pc = lastPc;
+        // both readings: the capture's CURPC sometimes names the instruction
+        // about to run and sometimes the one just finished
+        const prev = lastPc;
         lastPc = cur;
+        for (const pc of prev >= 0 ? [cur, prev] : [cur]) {
         const l = wanted.get(pc);
-        if (!l) return;
+        if (!l) continue;
         const got = [m.d0, m.d1, m.d2, m.d3, m.d4, m.d5, m.d6, m.d7,
                      m.a0, m.a1, m.a2, m.a3, m.a4, m.a5, m.a6].map((v) => v >>> 0);
         let hh = -1;
@@ -130,6 +133,7 @@ describe('where each divergence starts', () => {
             for (let i = 0; i < 0x2000; i += 1) hh = (hh * 31 + m.byte(SCRATCH + i)) >>> 0;
           }
           if (hh === (x.hash >>> 0)) okAt.add(x.steps);
+        }
         }
       };
       try { call(entry, m); } catch { /* budget or missing */ }

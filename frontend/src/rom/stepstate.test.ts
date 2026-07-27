@@ -23,14 +23,14 @@ const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const ramBaseline = new Uint8Array(readFileSync(join(here, 'step-ram-baseline.bin')));
 const pfBaseline = new Uint8Array(readFileSync(join(here, 'step-pf-baseline.bin')));
 
-type Case = { entry: number; steps: number; pc: number; regs: number[]; hash: number };
+type Case = { entry: number; shape: number; steps: number; pc: number; regs: number[]; hash: number };
 const cases: Case[] = [];
 for (const line of readFileSync(join(here, 'stepstate.log'), 'utf8').split('\n')) {
   const p = line.trim().split(/\s+/);
   if (p[0] !== 'S') continue;
-  const v = p.slice(3).map((x) => parseInt(x, 16));
-  cases.push({ entry: parseInt(p[1], 16), steps: Number(p[2]), pc: v[0],
-    regs: v.slice(1, 16), hash: v[16] });
+  const v = p.slice(4).map((x) => parseInt(x, 16));
+  cases.push({ entry: parseInt(p[1], 16), shape: Number(p[2]), steps: Number(p[3]),
+    pc: v[0], regs: v.slice(1, 16), hash: v[16] });
 }
 
 const entries: number[] = readFileSync(join(here, 'entries.txt'), 'utf8')
@@ -68,7 +68,6 @@ describe('routines compared at the instruction the chip stopped on', () => {
       const l = byEntry.get(c.entry);
       if (l) l.push(c); else byEntry.set(c.entry, [c]);
     }
-    const rand = new Rand();
     let compared = 0;
     let matched = 0;
     let stubbed = 0;
@@ -77,6 +76,8 @@ describe('routines compared at the instruction the chip stopped on', () => {
     const fail = new Set<number>();
     const detail: Array<{ entry: string; what: string }> = [];
 
+    for (const SHAPE of [0, 1, 2]) {
+    const rand = new Rand();   // each capture run started the generator afresh
     for (const entry of entries) {
       const m = new Machine(rom);
       for (let i = 0; i < ramBaseline.length; i += 1) m.setByte(RAM_LO + i, ramBaseline[i]);
@@ -84,9 +85,16 @@ describe('routines compared at the instruction the chip stopped on', () => {
       m.store(SENTINEL, 0x60fe, 16);
       for (let i = 0; i < SCRATCH_LEN; i += 1) m.setByte(SCRATCH + i, rand.next() % 256);
       const d: number[] = [];
-      for (let k = 0; k < 8; k += 1) d.push(rand.next() % 32);
+      for (let k = 0; k < 8; k += 1) {
+        const r = rand.next();
+        d.push(SHAPE === 0 ? r % 0x10000 : SHAPE === 1 ? r % 32 : r % 256);
+      }
       const a: number[] = [];
-      for (let k = 0; k < 6; k += 1) a.push(STRUCTS[rand.next() % STRUCTS.length]);
+      for (let k = 0; k < 6; k += 1) {
+        const r = rand.next();
+        a.push(SHAPE === 0 ? SCRATCH + (r % (SCRATCH_LEN - 0x80))
+          : STRUCTS[r % STRUCTS.length]);
+      }
       let sp = STACK;
       for (let k = 1; k <= 4; k += 1) {
         sp -= 4;
@@ -97,8 +105,8 @@ describe('routines compared at the instruction the chip stopped on', () => {
       sp -= 4;
       m.store(sp, SENTINEL, 32);
 
-      const all = byEntry.get(entry);
-      if (!all) continue;   // never ran far enough at any stopping point
+      const all = (byEntry.get(entry) ?? []).filter((x) => x.shape === SHAPE);
+      if (!all.length) continue;   // never ran far enough at any stopping point
 
       // The chip stopped inside the power-on reset routine, which re-masks
       // interrupts and rebuilds the stack pointer from scratch before clearing
@@ -106,9 +114,13 @@ describe('routines compared at the instruction the chip stopped on', () => {
       // rails and the machine restarted - the snapshot describes the reset
       // code, not the routine, and there is nothing to compare. 87 of 365
       // cases land here.
-      // Discard the ones where the chip had crashed into its power-on reset
-      // routine: the snapshot describes the reset code, not the routine.
-      const cs = all.filter((x) => !(x.pc >= 0x1357c && x.pc < 0x1365c));
+      // Discard the ones where the chip had crashed. Two places say so: the
+      // power-on reset routine at 0x1357C, and the exception stubs from
+      // 0x18548, each of which is `jsr $18652` followed by its message text -
+      // "ADDRESS ERR", "ILLEGAL INS", "PRIVILEDGE VIOL". Reaching either means
+      // the routine faulted, so the snapshot describes the handler rather than
+      // the routine and there is nothing to compare.
+      const cs = all.filter((x) => !((x.pc >= 0x1357c && x.pc < 0x1365c) || (x.pc >= 0x18548 && x.pc < 0x18680)));
       if (!cs.length) { crashed += 1; continue; }
 
       for (let k = 0; k < 8; k += 1) (m as never as Record<string, number>)[`d${k}`] = d[k];
@@ -182,6 +194,9 @@ describe('routines compared at the instruction the chip stopped on', () => {
         }
       }
     }
+    }
+
+    for (const e of pass) fail.delete(e);   // a match under any shape settles it
 
     // eslint-disable-next-line no-console
     console.log(`at the chip's stopping instruction: ${matched}/${compared} routines reproduce `

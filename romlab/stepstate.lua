@@ -15,7 +15,8 @@
 -- only a change of CURPC counts.
 local OUT = "D:/repos/crenellation/romlab/out/step/"
 local STEPS_ENV = os.getenv("STEPN") or "200"
-local log = io.open(OUT .. "s-" .. STEPS_ENV .. ".log", "w")
+local SHAPE = tonumber(os.getenv("STEPSHAPE") or "1")
+local log = io.open(OUT .. "s" .. SHAPE .. "-" .. STEPS_ENV .. ".log", "w")
 local NL = string.char(10)
 local cpu = manager.machine.devices[":maincpu"]
 local space = cpu.spaces["program"]
@@ -102,8 +103,25 @@ local function begin_case()
   restore()
   space:write_u16(SENTINEL, PARK)
   for i = 0, SCRATCH_LEN - 1 do space:write_u8(SCRATCH + i, rnd() % 256) end
-  for k = 0, 7 do cpu.state["D" .. k].value = rnd() % 32 end
-  for k = 0, 5 do cpu.state["A" .. k].value = STRUCTS[(rnd() % #STRUCTS) + 1] end
+  -- Same argument shapes as the return-based harness. A routine that wanders
+  -- off under one set of values may run somewhere comparable under another,
+  -- and each shape brings its own seven stopping points.
+  for k = 0, 7 do
+    local r = rnd()
+    local v
+    if SHAPE == 0 then v = r % 0x10000
+    elseif SHAPE == 1 then v = r % 32
+    else v = r % 256 end
+    cpu.state["D" .. k].value = v
+  end
+  for k = 0, 5 do
+    local r = rnd()
+    if SHAPE == 0 then
+      cpu.state["A" .. k].value = SCRATCH + (r % (SCRATCH_LEN - 0x80))
+    else
+      cpu.state["A" .. k].value = STRUCTS[(r % #STRUCTS) + 1]
+    end
+  end
   local sp = STACK
   for k = 1, 4 do
     sp = sp - 4
@@ -124,7 +142,7 @@ end
 
 local function record()
   if snap then
-    log:write(string.format("S %05X %d %s", entries[idx], STEPS, snap) .. NL)
+    log:write(string.format("S %05X %d %d %s", entries[idx], SHAPE, STEPS, snap) .. NL)
   else
     log:write(string.format("X %05X %d", entries[idx], steps) .. NL)
   end
