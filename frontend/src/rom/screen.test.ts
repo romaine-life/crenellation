@@ -82,10 +82,10 @@ describe('what the booted machine draws', () => {
     let prevA2 = -1;
     let spBefore = -1; const spDrift: string[] = [];
     let inHandler = false; let firstAbove = '';
-    let waitOn = -1;
+    let waitOn = -1; let waitFrame = -1; let setFrame = -1;
     const chanTrace: string[] = [];
     const writers = new Map<number, number>();
-    sys.m.watchLo = 0x3e3440; sys.m.watchHi = 0x3e34a0;
+    sys.m.watchLo = 0x3e3536; sys.m.watchHi = 0x3e3539;
     const order: string[] = [];
     sys.m.onWrite = (a, v, pc) => {
       writers.set(pc, (writers.get(pc) ?? 0) + 1);
@@ -100,7 +100,8 @@ describe('what the booted machine draws', () => {
         a2Writes.push('0x' + (sys.m.a2 >>> 0).toString(16) + '@' + pc.toString(16));
         if (a2Writes.length > 14) a2Writes.shift();
       }
-      if (pc === 0x14562 && waitOn < 0) waitOn = sys.m.a2 >>> 0;
+      if (pc === 0x14562 && waitOn < 0) { waitOn = sys.m.a2 >>> 0; waitFrame = sys.frames; }
+      if (pc === 0x14394 && setFrame < 0) setFrame = sys.frames;
       if (pc === 0x133b2) { a2In = sys.m.a2; spBefore = sys.m.a7; inHandler = true; }
       if (inHandler && !firstAbove && spBefore >= 0 && sys.m.a7 > spBefore) {
         firstAbove = `a7 first rose above the frame at 0x${pc.toString(16)}: `
@@ -118,8 +119,13 @@ describe('what the booted machine draws', () => {
       const k = (sys.m.sr >> 8) & 7;
       masks.set(k, (masks.get(k) ?? 0) + 1);
     };
+    // diagnostic only: the chip has the sound-enabled flag set and the port
+    // never reaches the routine that sets it. Forcing it says whether that is
+    // the linchpin or just another symptom.
+    let forced = false;
     try {
       sys.run((s) => {
+        if (!forced && s.frames === 30) { forced = true; s.m.setByte(0x3e344a, 1); }
         if (s.frames <= 8 || s.frames % 120 === 0) {
           chanTrace.push(`f${s.frames}:0x${(s.m.load(0x3e3536, 32) >>> 0).toString(16)}`);
         }
@@ -211,6 +217,7 @@ describe('what the booted machine draws', () => {
       notes.push(`sound area differs in ${n} of ${chipSound.length} bytes`);
       notes.push('   ' + diffs.join(' | '));
     }
+    notes.push(`first entered the wait at frame ${waitFrame}; first set the channel at frame ${setFrame}`);
     notes.push('busiest addresses:');
     for (const [a, n] of [...visits.entries()].sort((x, y) => y[1] - x[1]).slice(0, 10)) {
       notes.push(`   0x${a.toString(16)}  ${n}`);

@@ -107,6 +107,9 @@ describe('the boot path against the chip', () => {
       orderNote,
       `first routine the chip entered and the port never did: `
         + (firstFn < 0 ? 'none' : `0x${firstFn.toString(16)} (at the chip's ${fnIndex}th address)`),
+      'routines the chip entered and the port never did: ' + chip.map(owner)
+        .filter((f, i, all) => f >= 0 && !portFns.has(f) && all.indexOf(f) === i)
+        .slice(0, 24).map((f) => '0x' + f.toString(16)).join(' '),
       `addresses the port reached that the chip never did: `
         + (extra.length ? extra.map((a) => '0x' + a.toString(16)).join(' ') : 'none'),
     ];
