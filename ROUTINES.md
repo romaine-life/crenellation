@@ -20,8 +20,9 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | **Verified against hardware** | **651** |
 | Failing | 5 |
 | Passing under some inputs, failing under others | 26 |
-| Judged only by a stopping-point mismatch | 23 |
-| Never judged | 37 |
+| Judged only by a stopping-point mismatch | 21 |
+| Reproduces mid-run but not end to end | 11 |
+| Never judged | 39 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -152,6 +153,29 @@ faulted and the snapshot describes the handler. Those are discarded now, along
 with the reset-code ones.
 
 Nine divergences remain bracketed to between one and forty instructions each.
+
+### Why the unjudged are unjudged
+
+Nothing falls through the accounting now - all 753 routines land in exactly one
+category. The 39 that no harness can judge break down as:
+
+| | |
+|---|---|
+| every snapshot was taken after the chip faulted | 31 |
+| no snapshot at any stopping point | 5 |
+| read hardware the port does not model | 2 |
+| the port skipped a call the chip made | 1 |
+
+The 31 are the real boundary. Called out of context with generated arguments,
+the chip faults - into the reset routine or an exception stub - before reaching
+any point worth comparing. Verifying them needs arguments under which they do
+not fault, which means the game reaching the state that calls them; it never
+did across three capture passes.
+
+A separate category had been hiding: 11 routines fail end to end but reproduce
+exactly mid-run. The divergence is after the compared point and for these it is
+the hardware boundary - `0x5B4` and `0xEDEA` among them. They had been landing
+in no bucket at all and so were invisible.
 
 ### What is left
 

@@ -73,6 +73,8 @@ describe('routines compared at the instruction the chip stopped on', () => {
     let stubbed = 0;
     let crashed = 0;
     let offmap = 0;
+    const skipped = new Map<number, string>();
+    const skip = (e: number, why: string) => { if (!skipped.has(e)) skipped.set(e, why); };
     const pass = new Set<number>();
     const fail = new Set<number>();
     const detail: Array<{ entry: string; what: string }> = [];
@@ -107,7 +109,7 @@ describe('routines compared at the instruction the chip stopped on', () => {
       m.store(sp, SENTINEL, 32);
 
       const all = (byEntry.get(entry) ?? []).filter((x) => x.shape === SHAPE);
-      if (!all.length) continue;   // never ran far enough at any stopping point
+      if (!all.length) { skip(entry, 'no snapshot for this shape'); continue; }
 
       // The chip stopped inside the power-on reset routine, which re-masks
       // interrupts and rebuilds the stack pointer from scratch before clearing
@@ -122,7 +124,7 @@ describe('routines compared at the instruction the chip stopped on', () => {
       // the routine faulted, so the snapshot describes the handler rather than
       // the routine and there is nothing to compare.
       const cs = all.filter((x) => !((x.pc >= 0x1357c && x.pc < 0x1365c) || (x.pc >= 0x18548 && x.pc < 0x18680)));
-      if (!cs.length) { crashed += 1; continue; }
+      if (!cs.length) { crashed += 1; skip(entry, 'every snapshot was taken after the chip faulted'); continue; }
 
       for (let k = 0; k < 8; k += 1) (m as never as Record<string, number>)[`d${k}`] = d[k];
       for (let k = 0; k < 6; k += 1) (m as never as Record<string, number>)[`a${k}`] = a[k];
@@ -184,14 +186,14 @@ describe('routines compared at the instruction the chip stopped on', () => {
 
       m.trackOffMap = false;
       // A skipped call means the port did not run what the chip ran.
-      if (m.missingCalls.length) { stubbed += 1; compared -= 1; continue; }
+      if (m.missingCalls.length) { stubbed += 1; compared -= 1; skip(entry, 'the port skipped a call the chip made'); continue; }
 
       // The routine dereferenced something the port does not model - the
       // playfield is modelled, the input ports and sound chips are not, and a
       // caller-supplied pointer can land anywhere. The chip read a real value
       // there and the port read zero, so the two were never going to agree
       // and the case says nothing about the translation.
-      if (!hit && m.offMap) { offmap += 1; compared -= 1; continue; }
+      if (!hit && m.offMap) { offmap += 1; compared -= 1; skip(entry, 'read hardware the port does not model'); continue; }
 
       if (hit) { matched += 1; pass.add(entry); }
       else {
@@ -215,7 +217,8 @@ describe('routines compared at the instruction the chip stopped on', () => {
       + `${offmap} not comparable - read hardware the port does not model)`);
     // eslint-disable-next-line no-console
     writeFileSync(join(here, 'stepstate-result.json'),
-      JSON.stringify({ pass: [...pass], fail: [...fail], detail }));
+      JSON.stringify({ pass: [...pass], fail: [...fail],
+        skipped: [...skipped.entries()].map(([e, w]) => ({ entry: '0x' + e.toString(16), why: w })), detail }));
 
     expect(compared).toBeGreaterThan(200);
     expect(matched).toBe(compared);
