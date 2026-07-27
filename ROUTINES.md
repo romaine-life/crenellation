@@ -154,9 +154,11 @@ chip has a0 = 0x00011AE2 and the port has what the memory baseline says,
 0x003E1AE2. a0 comes from `movea.l $3e1960.l, a0`, so the two sides are reading
 different things rather than reading the same thing differently.
 
-Probing the capture shows 0x3E1960 *does* hold the baseline value when the case
-starts, so it changes during the case, in the sixteen instructions before the
-read. Nothing in those instructions writes near it. That is as far as this has
+Probing the capture shows 0x3E1960 holds the baseline value both when the case
+starts *and* when it ends - checked on every case, never once different. So the
+chip reads 0x11AE2 out of a location that holds 0x3E1AE2 before and after, which
+leaves the write happening inside the nested call to 0x11BD8 and being undone
+before the case finishes. Both probes sit outside that window and miss it. That is as far as this has
 been taken.
 
 `localise.test.ts` uses the stopping points as a bisection. A routine that
