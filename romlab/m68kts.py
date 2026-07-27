@@ -539,12 +539,18 @@ def emit(ins, nxt):
         # the destination untouched, which is the opposite of the right answer.
         over = "_q > 32767 || _q < -32768" if signed else "_q > 0xffff"
         trunc = "Math.trunc(_n / _d)" if signed else "Math.floor(_n / _d)"
-        return ("{ const _d = %s; const _n = %s; if (_d === 0) { throw new Error("
-                "'divide by zero at 0x%05x'); } const _q = %s; "
+        # Dividing by zero is an exception, not an error: the chip stacks the
+        # return address and the status register and vectors through 0x14. The
+        # sound code divides by a value off the stack, so any argument shape
+        # that can put a zero there took a path the port never followed.
+        return ("{ const _d = %s; const _n = %s; if (_d === 0) { "
+                "m.storePre('a7', 4, 0x%05x, 32); "
+                "m.storePre('a7', 2, m.getSR(), 16); "
+                "pc = m.load(0x14, 32); break; } const _q = %s; "
                 "const _r = _n %% _d; if (%s) { m.v = true; m.n = true; "
                 "m.z = false; m.c = false; } "
                 "else { m.v = false; %s; m.logicFlags(_q, 16); } } %s") % (
-            src, num_, ins.address, trunc, over,
+            src, num_, nxt, trunc, over,
             w % "(((_r & 0xffff) << 16) | (_q & 0xffff)) >>> 0", s)
     if b == "exg" and len(ops) == 2:
         r0, r1 = ops[0].strip(), ops[1].strip()

@@ -2150,7 +2150,7 @@ export function fn_0dc3a(m: Machine, at = 0x0dc3a): void {
       case 0x0dd04: { m.next = 0x0dd06; { const _a = m.rd(m.d1, 32);  const _b = m.rd(m.d6, 32); m.d6 = m.wr(m.d6, m.addFlags(_b, _a, 32), 32); } pc = 0x0dd06; } break;
       case 0x0dd06: { m.next = 0x0dd08; m.d2 = m.wr(m.d2, (0 >>> 0), 32); m.logicFlags(0, 32); pc = 0x0dd08; } break;
       case 0x0dd08: { m.next = 0x0dd0c; { const _s = m.load(m.a6 + -2, 16); m.d2 = m.wr(m.d2, _s, 16); m.logicFlags(_s, 16); } pc = 0x0dd0c; } break;
-      case 0x0dd0c: { m.next = 0x0dd10; { const _d = ((10) & 0xffff); const _n = (m.rd(m.d2, 32) >>> 0); if (_d === 0) { throw new Error('divide by zero at 0x0dd0c'); } const _q = Math.floor(_n / _d); const _r = _n % _d; if (_q > 0xffff) { m.v = true; m.n = true; m.z = false; m.c = false; } else { m.v = false; m.d2 = m.wr(m.d2, (((_r & 0xffff) << 16) | (_q & 0xffff)) >>> 0, 32); m.logicFlags(_q, 16); } } pc = 0x0dd10; } break;
+      case 0x0dd0c: { m.next = 0x0dd10; { const _d = ((10) & 0xffff); const _n = (m.rd(m.d2, 32) >>> 0); if (_d === 0) { m.storePre('a7', 4, 0x0dd10, 32); m.storePre('a7', 2, m.getSR(), 16); pc = m.load(0x14, 32); break; } const _q = Math.floor(_n / _d); const _r = _n % _d; if (_q > 0xffff) { m.v = true; m.n = true; m.z = false; m.c = false; } else { m.v = false; m.d2 = m.wr(m.d2, (((_r & 0xffff) << 16) | (_q & 0xffff)) >>> 0, 32); m.logicFlags(_q, 16); } } pc = 0x0dd10; } break;
       case 0x0dd10: { m.next = 0x0dd12; m.d3 = m.wr(m.d3, (0 >>> 0), 32); m.logicFlags(0, 32); pc = 0x0dd12; } break;
       case 0x0dd12: { m.next = 0x0dd14; m.logicFlags(m.rd(m.d2, 16), 16); pc = 0x0dd14; } break;
       case 0x0dd14: { m.next = 0x0dd16; m.d3 = m.wr(m.d3, (m.cond('ne') ? 0xff : 0), 8); pc = 0x0dd16; } break;
