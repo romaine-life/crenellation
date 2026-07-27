@@ -97,7 +97,10 @@ describe('the boot path against the chip', () => {
         + `${chipOrderFns[firstOrderDiff].toString(16)}, port goes to 0x`
         + `${portOrderFns[firstOrderDiff].toString(16)}`
         + ` (both had just been in 0x${(chipOrderFns[firstOrderDiff - 1] ?? 0).toString(16)})`;
-    const extra = order.filter((a) => !chip.includes(a)).slice(0, 10);
+    const chipSet = new Set(chip);
+    // the reset code runs before the chip's trace can start, so anything below
+    // 0x13660 is expected to be here and is not a divergence
+    const extra = order.filter((a) => !chipSet.has(a) && a > 0x13660).slice(0, 30);
     const notes = [
       `chip reached ${chip.length} distinct addresses; port reached ${order.length}`,
       `first address the chip reached and the port never did: `
@@ -107,6 +110,8 @@ describe('the boot path against the chip', () => {
       orderNote,
       `first routine the chip entered and the port never did: `
         + (firstFn < 0 ? 'none' : `0x${firstFn.toString(16)} (at the chip's ${fnIndex}th address)`),
+      'port inside 0x1425C-0x143B0: ' + order.filter((a) => a >= 0x1425c && a < 0x143b0)
+        .sort((x, y) => x - y).map((a) => a.toString(16)).join(' '),
       'routines the chip entered and the port never did: ' + chip.map(owner)
         .filter((f, i, all) => f >= 0 && !portFns.has(f) && all.indexOf(f) === i)
         .slice(0, 24).map((f) => '0x' + f.toString(16)).join(' '),

@@ -70,6 +70,13 @@ export class System {
       // in the same frame, and the frame handler branches on it - so both
       // paths are real and a constant value takes only one of them.
       if (((addr - IN0) & 3) === 0) {
+        // Bit 3 is not a button. Sampling between frames shows it high;
+        // reading it at the moment the game reads it shows it low, and two
+        // reads in the same frame can differ - so both branches the handler
+        // takes on it are real. Tying it to the interrupt mask, on the theory
+        // that it is the vertical blank, made things worse: the port reached
+        // 1,151 distinct addresses with this and 591 with that. Alternating is
+        // not a model of anything, but it is the one that gets furthest.
         this.statusToggle += 1;
         return this.statusToggle % 8 === 0 ? b | 0x08 : b & ~0x08;
       }
