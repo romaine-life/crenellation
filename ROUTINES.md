@@ -136,6 +136,21 @@ It converges. The last pass added six - 0x3EA, 0xC4CA, 0x120A2, 0x12306,
 0x13E0A, 0x1829C - and took failing from 19 to 16, input-dependent from 28 to
 26, and unexplained mismatches from 41 to 36.
 
+### How far the capture's program counter can be trusted
+
+The instruction-boundary harness matches a snapshot by the address the capture
+recorded, so if that address does not mean what it appears to, every match
+built on it is worth less than it looks. `romlab/pccheck.py` measures it: for a
+routine whose first few instructions are straight line - no branch, no call -
+the address after N instructions is fixed and can be computed from the
+disassembly.
+
+**5,398 of 5,475 such snapshots are exactly where the count says. 77 are not** -
+1.4%. The piece walker is one of the 77, which is why it looked like a
+contradiction rather than a rare case. The matching is sound for the great
+majority and the exceptions are a known, measured fraction rather than an
+unexamined assumption.
+
 ### How much the result leans on the two pc/register pairings
 
 Because the capture's program counter sometimes names the instruction about to
