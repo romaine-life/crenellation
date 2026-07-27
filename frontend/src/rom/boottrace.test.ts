@@ -15,6 +15,7 @@ import { System } from './system';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
+const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 
 const chip: number[] = [];
 for (const line of readFileSync(join(here, 'boottrace.log'), 'utf8').split('\n')) {
@@ -24,7 +25,7 @@ for (const line of readFileSync(join(here, 'boottrace.log'), 'utf8').split('\n')
 
 describe('the boot path against the chip', () => {
   it('finds where they part company', () => {
-    const sys = new System(rom);
+    const sys = new System(rom, board);
     const seen = new Set<number>();
     const order: number[] = [];
     sys.m.atPcExtra = (pc: number) => {

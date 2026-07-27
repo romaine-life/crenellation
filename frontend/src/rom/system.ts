@@ -68,8 +68,26 @@ export class System {
   /** Set to drive interrupts from an external schedule. */
   pacedIrq: ((steps: number) => boolean) | null = null;
 
-  constructor(rom: Uint8Array) {
+  /**
+   * Where the board's read-only data sits, and where each block starts in the
+   * capture. These are not devices: they are decoded regions the game reads
+   * real data out of, and the read probe found them only because it looked for
+   * reads - a write probe finds memory and misses every read-only decode.
+   * Without them the sound driver decodes zeros, hands back -1, and the game
+   * requeues the same sound for ever.
+   */
+  static readonly BOARD_DATA: ReadonlyArray<{ at: number; from: number; len: number }> = [
+    { at: 0x140000, from: 0x04000, len: 0x40000 },
+    { at: 0x500000, from: 0x44000, len: 0x20000 },
+  ];
+
+  constructor(rom: Uint8Array, board?: Uint8Array) {
     this.m = new Machine(rom);
+    if (board) {
+      for (const b of System.BOARD_DATA) {
+        for (let i = 0; i < b.len; i += 1) this.m.setByte(b.at + i, board[b.from + i]);
+      }
+    }
     // the devices below are all real memory or handled reads, so nothing here
     // is "off the map"
     this.m.ioModelled = true;

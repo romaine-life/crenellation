@@ -1,7 +1,7 @@
 initial sp 0x3e32fe  initial pc 0x1357c
 outcome: instruction budget exhausted after 20000002 steps
 instructions run: 20000002
-speed: 28 million instructions per second
+speed: 55 million instructions per second
 distinct addresses reached: 582
 last address: 0x133b2
 stopped: false   trapped: null   frames delivered: 1001

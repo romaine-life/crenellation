@@ -19,6 +19,7 @@ import { System } from './system';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
+const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 
 const chip: number[] = [];
 /** The chip's interrupt mask each time it changes, and where. */
@@ -34,7 +35,7 @@ for (const line of readFileSync(join(here, 'bootseq.log'), 'utf8').split('\n')) 
 
 describe('the boot instruction sequence against the chip', () => {
   it('finds the first instruction that differs', () => {
-    const sys = new System(rom);
+    const sys = new System(rom, board);
     const port: number[] = [];
     let state = '(not reached)';
     const LIMIT = 40_000_000;

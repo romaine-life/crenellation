@@ -17,7 +17,11 @@ import m68kts
 
 HERE = pathlib.Path(__file__).parent
 OUT = HERE.parent / "frontend" / "src" / "rom"
-UP = (HERE / "prog_upper.bin").read_bytes()
+# The program ROM is not all the code the game runs: it also calls a small
+# routine in the board ROM at 0x140000, which the running port found by
+# jumping to it. prog_ext.bin is the program image with that region laid in
+# at its real address so the translator can disassemble it like any other.
+UP = (HERE / "prog_ext.bin").read_bytes()
 md = capstone.Cs(capstone.CS_ARCH_M68K, capstone.CS_MODE_BIG_ENDIAN | capstone.CS_MODE_M68K_000)
 
 BUCKETS = 12

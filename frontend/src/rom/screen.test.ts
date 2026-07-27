@@ -15,6 +15,7 @@ import { System, SCREEN_W, SCREEN_H } from './system';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
+const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 
 /** Minimal PNG writer - no dependency, and the format is small enough. */
 function png(w: number, h: number, rgba: Uint32Array): Buffer {
@@ -65,7 +66,7 @@ function png(w: number, h: number, rgba: Uint32Array): Buffer {
 
 describe('what the booted machine draws', () => {
   it('writes the screen out', () => {
-    const sys = new System(rom);
+    const sys = new System(rom, board);
     sys.irqPhase = Number(process.env.IRQ_PHASE ?? 0);
     const STOP_AFTER = 6000;          // ten seconds of game time
     let done = false;

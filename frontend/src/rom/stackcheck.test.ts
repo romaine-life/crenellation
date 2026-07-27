@@ -21,10 +21,11 @@ import { System } from './system';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
+const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 
 describe('stack balance across calls', () => {
   it('names the routines that move it', () => {
-    const sys = new System(rom);
+    const sys = new System(rom, board);
     const drift = new Map<number, { at: number; by: number; n: number }>();
     const calls512: string[] = [];
 

@@ -12,7 +12,11 @@ from collections import defaultdict
 import capstone
 
 HERE = pathlib.Path(__file__).parent
-UP = (HERE / "prog_upper.bin").read_bytes()
+# The program ROM is not all the code the game runs: it also calls a small
+# routine in the board ROM at 0x140000, which the running port found by
+# jumping to it. prog_ext.bin is the program image with that region laid in
+# at its real address so the translator can disassemble it like any other.
+UP = (HERE / "prog_ext.bin").read_bytes()
 LIMIT = 0x20000
 M = json.loads((HERE / "out" / "codemap2.json").read_text())
 md = capstone.Cs(capstone.CS_ARCH_M68K, capstone.CS_MODE_BIG_ENDIAN | capstone.CS_MODE_M68K_000)
@@ -124,10 +128,33 @@ def pointer_table_handlers():
     return json.loads(f.read_text()) if f.exists() else []
 
 
+def reached_at_runtime():
+    """Addresses the running port called and had no routine for.
+
+    The classifier works from what it can see statically, and some routines
+    are only ever reached through a computed address, so nothing static points
+    at them. The port finds them by running: every call it cannot dispatch is
+    an address the game really does execute. Feeding those back is the only
+    evidence that settles whether a gap is code - the game jumped to it.
+    """
+    f = HERE / "out" / "runtime-entries.json"
+    return json.loads(f.read_text()) if f.exists() else []
+
+
 for a in pointer_table_handlers():
     entries.append(a)
 
-THUNKS = thunks_below_first_function() + jump_table_cases()
+# A runtime address needs a run of its own, not just an entry: an entry that
+# falls in a data run is never turned into a function. The run ends at the
+# next thing already known to start something, which for a gap between two
+# classified functions is exactly the gap.
+_bounds = sorted({a for a, _ in code_runs} | set(entries))
+RUNTIME = []
+for a in reached_at_runtime():
+    nxt = next((b for b in _bounds if b > a), a + 0x200)
+    RUNTIME.append((a, nxt))
+
+THUNKS = thunks_below_first_function() + jump_table_cases() + RUNTIME
 for a, b in THUNKS:
     entries.append(a)
     code_runs.append((a, b))
