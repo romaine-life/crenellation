@@ -14,6 +14,7 @@ local LIMIT = 6000000
 local taps = {}
 local buf = {}
 local last = -1
+local lastsr = -1
 
 -- A periodic callback fires during emulation rather than after a frame, so
 -- the tap goes in far earlier - the reset code spends a long time clearing the
@@ -54,7 +55,19 @@ emu.register_frame_done(function()
         if pc ~= last then
           last = pc
           n = n + 1
-          buf[#buf + 1] = string.format("%05X", pc)
+          -- The status register alongside the address, but only when it
+          -- changes. The two sides run identical instruction sequences for
+          -- millions of instructions and still end up with different masks, so
+          -- the address alone cannot show where it went wrong. Logging every
+          -- change keeps this small and names the instruction exactly.
+          -- only the mask matters here; the condition codes change constantly
+          local sr = (cpu.state["SR"].value // 256) % 8
+          if sr ~= lastsr then
+            lastsr = sr
+            buf[#buf + 1] = string.format("%05X M%d", pc, sr)
+          else
+            buf[#buf + 1] = string.format("%05X", pc)
+          end
           if #buf >= 4096 then
             log:write(table.concat(buf, NL) .. NL)
             buf = {}

@@ -21,9 +21,15 @@ const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 
 const chip: number[] = [];
+/** The chip's interrupt mask each time it changes, and where. */
+const chipMask: Array<{ at: number; pc: number; mask: number }> = [];
 for (const line of readFileSync(join(here, 'bootseq.log'), 'utf8').split('\n')) {
   const s = line.trim();
-  if (/^[0-9A-F]+$/.test(s)) chip.push(parseInt(s, 16));
+  const m = /^([0-9A-F]+)(?: M(\d))?$/.exec(s);
+  if (!m) continue;
+  const pc = parseInt(m[1], 16);
+  if (m[2] !== undefined) chipMask.push({ at: chip.length, pc, mask: Number(m[2]) });
+  chip.push(pc);
 }
 
 describe('the boot instruction sequence against the chip', () => {
@@ -32,6 +38,8 @@ describe('the boot instruction sequence against the chip', () => {
     const port: number[] = [];
     let state = '(not reached)';
     const LIMIT = 40_000_000;
+    const portMask: Array<{ at: number; pc: number; mask: number }> = [];
+    let lastMask = -1;
     // Collapse consecutive repeats, because the chip's capture has to: its tap
     // fires once per fetch, so an instruction with extension words reports the
     // same address several times. That also collapses a genuine one-instruction
@@ -43,6 +51,11 @@ describe('the boot instruction sequence against the chip', () => {
           + ` irqPending=${sys.m.irqPending} cycles=${sys.m.cycles} nextIrqAt=${(sys as unknown as {nextIrq?: number}).nextIrq ?? -1}`;
       }
       if (port.length >= LIMIT) return;
+      // record the mask before the duplicate check: an interrupt returning to
+      // the instruction it interrupted lands on the same address, and dropping
+      // that as a duplicate drops the mask change with it
+      const mk = (sys.m.sr >> 8) & 7;
+      if (mk !== lastMask) { lastMask = mk; portMask.push({ at: port.length, pc, mask: mk }); }
       if (port.length && port[port.length - 1] === pc) return;
       port.push(pc);
     };
@@ -102,8 +115,35 @@ describe('the boot instruction sequence against the chip', () => {
       if (ok) { start = i; break; }
     }
 
+    // The two run identical instruction sequences and still end up with
+    // different masks, so compare the masks directly, mapped onto a common
+    // timeline: the chip's trace starts part way in, so its index i is the
+    // port's i + offset. The first place they disagree is the instruction that
+    // set the wrong one.
+    let maskNote = 'no alignment, so the masks cannot be compared';
+    if (start >= 0) {
+      const offset = start - anchorAt;
+      const portAfter = portMask.filter((e) => e.at >= offset);
+      // the chip's first entry is the mask its trace opened with, not a
+      // change the code made
+      const chipChanges = chipMask.slice(1);
+      const n = Math.min(chipChanges.length, portAfter.length);
+      maskNote = `the first ${n} mask changes agree (chip ${chipChanges.length}, port ${portAfter.length})`;
+      for (let i = 0; i < n; i += 1) {
+        const cc = chipChanges[i]; const qq = portAfter[i];
+        if (cc.pc !== qq.pc || cc.mask !== qq.mask) {
+          const ctx = chipChanges.slice(Math.max(0, i - 4), i)
+            .map((e) => `0x${e.pc.toString(16)}->${e.mask}`).join(' ');
+          maskNote = `mask changes part at ${i}: chip 0x${cc.pc.toString(16)}->${cc.mask},`
+            + ` port 0x${qq.pc.toString(16)}->${qq.mask}   (chip had just done: ${ctx})`;
+          break;
+        }
+      }
+    }
+
     const notes: string[] = [
       `chip sequence: ${chip.length} addresses; port: ${port.length}`,
+      maskNote,
       'port runs the request path: ' + [0x1578, 0x157c, 0x14dc, 0x14e2, 0x14f0, 0x1500].map((a) => `0x${a.toString(16)}:${port.includes(a)}`).join(' '),
       'port runs the mask-setters: ' + [0xf77e, 0xf902, 0xfb4e, 0x650, 0x64a, 0x656, 0x620]
         .map((a) => `0x${a.toString(16)}:${port.includes(a)}`).join(' '),
