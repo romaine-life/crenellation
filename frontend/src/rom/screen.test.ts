@@ -82,6 +82,8 @@ describe('what the booted machine draws', () => {
     let prevA2 = -1;
     let spBefore = -1; const spDrift: string[] = [];
     let inHandler = false; let firstAbove = '';
+    let waitOn = -1;
+    const chanTrace: string[] = [];
     const a2Writes: string[] = [];
     sys.m.atPcExtra = (pc: number) => {
       visits.set(pc, (visits.get(pc) ?? 0) + 1);
@@ -91,6 +93,7 @@ describe('what the booted machine draws', () => {
         a2Writes.push('0x' + (sys.m.a2 >>> 0).toString(16) + '@' + pc.toString(16));
         if (a2Writes.length > 14) a2Writes.shift();
       }
+      if (pc === 0x14562 && waitOn < 0) waitOn = sys.m.a2 >>> 0;
       if (pc === 0x133b2) { a2In = sys.m.a2; spBefore = sys.m.a7; inHandler = true; }
       if (inHandler && !firstAbove && spBefore >= 0 && sys.m.a7 > spBefore) {
         firstAbove = `a7 first rose above the frame at 0x${pc.toString(16)}: `
@@ -110,6 +113,9 @@ describe('what the booted machine draws', () => {
     };
     try {
       sys.run((s) => {
+        if (s.frames <= 8 || s.frames % 120 === 0) {
+          chanTrace.push(`f${s.frames}:0x${(s.m.load(0x3e3536, 32) >>> 0).toString(16)}`);
+        }
         if (s.frames % 120 === 0 || s.frames === 1) {
           let lit = 0;
           for (let i = 0; i < 0x20000; i += 1) if (s.m.byte(0x200000 + i)) lit += 1;
@@ -146,6 +152,17 @@ describe('what the booted machine draws', () => {
     notes.push(`sound queue: 0x3E3528=${sys.m.load(0x3e3528,16)} 0x3E352A=${sys.m.load(0x3e352a,16)}`);
     notes.push(`routines that write them: 0x1425c ${visits.get(0x1425c) ?? 0}, 0x143b0 ${visits.get(0x143b0) ?? 0}, 0x144ae ${visits.get(0x144ae) ?? 0}, 0x144d0 ${visits.get(0x144d0) ?? 0}`);
     notes.push(`sound driver 0x196ac reached ${visits.get(0x196ac) ?? 0}; channel work 8(a2) still pending: ${sys.m.load(0x3e3536 + 8, 32)}`);
+    notes.push(`the spin at 0x14562 waits on a2=0x${(waitOn >>> 0).toString(16)}`
+      + (waitOn >= 0 ? `, whose first long is ${sys.m.load(waitOn, 32)}` : ''));
+    notes.push('channel pointer over time: ' + chanTrace.join(' '));
+    {
+      const at = sys.m.load(0x3e3536, 32) >>> 0;
+      const bytes: string[] = [];
+      for (let i = -4; i < 12; i += 1) bytes.push(sys.m.byte(at + i).toString(16).padStart(2, '0'));
+      notes.push(`sequence around 0x${at.toString(16)}: ${bytes.join(' ')}`);
+      notes.push(`channel struct at 0x3E3536: ` + Array.from({length: 8},
+        (_, i) => sys.m.load(0x3e3536 + i * 4, 32).toString(16)).join(' '));
+    }
     notes.push('busiest addresses:');
     for (const [a, n] of [...visits.entries()].sort((x, y) => y[1] - x[1]).slice(0, 10)) {
       notes.push(`   0x${a.toString(16)}  ${n}`);

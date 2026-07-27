@@ -26,6 +26,10 @@ a7 never rose above the frame inside the handler
 sound queue: 0x3E3528=3 0x3E352A=3
 routines that write them: 0x1425c 22, 0x143b0 7, 0x144ae 0, 0x144d0 7
 sound driver 0x196ac reached 121; channel work 8(a2) still pending: 0
+the spin at 0x14562 waits on a2=0x3e3536, whose first long is 4076778
+channel pointer over time: f1:0x0 f2:0x0 f3:0x0 f4:0x0 f5:0x0 f6:0x0 f7:0x0 f8:0x0 f120:0x0 f240:0x3e34d6 f360:0x3e34ea f480:0x3e34ea f600:0x3e34ea
+sequence around 0x3e34ea: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+channel struct at 0x3E3536: 3e34ea 5a0004 0 3e32d3 30000 3800ff00 0 0
 busiest addresses:
    0x594  5740020
    0x1311c  984063
