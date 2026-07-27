@@ -146,8 +146,15 @@ describe('routines compared at the instruction the chip stopped on', () => {
       // "ADDRESS ERR", "ILLEGAL INS", "PRIVILEDGE VIOL". Reaching either means
       // the routine faulted, so the snapshot describes the handler rather than
       // the routine and there is nothing to compare.
-      const cs = all.filter((x) => !((x.pc >= 0x1357c && x.pc < 0x1365c) || (x.pc >= 0x18548 && x.pc < 0x18680)));
-      if (!cs.length) { crashed += 1; skip(entry, 'every snapshot was taken after the chip faulted'); continue; }
+      // Snapshots taken after the chip reached its reset code. It gets there by
+      // taking an address error - a word access on an odd address - and the
+      // port does not model that exception, so it carries on where the chip
+      // restarts. Comparing there measures the missing exception, not the
+      // translation. Dropping this filter judges 18 more routines and fails
+      // almost all of them for that reason, which is a worse answer than
+      // saying so.
+      const cs = all.filter((x) => !(x.pc >= 0x1357c && x.pc < 0x1365c));
+      if (!cs.length) { crashed += 1; skip(entry, 'the chip took an address error, which the port does not model'); continue; }
 
       for (let k = 0; k < 8; k += 1) (m as never as Record<string, number>)[`d${k}`] = d[k];
       for (let k = 0; k < 6; k += 1) (m as never as Record<string, number>)[`a${k}`] = a[k];

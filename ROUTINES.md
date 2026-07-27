@@ -16,13 +16,13 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 757 |
-| *of the 593 the map held before trampolines and table cases were found* | *553 verified, 40 not* |
-| **Verified against hardware** | **694** |
+| *of the 593 the map held before trampolines and table cases were found* | *554 verified, 39 not* |
+| **Verified against hardware** | **696** |
 | Failing | 4 |
 | Passing under some inputs, failing under others | 13 |
 | Judged only by a stopping-point mismatch | 6 |
 | Reproduces mid-run but not end to end | 8 |
-| Never judged | 32 |
+| Never judged | 30 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -89,8 +89,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**553 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 40 are not.
+**554 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 39 are not.
 
 ### Instruction rules
 
@@ -153,6 +153,21 @@ faulted and the snapshot describes the handler. Those are discarded now, along
 with the reset-code ones.
 
 Nine divergences remain bracketed to between one and forty instructions each.
+
+### What "the chip faulted" is worth now
+
+Snapshots taken after the chip had faulted were discarded on the grounds that
+there was nothing to compare. Once traps and halts were modelled that stopped
+being true for one of the two cases: an exception stub reached through
+`trap #$0` is a path the port now follows exactly, so those snapshots are
+evidence and are used. Two more routines verified.
+
+The other case still holds. The chip reaches its reset code by taking an
+address error - a word access on an odd address - and the port does not model
+that exception, so it carries on where the chip restarts. Dropping that filter
+too judges 18 more routines and fails almost all of them, which is a worse
+answer than saying why they cannot be judged: it would be reporting a missing
+exception as a translation defect.
 
 ### A trap is not a no-op
 
