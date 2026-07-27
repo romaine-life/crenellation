@@ -8,8 +8,8 @@ that cite the evidence they used.
 
 ## Coverage
 
-- **Bytes accounted for: 131070 of 131072 - 100.0%**
-- Code: 87714 bytes in **756 functions**
+- **Bytes accounted for: 131062 of 131072 - 100.0%**
+- Code: 87704 bytes in **753 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -96,7 +96,6 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `00300` | 6 | 0 | trampoline to 0x003ea | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00306` | 6 | 1 | trampoline to 0x00580 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `003EA` | 24 | 0 | computed-jump entry at 0x003ea | observed as a jump target during the differential run with no function covering it |
-| `00402` | 2 | 0 | helper inside the jump-table case at 0x003ea | lies within the case reached from the table at 0x00000 |
 | `0042A` | 6 | 0 | trampoline to 0x09188 | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `00430` | 8 | 1 | helper for accessor for the state block at 0x3E1946 | only caller is 0x9150 |
 | `00438` | 218 | 0 | dispatcher gate check | tests the gate word at 0x3E0802 |
@@ -519,7 +518,6 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `0FC1E` | 20 | 1 | helper for handler reached through a function-pointer table | only caller is 0xa000 |
 | `0FC32` | 8 | 0 | small leaf utility | 8 bytes, no calls, no state access |
 | `0FC3A` | 12 | 0 | small leaf utility | 12 bytes, no calls, no state access |
-| `0FC46` | 4 | 1 | helper for main game state machine | only caller is 0x9266 |
 | `0FC4A` | 42 | 0 | option bit test (variant) | second form of the 0x3E0DE2 option compare |
 | `0FC74` | 20 | 1 | helper for attract mode controller | only caller is 0xe824 |
 | `0FC88` | 20 | 0 | small leaf utility | 20 bytes, no calls, no state access |
@@ -648,7 +646,6 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `183F2` | 38 | 2 | sound flag clear | clears the top bit of 0x3E3D8E |
 | `18418` | 38 | 1 | helper for sound sequence player | only caller is 0x14578 |
 | `1851C` | 40 | 5 | self-test result accumulate | folds a result into the words at 0x3E3D82/0x3E3D86 |
-| `18544` | 4 | 0 | small leaf utility | 4 bytes, no calls, no state access |
 | `18548` | 10 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `18556` | 10 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
 | `18564` | 6 | 0 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |

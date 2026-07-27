@@ -15,14 +15,10 @@ again in the TypeScript port from byte-identical starting state, and compared.
 
 | | |
 |---|---|
-| Routines in the overlay | 756 |
-| *of the 593 the map held before trampolines and table cases were found* | *590 verified, 3 not* |
-| **Verified against hardware** | **752** |
-| Failing | 0 |
-| Passing under some inputs, failing under others | 14 |
-| Judged only by a stopping-point mismatch | 1 |
-| Reproduces mid-run but not end to end | 12 |
-| Never judged | 0 |
+| Routines in the overlay | 753 |
+| *of the 593 the map held before trampolines and table cases were found* | *588 verified, 5 not* |
+| **Verified against hardware** | **751** |
+| Outstanding | 2 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -94,8 +90,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**590 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 23 are not.
+**588 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 25 are not.
 
 ### Instruction rules
 
@@ -228,6 +224,15 @@ the instruction that just ran, so it lags its own registers by one and the two
 cannot both line up - which is why the address is not part of this comparison
 at all. The step count fixes the position on both sides; only registers and
 memory are compared.
+
+### The last two
+
+`0x620` is `move.w #$2000, sr` and `0x656` is `move.w $3e0804.l, sr` - both
+exist to let interrupts in, and both hand control to a handler whose behaviour
+depends on when the board asserted the interrupt. The port models the vector,
+the frame and the mask, and the two reproduce under some argument shapes and
+step counts but not reliably across a whole capture. They are the only two
+routines of 753 that no run has settled.
 
 ### Where the remaining routines sit
 

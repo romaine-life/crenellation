@@ -152,10 +152,17 @@ for a, b in code_runs:
 # at all and the other only as a dc.w - so a "routine" starting there can only
 # ever throw. Dropping them folds their bytes into the function before them,
 # which is where they belong; coverage does not change.
+_starts = {a for a, _ in funcs}
 _ok = []
 for _a, _b in funcs:
     _i = next(md.disasm(UP[_a:_a + 16], _a, 1), None)
     if _i is None or _i.mnemonic.startswith("dc."):
+        continue
+    # An entry whose first instruction runs into the next one is not where an
+    # instruction starts. 0x18544 is the case: 0x18542 is an rts, the four
+    # bytes after it are padding, and reading them as code swallows the `jsr`
+    # that begins the exception stub at 0x18548.
+    if any(_a < s < _a + _i.size for s in _starts):
         continue
     _ok.append((_a, _b))
 funcs = _ok
