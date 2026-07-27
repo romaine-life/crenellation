@@ -552,6 +552,7 @@ const STARTS: number[] = [
   0x133ec,
   0x1354c,
   0x1357c,
+  0x1365c,
   0x13662,
   0x1378e,
   0x1397a,
@@ -1307,6 +1308,7 @@ const ENDS: number[] = [
   0x13408,
   0x1357c,
   0x1365c,
+  0x13662,
   0x136ee,
   0x1397a,
   0x13b5e,
@@ -2062,6 +2064,7 @@ const FNS: Routine[] = [
   r08.fn_133ec,
   r08.fn_1354c,
   r08.fn_1357c,
+  r08.fn_1365c,
   r08.fn_13662,
   r08.fn_1378e,
   r08.fn_1397a,
@@ -2093,7 +2096,7 @@ const FNS: Routine[] = [
   r08.fn_14ef8,
   r08.fn_14f7a,
   r08.fn_14ff2,
-  r08.fn_15064,
+  r09.fn_15064,
   r09.fn_15100,
   r09.fn_1520e,
   r09.fn_155a0,
@@ -2156,7 +2159,7 @@ const FNS: Routine[] = [
   r09.fn_185ee,
   r09.fn_18600,
   r09.fn_18614,
-  r09.fn_18626,
+  r10.fn_18626,
   r10.fn_1863e,
   r10.fn_18652,
   r10.fn_18658,
@@ -2219,7 +2222,7 @@ const FNS: Routine[] = [
   r10.fn_1997a,
   r10.fn_19a24,
   r10.fn_19bb8,
-  r10.fn_19bd8,
+  r11.fn_19bd8,
   r11.fn_19c00,
   r11.fn_19c22,
   r11.fn_19c2e,
@@ -2307,16 +2310,22 @@ export function call(addr: number, m: Machine): void {
     if (m.stubMissing && a >= 0x20000) { m.missingCalls.push(a); return; }
     throw new Error('no routine covers 0x' + a.toString(16));
   }
+  if (m.onCall) {
+    const before = m.a7 >>> 0;
+    FNS[found](m, a);
+    m.onCall(a, before, m.a7 >>> 0);
+    return;
+  }
   FNS[found](m, a);
   } catch (e) {
     // An odd word access is an address error: the chip stacks a
     // seven-word frame and vectors through 0x0C. The transfer of
     // control cannot happen inside the instruction, so it is
     // raised there and turned into the exception here.
-    if (e instanceof PendingInterrupt) { call(m.interruptFrame(e.level), m); return; }
+    if (e instanceof PendingInterrupt) throw e;
     if (!(e instanceof AddressError)) throw e;
     call(m.addressErrorFrame(), m);
   }
 }
 
-export const ROUTINE_COUNT = 753;
+export const ROUTINE_COUNT = 754;

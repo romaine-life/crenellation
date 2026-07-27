@@ -1,0 +1,27 @@
+frame 1: 0 playfield bytes set, 1022 palette entries set
+frame 120: 0 playfield bytes set, 0 palette entries set
+frame 240: 0 playfield bytes set, 0 palette entries set
+frame 360: 0 playfield bytes set, 0 palette entries set
+frame 480: 0 playfield bytes set, 0 palette entries set
+frame 600: 0 playfield bytes set, 0 palette entries set
+frames run: 600   instructions: 12000000
+missing routines: 0
+interrupt handler 0x133b2 entered: 121 times
+rte at handler exit reached: 121
+interrupt mask the machine runs at: level 4: 5791780, level 7: 3877166, level 0: 2328255, level 5: 2800
+last addresses before it stopped: 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594
+a2 entering the handler: 0x3e3536   leaving it: 0x3e3536
+a2 changed at: 0xfcfe@1538 0xfd02@1538 0xfd06@1538 0xfd0a@1538 0xfd0e@1538 0xfd12@1538 0xfd16@1538 0xfd1a@1538 0xfd1e@1538 0xfd22@1538 0xfd26@1538 0xfd2a@1538 0xfd2e@1538 0x3e3536@156a
+stack drift across the handler: entry 0x3e32f4 -> rte 0x3e32fa
+a7 never rose above the frame inside the handler
+busiest addresses:
+   0x594  5740020
+   0x1311c  984063
+   0x1311e  984063
+   0x13120  984063
+   0x14560  376377
+   0x1455a  376373
+   0x14554  376368
+   0x1454e  376364
+   0x14564  342852
+   0x14562  342850

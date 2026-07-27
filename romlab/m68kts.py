@@ -569,7 +569,18 @@ def emit(ins, nxt):
         # compared at all.
         return "m.stopped = true; m.tick(0x%05x); return;" % nxt
     if b in ("rte", "rtr"):
-        return "return;"
+        # Not a bare return. `rte` pops the status register and the program
+        # counter the exception stacked, and the status register is what
+        # carries the interrupt mask - leaving it raised means the first
+        # interrupt taken is also the last one, because every later one is
+        # blocked by a mask the handler never gave back. `rtr` pops the
+        # condition codes only, and leaves the mask alone.
+        if b == "rte":
+            return ("{ const _sr = m.loadPost('a7', 2, 16); "
+                    "m.a7 = (m.a7 + 4) >>> 0; m.setSR(_sr); } return;")
+        return ("{ const _cc = m.loadPost('a7', 2, 16); "
+                "m.a7 = (m.a7 + 4) >>> 0; m.setSR((m.getSR() & 0xff00) | (_cc & 0xff)); }"
+                " return;")
     if b == "reset":
         return s
     if b == "trap":

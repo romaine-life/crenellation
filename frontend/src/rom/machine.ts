@@ -60,11 +60,25 @@ export class Machine {
   /** Address of the instruction after the one running, for exception frames. */
   next = 0;
   atPc: ((pc: number) => void) | null = null;
+  /** A second hook, so the system can own atPc and a caller can still watch. */
+  atPcExtra: ((pc: number) => void) | null = null;
+  /** Called after every dispatched routine with the stack pointer before and
+   *  after, so an imbalance is attributed to the routine that caused it. */
+  onCall: ((addr: number, before: number, after: number) => void) | null = null;
 
   tick(pc = 0): void {
     this.pc = pc;
     if (this.atPc) this.atPc(pc);
     this.steps += 1;
+    // An interrupt is taken between instructions, never inside one. Raised
+    // here, the instruction about to run has not started, so the address to
+    // return to is this one - which `next` already holds, because the
+    // instruction before it set `next` to its own successor.
+    if (this.irqPending && ((this.sr >> 8) & 7) < this.irqPending) {
+      const lvl = this.irqPending;
+      this.irqPending = 0;
+      throw new PendingInterrupt(lvl);
+    }
     if (this.steps > this.budget) {
       throw new Error('instruction budget exhausted after ' + this.steps + ' steps');
     }
@@ -180,10 +194,20 @@ export class Machine {
       if (addr >= 0x640000 && addr <= 0x640fff) return;
       if (addr >= 0x140000 && addr <= 0x17ffff) return;
       if (addr >= 0x500000 && addr <= 0x51ffff) return;
+      // the watchdog, and the scanline register the frame handler writes
+      if (addr >= 0x72fffe && addr <= 0x72ffff) return;
+      if (addr >= 0x7efffe && addr <= 0x7effff) return;
     }
     this.offMap = true;
     if (this.offMapAt.length < 4) this.offMapAt.push(addr);
   }
+
+  /**
+   * Input ports. The board presents these as bytes with a bit low while its
+   * button is held, and the game polls them directly rather than through any
+   * routine, so the read has to be answered here.
+   */
+  inputAt: ((addr: number) => number) | null = null;
 
   byte(addr: number): number {
     // The 68000 has a 24-bit address bus - A24 to A31 do not exist - so an
@@ -194,6 +218,7 @@ export class Machine {
     addr = this.fold((addr >>> 0) & 0xffffff);
     if (this.trackOffMap) this.note(addr);
     if (addr < this.rom.length) return this.rom[addr];
+    if (this.inputAt && addr >= 0x640000 && addr <= 0x640003) return this.inputAt(addr);
     return this.ram.get(addr) ?? 0;
   }
 

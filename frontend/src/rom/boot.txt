@@ -1,0 +1,22 @@
+initial sp 0x3e32fe  initial pc 0x1357c
+outcome: instruction budget exhausted after 20000001 steps
+instructions run: 20000001
+speed: 42 million instructions per second
+distinct addresses reached: 586
+last address: 0x144ea
+stopped: false   trapped: null   frames delivered: 1001
+calls the port had no routine for: 0
+
+busiest addresses:
+   0x144ea  9349963
+   0x144ee  9349962
+   0x13812  138240
+   0x13814  138240
+   0x13816  138240
+   0x13818  138240
+   0x1381a  138240
+   0x13010  65535
+   0x13012  65535
+   0x13014  65535
+   0x13a58  16384
+   0x13a5a  16384

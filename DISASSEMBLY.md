@@ -9,7 +9,7 @@ that cite the evidence they used.
 ## Coverage
 
 - **Bytes accounted for: 131072 of 131072 - 100.0%**
-- Code: 87754 bytes in **753 functions**
+- Code: 87760 bytes in **754 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -565,6 +565,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `133EC` | 28 | 0 | sound command latch | gates on 0x3E340C and reads 0x640002 |
 | `1354C` | 48 | 1 | sound register preset | writes the fixed register list into 0x3E3F00 |
 | `1357C` | 224 | 1 | handler reached through a function-pointer table | its address is held in a run of 32-bit pointers that a dispatcher indexes; nothing calls it by name |
+| `1365C` | 6 | 0 | trampoline to 0x1310c | six-byte jmp stub; the whole run below the first routine is reached by absolute-short calls and pointer tables |
 | `13662` | 140 | 0 | computed-jump entry at 0x13662 | observed as a jump target during the differential run with no function covering it |
 | `1378E` | 492 | 0 | computed-jump entry at 0x1378e | observed as a jump target during the differential run with no function covering it |
 | `1397A` | 484 | 0 | computed-jump entry at 0x1397a | observed as a jump target during the differential run with no function covering it |

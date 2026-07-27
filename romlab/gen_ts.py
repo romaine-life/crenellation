@@ -47,6 +47,13 @@ def emit_function(entry, end, label):
     # A halted chip stays halted. STOP set the flag but only returned from
     # its own function, so every caller carried on - which is how the exception
     # stubs ran off the end of their own message text instead of stopping.
+    # The tick has to be inside the try. It is what raises an interrupt, and
+    # raised outside it the exception leaves the routine altogether - the
+    # dispatcher catches it, runs the handler and returns, and the routine it
+    # abandoned never reaches its rts. Every caller then loses the four bytes
+    # it pushed, and a few thousand instructions later a function pointer comes
+    # back holding an argument.
+    lines.append("    try {")
     lines.append("    m.tick(pc);")
     lines.append("    if (m.stopped) return;")
     lines.append("    switch (pc) {")
@@ -74,6 +81,14 @@ def emit_function(entry, end, label):
     # that simply runs on. Continue in whichever routine covers the address.
     lines.append("      default: call(pc, m); return;")
     lines.append("    }")
+    # An interrupt raised by the tick above is taken here, not at the
+    # dispatcher: the routine has to carry on afterwards. The chip resumes the
+    # instruction it had not started, and the switch does that by going round
+    # again with pc unchanged.
+    lines.append("    } catch (e) {")
+    lines.append("      if (!(e instanceof PendingInterrupt)) throw e;")
+    lines.append("      call(m.interruptFrame(e.level), m);")
+    lines.append("    }")
     lines.append("  }")
     lines.append("}")
     return "\n".join(lines)
@@ -97,7 +112,7 @@ def main():
                 "// Routines 0x%05x - 0x%05x of the Rampart program overlay."
                 % (chunk[0][0], chunk[-1][1]),
                 "",
-                "import type { Machine } from './machine';",
+                "import { PendingInterrupt, type Machine } from './machine';",
                 "import { call } from './dispatch';",
                 ""]
         for a, b in chunk:
@@ -163,13 +178,26 @@ def main():
     d.append("    if (m.stubMissing && a >= 0x20000) { m.missingCalls.push(a); return; }")
     d.append("    throw new Error('no routine covers 0x' + a.toString(16));")
     d.append("  }")
+    # A hook around the call itself, so a caller can see the stack pointer on
+    # the way in and on the way out. A routine that does not balance it shows
+    # up here by name instead of as a wrong value several thousand
+    # instructions later.
+    d.append("  if (m.onCall) {")
+    d.append("    const before = m.a7 >>> 0;")
+    d.append("    FNS[found](m, a);")
+    d.append("    m.onCall(a, before, m.a7 >>> 0);")
+    d.append("    return;")
+    d.append("  }")
     d.append("  FNS[found](m, a);")
     d.append("  } catch (e) {")
     d.append("    // An odd word access is an address error: the chip stacks a")
     d.append("    // seven-word frame and vectors through 0x0C. The transfer of")
     d.append("    // control cannot happen inside the instruction, so it is")
     d.append("    // raised there and turned into the exception here.")
-    d.append("    if (e instanceof PendingInterrupt) { call(m.interruptFrame(e.level), m); return; }")
+    # Not caught here: an interrupt is taken inside the routine that was
+    # running, which resumes afterwards. Handling it at this level would
+    # abandon that routine.
+    d.append("    if (e instanceof PendingInterrupt) throw e;")
     d.append("    if (!(e instanceof AddressError)) throw e;")
     d.append("    call(m.addressErrorFrame(), m);")
     d.append("  }")

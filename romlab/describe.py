@@ -174,6 +174,19 @@ for _i in range(len(_ok) - 1):
     _n = _ok[_i + 1][0]
     if _b < _n and any(x <= _a and _n <= y for x, y in code_runs):
         _ok[_i] = (_a, _n)
+# A `jmp <abs>.l` sitting in the gap between two functions is a trampoline, the
+# same as the ones below the first routine. 0x1365C is the case that matters:
+# the reset routine branches to it, and without it the machine boots, runs for
+# forty-five frames and dies with nothing covering the address. Only gaps that
+# begin with one are taken; the other ninety-odd are genuine data.
+_ok.sort()
+_extra = []
+for _i in range(len(_ok) - 1):
+    _b, _n = _ok[_i][1], _ok[_i + 1][0]
+    if _b < _n and UP[_b] == 0x4E and UP[_b + 1] == 0xF9:
+        _extra.append((_b, min(_b + 6, _n)))
+_ok.extend(_extra)
+_ok.sort()
 funcs = _ok
 
 # The injected spans overlap the runs they were carved out of, so one address
