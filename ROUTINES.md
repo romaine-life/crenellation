@@ -155,6 +155,12 @@ return address and the old status register, raises the mask to the interrupt's
 own, and vectors through the table. Both routines reproduce, and **the failing
 column is empty for the first time.**
 
+Only the instruction-boundary harness declares an interrupt pending. Doing the
+same in the three that wait for a return makes them slightly worse - 465 down
+to 464, 482 to 481 - because a routine diverted into a handler does not come
+back, so the case is lost rather than gained. The chip has an interrupt waiting
+either way; whether saying so helps depends on what the harness is looking for.
+
 ### The four that "nothing could judge" could be judged
 
 0x62E, 0x642, 0x1E8D2 and 0x18658 all reach `stop #$2700` immediately. A halted
