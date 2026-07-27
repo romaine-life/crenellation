@@ -162,9 +162,13 @@ being true for one of the two cases: an exception stub reached through
 `trap #$0` is a path the port now follows exactly, so those snapshots are
 evidence and are used. Two more routines verified.
 
-The other case still holds. The chip reaches its reset code by taking an
-address error - a word access on an odd address - and the port does not model
-that exception, so it carries on where the chip restarts. Dropping that filter
+The other case is now modelled and still does not close. An address error - a
+word access on an odd address - is implemented: the port stacks the seven-word
+frame and vectors through 0x0C, as the chip does. That gained one routine and
+took the not-comparable count down, but it did not make the reset-path
+snapshots reproduce. Dropping the filter with the exception in place judges 21
+more routines and fails almost all of them, so something in the frame or in
+when the fault is raised still does not match MAME. Dropping that filter
 too judges 18 more routines and fails almost all of them, which is a worse
 answer than saying why they cannot be judged: it would be reporting a missing
 exception as a translation defect.

@@ -6,6 +6,13 @@
 // register leaves the upper 24 bits alone, and that detail is load-bearing in
 // several routines.
 
+/** Raised by an odd word access; the dispatcher turns it into the exception. */
+export class AddressError extends Error {
+  constructor() {
+    super('address error');
+  }
+}
+
 export class Machine {
   d0 = 0; d1 = 0; d2 = 0; d3 = 0; d4 = 0; d5 = 0; d6 = 0; d7 = 0;
   a0 = 0; a1 = 0; a2 = 0; a3 = 0; a4 = 0; a5 = 0; a6 = 0; a7 = 0;
@@ -63,6 +70,22 @@ export class Machine {
   /** TRAP goes to an exception vector; nothing in the game's normal flow
    *  reaches one, so this records it instead of pretending to dispatch. */
   trapped: number | null = null;
+
+  /**
+   * Stack the address-error frame and give back the handler address. The frame
+   * is seven words: the special status word, the address that faulted, the
+   * instruction register, the status register and the program counter.
+   */
+  addressErrorFrame(): number {
+    const pc = this.pc >>> 0;
+    const sr = this.getSR();
+    this.storePre('a7', 4, pc, 32);
+    this.storePre('a7', 2, sr, 16);
+    this.storePre('a7', 2, this.load(pc & 0xffffff & ~1, 16), 16);
+    this.storePre('a7', 4, this.faultAddr, 32);
+    this.storePre('a7', 2, this.faultWrite ? 0x0005 : 0x0015, 16);
+    return this.load(0x0c, 32);
+  }
 
   trap(n: number): void {
     this.trapped = n;
@@ -159,7 +182,27 @@ export class Machine {
     this.ram.set(addr, v & 0xff);
   }
 
+  /**
+   * A word or long access on an odd address is an address error on the 68000:
+   * the chip stacks a seven-word frame and vectors through 0x0C. Not modelling
+   * it meant the port carried on computing where the chip had already
+   * restarted, and every routine that got there became uncomparable.
+   *
+   * Thrown rather than handled here, because the transfer of control has to
+   * happen outside the instruction; the dispatcher catches it.
+   */
+  faultAddr = 0;
+  faultWrite = false;
+
+  private oddAccess(addr: number, bits: number, write: boolean): void {
+    if (bits < 16 || (addr & 1) === 0) return;
+    this.faultAddr = addr >>> 0;
+    this.faultWrite = write;
+    throw new AddressError();
+  }
+
   load(addr: number, bits: number): number {
+    this.oddAccess(addr, bits, false);
     addr >>>= 0;
     if (bits === 8) return this.byte(addr);
     if (bits === 16) return (this.byte(addr) << 8) | this.byte(addr + 1);
@@ -172,6 +215,7 @@ export class Machine {
   }
 
   store(addr: number, v: number, bits: number): void {
+    this.oddAccess(addr, bits, true);
     addr >>>= 0;
     if (bits === 8) { this.setByte(addr, v); return; }
     if (bits === 16) { this.setByte(addr, v >>> 8); this.setByte(addr + 1, v); return; }
