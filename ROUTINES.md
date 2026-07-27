@@ -142,8 +142,13 @@ The stopping points double as a bisection. `0x8B4`, the piece walker, was clean
 at ten instructions and wrong by twenty; adding points at 12, 14, 16 and 18
 narrows it to two - `moveq #$0, d0` followed by `move.b $2(a0), d0`, where the
 chip has a0 = 0x00011AE2 and the port has what the memory baseline says,
-0x003E1AE2. That is a difference in what the two sides were reading, not in how
-they read it, and it is where the next look should start.
+0x003E1AE2. a0 comes from `movea.l $3e1960.l, a0`, so the two sides are reading
+different things rather than reading the same thing differently.
+
+Probing the capture shows 0x3E1960 *does* hold the baseline value when the case
+starts, so it changes during the case, in the sixteen instructions before the
+read. Nothing in those instructions writes near it. That is as far as this has
+been taken.
 
 `localise.test.ts` uses the stopping points as a bisection. A routine that
 matches at three instructions and not at five has something wrong in those two,
