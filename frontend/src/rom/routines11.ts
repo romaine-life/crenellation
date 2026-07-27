@@ -198,7 +198,7 @@ export function fn_19c2e(m: Machine, at = 0x19c2e): void {
     if (m.stopped) return;
     switch (pc) {
       case 0x19c2e: { m.next = 0x19c30; { m.trap(0); m.storePre('a7', 4, 0x19c30, 32); m.storePre('a7', 2, m.getSR(), 16); pc = m.load(0x80, 32); } break; } break;
-      case 0x19c30: { m.next = 0x19c34; m.stopped = true; return; } break;
+      case 0x19c30: { m.next = 0x19c34; m.stopped = true; m.tick(0x19c34); return; } break;
       case 0x19c34: { m.next = 0x19c36; pc = 0x19c36; } break;
       case 0x19c36: { m.next = 0x19c38; { const _a = m.sx(m.rd(m.a0, 32), 32); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) - _a), 32); } pc = 0x19c38; } break;
       case 0x19c38: { m.next = 0x19c3a; { const _s = m.loadPost('a0', 4, 32); m.a7 = m.wr(m.a7, m.sx(_s, 32), 32); } pc = 0x19c3a; } break;
@@ -2859,7 +2859,7 @@ export function fn_1e8d2(m: Machine, at = 0x1e8d2): void {
     m.tick(pc);
     if (m.stopped) return;
     switch (pc) {
-      case 0x1e8d2: { m.next = 0x1e8d6; m.stopped = true; return; } break;
+      case 0x1e8d2: { m.next = 0x1e8d6; m.stopped = true; m.tick(0x1e8d6); return; } break;
       case 0x1e8d6: { m.next = 0x1e8da; m.setSR(9984); pc = 0x1e8da; } break;
       case 0x1e8da: { m.next = 0x1e8e0; m.store(0x72fffe, 0, 16); m.logicFlags(0, 16); pc = 0x1e8e0; } break;
       case 0x1e8e0: { m.next = 0x1e8e4; m.storePre('a7', 4, m.a7, 32); m.storePre('a7', 4, m.a6, 32); m.storePre('a7', 4, m.a5, 32); m.storePre('a7', 4, m.a4, 32); m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.a0, 32); m.storePre('a7', 4, m.d7, 32); m.storePre('a7', 4, m.d6, 32); m.storePre('a7', 4, m.d5, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); m.storePre('a7', 4, m.d0, 32); pc = 0x1e8e4; } break;
@@ -2921,7 +2921,7 @@ export function fn_1e8d2(m: Machine, at = 0x1e8d2): void {
       case 0x1e9a6: { m.next = 0x1e9a8; if (m.cond('ne')) { pc = 0x1e9a2; } else { pc = 0x1e9a8; } } break;
       case 0x1e9a8: { m.next = 0x1e9ac; { const _c = (m.sx(m.rd(m.d0, 16), 16) - 1) & 0xffff; m.d0 = m.wr(m.d0, _c, 16); pc = (m.sx(_c, 16) !== -1) ? 0x1e996 : 0x1e9ac; } } break;
       case 0x1e9ac: { m.next = 0x1e9b0; m.d0 = m.loadPost('a7', 4, 32); m.d1 = m.loadPost('a7', 4, 32); m.d2 = m.loadPost('a7', 4, 32); m.d3 = m.loadPost('a7', 4, 32); m.d4 = m.loadPost('a7', 4, 32); m.d5 = m.loadPost('a7', 4, 32); m.d6 = m.loadPost('a7', 4, 32); m.d7 = m.loadPost('a7', 4, 32); m.a0 = m.loadPost('a7', 4, 32); m.a1 = m.loadPost('a7', 4, 32); m.a2 = m.loadPost('a7', 4, 32); m.a3 = m.loadPost('a7', 4, 32); m.a4 = m.loadPost('a7', 4, 32); m.a5 = m.loadPost('a7', 4, 32); m.a6 = m.loadPost('a7', 4, 32); m.a7 = m.loadPost('a7', 4, 32); pc = 0x1e9b0; } break;
-      case 0x1e9b0: { m.next = 0x1e9b4; m.stopped = true; return; } break;
+      case 0x1e9b0: { m.next = 0x1e9b4; m.stopped = true; m.tick(0x1e9b4); return; } break;
       case 0x1e9b4: { m.next = 0x1e9b6; { const _a = m.sx(m.rd(m.a0, 32), 32); m.a0 = m.wr(m.a0, (m.rd(m.a0, 32) - _a), 32); } pc = 0x1e9b6; } break;
       case 0x1e9b6: { m.next = 0x1e9b8; { const _s = m.loadPost('a0', 4, 32); m.a7 = m.wr(m.a7, m.sx(_s, 32), 32); } pc = 0x1e9b8; } break;
       case 0x1e9b8: { m.next = 0x1e9ba; { const _s = m.load(m.a0, 32); m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x1e9ba; } break;

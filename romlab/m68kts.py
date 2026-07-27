@@ -562,7 +562,12 @@ def emit(ins, nxt):
         e = "m.subFlags(%s, (%s) + (m.x ? 1 : 0), %d)" % (O[1].read, O[0].read, bits)
         return "%s; %s" % (O[1].write % e, s)
     if b == "stop":
-        return "m.stopped = true; return;"
+        # A halted 68000 has already prefetched the next instruction, and that
+        # is the address its program counter reports. Halting on the stop's own
+        # address instead means the harness never sees the point the chip
+        # stopped at, and the four routines that open with `stop` could not be
+        # compared at all.
+        return "m.stopped = true; m.tick(0x%05x); return;" % nxt
     if b in ("rte", "rtr"):
         return "return;"
     if b == "reset":

@@ -175,6 +175,13 @@ local function begin_case()
 end
 
 local function record()
+  -- A routine that halts on its first instruction fetches nothing more, so no
+  -- tap fires and no snapshot is taken - which left four of them judged by
+  -- nothing at all. But a halted chip still has a state, and it is as
+  -- comparable as any other: take it at the end of the frame.
+  if snap == nil and steps <= 3 then
+    snap = take_snapshot()
+  end
   if snap then
     log:write(string.format("S %05X %d %d %s", entries[idx], SHAPE, STEPS, snap) .. NL)
   else

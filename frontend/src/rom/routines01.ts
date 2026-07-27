@@ -343,7 +343,7 @@ export function fn_0062e(m: Machine, at = 0x0062e): void {
     m.tick(pc);
     if (m.stopped) return;
     switch (pc) {
-      case 0x0062e: { m.next = 0x00632; m.stopped = true; return; } break;
+      case 0x0062e: { m.next = 0x00632; m.stopped = true; m.tick(0x00632); return; } break;
       case 0x00632: { m.next = 0x00634; pc = 0x00634; } break;
       case 0x00634: { m.next = 0x00636; pc = 0x00636; } break;
       case 0x00636: { m.next = 0x00638; m.logicFlags(m.rd(m.d0, 16), 16); pc = 0x00638; } break;
@@ -361,7 +361,7 @@ export function fn_00642(m: Machine, at = 0x00642): void {
     m.tick(pc);
     if (m.stopped) return;
     switch (pc) {
-      case 0x00642: { m.next = 0x00646; m.stopped = true; return; } break;
+      case 0x00642: { m.next = 0x00646; m.stopped = true; m.tick(0x00646); return; } break;
       case 0x00646: { m.next = 0x00648; pc = 0x00648; } break;
       case 0x00648: { m.next = 0x0064a; pc = 0x0064a; } break;
       default: call(pc, m); return;

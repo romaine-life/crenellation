@@ -16,13 +16,13 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 756 |
-| *of the 593 the map held before trampolines and table cases were found* | *570 verified, 1 partly, 22 not* |
-| **Verified against hardware** | **725** |
+| *of the 593 the map held before trampolines and table cases were found* | *574 verified, 1 partly, 18 not* |
+| **Verified against hardware** | **729** |
 | Failing | 2 |
 | Passing under some inputs, failing under others | 14 |
 | Judged only by a stopping-point mismatch | 1 |
 | Reproduces mid-run but not end to end | 10 |
-| Never judged | 4 |
+| Never judged | 0 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -94,7 +94,7 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**570 of the 593 are fully verified**, counting one as verified only if every
+**574 of the 593 are fully verified**, counting one as verified only if every
 piece it was later split into is. 23 are not.
 
 ### Instruction rules
@@ -141,7 +141,23 @@ It converges. The last pass added six - 0x3EA, 0xC4CA, 0x120A2, 0x12306,
 0x13E0A, 0x1829C - and took failing from 19 to 16, input-dependent from 28 to
 26, and unexplained mismatches from 41 to 36.
 
-### Four routines that nothing can judge
+### The four that "nothing could judge" could be judged
+
+0x62E, 0x642, 0x1E8D2 and 0x18658 all reach `stop #$2700` immediately. A halted
+chip fetches nothing more, so no tap fires and no snapshot was taken after the
+instruction - and that was written down as a permanent boundary four routines
+wide.
+
+It was not. A halted chip still has a state, and taking it at the end of the
+frame gives something to compare. Two things then had to line up: the capture
+takes that snapshot for any case that stops within a few instructions, and the
+port halts at the address the chip reports rather than at the stop's own -
+a halted 68000 has already prefetched the next instruction, and that is what
+its program counter shows.
+
+All four verify. **Nothing in the map is now judged by nothing at all.**
+
+### Entries that were not instructions
 
 0x62E, 0x642, 0x1E8D2 and 0x18658 all reach `stop #$2700` immediately - the
 first two open with it, the others are one jump away. A halted chip fetches
@@ -150,8 +166,7 @@ There is no argument, no stopping point and no harness that produces a
 comparable moment for them. That is a real and permanent boundary, and it is
 four routines wide.
 
-Two more entries were not instructions at all. 0x404 does not disassemble and
-0xFBE2 only as a `dc.w`; a routine starting at either could only ever throw.
+0x404 does not disassemble and 0xFBE2 only as a `dc.w`; a routine starting at either could only ever throw.
 They are dropped from the map and their bytes fold into the function before
 them.
 

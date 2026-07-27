@@ -2024,7 +2024,7 @@ export function fn_198c0(m: Machine, at = 0x198c0): void {
       case 0x1993c: { m.next = 0x19940; { const _ea = ((m.a2 + 21)) >>> 0; const _r = (~m.load(_ea, 8)); m.store(_ea, _r, 8); m.logicFlags(_r, 8); } pc = 0x19940; } break;
       case 0x19940: { m.next = 0x19944; m.logicFlags(m.load(m.a3 + 4, 8), 8); pc = 0x19944; } break;
       case 0x19944: { m.next = 0x19948; if (m.cond('ne')) { pc = 0x19950; } else { pc = 0x19948; } } break;
-      case 0x19948: { m.next = 0x1994c; m.stopped = true; return; } break;
+      case 0x19948: { m.next = 0x1994c; m.stopped = true; m.tick(0x1994c); return; } break;
       case 0x1994c: { m.next = 0x19950; pc = 0x19a1e; break; } break;
       case 0x19950: { m.next = 0x19954; pc = 0x19966; break; } break;
       case 0x19954: { m.next = 0x19956; m.d1 = m.wr(m.d1, m.getSR(), 16); pc = 0x19956; } break;
