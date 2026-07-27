@@ -415,6 +415,38 @@ export class Machine {
    *  re-entered at once, which is worth being able to test against. */
   clearOnTake = true;
 
+  /**
+   * Whether a halted chip is allowed to wait for an interrupt.
+   *
+   * The verification harnesses run a routine in isolation with nothing to
+   * deliver one, so waiting there would just spin to the budget. Only the
+   * booted machine has a board driving interrupts, so only it sets this.
+   */
+  wakeOnIrq = false;
+
+  /**
+   * Halt until an interrupt above the mask arrives, as `stop` does.
+   *
+   * Time still passes while halted - the board keeps counting scanlines - so
+   * the wait has to keep advancing cycles, or the vertical blank that wakes
+   * it never comes. `next` is the address the chip reports while stopped: it
+   * has already prefetched the instruction after the stop.
+   */
+  halt(next: number): void {
+    this.stopped = true;
+    if (!this.wakeOnIrq) return;
+    while (this.stopped) {
+      if (this.irqPending && ((this.sr >> 8) & 7) < this.irqPending) {
+        this.stopped = false;
+        return;
+      }
+      this.cycles += 4;
+      this.steps += 1;
+      if (this.atPc) this.atPc(next);
+      if (this.steps > this.budget) return;   // still halted; the caller gives up
+    }
+  }
+
   /** Stack an interrupt frame and give back the handler address. */
   interruptFrame(level: number): number {
     const sr = this.getSR();

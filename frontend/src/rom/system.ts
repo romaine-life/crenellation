@@ -63,6 +63,8 @@ export class System {
 
   frames = 0;
   private statusToggle = 0;
+  /** Cycles to shift the first interrupt by. */
+  irqPhase = 0;
   /** Set to drive interrupts from an external schedule. */
   pacedIrq: ((steps: number) => boolean) | null = null;
 
@@ -110,8 +112,12 @@ export class System {
    */
   run(onFrame: (sys: System) => void): void {
     const pc = this.reset();
+    this.m.wakeOnIrq = true;
     const m = this.m;
-    let next = CYCLES_PER_FRAME;
+    // The first interrupt's phase. The board's own phase is not special - the
+    // game has to work at any of them - so if the port stalls at every offset
+    // the stall is not timing.
+    let next = CYCLES_PER_FRAME + this.irqPhase;
     m.atPc = (pc: number) => {
       if (this.m.atPcExtra) this.m.atPcExtra(pc);
       // a caller can take over the timing entirely, to deliver interrupts

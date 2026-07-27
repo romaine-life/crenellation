@@ -421,7 +421,7 @@ export function fn_0062e(m: Machine, at = 0x0062e): void {
     m.tick(pc);
     if (m.stopped) return;
     switch (pc) {
-      case 0x0062e: { m.next = 0x00632; m.cycles += 4; m.stopped = true; m.tick(0x00632); return; } break;
+      case 0x0062e: { m.next = 0x00632; m.cycles += 4; m.setSR(0x2700); m.halt(0x00632); pc = 0x00632; break; } break;
       case 0x00632: { m.next = 0x00634; m.cycles += 4; pc = 0x00634; } break;
       case 0x00634: { m.next = 0x00636; m.cycles += 4; pc = 0x00636; } break;
       case 0x00636: { m.next = 0x00638; m.cycles += 4; m.logicFlags(m.rd(m.d0, 16), 16); pc = 0x00638; } break;
@@ -445,7 +445,7 @@ export function fn_00642(m: Machine, at = 0x00642): void {
     m.tick(pc);
     if (m.stopped) return;
     switch (pc) {
-      case 0x00642: { m.next = 0x00646; m.cycles += 4; m.stopped = true; m.tick(0x00646); return; } break;
+      case 0x00642: { m.next = 0x00646; m.cycles += 4; m.setSR(0x2700); m.halt(0x00646); pc = 0x00646; break; } break;
       case 0x00646: { m.next = 0x00648; m.cycles += 4; pc = 0x00648; } break;
       case 0x00648: { m.next = 0x0064a; m.cycles += 4; pc = 0x0064a; } break;
       default: call(pc, m); return;

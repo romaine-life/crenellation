@@ -648,7 +648,17 @@ def emit(ins, nxt):
         # address instead means the harness never sees the point the chip
         # stopped at, and the four routines that open with `stop` could not be
         # compared at all.
-        return "m.stopped = true; m.tick(0x%05x); return;" % nxt
+        # `stop` also loads its operand into the status register - that is
+        # what raises the mask that decides which interrupt is allowed to
+        # wake it. Emitting the halt without the load left the mask at
+        # whatever the caller had, so the chip and the port disagreed about
+        # which interrupts get through while halted.
+        imm = 0
+        mm = re.search(r"#\$?([0-9a-fA-F]+)", ins.op_str or "")
+        if mm:
+            imm = int(mm.group(1), 16 if "$" in (ins.op_str or "") else 10)
+        return ("m.setSR(0x%x); m.halt(0x%05x); pc = 0x%05x; break;"
+                % (imm, nxt, nxt))
     if b in ("rte", "rtr"):
         # Not a bare return. `rte` pops the status register and the program
         # counter the exception stacked, and the status register is what

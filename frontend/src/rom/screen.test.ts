@@ -66,6 +66,7 @@ function png(w: number, h: number, rgba: Uint32Array): Buffer {
 describe('what the booted machine draws', () => {
   it('writes the screen out', () => {
     const sys = new System(rom);
+    sys.irqPhase = Number(process.env.IRQ_PHASE ?? 0);
     const STOP_AFTER = 6000;          // ten seconds of game time
     let done = false;
     const notes: string[] = [];
