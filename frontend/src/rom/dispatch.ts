@@ -668,6 +668,7 @@ const STARTS: number[] = [
   0x188ec,
   0x188f8,
   0x1890c,
+  0x18940,
   0x18a5e,
   0x18a66,
   0x18afe,
@@ -1427,6 +1428,7 @@ const ENDS: number[] = [
   0x188f8,
   0x1890c,
   0x1893c,
+  0x1899c,
   0x18a66,
   0x18afe,
   0x18b26,
@@ -2186,6 +2188,7 @@ const FNS: Routine[] = [
   r10.fn_188ec,
   r10.fn_188f8,
   r10.fn_1890c,
+  r10.fn_18940,
   r10.fn_18a5e,
   r10.fn_18a66,
   r10.fn_18afe,
@@ -2238,7 +2241,7 @@ const FNS: Routine[] = [
   r10.fn_19c3c,
   r10.fn_19c70,
   r10.fn_19ccc,
-  r10.fn_19cd0,
+  r11.fn_19cd0,
   r11.fn_19f3e,
   r11.fn_1a05a,
   r11.fn_1a0cc,
@@ -2330,4 +2333,4 @@ export function call(addr: number, m: Machine): void {
   }
 }
 
-export const ROUTINE_COUNT = 757;
+export const ROUTINE_COUNT = 758;

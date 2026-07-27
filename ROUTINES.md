@@ -16,13 +16,13 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 757 |
-| *of the 593 the map held before trampolines and table cases were found* | *568 verified, 25 not* |
-| **Verified against hardware** | **720** |
+| *of the 593 the map held before trampolines and table cases were found* | *570 verified, 23 not* |
+| **Verified against hardware** | **725** |
 | Failing | 2 |
-| Passing under some inputs, failing under others | 15 |
-| Judged only by a stopping-point mismatch | 6 |
+| Passing under some inputs, failing under others | 14 |
+| Judged only by a stopping-point mismatch | 4 |
 | Reproduces mid-run but not end to end | 9 |
-| Never judged | 5 |
+| Never judged | 4 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -34,7 +34,12 @@ The fourth does not need the routine to finish, and it is now the widest of
 the four: it reaches 135 routines no call-and-return harness can judge. The capture runs the chip for a
 while, stops, and records **the address of the instruction it stopped on**
 along with fifteen registers and a hash of the memory window. The port then
-compares every time it arrives at that address. The capture runs at seven stopping points - 2, 3, 5, 10, 20, 60 and 200
+compares every time it arrives at that address. A stopping point of one instruction was added last, for the routines that are
+one instruction long: 0x19C2E is `trap #$0`, 0x1E8D2 is `stop #$2700`, 0x18658
+is a single `jmp`. Nothing shorter than two instructions could ever catch them,
+and they were sitting in the unjudged column for that reason alone.
+
+The capture runs at eight stopping points - 2, 3, 5, 10, 20, 60 and 200
 instructions - and a match at any of them settles the routine.
 
 One stopping point was not enough, and the reason is worth stating because it
@@ -89,8 +94,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**568 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 25 are not.
+**570 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 23 are not.
 
 ### Instruction rules
 

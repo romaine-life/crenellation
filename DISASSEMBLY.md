@@ -9,7 +9,7 @@ that cite the evidence they used.
 ## Coverage
 
 - **Bytes accounted for: 131072 of 131072 - 100.0%**
-- Code: 87662 bytes in **757 functions**
+- Code: 87754 bytes in **758 functions**
 - Data: 50722 bytes in **92 regions**
 - **Functions labelled unknown: 0**
 - **Data regions unnamed: 0**
@@ -681,6 +681,7 @@ the hardware a routine writes, the table it indexes, or its only caller.
 | `188EC` | 12 | 0 | jump-table case at 0x188ec | reached from the table at 0x1883e used by the jmp at 0x1883a |
 | `188F8` | 20 | 0 | jump-table case at 0x188f8 | reached from the table at 0x1883e used by the jmp at 0x1883a |
 | `1890C` | 48 | 0 | sound gate on 0x3E340E | skips the call when the flag is set |
+| `18940` | 92 | 0 | computed-jump entry at 0x18940 | observed as a jump target during the differential run with no function covering it |
 | `18A5E` | 8 | 5 | small leaf utility | 8 bytes, no calls, no state access |
 | `18A66` | 152 | 0 | framebuffer draw | writes the framebuffer |
 | `18AFE` | 40 | 1 | sound call - two long args | marshals two longs for the driver |
