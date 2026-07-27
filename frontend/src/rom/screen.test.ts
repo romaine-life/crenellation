@@ -85,7 +85,7 @@ describe('what the booted machine draws', () => {
     let waitOn = -1; let waitFrame = -1; let setFrame = -1;
     const chanTrace: string[] = [];
     const writers = new Map<number, number>();
-    sys.m.watchLo = 0x3e0804; sys.m.watchHi = 0x3e0805;
+    sys.m.watchLo = 0x3e3528; sys.m.watchHi = 0x3e352b;
     const order: string[] = [];
     sys.m.onWrite = (a, v, pc) => {
       writers.set(pc, (writers.get(pc) ?? 0) + 1);
