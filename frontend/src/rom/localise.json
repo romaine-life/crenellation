@@ -1,50 +1,20 @@
 [
  {
-  "entry": "0x18caa",
-  "lastOk": 2,
-  "firstBad": 3,
-  "pc": "0x18cb4"
- },
- {
-  "entry": "0x441c",
-  "lastOk": 3,
-  "firstBad": 5,
-  "pc": "0x4430"
- },
- {
-  "entry": "0x19a24",
-  "lastOk": 3,
-  "firstBad": 5,
-  "pc": "0x19a32"
- },
- {
   "entry": "0x8b4",
-  "lastOk": 10,
+  "lastOk": 18,
   "firstBad": 20,
   "pc": "0x8e8"
  },
  {
-  "entry": "0xa7e6",
+  "entry": "0xf79e",
   "lastOk": 10,
-  "firstBad": 20,
-  "pc": "0x5e6"
- },
- {
-  "entry": "0x220c",
-  "lastOk": 20,
-  "firstBad": 60,
-  "pc": "0x5bc4"
+  "firstBad": 12,
+  "pc": "0xf7cc"
  },
  {
   "entry": "0x278",
   "lastOk": 60,
   "firstBad": 200,
   "pc": "0x1495e"
- },
- {
-  "entry": "0x18a5e",
-  "lastOk": 60,
-  "firstBad": 200,
-  "pc": "0x1e72c"
  }
 ]
