@@ -136,6 +136,15 @@ It converges. The last pass added six - 0x3EA, 0xC4CA, 0x120A2, 0x12306,
 0x13E0A, 0x1829C - and took failing from 19 to 16, input-dependent from 28 to
 26, and unexplained mismatches from 41 to 36.
 
+### How much the result leans on the two pc/register pairings
+
+Because the capture's program counter sometimes names the instruction about to
+run and sometimes the one just finished, a match is accepted under either
+reading. That is a place where a spurious match could creep in, so it was
+measured: restricting the comparison to the arrival reading alone takes the
+instruction-boundary harness from 712 routines to 710. Two routines depend on
+it. The figure is not resting on the looser test.
+
 ### Bracketing a divergence
 
 The stopping points double as a bisection. `0x8B4`, the piece walker, was clean
