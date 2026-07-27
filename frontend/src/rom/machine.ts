@@ -43,6 +43,8 @@ export class Machine {
    * and hoping the counts mean the same thing.
    */
   pc = 0;
+  /** Address of the instruction after the one running, for exception frames. */
+  next = 0;
   atPc: ((pc: number) => void) | null = null;
 
   tick(pc = 0): void {
@@ -77,13 +79,18 @@ export class Machine {
    * instruction register, the status register and the program counter.
    */
   addressErrorFrame(): number {
-    const pc = this.pc >>> 0;
-    const sr = this.getSR();
-    this.storePre('a7', 4, pc, 32);
-    this.storePre('a7', 2, sr, 16);
-    this.storePre('a7', 2, this.load(pc & 0xffffff & ~1, 16), 16);
+    // Taken from the chip rather than the manual. Faulting it deliberately -
+    // `move.w (a0), d0` with a0 odd - and reading the stack back shows the
+    // program counter pushed is the address *after* the instruction, not the
+    // instruction's own, and the special status word carries the top byte of
+    // the instruction register with it.
+    const at = this.pc >>> 0;
+    const ir = this.load(at & 0xfffffe, 16);
+    this.storePre('a7', 4, this.next >>> 0, 32);
+    this.storePre('a7', 2, this.getSR(), 16);
+    this.storePre('a7', 2, ir, 16);
     this.storePre('a7', 4, this.faultAddr, 32);
-    this.storePre('a7', 2, this.faultWrite ? 0x0005 : 0x0015, 16);
+    this.storePre('a7', 2, ((ir & 0xff00) | (this.faultWrite ? 0x05 : 0x15)) & 0xffff, 16);
     return this.load(0x0c, 32);
   }
 

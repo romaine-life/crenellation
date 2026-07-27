@@ -16,13 +16,13 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 757 |
-| *of the 593 the map held before trampolines and table cases were found* | *554 verified, 39 not* |
-| **Verified against hardware** | **696** |
-| Failing | 4 |
+| *of the 593 the map held before trampolines and table cases were found* | *569 verified, 24 not* |
+| **Verified against hardware** | **721** |
+| Failing | 2 |
 | Passing under some inputs, failing under others | 13 |
 | Judged only by a stopping-point mismatch | 6 |
-| Reproduces mid-run but not end to end | 8 |
-| Never judged | 30 |
+| Reproduces mid-run but not end to end | 10 |
+| Never judged | 5 |
 
 Four harnesses. Three call the routine and compare everything when it comes
 back to a sentinel return address: one drives it with three argument shapes in
@@ -89,8 +89,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**554 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 39 are not.
+**569 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 24 are not.
 
 ### Instruction rules
 
@@ -153,6 +153,27 @@ faulted and the snapshot describes the handler. Those are discarded now, along
 with the reset-code ones.
 
 Nine divergences remain bracketed to between one and forty instructions each.
+
+### It was the watchdog
+
+For most of this work the largest unjudged group was routines whose every
+snapshot was taken inside the power-on reset code. That was recorded first as
+"the chip crashed", then more carefully as "the chip took an address error the
+port does not model", and an address-error exception was implemented to close
+it. The exception did not close it, which was the clue: an address error
+vectors to 0x018564, a message stub, not to 0x1357C.
+
+The board has a watchdog. The harness freezes the game for a whole frame per
+case, so nothing kicks it, and the board resets - which is what put the chip in
+its reset code. Nothing to do with the routine under test at all.
+
+Kicking it the way the game does, `clr.w $72FFFE`, takes the number of
+snapshots landing in the reset code from hundreds to **zero**, and the
+instruction-boundary harness from 2,513 of 2,859 to 2,841 of 2,879 with nothing
+discarded.
+
+0x72FFFE had been sitting in the list of addresses routines read that could not
+be accounted for.
 
 ### What "the chip faulted" is worth now
 

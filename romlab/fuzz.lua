@@ -294,6 +294,9 @@ local START = 2400
 
 emu.register_frame_done(function()
   frame = frame + 1
+  -- Kick the watchdog: the harness freezes the game for a frame per case, so
+  -- nothing else does, and the board resets. The game kicks it the same way.
+  space:write_u16(0x72FFFE, 0)
   if frame < START then
     local c = frame % 240
     if c == 0 then set(":IN1", "Coin 1", 1) end

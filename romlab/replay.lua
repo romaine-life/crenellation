@@ -207,6 +207,9 @@ end
 
 emu.register_frame_done(function()
   frame = frame + 1
+  -- Kick the watchdog: the harness freezes the game for a frame per case, so
+  -- nothing else does, and the board resets. The game kicks it the same way.
+  space:write_u16(0x72FFFE, 0)
   if frame == 400 then
     space:write_u16(SENTINEL, PARK)
     dump_baseline()

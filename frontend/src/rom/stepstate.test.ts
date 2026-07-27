@@ -153,7 +153,7 @@ describe('routines compared at the instruction the chip stopped on', () => {
       // translation. Dropping this filter judges 18 more routines and fails
       // almost all of them for that reason, which is a worse answer than
       // saying so.
-      const cs = all.filter((x) => !(x.pc >= 0x1357c && x.pc < 0x1365c));
+      const cs = all.filter(() => true);
       if (!cs.length) { crashed += 1; skip(entry, 'the chip took an address error, which the port does not model'); continue; }
 
       for (let k = 0; k < 8; k += 1) (m as never as Record<string, number>)[`d${k}`] = d[k];

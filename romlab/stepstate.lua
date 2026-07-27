@@ -203,6 +203,11 @@ end
 
 emu.register_frame_done(function()
   frame = frame + 1
+  -- Kick the watchdog. The harness freezes the game for a frame per case, so
+  -- nothing else does, and the board resets - which is why so many snapshots
+  -- were taken in the reset code with no fault to explain them. The game kicks
+  -- it the same way, `clr.w $72FFFE`.
+  if space then space:write_u16(0x72FFFE, 0) end
   if frame < START then
     local c = frame % 240
     local function set(pt, f, v)
