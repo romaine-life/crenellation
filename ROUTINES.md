@@ -16,8 +16,8 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 756 |
-| *of the 593 the map held before trampolines and table cases were found* | *574 verified, 1 partly, 18 not* |
-| **Verified against hardware** | **729** |
+| *of the 593 the map held before trampolines and table cases were found* | *590 verified, 3 not* |
+| **Verified against hardware** | **752** |
 | Failing | 0 |
 | Passing under some inputs, failing under others | 14 |
 | Judged only by a stopping-point mismatch | 1 |
@@ -94,7 +94,7 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**574 of the 593 are fully verified**, counting one as verified only if every
+**590 of the 593 are fully verified**, counting one as verified only if every
 piece it was later split into is. 23 are not.
 
 ### Instruction rules
@@ -205,7 +205,31 @@ contradiction rather than a rare case. The matching is sound for the great
 majority and the exceptions are a known, measured fraction rather than an
 unexamined assumption.
 
-### Where the remaining nineteen sit
+### Single-stepping the chip
+
+The routines that would not verify sat disproportionately where the capture's
+program counter disagreed with the instruction stream - 7.6% of their
+straight-line snapshots against 2.6% overall. That pointed at the capture
+rather than the port, so the capture was replaced for them.
+
+MAME's debugger can single-step under `-debug -debugger none`. A breakpoint does
+not halt the machine there - that was tried and does not work - but `step()`
+advances exactly one instruction, and the state after it is a real boundary. It
+costs a frame per instruction, which is why it runs only for the routines that
+need it: 324 cases in forty seconds.
+
+**23 of the 27 reproduce.** The tap-based capture had been wrong about them.
+
+Three details had to be right first, and each was found by the numbers being
+wrong in a particular way. The tick that counts an instruction happens before it
+runs, so a budget of N leaves N-1 completed. `PC` read while the debugger has
+the machine stopped is the prefetch pointer, one word ahead. And `CURPC` names
+the instruction that just ran, so it lags its own registers by one and the two
+cannot both line up - which is why the address is not part of this comparison
+at all. The step count fixes the position on both sides; only registers and
+memory are compared.
+
+### Where the remaining routines sit
 
 The nineteen that do not verify are not spread evenly. Of their straight-line
 snapshots, **7.6% have a program counter that disagrees with the instruction

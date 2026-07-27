@@ -1,0 +1,215 @@
+{
+ "pass": [
+  370,
+  554,
+  560,
+  632,
+  1332,
+  1568,
+  1622,
+  2228,
+  5340,
+  34654,
+  34936,
+  35440,
+  47560,
+  58288,
+  60906,
+  62386,
+  63024,
+  63390,
+  63798,
+  64454,
+  78000,
+  82388,
+  101546
+ ],
+ "fail": [
+  52554,
+  99652,
+  105532,
+  124856
+ ],
+ "detail": [
+  {
+   "entry": "0x534",
+   "shape": 0,
+   "steps": 1,
+   "what": "memory"
+  },
+  {
+   "entry": "0x534",
+   "shape": 0,
+   "steps": 2,
+   "what": "memory"
+  },
+  {
+   "entry": "0x534",
+   "shape": 0,
+   "steps": 3,
+   "what": "memory"
+  },
+  {
+   "entry": "0x534",
+   "shape": 0,
+   "steps": 5,
+   "what": "memory"
+  },
+  {
+   "entry": "0x534",
+   "shape": 0,
+   "steps": 10,
+   "what": "memory"
+  },
+  {
+   "entry": "0x534",
+   "shape": 0,
+   "steps": 20,
+   "what": "memory"
+  },
+  {
+   "entry": "0x534",
+   "shape": 1,
+   "steps": 1,
+   "what": "d0 rom=19 port=0"
+  },
+  {
+   "entry": "0x534",
+   "shape": 1,
+   "steps": 3,
+   "what": "d3 rom=1e port=0"
+  },
+  {
+   "entry": "0x656",
+   "shape": 1,
+   "steps": 2,
+   "what": "memory"
+  },
+  {
+   "entry": "0x656",
+   "shape": 1,
+   "steps": 3,
+   "what": "memory"
+  },
+  {
+   "entry": "0x656",
+   "shape": 1,
+   "steps": 5,
+   "what": "a0 rom=3e3672 port=3e0864"
+  },
+  {
+   "entry": "0x656",
+   "shape": 1,
+   "steps": 10,
+   "what": "d2 rom=ffffffe0 port=7"
+  },
+  {
+   "entry": "0x656",
+   "shape": 1,
+   "steps": 20,
+   "what": "d0 rom=c8 port=1c"
+  },
+  {
+   "entry": "0x8b4",
+   "shape": 0,
+   "steps": 1,
+   "what": "memory"
+  },
+  {
+   "entry": "0x8b4",
+   "shape": 0,
+   "steps": 2,
+   "what": "a3 rom=3e4341 port=df003e"
+  },
+  {
+   "entry": "0x8b4",
+   "shape": 0,
+   "steps": 3,
+   "what": "d3 rom=f177 port=40e70000"
+  },
+  {
+   "entry": "0x8b4",
+   "shape": 0,
+   "steps": 10,
+   "what": "d0 rom=3b00 port=0"
+  },
+  {
+   "entry": "0x8b4",
+   "shape": 0,
+   "steps": 20,
+   "what": "a0 rom=3e1ae2 port=1000a"
+  },
+  {
+   "entry": "0x8b4",
+   "shape": 1,
+   "steps": 1,
+   "what": "memory"
+  },
+  {
+   "entry": "0x8b4",
+   "shape": 1,
+   "steps": 2,
+   "what": "a3 rom=3e0864 port=df003e"
+  },
+  {
+   "entry": "0x8b4",
+   "shape": 1,
+   "steps": 3,
+   "what": "d3 rom=17 port=40e70000"
+  },
+  {
+   "entry": "0x8b4",
+   "shape": 1,
+   "steps": 20,
+   "what": "a0 rom=3e1ae2 port=1000a"
+  },
+  {
+   "entry": "0x14dc",
+   "shape": 0,
+   "steps": 1,
+   "what": "d2 rom=3dfe port=f"
+  },
+  {
+   "entry": "0x14dc",
+   "shape": 0,
+   "steps": 2,
+   "what": "d4 rom=7cc7 port=2000"
+  },
+  {
+   "entry": "0x14dc",
+   "shape": 0,
+   "steps": 5,
+   "what": "a2 rom=3e40c0 port=fcf6"
+  },
+  {
+   "entry": "0x14dc",
+   "shape": 0,
+   "steps": 20,
+   "what": "a0 rom=3e42ca port=f79e"
+  },
+  {
+   "entry": "0x14dc",
+   "shape": 1,
+   "steps": 1,
+   "what": "d2 rom=1e port=f"
+  },
+  {
+   "entry": "0x14dc",
+   "shape": 1,
+   "steps": 2,
+   "what": "d4 rom=7 port=2000"
+  },
+  {
+   "entry": "0x14dc",
+   "shape": 1,
+   "steps": 5,
+   "what": "a2 rom=3e1bc6 port=fcf6"
+  },
+  {
+   "entry": "0x14dc",
+   "shape": 1,
+   "steps": 20,
+   "what": "a0 rom=3e0864 port=f79e"
+  }
+ ]
+}
