@@ -45,12 +45,17 @@ describe('generated ROM routines', () => {
     // The map grew as executable code kept turning up that had been filed as
     // data: trampolines below the first routine, jump-table cases, pointer
     // targets. 593 was the count before any of that was found, 754 before the
-    // game was run far enough to jump into the rest. The last 17 came from
+    // game was run far enough to jump into the rest. The last 18 came from
     // running it: each is an address the dispatcher had no routine for when
     // the game jumped there, fed back through out/runtime-entries.json. One
     // of them, 0x140010, is not in the program ROM at all - it is in the
     // board ROM at 0x140000.
-    expect(ROUTINE_COUNT).toBe(771);
+    // A floor, not an exact count. Routines are still being found by running
+    // the game, so the number goes up whenever one turns up - which is the
+    // work going right, and twice now has been a red CI run reporting it as a
+    // failure. Losing routines would be the real regression, and a floor
+    // catches that.
+    expect(ROUTINE_COUNT).toBeGreaterThanOrEqual(772);
   });
 
   it('reproduces the random number generator for all 96 captured cases', () => {
