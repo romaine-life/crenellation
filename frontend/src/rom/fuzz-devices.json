@@ -1,178 +1,178 @@
 [
  {
   "device": "0x140000",
-  "accesses": 91
- },
- {
-  "device": "0x2f0000",
-  "accesses": 60
+  "accesses": 101
  },
  {
   "device": "0x640000",
-  "accesses": 53
+  "accesses": 87
+ },
+ {
+  "device": "0x2f0000",
+  "accesses": 62
  },
  {
   "device": "0x230000",
-  "accesses": 38
+  "accesses": 47
+ },
+ {
+  "device": "0x3c0000",
+  "accesses": 45
+ },
+ {
+  "device": "0x220000",
+  "accesses": 32
+ },
+ {
+  "device": "0x400000",
+  "accesses": 30
  },
  {
   "device": "0x3d0000",
-  "accesses": 25
+  "accesses": 30
  },
  {
-  "device": "0x-7ab80000",
-  "accesses": 17
+  "device": "0x2b0000",
+  "accesses": 28
  },
  {
-  "device": "0x4eb90000",
-  "accesses": 15
+  "device": "0x250000",
+  "accesses": 28
  },
  {
-  "device": "0x-10000",
-  "accesses": 12
+  "device": "0x460000",
+  "accesses": 28
+ },
+ {
+  "device": "0x260000",
+  "accesses": 20
+ },
+ {
+  "device": "0x6c0000",
+  "accesses": 18
  },
  {
   "device": "0x720000",
-  "accesses": 8
+  "accesses": 16
+ },
+ {
+  "device": "0x240000",
+  "accesses": 16
+ },
+ {
+  "device": "0xff0000",
+  "accesses": 15
+ },
+ {
+  "device": "0x2a0000",
+  "accesses": 12
+ },
+ {
+  "device": "0x7e0000",
+  "accesses": 9
+ },
+ {
+  "device": "0xf30000",
+  "accesses": 9
  },
  {
   "device": "0x2c0000",
   "accesses": 8
  },
  {
-  "device": "0x2e0000",
+  "device": "0x750000",
   "accesses": 8
  },
  {
-  "device": "0x460000",
+  "device": "0xa60000",
   "accesses": 8
  },
  {
-  "device": "0x75750000",
-  "accesses": 6
- },
- {
-  "device": "0x7e0000",
-  "accesses": 5
+  "device": "0xb90000",
+  "accesses": 8
  },
  {
   "device": "0x300000",
+  "accesses": 6
+ },
+ {
+  "device": "0x980000",
   "accesses": 4
  },
  {
-  "device": "0xa50000",
+  "device": "0xa00000",
   "accesses": 4
  },
  {
-  "device": "0xa40000",
+  "device": "0x110000",
   "accesses": 4
  },
  {
-  "device": "0x240000",
+  "device": "0xdc0000",
   "accesses": 4
  },
  {
-  "device": "0x1f010000",
+  "device": "0xf60000",
   "accesses": 4
  },
  {
-  "device": "0x-7a000000",
+  "device": "0x580000",
   "accesses": 4
  },
  {
-  "device": "0x494e0000",
+  "device": "0x660000",
   "accesses": 4
  },
  {
-  "device": "0x4ef90000",
+  "device": "0x2d0000",
   "accesses": 4
  },
  {
-  "device": "0x400000",
+  "device": "0x2e0000",
   "accesses": 4
  },
  {
-  "device": "0x280000",
-  "accesses": 4
- },
- {
-  "device": "0x2a0000",
-  "accesses": 4
- },
- {
-  "device": "0x220000",
-  "accesses": 4
- },
- {
-  "device": "0xda60000",
-  "accesses": 4
- },
- {
-  "device": "0x290000",
-  "accesses": 4
- },
- {
-  "device": "0x2b0000",
-  "accesses": 4
- },
- {
-  "device": "0x48e70000",
-  "accesses": 4
- },
- {
-  "device": "0x1e0000",
-  "accesses": 4
- },
- {
-  "device": "0x46fc0000",
+  "device": "0xc30000",
   "accesses": 4
  },
  {
   "device": "0x480000",
-  "accesses": 4
- },
- {
-  "device": "0x260000",
-  "accesses": 4
- },
- {
-  "device": "0x131b0000",
   "accesses": 3
  },
  {
-  "device": "0x3c0000",
-  "accesses": 3
- },
- {
-  "device": "0x6c0000",
-  "accesses": 3
- },
- {
-  "device": "0xb00000",
+  "device": "0x160000",
   "accesses": 2
  },
  {
-  "device": "0x7f0000",
+  "device": "0x920000",
   "accesses": 2
  },
  {
-  "device": "0x-79a80000",
+  "device": "0x280000",
   "accesses": 2
  },
  {
-  "device": "0x180000",
+  "device": "0x6a0000",
+  "accesses": 2
+ },
+ {
+  "device": "0xda0000",
+  "accesses": 2
+ },
+ {
+  "device": "0x5a0000",
   "accesses": 1
  },
  {
-  "device": "0x510000",
+  "device": "0x9a0000",
   "accesses": 1
  },
  {
-  "device": "0xbd0000",
+  "device": "0x9e0000",
   "accesses": 1
  },
  {
-  "device": "0x3c1f0000",
+  "device": "0xfd0000",
   "accesses": 1
  }
 ]

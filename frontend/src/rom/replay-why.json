@@ -4,27 +4,7 @@
   "why": "reads 0x7effff 0x72ffff 0x640002 0x3c0000 then instruction budget exhausted after 20000"
  },
  {
-  "entry": "0x19a24",
-  "why": "reads 0x50032b 0x50033b 0x500333 0x50032f (not modelled)"
- },
- {
-  "entry": "0xe020",
-  "why": "threw: no routine covers 0xe516"
- },
- {
-  "entry": "0xedea",
-  "why": "d0,a2 first d0 rom=0 port=1"
- },
- {
   "entry": "0x14dc",
-  "why": "memory only"
- },
- {
-  "entry": "0x5056",
-  "why": "reads 0x54005400 0x54005401 0x54005402 0x54005403 (not modelled)"
- },
- {
-  "entry": "0x656",
   "why": "memory only"
  },
  {
@@ -36,35 +16,11 @@
   "why": "reads 0x640000 (not modelled)"
  },
  {
-  "entry": "0x5622",
-  "why": "reads 0xe30a64ea 0xe30a64eb 0xe30a64ec 0xe30a64ed (not modelled)"
+  "entry": "0x656",
+  "why": "memory only"
  },
  {
-  "entry": "0x875e",
-  "why": "reads 0x8600000d 0x8600000e 0x8600000d 0x8600000e then instruction budget exhausted after 20000"
- },
- {
-  "entry": "0x8b4",
-  "why": "reads 0x32c60000 0x32c60001 (not modelled)"
- },
- {
-  "entry": "0x3f94",
-  "why": "threw: Maximum call stack size exceeded"
- },
- {
-  "entry": "0x74fa",
-  "why": "reads 0xf900003e (not modelled)"
- },
- {
-  "entry": "0xb738",
-  "why": "reads 0x6000002c 0x6000002d 0x6000002e 0x6000002f (not modelled)"
- },
- {
-  "entry": "0x19c3c",
-  "why": "threw: no routine covers 0x19c70"
- },
- {
-  "entry": "0x1978e",
-  "why": "threw: no routine covers 0x197d8"
+  "entry": "0x534",
+  "why": "reads 0x6c0007 (not modelled)"
  }
 ]

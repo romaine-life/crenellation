@@ -1,47 +1,75 @@
 [
  {
-  "cause": "threw",
-  "routines": 28,
-  "sample": "no routine covers 0x2768",
+  "cause": "registers and memory",
+  "routines": 342,
+  "sample": "",
   "entries": [
-   "0x272e",
-   "0x4f9e",
-   "0x7ea4",
-   "0x7f5a",
-   "0x8200",
-   "0x9208",
-   "0xa80c",
-   "0xa90e",
-   "0xc240",
-   "0xc568"
+   "0x118",
+   "0x11e",
+   "0x124",
+   "0x130",
+   "0x136",
+   "0x148",
+   "0x15a",
+   "0x172",
+   "0x178",
+   "0x184"
   ]
  },
  {
   "cause": "off-map hardware",
-  "routines": 11,
-  "sample": "0x640001",
+  "routines": 93,
+  "sample": "0x980001 0x980001 0x16494c 0x16494d",
   "entries": [
-   "0x5b4",
-   "0x3242",
-   "0x44a2",
-   "0x744e",
-   "0x74fa",
-   "0xa7e6",
-   "0x11f2a",
-   "0x133ec",
-   "0x18cce",
-   "0x18cde"
+   "0x142",
+   "0x1ca",
+   "0x1e2",
+   "0x23c",
+   "0x248",
+   "0x25a",
+   "0x26c",
+   "0x292",
+   "0x306",
+   "0x580"
+  ]
+ },
+ {
+  "cause": "registers",
+  "routines": 61,
+  "sample": "d2 rom=0 port=e480",
+  "entries": [
+   "0x160",
+   "0x166",
+   "0x1e8",
+   "0x1ee",
+   "0x200",
+   "0x206",
+   "0x224",
+   "0x22a",
+   "0x52a",
+   "0x620"
   ]
  },
  {
   "cause": "memory",
-  "routines": 4,
+  "routines": 5,
   "sample": "",
   "entries": [
    "0x620",
    "0x656",
    "0x14dc",
-   "0x900a"
+   "0xf630",
+   "0xf936"
+  ]
+ },
+ {
+  "cause": "threw",
+  "routines": 3,
+  "sample": "no routine covers 0x88b0",
+  "entries": [
+   "0x8878",
+   "0x124e2",
+   "0x12574"
   ]
  },
  {

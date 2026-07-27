@@ -42,7 +42,10 @@ function withArgs(args: number[]): Machine {
 
 describe('generated ROM routines', () => {
   it('emits every routine in the overlay', () => {
-    expect(ROUTINE_COUNT).toBe(593);
+    // the map grew as executable code kept turning up that had been filed as
+    // data: trampolines below the first routine, jump-table cases, pointer
+    // targets. 593 was the count before any of that was found.
+    expect(ROUTINE_COUNT).toBe(754);
   });
 
   it('reproduces the random number generator for all 96 captured cases', () => {
