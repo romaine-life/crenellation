@@ -33,9 +33,10 @@ for (const line of readFileSync(join(here, 'stepstate.log'), 'utf8').split('\n')
 // enough for the worst case takes longer than the answer is worth.
 const verdicts = JSON.parse(readFileSync(join(here, 'verified.json'), 'utf8')) as {
   failing: number[]; conflicted: number[]; stepStateOnlyMismatch: number[];
+  midRunOnly: number[];
 };
 const TARGETS = new Set<number>([...verdicts.failing, ...verdicts.conflicted,
-  ...verdicts.stepStateOnlyMismatch]);
+  ...verdicts.stepStateOnlyMismatch, ...(verdicts.midRunOnly ?? [])]);
 
 const entries: number[] = readFileSync(join(here, 'entries.txt'), 'utf8')
   .split('\n').map((s) => s.trim()).filter(Boolean).map((s) => parseInt(s, 16));
@@ -109,7 +110,7 @@ describe('where each divergence starts', () => {
       m.a6 = STACK + 0x200;
       m.sr = 0x2700;
       m.stubMissing = true;
-      m.budget = 20000;   // the furthest stopping point is 200 instructions
+      m.budget = 200000;   // the furthest stopping point is 2000 instructions
       // The capture's registers are the state *after* the instruction at the
       // recorded address has run, while CURPC still names it. Comparing when
       // the port arrives at that address compares one instruction too early,

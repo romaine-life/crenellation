@@ -1,20 +1,20 @@
 value at 0x3E1960 before the call: 0x3e1ae2
-  step 2 pc 8bc: regs match memory matches
-  step 3 pc 8c0: regs match memory matches
-  step 2 pc 8bc: regs differ [a3 rom=3e1bc6 port=20003e] memory matches
-  step 3 pc 8c0: regs differ [d3 rom=a port=41bd0000] memory matches
-  step 5 pc 8c6: regs match memory matches
-  step 5 pc 8c6: regs match memory differs
-  step 10 pc 11bd8: regs differ [d0 rom=0 port=c9] memory matches
-  step 10 pc 11bd8: regs match memory matches
-  step 12 pc 11bde: regs match memory matches
-  step 12 pc 11bde: regs differ [d0 rom=c8 port=1900] memory matches
-  step 14 pc 11be4: regs match memory matches
-  step 14 pc 11be4: regs differ [d0 rom=19c9 port=3e222d] memory matches
-  step 16 pc 8da: regs differ [d6 rom=3e222d port=12] memory matches
-  step 16 pc 8da: regs match memory matches
-  step 18 pc 8e2: regs differ [d0 rom=0 port=3e222d] memory matches
-  step 18 pc 8e2: regs match memory matches
-  step 20 pc 8e8: regs differ [a0 rom=11ae2 port=3e1ae2] memory matches
-  step 20 pc 8e8: regs differ [a0 rom=11ae2 port=1000a] memory matches
+  step 1 pc 19c40: regs differ [a0 rom=6c0864 port=3e0864] memory matches
+  step 2 pc 19c46: regs match memory matches
+  step 1 pc 19c40: regs differ [a0 rom=6c0864 port=6c0000] memory matches
+  step 3 pc 19c4c: regs match memory differs
+  step 2 pc 19c46: regs differ [a1 rom=3e02d8 port=3e367c] memory matches
+  step 3 pc 19c4c: regs match memory matches
+  step 5 pc 19c74: regs differ [d0 rom=ff port=a] memory matches
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0] memory matches
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, a0 rom=6c0005 port=6c0000, a1 rom=3e368c port=3e367c] memory differs
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, a0 rom=6c0005 port=6c0000, a1 rom=3e368c port=3e367c] memory differs
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d3 rom=13 port=0, a0 rom=6c0000 port=6c0001, a1 rom=3e367c port=3e3684] memory differs
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d3 rom=13 port=0, a0 rom=6c0000 port=6c0001, a1 rom=3e367c port=3e3684] memory differs
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, a0 rom=6c0005 port=6c0001, a1 rom=3e368c port=3e3684] memory differs
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, a0 rom=6c0005 port=6c0001, a1 rom=3e368c port=3e3684] memory differs
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d3 rom=13 port=0, a0 rom=6c0000 port=6c0005, a1 rom=3e367c port=3e368c] memory differs
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d3 rom=13 port=0, a0 rom=6c0000 port=6c0005, a1 rom=3e367c port=3e368c] memory differs
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0] memory matches
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0] memory matches
 value at 0x3E1960 after the call: 0x3e1ae2

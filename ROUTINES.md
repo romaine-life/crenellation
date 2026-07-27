@@ -205,6 +205,23 @@ contradiction rather than a rare case. The matching is sound for the great
 majority and the exceptions are a known, measured fraction rather than an
 unexamined assumption.
 
+### Where the remaining nineteen sit
+
+The nineteen that do not verify are not spread evenly. Of their straight-line
+snapshots, **7.6% have a program counter that disagrees with the instruction
+stream, against 2.6% across all routines** - three times the rate.
+
+That is measured, not inferred, and it is the same defect twice over: 0x8B4 and
+0x19C3C were both taken apart instruction by instruction and both ended in the
+same place, a recorded address that cannot be reconciled with the registers
+recorded beside it. 0x19C3C differs on its *first* instruction, where the chip
+reports a0 = 0x6C0864 at an address whose instruction sets a0 = 0x6C0000.
+
+It does not prove all nineteen are artefacts. It does say the remainder is
+concentrated where the capture is least trustworthy, and that closing them
+means fixing the capture - a breakpoint-driven one that stops the chip between
+instructions - rather than the translation.
+
 ### How much the result leans on the two pc/register pairings
 
 Because the capture's program counter sometimes names the instruction about to

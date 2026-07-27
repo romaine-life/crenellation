@@ -24,7 +24,7 @@ const IO_BLOCKS: Array<[number, number]> = [
   [0x140000, 0x40000], [0x500000, 0x20000],
 ];
 
-const ENTRY = 0x8b4;
+const ENTRY = 0x19c3c;
 const SHAPE = 1;
 const RAM_LO = 0x3e0000;
 const PF_LO = 0x200000;
