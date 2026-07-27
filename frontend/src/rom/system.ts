@@ -47,9 +47,14 @@ export class System {
   readonly m: Machine;
 
   /** Input port bytes, as the board would present them: 0 means held. */
-  readonly inputs = new Uint8Array([0xff, 0xff, 0xff, 0xff]);
+  // Read from the board rather than assumed. 0x640000 comes back as 0xF7 with
+  // bit 3 clear, not 0xFF: the frame handler does  on it and takes a
+  // branch the port was never taking, which is where the two boot paths first
+  // parted company.
+  readonly inputs = new Uint8Array([0xf7, 0xff, 0xff, 0xff]);
 
   frames = 0;
+  private statusToggle = 0;
 
   constructor(rom: Uint8Array) {
     this.m = new Machine(rom);
@@ -58,7 +63,18 @@ export class System {
     this.m.ioModelled = true;
     this.m.sound = true;
     this.m.budget = Number.MAX_SAFE_INTEGER;
-    this.m.inputAt = (addr: number): number => this.inputs[(addr - IN0) & 3];
+    this.m.inputAt = (addr: number): number => {
+      const b = this.inputs[(addr - IN0) & 3];
+      // Bit 3 of the first byte is not a button. On the board it reads clear
+      // most of the time and set some of the time, changing between two reads
+      // in the same frame, and the frame handler branches on it - so both
+      // paths are real and a constant value takes only one of them.
+      if (((addr - IN0) & 3) === 0) {
+        this.statusToggle += 1;
+        return this.statusToggle % 8 === 0 ? b | 0x08 : b & ~0x08;
+      }
+      return b;
+    };
   }
 
   /** Stack pointer and program counter, exactly as the chip takes them. */

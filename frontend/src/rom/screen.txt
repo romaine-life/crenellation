@@ -6,38 +6,40 @@ frame 480: 0 playfield bytes set, 0 palette entries set
 frame 600: 0 playfield bytes set, 0 palette entries set
 frames run: 600   instructions: 12000000
 missing routines: 0
-interrupt handler 0x133b2 entered: 121 times
-rte at handler exit reached: 121
-interrupt mask the machine runs at: level 4: 5791780, level 7: 3877166, level 0: 2328255, level 5: 2800
-last addresses before it stopped: 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594 0x594
+interrupt handler 0x133b2 entered: 407 times
+rte at handler exit reached: 407
+interrupt mask the machine runs at: level 0: 8092993, level 7: 3876851, level 4: 27357, level 5: 2800
+last addresses before it stopped: 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514 0x14510 0x14514
 a2 entering the handler: 0x3e3536   leaving it: 0x3e3536
-a2 changed at: 0xfcfe@1538 0xfd02@1538 0xfd06@1538 0xfd0a@1538 0xfd0e@1538 0xfd12@1538 0xfd16@1538 0xfd1a@1538 0xfd1e@1538 0xfd22@1538 0xfd26@1538 0xfd2a@1538 0xfd2e@1538 0x3e3536@156a
-stack drift across the handler: entry 0x3e32f4 -> rte 0x3e32fa
+a2 changed at: 0x21fffe@c4e6 0x3e236c@c4d8 0x21fffe@c4e6 0x3e239e@c4d8 0x21fffe@c4e6 0x3e23d0@c4d8 0x21fffe@c4e6 0x3e2402@c4d8 0x21fffe@c4e6 0x3e2434@c4d8 0x21fffe@c4e6 0x3e370e@19f48 0x21fffe@1a058 0x3e3536@14582
+stack drift across the handler: none
 a7 never rose above the frame inside the handler
-   0x580 reached 242 times
-   0x596 reached 120 times
-   0x618 reached 123 times
-   0x125da reached 120 times
-   0x1512 reached 120 times
-   0x53f8 reached 120 times
+   0x580 reached 0 times
+   0x596 reached 0 times
+   0x618 reached 3 times
+   0x125da reached 0 times
+   0x1512 reached 0 times
+   0x53f8 reached 0 times
    0x512 reached 0 times
    0x51a reached 0 times
    0x522 reached 0 times
-sound queue: 0x3E3528=3 0x3E352A=3
-routines that write them: 0x1425c 22, 0x143b0 7, 0x144ae 0, 0x144d0 7
-sound driver 0x196ac reached 121; channel work 8(a2) still pending: 0
-the spin at 0x14562 waits on a2=0x3e3536, whose first long is 4076778
-channel pointer over time: f1:0x0 f2:0x0 f3:0x0 f4:0x0 f5:0x0 f6:0x0 f7:0x0 f8:0x0 f120:0x0 f240:0x3e34d6 f360:0x3e34ea f480:0x3e34ea f600:0x3e34ea
-sequence around 0x3e34ea: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-channel struct at 0x3E3536: 3e34ea 5a0004 0 3e32d3 30000 3800ff00 0 0
+sound queue: 0x3E3528=0 0x3E352A=0
+routines that write them: 0x1425c 0, 0x143b0 0, 0x144ae 0, 0x144d0 1
+sound driver 0x196ac reached 407; channel work 8(a2) still pending: 4076748
+the spin at 0x14562 waits on a2=0xffffffff
+channel pointer over time: f1:0x0 f2:0x0 f3:0x0 f4:0x0 f5:0x0 f6:0x0 f7:0x0 f8:0x0 f120:0x0 f240:0x0 f360:0x0 f480:0x0 f600:0x0
+sequence around 0x0: 00 00 00 00 00 3e 32 fe 00 01 35 7c 00 01 85 56
+channel struct at 0x3E3536: 0 0 3e34cc 3e32cd 0 0 0 0
+writes to 0x3E34EA: f45 0x3e34ea=0 by 0x13096 | f45 0x3e34eb=0 by 0x13096 | f45 0x3e34ec=0 by 0x13096 | f45 0x3e34ed=0 by 0x13096
+who writes it: 0x13096x4
 busiest addresses:
-   0x594  5740020
+   0x14510  4046480
+   0x14514  4046480
    0x1311c  984063
    0x1311e  984063
    0x13120  984063
-   0x14560  376377
-   0x1455a  376373
-   0x14554  376368
-   0x1454e  376364
-   0x14564  342852
-   0x14562  342850
+   0x13812  138240
+   0x13814  138240
+   0x13816  138240
+   0x13818  138240
+   0x1381a  138240

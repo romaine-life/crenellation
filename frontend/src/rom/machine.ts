@@ -229,8 +229,18 @@ export class Machine {
     return this.ram.get(addr) ?? 0;
   }
 
+  /** Watch a range of addresses; the callback gets the address, the value and
+   *  the instruction that wrote it. For finding who fills a buffer - or who
+   *  never does. */
+  watchLo = -1;
+  watchHi = -1;
+  onWrite: ((addr: number, v: number, pc: number) => void) | null = null;
+
   setByte(addr: number, v: number): void {
     addr = this.fold((addr >>> 0) & 0xffffff);
+    if (this.onWrite && addr >= this.watchLo && addr <= this.watchHi) {
+      this.onWrite(addr, v & 0xff, this.pc);
+    }
     if (this.trackOffMap) this.note(addr);
     this.ram.set(addr, v & 0xff);
   }

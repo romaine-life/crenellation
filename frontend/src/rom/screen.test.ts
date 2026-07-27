@@ -84,6 +84,13 @@ describe('what the booted machine draws', () => {
     let inHandler = false; let firstAbove = '';
     let waitOn = -1;
     const chanTrace: string[] = [];
+    const writers = new Map<number, number>();
+    sys.m.watchLo = 0x3e34ea; sys.m.watchHi = 0x3e34ed;
+    const order: string[] = [];
+    sys.m.onWrite = (a, v, pc) => {
+      writers.set(pc, (writers.get(pc) ?? 0) + 1);
+      if (order.length < 12) order.push(`f${sys.frames} 0x${a.toString(16)}=${v} by 0x${pc.toString(16)}`);
+    };
     const a2Writes: string[] = [];
     sys.m.atPcExtra = (pc: number) => {
       visits.set(pc, (visits.get(pc) ?? 0) + 1);
@@ -163,6 +170,10 @@ describe('what the booted machine draws', () => {
       notes.push(`channel struct at 0x3E3536: ` + Array.from({length: 8},
         (_, i) => sys.m.load(0x3e3536 + i * 4, 32).toString(16)).join(' '));
     }
+    notes.push('writes to 0x3E34EA: ' + (order.join(' | ') || 'none'));
+    notes.push('who writes it: ' + ([...writers.entries()]
+      .sort((a, b) => b[1] - a[1]).slice(0, 8)
+      .map(([p, n]) => `0x${p.toString(16)}x${n}`).join(' ') || 'nobody'));
     notes.push('busiest addresses:');
     for (const [a, n] of [...visits.entries()].sort((x, y) => y[1] - x[1]).slice(0, 10)) {
       notes.push(`   0x${a.toString(16)}  ${n}`);
