@@ -16,6 +16,7 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 753 |
+| *of the 593 the map held before trampolines and table cases were found* | *515 verified, 2 partly, 76 not* |
 | **Verified against hardware** | **651** |
 | Failing | 5 |
 | Passing under some inputs, failing under others | 26 |
@@ -77,6 +78,18 @@ were wrong:
   instead of 112 - but "agrees at one of four counts" is a weaker claim than
   "agrees at the instruction the chip was on", and the stricter test is the one
   reported. It puts the figure at 569 rather than 572.
+
+### Against the original list
+
+The map has grown as executable code kept turning up that had been filed as
+data, so the headline figure is measured against a denominator that did not
+exist when the work started. `romlab/original593.py` reconstructs the original
+list - code runs and entries straight out of the classifier, nothing injected -
+and reports how those particular routines stand now. It reconstructs to exactly
+593, which is the check that it is the right list.
+
+**515 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 2 are partly verified, 76 are not.
 
 ### Instruction rules
 
