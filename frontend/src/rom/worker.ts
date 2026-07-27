@@ -34,9 +34,11 @@ self.onmessage = (ev: MessageEvent<StartMessage>) => {
   const px = new Uint32Array(pixels);
   const sys = new System(new Uint8Array(rom), new Uint8Array(board));
 
-  // Idle is all bits high except bit 3 of the first byte, which the board
-  // reads clear. Anything the keyboard holds down clears its bit on top.
-  const IDLE = 0xff7fffff | 0;
+  // Idle is every bit high - a button reads clear only while it is held. Bit 3
+  // of the first byte is not a button and the System drives it itself, so it
+  // must not be cleared here: 0xff7fffff, which is what this used to be, holds
+  // bit 7 of the second byte down for ever.
+  const IDLE = 0xffffffff | 0;
   Atomics.store(c, CTRL_IN0, IDLE);
 
   const started = performance.now();
