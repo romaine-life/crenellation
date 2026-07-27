@@ -44,7 +44,7 @@ const SCRATCH_LEN = 0x400;
 const STACK = 0x3e5000;
 const SENTINEL = 0x3e6000;
 const STRUCTS = [0x3e0864, 0x3e1968, 0x3e1cf6, 0x3e1bc6, 0x3e0f48, 0x3e02d8, 0x3e4000];
-const SHAPE = 1;
+const SHAPE: number = 1;
 
 class Rand {
   s = 0x12345678;

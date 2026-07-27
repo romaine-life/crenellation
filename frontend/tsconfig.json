@@ -13,7 +13,10 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    // The ROM harnesses read their capture files with node:fs. They are
+    // type-checked like everything else, so the built-ins have to resolve.
+    "types": ["node", "vite/client"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

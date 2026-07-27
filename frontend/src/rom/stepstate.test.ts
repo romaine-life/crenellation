@@ -241,9 +241,13 @@ describe('routines compared at the instruction the chip stopped on', () => {
       // destination write not yet. If the only registers that differ are ones
       // the instruction at that address writes, that is what happened, and the
       // snapshot says nothing about the translation.
-      if (!hit && closest) {
-        const w = new Set(WRITTEN[closest.pc.toString(16)] ?? []);
-        if (closest.diff.length > 0 && closest.diff.every((n) => w.has(n))) {
+      // Read through a local: `closest` is only ever assigned inside the
+      // per-instruction callback, and the checker's flow analysis cannot see
+      // that, so at this point it believes the variable is still null.
+      const near = closest as { pc: number; diff: string[] } | null;
+      if (!hit && near) {
+        const w = new Set<string>(WRITTEN[near.pc.toString(16)] ?? []);
+        if (near.diff.length > 0 && near.diff.every((n: string) => w.has(n))) {
           midInstruction += 1;
           compared -= 1;
           skip(entry, 'the capture caught the chip part-way through an instruction');

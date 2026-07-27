@@ -33,7 +33,7 @@ class Rand {
   s = 0x12345678;
   next() { let x = this.s; x = (x ^ (x << 13)) >>> 0; x = (x ^ (x >>> 17)) >>> 0; x = (x ^ (x << 5)) >>> 0; this.s = x; return x; }
 }
-function scratchHash(m) {
+function scratchHash(m: Machine): string {
   let h1 = 0, h2 = 0;
   for (let i = 0; i < 0x2000; i += 1) {
     const b = m.byte(0x3e4000 + i);
@@ -74,8 +74,8 @@ for (const entry of entries) {
     const c = byKey.get(`${entry}:${trial}`);
     if (!c) continue;
 
-    for (let k = 0; k < 8; k += 1) m[`d${k}`] = d[k];
-    for (let k = 0; k < 6; k += 1) m[`a${k}`] = a[k];
+    for (let k = 0; k < 8; k += 1) (m as never as Record<string, number>)[`d${k}`] = d[k];
+    for (let k = 0; k < 6; k += 1) (m as never as Record<string, number>)[`a${k}`] = a[k];
     m.a7 = sp;
     m.a6 = STACK + 0x200;
     m.sr = 0x2700;
@@ -87,7 +87,7 @@ for (const entry of entries) {
       call(entry, m);
       m.trackOffMap = false;
       const got = [m.d0, m.d1, m.d2, m.d3, m.d4, m.d5, m.d6, m.d7, m.a0, m.a1, m.a2, m.a3].map((v) => v >>> 0);
-      const want = c.out.map((v) => v >>> 0);
+      const want = (c.out as number[]).map((v: number) => v >>> 0);
       const bad = got.filter((v, i) => v !== want[i]).length;
       const memBad = scratchHash(m) !== c.hash;
       if (!bad && !memBad) { /* match */ }
@@ -107,7 +107,7 @@ for (const entry of entries) {
       m.trackOffMap = false;
       cause = m.offMap ? 'off-map hardware' : 'threw';
       sample = (m.offMap ? m.offMapAt.map((x) => '0x' + x.toString(16)).join(' ') + ' | ' : '')
-        + e.message.slice(0, 50);
+        + (e as Error).message.slice(0, 50);
     }
     for (const x of m.offMapAt) {
       const dev = (x >>> 16) << 16;
