@@ -19,14 +19,14 @@ const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const ramBaseline = new Uint8Array(readFileSync(join(here, 'step-ram-baseline.bin')));
 const pfBaseline = new Uint8Array(readFileSync(join(here, 'step-pf-baseline.bin')));
 
-type Case = { entry: number; steps: number; pc: number; regs: number[]; hash: number };
+type Case = { entry: number; shape: number; steps: number; pc: number; regs: number[]; hash: number };
 const cases: Case[] = [];
 for (const line of readFileSync(join(here, 'stepstate.log'), 'utf8').split('\n')) {
   const p = line.trim().split(/\s+/);
   if (p[0] !== 'S') continue;
-  const v = p.slice(3).map((x) => parseInt(x, 16));
-  cases.push({ entry: parseInt(p[1], 16), steps: Number(p[2]), pc: v[0],
-    regs: v.slice(1, 16), hash: v[16] });
+  const v = p.slice(4).map((x) => parseInt(x, 16));
+  cases.push({ entry: parseInt(p[1], 16), shape: Number(p[2]), steps: Number(p[3]),
+    pc: v[0], regs: v.slice(1, 16), hash: v[16] });
 }
 
 // Only the routines that actually diverge. Running all 753 with a budget large
@@ -90,8 +90,8 @@ describe('where each divergence starts', () => {
       sp -= 4;
       m.store(sp, SENTINEL, 32);
 
-      const all = byEntry.get(entry);
-      if (!all || !TARGETS.has(entry)) continue;
+      const all = (byEntry.get(entry) ?? []).filter((x) => x.shape === 1);
+      if (!all.length || !TARGETS.has(entry)) continue;
       const cs = all.filter((x) => !((x.pc >= 0x1357c && x.pc < 0x1365c) || (x.pc >= 0x18548 && x.pc < 0x18680)))
         .sort((x, y) => x.steps - y.steps);
       if (cs.length < 2) continue;
