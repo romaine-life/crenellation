@@ -97,6 +97,8 @@ export class Machine {
    */
   trackOffMap = false;
   offMap = false;
+  /** Whether the caller has loaded the device snapshot. */
+  ioModelled = false;
 
   /** Where the off-map accesses went, so the gap can be named rather than
    *  guessed at. Only the first few are kept; the address is rounded to the
@@ -110,6 +112,15 @@ export class Machine {
     // reaching them is not a gap.
     if (addr >= 0x3e0000 && addr <= 0x3fffff) return;
     if (addr >= 0x200000 && addr <= 0x21ffff) return;
+    // The palette, the two sound chips and the input ports. The port does not
+    // implement them, but the harness hands it a snapshot of what they held
+    // while the machine was frozen, which is enough for a read to compare.
+    if (this.ioModelled) {
+      if (addr >= 0x3c0000 && addr <= 0x3c0fff) return;
+      if (addr >= 0x460000 && addr <= 0x460fff) return;
+      if (addr >= 0x480000 && addr <= 0x480fff) return;
+      if (addr >= 0x640000 && addr <= 0x640fff) return;
+    }
     this.offMap = true;
     if (this.offMapAt.length < 4) this.offMapAt.push(addr);
   }

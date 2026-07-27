@@ -154,6 +154,22 @@ with the reset-code ones.
 
 Nine divergences remain bracketed to between one and forty instructions each.
 
+### Modelling the devices, and why it changed nothing
+
+The palette, the two sound chips and the input ports are not implemented, so a
+routine that reads one gets a real value on the chip and zero in the port. The
+capture now snapshots what those addresses hold while the machine is frozen and
+the port reads from that, which makes such a read comparable.
+
+It moved no number at all. Of the 29 off-map addresses the failing routines
+actually touch, 4 are device registers; the rest are 0x7EFFFF, 0x54005400,
+0x50032B and the like - wild pointers produced by handing a routine a generated
+argument where it expected a structure. No snapshot can make those comparable,
+because there is nothing at them on the board either.
+
+The change is kept because the port is more faithful with it, not because it
+helped.
+
 ### Why the unjudged are unjudged
 
 Nothing falls through the accounting now - all 753 routines land in exactly one

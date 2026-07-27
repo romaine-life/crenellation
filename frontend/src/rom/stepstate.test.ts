@@ -22,6 +22,9 @@ const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const ramBaseline = new Uint8Array(readFileSync(join(here, 'step-ram-baseline.bin')));
 const pfBaseline = new Uint8Array(readFileSync(join(here, 'step-pf-baseline.bin')));
+// what the palette, sound chips and input ports held while the chip was frozen
+const ioBaseline = new Uint8Array(readFileSync(join(here, 'step-io-baseline.bin')));
+const IO_BLOCKS = [0x3c0000, 0x460000, 0x480000, 0x640000];
 
 type Case = { entry: number; shape: number; steps: number; pc: number; regs: number[]; hash: number };
 const cases: Case[] = [];
@@ -85,6 +88,10 @@ describe('routines compared at the instruction the chip stopped on', () => {
       const m = new Machine(rom);
       for (let i = 0; i < ramBaseline.length; i += 1) m.setByte(RAM_LO + i, ramBaseline[i]);
       for (let i = 0; i < pfBaseline.length; i += 1) m.setByte(PF_LO + i, pfBaseline[i]);
+      for (let b = 0; b < IO_BLOCKS.length; b += 1) {
+        for (let i = 0; i < 0x1000; i += 1) m.setByte(IO_BLOCKS[b] + i, ioBaseline[b * 0x1000 + i]);
+      }
+      m.ioModelled = true;
       m.store(SENTINEL, 0x60fe, 16);
       for (let i = 0; i < SCRATCH_LEN; i += 1) m.setByte(SCRATCH + i, rand.next() % 256);
       const d: number[] = [];

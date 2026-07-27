@@ -101,6 +101,24 @@ local function dump_baseline()
   dump_range(PF_LO, PF_HI, pfbase, "pf-baseline.bin")
 end
 
+-- The devices the port does not model: the palette, the two sound chips and
+-- the input ports. A routine that reads one of them gets a real value on the
+-- chip and zero in the port, so the two can never agree. The machine is frozen
+-- while the harness runs, so a snapshot of what those addresses hold is enough
+-- to make the reads comparable.
+local IO_BLOCKS = {
+  {0x3C0000, 0x1000}, {0x460000, 0x1000}, {0x480000, 0x1000}, {0x640000, 0x1000},
+}
+
+local function dump_io()
+  local t = {}
+  for _, blk in ipairs(IO_BLOCKS) do
+    for i = 0, blk[2] - 1 do t[#t + 1] = string.char(space:read_u8(blk[1] + i)) end
+  end
+  local fh = io.open(OUT .. "io-baseline.bin", "wb")
+  fh:write(table.concat(t)); fh:close()
+end
+
 local function restore_ram()
   for addr in pairs(dirty) do space:write_u8(addr, baseline[addr]) end
   dirty = {}
@@ -270,6 +288,7 @@ emu.register_frame_done(function()
   if frame == START then
     space:write_u16(SENTINEL, PARK)
     dump_baseline()
+    dump_io()
     install()
     log:write("baseline dumped" .. NL)
     log:flush()
