@@ -165,7 +165,14 @@ export class System {
   palette(): Uint32Array {
     const out = new Uint32Array(PAL_ENTRIES);
     for (let i = 0; i < PAL_ENTRIES; i += 1) {
-      const w = this.m.load(PAL_BASE + i * 2, 16);
+      // One entry spans two 16-bit slots, not one. The palette RAM is byte-wide
+      // on a 16-bit bus - every odd byte reads back zero, on the board as well
+      // as here - so the sixteen bits of a colour arrive as the high bytes of
+      // two consecutive words, four bytes apart. Reading it as a single word at
+      // stride two takes the right red and the wrong green and blue, which
+      // looks like a plausible picture in the wrong colours rather than like a
+      // fault, and it drew every screenshot in this repo until now.
+      const w = (this.m.byte(PAL_BASE + i * 4) << 8) | this.m.byte(PAL_BASE + i * 4 + 2);
       // IRGB 1-5-5-5: the intensity bit is a sixth low bit shared by all three
       // channels, and MAME expands each six-bit value as (x << 2) | (x >> 4)
       const inten = (w >> 15) & 1;
