@@ -16,12 +16,12 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 757 |
-| *of the 593 the map held before trampolines and table cases were found* | *519 verified, 1 partly, 73 not* |
-| **Verified against hardware** | **659** |
+| *of the 593 the map held before trampolines and table cases were found* | *536 verified, 1 partly, 56 not* |
+| **Verified against hardware** | **676** |
 | Failing | 5 |
-| Passing under some inputs, failing under others | 24 |
+| Passing under some inputs, failing under others | 13 |
 | Judged only by a stopping-point mismatch | 18 |
-| Reproduces mid-run but not end to end | 12 |
+| Reproduces mid-run but not end to end | 6 |
 | Never judged | 39 |
 
 Four harnesses. Three call the routine and compare everything when it comes
@@ -89,8 +89,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**519 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 1 is partly verified, 73 are not.
+**536 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 1 is partly verified, 56 are not.
 
 ### Instruction rules
 
@@ -154,7 +154,31 @@ with the reset-code ones.
 
 Nine divergences remain bracketed to between one and forty instructions each.
 
-### Modelling the devices, and why it changed nothing
+### The address bus is 24 bits
+
+A pointer that computes 0x101FF00 does not read nothing - the 68000 has no A24
+to A31, so it reads 0x01FF00, which is ROM, and the chip gets real data there.
+The port was not masking, so every such read looked like a read of empty space.
+This was dismissed twice as "wild pointers, nothing is there on the board
+either", which was wrong: they wrap.
+
+### What the board actually decodes
+
+The first memory probe wrote a value and read it back, which finds RAM and
+misses every read-only decode. A probe that only reads found a great deal more:
+`0x140000-0x17FFFF`, `0x500000-0x519FFF`, `0x800000-0x8FFFFF` and several
+ranges above that, all of which real routines read - `0xEDEA` calls `$140010`,
+which had been written off as an address the board does not decode.
+
+Some of it is mirrors. `0x800000` reads back exactly as the program ROM, and
+`0x540000`, `0x940000` and `0xD40000` are the same thing as `0x140000`: the top
+address lines are not all decoded. Those fold. The rest is snapshotted with the
+palette and the sound chips.
+
+Together the mask and the snapshot took the input-dependent count from 24 to 13
+and the mid-run-only count from 12 to 6.
+
+### Modelling the devices, and why it changed nothing at first
 
 The palette, the two sound chips and the input ports are not implemented, so a
 routine that reads one gets a real value on the chip and zero in the port. The

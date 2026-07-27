@@ -25,6 +25,13 @@ const RAM_LO = 0x3e0000;
 // Without it, every drawing routine compared real pixels against zeroes.
 const pfBaseline = new Uint8Array(readFileSync(join(here, 'pf-baseline.bin')));
 const PF_LO = 0x200000;
+// what the devices held while the machine was frozen: the palette, the sound
+// chips, the input ports, and the two regions the read probe found
+const ioBaseline = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
+const IO_BLOCKS: Array<[number, number]> = [
+  [0x3c0000, 0x1000], [0x460000, 0x1000], [0x480000, 0x1000], [0x640000, 0x1000],
+  [0x140000, 0x40000], [0x500000, 0x20000],
+];
 const fuzz = JSON.parse(readFileSync(join(here, 'fuzz.json'), 'utf8')) as {
   cases: Array<{
     entry: number;
@@ -98,6 +105,12 @@ describe('every routine against the real 68000', () => {
         const m = new Machine(rom);
         for (let i = 0; i < ramBaseline.length; i += 1) m.setByte(RAM_LO + i, ramBaseline[i]);
     for (let i = 0; i < pfBaseline.length; i += 1) m.setByte(PF_LO + i, pfBaseline[i]);
+    let io = 0;
+    for (const [base, len] of IO_BLOCKS) {
+      for (let i = 0; i < len; i += 1) m.setByte(base + i, ioBaseline[io + i]);
+      io += len;
+    }
+    m.ioModelled = true;
         for (let i = 0; i < SCRATCH_LEN; i += 1) m.setByte(SCRATCH + i, rand.next() % 256);
         const d: number[] = [];
         // trial 0 is noise; later trials hand the routine the structures the

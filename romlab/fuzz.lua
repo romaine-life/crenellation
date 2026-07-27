@@ -106,8 +106,13 @@ end
 -- chip and zero in the port, so the two can never agree. The machine is frozen
 -- while the harness runs, so a snapshot of what those addresses hold is enough
 -- to make the reads comparable.
+-- The read probe found more decoded space than the write probe did: a write
+-- probe finds memory and misses every read-only decode. 0x140000 and 0x500000
+-- are read by real routines, and 0x800000 turned out to be an exact mirror of
+-- the program ROM, which needs no snapshot at all - just the fold.
 local IO_BLOCKS = {
   {0x3C0000, 0x1000}, {0x460000, 0x1000}, {0x480000, 0x1000}, {0x640000, 0x1000},
+  {0x140000, 0x40000}, {0x500000, 0x20000},
 }
 
 local function dump_io()

@@ -28,7 +28,10 @@ const ioBaseline = new Uint8Array(readFileSync(join(here, 'step-io-baseline.bin'
 // from part-way through one
 const WRITTEN = JSON.parse(readFileSync(join(here, 'written-regs.json'), 'utf8')) as
   Record<string, string[]>;
-const IO_BLOCKS = [0x3c0000, 0x460000, 0x480000, 0x640000];
+const IO_BLOCKS: Array<[number, number]> = [
+  [0x3c0000, 0x1000], [0x460000, 0x1000], [0x480000, 0x1000], [0x640000, 0x1000],
+  [0x140000, 0x40000], [0x500000, 0x20000],
+];
 
 type Case = { entry: number; shape: number; steps: number; pc: number; regs: number[]; hash: number };
 const cases: Case[] = [];
@@ -94,8 +97,10 @@ describe('routines compared at the instruction the chip stopped on', () => {
       const m = new Machine(rom);
       for (let i = 0; i < ramBaseline.length; i += 1) m.setByte(RAM_LO + i, ramBaseline[i]);
       for (let i = 0; i < pfBaseline.length; i += 1) m.setByte(PF_LO + i, pfBaseline[i]);
-      for (let b = 0; b < IO_BLOCKS.length; b += 1) {
-        for (let i = 0; i < 0x1000; i += 1) m.setByte(IO_BLOCKS[b] + i, ioBaseline[b * 0x1000 + i]);
+      let io = 0;
+      for (const [base, len] of IO_BLOCKS) {
+        for (let i = 0; i < len; i += 1) m.setByte(base + i, ioBaseline[io + i]);
+        io += len;
       }
       m.ioModelled = true;
       m.store(SENTINEL, 0x60fe, 16);

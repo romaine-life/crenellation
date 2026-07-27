@@ -22,6 +22,13 @@ const baseline = new Uint8Array(readFileSync(join(here, 'replay-baseline.bin')))
 // The playfield bitmap is ordinary memory on the board; routines read it back.
 const pfBaseline = new Uint8Array(readFileSync(join(here, 'replay-pf-baseline.bin')));
 const PF_LO = 0x200000;
+// what the devices held while the machine was frozen: the palette, the sound
+// chips, the input ports, and the two regions the read probe found
+const ioBaseline = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
+const IO_BLOCKS: Array<[number, number]> = [
+  [0x3c0000, 0x1000], [0x460000, 0x1000], [0x480000, 0x1000], [0x640000, 0x1000],
+  [0x140000, 0x40000], [0x500000, 0x20000],
+];
 const cases = JSON.parse(readFileSync(join(here, 'replay.json'), 'utf8')) as Array<{
   entry: number;
   din: number[];
@@ -58,6 +65,12 @@ describe('routines replayed with the arguments the game passed', () => {
       const m = new Machine(rom);
       for (let i = 0; i < baseline.length; i += 1) m.setByte(RAM_LO + i, baseline[i]);
     for (let i = 0; i < pfBaseline.length; i += 1) m.setByte(PF_LO + i, pfBaseline[i]);
+    let io = 0;
+    for (const [base, len] of IO_BLOCKS) {
+      for (let i = 0; i < len; i += 1) m.setByte(base + i, ioBaseline[io + i]);
+      io += len;
+    }
+    m.ioModelled = true;
       m.store(SENTINEL, 0x60fe, 16);
 
       let sp = STACK;

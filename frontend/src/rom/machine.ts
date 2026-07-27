@@ -105,6 +105,20 @@ export class Machine {
    *  device, not the byte. */
   readonly offMapAt: number[] = [];
 
+  /**
+   * Fold the mirrors the board decodes. 0x800000 reads back exactly as the
+   * program ROM does, and 0x540000, 0x940000 and 0xD40000 are the same thing
+   * as 0x140000 - the top address lines are not all decoded.
+   */
+  private fold(addr: number): number {
+    if (addr >= 0x800000 && addr <= 0x8fffff) return addr - 0x800000;
+    if (addr >= 0x540000 && addr <= 0x57ffff) return addr - 0x400000;
+    if (addr >= 0x940000 && addr <= 0x97ffff) return addr - 0x800000;
+    if (addr >= 0xd40000 && addr <= 0xd7ffff) return addr - 0xc00000;
+    if (addr >= 0xd00000 && addr <= 0xd1ffff) return addr - 0x800000;
+    return addr;
+  }
+
   private note(addr: number): void {
     if (addr < this.rom.length) return;
     // Probed from the board: work RAM runs to 0x3FFFFF, and the playfield
@@ -120,20 +134,27 @@ export class Machine {
       if (addr >= 0x460000 && addr <= 0x460fff) return;
       if (addr >= 0x480000 && addr <= 0x480fff) return;
       if (addr >= 0x640000 && addr <= 0x640fff) return;
+      if (addr >= 0x140000 && addr <= 0x17ffff) return;
+      if (addr >= 0x500000 && addr <= 0x51ffff) return;
     }
     this.offMap = true;
     if (this.offMapAt.length < 4) this.offMapAt.push(addr);
   }
 
   byte(addr: number): number {
-    addr >>>= 0;
+    // The 68000 has a 24-bit address bus - A24 to A31 do not exist - so an
+    // address above 16 MiB is not "off the map", it wraps. A pointer that
+    // computes 0x101FF00 reads 0x01FF00, which is ROM, and the chip gets real
+    // data there. Not masking made every one of those look like a read of
+    // nothing.
+    addr = this.fold((addr >>> 0) & 0xffffff);
     if (this.trackOffMap) this.note(addr);
     if (addr < this.rom.length) return this.rom[addr];
     return this.ram.get(addr) ?? 0;
   }
 
   setByte(addr: number, v: number): void {
-    addr >>>= 0;
+    addr = this.fold((addr >>> 0) & 0xffffff);
     if (this.trackOffMap) this.note(addr);
     this.ram.set(addr, v & 0xff);
   }
