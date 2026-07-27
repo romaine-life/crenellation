@@ -190,9 +190,13 @@ Fixing it needs a capture that can stop the chip between instructions. MAME run
 with `-debug -debugger none` does expose one: `cpu.debug` becomes a real
 `device_debug` with `bpset`, `step` and `go`, and a breakpoint stops the chip
 before an instruction executes, which is exactly the boundary the port compares
-at. `romlab/bpcap.lua` is an attempt at that capture and it crashes MAME during
-the first case - with three cases or with four hundred - so the fault is in how
-the debugger is being driven. It is committed unfinished and labelled as such.
+at. `romlab/bpcap.lua` is an attempt at that capture. Two faults in it are fixed:
+the debugger objects were resolved at script load, before the machine exists,
+and `bpset` was called with one argument, which hard-crashes MAME rather than
+erroring - it wants `bpset(addr, cond, action)`. What still does not work is the
+stop itself: under `-debugger none` a breakpoint does not halt execution, so
+nothing ever reports "stop" and no snapshot is taken. Committed unfinished and
+labelled, with the next thing to try named in its header.
 
 ### Why the unjudged are unjudged
 

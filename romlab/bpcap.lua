@@ -1,8 +1,11 @@
--- UNFINISHED. This crashes MAME - the process dies during the first case, with
--- three cases or with four hundred, so it is the way the debugger is being
--- driven rather than anything about scale. Committed because the diagnosis it
--- exists to act on is worth keeping, and because the next person to try should
--- know this shape of it does not work.
+-- UNFINISHED, but further along than it looks. Two things were wrong and are
+-- fixed: the debugger objects were being resolved at script load, when the
+-- machine does not exist yet, and `bpset` was called with one argument, which
+-- hard-crashes MAME rather than erroring - it needs `bpset(addr, cond, action)`
+-- with all three. What still does not work is the stop: under
+-- `-debug -debugger none` a breakpoint does not appear to halt execution, so
+-- `execution_state` never reads "stop" and no snapshot is ever taken. The next
+-- thing to try is a different -debugger backend.
 --
 -- Capture state at a true instruction boundary, using a breakpoint.
 --
@@ -19,10 +22,17 @@
 local OUT = "D:/repos/crenellation/romlab/out/bp/"
 local log = io.open(OUT .. "b.log", "w")
 local NL = string.char(10)
-local cpu = manager.machine.devices[":maincpu"]
-local space = cpu.spaces["program"]
-local dbg = cpu.debug
-local mdbg = manager.machine.debugger
+-- Resolved lazily. At script load the machine is not built yet, so cpu.debug
+-- and manager.machine.debugger are nil there - reading them at load and using
+-- them later is what killed the process.
+local cpu, space, dbg, mdbg
+
+local function bind()
+  cpu = manager.machine.devices[":maincpu"]
+  space = cpu.spaces["program"]
+  dbg = cpu.debug
+  mdbg = manager.machine.debugger
+end
 
 local SENTINEL = 0x3E6000
 local PARK = 0x60FE
@@ -130,6 +140,7 @@ local function snapshot(c)
 end
 
 local idx = 1
+local startedAt = 0
 
 local function start_case()
   while idx <= #cases do
@@ -150,8 +161,11 @@ local function start_case()
     cpu.state["SR"].value = 0x2700
     cpu.state["PC"].value = c.entry
     if bp then dbg:bpclear(bp) end
-    bp = dbg:bpset(c.pc)
+    -- all three arguments: the one-argument form hard-crashes MAME rather than
+    -- erroring, which is what made this look like a scale problem
+    bp = dbg:bpset(c.pc, "1", "")
     pending = c
+    startedAt = frame
     mdbg.execution_state = "run"
     return
   end
@@ -162,6 +176,7 @@ end
 
 emu.register_frame_done(function()
   frame = frame + 1
+  if cpu == nil then bind() end
   if frame < START then
     local c = frame % 240
     local function set(pt, f, v)
@@ -175,21 +190,30 @@ emu.register_frame_done(function()
     if c == 50 then set(":IN1", "P1 Button 1", 0) end
     return
   end
+  if pending ~= nil and frame > startedAt + 3 then
+    idx = idx + 1        -- never reached its breakpoint
+    seed = 0x12345678
+    start_case()
+    return
+  end
   if frame == START then
+    bind()
+    if mdbg then mdbg.execution_state = "run" end
     dump_baseline()
     seed = 0x12345678
     start_case()
     return
   end
-  if pending == nil then return end
-  -- the breakpoint stops execution; that is the boundary to read
+end)
+
+-- A breakpoint stops the emulation, and no further frames complete while it is
+-- stopped, so the frame callback never gets to notice. This one keeps running.
+local idleFrames = 0
+emu.register_periodic(function()
+  if pending == nil or cpu == nil then return end
   if mdbg.execution_state == "stop" then
     if cpu.state["PC"].value == pending.pc then snapshot(pending) end
-    idx = idx + 1
-    seed = 0x12345678
-    start_case()
-  elseif frame % 4 == 0 then
-    -- never reached it within a few frames
+    idleFrames = 0
     idx = idx + 1
     seed = 0x12345678
     start_case()
