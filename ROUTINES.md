@@ -170,6 +170,25 @@ because there is nothing at them on the board either.
 The change is kept because the port is more faithful with it, not because it
 helped.
 
+### The residual mismatches are mid-instruction snapshots
+
+The capture takes its snapshot inside a memory-read tap, and an instruction can
+read memory more than once. `0x441C` is the clean demonstration. At the
+recorded stopping point the chip is "at" `0x4430`, which is
+`move.b (a1)+, (a0)+`, and the registers are a1 = 0x8B where a2 + 0x3C = 0x8A,
+with a0 not incremented at all. The source postincrement has happened and the
+destination write has not: the state is from part-way through the instruction.
+
+A port that executes instructions atomically can never reproduce that, and no
+pairing of the program counter with the registers fixes it - the state does not
+correspond to any instruction boundary. It is a limit of reading state from a
+memory tap, not a defect in the translation, and the routines whose only
+evidence against them is a snapshot of this kind are not shown to be wrong by
+it.
+
+Fixing it needs a capture that can stop the chip between instructions, which
+means driving MAME's debugger rather than a tap.
+
 ### Why the unjudged are unjudged
 
 Nothing falls through the accounting now - all 753 routines land in exactly one
