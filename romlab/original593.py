@@ -36,12 +36,26 @@ def main():
     ok = set(v["verified"])
     now = sorted(set(ok) | set(v["failing"]) | set(v["conflicted"])
                  | set(v["stepStateOnlyMismatch"]) | set(v["neverJudged"]))
+    # the current map's own extents, so an original entry that is no longer a
+    # start can be attributed to whichever function absorbed it rather than
+    # counted as unknown
+    cur = sorted((a, b) for a, b in
+                 json.loads((HERE / "out" / "facts.json").read_text())["funcs"])
+
+    def pieces_of(a, b):
+        inside = [x for x in now if a <= x < b]
+        if inside:
+            return inside
+        for x, y in cur:
+            if x <= a < y:
+                return [x]
+        return [a]
 
     full = 0
     partial = 0
     none = 0
     for a, b in funcs:
-        pieces = [x for x in now if a <= x < b] or [a]
+        pieces = pieces_of(a, b)
         good = [x for x in pieces if x in ok]
         if len(good) == len(pieces):
             full += 1
@@ -50,6 +64,29 @@ def main():
         else:
             none += 1
 
+    blocked = {"mid-run only": set(v.get("midRunOnly",[])), "failing": set(v["failing"]), "input-dependent": set(v["conflicted"]),
+               "stopping-point": set(v["stepStateOnlyMismatch"]),
+               "never judged": set(v["neverJudged"])}
+    rows = []
+    for a, b in funcs:
+        pieces = pieces_of(a, b)
+        bad = [x for x in pieces if x not in ok]
+        if not bad:
+            continue
+        why = set()
+        for x in bad:
+            for k, s in blocked.items():
+                if x in s:
+                    why.add(k)
+        rows.append((a, bad, sorted(why) or ["unknown"]))
+    json.dump([{"entry": a, "pieces": bad, "why": why} for a, bad, why in rows],
+              open(HERE / "out" / "original-unverified.json", "w"))
+    import collections
+    c = collections.Counter(tuple(w) for _, _, w in rows)
+    print("what blocks the ones that are not verified:")
+    for k, n in c.most_common():
+        print("   %3d  %s" % (n, ", ".join(k)))
+    print()
     print("original routines: %d" % len(funcs))
     print("  fully verified (every piece they were split into): %d" % full)
     print("  partly verified: %d" % partial)
