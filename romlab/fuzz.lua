@@ -190,6 +190,8 @@ local function begin_case()
       v = STRUCTS[1]
     elseif sh == 7 then
       v = STRUCTS[(k % #STRUCTS) + 1]
+    elseif sh == 8 then
+      v = STRUCTS[(r % #STRUCTS) + 1]
     else
       v = STRUCTS[(r % #STRUCTS) + 1]
     end
@@ -200,8 +202,20 @@ local function begin_case()
   stackargs = {}
   for k = 1, 4 do
     sp = sp - 4
-    local v = (k % 2 == 0) and (rnd() % 0x100)
-              or (SCRATCH + (rnd() % (SCRATCH_LEN - 0x80)))
+    local r = rnd()
+    local v
+    if sh == 8 then
+      -- Structures on the stack as well as in the address registers. A routine
+      -- that takes a structure pointer as a stack argument and is handed a
+      -- random number walks off and never returns, and the case is lost - the
+      -- same fault that made the instruction-boundary harness think the chip
+      -- was crashing.
+      v = STRUCTS[(r % #STRUCTS) + 1]
+    elseif k % 2 == 0 then
+      v = r % 0x100
+    else
+      v = SCRATCH + (r % (SCRATCH_LEN - 0x80))
+    end
     space:write_u32(sp, v)
     stackargs[k] = v
   end

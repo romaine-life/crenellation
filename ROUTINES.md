@@ -16,12 +16,12 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 757 |
-| *of the 593 the map held before trampolines and table cases were found* | *541 verified, 52 not* |
-| **Verified against hardware** | **682** |
+| *of the 593 the map held before trampolines and table cases were found* | *540 verified, 53 not* |
+| **Verified against hardware** | **681** |
 | Failing | 4 |
 | Passing under some inputs, failing under others | 13 |
 | Judged only by a stopping-point mismatch | 18 |
-| Reproduces mid-run but not end to end | 7 |
+| Reproduces mid-run but not end to end | 8 |
 | Never judged | 32 |
 
 Four harnesses. Three call the routine and compare everything when it comes
@@ -89,8 +89,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**541 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 52 are not.
+**540 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 53 are not.
 
 ### Instruction rules
 
@@ -167,6 +167,11 @@ the harness was pushing random numbers there while carefully handing the
 address registers real structures. Pushing structures on the stack as well -
 one more argument shape - produced 4,223 snapshots with **not one** taken after
 a fault, where the earlier shapes produced hundreds.
+
+The same shape was added to the return-based harness, where it takes the
+routines that reproduce from 390 to 450. It also cost one routine from the
+verified column: driven with arguments it had never seen, it disagreed. That is
+the shape working, not failing.
 
 ### The address bus is 24 bits
 

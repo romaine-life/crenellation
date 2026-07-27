@@ -108,8 +108,13 @@ describe('routines under one argument shape per run', () => {
         let sp = STACK;
         for (let k = 1; k <= 4; k += 1) {
           sp -= 4;
-          const v = k % 2 === 0 ? rand.next() % 0x100
-            : SCRATCH + (rand.next() % (SCRATCH_LEN - 0x80));
+          const r = rand.next();
+          // shape 8 puts structures on the stack as well. A routine handed a
+          // random number where it wants a structure pointer never returns,
+          // and the case is lost rather than compared.
+          const v = sh === 8 ? STRUCTS[r % STRUCTS.length]
+            : k % 2 === 0 ? r % 0x100
+            : SCRATCH + (r % (SCRATCH_LEN - 0x80));
           m.store(sp, v, 32);
         }
         sp -= 4;
