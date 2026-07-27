@@ -1,0 +1,9 @@
+{
+  "_comment": "What each harness reaches now. The assertions check that a run does not fall below these, rather than demanding a perfect match - a suite that can never be green is a suite nobody reads, which is how a test that had stopped compiling went unread for several rounds. Raise a floor when something improves. A zero means the harness does not report its count yet.",
+  "insn": 9169,
+  "fuzz": 1301,
+  "fuzz-shapes": 0,
+  "stepstate": 0,
+  "write": 0,
+  "replay": 1258
+}

@@ -22,5 +22,33 @@
  {
   "entry": "0x534",
   "why": "reads 0x6c0007 (not modelled)"
+ },
+ {
+  "entry": "0x8b4",
+  "why": "reads 0xc60000 0xc60001 (not modelled)"
+ },
+ {
+  "entry": "0x19a24",
+  "why": "reads 0x50032b 0x50033b 0x500333 0x50032f (not modelled)"
+ },
+ {
+  "entry": "0xedea",
+  "why": "d0,a2 first d0 rom=2 port=1"
+ },
+ {
+  "entry": "0x19c3c",
+  "why": "reads 0x6c0000 0x6c0002 0x6c0001 0x6c0003 (not modelled)"
+ },
+ {
+  "entry": "0xf630",
+  "why": "memory only"
+ },
+ {
+  "entry": "0xf79e",
+  "why": "memory only"
+ },
+ {
+  "entry": "0xf936",
+  "why": "memory only"
  }
 ]

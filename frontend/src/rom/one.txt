@@ -1,20 +1,20 @@
 value at 0x3E1960 before the call: 0x3e1ae2
-  step 1 pc 19c40: regs differ [d0 rom=1f port=8, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=b, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c1968 port=3e4000, a1 rom=3e1968 port=3e0864, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 2 pc 19c46: regs differ [d0 rom=1f port=8, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=b, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a1 rom=3e1968 port=3e0864, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 1 pc 19c40: regs differ [d0 rom=1f port=8, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=b, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c1968 port=6c0000, a1 rom=3e1968 port=3e0864, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 3 pc 19c4c: regs differ [d0 rom=1f port=8, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=b, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 2 pc 19c46: regs differ [d0 rom=1f port=8, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=b, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a1 rom=3e1968 port=3e367c, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 3 pc 19c4c: regs differ [d0 rom=1f port=8, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=b, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 5 pc 19c74: regs differ [d0 rom=ff port=8, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=b, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=b, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c0005 port=6c0000, a1 rom=3e368c port=3e367c, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c0005 port=6c0000, a1 rom=3e368c port=3e367c, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=0, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c0000 port=6c0001, a1 rom=3e367c port=3e3684, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=0, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c0000 port=6c0001, a1 rom=3e367c port=3e3684, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c0005 port=6c0001, a1 rom=3e368c port=3e3684, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c0005 port=6c0001, a1 rom=3e368c port=3e3684, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=0, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c0000 port=6c0005, a1 rom=3e367c port=3e368c, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d3 rom=1a port=0, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a0 rom=6c0000 port=6c0005, a1 rom=3e367c port=3e368c, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
-  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, d1 rom=17 port=1, d2 rom=3 port=10, d4 rom=1b port=17, d5 rom=1e port=4, d6 rom=12 port=5, d7 rom=7 port=3, a2 rom=3e4000 port=3e02d8, a3 rom=3e4000 port=3e1bc6, a4 rom=3e1bc6 port=3e1968, a5 rom=3e1968 port=3e0f48] memory differs
+  step 1 pc 19c40: regs differ [a0 rom=6c4000 port=3e4000] memory matches
+  step 2 pc 19c46: regs match memory matches
+  step 1 pc 19c40: regs differ [a0 rom=6c4000 port=6c0000] memory matches
+  step 3 pc 19c4c: regs match memory differs
+  step 2 pc 19c46: regs differ [a1 rom=3e0864 port=3e367c] memory matches
+  step 3 pc 19c4c: regs match memory matches
+  step 5 pc 19c74: regs differ [d0 rom=ff port=8] memory matches
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0] memory matches
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, a0 rom=6c0005 port=6c0000, a1 rom=3e368c port=3e367c] memory differs
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, a0 rom=6c0005 port=6c0000, a1 rom=3e368c port=3e367c] memory differs
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d3 rom=b port=0, a0 rom=6c0000 port=6c0001, a1 rom=3e367c port=3e3684] memory differs
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d3 rom=b port=0, a0 rom=6c0000 port=6c0001, a1 rom=3e367c port=3e3684] memory differs
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, a0 rom=6c0005 port=6c0001, a1 rom=3e368c port=3e3684] memory differs
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0, a0 rom=6c0005 port=6c0001, a1 rom=3e368c port=3e3684] memory differs
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d3 rom=b port=0, a0 rom=6c0000 port=6c0005, a1 rom=3e367c port=3e368c] memory differs
+  step 5 pc 19c74: regs differ [d0 rom=ff port=0, d3 rom=b port=0, a0 rom=6c0000 port=6c0005, a1 rom=3e367c port=3e368c] memory differs
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0] memory matches
+  step 60 pc 19c9e: regs differ [d0 rom=ff port=0] memory matches
 value at 0x3E1960 after the call: 0x3e1ae2

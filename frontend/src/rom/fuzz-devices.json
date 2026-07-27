@@ -92,6 +92,10 @@
   "accesses": 8
  },
  {
+  "device": "0x1e0000",
+  "accesses": 8
+ },
+ {
   "device": "0x300000",
   "accesses": 6
  },
@@ -132,10 +136,6 @@
   "accesses": 4
  },
  {
-  "device": "0xc30000",
-  "accesses": 4
- },
- {
   "device": "0x480000",
   "accesses": 3
  },
@@ -165,6 +165,10 @@
  },
  {
   "device": "0x9a0000",
+  "accesses": 1
+ },
+ {
+  "device": "0xcc0000",
   "accesses": 1
  },
  {

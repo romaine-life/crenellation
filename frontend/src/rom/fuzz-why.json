@@ -1,7 +1,7 @@
 [
  {
   "cause": "registers and memory",
-  "routines": 342,
+  "routines": 314,
   "sample": "",
   "entries": [
    "0x118",
@@ -18,7 +18,7 @@
  },
  {
   "cause": "off-map hardware",
-  "routines": 93,
+  "routines": 90,
   "sample": "0x980001 0x980001 0x16494c 0x16494d",
   "entries": [
    "0x142",
@@ -35,7 +35,7 @@
  },
  {
   "cause": "registers",
-  "routines": 61,
+  "routines": 82,
   "sample": "d2 rom=0 port=e480",
   "entries": [
    "0x160",
@@ -52,9 +52,10 @@
  },
  {
   "cause": "memory",
-  "routines": 5,
+  "routines": 6,
   "sample": "",
   "entries": [
+   "0x172",
    "0x620",
    "0x656",
    "0x14dc",
