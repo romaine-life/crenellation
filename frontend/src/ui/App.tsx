@@ -32,7 +32,7 @@ const importTilePreview = () => import('./TilePreview');
 const importLevelEditor = () => import('./LevelEditor');
 const importPortraitEditor = () => import('./PortraitEditor');
 const importDoodadEditor = () => import('./DoodadEditor');
-const importRampart = () => import('../rampart/RampartScreen');
+const importRampart = () => import('../rom/RomScreen');
 
 const Skirmish = lazy(() => importSkirmish().then((m) => ({ default: m.Skirmish })));
 const CampaignEditor = lazy(() => importCampaignEditor().then((m) => ({ default: m.CampaignEditor })));

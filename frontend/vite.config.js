@@ -106,5 +106,14 @@ function bgmDevMock() {
 }
 
 export default defineConfig({
+  server: {
+    // The /play page needs SharedArrayBuffer, which the browser only gives to
+    // a cross-origin-isolated page. backend/server.js sends the same pair in
+    // production; without them here the dev server cannot run the machine.
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'credentialless',
+    },
+  },
   plugins: [react(), buildInfo(), doodadCompositionSave(), bgmDevMock()],
 });
