@@ -16,7 +16,8 @@ export const CTRL_FRAME = 0;    // frame counter, bumped when pixels are fresh
 export const CTRL_IN0 = 1;      // the four input-port bytes, packed
 export const CTRL_WAIT = 2;     // never written; Atomics.wait parks on it
 export const CTRL_STEPS = 3;    // instructions run, for the readout
-export const CTRL_WORDS = 4;
+export const CTRL_TRACK = 4;    // trackball direction, two signed bytes packed
+export const CTRL_WORDS = 5;
 
 export type StartMessage = {
   rom: ArrayBuffer;
@@ -46,6 +47,14 @@ self.onmessage = (ev: MessageEvent<StartMessage>) => {
       sys.inputs[1] = (packed >>> 16) & 0xff;
       sys.inputs[2] = (packed >>> 8) & 0xff;
       sys.inputs[3] = packed & 0xff;
+
+      // The trackball is a free-running counter the game differences between
+      // frames, so a held arrow key steps it rather than setting it.
+      const dir = Atomics.load(c, CTRL_TRACK);
+      const dx = (dir << 24) >> 24;
+      const dy = (dir << 16) >> 24;
+      if (dx) sys.track[0] = (sys.track[0] + dx * 3) & 0xff;
+      if (dy) sys.track[1] = (sys.track[1] + dy * 3) & 0xff;
 
       s.screen(px);
       Atomics.store(c, CTRL_STEPS, s.m.steps | 0);

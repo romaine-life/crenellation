@@ -61,6 +61,13 @@ export class System {
   // parted company.
   readonly inputs = new Uint8Array([0xf7, 0xff, 0xff, 0xff]);
 
+  /**
+   * The trackball counters, one per axis per station. The game reads these as
+   * free-running counters and works on the difference between frames, so
+   * moving the cursor means stepping one of them, not holding a value.
+   */
+  readonly track = new Uint8Array(8);
+
   frames = 0;
   private statusToggle = 0;
   /** Cycles to shift the first interrupt by. */
@@ -93,6 +100,7 @@ export class System {
     this.m.ioModelled = true;
     this.m.sound = true;
     this.m.budget = Number.MAX_SAFE_INTEGER;
+    this.m.trackAt = (addr: number): number => this.track[addr & 7];
     this.m.inputAt = (addr: number): number => {
       const b = this.inputs[(addr - IN0) & 3];
       // Bit 3 of the first byte is not a button. On the board it reads clear

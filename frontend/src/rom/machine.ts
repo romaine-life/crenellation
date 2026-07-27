@@ -230,6 +230,17 @@ export class Machine {
   /** Whether to answer sound-chip reads rather than replay a snapshot. */
   sound = false;
 
+  /**
+   * The trackball counters at 0x6C0000.
+   *
+   * Six of the eight bytes are read together each time the game samples the
+   * controls: it takes the counter, negates it and subtracts what it read
+   * last time, so what moves the cursor is the change between frames, not the
+   * value. Answering a constant - which is what an unmapped address does -
+   * is a trackball nobody is touching.
+   */
+  trackAt: ((addr: number) => number) | null = null;
+
   byte(addr: number): number {
     // The 68000 has a 24-bit address bus - A24 to A31 do not exist - so an
     // address above 16 MiB is not "off the map", it wraps. A pointer that
@@ -245,6 +256,7 @@ export class Machine {
     // which is what the main loop is waiting on in turn. Nothing here plays
     // sound yet, so report every voice idle.
     if (this.sound && addr >= 0x460000 && addr <= 0x460fff) return 0;
+    if (this.trackAt && addr >= 0x6c0000 && addr <= 0x6c0007) return this.trackAt(addr);
     return this.ram.get(addr) ?? 0;
   }
 

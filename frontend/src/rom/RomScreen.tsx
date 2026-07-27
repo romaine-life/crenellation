@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import romUrl from './rom.bin?url';
 import boardUrl from './io-baseline.bin?url';
-import { CTRL_FRAME, CTRL_IN0, CTRL_STEPS, CTRL_WORDS } from './worker';
+import { CTRL_FRAME, CTRL_IN0, CTRL_STEPS, CTRL_TRACK, CTRL_WORDS } from './worker';
 
 const SCREEN_W = 336;
 const SCREEN_H = 240;
@@ -98,6 +98,23 @@ export function Rampart() {
       raf = requestAnimationFrame(tick);
     })();
 
+    // The trackball, as a direction rather than a position: the game reads a
+    // counter and works on the difference between frames, so the worker steps
+    // it while a key is down.
+    const arrows: Record<string, [axis: number, dir: number]> = {
+      ArrowLeft: [0, -1], ArrowRight: [0, 1], ArrowUp: [1, -1], ArrowDown: [1, 1],
+    };
+    const held = new Set<string>();
+    const pushTrack = (): void => {
+      let dx = 0;
+      let dy = 0;
+      for (const code of held) {
+        const a = arrows[code];
+        if (a[0] === 0) dx = a[1]; else dy = a[1];
+      }
+      Atomics.store(c, CTRL_TRACK, ((dy & 0xff) << 8) | (dx & 0xff));
+    };
+
     // Active-low: holding a key clears its bit. The four port bytes are packed
     // into one word so a single atomic write is always a consistent snapshot.
     const set = (code: string, held: boolean): void => {
@@ -107,8 +124,14 @@ export function Rampart() {
       const was = Atomics.load(c, CTRL_IN0);
       Atomics.store(c, CTRL_IN0, held ? (was & ~(1 << shift)) : (was | (1 << shift)));
     };
-    const down = (e: KeyboardEvent): void => { if (KEYS[e.code]) { e.preventDefault(); set(e.code, true); } };
-    const up = (e: KeyboardEvent): void => { if (KEYS[e.code]) { e.preventDefault(); set(e.code, false); } };
+    const down = (e: KeyboardEvent): void => {
+      if (KEYS[e.code]) { e.preventDefault(); set(e.code, true); }
+      if (arrows[e.code]) { e.preventDefault(); held.add(e.code); pushTrack(); }
+    };
+    const up = (e: KeyboardEvent): void => {
+      if (KEYS[e.code]) { e.preventDefault(); set(e.code, false); }
+      if (arrows[e.code]) { e.preventDefault(); held.delete(e.code); pushTrack(); }
+    };
     window.addEventListener('keydown', down);
     window.addEventListener('keyup', up);
 
