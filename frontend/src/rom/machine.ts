@@ -6,6 +6,20 @@
 // register leaves the upper 24 bits alone, and that detail is load-bearing in
 // several routines.
 
+/**
+ * Raised when a routine lowers the interrupt mask far enough to let a pending
+ * interrupt in. The board asserts level 4 every frame, and the harness freezes
+ * the machine mid-frame, so one is always waiting: `0x620` sets the mask to
+ * zero and `0x656` restores a saved 0x2309, and the chip vectors straight to
+ * 0x133B2. Without this the port simply returned and the two could not be
+ * compared at all.
+ */
+export class PendingInterrupt extends Error {
+  constructor(readonly level: number) {
+    super('interrupt');
+  }
+}
+
 /** Raised by an odd word access; the dispatcher turns it into the exception. */
 export class AddressError extends Error {
   constructor() {
@@ -330,6 +344,18 @@ export class Machine {
       | (this.v ? 2 : 0) | (this.c ? 1 : 0)) >>> 0;
   }
 
+  /** Whether the board has an interrupt waiting. The harness sets this. */
+  irqPending = 0;
+
+  /** Stack an interrupt frame and give back the handler address. */
+  interruptFrame(level: number): number {
+    const sr = this.getSR();
+    this.storePre('a7', 4, this.next >>> 0, 32);
+    this.storePre('a7', 2, sr, 16);
+    this.sr = ((sr & 0xf8ff) | 0x2000 | (level << 8)) & 0xffff;
+    return this.load(0x60 + level * 4, 32);
+  }
+
   setSR(v: number): void {
     this.sr = v & 0xffff;
     this.x = (v & 16) !== 0;
@@ -337,6 +363,11 @@ export class Machine {
     this.z = (v & 4) !== 0;
     this.v = (v & 2) !== 0;
     this.c = (v & 1) !== 0;
+    if (this.irqPending && ((v >> 8) & 7) < this.irqPending) {
+      const lvl = this.irqPending;
+      this.irqPending = 0;
+      throw new PendingInterrupt(lvl);
+    }
   }
 
   /**

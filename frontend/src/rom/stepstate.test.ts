@@ -161,6 +161,9 @@ describe('routines compared at the instruction the chip stopped on', () => {
       m.a7 = sp;
       m.a6 = STACK + 0x200;
       m.sr = 0x2700;
+      // the board asserts level 4 every frame and the harness freezes the
+      // machine mid-frame, so one is always waiting when a routine unmasks
+      m.irqPending = 4;
       m.stubMissing = true;
       m.trackOffMap = true;
 

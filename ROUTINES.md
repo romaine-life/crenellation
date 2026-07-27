@@ -18,10 +18,10 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | Routines in the overlay | 756 |
 | *of the 593 the map held before trampolines and table cases were found* | *574 verified, 1 partly, 18 not* |
 | **Verified against hardware** | **729** |
-| Failing | 2 |
+| Failing | 0 |
 | Passing under some inputs, failing under others | 14 |
 | Judged only by a stopping-point mismatch | 1 |
-| Reproduces mid-run but not end to end | 10 |
+| Reproduces mid-run but not end to end | 12 |
 | Never judged | 0 |
 
 Four harnesses. Three call the routine and compare everything when it comes
@@ -140,6 +140,20 @@ everything is re-captured and the loop runs again.
 It converges. The last pass added six - 0x3EA, 0xC4CA, 0x120A2, 0x12306,
 0x13E0A, 0x1829C - and took failing from 19 to 16, input-dependent from 28 to
 26, and unexplained mismatches from 41 to 36.
+
+### Interrupts
+
+Two routines exist to let interrupts in: `0x620` is `move.w #$2000, sr`, which
+drops the mask to zero, and `0x656` restores a saved 0x2309. The board asserts
+level 4 every frame and the harness freezes the machine mid-frame, so one is
+always waiting - the chip vectors straight to 0x133B2, which is exactly the
+address the harness reported the port never reaching. The level-4 autovector
+confirms it.
+
+The port models that now: lowering the mask below a pending level stacks the
+return address and the old status register, raises the mask to the interrupt's
+own, and vectors through the table. Both routines reproduce, and **the failing
+column is empty for the first time.**
 
 ### The four that "nothing could judge" could be judged
 
