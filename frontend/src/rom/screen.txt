@@ -83,6 +83,7 @@ work RAM differs in 1744 of 65536 bytes across 29 pages
 sound area differs in 198 of 1024 bytes
    0x3e344a: chip 1 port 0 | 0x3e344e: chip 19 port 0 | 0x3e344f: chip 135 port 0 | 0x3e3450: chip 80 port 0 | 0x3e3451: chip 67 port 0 | 0x3e3452: chip 82 port 0 | 0x3e3454: chip 162 port 0 | 0x3e3457: chip 1 port 0 | 0x3e345c: chip 12 port 0 | 0x3e345d: chip 2 port 0 | 0x3e3468: chip 22 port 0 | 0x3e347c: chip 1 port 0 | 0x3e3490: chip 6 port 0 | 0x3e3492: chip 5 port 0
 first entered the wait at frame 1200; first set the channel at frame 1200
+port 0x3E0DC8 = 0x4000 (the handler bitmask)
 port 0x3E0804 = 0x2700 (mask 7); 0x3E0802 = 0x79; 0x3E0800 = 0x0
 busiest addresses:
    0x594  10689790

@@ -1,4 +1,5 @@
 chip sequence: 6000000 addresses; port: 5967918
+port runs the request path: 0x1578:true 0x157c:true 0x14dc:false 0x14e2:false 0x14f0:false 0x1500:false
 port runs the mask-setters: 0xf77e:false 0xf902:false 0xfb4e:false 0x650:true 0x64a:true 0x656:true 0x620:true
 at the divergence: sr=0x2400 mask=4 irqPending=4 cycles=32925586 nextIrqAt=-1
 anchored on the chip's 1336th address, a run of 24 with no repeats; found at the port's 12096th

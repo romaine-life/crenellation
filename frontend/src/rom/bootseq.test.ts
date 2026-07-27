@@ -104,6 +104,7 @@ describe('the boot instruction sequence against the chip', () => {
 
     const notes: string[] = [
       `chip sequence: ${chip.length} addresses; port: ${port.length}`,
+      'port runs the request path: ' + [0x1578, 0x157c, 0x14dc, 0x14e2, 0x14f0, 0x1500].map((a) => `0x${a.toString(16)}:${port.includes(a)}`).join(' '),
       'port runs the mask-setters: ' + [0xf77e, 0xf902, 0xfb4e, 0x650, 0x64a, 0x656, 0x620]
         .map((a) => `0x${a.toString(16)}:${port.includes(a)}`).join(' '),
       state,

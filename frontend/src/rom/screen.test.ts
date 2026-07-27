@@ -218,6 +218,7 @@ describe('what the booted machine draws', () => {
       notes.push('   ' + diffs.join(' | '));
     }
     notes.push(`first entered the wait at frame ${waitFrame}; first set the channel at frame ${setFrame}`);
+    notes.push(`port 0x3E0DC8 = 0x${sys.m.load(0x3e0dc8,16).toString(16)} (the handler bitmask)`);
     notes.push(`port 0x3E0804 = 0x${sys.m.load(0x3e0804,16).toString(16)} (mask ${(sys.m.load(0x3e0804,16)>>8)&7}); `
       + `0x3E0802 = 0x${sys.m.load(0x3e0802,16).toString(16)}; 0x3E0800 = 0x${sys.m.load(0x3e0800,16).toString(16)}`);
     notes.push('busiest addresses:');
