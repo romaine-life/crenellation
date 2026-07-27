@@ -16,12 +16,12 @@ again in the TypeScript port from byte-identical starting state, and compared.
 | | |
 |---|---|
 | Routines in the overlay | 757 |
-| *of the 593 the map held before trampolines and table cases were found* | *569 verified, 24 not* |
-| **Verified against hardware** | **721** |
+| *of the 593 the map held before trampolines and table cases were found* | *568 verified, 25 not* |
+| **Verified against hardware** | **720** |
 | Failing | 2 |
-| Passing under some inputs, failing under others | 13 |
+| Passing under some inputs, failing under others | 15 |
 | Judged only by a stopping-point mismatch | 6 |
-| Reproduces mid-run but not end to end | 10 |
+| Reproduces mid-run but not end to end | 9 |
 | Never judged | 5 |
 
 Four harnesses. Three call the routine and compare everything when it comes
@@ -89,8 +89,8 @@ list - code runs and entries straight out of the classifier, nothing injected -
 and reports how those particular routines stand now. It reconstructs to exactly
 593, which is the check that it is the right list.
 
-**569 of the 593 are fully verified**, counting one as verified only if every
-piece it was later split into is. 24 are not.
+**568 of the 593 are fully verified**, counting one as verified only if every
+piece it was later split into is. 25 are not.
 
 ### Instruction rules
 
@@ -174,6 +174,11 @@ discarded.
 
 0x72FFFE had been sitting in the list of addresses routines read that could not
 be accounted for.
+
+The return-based harnesses were starving it too. Re-capturing them with the
+watchdog fed takes the routines reproducing under them from 458 to 460, from
+450 to 483 and from 334 to 335 - and turns up two routines that had been
+counted as verified and disagree once the machine stops resetting under them.
 
 ### What "the chip faulted" is worth now
 
