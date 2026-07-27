@@ -34,6 +34,22 @@ const BGM_CACHE_TTL_MS = 5 * 60 * 1000;
 let bgmCache = { tracks: null, expiry: 0 };
 let bgmContainerClient = null; // lazily built Azure ContainerClient (list mode only)
 
+// Cross-origin isolation, so the page may use SharedArrayBuffer.
+//
+// The ported ROM runs in a worker that never returns to its event loop - the
+// game's main loop does not return, and the port mirrors the 68000's call
+// stack in JavaScript's - so the worker cannot receive postMessage while it
+// runs. Keyboard input and the framebuffer cross through shared memory
+// instead, and the browser only hands out SharedArrayBuffer to an isolated
+// page. `credentialless` rather than `require-corp` because the rest of the
+// app loads cross-origin resources that carry no CORP header, and
+// require-corp would block every one of them.
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'credentialless');
+  next();
+});
+
 app.use(express.json({ limit: '256kb' }));
 
 // ---------------------------------------------------------------------------
@@ -1829,22 +1845,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-// Cross-origin isolation, so the page may use SharedArrayBuffer.
-//
-// The ported ROM runs in a worker that never returns to its event loop - the
-// game's main loop does not return, and the port mirrors the 68000's call
-// stack in JavaScript's - so the worker cannot receive postMessage while it
-// runs. Keyboard input and the framebuffer cross through shared memory
-// instead, and the browser only hands out SharedArrayBuffer to an isolated
-// page. `credentialless` rather than `require-corp` because the rest of the
-// app loads cross-origin resources that carry no CORP header, and
-// require-corp would block every one of them.
-app.use((req, res, next) => {
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-  res.setHeader('Cross-Origin-Embedder-Policy', 'credentialless');
-  next();
-});
-
 app.use(express.static(frontendDir, { setHeaders: makeStaticCacheHeaders(frontendDir) }));
 
 // SPA fallback: serve index.html for client routes. Only 404 for genuine
