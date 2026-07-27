@@ -44,7 +44,11 @@ def emit_function(entry, end, label):
     lines.append("  for (;;) {")
     # pass the program counter so a test can recognise an instruction
     # boundary by address rather than by counting to it
+    # A halted chip stays halted. STOP set the flag but only returned from
+    # its own function, so every caller carried on - which is how the exception
+    # stubs ran off the end of their own message text instead of stopping.
     lines.append("    m.tick(pc);")
+    lines.append("    if (m.stopped) return;")
     lines.append("    switch (pc) {")
     addr = entry
     while addr < end:
@@ -137,6 +141,8 @@ def main():
     d.append(" * the routine containing the address and enters it there.")
     d.append(" */")
     d.append("export function call(addr: number, m: Machine): void {")
+    d.append("  // a halted chip does not start another routine")
+    d.append("  if (m.stopped) return;")
     d.append("  const a = addr >>> 0;")
     d.append("  let lo = 0;")
     d.append("  let hi = STARTS.length - 1;")

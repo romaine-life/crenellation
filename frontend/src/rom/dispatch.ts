@@ -2300,6 +2300,8 @@ const FNS: Routine[] = [
  * the routine containing the address and enters it there.
  */
 export function call(addr: number, m: Machine): void {
+  // a halted chip does not start another routine
+  if (m.stopped) return;
   const a = addr >>> 0;
   let lo = 0;
   let hi = STARTS.length - 1;

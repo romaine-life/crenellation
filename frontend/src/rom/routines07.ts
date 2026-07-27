@@ -9,6 +9,7 @@ export function fn_0ea7a(m: Machine, at = 0x0ea7a): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0ea7a: { m.storePre('a7', 4, m.a6, 32); m.a6 = m.a7; m.a7 = (m.a7 + (-4)) >>> 0; pc = 0x0ea7e; } break;
       case 0x0ea7e: { m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d2, 32); pc = 0x0ea82; } break;
@@ -43,6 +44,7 @@ export function fn_0eaba(m: Machine, at = 0x0eaba): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0eaba: { m.storePre('a7', 4, 0x0eabc, 32); call(0x0eac8, m); pc = 0x0eabc; } break;
       case 0x0eabc: { m.storePre('a7', 4, 0, 32); m.logicFlags(0, 32); pc = 0x0eabe; } break;
@@ -59,6 +61,7 @@ export function fn_0eac8(m: Machine, at = 0x0eac8): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0eac8: { { const _a = 1; const _b = m.load(0x3e1954, 8); m.subFlags(_b, _a, 8, false); } pc = 0x0ead0; } break;
       case 0x0ead0: { if (m.cond('ne')) { pc = 0x0eaec; } else { pc = 0x0ead2; } } break;
@@ -78,6 +81,7 @@ export function fn_0ebba(m: Machine, at = 0x0ebba): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0ebba: { m.a7 = m.wr(m.a7, (m.a7 + 16), 32); pc = 0x0ebbe; } break;
       case 0x0ebbe: { m.d2 = m.loadPost('a7', 4, 32); m.d3 = m.loadPost('a7', 4, 32); m.d4 = m.loadPost('a7', 4, 32); m.a2 = m.loadPost('a7', 4, 32); m.a3 = m.loadPost('a7', 4, 32); m.a4 = m.loadPost('a7', 4, 32); m.a5 = m.loadPost('a7', 4, 32); pc = 0x0ebc2; } break;
@@ -92,6 +96,7 @@ export function fn_0ec3a(m: Machine, at = 0x0ec3a): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0ec3a: { m.storePre('a7', 4, m.a6, 32); m.a6 = m.a7; m.a7 = (m.a7 + (-4)) >>> 0; pc = 0x0ec3e; } break;
       case 0x0ec3e: { m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); pc = 0x0ec42; } break;
@@ -135,6 +140,7 @@ export function fn_0ecb0(m: Machine, at = 0x0ecb0): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0ecb0: { m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); pc = 0x0ecb4; } break;
       case 0x0ecb4: { { const _s = m.load(m.a7 + 14, 32); m.d2 = m.wr(m.d2, _s, 32); m.logicFlags(_s, 32); } pc = 0x0ecb8; } break;
@@ -171,6 +177,7 @@ export function fn_0edea(m: Machine, at = 0x0edea): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0edea: { { const _s = m.rd(m.a2, 32); m.storePre('a7', 4, _s, 32); m.logicFlags(_s, 32); } pc = 0x0edec; } break;
       case 0x0edec: { m.a2 = m.wr(m.a2, 0x3e0de2, 32); pc = 0x0edf2; } break;
@@ -196,6 +203,7 @@ export function fn_0ee22(m: Machine, at = 0x0ee22): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0ee22: { m.d0 = m.wr(m.d0, (0 >>> 0), 32); m.logicFlags(0, 32); pc = 0x0ee24; } break;
       case 0x0ee24: { { const _s = m.load(0x3e0dd2, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x0ee2a; } break;
@@ -212,6 +220,7 @@ export function fn_0ee3a(m: Machine, at = 0x0ee3a): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0ee3a: { { const _s = 65535; m.store(0x3e1cf4, _s, 16); m.logicFlags(_s, 16); } pc = 0x0ee42; } break;
       case 0x0ee42: { m.a7 = (m.a7 + 4) >>> 0; return; } break;
@@ -225,6 +234,7 @@ export function fn_0ee44(m: Machine, at = 0x0ee44): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0ee44: { m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d2, 32); pc = 0x0ee48; } break;
       case 0x0ee48: { m.d2 = m.wr(m.d2, 0, 32); m.logicFlags(0, 32); pc = 0x0ee4a; } break;
@@ -259,6 +269,7 @@ export function fn_0ee90(m: Machine, at = 0x0ee90): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0ee90: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x0ee94; } break;
       case 0x0ee94: { { const _s = m.load(m.a7 + 16, 32); m.a1 = m.wr(m.a1, m.sx(_s, 32), 32); } pc = 0x0ee98; } break;
@@ -294,6 +305,7 @@ export function fn_0eeee(m: Machine, at = 0x0eeee): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0eeee: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x0eef2; } break;
       case 0x0eef2: { m.d0 = m.wr(m.d0, 0, 32); m.logicFlags(0, 32); pc = 0x0eef4; } break;
@@ -336,6 +348,7 @@ export function fn_0ef58(m: Machine, at = 0x0ef58): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0ef58: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x0ef5c; } break;
       case 0x0ef5c: { { const _s = m.load(m.a7 + 16, 32); m.a1 = m.wr(m.a1, m.sx(_s, 32), 32); } pc = 0x0ef60; } break;
@@ -376,6 +389,7 @@ export function fn_0efba(m: Machine, at = 0x0efba): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0efba: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x0efbe; } break;
       case 0x0efbe: { m.d0 = m.wr(m.d0, 0, 32); m.logicFlags(0, 32); pc = 0x0efc0; } break;
@@ -406,6 +420,7 @@ export function fn_0effa(m: Machine, at = 0x0effa): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0effa: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x0effe; } break;
       case 0x0effe: { m.d0 = m.wr(m.d0, 0, 32); m.logicFlags(0, 32); pc = 0x0f000; } break;
@@ -419,6 +434,7 @@ export function fn_0f000(m: Machine, at = 0x0f000): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f000: { { const _s = m.load(0x3e1cf4, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x0f006; } break;
       case 0x0f006: { if (m.cond('mi')) { pc = 0x0f028; } else { pc = 0x0f008; } } break;
@@ -444,6 +460,7 @@ export function fn_0f13e(m: Machine, at = 0x0f13e): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f13e: { m.storePre('a7', 4, m.a5, 32); m.storePre('a7', 4, m.a4, 32); m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d7, 32); m.storePre('a7', 4, m.d6, 32); m.storePre('a7', 4, m.d3, 32); pc = 0x0f142; } break;
       case 0x0f142: { { const _s = 4063960; m.a4 = m.wr(m.a4, m.sx(_s, 32), 32); } pc = 0x0f148; } break;
@@ -509,6 +526,7 @@ export function fn_0f1fa(m: Machine, at = 0x0f1fa): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f1fa: { { const _s = m.rd(m.a3, 32); m.storePre('a7', 4, _s, 32); m.logicFlags(_s, 32); } pc = 0x0f1fc; } break;
       case 0x0f1fc: { m.storePre('a7', 4, 0x0f202, 32); call(0x0f2cc, m); pc = 0x0f202; } break;
@@ -550,6 +568,7 @@ export function fn_0f26a(m: Machine, at = 0x0f26a): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f26a: { m.d1 = m.wr(m.d1, 0, 32); m.logicFlags(0, 32); pc = 0x0f26c; } break;
       case 0x0f26c: { { const _s = m.load(m.a3 + 8, 16); m.d1 = m.wr(m.d1, _s, 16); m.logicFlags(_s, 16); } pc = 0x0f270; } break;
@@ -587,6 +606,7 @@ export function fn_0f2cc(m: Machine, at = 0x0f2cc): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f2cc: { m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.d2, 32); pc = 0x0f2d0; } break;
       case 0x0f2d0: { { const _s = m.load(m.a7 + 12, 32); m.a3 = m.wr(m.a3, m.sx(_s, 32), 32); } pc = 0x0f2d4; } break;
@@ -608,6 +628,7 @@ export function fn_0f2ee(m: Machine, at = 0x0f2ee): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f2ee: { { const _s = m.load(m.a7 + 4, 32); m.d0 = m.wr(m.d0, _s, 32); m.logicFlags(_s, 32); } pc = 0x0f2f2; } break;
       case 0x0f2f2: { { const _a = 129008;  const _b = m.rd(m.d0, 32); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 32), 32); } pc = 0x0f2f8; } break;
@@ -622,6 +643,7 @@ export function fn_0f2fa(m: Machine, at = 0x0f2fa): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f2fa: { { const _s = m.load(m.a7 + 4, 32); m.d0 = m.wr(m.d0, _s, 32); m.logicFlags(_s, 32); } pc = 0x0f2fe; } break;
       case 0x0f2fe: { { const _a = 129008;  const _b = m.rd(m.d0, 32); m.d0 = m.wr(m.d0, m.subFlags(_b, _a, 32), 32); } pc = 0x0f304; } break;
@@ -636,6 +658,7 @@ export function fn_0f306(m: Machine, at = 0x0f306): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f306: { m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); pc = 0x0f30a; } break;
       case 0x0f30a: { { const _s = m.load(m.a7 + 26, 16); m.d2 = m.wr(m.d2, _s, 16); m.logicFlags(_s, 16); } pc = 0x0f30e; } break;
@@ -698,6 +721,7 @@ export function fn_0f3b2(m: Machine, at = 0x0f3b2): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f3b2: { m.storePre('a7', 4, m.a5, 32); m.storePre('a7', 4, m.a4, 32); m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d6, 32); m.storePre('a7', 4, m.d5, 32); m.storePre('a7', 4, m.d4, 32); pc = 0x0f3b6; } break;
       case 0x0f3b6: { { const _s = 4063232; m.a4 = m.wr(m.a4, m.sx(_s, 32), 32); } pc = 0x0f3bc; } break;
@@ -798,6 +822,7 @@ export function fn_0f4ca(m: Machine, at = 0x0f4ca): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f4ca: { m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d4, 32); pc = 0x0f4ce; } break;
       case 0x0f4ce: { { const _s = 4063232; m.a2 = m.wr(m.a2, m.sx(_s, 32), 32); } pc = 0x0f4d4; } break;
@@ -836,6 +861,7 @@ export function fn_0f52c(m: Machine, at = 0x0f52c): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f52c: { { const _c = (4) & 63;  const _v = m.rd(m.d1, 16); const _r = (_c >= 16 ? 0 : (_v << _c)); m.d1 = m.wr(m.d1, _r, 16); m.shiftFlags(_r, _v, _c, 16, true, false); } pc = 0x0f52e; } break;
       case 0x0f52e: { { const _s = 4079424; m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x0f534; } break;
@@ -854,6 +880,7 @@ export function fn_0f540(m: Machine, at = 0x0f540): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f540: { m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d3, 32); pc = 0x0f544; } break;
       case 0x0f544: { { const _s = 4063232; m.a2 = m.wr(m.a2, m.sx(_s, 32), 32); } pc = 0x0f54a; } break;
@@ -917,6 +944,7 @@ export function fn_0f5f6(m: Machine, at = 0x0f5f6): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f5f6: { { const _s = m.rd(m.d2, 32); m.storePre('a7', 4, _s, 32); m.logicFlags(_s, 32); } pc = 0x0f5f8; } break;
       case 0x0f5f8: { { const _a = 70;  const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x0f5fc; } break;
@@ -947,6 +975,7 @@ export function fn_0f630(m: Machine, at = 0x0f630): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f630: { m.storePre('a7', 4, m.a6, 32); m.a6 = m.a7; m.a7 = (m.a7 + (-8)) >>> 0; pc = 0x0f634; } break;
       case 0x0f634: { m.storePre('a7', 4, m.a5, 32); m.storePre('a7', 4, m.a4, 32); m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d7, 32); m.storePre('a7', 4, m.d6, 32); m.storePre('a7', 4, m.d5, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); pc = 0x0f638; } break;
@@ -1076,6 +1105,7 @@ export function fn_0f79e(m: Machine, at = 0x0f79e): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f79e: { m.storePre('a7', 4, m.a6, 32); m.a6 = m.a7; m.a7 = (m.a7 + (-10)) >>> 0; pc = 0x0f7a2; } break;
       case 0x0f7a2: { m.storePre('a7', 4, m.a5, 32); m.storePre('a7', 4, m.a4, 32); m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d7, 32); m.storePre('a7', 4, m.d6, 32); m.storePre('a7', 4, m.d5, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); pc = 0x0f7a6; } break;
@@ -1212,6 +1242,7 @@ export function fn_0f922(m: Machine, at = 0x0f922): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f922: { { const _s = m.load(m.a0 + 6, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x0f926; } break;
       case 0x0f926: { { const _n = (6) & 7; const _v = m.load(m.a4 + 2, 8); m.z = ((_v >>> _n) & 1) === 0; } pc = 0x0f92c; } break;
@@ -1229,6 +1260,7 @@ export function fn_0f936(m: Machine, at = 0x0f936): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0f936: { m.storePre('a7', 4, m.a6, 32); m.a6 = m.a7; m.a7 = (m.a7 + (-10)) >>> 0; pc = 0x0f93a; } break;
       case 0x0f93a: { m.storePre('a7', 4, m.a5, 32); m.storePre('a7', 4, m.a4, 32); m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.d7, 32); m.storePre('a7', 4, m.d6, 32); m.storePre('a7', 4, m.d5, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); pc = 0x0f93e; } break;
@@ -1404,6 +1436,7 @@ export function fn_0fb74(m: Machine, at = 0x0fb74): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fb74: { { const _s = m.load(m.a7 + 4, 32); m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x0fb78; } break;
       case 0x0fb78: { m.a7 = (m.a7 + 4) >>> 0; return; } break;
@@ -1419,6 +1452,7 @@ export function fn_0fb80(m: Machine, at = 0x0fb80): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fb80: { m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.a1, 32); pc = 0x0fb84; } break;
       case 0x0fb84: { m.d0 = m.wr(m.d0, 0, 16); m.logicFlags(0, 16); pc = 0x0fb86; } break;
@@ -1454,6 +1488,7 @@ export function fn_0fbc6(m: Machine, at = 0x0fbc6): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fbc6: { { const _s = m.load(0x3e0800, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fbcc; } break;
       case 0x0fbcc: { { const _a = 63;  const _b = m.rd(m.d0, 8); const _r = (_b & _a); m.d0 = m.wr(m.d0, _r, 8); m.logicFlags(_r, 8); } pc = 0x0fbd0; } break;
@@ -1473,6 +1508,7 @@ export function fn_0fbe2(m: Machine, at = 0x0fbe2): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fbe2: { throw new Error('reached data at 0x0fbe2'); } break;
       default: call(pc, m); return;
@@ -1485,6 +1521,7 @@ export function fn_0fbe4(m: Machine, at = 0x0fbe4): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fbe4: { m.storePre('a7', 4, 0x0fbea, 32); call(0x0064a, m); pc = 0x0fbea; } break;
       case 0x0fbea: { m.logicFlags(m.load(0x140000, 16), 16); pc = 0x0fbf0; } break;
@@ -1502,6 +1539,7 @@ export function fn_0fc06(m: Machine, at = 0x0fc06): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc06: { m.logicFlags(m.load(0x1400e8, 16), 16); pc = 0x0fc0c; } break;
       case 0x0fc0c: { m.a7 = (m.a7 + 4) >>> 0; return; } break;
@@ -1515,6 +1553,7 @@ export function fn_0fc0e(m: Machine, at = 0x0fc0e): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc0e: { m.a7 = (m.a7 + 4) >>> 0; return; } break;
       default: call(pc, m); return;
@@ -1527,6 +1566,7 @@ export function fn_0fc10(m: Machine, at = 0x0fc10): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc10: { m.logicFlags(m.load(0x140000, 16), 16); pc = 0x0fc16; } break;
       case 0x0fc16: { m.logicFlags(m.load(0x1432b0, 32), 32); pc = 0x0fc1c; } break;
@@ -1541,6 +1581,7 @@ export function fn_0fc1e(m: Machine, at = 0x0fc1e): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc1e: { { const _s = m.load(0x3e0de6, 8); m.d1 = m.wr(m.d1, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fc24; } break;
       case 0x0fc24: { { const _s = m.load(0x3e0de2, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fc2a; } break;
@@ -1557,6 +1598,7 @@ export function fn_0fc32(m: Machine, at = 0x0fc32): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc32: { m.logicFlags(m.load(0x1460bc, 16), 16); pc = 0x0fc38; } break;
       case 0x0fc38: { { const _a = 1;  const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x0fc3a; } break;
@@ -1570,6 +1612,7 @@ export function fn_0fc3a(m: Machine, at = 0x0fc3a): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc3a: { { const _a = 3;  const _b = m.rd(m.d0, 16); const _r = (_b & _a); m.d0 = m.wr(m.d0, _r, 16); m.logicFlags(_r, 16); } pc = 0x0fc3e; } break;
       case 0x0fc3e: { { const _s = m.rd(m.d0, 8); m.store(0x3e0de2, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fc44; } break;
@@ -1584,6 +1627,7 @@ export function fn_0fc46(m: Machine, at = 0x0fc46): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc46: { { const _s = m.load(0x3e0de6, 8); m.d1 = m.wr(m.d1, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fc4c; } break;
       default: call(pc, m); return;
@@ -1596,6 +1640,7 @@ export function fn_0fc4a(m: Machine, at = 0x0fc4a): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc4a: { { const _n = (m.rd(m.d6, 8)) & 7; m.a6 = (m.a6 - 1) >>> 0; const _ea = m.a6; const _v = m.load(_ea, 8); const _bit = (1 << _n) >>> 0; m.z = ((_v >>> _n) & 1) === 0; m.store(_ea, (_v | _bit), 8); } pc = 0x0fc4c; } break;
       case 0x0fc4c: { { const _s = m.load(0x3e0de2, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fc52; } break;
@@ -1618,6 +1663,7 @@ export function fn_0fc74(m: Machine, at = 0x0fc74): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc74: { { const _s = m.load(0x3e0de6, 8); m.d1 = m.wr(m.d1, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fc7a; } break;
       case 0x0fc7a: { { const _s = m.load(0x3e0de2, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fc80; } break;
@@ -1634,6 +1680,7 @@ export function fn_0fc88(m: Machine, at = 0x0fc88): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc88: { m.logicFlags(m.load(0x1461bc, 16), 16); pc = 0x0fc8e; } break;
       case 0x0fc8e: { { const _a = 1;  const _b = m.rd(m.d0, 16); m.d0 = m.wr(m.d0, m.addFlags(_b, _a, 16), 16); } pc = 0x0fc90; } break;
@@ -1650,6 +1697,7 @@ export function fn_0fc9c(m: Machine, at = 0x0fc9c): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x0fc9c: { { const _s = m.load(0x3e0de6, 8); m.d1 = m.wr(m.d1, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fca2; } break;
       case 0x0fca2: { { const _s = m.load(0x3e0de2, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x0fca8; } break;
@@ -1672,6 +1720,7 @@ export function fn_11bd8(m: Machine, at = 0x11bd8): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11bd8: { m.d0 = m.wr(m.d0, 0, 32); m.logicFlags(0, 32); pc = 0x11bda; } break;
       case 0x11bda: { { const _s = m.load(m.a7 + 4, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x11bde; } break;
@@ -1689,6 +1738,7 @@ export function fn_11bec(m: Machine, at = 0x11bec): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11bec: { m.d0 = m.wr(m.d0, 0, 32); m.logicFlags(0, 32); pc = 0x11bee; } break;
       case 0x11bee: { { const _s = m.load(m.a7 + 5, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x11bf2; } break;
@@ -1708,6 +1758,7 @@ export function fn_11c04(m: Machine, at = 0x11c04): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11c04: { { const _s = m.load(m.a7 + 4, 32); m.d0 = m.wr(m.d0, _s, 32); m.logicFlags(_s, 32); } pc = 0x11c08; } break;
       case 0x11c08: { { const _s = m.rd(m.d0, 32); m.a0 = m.wr(m.a0, m.sx(_s, 32), 32); } pc = 0x11c0a; } break;
@@ -1801,6 +1852,7 @@ export function fn_11ce2(m: Machine, at = 0x11ce2): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11ce2: { m.storePre('a7', 4, m.a0, 32); pc = 0x11ce6; } break;
       case 0x11ce6: { { const _s = m.load(m.a7 + 8, 32); m.d0 = m.wr(m.d0, _s, 32); m.logicFlags(_s, 32); } pc = 0x11cea; } break;
@@ -1819,6 +1871,7 @@ export function fn_11cf8(m: Machine, at = 0x11cf8): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11cf8: { m.storePre('a7', 4, m.d5, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); pc = 0x11cfc; } break;
       case 0x11cfc: { { const _s = m.load(m.a7 + 22, 16); m.d4 = m.wr(m.d4, _s, 16); m.logicFlags(_s, 16); } pc = 0x11d00; } break;
@@ -1875,6 +1928,7 @@ export function fn_11d5c(m: Machine, at = 0x11d5c): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11d5c: { m.d0 = m.wr(m.d0, 0, 32); m.logicFlags(0, 32); pc = 0x11d5e; } break;
       case 0x11d5e: { { const _s = m.load(m.a7 + 10, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x11d62; } break;
@@ -1911,6 +1965,7 @@ export function fn_11d96(m: Machine, at = 0x11d96): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11d96: { m.storePre('a7', 4, m.a3, 32); m.storePre('a7', 4, m.a2, 32); m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.d6, 32); m.storePre('a7', 4, m.d5, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x11d9a; } break;
       case 0x11d9a: { { const _s = m.load(m.a7 + 40, 32); m.a1 = m.wr(m.a1, m.sx(_s, 32), 32); } pc = 0x11d9e; } break;
@@ -1968,6 +2023,7 @@ export function fn_11e10(m: Machine, at = 0x11e10): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11e10: { m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x11e14; } break;
       case 0x11e14: { m.storePre('a7', 4, 0x11e1a, 32); call(0x00512, m); pc = 0x11e1a; } break;
@@ -1998,6 +2054,7 @@ export function fn_11e58(m: Machine, at = 0x11e58): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11e58: { { const _s = m.load(m.a7 + 4, 32); m.d1 = m.wr(m.d1, _s, 32); m.logicFlags(_s, 32); } pc = 0x11e5c; } break;
       case 0x11e5c: { m.a0 = m.wr(m.a0, 0x3e0842, 32); pc = 0x11e62; } break;
@@ -2023,6 +2080,7 @@ export function fn_11eda(m: Machine, at = 0x11eda): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11eda: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.a0, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x11ede; } break;
       case 0x11ede: { m.a0 = m.wr(m.a0, 0xe5930, 32); pc = 0x11ee4; } break;
@@ -2040,6 +2098,7 @@ export function fn_11ef2(m: Machine, at = 0x11ef2): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11ef2: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.a0, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x11ef6; } break;
       case 0x11ef6: { m.a0 = m.wr(m.a0, 0xdaddc, 32); pc = 0x11efc; } break;
@@ -2054,6 +2113,7 @@ export function fn_11efe(m: Machine, at = 0x11efe): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11efe: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.a0, 32); m.storePre('a7', 4, m.d4, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x11f02; } break;
       case 0x11f02: { m.a0 = m.wr(m.a0, 0xd2608, 32); pc = 0x11f08; } break;
@@ -2079,6 +2139,7 @@ export function fn_11f2a(m: Machine, at = 0x11f2a): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11f2a: { m.d0 = m.wr(m.d0, 0, 32); m.logicFlags(0, 32); pc = 0x11f2c; } break;
       case 0x11f2c: { { const _s = m.loadPost('a0', 1, 8); m.d0 = m.wr(m.d0, _s, 8); m.logicFlags(_s, 8); } pc = 0x11f2e; } break;
@@ -2160,6 +2221,7 @@ export function fn_11ff8(m: Machine, at = 0x11ff8): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x11ff8: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.d3, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x11ffc; } break;
       case 0x11ffc: { { const _s = m.load(m.a7 + 26, 16); m.d2 = m.wr(m.d2, _s, 16); m.logicFlags(_s, 16); } pc = 0x12000; } break;
@@ -2186,6 +2248,7 @@ export function fn_12026(m: Machine, at = 0x12026): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x12026: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x1202a; } break;
       case 0x1202a: { { const _s = m.load(m.a7 + 22, 16); m.d0 = m.wr(m.d0, _s, 16); m.logicFlags(_s, 16); } pc = 0x1202e; } break;
@@ -2209,6 +2272,7 @@ export function fn_1204c(m: Machine, at = 0x1204c): void {
   let pc = at;
   for (;;) {
     m.tick(pc);
+    if (m.stopped) return;
     switch (pc) {
       case 0x1204c: { m.storePre('a7', 4, m.a1, 32); m.storePre('a7', 4, m.d2, 32); m.storePre('a7', 4, m.d1, 32); pc = 0x12050; } break;
       case 0x12050: { { const _s = m.load(m.a7 + 16, 32); m.a1 = m.wr(m.a1, m.sx(_s, 32), 32); } pc = 0x12054; } break;
