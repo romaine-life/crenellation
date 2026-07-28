@@ -811,6 +811,22 @@ def lift_once(lo, hi, names, seed=()):
     if not g:
         raise Bail("nothing to decode")
     starts, edges = g["blocks"], {int(k): v for k, v in g["edges"].items()}
+    # Blocks the entry cannot reach are not this routine's code. Rampart has
+    # routines that share a tail, so a second `movem ...,-(a7)` sits in the
+    # middle as another entry point - lifting it pushes onto the same
+    # saved-register stack the real restore pops from, and the routine comes
+    # back with a register it never held. Prune them here, before the graph is
+    # reshaped, so nothing downstream tries to sequence them either.
+    reach, seen_r = [0], {0}
+    while reach:
+        v = reach.pop()
+        for w in edges.get(v, []):
+            if w not in seen_r:
+                seen_r.add(w)
+                reach.append(w)
+    for k in list(edges):
+        if k not in seen_r:
+            edges[k] = []
     ok, back = reducible(len(starts), edges)
     clone_of = {}
     dispatch = False
@@ -844,18 +860,6 @@ def lift_once(lo, hi, names, seed=()):
     for a, outs in edges.items():
         for b_ in outs:
             preds[b_].add(a)
-    # Blocks the entry cannot reach are not this routine's code. Rampart has
-    # routines that share a tail, so a second `movem ...,-(a7)` sits in the
-    # middle as another entry point - lifting it pushes onto the same
-    # saved-register stack the real restore pops from, and the routine comes
-    # back with a register it never held.
-    reach, seen_r = [0], {0}
-    while reach:
-        v = reach.pop()
-        for w in edges.get(v, []):
-            if w not in seen_r:
-                seen_r.add(w)
-                reach.append(w)
     end_flags = {}
     for n, (s, e) in enumerate(zip(starts, ends)):
         if n not in seen_r:
