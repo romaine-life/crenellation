@@ -156,6 +156,13 @@ class BlockLifter(Lifter):
                 mask = (1 << bits) - 1
                 self.stmts.append(f"{tok} = (({tok} & {keep}) | ({value.text} & {mask}));")
             return
+        # A store to memory sets N and Z from the value stored, and the branch
+        # after it reads them - `move.w d0,(a0)+` then `dbeq` writes one word,
+        # not thirty-three, because d0 is zero and the loop's condition is
+        # already true. Naming the value first is what makes those flags
+        # available: a destination that post-increments cannot be read back.
+        value = self.pin(value)
+        self.last_written = value
         super().write(tok, value, bits)
 
     def temp(self, value):
