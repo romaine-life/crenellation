@@ -108,8 +108,13 @@ function digests(entry: (addr: number, m: Machine) => void): number[] {
 
 type Machine = System['m'];
 
+// Once a rule has been changed on purpose, "identical to the original" is the
+// wrong question - the decompiled source is no longer trying to be the ROM. The
+// matching decompilation projects handle this with a build flag; same idea.
+const MODIFIED = process.env.MODIFIED === '1';
+
 describe('the decompiled routines compose', () => {
-  it('runs the game identically to the recompiled ones', () => {
+  it.skipIf(MODIFIED)('runs the game identically to the recompiled ones', () => {
     const a = shots(viaRecompiled);
     const b = shots(viaDecompiled);
     let note = `identical for ${a.length} frames`;
@@ -135,5 +140,19 @@ describe('the decompiled routines compose', () => {
     // far - not that either reached some number this test picked.
     expect(note).toBe(`identical for ${a.length} frames`);
     expect(b.length).toBe(a.length);
+  }, 900000);
+
+  // With a rule changed, the useful claim is the opposite one: the change is
+  // actually in the running game rather than in a file nothing reads.
+  it.skipIf(!MODIFIED)('differs from the original where it was changed', () => {
+    const a = shots(viaRecompiled);
+    const b = shots(viaDecompiled);
+    let differs = false;
+    for (let f = 0; f < Math.min(a.length, b.length) && !differs; f += 1) {
+      for (let i = 0; i < a[f].length; i += 1) {
+        if (a[f][i] !== b[f][i]) { differs = true; break; }
+      }
+    }
+    expect(differs).toBe(true);
   }, 900000);
 });

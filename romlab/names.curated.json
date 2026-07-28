@@ -55,6 +55,7 @@
   "0x8606": "damage handler",
   "0x865e": "territory scoring",
   "0x8b4": "piece walker",
+  "0x9080": "drain event queue",
   "0xaf72": "unit movement",
   "0xbc2": "enclosure test",
   "0xcae2": "scheduled trigger",
