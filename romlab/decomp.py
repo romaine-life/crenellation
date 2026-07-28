@@ -247,6 +247,12 @@ class Lifter:
         the high part first, because the 68000 is big-endian. `live` is how to
         reach the same bytes in memory, for a slot this routine has written.
         """
+        if off < 4:
+            # Below the first argument: the return address slot, or the frame
+            # the caller is still using. A routine reached by a tail jump reads
+            # here on purpose. There is no parameter for it, but the stack is
+            # real and holds what the machine sees.
+            return Expr(f"load{bits}({live})", "expr")
         slot = off & ~3
         if slot in self.dirty:
             return Expr(f"load{bits}({live})", "expr")
@@ -1000,8 +1006,13 @@ def main():
     # this module - and, more to the point, the same oracle.
     blocks = HERE / "out" / "blocks.json"
     if blocks.exists():
+        already = {a for a, _, _ in pure}
         for row in json.loads(blocks.read_text()):
             if "fn_" in row["src"].split("{", 1)[1]:
+                continue
+            if row["at"] in already:
+                # Both passes can lift it now. The single-block form is the
+                # simpler source, so it wins; this pass is the fallback.
                 continue
             params = ([{"from": "reg", "name": r} for r in row["regs"]]
                       + [{"from": "stack", "off": o} for o in row["stack"]])

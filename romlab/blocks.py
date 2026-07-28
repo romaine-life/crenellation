@@ -357,12 +357,22 @@ class BlockLifter(Lifter):
             dest = ops[1].strip()
             base = self.mem_base(dest)
             for k, r in enumerate(regs):
+                # a7 is the machine's stack pointer, never a local. A register
+                # list that reaches a7 - `movem.l d1-d7/a2-a7,(a0)`, which is
+                # this ROM's setjmp - would otherwise save the value this
+                # routine was handed instead of where the stack actually is.
+                if r == "a7":
+                    self.stmts.append(f"store{bits}({slot(base, k)}, stackPointer());")
+                    continue
                 self.used_regs.add(r)
                 self.stmts.append(f"store{bits}({slot(base, k)}, {r});")
             return
         regs = self.regs_of(ops[1])
         base = self.mem_base(ops[0].strip())
         for k, r in enumerate(regs):
+            if r == "a7":
+                self.stmts.append(f"setStackPointer(load{bits}({slot(base, k)}));")
+                continue
             self.used_regs.add(r)
             self.stmts.append(f"{r} = load{bits}({slot(base, k)});")
         return
@@ -855,8 +865,18 @@ def lift_once(lo, hi, names, seed=()):
     # has rejected that shape for a long time; this one did not, and produced
     # functions that returned where the machine kept executing.
     tail = decode(starts[-1], hi)
-    last = tail[-1].mnemonic.split(".")[0] if tail else ""
-    if last not in ("rts", "rte", "rtr", "jmp", "bra", "bral") and last not in COND             and not last.startswith("db"):
+    last_ins = tail[-1] if tail else None
+    last = last_ins.mnemonic.split(".")[0] if last_ins else ""
+    runs_on = last_ins is not None and last not in ("rts", "rte", "rtr", "jmp", "bra", "bral")
+    if runs_on and (last in COND or last.startswith("db")):
+        # A conditional branch at the very end runs on only if its own target
+        # also left the routine - both ways out are then tail jumps, the block
+        # has no successors at all, and the `if` for the taken side has already
+        # been emitted. When the target is inside, the fall-through is the
+        # graph's edge and jumping here would make the branch unconditional.
+        tgt = target_of(last_ins)
+        runs_on = tgt is None or tgt not in index
+    if runs_on:
         lifter.stmts = []
         lifter.flush()
         lifted[len(starts) - 1] = lifted.get(len(starts) - 1, []) + list(lifter.stmts) + [
@@ -884,7 +904,11 @@ def main():
     rows = json.loads((HERE / "out" / "cfg.json").read_text())
     # Irreducible graphs are included now: split_nodes duplicates the
     # multi-entry regions until they nest.
-    targets = [r for r in rows if r["blocks"] > 1]
+    # Every routine, not just the branching ones. A single block can still end
+    # in a conditional tail jump or use set-on-condition, and this pass is the
+    # only one with flags - the first pass refuses those, and its refusals were
+    # simply going nowhere.
+    targets = rows
     ok, failed = [], {}
     for r in targets:
         try:
