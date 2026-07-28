@@ -951,10 +951,21 @@ const halted = (): boolean => M.stopped;
 const getSr = (): number => M.getSR();
 // The X flag, for addx/subx, and division, which sets flags the machine owns.
 const extend = (): number => (M.x ? 1 : 0);
-const divu = (n: number, d: number): number => (d === 0 ? n
-  : (((Math.floor((n >>> 0) / d) & 0xffff) | (((n >>> 0) % d) << 16)) >>> 0));
-const divs = (n: number, d: number): number => (d === 0 ? n
-  : (((Math.trunc((n | 0) / d) & 0xffff) | (((n | 0) % d) << 16)) >>> 0));
+// Quotient in the low word, remainder in the high one. A quotient too wide for
+// the low word overflows: the 68000 sets V and leaves the destination alone,
+// where truncating it would silently write a plausible wrong number.
+const divu = (n: number, d: number): number => {
+  if (d === 0) return n;
+  const q = Math.floor((n >>> 0) / d);
+  if (q > 0xffff) return n;
+  return ((q & 0xffff) | (((n >>> 0) % d) << 16)) >>> 0;
+};
+const divs = (n: number, d: number): number => {
+  if (d === 0) return n;
+  const q = Math.trunc((n | 0) / d);
+  if (q > 32767 || q < -32768) return n;
+  return ((q & 0xffff) | (((n | 0) % d) << 16)) >>> 0;
+};
 const setSr = (v: number): void => { M.setSR(v & 0xffff); };
 // `move sr,dN` reads the real condition codes. Nothing in the lifted source
 // keeps them, but whatever set them last is known at the point of the read, so
