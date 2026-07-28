@@ -501,10 +501,24 @@ def lift(lo, hi, names):
                 # them positionally inverts every condition in the routine.
                 tgt = target_of(i)
                 if tgt is None or tgt not in index:
-                    raise Bail("branch out of the routine")
+                    raise Bail("conditional branch out of the routine")
                 conds[n] = (lifter.condition(b), index[tgt])
                 continue
-            if b == "bra":
+            if b in ("bra", "bral", "jmp"):
+                tgt = target_of(i)
+                if tgt is not None and tgt in index:
+                    continue                     # an edge the graph already has
+                if tgt is None:
+                    raise Bail("computed jump")
+                # Outside this routine: a tail jump, which hands the callee the
+                # frame this routine was given. The graph has no edge for it, so
+                # without this the block simply runs off its end and control
+                # never goes anywhere.
+                if lifter.pushed:
+                    raise Bail("tail jump with arguments still on the stack")
+                lifter.flush()
+                lifter.stmts.append(f"jumpRom(0x{tgt:05x});")
+                lifter.stmts.append("return;")
                 continue
             lifter.step(i)
         lifted[n] = list(lifter.stmts)

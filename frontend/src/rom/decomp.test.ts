@@ -136,7 +136,7 @@ describe('decompiled routines against the recompiled oracle', () => {
         const ra = a as never as Record<string, number>;
         const rb = b as never as Record<string, number>;
         const wrong = regs.find((r) => (ra[r] >>> 0) !== (rb[r] >>> 0));
-        if (wrong && bad.length < 12) {
+        if (wrong && bad.length < 400) {
           bad.push(`0x${addr.toString(16)} trial ${trial}: ${wrong} differs`
             + ` - machine 0x${(ra[wrong] >>> 0).toString(16)},`
             + ` decompiled 0x${(rb[wrong] >>> 0).toString(16)}`);
@@ -146,7 +146,7 @@ describe('decompiled routines against the recompiled oracle', () => {
         const wb = window(b);
         let off = -1;
         for (let i = 0; i < wa.length; i += 1) if (wa[i] !== wb[i]) { off = i; break; }
-        if (off >= 0 && bad.length < 12) {
+        if (off >= 0 && bad.length < 400) {
           const where = off < SCRATCH_LEN ? SCRATCH + off : 0x3e0000 + (off - SCRATCH_LEN);
           bad.push(`0x${addr.toString(16)} trial ${trial}: memory differs at 0x${where.toString(16)}`
             + ` - machine ${wa[off]}, decompiled ${wb[off]}`);
@@ -157,7 +157,8 @@ describe('decompiled routines against the recompiled oracle', () => {
     const note = [
       `${DECOMPILED.length} decompiled routines, ${checked} comparisons against the machine`,
       bad.length ? `${bad.length} disagree:` : 'all identical',
-      ...bad,
+      ...bad.slice(0, 12),
+      bad.length > 12 ? `  ... and ${bad.length - 12} more` : '',
     ].join('\n');
     // eslint-disable-next-line no-console
     console.log(note);

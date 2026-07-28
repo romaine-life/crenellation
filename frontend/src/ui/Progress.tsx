@@ -54,7 +54,7 @@ const PIPELINE: Stage[] = [
     name: 'Decompile',
     what: 'machine code → source a person can change',
     state: 'part',
-    detail: 'Started. A lifter recovers parameters, results and expressions, and every routine it produces is proved against the recompiled one on random machine states - 247 so far, exactly equal across 808 comparisons, and seventy-two held back because they were not. Control-flow structuring is next; 75% of the corpus needs only ordinary loops and branches.',
+    detail: 'Started. A lifter recovers parameters, results and expressions, and every routine it produces is proved against the recompiled one on random machine states - 249 so far, exactly equal across 816 comparisons, and sixty-nine held back because they were not. Control-flow structuring is next; 75% of the corpus needs only ordinary loops and branches.',
   },
 ];
 
@@ -71,16 +71,16 @@ const LAYERS: Layer[] = [
 
 /** What is known about each of the 777 routines. */
 const KNOWLEDGE = [
-  { label: 'Decompiled — readable source, proved equal to the machine', n: 247, colour: C.done },
+  { label: 'Decompiled — readable source, proved equal to the machine', n: 249, colour: C.done },
   { label: 'Named by hand, purpose established', n: 39, colour: C.part },
-  { label: 'Described from evidence — callers, callees, hardware touched', n: 309, colour: '#2d4f6b' },
+  { label: 'Described from evidence — callers, callees, hardware touched', n: 307, colour: '#2d4f6b' },
   { label: 'Nothing known beyond where it starts and ends', n: 182, colour: C.none },
 ];
 
 const TOTAL = 777;
 
 const REMAINING = [
-  ['Decompile the rest', '247 of 777. Branching routines now lift too, with conditions recovered from whatever set the flags and if/else recovered from the graph. What is left is dominated by 127 routines whose control flow is irreducible - loops entered at two points, which hand-written assembly produces freely and which cannot become nested loops without duplicating blocks - and about 141 that both branch and call, which needs real liveness analysis. Three attempts at that by rule rather than by analysis were all caught by the oracle and reverted.'],
+  ['Decompile the rest', '249 of 777. Branching routines now lift too, with conditions recovered from whatever set the flags and if/else recovered from the graph. What is left is dominated by 127 routines whose control flow is irreducible - loops entered at two points, which hand-written assembly produces freely and which cannot become nested loops without duplicating blocks - and about 141 that both branch and call, which needs real liveness analysis. Three attempts at that by rule rather than by analysis were all caught by the oracle and reverted.'],
   ['Motion objects', 'A video layer the port ignores. The captured display list holds 735,711 non-zero bytes across a run, so the board draws something the port does not — but the playfield already carries terrain, castles, walls and ships, so the first job is establishing what is actually on that list.'],
   ['Audio', 'Both chips are written to correctly and neither is modelled. Needs YM2413 FM and OKI6295 ADPCM synthesised.'],
   ['Routine discovery', 'Has not converged. Every new input pattern finds routines nothing static points at. Needs a systematic sweep until it goes dry.'],
@@ -133,7 +133,7 @@ export function Progress() {
           </div>
           <div style={{ width: 1, alignSelf: 'stretch', background: C.line }} />
           <div>
-            <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1, color: C.part }}>247</div>
+            <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1, color: C.part }}>249</div>
             <div style={{ color: C.dim, fontSize: 13, marginTop: 4 }}>routines decompiled</div>
           </div>
           <div style={{ flex: 1, minWidth: 260, color: C.dim, fontSize: 13.5 }}>
