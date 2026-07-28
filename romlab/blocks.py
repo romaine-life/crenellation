@@ -72,6 +72,12 @@ class BlockLifter(Lifter):
         self.flags = None
         self.saved = {}
         self.db_cond = None         # the loop test of the last dbcc
+        # Whether `flags` is known for certain on this path. Inherited from a
+        # single predecessor, or set by an instruction just lifted, it is. Fallen
+        # back to whatever the previous block in memory left, it is not - and a
+        # guess is fine for choosing a branch, which the oracle checks, but not
+        # for writing the machine's condition codes, which a callee may save.
+        self.flags_certain = True
 
     def reg_value(self, r, bits):
         if r == "a7":
@@ -215,7 +221,7 @@ class BlockLifter(Lifter):
         machine, saves the real thing. Only cmp- and add-shaped states can be
         reconstructed; the rest leave the machine as it is.
         """
-        if not self.flags:
+        if not self.flags or not self.flags_certain:
             return
         kind, lhs, rhs, bits = self.flags
         if kind == "bit":
@@ -963,7 +969,14 @@ def lift_once(lo, hi, names, seed=()):
             continue
         lifter.stmts = []
         if n:
-            known = {end_flags[p] for p in preds.get(n, ()) if p in end_flags}
+            ps = preds.get(n, ())
+            known = {end_flags[p] for p in ps if p in end_flags}
+            # Certain only if *every* predecessor has been lifted and they
+            # agree. A loop header's latch comes later in address order, so
+            # "one known predecessor" can just mean "one so far" - which is how
+            # a state belonging to the entry path got written to the machine on
+            # every trip round the loop.
+            lifter.flags_certain = all(p in end_flags for p in ps) and len(known) == 1
             if len(known) == 1:
                 lifter.flags = next(iter(known))
             # Predecessors that disagree leave whatever the block before this
@@ -979,7 +992,10 @@ def lift_once(lo, hi, names, seed=()):
                 # the lifter; the branch has to be recorded here or the block
                 # ends with two successors and no test, which is what every
                 # "two-way branch with no condition" bail was.
+                before_f = lifter.flags
                 lifter.step(i)
+                if lifter.flags is not before_f:
+                    lifter.flags_certain = True
                 tgt = target_of(i)
                 if tgt is None:
                     raise Bail("dbcc through a register")
@@ -1048,7 +1064,10 @@ def lift_once(lo, hi, names, seed=()):
                 lifter.stmts.append(f"jumpRom(0x{tgt:05x});")
                 lifter.stmts.append("return;")
                 continue
+            before_f = lifter.flags
             lifter.step(i)
+            if lifter.flags is not before_f:
+                lifter.flags_certain = True
         lifted[n] = list(lifter.stmts)
         end_flags[n] = lifter.flags
     for copy, orig in clone_of.items():
