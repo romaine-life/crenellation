@@ -85,15 +85,18 @@ describe('decompiled routines against the recompiled oracle', () => {
         // The oracle takes its arguments where the ROM expects them: some in
         // registers, some on the stack, as the routine itself decided.
         const a = fresh(seed);
+        // Each stack argument at the offset the routine reads it from, not
+        // packed from 4 upwards. A routine whose only argument is at 0xC gets
+        // it at 0xC; pushing it at 4 instead leaves the machine reading
+        // whatever happens to be there, and the comparison then measures the
+        // harness rather than the lifting.
         const stack = params
           .map((p, i) => ({ p, v: args[i] }))
-          .filter((x) => x.p.from === 'stack')
-          .sort((x, y) => (x.p as { off: number }).off - (y.p as { off: number }).off);
-        let sp = STACK;
-        for (let i = stack.length - 1; i >= 0; i -= 1) { sp -= 4; a.store(sp, stack[i].v, 32); }
-        sp -= 4;
-        a.store(sp, SENTINEL, 32);
+          .filter((x) => x.p.from === 'stack');
+        const sp = STACK - 0x40;
         a.a7 = sp;
+        a.store(sp, SENTINEL, 32);
+        for (const { p, v } of stack) a.store(sp + (p as { off: number }).off, v, 32);
         a.store(SENTINEL, 0x4e75, 16);      // rts, so a stray return lands somewhere valid
         // Both machines. The oracle reads register arguments out of registers,
         // and so does any ROM routine the decompiled version calls or jumps
@@ -113,11 +116,9 @@ describe('decompiled routines against the recompiled oracle', () => {
         // that jumps into ROM code hands it this frame, and that code reads
         // the arguments and the return address out of it.
         const b = fresh(seed);
-        let bp = STACK;
-        for (let i = stack.length - 1; i >= 0; i -= 1) { bp -= 4; b.store(bp, stack[i].v, 32); }
-        bp -= 4;
-        b.store(bp, SENTINEL, 32);
-        b.a7 = bp;
+        b.a7 = sp;
+        b.store(sp, SENTINEL, 32);
+        for (const { p, v } of stack) b.store(sp + (p as { off: number }).off, v, 32);
         b.store(SENTINEL, 0x4e75, 16);
         for (const [name, v] of regParams) (b as never as Record<string, number>)[name] = v;
         bind(b);
