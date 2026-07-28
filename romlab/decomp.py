@@ -960,6 +960,13 @@ const setSr = (v: number): void => { M.setSR(v & 0xffff); };
 // keeps them, but whatever set them last is known at the point of the read, so
 // they are computed there and handed to the machine, which composes the word.
 const widthMask = (bits: number): number => (bits === 32 ? 0xffffffff : (1 << bits) - 1);
+// A compare leaves X alone; a subtract sets it from the borrow. One helper
+// each, because the difference is visible the moment a routine saves sr.
+// `btst` touches Z and nothing else.
+const setFlagsBit = (v: number, n: number): void => { M.z = ((v >>> (n & 7)) & 1) === 0; };
+const setFlagsCmp = (a: number, b: number, bits: number): void => {
+  const x = M.x; setFlagsSub(a, b, bits); M.x = x;
+};
 const setFlagsSub = (a: number, b: number, bits: number): void => {
   const mask = widthMask(bits); const sh = 32 - bits;
   const ua = (a & mask) >>> 0; const ub = (b & mask) >>> 0;

@@ -101,9 +101,9 @@ class BlockLifter(Lifter):
                 # the current ones and can be read straight out.
                 return Expr("getSr()", "expr")
             kind, lhs, rhs, fbits = self.flags
-            if kind not in ("cmp", "add"):
+            if kind not in ("cmp", "sub", "add"):
                 raise Bail(f"reads the condition codes after {kind}")
-            call = "setFlagsAdd" if kind == "add" else "setFlagsSub"
+            call = {"add": "setFlagsAdd", "sub": "setFlagsSub"}.get(kind, "setFlagsCmp")
             self.stmts.append(f"{call}({lhs}, {rhs}, {fbits});")
             return Expr("getSr()", "expr")
         return super().read(tok, bits)
@@ -202,8 +202,29 @@ class BlockLifter(Lifter):
         there before the call - which is how a routine came to use a stale d0
         that the callee had long since overwritten.
         """
+        self.sync_flags()
         for r in sorted(self.used_regs):
             self.stmts.append(f"setReg('{r}', {r});")
+
+    def sync_flags(self):
+        """Put the condition codes in the machine before control leaves.
+
+        The lifted source computes its branches in JavaScript and never touches
+        the machine's flags, so a callee that saves the status register saves
+        whatever was there before. The oracle, running the same `cmpi` on the
+        machine, saves the real thing. Only cmp- and add-shaped states can be
+        reconstructed; the rest leave the machine as it is.
+        """
+        if not self.flags:
+            return
+        kind, lhs, rhs, bits = self.flags
+        if kind == "bit":
+            self.stmts.append(f"setFlagsBit({lhs}, {rhs});")
+            return
+        if kind not in ("cmp", "sub", "add"):
+            return
+        call = {"add": "setFlagsAdd", "sub": "setFlagsSub"}.get(kind, "setFlagsCmp")
+        self.stmts.append(f"{call}({lhs}, {rhs}, {bits});")
 
     def reload(self):
         for r in sorted(self.used_regs):
@@ -339,7 +360,7 @@ class BlockLifter(Lifter):
                 # A subtract's flags are exactly a compare's: `dst - src`. An
                 # add needs its own kind because carry there is the bit that
                 # fell off the top rather than a borrow.
-                self.flags = (("add" if b.startswith("add") else "cmp"),
+                self.flags = (("add" if b.startswith("add") else "sub"),
                               addends[0], addends[1], bits)
             elif shifted is not None:
                 self.flags = ("shift", self.reg_value(dst, bits).text, shifted, bits)
@@ -469,6 +490,10 @@ class BlockLifter(Lifter):
         return self.condition_of(*self.flags, mnemonic=mnemonic)
 
     def condition_of(self, kind, lhs, rhs, bits, mnemonic="b"):
+        if kind == "sub":
+            # A subtract's tests are a compare's; only X differs, and no branch
+            # reads X.
+            kind = "cmp"
         if kind == "bit":
             if mnemonic == "beq":
                 return f"((({lhs}) >>> (({rhs}) & 7)) & 1) === 0"
