@@ -128,6 +128,15 @@ class BlockLifter(Lifter):
             v = self.read(ops[1], bits)
             self.flags = ("bit", v.text, n.text, bits)
             return
+        if b.startswith("db") and b != "divs":
+            reg = ops[0].strip()
+            if reg not in DATA:
+                raise Bail(f"{b} on {reg}")
+            self.used_regs.add(reg)
+            self.stmts.append(
+                f"{reg} = (({reg} & 0xffff0000) | ((({reg} & 0xffff) - 1) & 0xffff));")
+            self.flags = ("dbcc", f"({reg} & 0xffff)", "0xffff", 16)
+            return
         if b == "movem":
             self.movem(ins, ops, bits)
             return
@@ -225,6 +234,8 @@ class BlockLifter(Lifter):
             if mnemonic == "bne":
                 return f"((({lhs}) >>> (({rhs}) & 7)) & 1) !== 0"
             raise Bail(f"{mnemonic} after btst")
+        if kind == "dbcc":
+            return f"{lhs} !== {rhs}"
         if mnemonic not in COMPARE:
             raise Bail(f"branch {mnemonic}")
         op = COMPARE[mnemonic]
@@ -232,11 +243,75 @@ class BlockLifter(Lifter):
         return f"{conv(lhs, bits)} {op} {conv(rhs, bits)}"
 
 
-def structure(blocks, edges, lifted, conds, node, stop, depth=0):
-    """Emit one region of an acyclic graph as nested if/else."""
+def back_edges(edges, n):
+    """Edges returning to a block already on the current path."""
+    colour = [0] * n
+    found = set()
+    stack = [(0, iter(edges.get(0, [])))]
+    colour[0] = 1
+    while stack:
+        v, it = stack[-1]
+        moved = False
+        for w in it:
+            if colour[w] == 1:
+                found.add((v, w))
+            elif colour[w] == 0:
+                colour[w] = 1
+                stack.append((w, iter(edges.get(w, []))))
+                moved = True
+                break
+        if not moved:
+            colour[v] = 2
+            stack.pop()
+    return found
+
+
+def loop_body(edges, latches, header):
+    """Blocks that can reach the header again without leaving the loop."""
+    body = {header}
+    stack = list(latches)
+    while stack:
+        n = stack.pop()
+        if n in body:
+            continue
+        body.add(n)
+        for pred, outs in edges.items():
+            if n in outs and pred not in body:
+                stack.append(pred)
+    return body
+
+
+def loop_exit(edges, body):
+    outs = {m for n in body for m in edges.get(n, []) if m not in body}
+    if len(outs) > 1:
+        raise Bail("loop with more than one way out")
+    return next(iter(outs)) if outs else None
+
+
+def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset(),
+              open_loops=()):
+    """Emit one region as nested if/else and for(;;)."""
     out = []
     seen = set()
     while node is not None and node != stop:
+        if node in open_loops:
+            out.append("continue;")
+            return out
+        if any(w == node for _, w in backs):
+            header = node
+            latches = [v for v, w in backs if w == header]
+            body = loop_body(edges, latches, header)
+            after = loop_exit(edges, body)
+            inner = structure(blocks, edges, lifted, conds, header, after, depth + 1,
+                              frozenset((v, w) for v, w in backs if w != header),
+                              open_loops + (header,))
+            out.append("for (;;) {")
+            out.append(f"  if (++_guard > 4000000) throw new Error('loop {header} did not end');")
+            out.extend("  " + s for s in inner)
+            out.append("  break;")
+            out.append("}")
+            node = after
+            continue
         if node in seen or depth > 40:
             raise Bail("control flow this pass cannot shape")
         seen.add(node)
@@ -256,8 +331,10 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0):
         fall = fall[0]
         join = meet(edges, taken, fall)
         cond = cond_text
-        then = structure(blocks, edges, lifted, conds, taken, join, depth + 1)
-        other = structure(blocks, edges, lifted, conds, fall, join, depth + 1)
+        then = structure(blocks, edges, lifted, conds, taken, join, depth + 1,
+                         backs, open_loops)
+        other = structure(blocks, edges, lifted, conds, fall, join, depth + 1,
+                          backs, open_loops)
         if other:
             out.append(f"if ({cond}) {{")
             out.extend("  " + s for s in then)
@@ -306,8 +383,6 @@ def lift(lo, hi, names):
     ok, back = reducible(len(starts), edges)
     if not ok:
         raise Bail("irreducible")
-    if back:
-        raise Bail("contains a loop")
     ends = starts[1:] + [hi]
 
     index = {a: k for k, a in enumerate(starts)}
@@ -332,13 +407,14 @@ def lift(lo, hi, names):
                 continue
             lifter.step(i)
         lifted[n] = list(lifter.stmts)
-    body = structure(starts, edges, lifted, conds, 0, None)
+    backs = frozenset(back_edges(edges, len(starts)))
+    body = structure(starts, edges, lifted, conds, 0, None, 0, backs, ())
     return lifter, body
 
 
 def main():
     rows = json.loads((HERE / "out" / "cfg.json").read_text())
-    targets = [r for r in rows if r["blocks"] > 1 and r["reducible"] and r["loops"] == 0]
+    targets = [r for r in rows if r["blocks"] > 1 and r["reducible"]]
     ok, failed = [], {}
     for r in targets:
         try:
@@ -351,7 +427,14 @@ def main():
                 [f"{x}_: number" for x in regs]
                 + [f"{lifter.params[k]}: number" for k in sorted(lifter.params)])
             tail = "\n".join(f"  setReg('{x}', {x});" for x in regs)
+            # Declared unconditionally. A loop guard is referenced from inside
+            # a nested region, and deciding whether to declare it by looking
+            # for the name in the assembled body missed three routines - which
+            # ran correctly and failed to type-check, the one combination the
+            # oracle cannot catch.
+            guard = "  let _guard = 0;\n  void _guard;\n"
             src = (f"export function fn_{r['at']:05x}({sig}): void {{\n"
+                   + guard
                    + (decl + "\n" if decl else "")
                    + "\n".join("  " + s for s in body)
                    + ("\n" + tail if tail else "") + "\n}")
@@ -366,7 +449,7 @@ def main():
             k = f"crash: {type(e).__name__}"
             failed[k] = failed.get(k, 0) + 1
 
-    print(f"branching routines with no loops: {len(targets)}")
+    print(f"branching routines: {len(targets)}")
     print(f"  lifted: {len(ok)} ({len(ok) * 100 // max(1, len(targets))}%)")
     for k, n in sorted(failed.items(), key=lambda kv: -kv[1])[:8]:
         print(f"    {n:4}  {k}")

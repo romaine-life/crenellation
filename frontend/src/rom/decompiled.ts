@@ -395,6 +395,18 @@ export function fn_0042a(): void {
   return;
 }
 
+export function fn_00512(): void {
+  let _guard = 0;
+  void _guard;
+  store16(0x3e0802, 0x0);
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 1 did not end');
+    continue;
+    break;
+  }
+  store16(0x3e0802, (load16(0x3e0802) - 0x1));
+}
+
 export function fn_0052a(): void {
   store16(0x3e0802, 0x0);
 }
@@ -404,6 +416,8 @@ export function fn_00618(): void {
 }
 
 export function fn_00686(a0_: number, a2_: number, d0_: number, d2_: number, d3_: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a2 = a2_;
   let d0 = d0_;
@@ -609,6 +623,8 @@ export function fn_00686(a0_: number, a2_: number, d0_: number, d2_: number, d3_
 }
 
 export function fn_00dda(a2_: number, d0_: number, d2_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a2 = a2_;
   let d0 = d0_;
   let d2 = d2_;
@@ -740,6 +756,8 @@ export function fn_019d8(arg0: number): void {
 }
 
 export function fn_01f3a(a0_: number, d0_: number, d1_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let d0 = d0_;
   let d1 = d1_;
@@ -762,6 +780,8 @@ export function fn_01f3a(a0_: number, d0_: number, d1_: number, arg0: number): v
 }
 
 export function fn_01f60(a0_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   a0 = arg0;
   if (((load8(a0 + 0x1d)) & 255) <= ((0) & 255)) {
@@ -772,6 +792,8 @@ export function fn_01f60(a0_: number, arg0: number): void {
 }
 
 export function fn_01f70(a0_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   a0 = arg0;
   if (((load8(a0 + 0x1e)) & 255) !== ((0x4) & 255)) {
@@ -782,6 +804,8 @@ export function fn_01f70(a0_: number, arg0: number): void {
 }
 
 export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, arg0: number, arg1: number, arg2: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let d0 = d0_;
@@ -898,6 +922,8 @@ export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
 }
 
 export function fn_0255c(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, arg0: number, arg1: number, arg2: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let d0 = d0_;
@@ -960,6 +986,8 @@ export function fn_0255c(a0_: number, a1_: number, d0_: number, d1_: number, d2_
 }
 
 export function fn_02698(a0_: number, a1_: number, a2_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let a2 = a2_;
@@ -1069,6 +1097,8 @@ export function fn_02698(a0_: number, a1_: number, a2_: number, d0_: number, d1_
 }
 
 export function fn_02a5c(a0_: number, d0_: number, d1_: number, d2_: number, d3_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let d0 = d0_;
   let d1 = d1_;
@@ -1128,6 +1158,8 @@ export function fn_02a5c(a0_: number, d0_: number, d1_: number, d2_: number, d3_
 }
 
 export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let a2 = a2_;
@@ -1275,6 +1307,8 @@ export function fn_02b74(arg0: number): void {
 }
 
 export function fn_02c5c(d0_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   d0 = ((d0 & 0xffff0000) | (((arg1 >>> 16) & 0xffff) & 65535));
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) - 0x2) & 65535));
@@ -1294,6 +1328,8 @@ export function fn_02c5c(d0_: number, arg0: number, arg1: number): void {
 }
 
 export function fn_02d78(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let d0 = d0_;
@@ -1400,6 +1436,8 @@ export function fn_03194(arg0: number): void {
 }
 
 export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a2 = a2_;
   let d0 = d0_;
@@ -1543,6 +1581,8 @@ export function fn_03726(): void {
 }
 
 export function fn_03728(d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   let d2 = d2_;
@@ -1681,6 +1721,8 @@ export function fn_037e8(): void {
 }
 
 export function fn_03cee(a0_: number, a2_: number, d0_: number, d1_: number, d2_: number, d3_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a2 = a2_;
   let d0 = d0_;
@@ -1874,6 +1916,8 @@ export function fn_04332(arg0: number): void {
 }
 
 export function fn_0435a(a0_: number, d0_: number, d1_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let d0 = d0_;
   let d1 = d1_;
@@ -2055,6 +2099,8 @@ export function fn_04d90(arg0: number): void {
 }
 
 export function fn_0522e(a0_: number, a2_: number, a3_: number, d0_: number, d1_: number, d2_: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a2 = a2_;
   let a3 = a3_;
@@ -2109,6 +2155,8 @@ export function fn_0522e(a0_: number, a2_: number, a3_: number, d0_: number, d1_
 }
 
 export function fn_05280(a0_: number, a1_: number, a2_: number, a3_: number, d0_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let a2 = a2_;
@@ -2206,6 +2254,8 @@ export function fn_05280(a0_: number, a1_: number, a2_: number, a3_: number, d0_
 }
 
 export function fn_0545a(a0_: number, d0_: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let d0 = d0_;
   if (load32(0x3e0ec2) === 0) {
@@ -2220,6 +2270,8 @@ export function fn_0545a(a0_: number, d0_: number): void {
 }
 
 export function fn_05474(a0_: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   a0 = load32(0x3e0ec2);
   if ((((load16(a0 + 0x6)) << 16) >> 16) < (((0x10e) << 16) >> 16)) {
@@ -2251,6 +2303,8 @@ export function fn_0592a(arg0: number): void {
 }
 
 export function fn_05afc(a0_: number, a1_: number, d0_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let d0 = d0_;
@@ -2291,6 +2345,8 @@ export function fn_05dea(): void {
 }
 
 export function fn_05dec(d0_: number, arg0: number, arg1: number, arg2: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   d0 = arg2;
   setReg('d0', d0);
@@ -2457,6 +2513,8 @@ export function fn_06988(arg0: number): void {
 }
 
 export function fn_06c20(a2_: number, a3_: number, d0_: number, d1_: number, d2_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a2 = a2_;
   let a3 = a3_;
   let d0 = d0_;
@@ -2619,6 +2677,8 @@ export function fn_07e7a(d0: number, arg0: number): void {
 }
 
 export function fn_07ea4(a0_: number, a2_: number, d0_: number, d2_: number, d3_: number, d4_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a2 = a2_;
   let d0 = d0_;
@@ -2782,6 +2842,8 @@ export function fn_0900a(arg0: number): void {
 }
 
 export function fn_090e6(d0_: number, d1_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   d1 = ((d1 & 0xffffff00) | ((arg0 & 0xff) & 255));
@@ -2814,6 +2876,8 @@ export function fn_090fe(d1: number, arg0: number): void {
 }
 
 export function fn_0910e(a2_: number, d0_: number, d1_: number, d2_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
   let a2 = a2_;
   let d0 = d0_;
   let d1 = d1_;
@@ -2879,6 +2943,8 @@ export function fn_0ab12(): void {
 }
 
 export function fn_0b2e8(a0_: number, a2_: number, a3_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a2 = a2_;
   let a3 = a3_;
@@ -2912,6 +2978,8 @@ export function fn_0b2e8(a0_: number, a2_: number, a3_: number, arg0: number): v
 }
 
 export function fn_0b330(a0_: number, d0_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let d0 = d0_;
   push(((arg0 >>> 16) & 0xffff), 2);
@@ -3263,6 +3331,8 @@ export function fn_0c4e8(arg0: number): void {
 }
 
 export function fn_0c504(a2_: number, d0_: number, d1_: number, d2_: number, d3_: number): void {
+  let _guard = 0;
+  void _guard;
   let a2 = a2_;
   let d0 = d0_;
   let d1 = d1_;
@@ -3306,6 +3376,8 @@ export function fn_0c504(a2_: number, d0_: number, d1_: number, d2_: number, d3_
 }
 
 export function fn_0cae2(d0_: number, d1_: number, d2_: number, d3_: number, arg0: number, arg1: number, arg2: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   let d2 = d2_;
@@ -3350,6 +3422,8 @@ export function fn_0cae2(d0_: number, d1_: number, d2_: number, d3_: number, arg
 }
 
 export function fn_0cce6(a0_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   a0 = arg0;
   if (((load8(0x3e195c)) & 255) > ((0x1) & 255)) {
@@ -3376,6 +3450,8 @@ export function fn_0cdae(arg0: number): void {
 }
 
 export function fn_0cdf6(a0_: number, a6_: number, d0_: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a6 = a6_;
   let d0 = d0_;
@@ -3415,6 +3491,8 @@ export function fn_0cdf6(a0_: number, a6_: number, d0_: number): void {
 }
 
 export function fn_0ce48(a0_: number, d0_: number, d1_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let d0 = d0_;
   let d1 = d1_;
@@ -3458,6 +3536,8 @@ export function fn_0d030(): void {
 }
 
 export function fn_0d7a0(a0_: number, a2_: number, d0_: number, d1_: number, d2_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a2 = a2_;
   let d0 = d0_;
@@ -3650,6 +3730,8 @@ export function fn_0db78(arg0: number): void {
 }
 
 export function fn_0dbe6(d0_: number, d1_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   d1 = ((d1 & 0xffff0000) | ((arg0 & 0xffff) & 65535));
@@ -3685,6 +3767,8 @@ export function fn_0dbe6(d0_: number, d1_: number, arg0: number): void {
 }
 
 export function fn_0dc10(d0_: number, d1_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   d1 = ((d1 & 0xffff0000) | ((arg0 & 0xffff) & 65535));
@@ -3733,6 +3817,8 @@ export function fn_0e000(): void {
 }
 
 export function fn_0e516(d0_: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   push(0x13, 4);
   callRom(0x00184);
@@ -3776,6 +3862,8 @@ export function fn_0e554(): void {
 }
 
 export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, d0_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let a2 = a2_;
@@ -4033,6 +4121,8 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
 }
 
 export function fn_0ea46(): void {
+  let _guard = 0;
+  void _guard;
   if (((load8(0x3e195c)) & 255) <= ((0x4) & 255)) {
   } else {
     store8(0x3e195c, 0x4);
@@ -4059,6 +4149,8 @@ export function fn_0eaba(): void {
 }
 
 export function fn_0eac8(): void {
+  let _guard = 0;
+  void _guard;
   if (((load8(0x3e1954)) & 255) !== ((0x1) & 255)) {
   } else {
     if (((load8(0x3e1cb4)) & 255) <= ((0) & 255)) {
@@ -4082,6 +4174,8 @@ export function fn_0ee3a(): void {
 }
 
 export function fn_0f1fa(a1_: number, a2_: number, a3_: number, d0_: number, d1_: number): void {
+  let _guard = 0;
+  void _guard;
   let a1 = a1_;
   let a2 = a2_;
   let a3 = a3_;
@@ -4139,6 +4233,8 @@ export function fn_0f2fa(arg0: number): void {
 }
 
 export function fn_0f922(a0_: number, a4_: number, d0_: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a4 = a4_;
   let d0 = d0_;
@@ -4154,6 +4250,8 @@ export function fn_0f922(a0_: number, a4_: number, d0_: number): void {
 }
 
 export function fn_0fb74(a0_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   a0 = arg0;
   setReg('a0', a0);
@@ -4164,6 +4262,8 @@ export function fn_0fc0e(): void {
 }
 
 export function fn_0fc3a(d0_: number, d1_: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x3) & 65535));
@@ -4173,6 +4273,8 @@ export function fn_0fc3a(d0_: number, d1_: number): void {
 }
 
 export function fn_0fc9c(d0_: number, d1_: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   d1 = ((d1 & 0xffffff00) | (load8(0x3e0de6) & 255));
@@ -4235,6 +4337,8 @@ export function fn_12306(a3: number, a5: number, d4: number, d5: number, d7: num
 }
 
 export function fn_12354(a0_: number, a1_: number, a2_: number, a4_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d7_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let a2 = a2_;
@@ -4261,6 +4365,122 @@ export function fn_12354(a0_: number, a1_: number, a2_: number, a4_: number, d0_
   setReg('d7', d7);
 }
 
+export function fn_130f8(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a5_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number, d7_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a5 = a5_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  let d7 = d7_;
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  const save_d5_3 = d5;
+  const save_d6_4 = d6;
+  const save_d7_5 = d7;
+  const save_a0_6 = a0;
+  const save_a1_7 = a1;
+  const save_a2_8 = a2;
+  const save_a3_9 = a3;
+  const save_a4_10 = a4;
+  const save_a5_11 = a5;
+  const save_a6_12 = a6;
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('a6', a6);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+  setReg('d7', d7);
+  callRom(0x13662);
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a4 = getReg('a4');
+  a5 = getReg('a5');
+  a6 = getReg('a6');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d4 = getReg('d4');
+  d5 = getReg('d5');
+  d6 = getReg('d6');
+  d7 = getReg('d7');
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('a6', a6);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+  setReg('d7', d7);
+  callRom(0x136ee);
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a4 = getReg('a4');
+  a5 = getReg('a5');
+  a6 = getReg('a6');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d4 = getReg('d4');
+  d5 = getReg('d5');
+  d6 = getReg('d6');
+  d7 = getReg('d7');
+  d0 = d5;
+  d2 = save_d2_0;
+  d3 = save_d3_1;
+  d4 = save_d4_2;
+  d5 = save_d5_3;
+  d6 = save_d6_4;
+  d7 = save_d7_5;
+  a0 = save_a0_6;
+  a1 = save_a1_7;
+  a2 = save_a2_8;
+  a3 = save_a3_9;
+  a4 = save_a4_10;
+  a5 = save_a5_11;
+  a6 = save_a6_12;
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+  setReg('d7', d7);
+}
+
 export function fn_1354c(): void {
   store16(0x3e3f00, 0x9);
   store16((0x3e3f00 + 2), 0xd);
@@ -4278,6 +4498,8 @@ export function fn_1365c(): void {
 }
 
 export function fn_13f98(d0_: number, d1_: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   if (((load8(0x3e344a)) & 255) !== ((0) & 255)) {
@@ -4313,6 +4535,8 @@ export function fn_14492(): void {
 }
 
 export function fn_144ae(d0_: number, d1_: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   d1 = 0x1;
@@ -4327,6 +4551,35 @@ export function fn_144ae(d0_: number, d1_: number): void {
   d0 = d1;
   setReg('d0', d0);
   setReg('d1', d1);
+}
+
+export function fn_14e5c(d0_: number, d1_: number, d2_: number, d3_: number, d4_: number): void {
+  let _guard = 0;
+  void _guard;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  d2 = 0xe;
+  d3 = 0x3e3454;
+  d4 = ((d4 & 0xffff0000) | (0 & 65535));
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 1 did not end');
+    continue;
+    break;
+  }
+  d2 = save_d2_0;
+  d3 = save_d3_1;
+  d4 = save_d4_2;
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
 }
 
 export function fn_15672(d0: number, arg0: number): void {
@@ -4359,6 +4612,8 @@ export function fn_1568e(d1: number, arg0: number): void {
 }
 
 export function fn_15830(d0_: number, d1_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   d1 = ((d1 & 0xffff0000) | ((arg0 & 0xffff) & 65535));
@@ -4383,6 +4638,8 @@ export function fn_15830(d0_: number, d1_: number, arg0: number): void {
 }
 
 export function fn_168f8(d0_: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   callRom(0x19366);
   callRom(0x17500);
@@ -4415,6 +4672,21 @@ export function fn_168f8(d0_: number): void {
   callRom(0x1485c);
   d0 = getReg('d0');
   drop(16);
+  setReg('d0', d0);
+}
+
+export function fn_16bc8(d0_: number): void {
+  let _guard = 0;
+  void _guard;
+  let d0 = d0_;
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 0 did not end');
+    continue;
+    break;
+  }
+  setReg('d0', d0);
+  callRom(0x1357c);
+  d0 = getReg('d0');
   setReg('d0', d0);
 }
 
@@ -4477,6 +4749,22 @@ export function fn_177e8(): void {
   drop(8);
 }
 
+export function fn_17ede(d0_: number): void {
+  let _guard = 0;
+  void _guard;
+  let d0 = d0_;
+  d0 = load32(0x3e3532);
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 1 did not end');
+    continue;
+    break;
+  }
+  setReg('d0', d0);
+  callRom(0x19c3c);
+  d0 = getReg('d0');
+  setReg('d0', d0);
+}
+
 export function fn_17f42(): void {
   push(0x2040, 4);
   push(0x1dfb2, 4);
@@ -4492,6 +4780,8 @@ export function fn_17f42(): void {
 }
 
 export function fn_17f70(): void {
+  let _guard = 0;
+  void _guard;
   push(0x2040, 4);
   push(0x1df8a, 4);
   push(0x1b, 4);
@@ -4513,6 +4803,8 @@ export function fn_181a4(): void {
 }
 
 export function fn_183f2(a0_: number, d0_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let d0 = d0_;
   d0 = ((d0 & 0xffff0000) | ((arg0 & 0xffff) & 65535));
@@ -4543,6 +4835,8 @@ export function fn_18418(): void {
 }
 
 export function fn_1851c(a0_: number, a3_: number, a5_: number, d0_: number, d1_: number, d2_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a3 = a3_;
   let a5 = a5_;
@@ -4620,6 +4914,8 @@ export function fn_188ec(a2: number, d0: number): void {
 }
 
 export function fn_1890c(d0_: number, d1_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
   let d0 = d0_;
   let d1 = d1_;
   if (((load16(0x3e340e)) & 65535) !== ((0) & 65535)) {
@@ -4695,6 +4991,8 @@ export function fn_19404(d0: number): void {
 }
 
 export function fn_1a05a(a0_: number, a1_: number, d0_: number, d1_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
   let a0 = a0_;
   let a1 = a1_;
   let d0 = d0_;
@@ -4853,6 +5151,8 @@ export function fn_1b11c(d0: number, arg0: number): void {
 }
 
 export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
   let a2 = a2_;
   let a3 = a3_;
   let a4 = a4_;
@@ -5184,6 +5484,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0042a, fn: fn_0042a as (...a: number[]) => void, params: [] },
 
+  { at: 0x00512, fn: fn_00512 as (...a: number[]) => void, params: [] },
+
   { at: 0x0052a, fn: fn_0052a as (...a: number[]) => void, params: [] },
 
   { at: 0x00618, fn: fn_00618 as (...a: number[]) => void, params: [] },
@@ -5434,6 +5736,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x12354, fn: fn_12354 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd7' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
+  { at: 0x130f8, fn: fn_130f8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+
   { at: 0x1354c, fn: fn_1354c as (...a: number[]) => void, params: [] },
 
   { at: 0x1365c, fn: fn_1365c as (...a: number[]) => void, params: [] },
@@ -5444,6 +5748,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x144ae, fn: fn_144ae as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
+  { at: 0x14e5c, fn: fn_14e5c as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+
   { at: 0x15672, fn: fn_15672 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
   { at: 0x1568e, fn: fn_1568e as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
@@ -5451,6 +5757,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x15830, fn: fn_15830 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
   { at: 0x168f8, fn: fn_168f8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
+
+  { at: 0x16bc8, fn: fn_16bc8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
   { at: 0x16d3e, fn: fn_16d3e as (...a: number[]) => void, params: [] },
 
@@ -5469,6 +5777,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x16e24, fn: fn_16e24 as (...a: number[]) => void, params: [] },
 
   { at: 0x177e8, fn: fn_177e8 as (...a: number[]) => void, params: [] },
+
+  { at: 0x17ede, fn: fn_17ede as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
   { at: 0x17f42, fn: fn_17f42 as (...a: number[]) => void, params: [] },
 
