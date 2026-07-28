@@ -348,6 +348,12 @@ class BlockLifter(Lifter):
                 and rereadable(ops[-1]) and rereadable(ops[0])):
             addends = (self.pin(self.read(ops[-1], bits)).text,
                        self.pin(self.read(ops[0], bits)).text)
+        if b in ("addx", "subx"):
+            # X comes from the instruction before, and the lifted source works
+            # its arithmetic out in JavaScript without touching the machine.
+            # `add.b d6,d6` / `addx.w d0,d0` is this ROM's way of shifting five
+            # bytes' top bits into one word, and it reads X five times.
+            self.sync_flags()
         # A shift by a literal count sets carry from the bit that left the
         # register. `lsr.b #1,dN` followed by `bcs` is this ROM's bit walk, and
         # as "the result against zero" that test can never fire.
