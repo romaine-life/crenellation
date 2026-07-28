@@ -217,8 +217,15 @@ class BlockLifter(Lifter):
         wide = bits // 8
         if ops[1].strip() == "-(a7)":
             regs = self.regs_of(ops[0])
-            for r in regs:
+            # The value is pinned in a constant *and* the machine's stack
+            # actually moves. Recording the depth without moving the stack
+            # leaves any callee looking at a stack this many bytes shallower
+            # than the ROM's, which only shows up if the callee reads past its
+            # own arguments - and some do.
+            for r in reversed(regs):
                 self.used_regs.add(r)
+                self.stmts.append(f"push({r}, {wide});")
+            for r in regs:
                 name = f"save_{r}_{len(self.temps)}"
                 self.temps.append(name)
                 self.stmts.append(f"const {name} = {r};")
@@ -231,6 +238,7 @@ class BlockLifter(Lifter):
                 if not self.saved.get(r):
                     raise Bail("restores a register it never saved")
                 self.stmts.append(f"{r} = {self.saved[r].pop()};")
+            self.stmts.append(f"drop({wide * len(regs)});")
             self.pushed -= wide * len(regs)
             return
         # To or from ordinary memory rather than the stack. The registers go in

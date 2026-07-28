@@ -477,6 +477,9 @@ export function fn_00686(a0_: number, a2_: number, d0_: number, d2_: number, d3_
   let d0 = d0_;
   let d2 = d2_;
   let d3 = d3_;
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_a2_2 = a2;
@@ -690,6 +693,7 @@ export function fn_00686(a0_: number, a2_: number, d0_: number, d2_: number, d3_
   d2 = save_d2_0;
   d3 = save_d3_1;
   a2 = save_a2_2;
+  drop(12);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
@@ -748,6 +752,8 @@ export function fn_00dda(a2_: number, d0_: number, d2_: number, arg0: number): v
   let a2 = a2_;
   let d0 = d0_;
   let d2 = d2_;
+  push(a2, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_a2_1 = a2;
   const t2 = (arg0 & 0xffff);
@@ -815,6 +821,7 @@ export function fn_00dda(a2_: number, d0_: number, d2_: number, arg0: number): v
   }
   d2 = save_d2_0;
   a2 = save_a2_1;
+  drop(8);
   setReg('a2', a2);
   setReg('d0', d0);
   setReg('d2', d2);
@@ -840,6 +847,10 @@ export function fn_014dc(a0_: number, a2_: number, d0_: number, d2_: number, d3_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -886,6 +897,7 @@ export function fn_014dc(a0_: number, a2_: number, d0_: number, d2_: number, d3_
         d3 = save_d3_1;
         d4 = save_d4_2;
         a2 = save_a2_3;
+        drop(16);
         break dispatch;
       }
       default: break dispatch;
@@ -919,6 +931,10 @@ export function fn_01512(a0_: number, a2_: number, d0_: number, d2_: number, d3_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -992,6 +1008,7 @@ export function fn_01512(a0_: number, a2_: number, d0_: number, d2_: number, d3_
         d3 = save_d3_1;
         d4 = save_d4_2;
         a2 = save_a2_3;
+        drop(16);
         break dispatch;
       }
       default: break dispatch;
@@ -1065,6 +1082,8 @@ export function fn_015d6(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   d1 = 3;
@@ -1086,6 +1105,7 @@ export function fn_015d6(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   }
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('d0', d0);
   setReg('d1', d1);
@@ -1118,6 +1138,12 @@ export function fn_01836(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -1206,6 +1232,7 @@ export function fn_01836(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         a2 = save_a2_3;
         a3 = save_a3_4;
         a4 = save_a4_5;
+        drop(24);
         break dispatch;
       }
       default: break dispatch;
@@ -1333,6 +1360,10 @@ export function fn_019ee(a2_: number, a3_: number, d0_: number, d1_: number, d2_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a3, 4);
+        push(a2, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_a2_2 = a2;
@@ -1431,6 +1462,7 @@ export function fn_019ee(a2_: number, a3_: number, d0_: number, d1_: number, d2_
         d3 = save_d3_1;
         a2 = save_a2_2;
         a3 = save_a3_3;
+        drop(16);
         break dispatch;
       }
       default: break dispatch;
@@ -1466,6 +1498,9 @@ export function fn_01a70(a0_: number, d0_: number, d2_: number, d3_: number, d4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -1540,6 +1575,7 @@ export function fn_01a70(a0_: number, d0_: number, d2_: number, d3_: number, d4_
         d2 = save_d2_0;
         d3 = save_d3_1;
         d4 = save_d4_2;
+        drop(12);
         break dispatch;
       }
       default: break dispatch;
@@ -1574,6 +1610,12 @@ export function fn_01aea(a2_: number, d0_: number, d2_: number, d3_: number, d4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -1634,6 +1676,7 @@ export function fn_01aea(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         d5 = save_d5_3;
         d6 = save_d6_4;
         a2 = save_a2_5;
+        drop(24);
         break dispatch;
       }
       default: break dispatch;
@@ -1684,6 +1727,13 @@ export function fn_01b96(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -1833,6 +1883,7 @@ export function fn_01b96(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         a3 = save_a3_4;
         a4 = save_a4_5;
         a5 = save_a5_6;
+        drop(28);
         break dispatch;
       }
       default: break dispatch;
@@ -1866,6 +1917,9 @@ export function fn_01c34(a2_: number, d0_: number, d2_: number, d3_: number): vo
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_a2_2 = a2;
@@ -1905,6 +1959,7 @@ export function fn_01c34(a2_: number, d0_: number, d2_: number, d3_: number): vo
         d2 = save_d2_0;
         d3 = save_d3_1;
         a2 = save_a2_2;
+        drop(12);
         break dispatch;
       }
       default: break dispatch;
@@ -1980,6 +2035,10 @@ export function fn_01fd6(d0_: number, d2_: number, d3_: number, d4_: number, d5_
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -2023,6 +2082,7 @@ export function fn_01fd6(d0_: number, d2_: number, d3_: number, d4_: number, d5_
   d3 = save_d3_1;
   d4 = save_d4_2;
   d5 = save_d5_3;
+  drop(16);
   setReg('d0', d0);
   setReg('d2', d2);
   setReg('d3', d3);
@@ -2106,6 +2166,12 @@ export function fn_02248(a2_: number, a3_: number, d0_: number, d2_: number, d3_
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -2180,6 +2246,7 @@ export function fn_02248(a2_: number, a3_: number, d0_: number, d2_: number, d3_
   d5 = save_d5_3;
   a2 = save_a2_4;
   a3 = save_a3_5;
+  drop(24);
   setReg('a2', a2);
   setReg('a3', a3);
   setReg('d0', d0);
@@ -2199,6 +2266,11 @@ export function fn_022ba(a0_: number, a2_: number, a3_: number, d0_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -2248,6 +2320,7 @@ export function fn_022ba(a0_: number, a2_: number, a3_: number, d0_: number, d2_
   d4 = save_d4_2;
   a2 = save_a2_3;
   a3 = save_a3_4;
+  drop(20);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('a3', a3);
@@ -2311,6 +2384,9 @@ export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -2387,6 +2463,7 @@ export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
         d2 = save_d2_0;
         d3 = save_d3_1;
         d4 = save_d4_2;
+        drop(12);
       }
     }
   }
@@ -2417,6 +2494,7 @@ export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d2 = save_d2_0;
   d3 = save_d3_1;
   d4 = save_d4_2;
+  drop(12);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
@@ -2435,6 +2513,8 @@ export function fn_0255c(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   a1 = arg0;
@@ -2490,6 +2570,7 @@ export function fn_0255c(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d0 = ((d0 & 0xffff0000) | (t9 & 65535));
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
@@ -2508,6 +2589,10 @@ export function fn_025f4(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_a2_2 = a2;
@@ -2665,6 +2750,7 @@ export function fn_025f4(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   d3 = save_d3_1;
   a2 = save_a2_2;
   a3 = save_a3_3;
+  drop(16);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('a3', a3);
@@ -2686,6 +2772,11 @@ export function fn_02698(a0_: number, a1_: number, a2_: number, d0_: number, d1_
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
+  push(a2, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -2783,6 +2874,7 @@ export function fn_02698(a0_: number, a1_: number, a2_: number, d0_: number, d1_
   d4 = save_d4_2;
   d5 = save_d5_3;
   a2 = save_a2_4;
+  drop(20);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
@@ -2802,6 +2894,8 @@ export function fn_02a5c(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   d2 = 0x2065a;
@@ -2855,6 +2949,7 @@ export function fn_02a5c(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   drop(6);
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('d0', d0);
   setReg('d1', d1);
@@ -2875,6 +2970,12 @@ export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -3000,6 +3101,7 @@ export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d5 = save_d5_3;
   a2 = save_a2_4;
   a3 = save_a3_5;
+  drop(24);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
@@ -3031,6 +3133,10 @@ export function fn_02b88(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_a2_2 = a2;
@@ -3220,6 +3326,7 @@ export function fn_02b88(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d3 = save_d3_1;
   a2 = save_a2_2;
   a3 = save_a3_3;
+  drop(16);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
@@ -3264,6 +3371,10 @@ export function fn_02c86(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_a2_2 = a2;
@@ -3459,6 +3570,7 @@ export function fn_02c86(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d3 = save_d3_1;
   a2 = save_a2_2;
   a3 = save_a3_3;
+  drop(16);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
@@ -3478,6 +3590,8 @@ export function fn_02d78(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const t2 = ((arg1 >>> 16) & 0xffff);
@@ -3562,6 +3676,7 @@ export function fn_02d78(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   drop(10);
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
@@ -3594,6 +3709,10 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -3724,6 +3843,7 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d3 = save_d3_1;
   d4 = save_d4_2;
   a2 = save_a2_3;
+  drop(16);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
@@ -3746,6 +3866,10 @@ export function fn_03728(d0_: number, d1_: number, d2_: number, d3_: number, d4_
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -3853,6 +3977,7 @@ export function fn_03728(d0_: number, d1_: number, d2_: number, d3_: number, d4_
   d3 = save_d3_1;
   d4 = save_d4_2;
   d5 = save_d5_3;
+  drop(16);
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', d2);
@@ -3886,6 +4011,8 @@ export function fn_03802(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   let d0 = d0_;
   let d1 = d1_;
   let d2 = d2_;
+  push(a2, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_a2_1 = a2;
   a2 = 0x3e0de8;
@@ -3982,6 +4109,7 @@ export function fn_03802(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   drop(24);
   d2 = save_d2_0;
   a2 = save_a2_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
@@ -3998,6 +4126,9 @@ export function fn_03cee(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_a2_2 = a2;
@@ -4129,6 +4260,7 @@ export function fn_03cee(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d2 = save_d2_0;
   d3 = save_d3_1;
   a2 = save_a2_2;
+  drop(12);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
@@ -4169,6 +4301,11 @@ export function fn_03e84(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   let d0 = d0_;
   let d2 = d2_;
   let d3 = d3_;
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_a2_2 = a2;
@@ -4320,6 +4457,7 @@ export function fn_03e84(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   a2 = save_a2_2;
   a3 = save_a3_3;
   a4 = save_a4_4;
+  drop(20);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('a3', a3);
@@ -4466,6 +4604,12 @@ export function fn_043c2(a2_: number, a6_: number, d0_: number, d2_: number, d3_
         push(a6, 4);
         a6 = stackPointer();
         drop(65532);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -4633,6 +4777,10 @@ export function fn_0482e(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_a2_1 = a2;
         save_a3_2 = a3;
@@ -4691,6 +4839,7 @@ export function fn_0482e(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         a2 = save_a2_1;
         a3 = save_a3_2;
         a4 = save_a4_3;
+        drop(16);
         break dispatch;
       }
       default: break dispatch;
@@ -4725,6 +4874,11 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_a2_2 = a2;
@@ -5080,6 +5234,7 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   a2 = save_a2_2;
   a3 = save_a3_3;
   a4 = save_a4_4;
+  drop(20);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('a3', a3);
@@ -5112,6 +5267,12 @@ export function fn_04a6a(a2_: number, d0_: number, d2_: number, d3_: number, d4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -5173,6 +5334,7 @@ export function fn_04a6a(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         d5 = save_d5_3;
         d6 = save_d6_4;
         a2 = save_a2_5;
+        drop(24);
         break dispatch;
       }
       default: break dispatch;
@@ -5218,6 +5380,10 @@ export function fn_04b0a(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   let a4 = a4_;
   let d0 = d0_;
   let d2 = d2_;
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_a2_1 = a2;
   const save_a3_2 = a3;
@@ -5401,6 +5567,7 @@ export function fn_04b0a(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   a2 = save_a2_1;
   a3 = save_a3_2;
   a4 = save_a4_3;
+  drop(16);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('a3', a3);
@@ -5602,6 +5769,13 @@ export function fn_04dd2(a2_: number, a3_: number, d0_: number, d2_: number, d3_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -5669,6 +5843,7 @@ export function fn_04dd2(a2_: number, a3_: number, d0_: number, d2_: number, d3_
         d6 = save_d6_4;
         a2 = save_a2_5;
         a3 = save_a3_6;
+        drop(28);
         break dispatch;
       }
       default: break dispatch;
@@ -5769,6 +5944,10 @@ export function fn_0512a(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -5810,6 +5989,7 @@ export function fn_0512a(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d3 = save_d3_1;
   d4 = save_d4_2;
   a2 = save_a2_3;
+  drop(16);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
@@ -5863,6 +6043,9 @@ export function fn_0522e(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   let d0 = d0_;
   let d1 = d1_;
   let d2 = d2_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_a2_1 = a2;
   const save_a3_2 = a3;
@@ -5911,6 +6094,7 @@ export function fn_0522e(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   d2 = save_d2_0;
   a2 = save_a2_1;
   a3 = save_a3_2;
+  drop(12);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('a3', a3);
@@ -5927,6 +6111,8 @@ export function fn_05280(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   let a2 = a2_;
   let a3 = a3_;
   let d0 = d0_;
+  push(a3, 4);
+  push(a2, 4);
   const save_a2_0 = a2;
   const save_a3_1 = a3;
   const t2 = (arg0 & 0xffff);
@@ -5977,6 +6163,7 @@ export function fn_05280(a0_: number, a1_: number, a2_: number, a3_: number, d0_
           }
           a2 = save_a2_0;
           a3 = save_a3_1;
+          drop(8);
         }
       }
       push(0x1fae0, 4);
@@ -6001,6 +6188,7 @@ export function fn_05280(a0_: number, a1_: number, a2_: number, a3_: number, d0_
       }
       a2 = save_a2_0;
       a3 = save_a3_1;
+      drop(8);
     }
     push(0x1fae2, 4);
   }
@@ -6025,6 +6213,7 @@ export function fn_05280(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   }
   a2 = save_a2_0;
   a3 = save_a3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
@@ -6043,6 +6232,13 @@ export function fn_053a6(a2_: number, a3_: number, d0_: number, d2_: number, d3_
   let d4 = d4_;
   let d5 = d5_;
   let d6 = d6_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d6, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -6120,6 +6316,7 @@ export function fn_053a6(a2_: number, a3_: number, d0_: number, d2_: number, d3_
   d6 = save_d6_4;
   a2 = save_a2_5;
   a3 = save_a3_6;
+  drop(28);
   setReg('a2', a2);
   setReg('a3', a3);
   setReg('d0', d0);
@@ -6215,6 +6412,11 @@ export function fn_056f4(a0_: number, a6_: number, d0_: number, d1_: number, d2_
         push(a6, 4);
         a6 = stackPointer();
         drop(65532);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -6495,6 +6697,8 @@ export function fn_05892(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const t2 = (arg0 & 0xffff);
@@ -6552,6 +6756,7 @@ export function fn_05892(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   }
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
@@ -6608,6 +6813,13 @@ export function fn_05948(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -6769,6 +6981,7 @@ export function fn_05948(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         a3 = save_a3_4;
         a4 = save_a4_5;
         a5 = save_a5_6;
+        drop(28);
         break dispatch;
       }
       default: break dispatch;
@@ -6811,6 +7024,11 @@ export function fn_05ab0(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_a2_2 = a2;
@@ -6881,6 +7099,7 @@ export function fn_05ab0(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         a2 = save_a2_2;
         a3 = save_a3_3;
         a4 = save_a4_4;
+        drop(20);
         break dispatch;
       }
       default: break dispatch;
@@ -6941,6 +7160,9 @@ export function fn_05c80(a2_: number, d0_: number, d2_: number, d3_: number): vo
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_a2_2 = a2;
@@ -6982,6 +7204,7 @@ export function fn_05c80(a2_: number, d0_: number, d2_: number, d3_: number): vo
         d2 = save_d2_0;
         d3 = save_d3_1;
         a2 = save_a2_2;
+        drop(12);
         break dispatch;
       }
       default: break dispatch;
@@ -7017,6 +7240,8 @@ export function fn_05cce(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   d2 = 86;
@@ -7127,6 +7352,7 @@ export function fn_05cce(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   drop(8);
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('d0', d0);
   setReg('d1', d1);
@@ -7658,6 +7884,15 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   push(a6, 4);
   a6 = stackPointer();
   drop(65524);
+  push(a5, 4);
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d6, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -8342,6 +8577,10 @@ export function fn_069ae(a2_: number, d0_: number, d2_: number, d3_: number, d4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -8386,6 +8625,7 @@ export function fn_069ae(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         d3 = save_d3_1;
         d4 = save_d4_2;
         a2 = save_a2_3;
+        drop(16);
         break dispatch;
       }
       default: break dispatch;
@@ -8406,6 +8646,9 @@ export function fn_06c20(a2_: number, a3_: number, d0_: number, d1_: number, d2_
   let d0 = d0_;
   let d1 = d1_;
   let d2 = d2_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_a2_1 = a2;
   const save_a3_2 = a3;
@@ -8499,6 +8742,7 @@ export function fn_06c20(a2_: number, a3_: number, d0_: number, d1_: number, d2_
   d2 = save_d2_0;
   a2 = save_a2_1;
   a3 = save_a3_2;
+  drop(12);
   setReg('a2', a2);
   setReg('a3', a3);
   setReg('d0', d0);
@@ -8527,6 +8771,8 @@ export function fn_06fb4(a2_: number, a3_: number, d0_: number, d1_: number, arg
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a3, 4);
+        push(a2, 4);
         save_a2_0 = a2;
         save_a3_1 = a3;
         a2 = arg0;
@@ -8589,6 +8835,7 @@ export function fn_06fb4(a2_: number, a3_: number, d0_: number, d1_: number, arg
         store32(a2 + 0x72, a3);
         a2 = save_a2_0;
         a3 = save_a3_1;
+        drop(8);
         break dispatch;
       }
       default: break dispatch;
@@ -8644,6 +8891,12 @@ export function fn_073dc(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a3, 4);
+        push(a2, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -8719,6 +8972,7 @@ export function fn_073dc(a0_: number, a1_: number, a2_: number, a3_: number, d0_
         d5 = save_d5_3;
         a2 = save_a2_4;
         a3 = save_a3_5;
+        drop(24);
         break dispatch;
       }
       default: break dispatch;
@@ -8855,6 +9109,53 @@ export function fn_07a12(): void {
   drop(8);
 }
 
+export function fn_07b14(d0_: number, d2_: number, d3_: number, d4_: number): void {
+  let _guard = 0;
+  void _guard;
+  let d0 = d0_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  d2 = 3;
+  d4 = 0x3e1968;
+  d3 = ((d3 & 0xffff0000) | (0 & 65535));
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 1 did not end');
+    push(d4, 4);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    callRom(0x0427e, 0x07b28);
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    d0 = 126;
+    d4 = (d4 + d0);
+    drop(4);
+    d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + 0x1) & 65535));
+    d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+    d0 = ((((d0 & 65535)) << 16) >> 16);
+    if ((d0 | 0) < (d2 | 0)) {
+      continue;
+    }
+    break;
+  }
+  d2 = save_d2_0;
+  d3 = save_d3_1;
+  d4 = save_d4_2;
+  drop(12);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+}
+
 export function fn_07c72(): void {
   push(0x1, 4);
   push(0x11b30, 4);
@@ -8914,6 +9215,13 @@ export function fn_07d80(a2_: number, a3_: number, d0_: number, d2_: number, d3_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -8980,6 +9288,7 @@ export function fn_07d80(a2_: number, a3_: number, d0_: number, d2_: number, d3_
         d6 = save_d6_4;
         a2 = save_a2_5;
         a3 = save_a3_6;
+        drop(28);
         break dispatch;
       }
       default: break dispatch;
@@ -9025,6 +9334,13 @@ export function fn_07dce(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -9169,6 +9485,7 @@ export function fn_07dce(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         a2 = save_a2_4;
         a3 = save_a3_5;
         a4 = save_a4_6;
+        drop(28);
         break dispatch;
       }
       default: break dispatch;
@@ -9211,6 +9528,10 @@ export function fn_07ea4(a0_: number, a2_: number, d0_: number, d2_: number, d3_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -9321,7 +9642,102 @@ export function fn_07ea4(a0_: number, a2_: number, d0_: number, d2_: number, d3_
   d3 = save_d3_1;
   d4 = save_d4_2;
   a2 = save_a2_3;
+  drop(16);
   setReg('a0', a0);
+  setReg('a2', a2);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+}
+
+export function fn_0848e(a2_: number, d0_: number, d2_: number, d3_: number, d4_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a2 = a2_;
+  let d0 = d0_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_a2_3 = 0;
+  let t4 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_a2_3 = a2;
+        d2 = 3;
+        a2 = 0x3e1968;
+        d4 = ((d4 & 0xffff0000) | (0 & 65535));
+        d3 = 0x11b36;
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        t4 = load16(a2);
+        d0 = ((d0 & 0xffff0000) | (t4 & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0xc000) & 65535));
+        _at = ((((d0 & 65535)) & 65535) === ((0) & 65535)) ? 3 : 2; continue dispatch;
+      }
+      case 2: {
+        store8(a2 + 0x30, 0);
+        store8(a2 + 0x31, 0);
+        push(a2, 4);
+        push(d3, 4);
+        setReg('a2', a2);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x0ee90, 0x084bc);
+        a2 = getReg('a2');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        push(a2, 4);
+        setReg('a2', a2);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x08326, 0x084c2);
+        a2 = getReg('a2');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        drop(12);
+        _at = 3; continue dispatch;
+      }
+      case 3: {
+        a2 = (a2 + 0x7e);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
+        d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        _at = ((d0 | 0) < (d2 | 0)) ? 1 : 4; continue dispatch;
+      }
+      case 4: {
+        d2 = save_d2_0;
+        d3 = save_d3_1;
+        d4 = save_d4_2;
+        a2 = save_a2_3;
+        drop(16);
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
   setReg('a2', a2);
   setReg('d0', d0);
   setReg('d2', d2);
@@ -9376,6 +9792,8 @@ export function fn_08598(a0_: number, a2_: number, d0_: number, d1_: number, d2_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_a2_1 = a2;
         a2 = 0x3e1968;
@@ -9456,6 +9874,7 @@ export function fn_08598(a0_: number, a2_: number, d0_: number, d1_: number, d2_
         d2 = getReg('d2');
         d2 = save_d2_0;
         a2 = save_a2_1;
+        drop(8);
         break dispatch;
       }
       default: break dispatch;
@@ -9634,6 +10053,8 @@ export function fn_0910e(a2_: number, d0_: number, d1_: number, d2_: number, arg
   let d0 = d0_;
   let d1 = d1_;
   let d2 = d2_;
+  push(a2, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_a2_1 = a2;
   const t2 = (arg0 & 0xff);
@@ -9672,6 +10093,7 @@ export function fn_0910e(a2_: number, d0_: number, d1_: number, d2_: number, arg
   }
   d2 = save_d2_0;
   a2 = save_a2_1;
+  drop(8);
   setReg('a2', a2);
   setReg('d0', d0);
   setReg('d1', d1);
@@ -9721,6 +10143,15 @@ export function fn_0a80c(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -9908,6 +10339,7 @@ export function fn_0a80c(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         a3 = save_a3_6;
         a4 = save_a4_7;
         a5 = save_a5_8;
+        drop(36);
         break dispatch;
       }
       default: break dispatch;
@@ -9939,6 +10371,12 @@ export function fn_0a90e(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -10084,6 +10522,7 @@ export function fn_0a90e(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         a2 = save_a2_3;
         a3 = save_a3_4;
         a4 = save_a4_5;
+        drop(24);
       } else {
         d0 = 0;
         const t7 = load8(a2);
@@ -10142,6 +10581,7 @@ export function fn_0a90e(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         a2 = save_a2_3;
         a3 = save_a3_4;
         a4 = save_a4_5;
+        drop(24);
       }
       continue;
       break;
@@ -10153,10 +10593,325 @@ export function fn_0a90e(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   a2 = save_a2_3;
   a3 = save_a3_4;
   a4 = save_a4_5;
+  drop(24);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('a3', a3);
   setReg('a4', a4);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+}
+
+export function fn_0aa86(a2_: number, a3_: number, d0_: number, d2_: number, d3_: number, d4_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a2 = a2_;
+  let a3 = a3_;
+  let d0 = d0_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  const save_a2_3 = a2;
+  const save_a3_4 = a3;
+  a2 = 0xee90;
+  if (((load8(0x3e1954)) & 255) !== ((0x1) & 255)) {
+    d2 = 3;
+    a3 = 0x3e1968;
+    d4 = ((d4 & 0xffff0000) | (0 & 65535));
+    d3 = 0x11b4e;
+    for (;;) {
+      if (++_guard > 4000000) throw new Error('loop 3 did not end');
+      const t5 = load16(a3);
+      d0 = ((d0 & 0xffff0000) | (t5 & 65535));
+      d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x8000) & 65535));
+      if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
+        a3 = (a3 + 0x7e);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
+        d4 = ((((d4 & 65535)) << 16) >> 16);
+        if ((d4 | 0) < (d2 | 0)) {
+          continue;
+        }
+        push(0x11b5a, 4);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x0ef58, 0x0aaf0);
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        push(0, 4);
+        push(0x11b54, 4);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(a2, 0x0aafa);
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x04c80, 0x0aafe);
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d2 = 15;
+        drop(12);
+        for (;;) {
+          if (++_guard > 4000000) throw new Error('loop 7 did not end');
+          setReg('a2', a2);
+          setReg('a3', a3);
+          setReg('d0', d0);
+          setReg('d2', d2);
+          setReg('d3', d3);
+          setReg('d4', d4);
+          callRom(0x0b032, 0x0ab08);
+          a2 = getReg('a2');
+          a3 = getReg('a3');
+          d0 = getReg('d0');
+          d2 = getReg('d2');
+          d3 = getReg('d3');
+          d4 = getReg('d4');
+          d2 = ((d2 & 0xffff0000) | (((d2 & 0xffff) - 1) & 0xffff));
+          if ((d2 & 0xffff) !== 0xffff) {
+            continue;
+          }
+          break;
+        }
+        d2 = save_d2_0;
+        d3 = save_d3_1;
+        d4 = save_d4_2;
+        a2 = save_a2_3;
+        a3 = save_a3_4;
+        drop(20);
+      } else {
+        push(a3, 4);
+        push(d3, 4);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(a2, 0x0aad6);
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        drop(8);
+        a3 = (a3 + 0x7e);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
+        d4 = ((((d4 & 65535)) << 16) >> 16);
+        if ((d4 | 0) < (d2 | 0)) {
+          continue;
+        }
+        push(0x11b5a, 4);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x0ef58, 0x0aaf0);
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        push(0, 4);
+        push(0x11b54, 4);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(a2, 0x0aafa);
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x04c80, 0x0aafe);
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d2 = 15;
+        drop(12);
+        for (;;) {
+          if (++_guard > 4000000) throw new Error('loop 7 did not end');
+          setReg('a2', a2);
+          setReg('a3', a3);
+          setReg('d0', d0);
+          setReg('d2', d2);
+          setReg('d3', d3);
+          setReg('d4', d4);
+          callRom(0x0b032, 0x0ab08);
+          a2 = getReg('a2');
+          a3 = getReg('a3');
+          d0 = getReg('d0');
+          d2 = getReg('d2');
+          d3 = getReg('d3');
+          d4 = getReg('d4');
+          d2 = ((d2 & 0xffff0000) | (((d2 & 0xffff) - 1) & 0xffff));
+          if ((d2 & 0xffff) !== 0xffff) {
+            continue;
+          }
+          break;
+        }
+        d2 = save_d2_0;
+        d3 = save_d3_1;
+        d4 = save_d4_2;
+        a2 = save_a2_3;
+        a3 = save_a3_4;
+        drop(20);
+      }
+      continue;
+      break;
+    }
+  } else {
+    push(0, 4);
+    push(0x11b72, 4);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    callRom(a2, 0x0aaa4);
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    push(load32(0x3e1c84), 4);
+    push(0x11b4e, 4);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    callRom(a2, 0x0aab2);
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    drop(16);
+  }
+  push(0x11b5a, 4);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  callRom(0x0ef58, 0x0aaf0);
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  d0 = getReg('d0');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d4 = getReg('d4');
+  push(0, 4);
+  push(0x11b54, 4);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  callRom(a2, 0x0aafa);
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  d0 = getReg('d0');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d4 = getReg('d4');
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  callRom(0x04c80, 0x0aafe);
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  d0 = getReg('d0');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d4 = getReg('d4');
+  d2 = 15;
+  drop(12);
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 7 did not end');
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('d0', d0);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    callRom(0x0b032, 0x0ab08);
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    d0 = getReg('d0');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    d2 = ((d2 & 0xffff0000) | (((d2 & 0xffff) - 1) & 0xffff));
+    if ((d2 & 0xffff) !== 0xffff) {
+      continue;
+    }
+    break;
+  }
+  d2 = save_d2_0;
+  d3 = save_d3_1;
+  d4 = save_d4_2;
+  a2 = save_a2_3;
+  a3 = save_a3_4;
+  drop(20);
+  setReg('a2', a2);
+  setReg('a3', a3);
   setReg('d0', d0);
   setReg('d2', d2);
   setReg('d3', d3);
@@ -10213,6 +10968,12 @@ export function fn_0af72(a0_: number, a2_: number, d0_: number, d2_: number, d3_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -10298,6 +11059,7 @@ export function fn_0af72(a0_: number, a2_: number, d0_: number, d2_: number, d3_
         d5 = save_d5_3;
         d6 = save_d6_4;
         a2 = save_a2_5;
+        drop(24);
         break dispatch;
       }
       default: break dispatch;
@@ -10401,6 +11163,8 @@ export function fn_0b2e8(a0_: number, a2_: number, a3_: number, arg0: number): v
   let a0 = a0_;
   let a2 = a2_;
   let a3 = a3_;
+  push(a3, 4);
+  push(a2, 4);
   const save_a2_0 = a2;
   const save_a3_1 = a3;
   a2 = arg0;
@@ -10428,6 +11192,7 @@ export function fn_0b2e8(a0_: number, a2_: number, a3_: number, arg0: number): v
   }
   a2 = save_a2_0;
   a3 = save_a3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('a3', a3);
@@ -10844,6 +11609,11 @@ export function fn_0b958(a0_: number, d0_: number, d1_: number, d2_: number, d3_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -10935,6 +11705,7 @@ export function fn_0b958(a0_: number, d0_: number, d1_: number, d2_: number, d3_
         d4 = save_d4_2;
         d5 = save_d5_3;
         d6 = save_d6_4;
+        drop(20);
         break dispatch;
       }
       default: break dispatch;
@@ -11009,6 +11780,9 @@ export function fn_0c504(a2_: number, d0_: number, d1_: number, d2_: number, d3_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_a2_2 = a2;
@@ -11040,6 +11814,7 @@ export function fn_0c504(a2_: number, d0_: number, d1_: number, d2_: number, d3_
   d2 = save_d2_0;
   d3 = save_d3_1;
   a2 = save_a2_2;
+  drop(12);
   setReg('a2', a2);
   setReg('d0', d0);
   setReg('d1', d1);
@@ -11055,6 +11830,10 @@ export function fn_0c568(d0_: number, d2_: number, d3_: number, d4_: number, d5_
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -11097,6 +11876,7 @@ export function fn_0c568(d0_: number, d2_: number, d3_: number, d4_: number, d5_
   d3 = save_d3_1;
   d4 = save_d4_2;
   d5 = save_d5_3;
+  drop(16);
   setReg('d0', d0);
   setReg('d2', d2);
   setReg('d3', d3);
@@ -11114,6 +11894,10 @@ export function fn_0c5ca(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -11214,6 +11998,7 @@ export function fn_0c5ca(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d3 = save_d3_1;
   d4 = save_d4_2;
   a2 = save_a2_3;
+  drop(16);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
@@ -11233,6 +12018,10 @@ export function fn_0c688(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -11315,6 +12104,7 @@ export function fn_0c688(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d3 = save_d3_1;
   d4 = save_d4_2;
   a2 = save_a2_3;
+  drop(16);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
@@ -11334,6 +12124,10 @@ export function fn_0c724(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -11414,6 +12208,7 @@ export function fn_0c724(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d3 = save_d3_1;
   d4 = save_d4_2;
   a2 = save_a2_3;
+  drop(16);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
@@ -11433,6 +12228,9 @@ export function fn_0c7bc(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -11494,6 +12292,7 @@ export function fn_0c7bc(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d2 = save_d2_0;
   d3 = save_d3_1;
   d4 = save_d4_2;
+  drop(12);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
@@ -11513,6 +12312,9 @@ export function fn_0c8de(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -11579,6 +12381,7 @@ export function fn_0c8de(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d2 = save_d2_0;
   d3 = save_d3_1;
   d4 = save_d4_2;
+  drop(12);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
@@ -11598,6 +12401,9 @@ export function fn_0c95e(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -11662,6 +12468,7 @@ export function fn_0c95e(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d2 = save_d2_0;
   d3 = save_d3_1;
   d4 = save_d4_2;
+  drop(12);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
@@ -11681,6 +12488,9 @@ export function fn_0c9d2(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -11747,6 +12557,7 @@ export function fn_0c9d2(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d2 = save_d2_0;
   d3 = save_d3_1;
   d4 = save_d4_2;
+  drop(12);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
@@ -11762,6 +12573,8 @@ export function fn_0ca52(a0_: number, a2_: number, d2_: number): void {
   let a0 = a0_;
   let a2 = a2_;
   let d2 = d2_;
+  push(a2, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_a2_1 = a2;
   store8(0x3e2498, 0x1);
@@ -11789,6 +12602,7 @@ export function fn_0ca52(a0_: number, a2_: number, d2_: number): void {
   store8(0x3e2498, 0);
   d2 = save_d2_0;
   a2 = save_a2_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d2', d2);
@@ -11801,6 +12615,8 @@ export function fn_0cae2(d0_: number, d1_: number, d2_: number, d3_: number, arg
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const t2 = (arg0 & 0xffff);
@@ -11837,6 +12653,7 @@ export function fn_0cae2(d0_: number, d1_: number, d2_: number, d3_: number, arg
   }
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', d2);
@@ -11865,6 +12682,11 @@ export function fn_0cb24(a2_: number, d0_: number, d2_: number, d3_: number, d4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a2, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -11993,6 +12815,7 @@ export function fn_0cb24(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         d4 = save_d4_2;
         d5 = save_d5_3;
         a2 = save_a2_4;
+        drop(20);
         break dispatch;
       }
       default: break dispatch;
@@ -12174,6 +12997,12 @@ export function fn_0cee8(a2_: number, d0_: number, d2_: number, d3_: number, d4_
   let d4 = d4_;
   let d5 = d5_;
   let d6 = d6_;
+  push(a2, 4);
+  push(d6, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -12206,6 +13035,7 @@ export function fn_0cee8(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         d5 = save_d5_3;
         d6 = save_d6_4;
         a2 = save_a2_5;
+        drop(24);
       } else {
         d0 = 0;
         const t7 = load8(a2 + 0x20);
@@ -12222,6 +13052,7 @@ export function fn_0cee8(a2_: number, d0_: number, d2_: number, d3_: number, d4_
           d5 = save_d5_3;
           d6 = save_d6_4;
           a2 = save_a2_5;
+          drop(24);
         } else {
           push(a2, 4);
           push(d5, 4);
@@ -12253,6 +13084,7 @@ export function fn_0cee8(a2_: number, d0_: number, d2_: number, d3_: number, d4_
           d5 = save_d5_3;
           d6 = save_d6_4;
           a2 = save_a2_5;
+          drop(24);
         }
       }
       continue;
@@ -12265,6 +13097,7 @@ export function fn_0cee8(a2_: number, d0_: number, d2_: number, d3_: number, d4_
   d5 = save_d5_3;
   d6 = save_d6_4;
   a2 = save_a2_5;
+  drop(24);
   setReg('a2', a2);
   setReg('d0', d0);
   setReg('d2', d2);
@@ -12297,6 +13130,11 @@ export function fn_0d696(a2_: number, d0_: number, d2_: number, d3_: number, d4_
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
+  push(a2, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -12415,6 +13253,7 @@ export function fn_0d696(a2_: number, d0_: number, d2_: number, d3_: number, d4_
   d4 = save_d4_2;
   d5 = save_d5_3;
   a2 = save_a2_4;
+  drop(20);
   setReg('a2', a2);
   setReg('d0', d0);
   setReg('d2', d2);
@@ -12451,6 +13290,11 @@ export function fn_0d6e6(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a3, 4);
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -12540,6 +13384,7 @@ export function fn_0d6e6(a0_: number, a1_: number, a2_: number, a3_: number, d0_
         d4 = save_d4_2;
         a2 = save_a2_3;
         a3 = save_a3_4;
+        drop(20);
         break dispatch;
       }
       default: break dispatch;
@@ -12563,6 +13408,8 @@ export function fn_0d7a0(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   let d0 = d0_;
   let d1 = d1_;
   let d2 = d2_;
+  push(a2, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_a2_1 = a2;
   a2 = arg0;
@@ -12680,6 +13527,7 @@ export function fn_0d7a0(a0_: number, a2_: number, d0_: number, d1_: number, d2_
         }
         d2 = save_d2_0;
         a2 = save_a2_1;
+        drop(8);
       }
       if (((((d2 & 65535)) << 16) >> 16) <= (((0) << 16) >> 16)) {
         if (((((d2 & 65535)) << 16) >> 16) >= (((0) << 16) >> 16)) {
@@ -12735,6 +13583,7 @@ export function fn_0d7a0(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   }
   d2 = save_d2_0;
   a2 = save_a2_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
@@ -12904,6 +13753,11 @@ export function fn_0de1a(a2_: number, a3_: number, d0_: number, d2_: number, d3_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a3, 4);
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -13057,6 +13911,7 @@ export function fn_0de1a(a2_: number, a3_: number, d0_: number, d2_: number, d3_
         d4 = save_d4_2;
         a2 = save_a2_3;
         a3 = save_a3_4;
+        drop(20);
         break dispatch;
       }
       default: break dispatch;
@@ -13137,6 +13992,15 @@ export function fn_0e0ee(a0_: number, a2_: number, a3_: number, a4_: number, a5_
         push(a6, 4);
         a6 = stackPointer();
         drop(65508);
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -13733,6 +14597,8 @@ export function fn_0e332(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   d3 = 3;
@@ -13788,6 +14654,7 @@ export function fn_0e332(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   drop(16);
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('d0', d0);
   setReg('d1', d1);
@@ -13938,6 +14805,9 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   let a3 = a3_;
   let a4 = a4_;
   let d0 = d0_;
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
   const save_a2_0 = a2;
   const save_a3_1 = a3;
   const save_a4_2 = a4;
@@ -14204,6 +15074,7 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   a2 = save_a2_0;
   a3 = save_a3_1;
   a4 = save_a4_2;
+  drop(12);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
@@ -14285,6 +15156,13 @@ export function fn_0ecfa(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -14381,6 +15259,7 @@ export function fn_0ecfa(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         a2 = save_a2_4;
         a3 = save_a3_5;
         a4 = save_a4_6;
+        drop(28);
         break dispatch;
       }
       default: break dispatch;
@@ -14605,6 +15484,13 @@ export function fn_0f3b2(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
         save_d4_0 = d4;
         save_d5_1 = d5;
         save_d6_2 = d6;
@@ -14876,6 +15762,7 @@ export function fn_0f3b2(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         a3 = save_a3_4;
         a4 = save_a4_5;
         a5 = save_a5_6;
+        drop(28);
         break dispatch;
       }
       default: break dispatch;
@@ -14931,6 +15818,8 @@ export function fn_0f540(a0_: number, a1_: number, a2_: number, d0_: number, d1_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(a2, 4);
+  push(d3, 4);
   const save_d3_0 = d3;
   const save_a2_1 = a2;
   a2 = 0x3e0000;
@@ -15020,6 +15909,7 @@ export function fn_0f540(a0_: number, a1_: number, a2_: number, d0_: number, d1_
   }
   d3 = save_d3_0;
   a2 = save_a2_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
@@ -15150,6 +16040,15 @@ export function fn_11d96(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a3, 4);
+        push(a2, 4);
+        push(a1, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        push(d1, 4);
         save_d1_0 = d1;
         save_d2_1 = d2;
         save_d3_2 = d3;
@@ -15262,6 +16161,7 @@ export function fn_11d96(a0_: number, a1_: number, a2_: number, a3_: number, d0_
         a1 = save_a1_6;
         a2 = save_a2_7;
         a3 = save_a3_8;
+        drop(36);
         break dispatch;
       }
       default: break dispatch;
@@ -15297,6 +16197,8 @@ export function fn_11e10(a0_: number, d0_: number, d1_: number, d2_: number): vo
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(d2, 4);
+        push(d1, 4);
         save_d1_0 = d1;
         save_d2_1 = d2;
         setReg('d1', d1);
@@ -15336,6 +16238,7 @@ export function fn_11e10(a0_: number, d0_: number, d1_: number, d2_: number): vo
       case 5: {
         d1 = save_d1_0;
         d2 = save_d2_1;
+        drop(8);
         setReg('a0', a0);
         setReg('d0', d0);
         setReg('d1', d1);
@@ -15372,6 +16275,10 @@ export function fn_11ff8(a1_: number, d0_: number, d1_: number, d2_: number, d3_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a1, 4);
+        push(d3, 4);
+        push(d2, 4);
+        push(d1, 4);
         save_d1_0 = d1;
         save_d2_1 = d2;
         save_d3_2 = d3;
@@ -15404,6 +16311,7 @@ export function fn_11ff8(a1_: number, d0_: number, d1_: number, d2_: number, d3_
         d2 = save_d2_1;
         d3 = save_d3_2;
         a1 = save_a1_3;
+        drop(16);
         break dispatch;
       }
       default: break dispatch;
@@ -15432,6 +16340,9 @@ export function fn_12026(a1_: number, d0_: number, d1_: number, d2_: number, arg
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a1, 4);
+        push(d2, 4);
+        push(d1, 4);
         save_d1_0 = d1;
         save_d2_1 = d2;
         save_a1_2 = a1;
@@ -15458,6 +16369,7 @@ export function fn_12026(a1_: number, d0_: number, d1_: number, d2_: number, arg
         d1 = save_d1_0;
         d2 = save_d2_1;
         a1 = save_a1_2;
+        drop(12);
         break dispatch;
       }
       default: break dispatch;
@@ -15517,6 +16429,10 @@ export function fn_1217e(a0_: number, a1_: number, d0_: number, d1_: number, d2_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a1, 4);
+        push(d3, 4);
+        push(d2, 4);
+        push(d1, 4);
         save_d1_0 = d1;
         save_d2_1 = d2;
         save_d3_2 = d3;
@@ -15556,6 +16472,7 @@ export function fn_1217e(a0_: number, a1_: number, d0_: number, d1_: number, d2_
         d2 = save_d2_1;
         d3 = save_d3_2;
         a1 = save_a1_3;
+        drop(16);
         break dispatch;
       }
       default: break dispatch;
@@ -15921,6 +16838,19 @@ export function fn_130f8(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   let d5 = d5_;
   let d6 = d6_;
   let d7 = d7_;
+  push(a6, 4);
+  push(a5, 4);
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(a1, 4);
+  push(a0, 4);
+  push(d7, 4);
+  push(d6, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -16002,6 +16932,7 @@ export function fn_130f8(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   a4 = save_a4_10;
   a5 = save_a5_11;
   a6 = save_a6_12;
+  drop(52);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
@@ -16096,6 +17027,8 @@ export function fn_141d4(d0_: number, d1_: number, d2_: number, d3_: number): vo
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         _at = (((load8(0x3e344a)) & 255) !== ((0) & 255)) ? 2 : 1; continue dispatch;
@@ -16164,6 +17097,7 @@ export function fn_141d4(d0_: number, d1_: number, d2_: number, d3_: number): vo
       case 13: {
         d2 = save_d2_0;
         d3 = save_d3_1;
+        drop(8);
         break dispatch;
       }
       case 14: {
@@ -16267,6 +17201,9 @@ export function fn_144d0(a0_: number, a2_: number, a6_: number, d0_: number, d2_
   push(a6, 4);
   a6 = stackPointer();
   drop(65532);
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_a2_2 = a2;
@@ -16408,6 +17345,12 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -16928,6 +17871,7 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         a2 = save_a2_3;
         a3 = save_a3_4;
         a4 = save_a4_5;
+        drop(24);
         break dispatch;
       }
       default: break dispatch;
@@ -16951,6 +17895,9 @@ export function fn_14e5c(d0_: number, d1_: number, d2_: number, d3_: number, d4_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -17023,6 +17970,7 @@ export function fn_14e5c(d0_: number, d1_: number, d2_: number, d3_: number, d4_
   d2 = save_d2_0;
   d3 = save_d3_1;
   d4 = save_d4_2;
+  drop(12);
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', d2);
@@ -17040,6 +17988,12 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -17162,6 +18116,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
     d5 = save_d5_3;
     a2 = save_a2_4;
     a3 = save_a3_5;
+    drop(24);
   } else {
     setReg('a2', a2);
     setReg('a3', a3);
@@ -72737,6 +73692,8 @@ export function fn_1753c(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   a0 = arg0;
@@ -72758,6 +73715,7 @@ export function fn_1753c(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   }
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('d0', d0);
   setReg('d1', d1);
@@ -72834,6 +73792,11 @@ export function fn_17ef4(d0_: number, d2_: number, d3_: number, d4_: number, d5_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
@@ -72902,6 +73865,7 @@ export function fn_17ef4(d0_: number, d2_: number, d3_: number, d4_: number, d5_
         d4 = save_d4_2;
         d5 = save_d5_3;
         d6 = save_d6_4;
+        drop(20);
         break dispatch;
       }
       default: break dispatch;
@@ -73345,6 +74309,8 @@ export function fn_18d18(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(a3, 4);
+        push(a2, 4);
         save_a2_0 = a2;
         save_a3_1 = a3;
         _at = 1; continue dispatch;
@@ -73411,6 +74377,7 @@ export function fn_18d18(a0_: number, a1_: number, a2_: number, a3_: number, d0_
       case 6: {
         a2 = save_a2_0;
         a3 = save_a3_1;
+        drop(8);
         break dispatch;
       }
       default: break dispatch;
@@ -74350,6 +75317,11 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a3, 4);
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -74447,6 +75419,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
             d4 = save_d4_2;
             a2 = save_a2_3;
             a3 = save_a3_4;
+            drop(20);
           }
           for (;;) {
             if (++_guard > 4000000) throw new Error('loop 6 did not end');
@@ -74488,6 +75461,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
         d4 = save_d4_2;
         a2 = save_a2_3;
         a3 = save_a3_4;
+        drop(20);
       }
     }
     for (;;) {
@@ -74530,6 +75504,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d4 = save_d4_2;
   a2 = save_a2_3;
   a3 = save_a3_4;
+  drop(20);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
@@ -74559,6 +75534,8 @@ export function fn_1b2b2(a0_: number, a1_: number, d0_: number, d1_: number, d2_
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
+        push(d3, 4);
+        push(d2, 4);
         save_d2_0 = d2;
         save_d3_1 = d3;
         t2 = (arg0 & 0xff);
@@ -74596,6 +75573,7 @@ export function fn_1b2b2(a0_: number, a1_: number, d0_: number, d1_: number, d2_
       case 4: {
         d2 = save_d2_0;
         d3 = save_d3_1;
+        drop(8);
         break dispatch;
       }
       default: break dispatch;
@@ -74618,6 +75596,8 @@ export function fn_1b4be(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   let d1 = d1_;
   let d2 = d2_;
   let d3 = d3_;
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   a0 = 0x3e3d8e;
@@ -74707,6 +75687,7 @@ export function fn_1b4be(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   }
   d2 = save_d2_0;
   d3 = save_d3_1;
+  drop(8);
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
@@ -74726,6 +75707,12 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
@@ -74900,6 +75887,7 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
   a2 = save_a2_3;
   a3 = save_a3_4;
   a4 = save_a4_5;
+  drop(24);
   setReg('a2', a2);
   setReg('a3', a3);
   setReg('a4', a4);
@@ -75042,6 +76030,10 @@ export function fn_1e7e4(a1_: number, d0_: number, d1_: number, d2_: number, d3_
         break dispatch;
       }
       case 5: {
+        push(a1, 4);
+        push(d3, 4);
+        push(d2, 4);
+        push(d1, 4);
         save_d1_1 = d1;
         save_d2_2 = d2;
         save_d3_3 = d3;
@@ -75076,6 +76068,7 @@ export function fn_1e7e4(a1_: number, d0_: number, d1_: number, d2_: number, d3_
         d2 = save_d2_2;
         d3 = save_d3_3;
         a1 = save_a1_4;
+        drop(16);
         break dispatch;
       }
       default: break dispatch;
@@ -75489,6 +76482,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x07a12, fn: fn_07a12 as (...a: number[]) => void, params: [] },
 
+  { at: 0x07b14, fn: fn_07b14 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+
   { at: 0x07c72, fn: fn_07c72 as (...a: number[]) => void, params: [] },
 
   { at: 0x07d50, fn: fn_07d50 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
@@ -75500,6 +76495,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x07e7a, fn: fn_07e7a as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
   { at: 0x07ea4, fn: fn_07ea4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
+
+  { at: 0x0848e, fn: fn_0848e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x08536, fn: fn_08536 as (...a: number[]) => void, params: [] },
 
@@ -75524,6 +76521,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x0a80c, fn: fn_0a80c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x0a90e, fn: fn_0a90e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+
+  { at: 0x0aa86, fn: fn_0aa86 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x0ab12, fn: fn_0ab12 as (...a: number[]) => void, params: [] },
 
