@@ -1,75 +1,75 @@
 frame 1: 0 playfield bytes set, 1022 palette entries set
 frame 120: 0 playfield bytes set, 0 palette entries set
 frame 240: 0 playfield bytes set, 0 palette entries set
-frame 360: 0 playfield bytes set, 0 palette entries set
-frame 480: 0 playfield bytes set, 0 palette entries set
-frame 600: 0 playfield bytes set, 173 palette entries set
-frame 720: 0 playfield bytes set, 402 palette entries set
-frame 840: 0 playfield bytes set, 616 palette entries set
-frame 960: 0 playfield bytes set, 675 palette entries set
-frame 1080: 2688 playfield bytes set, 675 palette entries set
-frame 1200: 8064 playfield bytes set, 675 palette entries set
-frame 1320: 16128 playfield bytes set, 675 palette entries set
-frame 1440: 21504 playfield bytes set, 675 palette entries set
-frame 1560: 26880 playfield bytes set, 675 palette entries set
-frame 1680: 32256 playfield bytes set, 675 palette entries set
-frame 1800: 37632 playfield bytes set, 675 palette entries set
-frame 1920: 43008 playfield bytes set, 675 palette entries set
-frame 2040: 48384 playfield bytes set, 675 palette entries set
-frame 2160: 56448 playfield bytes set, 675 palette entries set
-frame 2280: 61824 playfield bytes set, 675 palette entries set
-frame 2400: 67200 playfield bytes set, 675 palette entries set
-frame 2520: 72576 playfield bytes set, 675 palette entries set
-frame 2640: 77952 playfield bytes set, 675 palette entries set
-frame 2760: 80640 playfield bytes set, 675 palette entries set
-frame 2880: 80640 playfield bytes set, 675 palette entries set
+frame 360: 0 playfield bytes set, 675 palette entries set
+frame 480: 37632 playfield bytes set, 675 palette entries set
+frame 600: 77952 playfield bytes set, 675 palette entries set
+frame 720: 80640 playfield bytes set, 753 palette entries set
+frame 840: 80640 playfield bytes set, 753 palette entries set
+frame 960: 80640 playfield bytes set, 753 palette entries set
+frame 1080: 80640 playfield bytes set, 753 palette entries set
+frame 1200: 80640 playfield bytes set, 753 palette entries set
+frame 1320: 80640 playfield bytes set, 753 palette entries set
+frame 1440: 80640 playfield bytes set, 753 palette entries set
+frame 1560: 80640 playfield bytes set, 753 palette entries set
+frame 1680: 80640 playfield bytes set, 753 palette entries set
+frame 1800: 80640 playfield bytes set, 753 palette entries set
+frame 1920: 80640 playfield bytes set, 753 palette entries set
+frame 2040: 80640 playfield bytes set, 753 palette entries set
+frame 2160: 80640 playfield bytes set, 753 palette entries set
+frame 2280: 80640 playfield bytes set, 753 palette entries set
+frame 2400: 80640 playfield bytes set, 753 palette entries set
+frame 2520: 80640 playfield bytes set, 753 palette entries set
+frame 2640: 80640 playfield bytes set, 753 palette entries set
+frame 2760: 12254 playfield bytes set, 753 palette entries set
+frame 2880: 80640 playfield bytes set, 753 palette entries set
 frame 3000: 80640 playfield bytes set, 753 palette entries set
 frame 3120: 80640 playfield bytes set, 753 palette entries set
 frame 3240: 80640 playfield bytes set, 753 palette entries set
 frame 3360: 80640 playfield bytes set, 753 palette entries set
-frame 3480: 80640 playfield bytes set, 753 palette entries set
-frame 3600: 80640 playfield bytes set, 753 palette entries set
-frame 3720: 80640 playfield bytes set, 753 palette entries set
-frame 3840: 80640 playfield bytes set, 753 palette entries set
-frame 3960: 80640 playfield bytes set, 753 palette entries set
-frame 4080: 80640 playfield bytes set, 753 palette entries set
-frame 4200: 80640 playfield bytes set, 753 palette entries set
-frame 4320: 80640 playfield bytes set, 753 palette entries set
-frame 4440: 80640 playfield bytes set, 753 palette entries set
-frame 4560: 80640 playfield bytes set, 753 palette entries set
-frame 4680: 80640 playfield bytes set, 753 palette entries set
-frame 4800: 80640 playfield bytes set, 753 palette entries set
-frame 4920: 80640 playfield bytes set, 753 palette entries set
-frame 5040: 80640 playfield bytes set, 753 palette entries set
-frame 5160: 80640 playfield bytes set, 753 palette entries set
-frame 5280: 80640 playfield bytes set, 753 palette entries set
-frame 5400: 80640 playfield bytes set, 753 palette entries set
-frame 5520: 80640 playfield bytes set, 753 palette entries set
-frame 5640: 80640 playfield bytes set, 753 palette entries set
-frame 5760: 80640 playfield bytes set, 753 palette entries set
-frame 5880: 80640 playfield bytes set, 753 palette entries set
-frame 6000: 80640 playfield bytes set, 753 palette entries set
-frames run: 6000   instructions: 55162071
+frame 3480: 76745 playfield bytes set, 825 palette entries set
+frame 3600: 76745 playfield bytes set, 823 palette entries set
+frame 3720: 76745 playfield bytes set, 819 palette entries set
+frame 3840: 76745 playfield bytes set, 821 palette entries set
+frame 3960: 80285 playfield bytes set, 821 palette entries set
+frame 4080: 80640 playfield bytes set, 821 palette entries set
+frame 4200: 80640 playfield bytes set, 821 palette entries set
+frame 4320: 80640 playfield bytes set, 821 palette entries set
+frame 4440: 80640 playfield bytes set, 821 palette entries set
+frame 4560: 80640 playfield bytes set, 821 palette entries set
+frame 4680: 80640 playfield bytes set, 821 palette entries set
+frame 4800: 80640 playfield bytes set, 821 palette entries set
+frame 4920: 80640 playfield bytes set, 821 palette entries set
+frame 5040: 80640 playfield bytes set, 821 palette entries set
+frame 5160: 80640 playfield bytes set, 821 palette entries set
+frame 5280: 76506 playfield bytes set, 827 palette entries set
+frame 5400: 76506 playfield bytes set, 825 palette entries set
+frame 5520: 76506 playfield bytes set, 822 palette entries set
+frame 5640: 76707 playfield bytes set, 822 palette entries set
+frame 5760: 80046 playfield bytes set, 822 palette entries set
+frame 5880: 80640 playfield bytes set, 822 palette entries set
+frame 6000: 80640 playfield bytes set, 822 palette entries set
+frames run: 6000   instructions: 59096555
 missing routines: 0
 interrupt handler 0x133b2 entered: 5725 times
 rte at handler exit reached: 5725
-interrupt mask the machine runs at: level 3: 43534486, level 0: 5757328, level 7: 4167908, level 4: 1696840, level 5: 5510
-last addresses before it stopped: 0x474 0x476 0x444 0x44a 0x44e 0x452 0x454 0x456 0x45a 0x45c 0x460 0x462 0x466 0x468 0x46c 0x46e 0x470 0x472 0x474 0x476 0x444 0x44a 0x44e 0x452
+interrupt mask the machine runs at: level 3: 48414386, level 7: 5658021, level 4: 4312599, level 0: 693987, level 5: 17563
+last addresses before it stopped: 0x45c 0x460 0x462 0x466 0x468 0x46c 0x46e 0x470 0x472 0x474 0x476 0x444 0x44a 0x44e 0x452 0x454 0x456 0x45a 0x45c 0x460 0x462 0x466 0x468 0x46c
 a2 entering the handler: 0x21fffe   leaving it: 0x21fffe
-a2 changed at: 0x3e3706@1b06a 0x21fffe@1b610 0x3e3706@1b54a 0x0@1b05a 0x3e3706@1b06a 0x21fffe@1b610 0x3e36fa@1b318 0x0@1b05a 0x3e36fa@1b06a 0x21fffe@1b42c 0x3e36fa@1b318 0x0@1b05a 0x3e36fa@1b06a 0x21fffe@1b42c
+a2 changed at: 0x3e1a64@deb4 0x3e1ae2@deb4 0x21fffe@dec6 0x3e1cf6@ee58 0x3e1d02@ee86 0x3e0dfe@3e8c 0x3e1d02@3f0e 0x3e1d0e@ee86 0x3e1d1a@ee86 0x3e1d26@ee86 0x3e1d32@ee86 0x3e1d3e@ee86 0x3e1d4a@ee86 0x21fffe@ee8e
 stack drift across the handler: none
 a7 never rose above the frame inside the handler
-   0x580 reached 1610 times
-   0x596 reached 805 times
-   0x618 reached 808 times
-   0x125da reached 805 times
-   0x1512 reached 805 times
-   0x53f8 reached 805 times
-   0x512 reached 60 times
-   0x51a reached 2119855 times
-   0x522 reached 60 times
+   0x580 reached 11450 times
+   0x596 reached 5725 times
+   0x618 reached 5728 times
+   0x125da reached 5725 times
+   0x1512 reached 5725 times
+   0x53f8 reached 5725 times
+   0x512 reached 120 times
+   0x51a reached 513323 times
+   0x522 reached 120 times
 sound queue: 0x3E3528=0 0x3E352A=0
-routines that write them: 0x1425c 805, 0x143b0 0, 0x144ae 0, 0x144d0 28
+routines that write them: 0x1425c 5725, 0x143b0 0, 0x144ae 0, 0x144d0 28
 sound driver 0x196ac reached 5725; channel work 8(a2) still pending: 0
 the spin at 0x14562 waits on a2=0xffffffff
 channel pointer over time: f1:0x0 f2:0x0 f3:0x0 f4:0x0 f5:0x0 f6:0x0 f7:0x0 f8:0x0 f120:0x0 f240:0x0 f360:0x0 f480:0x0 f600:0x0 f720:0x0 f840:0x0 f960:0x0 f1080:0x0 f1200:0x0 f1320:0x0 f1440:0x0 f1560:0x0 f1680:0x0 f1800:0x0 f1920:0x0 f2040:0x0 f2160:0x0 f2280:0x0 f2400:0x0 f2520:0x0 f2640:0x0 f2760:0x0 f2880:0x0 f3000:0x0 f3120:0x0 f3240:0x0 f3360:0x0 f3480:0x0 f3600:0x0 f3720:0x0 f3840:0x0 f3960:0x0 f4080:0x0 f4200:0x0 f4320:0x0 f4440:0x0 f4560:0x0 f4680:0x0 f4800:0x0 f4920:0x0 f5040:0x0 f5160:0x0 f5280:0x0 f5400:0x0 f5520:0x0 f5640:0x0 f5760:0x0 f5880:0x0 f6000:0x0
@@ -77,22 +77,22 @@ sequence around 0x0: 00 00 00 00 00 3e 32 fe 00 01 35 7c 00 01 85 56
 channel struct at 0x3E3536: 0 4 0 3e32a5 19ffff 0 0 1008713
 writes to 0x3E34EA: f60 0x3e3528=0 by 0x13096 | f60 0x3e3529=0 by 0x13096 | f60 0x3e352a=0 by 0x13096 | f60 0x3e352b=0 by 0x13096
 who writes it: 0x13096x4
-work RAM differs in 391 of 65536 bytes across 22 pages
-   worst pages: 0x3e3200:159 0x3e3100:113 0x3e1b00:21 0x3e1a00:14 0x3e1500:11 0x3e0800:9 0x3e0c00:9 0x3e0b00:8
-   first differing bytes: 0x3e0013: chip 66 port 19 | 0x3e0014: chip 64 port 132 | 0x3e0016: chip 240 port 228 | 0x3e0017: chip 33 port 0 | 0x3e02f9: chip 26 port 4 | 0x3e02ff: chip 28 port 60 | 0x3e0300: chip 0 port 1 | 0x3e0301: chip 140 port 12 | 0x3e0304: chip 250 port 254 | 0x3e0307: chip 33 port 0
-sound area differs in 7 of 1024 bytes
-   0x3e34f4: chip 38 port 118 | 0x3e3501: chip 212 port 222 | 0x3e3503: chip 145 port 155 | 0x3e3534: chip 2 port 3 | 0x3e3535: chip 150 port 37 | 0x3e367b: chip 4 port 3 | 0x3e36d4: chip 44 port 73
+work RAM differs in 2161 of 65536 bytes across 34 pages
+   worst pages: 0x3e0a00:187 0x3e0900:184 0x3e0b00:180 0x3e3200:180 0x3e0c00:176 0x3e3100:145 0x3e0300:129 0x3e0d00:125
+   first differing bytes: 0x3e0009: chip 2 port 1 | 0x3e000a: chip 0 port 3 | 0x3e000b: chip 0 port 133 | 0x3e000c: chip 254 port 52 | 0x3e000e: chip 254 port 176 | 0x3e000f: chip 0 port 17 | 0x3e0012: chip 0 port 3 | 0x3e0013: chip 66 port 133 | 0x3e0014: chip 64 port 140 | 0x3e0016: chip 240 port 192
+sound area differs in 19 of 1024 bytes
+   0x3e344f: chip 135 port 126 | 0x3e3450: chip 80 port 78 | 0x3e3451: chip 67 port 79 | 0x3e3452: chip 82 port 87 | 0x3e34f4: chip 38 port 118 | 0x3e3501: chip 212 port 222 | 0x3e3503: chip 145 port 155 | 0x3e3534: chip 2 port 22 | 0x3e3535: chip 150 port 93 | 0x3e3625: chip 75 port 76 | 0x3e365f: chip 75 port 76 | 0x3e3663: chip 75 port 76 | 0x3e367b: chip 4 port 3 | 0x3e36d4: chip 44 port 0
 first entered the wait at frame -1; first set the channel at frame -1
 port 0x3E0DC8 = 0x4000 (the handler bitmask)
-port 0x3E0804 = 0x2300 (mask 3); 0x3E0802 = 0x0; 0x3E0800 = 0x2cd
+port 0x3E0804 = 0x2300 (mask 3); 0x3E0802 = 0x0; 0x3E0800 = 0x14d5
 busiest addresses:
-   0x444  2304587
-   0x44a  2304402
-   0x452  2304391
-   0x46c  2304066
-   0x45c  2304031
-   0x468  2303796
-   0x46e  2303740
-   0x460  2303676
-   0x466  2303604
-   0x476  2303549
+   0x44a  2029813
+   0x444  2029595
+   0x452  2025073
+   0x46c  2024720
+   0x460  2024394
+   0x45a  2024354
+   0x466  2024348
+   0x468  2024329
+   0x462  2024324
+   0x474  2024314
