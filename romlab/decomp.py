@@ -760,6 +760,10 @@ class Lifter:
                 self.write(ops[1], Expr("0"), bits)
                 self.stmts.append("movep(0);")
             return
+        if b == "reset":
+            # Asserts the RESET line to the peripherals. The CPU carries on and
+            # nothing here models the chips it would reset.
+            return
         if b == "trap":
             self.stmts.append(f"trap({num(ops[0])});")
             self.stmts.append("return;")
@@ -902,6 +906,24 @@ const divu = (n: number, d: number): number => (d === 0 ? n
 const divs = (n: number, d: number): number => (d === 0 ? n
   : (((Math.trunc((n | 0) / d) & 0xffff) | (((n | 0) % d) << 16)) >>> 0));
 const setSr = (v: number): void => { M.setSR(v & 0xffff); };
+// `move sr,dN` reads the real condition codes. Nothing in the lifted source
+// keeps them, but whatever set them last is known at the point of the read, so
+// they are computed there and handed to the machine, which composes the word.
+const widthMask = (bits: number): number => (bits === 32 ? 0xffffffff : (1 << bits) - 1);
+const setFlagsSub = (a: number, b: number, bits: number): void => {
+  const mask = widthMask(bits); const sh = 32 - bits;
+  const ua = (a & mask) >>> 0; const ub = (b & mask) >>> 0;
+  const r = (ua - ub) & mask;
+  const sa = (ua << sh) >> sh; const sb = (ub << sh) >> sh; const sr = (r << sh) >> sh;
+  M.z = r === 0; M.n = sr < 0; M.c = ua < ub; M.x = M.c; M.v = (sa - sb) !== sr;
+};
+const setFlagsAdd = (a: number, b: number, bits: number): void => {
+  const mask = widthMask(bits); const sh = 32 - bits;
+  const ua = (a & mask) >>> 0; const ub = (b & mask) >>> 0;
+  const wide = ua + ub; const r = wide & mask;
+  const sa = (ua << sh) >> sh; const sb = (ub << sh) >> sh; const sr = (r << sh) >> sh;
+  M.z = r === 0; M.n = sr < 0; M.c = wide > mask; M.x = M.c; M.v = (sa + sb) !== sr;
+};
 const movep = (v: number): void => { M.movep(v); };
 const trap = (n: number): void => { M.trap(n); };
 const rot = (v: number, c: number, bits: number, left: boolean): number => {

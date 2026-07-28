@@ -16,6 +16,7 @@ turned into `while`, and come next.
 
 import json
 import re
+from collections import defaultdict
 from pathlib import Path
 
 from cfg import build, decode as cfg_decode, reducible, target_of
@@ -72,6 +73,21 @@ class BlockLifter(Lifter):
         if bits == 32:
             return Expr(r, "reg")
         return Expr(f"({r} & {(1 << bits) - 1})", "expr")
+
+    def read(self, tok, bits):
+        if tok.strip() == "sr":
+            # The condition codes, which the lifted source does not keep - but
+            # whatever set them last is known right here, so compute them and
+            # give them to the machine, which composes the word.
+            if self.flags is None:
+                raise Bail("reads the condition codes with none set")
+            kind, lhs, rhs, fbits = self.flags
+            if kind not in ("cmp", "add"):
+                raise Bail(f"reads the condition codes after {kind}")
+            call = "setFlagsAdd" if kind == "add" else "setFlagsSub"
+            self.stmts.append(f"{call}({lhs}, {rhs}, {fbits});")
+            return Expr("getSr()", "expr")
+        return super().read(tok, bits)
 
     def write(self, tok, value, bits):
         tok = tok.strip()
@@ -698,6 +714,10 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset
             raise Bail("two-way branch with no condition")
         cond_text, taken = conds[node]
         fall = [x for x in outs if x != taken]
+        if not fall:
+            # Both edges land on the same block: the test decides nothing.
+            node = taken
+            continue
         if len(fall) != 1:
             raise Bail("branch whose two edges cannot be told apart")
         fall = fall[0]
@@ -791,8 +811,28 @@ def lift_once(lo, hi, names, seed=()):
     lifter = BlockLifter(lo, hi, names)
     lifter.used_regs.update(seed)
     lifted, conds = {}, {}
+    # Flags reach a block from its predecessors in the graph, not from whatever
+    # happens to sit before it in memory. Address order is right for the common
+    # case and wrong wherever a block is reached by a branch - the flags then
+    # belong to a block that never ran on that path. Only agreeing predecessors
+    # count; disagreement means the branch there cannot be answered, which is
+    # what the "no flag-setter" bail says.
+    preds = defaultdict(set)
+    for a, outs in edges.items():
+        for b_ in outs:
+            preds[b_].add(a)
+    end_flags = {}
     for n, (s, e) in enumerate(zip(starts, ends)):
         lifter.stmts = []
+        if n:
+            known = {end_flags[p] for p in preds.get(n, ()) if p in end_flags}
+            if len(known) == 1:
+                lifter.flags = next(iter(known))
+            # Predecessors that disagree leave whatever the block before this
+            # one in memory left. That is not sound in general, but it is what
+            # the graph cannot answer, and the oracle is the thing deciding
+            # whether it was right - taking None here instead costs five
+            # routines and gains one.
         ins = decode(s, e)
         for i in ins:
             b = i.mnemonic.split(".")[0]
@@ -856,6 +896,7 @@ def lift_once(lo, hi, names, seed=()):
                 continue
             lifter.step(i)
         lifted[n] = list(lifter.stmts)
+        end_flags[n] = lifter.flags
     for copy, orig in clone_of.items():
         lifted[copy] = list(lifted[orig])
         if orig in conds:
