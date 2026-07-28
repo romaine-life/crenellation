@@ -364,6 +364,13 @@ class Lifter:
                 self.stmts.append(
                     f"store{bits}(stackPointer() + {off}, {value.text});")
                 return
+            if r == self.frame and off >= 8:
+                # Writing an argument through the frame pointer. The store is
+                # right either way - the stack is real - but the slot is also
+                # bound to a parameter, and a later read has to see the new
+                # value. The a7 path has always done this; the frame pointer
+                # reaches the same bytes by another name.
+                self.dirty.add((off - 4) & ~3)
             b = self.reg_value(r, 32)
             addr = b.text if off == 0 else f"{b.text} + {hex(off)}"
             self.stmts.append(f"store{bits}({addr}, {value.text});")

@@ -1,2 +1,2 @@
-767 decompiled routines, 2481 comparisons against the machine
+769 decompiled routines, 2489 comparisons against the machine
 all identical
