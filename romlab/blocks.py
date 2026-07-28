@@ -680,7 +680,13 @@ def lift(lo, hi, names):
                 if tgt is not None and tgt in index:
                     continue                     # an edge the graph already has
                 if tgt is None:
-                    raise Bail("computed jump")
+                    # Through a register or a table. The dispatcher takes an
+                    # address either way, and the callee inherits this frame.
+                    lifter.flush()
+                    ops = split_ops(i.op_str or "")
+                    lifter.stmts.append(f"jumpRom({lifter.effective_address(ops[0])});")
+                    lifter.stmts.append("return;")
+                    continue
                 # Outside this routine: a tail jump, which hands the callee the
                 # frame this routine was given. The graph has no edge for it, so
                 # without this the block simply runs off its end and control
@@ -708,6 +714,15 @@ def lift(lo, hi, names):
             f"jumpRom(0x{hi:05x});", "return;"]
 
     if dispatch:
+        return lifter, dispatch_form(starts, edges, lifted, conds)
+    try:
+        backs = frozenset(back_edges(edges, len(starts) + len(clone_of)))
+        return lifter, structure(starts, edges, lifted, conds, 0, None, 0, backs, ())
+    except Bail:
+        # Shapes the structurer cannot nest - a loop with several ways out, a
+        # region it cannot bound - are not failures, they are what the dispatch
+        # form exists for. Falling back keeps the block bodies as recovered
+        # source and only makes the sequencing dynamic.
         return lifter, dispatch_form(starts, edges, lifted, conds)
     backs = frozenset(back_edges(edges, len(starts) + len(clone_of)))
     body = structure(starts, edges, lifted, conds, 0, None, 0, backs, ())

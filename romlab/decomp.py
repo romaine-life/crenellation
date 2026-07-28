@@ -469,7 +469,12 @@ class Lifter:
             tok = ops[0].strip()
             m = re.fullmatch(r"\$([0-9a-fA-F]+)(\.(w|l))?", tok)
             if not m:
-                raise Bail("computed jump")
+                # `jmp (a0)` or through a table - the dispatcher takes an
+                # address either way, exactly as for an indirect call.
+                self.flush()
+                self.stmts.append(f"jumpRom({self.effective_address(tok)});")
+                self.stmts.append("return;")
+                return
             target = int(m.group(1), 16)
             # Arguments still on the stack are not a problem: a jump hands the
             # callee this frame, which is exactly how the ROM passes them on.
