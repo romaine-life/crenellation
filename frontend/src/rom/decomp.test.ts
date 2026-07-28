@@ -80,7 +80,12 @@ describe('decompiled routines against the recompiled oracle', () => {
     const bad: string[] = [];
     let checked = 0;
 
+    // A range filter, so a hunt can ask about the routines it cares about
+    // rather than waiting for all thousand. `DECOMP_ONLY=13000-14000`.
+    const only = (process.env.DECOMP_ONLY ?? '').split('-').map((x) => parseInt(x, 16));
     for (const { at: addr, fn, params } of DECOMPILED) {
+      if (only.length === 2 && !Number.isNaN(only[0])
+          && (addr < only[0] || addr > only[1])) continue;
       for (let trial = 0; trial < 4; trial += 1) {
         const seed = (0x1234567 + trial * 7919 + addr) >>> 0;
         const args = params.map((_, i) => valueFor(i, seed));

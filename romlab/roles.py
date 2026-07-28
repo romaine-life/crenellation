@@ -94,8 +94,12 @@ def apply(text, mapping):
     """Rewrite the lifted names, including the `_` suffixed parameter forms."""
     if not mapping:
         return text
-    pattern = re.compile(r"\b(" + "|".join(
-        re.escape(k) + "_?" for k in sorted(mapping, key=len, reverse=True)) + r")\b")
+    # Never inside quotes. `setReg('a0', a0)` names a machine register in the
+    # string and a local in the argument; rewriting the string writes the
+    # register under a name the machine does not have - silently, because the
+    # parameter is a string either way and the type-checker sees nothing wrong.
+    pattern = re.compile(r"(?<!')\b(" + "|".join(
+        re.escape(k) + "_?" for k in sorted(mapping, key=len, reverse=True)) + r")\b(?!')")
 
     def sub(m):
         tok = m.group(1)
