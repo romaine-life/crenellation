@@ -1,10 +1,11 @@
-// Which write differs, and who made it?
+// Which write differs first, and who made it?
 //
 // Comparing call sequences does not work: the recompiled dispatcher only sees
 // calls that leave a routine's own switch, while the decompiled one routes
 // every call through. Writes are comparable either way - the same behaviour
-// writes the same bytes - and the JavaScript stack at a decompiled write names
-// the function that made it.
+// writes the same bytes in the same order - so this records every write to work
+// RAM from both runs, finds the first that differs, and then re-runs the
+// decompiled side to capture the JavaScript stack at exactly that write.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -17,25 +18,31 @@ const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 const FRAMES = Number(process.env.WRITE_FRAMES ?? 280);
-const LO = 0x3e3240;
-const HI = 0x3e32a0;
+const LO = 0x3e0000;
+const HI = 0x400000;
+const CAP = 4_000_000;
 
-function record(entry: (addr: number, m: System['m']) => void, stacks: boolean): string[] {
+type Run = { addr: Int32Array; val: Int32Array; n: number };
+
+function record(entry: (addr: number, m: System['m']) => void, stopAt = -1): {
+  run: Run; stack: string;
+} {
   const sys = new System(rom, board);
   bind(sys.m);
   const m = sys.m as unknown as {
     setByte(a: number, v: number): void; store(a: number, v: number, b: number): void;
   };
-  const seq: string[] = [];
+  const run: Run = { addr: new Int32Array(CAP), val: new Int32Array(CAP), n: 0 };
+  let stack = '';
   const note = (a: number, v: number, bits: number): void => {
-    if (a < LO || a >= HI) return;
-    let who = '';
-    if (stacks) {
-      const st = (new Error().stack ?? '').split('\n').slice(2, 7)
-        .map((l) => (l.match(/at (\w+)/) ?? [])[1]).filter(Boolean);
-      who = ' <- ' + st.join(' ');
+    if (a < LO || a >= HI || run.n >= CAP) return;
+    if (run.n === stopAt) {
+      stack = (new Error().stack ?? '').split('\n').slice(2, 10)
+        .map((l) => (l.match(/at (\w+)/) ?? [])[1]).filter(Boolean).join(' <- ');
     }
-    seq.push(`${a.toString(16)}=${v.toString(16)}/${bits}${who}`);
+    run.addr[run.n] = a;
+    run.val[run.n] = (v & ((1 << bits) - 1 || -1)) | (bits << 24);
+    run.n += 1;
   };
   const sb = m.setByte.bind(m); const st = m.store.bind(m);
   m.setByte = (a, v) => { note(a, v, 8); sb(a, v); };
@@ -44,22 +51,36 @@ function record(entry: (addr: number, m: System['m']) => void, stacks: boolean):
   let n = 0;
   try {
     sys.run(() => { n += 1; if (n > FRAMES) throw STOP; }, entry);
-  } catch (e) { if (e !== STOP) throw e; }
-  return seq;
+  } catch (e) {
+    // A run that has already diverged can branch somewhere the machine never
+    // goes. That is the thing being measured, not a reason to stop measuring.
+    if (e !== STOP) run.n = run.n;
+  }
+  return { run, stack };
 }
 
-describe('writes to the diverging region', () => {
+describe('writes to work RAM', () => {
   it('are the same', () => {
-    const a = record(viaRecompiled, false);
-    const b = record(viaDecompiled, true);
+    const a = record(viaRecompiled).run;
+    const b = record(viaDecompiled).run;
     let i = 0;
-    const key = (s: string): string => s.split(' <- ')[0];
-    while (i < a.length && i < b.length && key(a[i]) === key(b[i])) i += 1;
-    const note = i === a.length && i === b.length
-      ? `identical: ${a.length} writes`
-      : [`diverge at write ${i} of ${a.length}/${b.length}`,
-        `  recompiled: ${a.slice(i, i + 3).join(' | ') || '(none)'}`,
-        `  decompiled: ${b.slice(i, i + 3).join(' | ') || '(none)'}`].join('\n');
+    while (i < a.n && i < b.n && a.addr[i] === b.addr[i] && a.val[i] === b.val[i]) i += 1;
+    let note = `identical: ${a.n} writes`;
+    if (i < a.n || i < b.n) {
+      const show = (r: Run, k: number): string => (k < r.n
+        ? `0x${r.addr[k].toString(16)}=${(r.val[k] & 0xffffff).toString(16)}/${r.val[k] >>> 24}`
+        : '(end)');
+      // The third run goes further than the other two and can wander into a
+      // branch the machine never takes - which is the divergence, not a
+      // separate fault. The stack is captured before that happens.
+      let who = '';
+      try { who = record(viaDecompiled, i).stack; } catch (e) { who = `(${(e as Error).message})`; }
+      note = [`diverge at write ${i} of ${a.n}/${b.n}`,
+        `  recompiled: ${show(a, i)} ${show(a, i + 1)} ${show(a, i + 2)}`,
+        `  decompiled: ${show(b, i)} ${show(b, i + 1)} ${show(b, i + 2)}`,
+        `  before:     ${show(a, i - 2)} ${show(a, i - 1)}`,
+        `  stack:      ${who}`].join('\n');
+    }
     writeFileSync(join(here, 'writes.txt'), note);
     expect(note.startsWith('identical')).toBe(true);
   }, 900000);

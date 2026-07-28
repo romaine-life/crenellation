@@ -1,3 +1,5 @@
-diverge at write 48 of 1542/1542
-  recompiled: 3e3282=0/16 | 3e3282=0/8 | 3e3283=0/8
-  decompiled: 3e3282=1/16 <- Machine Machine push helperVblankGateTick call | 3e3282=0/8 <- Machine Machine Machine Machine push | 3e3283=1/8 <- Machine Machine Machine Machine push
+diverge at write 3168 of 40446/3168
+  recompiled: 0x3e0000=0/16 0x3e0000=0/8 0x3e0001=0/8
+  decompiled: (end) (end) (end)
+  before:     0x3e0000=0/8 0x3e0001=0/8
+  stack:      
