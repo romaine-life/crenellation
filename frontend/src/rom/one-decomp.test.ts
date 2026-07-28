@@ -91,6 +91,9 @@ describe('probe', () => {
         if (a.byte(addr) !== b.byte(addr)) mem.push(`${addr.toString(16)}:${a.byte(addr)}/${b.byte(addr)}`);
         if (mem.length > 12) break;
       }
+      out.push(`  params ${JSON.stringify(params)}`);
+      out.push(`  args ${args.map((v) => v.toString(16)).join(' ')}`
+        + ` | stack@sp+4 ${a.load(sp + 4, 32).toString(16)} @sp+8 ${a.load(sp + 8, 32).toString(16)}`);
       out.push(`  memory ${mem.join(' ') || 'equal'}`);
       out.push(`trial ${trial}: machine[${oracleFailed || 'ok'}] lifted[${liftedFailed || 'ok'}]`
         + ` a7 ${a.a7.toString(16)}/${b.a7.toString(16)} :: ${diff.join(' ') || 'regs equal'}`);
