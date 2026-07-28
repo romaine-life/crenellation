@@ -54,7 +54,7 @@ const PIPELINE: Stage[] = [
     name: 'Decompile',
     what: 'machine code → source a person can change',
     state: 'part',
-    detail: 'Started. A lifter recovers parameters, results and expressions, and every routine it produces is proved against the recompiled one on random machine states - 419 so far, exactly equal across 1,325 comparisons, and 103 held back because they were not. Control-flow structuring is next; 75% of the corpus needs only ordinary loops and branches.',
+    detail: 'Started. A lifter recovers parameters, results and expressions, and every routine it produces is proved against the recompiled one on random machine states - 429 so far, exactly equal across 1,365 comparisons, and 93 held back because they were not. Control-flow structuring is next; 75% of the corpus needs only ordinary loops and branches.',
   },
 ];
 
@@ -71,16 +71,16 @@ const LAYERS: Layer[] = [
 
 /** What is known about each of the 777 routines. */
 const KNOWLEDGE = [
-  { label: 'Decompiled — readable source, proved equal to the machine', n: 419, colour: C.done },
+  { label: 'Decompiled — readable source, proved equal to the machine', n: 429, colour: C.done },
   { label: 'Named by hand, purpose established', n: 39, colour: C.part },
-  { label: 'Described from evidence — callers, callees, hardware touched', n: 137, colour: '#2d4f6b' },
+  { label: 'Described from evidence — callers, callees, hardware touched', n: 127, colour: '#2d4f6b' },
   { label: 'Nothing known beyond where it starts and ends', n: 182, colour: C.none },
 ];
 
 const TOTAL = 777;
 
 const REMAINING = [
-  ['Decompile the rest', '419 of 777. Branching routines now lift too, with conditions recovered from whatever set the flags and if/else recovered from the graph. Irreducible control flow is handled now: where no arrangement of if and for expresses the graph, the blocks go in a dispatch loop, which is what every decompiler falls back to. What is left is the routines that lift into something plausible the machine disagrees with - 101 of them, listed by address - plus movem forms and a few operand shapes.'],
+  ['Decompile the rest', '429 of 777. Branching routines now lift too, with conditions recovered from whatever set the flags and if/else recovered from the graph. Irreducible control flow is handled now: where no arrangement of if and for expresses the graph, the blocks go in a dispatch loop, which is what every decompiler falls back to. What is left is the routines that lift into something plausible the machine disagrees with - 101 of them, listed by address - plus movem forms and a few operand shapes.'],
   ['Motion objects', 'A video layer the port ignores. The captured display list holds 735,711 non-zero bytes across a run, so the board draws something the port does not — but the playfield already carries terrain, castles, walls and ships, so the first job is establishing what is actually on that list.'],
   ['Audio', 'Both chips are written to correctly and neither is modelled. Needs YM2413 FM and OKI6295 ADPCM synthesised.'],
   ['Routine discovery', 'Has not converged. Every new input pattern finds routines nothing static points at. Needs a systematic sweep until it goes dry.'],
@@ -133,7 +133,7 @@ export function Progress() {
           </div>
           <div style={{ width: 1, alignSelf: 'stretch', background: C.line }} />
           <div>
-            <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1, color: C.part }}>419</div>
+            <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1, color: C.part }}>429</div>
             <div style={{ color: C.dim, fontSize: 13, marginTop: 4 }}>routines decompiled</div>
           </div>
           <div style={{ flex: 1, minWidth: 260, color: C.dim, fontSize: 13.5 }}>

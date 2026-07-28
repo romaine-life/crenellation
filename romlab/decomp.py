@@ -116,6 +116,7 @@ class Lifter:
         self.after_call = False     # registers now hold whatever the callee left
         self.used_regs = set()
         self.saved = {}             # registers a movem is holding
+        self.restored = set()       # registers a movem put back
 
     # ---- reading operands -------------------------------------------------
 
@@ -394,6 +395,12 @@ class Lifter:
                     if not self.saved.get(r):
                         raise Bail("restores a register it never saved")
                     self.reg[r] = self.saved[r].pop()
+                    # Restoring puts the entry value back, so nothing about the
+                    # symbolic value changed and the writeback would be skipped
+                    # as a no-op. The machine's copy is another matter: a call
+                    # in between clobbered it, and the ROM's pop is what puts it
+                    # right. Force the writeback.
+                    self.restored.add(r)
                 self.stmts.append(f"drop({wide * len(regs)});")
                 self.pushed -= wide * len(regs)
                 return
@@ -609,7 +616,7 @@ class Lifter:
         """
         out = []
         for r, e in sorted(self.reg.items()):
-            if e.kind == "reg" and e.text == r:
+            if e.kind == "reg" and e.text == r and r not in self.restored:
                 continue                      # untouched: still the entry value
             out.append((r, e))
         return out
