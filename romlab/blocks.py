@@ -503,6 +503,14 @@ class BlockLifter(Lifter):
             diff = (f"(({uz(lhs, bits)} - {uz(rhs, bits)}) & {mask})" if bits < 32
                     else f"(({lhs} - {rhs}) | 0)")
             return f"{sx(diff, bits)} {op} 0"
+        if mnemonic in ("bvs", "bvc"):
+            # Signed overflow of `lhs - rhs`: the full-precision difference
+            # does not fit the operand width.
+            mask = (1 << bits) - 1
+            res = (f"(({uz(lhs, bits)} - {uz(rhs, bits)}) & {mask})" if bits < 32
+                   else f"(({lhs} - {rhs}) | 0)")
+            over = f"(({sx(lhs, bits)} - {sx(rhs, bits)}) !== {sx(res, bits)})"
+            return over if mnemonic == "bvs" else f"!{over}"
         if mnemonic not in COMPARE:
             raise Bail(f"branch {mnemonic}")
         op = COMPARE[mnemonic]
@@ -914,8 +922,24 @@ def lift_once(lo, hi, names, seed=()):
                 # "two-way branch with no condition" bail was.
                 lifter.step(i)
                 tgt = target_of(i)
-                if tgt is None or tgt not in index:
-                    raise Bail("dbcc out of the routine")
+                if tgt is None:
+                    raise Bail("dbcc through a register")
+                if tgt not in index:
+                    # The loop branch leaves the routine: a tail jump taken
+                    # while the counter has not run out. The graph has no edge
+                    # for it, so it goes in the block itself and the structurer
+                    # carries on with the path that stays.
+                    saved = list(lifter.stmts)
+                    lifter.stmts = []
+                    lifter.flush()
+                    inner = lifter.stmts
+                    lifter.stmts = saved
+                    lifter.stmts.append(f"if ({lifter.db_cond}) {{")
+                    lifter.stmts.extend("  " + s for s in inner)
+                    lifter.stmts.append(f"  jumpRom(0x{tgt:05x});")
+                    lifter.stmts.append("  return;")
+                    lifter.stmts.append("}")
+                    continue
                 conds[n] = (lifter.db_cond, index[tgt])
                 continue
             if b in COND:
