@@ -36,3 +36,5 @@ frontend/public/assets/
 /romlab/nvram_clean/
 /romlab/*.bin
 romlab/__pycache__/
+# scratch output from the one-routine probe
+frontend/src/rom/probe.txt
