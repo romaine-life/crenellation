@@ -103,7 +103,10 @@ export function Progress() {
 
   return (
     <div style={{
-      background: C.bg, color: C.ink, minHeight: '100vh', padding: '48px 24px',
+      background: C.bg, color: C.ink, minHeight: '100vh',
+      // The app shell's title bar overlays the top of every route rather than
+      // sitting above it, so a plain top padding puts the heading underneath it.
+      padding: 'calc(var(--app-header-h, 56px) + 32px) 24px 48px',
       fontFamily: 'ui-sans-serif, system-ui, -apple-system, sans-serif',
       lineHeight: 1.55,
     }}>
