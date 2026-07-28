@@ -1,8 +1,8 @@
-  memory equal
-trial 0: machine[ok] lifted[ok] a7 3e5fc4/3e5fc0 :: a1 2097214!=2245182
-  memory equal
-trial 1: machine[ok] lifted[ok] a7 3e5fc4/3e5fc0 :: a1 2097214!=2372158
-  memory equal
-trial 2: machine[ok] lifted[ok] a7 3e5fc4/3e5fc0 :: a1 2097214!=2235454
-  memory equal
-trial 3: machine[ok] lifted[ok] a7 3e5fc4/3e5fc0 :: a1 2097214!=2260286
+  memory 3e4310:75/66 3e4311:75/66 3e4312:222/66 3e4313:2/66 3e4314:68/66 3e4315:30/66 3e4316:182/66 3e4317:210/66 3e4318:160/65 3e4319:198/65 3e431a:212/65 3e431b:212/65 3e431c:172/65
+trial 0: machine[ok] lifted[ok] a7 3e5fc4/3e5fc0 :: regs equal
+  memory 3e4210:69/68 3e4211:69/58 3e4212:69/22 3e4218:67/248 3e4219:67/234 3e421a:67/10 3e421d:60/67 3e4419:67/54 3e441a:164/67 3e441d:98/67 3e461a:160/67 3e461d:40/67 3e481a:0/67
+trial 1: machine[ok] lifted[ok] a7 3e5fc4/3e5fc0 :: regs equal
+  memory 3e4310:75/16 3e4311:75/50 3e4312:75/2 3e4313:76/190 3e4314:71/44 3e4315:71/136 3e4316:73/220 3e4317:74/162 3e4318:73/194 3e4319:73/220 3e431a:73/166 3e4510:74/150 3e4511:74/52
+trial 2: machine[ok] lifted[ok] a7 3e5fc4/3e5fc0 :: regs equal
+  memory 3e4210:74/65 3e4211:72/65 3e4212:66/65 3e4213:64/65 3e4214:64/65 3e4215:77/65 3e4216:77/65 3e4217:66/65 3e4218:69/66 3e4219:69/66 3e421a:69/66 3e421b:69/66 3e421c:69/66
+trial 3: machine[ok] lifted[ok] a7 3e5fc4/3e5fc0 :: regs equal

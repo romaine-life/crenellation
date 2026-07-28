@@ -332,7 +332,10 @@ class BlockLifter(Lifter):
                 self.flags = ("cmp", self.reg_value(dst, bits).text, "0", bits)
             elif rereadable(dst) and dst not in DATA and dst not in ADDR:
                 # A read-modify-write on memory sets the flags from what it
-                # wrote. `subq.w #1,(a2)` followed by `bgt` is the ROM's
+                # wrote. This re-reads the destination, which
+                # is a second access - restricting it to genuine
+                # read-modify-writes to avoid that costs two routines, so the
+                # oracle says the moves need it too. `subq.w #1,(a2)` followed by `bgt` is the ROM's
                 # countdown, and without this the branch reads whatever set
                 # the flags before it. Only operands that can be read a second
                 # time without moving a pointer qualify.
@@ -745,7 +748,11 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset
     first = True
     while node is not None and node != stop:
         if node in open_loops and not (first and node == entering):
-            out.append("continue;")
+            # Labelled, because `continue` on its own goes to the nearest
+            # enclosing loop and the block being reached may be the header of
+            # an outer one. Unlabelled, an exit from an inner loop back to the
+            # outer one spins the inner loop forever.
+            out.append(f"continue l{node};")
             return out
         first = False
         if any(w == node for _, w in backs):
@@ -756,7 +763,7 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset
             inner = structure(blocks, edges, lifted, conds, header, after, depth + 1,
                               frozenset((v, w) for v, w in backs if w != header),
                               open_loops + (header,), header)
-            out.append("for (;;) {")
+            out.append(f"l{header}: for (;;) {{")
             out.append(f"  if (++_guard > 4000000) throw new Error('loop {header} did not end');")
             out.extend("  " + s for s in inner)
             out.append("  break;")

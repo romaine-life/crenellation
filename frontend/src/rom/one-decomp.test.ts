@@ -43,7 +43,7 @@ function fresh(seed: number): Machine {
 function valueFor(i: number, seed: number): number {
   let s = (seed + i * 2654435761) >>> 0;
   s = (s ^ (s << 13)) >>> 0; s = (s ^ (s >>> 17)) >>> 0; s = (s ^ (s << 5)) >>> 0;
-  return SCRATCH + (s % 0x180) * 2;
+  return SCRATCH + 0x200 + (s % 0x40) * 8;
 }
 
 const REGS = ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7',
