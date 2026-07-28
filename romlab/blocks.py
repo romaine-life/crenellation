@@ -253,6 +253,16 @@ class BlockLifter(Lifter):
             text = {"st": "0xff", "sf": "0"}.get(b, f"(({cond}) ? 0xff : 0)")
             self.write(ops[0], Expr(text, "expr"), 8)
             return
+        # An add whose operands can be read twice without side effects: keep
+        # them, so a later `bcc` can be answered with the real carry rather
+        # than a comparison that never sees it.
+        addends = None
+        if (b in ("add", "addq", "addi", "adda") and len(ops) == 2
+                and ops[-1].strip() in DATA
+                and (ops[0].strip() in DATA or ops[0].strip() in ADDR
+                     or ops[0].strip().startswith("#"))):
+            addends = (self.temp(self.reg_value(ops[-1].strip(), bits)).text,
+                       self.temp(self.read(ops[0], bits)).text)
         before = len(self.stmts)
         super().step(ins)
         # Anything that writes a data register also sets the flags from what it
@@ -261,8 +271,17 @@ class BlockLifter(Lifter):
                  "and", "andi", "or", "ori", "eor", "eori", "clr", "asl", "asr",
                  "lsl", "lsr", "neg", "not", "ext") and ops:
             dst = ops[-1].strip()
-            if dst in DATA:
+            if addends is not None:
+                self.flags = ("add", addends[0], addends[1], bits)
+            elif dst in DATA:
                 self.flags = ("cmp", self.reg_value(dst, bits).text, "0", bits)
+            elif re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d)\)|\$[0-9a-fA-F]+\.(w|l)", dst):
+                # A read-modify-write on memory sets the flags from what it
+                # wrote. `subq.w #1,(a2)` followed by `bgt` is the ROM's
+                # countdown, and without this the branch reads whatever set
+                # the flags before it. Only operands that can be read a second
+                # time without moving a pointer qualify.
+                self.flags = ("cmp", self.temp(self.read(dst, bits)).text, "0", bits)
             elif b == "clr":
                 self.flags = ("cmp", "0", "0", bits)
         del before
@@ -379,6 +398,27 @@ class BlockLifter(Lifter):
             # Loop again only if the condition is still false and the counter
             # has not wrapped past zero.
             return f"!{lhs} && {rhs} !== 0xffff"
+        if kind == "add":
+            # An add sets carry as well as N and Z, and modelling it as
+            # "the result against zero" loses it. `add.w dN,dN` is this ROM's
+            # shift-left, and the `bcc`/`bcs` after it is reading the bit that
+            # fell off the top - answered as a comparison it is always false.
+            mask = (1 << bits) - 1
+            wide = f"((({lhs}) & {mask}) + (({rhs}) & {mask}))"
+            res = f"({wide} & {mask})"
+            if mnemonic in ("bcs", "bcc"):
+                return f"{wide} {'>' if mnemonic == 'bcs' else '<='} {mask}"
+            if mnemonic in ("beq", "bne"):
+                return f"{res} {'===' if mnemonic == 'beq' else '!=='} 0"
+            if mnemonic in ("bmi", "bpl"):
+                return f"{sx(res, bits)} {'<' if mnemonic == 'bmi' else '>='} 0"
+            if mnemonic == "bhi":
+                return f"{wide} <= {mask} && {res} !== 0"
+            if mnemonic == "bls":
+                return f"({wide} > {mask} || {res} === 0)"
+            if mnemonic in SIGNED:
+                return f"{sx(res, bits)} {COMPARE[mnemonic]} 0"
+            raise Bail(f"{mnemonic} after add")
         if mnemonic in ("bmi", "bpl"):
             # The sign of `lhs - rhs`, which after a `tst` is just the sign of
             # the value. Both operands are sign-extended first: comparing the

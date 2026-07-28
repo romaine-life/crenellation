@@ -559,7 +559,12 @@ class Lifter:
             if b == "lea":
                 m2 = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\(a7\)", ops[0].strip())
                 if not m2:
-                    raise Bail(f"no rule for {mn} {ins.op_str}")
+                    # `lea $3e32fe.l,a7` resets the stack outright rather than
+                    # unwinding it, which is what the boot path does.
+                    self.stmts.append(
+                        f"setStackPointer({self.effective_address(ops[0])});")
+                    self.pushed = 0
+                    return
                 n = num(m2.group(1)) if m2.group(1) else 0
             else:
                 n = num(ops[0])
@@ -728,6 +733,31 @@ class Lifter:
             for tok in ops:
                 self.read(tok, 32 if b == "cmpa" else bits)
             return
+        if b in ("rol", "ror"):
+            # The count is modulo 64 when it comes from a register, and the
+            # rotate itself is modulo the operand width.
+            if len(ops) == 1:
+                cnt, dst = "1", ops[0]
+            else:
+                cnt, dst = self.read(ops[0], 32).text, ops[1]
+            v = self.read(dst, bits).text
+            self.write(dst, Expr(f"{b}{bits}({v}, {cnt})"), bits)
+            return
+        if b == "movep":
+            # Alternating bytes to a peripheral. The sound chips are not
+            # modelled, so the machine only records that it happened - and the
+            # decompiled version has to record it too, or the counts diverge.
+            src = ops[0].strip()
+            if src in DATA:
+                self.stmts.append(f"movep({self.read(src, bits).text});")
+            else:
+                self.write(ops[1], Expr("0"), bits)
+                self.stmts.append("movep(0);")
+            return
+        if b == "trap":
+            self.stmts.append(f"trap({num(ops[0])});")
+            self.stmts.append("return;")
+            return
         raise Bail(f"no rule for {mn} {ins.op_str}")
 
     def effective_address(self, tok):
@@ -866,6 +896,22 @@ const divu = (n: number, d: number): number => (d === 0 ? n
 const divs = (n: number, d: number): number => (d === 0 ? n
   : (((Math.trunc((n | 0) / d) & 0xffff) | (((n | 0) % d) << 16)) >>> 0));
 const setSr = (v: number): void => { M.setSR(v & 0xffff); };
+const movep = (v: number): void => { M.movep(v); };
+const trap = (n: number): void => { M.trap(n); };
+const rot = (v: number, c: number, bits: number, left: boolean): number => {
+  const n = (c & 63) % bits;
+  const mask = bits === 32 ? 0xffffffff : (1 << bits) - 1;
+  const x = v & mask;
+  if (n === 0) return x >>> 0;
+  const r = left ? (x << n) | (x >>> (bits - n)) : (x >>> n) | (x << (bits - n));
+  return (r & mask) >>> 0;
+};
+const rol8 = (v: number, c: number): number => rot(v, c, 8, true);
+const rol16 = (v: number, c: number): number => rot(v, c, 16, true);
+const rol32 = (v: number, c: number): number => rot(v, c, 32, true);
+const ror8 = (v: number, c: number): number => rot(v, c, 8, false);
+const ror16 = (v: number, c: number): number => rot(v, c, 16, false);
+const ror32 = (v: number, c: number): number => rot(v, c, 32, false);
 
 const callRom = (addr: number, ret = 0): void => {
   // The real return address, not a placeholder. `jsr` pushes the address of
