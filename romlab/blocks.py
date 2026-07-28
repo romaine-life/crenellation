@@ -627,10 +627,15 @@ def split_nodes(edges, nblocks, limit):
     edges = {k: list(v) for k, v in edges.items()}
     total = nblocks
     clone_of = {}
+    # How each copy's successors were renumbered. A copied block keeps the
+    # original's branch condition, and that condition names the block it jumps
+    # to - by index. Without the remap the index still points into the original
+    # region, which is not among the copy's successors at all.
+    remap = {}
     for _ in range(24):
         ok, _ = reducible(total, edges)
         if ok:
-            return edges, total, clone_of
+            return edges, total, clone_of, remap
         target = None
         for comp in sccs(edges, total):
             if len(comp) < 2:
@@ -644,12 +649,12 @@ def split_nodes(edges, nblocks, limit):
                 target = (inside, entries)
                 break
         if target is None:
-            return None, None, None
+            return None, None, None, None
         inside, entries = target
         keep, extra = entries[0], entries[1:]
         for entry in extra:
             if total + len(inside) > limit:
-                return None, None, None
+                return None, None, None, None
             mapping = {}
             for node in sorted(inside):
                 mapping[node] = total
@@ -657,6 +662,7 @@ def split_nodes(edges, nblocks, limit):
                 total += 1
             for node in sorted(inside):
                 edges[mapping[node]] = [mapping.get(m, m) for m in edges.get(node, [])]
+                remap[mapping[node]] = mapping
             # every edge from outside that went to `entry` now goes to its copy
             for v, outs in list(edges.items()):
                 if v in inside or v in mapping.values():
@@ -871,9 +877,10 @@ def lift_once(lo, hi, names, seed=()):
             edges[k] = []
     ok, back = reducible(len(starts), edges)
     clone_of = {}
+    remapped = {}
     dispatch = False
     if not ok:
-        split, grown, cloned = split_nodes(edges, len(starts), len(starts) * 4 + 8)
+        split, grown, cloned, remapped = split_nodes(edges, len(starts), len(starts) * 4 + 8)
         if split is None:
             # Genuinely irreducible: a loop entered at two places, which no
             # arrangement of `if` and `for` expresses without duplicating the
@@ -1000,7 +1007,25 @@ def lift_once(lo, hi, names, seed=()):
     for copy, orig in clone_of.items():
         lifted[copy] = list(lifted[orig])
         if orig in conds:
-            conds[copy] = conds[orig]
+            cond_text, taken = conds[orig]
+            conds[copy] = (cond_text, remapped.get(copy, {}).get(taken, taken))
+    # Node splitting also redirects edges that come *into* the region from
+    # outside, so a block that never moved can still have its branch target
+    # renumbered under it. Reconcile every condition against the graph as it
+    # now stands: the taken block is whichever successor is the same block,
+    # original or copy.
+    def root(x):
+        while x in clone_of:
+            x = clone_of[x]
+        return x
+
+    for n, (cond_text, taken) in list(conds.items()):
+        outs = edges.get(n, [])
+        if taken in outs:
+            continue
+        same = [m for m in outs if root(m) == root(taken)]
+        if len(same) == 1:
+            conds[n] = (cond_text, same[0])
     # A routine whose last block runs off its end does not stop there - the
     # machine carries straight on into whatever follows. The single-block pass
     # has rejected that shape for a long time; this one did not, and produced
