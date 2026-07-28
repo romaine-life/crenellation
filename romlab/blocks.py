@@ -588,6 +588,17 @@ def lift(lo, hi, names):
         ins = decode(s, e)
         for i in ins:
             b = i.mnemonic.split(".")[0]
+            if b.startswith("db") and b != "divs":
+                # Both a decrement and a branch. The decrement is emitted by
+                # the lifter; the branch has to be recorded here or the block
+                # ends with two successors and no test, which is what every
+                # "two-way branch with no condition" bail was.
+                lifter.step(i)
+                tgt = target_of(i)
+                if tgt is None or tgt not in index:
+                    raise Bail("dbcc out of the routine")
+                conds[n] = (lifter.condition(b), index[tgt])
+                continue
             if b in COND:
                 # Which successor is the taken one has to come from the branch
                 # itself. The graph stores successors sorted by block index, so
