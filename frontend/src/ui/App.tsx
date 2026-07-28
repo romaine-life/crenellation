@@ -33,6 +33,7 @@ const importLevelEditor = () => import('./LevelEditor');
 const importPortraitEditor = () => import('./PortraitEditor');
 const importDoodadEditor = () => import('./DoodadEditor');
 const importRampart = () => import('../rom/RomScreen');
+const Progress = lazy(() => import('./Progress').then((m) => ({ default: m.Progress })));
 
 const Skirmish = lazy(() => importSkirmish().then((m) => ({ default: m.Skirmish })));
 const CampaignEditor = lazy(() => importCampaignEditor().then((m) => ({ default: m.CampaignEditor })));
@@ -267,6 +268,7 @@ export function App(): ReactElement {
 }
 
 function renderRoute(path: string): ReactElement {
+  if (path === '/progress') return <Progress />;
   if (path === '/play') return <Rampart />;
   if (path === '/skirmish') return <Skirmish />;
   if (path === '/tileset-studio') return <TilesetStudio />;
