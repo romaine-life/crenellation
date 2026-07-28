@@ -7533,6 +7533,17 @@ export function fn_06420(a0_: number, a2_: number, a3_: number, a6_: number, d0_
   setReg('d2', d2);
   setReg('d4', d4);
   setReg('d5', d5);
+  jumpRom(0x06460);
+  return;
+  setReg('a0', a0);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d4', d4);
+  setReg('d5', d5);
 }
 
 export function fn_0663c(): void {
@@ -73440,6 +73451,22 @@ export function fn_18df6(d0_: number): void {
   setReg('d0', d0);
 }
 
+export function fn_18dfc(d0_: number, d1_: number, arg2: number): void {
+  let _guard = 0;
+  void _guard;
+  let d0 = d0_;
+  let d1 = d1_;
+  d0 = 1;
+  const t0 = (arg2 & 0xffff);
+  d1 = ((d1 & 0xffff0000) | (t0 & 65535));
+  setReg('d0', d0);
+  setReg('d1', d1);
+  jumpRom(0x18e06);
+  return;
+  setReg('d0', d0);
+  setReg('d1', d1);
+}
+
 export function fn_19366(a0_: number, a1_: number, d0_: number, d1_: number): void {
   let _guard = 0;
   void _guard;
@@ -75765,6 +75792,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x18dc4, fn: fn_18dc4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
   { at: 0x18df6, fn: fn_18df6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
+
+  { at: 0x18dfc, fn: fn_18dfc as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
 
   { at: 0x19366, fn: fn_19366 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 

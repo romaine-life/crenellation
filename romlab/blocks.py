@@ -671,6 +671,18 @@ def lift(lo, hi, names):
         lifted[copy] = list(lifted[orig])
         if orig in conds:
             conds[copy] = conds[orig]
+    # A routine whose last block runs off its end does not stop there - the
+    # machine carries straight on into whatever follows. The single-block pass
+    # has rejected that shape for a long time; this one did not, and produced
+    # functions that returned where the machine kept executing.
+    tail = decode(starts[-1], hi)
+    last = tail[-1].mnemonic.split(".")[0] if tail else ""
+    if last not in ("rts", "rte", "rtr", "jmp", "bra", "bral") and last not in COND             and not last.startswith("db"):
+        lifter.stmts = []
+        lifter.flush()
+        lifted[len(starts) - 1] = lifted.get(len(starts) - 1, []) + list(lifter.stmts) + [
+            f"jumpRom(0x{hi:05x});", "return;"]
+
     if dispatch:
         return lifter, dispatch_form(starts, edges, lifted, conds)
     backs = frozenset(back_edges(edges, len(starts) + len(clone_of)))
