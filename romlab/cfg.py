@@ -175,7 +175,14 @@ def reducible(nblocks, edges):
                 for t in edges.get(n, []):
                     if t in alive and t != n:
                         preds[t].discard(n)
-                        preds[t].add(only)
+                        # Not if that makes it its own predecessor. Collapsing
+                        # a loop's body into its header turns the back edge
+                        # into a self-edge, and a self-edge is removed by T1,
+                        # not counted as a second way in. Without this, every
+                        # ordinary loop reads as irreducible - which is what
+                        # the 194 "irreducible" routines mostly were.
+                        if only != t:
+                            preds[t].add(only)
                 alive.discard(n)
                 changed = True
                 break

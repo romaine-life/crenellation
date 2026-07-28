@@ -288,6 +288,104 @@ def loop_exit(edges, body):
     return next(iter(outs)) if outs else None
 
 
+
+def sccs(edges, n):
+    """Strongly connected components, by Tarjan's algorithm, iteratively."""
+    index = {}
+    low = {}
+    on = set()
+    stack = []
+    out = []
+    counter = [0]
+    for root in range(n):
+        if root in index:
+            continue
+        work = [(root, iter(edges.get(root, [])))]
+        index[root] = low[root] = counter[0]
+        counter[0] += 1
+        stack.append(root)
+        on.add(root)
+        while work:
+            v, it = work[-1]
+            pushed = False
+            for w in it:
+                if w not in index:
+                    index[w] = low[w] = counter[0]
+                    counter[0] += 1
+                    stack.append(w)
+                    on.add(w)
+                    work.append((w, iter(edges.get(w, []))))
+                    pushed = True
+                    break
+                if w in on:
+                    low[v] = min(low[v], index[w])
+            if pushed:
+                continue
+            work.pop()
+            if work:
+                low[work[-1][0]] = min(low[work[-1][0]], low[v])
+            if low[v] == index[v]:
+                comp = []
+                while True:
+                    w = stack.pop()
+                    on.discard(w)
+                    comp.append(w)
+                    if w == v:
+                        break
+                out.append(comp)
+    return out
+
+
+def split_nodes(edges, nblocks, limit):
+    """Duplicate blocks until every loop has one way in.
+
+    Assembly written by hand jumps into the middle of loops, which no
+    combination of `while` and `if` can express - the block genuinely has two
+    entries. Giving each entry its own copy of the region is the standard
+    remedy: the copies are identical code, and the graph that results nests.
+    """
+    edges = {k: list(v) for k, v in edges.items()}
+    total = nblocks
+    clone_of = {}
+    for _ in range(24):
+        ok, _ = reducible(total, edges)
+        if ok:
+            return edges, total, clone_of
+        target = None
+        for comp in sccs(edges, total):
+            if len(comp) < 2:
+                continue
+            inside = set(comp)
+            entries = sorted({w for v, outs in edges.items() for w in outs
+                              if w in inside and v not in inside})
+            if 0 in inside:
+                entries = sorted(set(entries) | {0})
+            if len(entries) > 1:
+                target = (inside, entries)
+                break
+        if target is None:
+            return None, None, None
+        inside, entries = target
+        keep, extra = entries[0], entries[1:]
+        for entry in extra:
+            if total + len(inside) > limit:
+                return None, None, None
+            mapping = {}
+            for node in sorted(inside):
+                mapping[node] = total
+                clone_of[total] = node
+                total += 1
+            for node in sorted(inside):
+                edges[mapping[node]] = [mapping.get(m, m) for m in edges.get(node, [])]
+            # every edge from outside that went to `entry` now goes to its copy
+            for v, outs in list(edges.items()):
+                if v in inside or v in mapping.values():
+                    continue
+                edges[v] = [mapping[entry] if m == entry else m for m in outs]
+            del keep
+    return None, None, None
+
+
 def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset(),
               open_loops=()):
     """Emit one region as nested if/else and for(;;)."""
@@ -381,8 +479,11 @@ def lift(lo, hi, names):
         raise Bail("nothing to decode")
     starts, edges = g["blocks"], {int(k): v for k, v in g["edges"].items()}
     ok, back = reducible(len(starts), edges)
+    clone_of = {}
     if not ok:
-        raise Bail("irreducible")
+        edges, grown, clone_of = split_nodes(edges, len(starts), len(starts) * 4 + 8)
+        if edges is None:
+            raise Bail("irreducible even after splitting")
     ends = starts[1:] + [hi]
 
     index = {a: k for k, a in enumerate(starts)}
@@ -407,14 +508,20 @@ def lift(lo, hi, names):
                 continue
             lifter.step(i)
         lifted[n] = list(lifter.stmts)
-    backs = frozenset(back_edges(edges, len(starts)))
+    for copy, orig in clone_of.items():
+        lifted[copy] = list(lifted[orig])
+        if orig in conds:
+            conds[copy] = conds[orig]
+    backs = frozenset(back_edges(edges, len(starts) + len(clone_of)))
     body = structure(starts, edges, lifted, conds, 0, None, 0, backs, ())
     return lifter, body
 
 
 def main():
     rows = json.loads((HERE / "out" / "cfg.json").read_text())
-    targets = [r for r in rows if r["blocks"] > 1 and r["reducible"]]
+    # Irreducible graphs are included now: split_nodes duplicates the
+    # multi-entry regions until they nest.
+    targets = [r for r in rows if r["blocks"] > 1]
     ok, failed = [], {}
     for r in targets:
         try:
