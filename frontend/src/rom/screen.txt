@@ -1,16 +1,16 @@
 frame 1: 0 playfield bytes set, 1022 palette entries set
 frame 120: 0 playfield bytes set, 0 palette entries set
 frame 240: 0 playfield bytes set, 0 palette entries set
-frame 360: 0 playfield bytes set, 0 palette entries set
-frame 480: 37632 playfield bytes set, 0 palette entries set
-frame 600: 77952 playfield bytes set, 0 palette entries set
-frame 720: 80640 playfield bytes set, 0 palette entries set
-frame 840: 80640 playfield bytes set, 0 palette entries set
-frame 960: 80640 playfield bytes set, 0 palette entries set
-frame 1080: 80640 playfield bytes set, 0 palette entries set
-frame 1200: 80640 playfield bytes set, 0 palette entries set
-frame 1320: 80640 playfield bytes set, 0 palette entries set
-frame 1440: 80640 playfield bytes set, 0 palette entries set
+frame 360: 0 playfield bytes set, 675 palette entries set
+frame 480: 37632 playfield bytes set, 675 palette entries set
+frame 600: 77952 playfield bytes set, 675 palette entries set
+frame 720: 80640 playfield bytes set, 753 palette entries set
+frame 840: 80640 playfield bytes set, 753 palette entries set
+frame 960: 80640 playfield bytes set, 753 palette entries set
+frame 1080: 80640 playfield bytes set, 753 palette entries set
+frame 1200: 80640 playfield bytes set, 753 palette entries set
+frame 1320: 80640 playfield bytes set, 753 palette entries set
+frame 1440: 80640 playfield bytes set, 753 palette entries set
 stopped early: no decompiled routine at 0x3c44
 frames run: 1536   instructions: 0
 missing routines: 0

@@ -808,15 +808,29 @@ class Lifter:
             self.write(dst, Expr(f"{b}{bits}({v}, {cnt})"), bits)
             return
         if b == "movep":
-            # Alternating bytes to a peripheral. The sound chips are not
-            # modelled, so the machine only records that it happened - and the
-            # decompiled version has to record it too, or the counts diverge.
-            src = ops[0].strip()
+            # A register through every other byte of memory, for a device wired
+            # to one half of the data bus. It is the only instruction whose
+            # bytes are not contiguous, so nothing else here produces the right
+            # addresses. Treating it as a no-op - on the assumption only the
+            # unmodelled sound chips used it - left the palette, which is wired
+            # exactly this way, never written at all: the game drew every frame
+            # correctly in black.
+            n = bits // 8
+            src, dst = ops[0].strip(), ops[1].strip()
             if src in DATA:
-                self.stmts.append(f"movep({self.read(src, bits).text});")
-            else:
-                self.write(ops[1], Expr("0"), bits)
-                self.stmts.append("movep(0);")
+                ea = self.temp(Expr(self.effective_address(dst), "expr")).text
+                v = self.temp(self.read(src, 32)).text
+                for i in range(n):
+                    self.stmts.append(
+                        f"store8({ea} + {i * 2}, {v} >>> {(n - 1 - i) * 8});")
+                return
+            if dst not in DATA:
+                raise Bail(f"movep {ins.op_str!r}")
+            ea = self.temp(Expr(self.effective_address(src), "expr")).text
+            parts = " | ".join(f"(load8({ea} + {i * 2}) << {(n - 1 - i) * 8})"
+                               for i in range(n))
+            keep = "" if n == 4 else f"({self.read(dst, 32).text} & 0xffff0000) | "
+            self.write(dst, Expr(f"(({keep}({parts})) >>> 0)"), 32)
             return
         if b == "rte":
             # Return from exception: the status register and then the program
