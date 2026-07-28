@@ -56,8 +56,7 @@ class BlockLifter(Lifter):
 
     def reg_value(self, r, bits):
         if r == "a7":
-            raise Bail("bare a7")
-        assert r != "a7"
+            return Expr("stackPointer()", "expr")
         if r not in self.used_regs and self.after_call:
             # First touched after a call, so it holds what the callee left -
             # a return value, most often. Introducing it as a parameter gives
@@ -662,8 +661,6 @@ def lift(lo, hi, names):
                     # test. The graph has only the fall-through edge, so this
                     # is emitted in the block itself and the structurer carries
                     # on with the path that stays.
-                    if lifter.pushed:
-                        raise Bail("conditional tail jump with a loaded stack")
                     cond = lifter.condition(b)
                     lifter.stmts.append(f"if ({cond}) {{")
                     saved = list(lifter.stmts)
@@ -688,8 +685,6 @@ def lift(lo, hi, names):
                 # frame this routine was given. The graph has no edge for it, so
                 # without this the block simply runs off its end and control
                 # never goes anywhere.
-                if lifter.pushed:
-                    raise Bail("tail jump with arguments still on the stack")
                 lifter.flush()
                 lifter.stmts.append(f"jumpRom(0x{tgt:05x});")
                 lifter.stmts.append("return;")

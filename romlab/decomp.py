@@ -151,7 +151,10 @@ class Lifter:
 
     def reg_value(self, r, bits):
         if r == "a7":
-            raise Bail("bare a7")
+            # Reading the stack pointer as a value - `lea 4(a7),a0` and friends.
+            # It is the machine's, so it is read from the machine; only writes
+            # to it have to go through push and drop.
+            return Expr("stackPointer()", "expr")
         if r not in self.reg:
             if self.after_call:
                 # Whatever the callee left there. Not a parameter of this
@@ -475,8 +478,8 @@ class Lifter:
             if not m:
                 raise Bail("computed jump")
             target = int(m.group(1), 16)
-            if self.pushed:
-                raise Bail("tail jump with arguments still on the stack")
+            # Arguments still on the stack are not a problem: a jump hands the
+            # callee this frame, which is exactly how the ROM passes them on.
             self.flush()
             # A jump is not a call: it pushes no return address and hands the
             # callee the frame this routine was given, so the arguments the
