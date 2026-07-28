@@ -75,6 +75,22 @@ def num(tok):
     return -v if neg else v
 
 
+def expand_regs(tok):
+    """`d2-d4/a2` -> the register names it names."""
+    out = []
+    for part in tok.split("/"):
+        part = part.strip()
+        m = re.fullmatch(r"([ad])(\d)-([ad])(\d)", part)
+        if m and m.group(1) == m.group(3):
+            out.extend(f"{m.group(1)}{n}" for n in range(int(m.group(2)), int(m.group(4)) + 1))
+            continue
+        if re.fullmatch(r"[ad]\d", part):
+            out.append(part)
+            continue
+        raise Bail(f"movem list {tok!r}")
+    return out
+
+
 class Expr:
     """A value, as source text plus how it was built."""
 
@@ -99,6 +115,7 @@ class Lifter:
         self.temps = []             # named intermediates, in evaluation order
         self.after_call = False     # registers now hold whatever the callee left
         self.used_regs = set()
+        self.saved = {}             # registers a movem is holding
 
     # ---- reading operands -------------------------------------------------
 
@@ -324,6 +341,45 @@ class Lifter:
         if b == "rts":
             return
         if b == "nop":
+            return
+        if b == "movem":
+            # Saving is the routine's promise to its caller, not part of what
+            # it computes: hold each register's current value and put it back
+            # on restore. The stack really moves, so a callee in between sees
+            # the same stack the ROM gives it.
+            wide = bits // 8
+            if ops[1].strip() == "-(a7)":
+                regs = expand_regs(ops[0])
+                for r in reversed(regs):
+                    self.stmts.append(f"push({self.reg_value(r, 32).text}, {wide});")
+                for r in regs:
+                    self.saved.setdefault(r, []).append(self.reg_value(r, 32))
+                self.pushed += wide * len(regs)
+                return
+            if ops[0].strip() == "(a7)+":
+                regs = expand_regs(ops[1])
+                for r in regs:
+                    if not self.saved.get(r):
+                        raise Bail("restores a register it never saved")
+                    self.reg[r] = self.saved[r].pop()
+                self.stmts.append(f"drop({wide * len(regs)});")
+                self.pushed -= wide * len(regs)
+                return
+            raise Bail(f"movem {ins.op_str!r}")
+        if b == "link":
+            self.stmts.append(f"push({self.reg_value(ops[0].strip(), 32).text}, 4);")
+            self.stmts.append("__sp = stackPointer();")
+            self.reg[ops[0].strip()] = Expr("__sp", "expr")
+            n = -num(ops[1])
+            self.stmts.append(f"drop({-n});")
+            self.pushed += 4 + n
+            return
+        if b == "unlk":
+            r = ops[0].strip()
+            self.stmts.append(f"setStackPointer({self.reg_value(r, 32).text});")
+            self.stmts.append("__sp = popLong();")
+            self.reg[r] = Expr("__sp", "expr")
+            self.pushed = 0
             return
         if b == "pea":
             tok = ops[0].strip()
@@ -614,7 +670,8 @@ const stackPointer = (): number => M.a7 >>> 0;
 const setStackPointer = (v: number): void => { M.a7 = v >>> 0; };
 const popLong = (): number => { const v = M.load(M.a7 >>> 0, 32); M.a7 = (M.a7 + 4) >>> 0; return v; };
 void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
-void stackPointer; void setStackPointer; void popLong;
+let __sp = 0;
+void stackPointer; void setStackPointer; void popLong; void __sp;
 """
 
 

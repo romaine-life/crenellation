@@ -66,7 +66,8 @@ const stackPointer = (): number => M.a7 >>> 0;
 const setStackPointer = (v: number): void => { M.a7 = v >>> 0; };
 const popLong = (): number => { const v = M.load(M.a7 >>> 0, 32); M.a7 = (M.a7 + 4) >>> 0; return v; };
 void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
-void stackPointer; void setStackPointer; void popLong;
+let __sp = 0;
+void stackPointer; void setStackPointer; void popLong; void __sp;
 
 
 export function fn_00118(): void {
@@ -412,6 +413,16 @@ export function fn_003ea(): void {
 
 export function fn_0042a(): void {
   jumpRom(0x09188);
+  return;
+}
+
+export function fn_00430(a0: number, a1: number, d2: number, d3: number): void {
+  push(a1, 4);
+  push(a0, 4);
+  push(d3, 4);
+  push(d2, 4);
+  setReg('d0', 0xaaaaaaaa);
+  jumpRom(0x00438);
   return;
 }
 
@@ -3869,6 +3880,84 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   setReg('d4', d4);
 }
 
+export function fn_035ee(d1: number, d2: number, d3: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number): void {
+  push(d3, 4);
+  push(d2, 4);
+  const t0 = (arg2 & 0xffff);
+  const t1 = ((d1 & 0xffff0000) | (t0 & 0xffff));
+  const t2 = (arg4 & 0xffff);
+  const t3 = ((0 & 0xffff0000) | (t2 & 0xffff));
+  push(t3, 4);
+  const t4 = (arg3 & 0xffff);
+  const t5 = ((t3 & 0xffff0000) | (t4 & 0xffff));
+  const t6 = ((((t5 & 0xffff)) << 16) >> 16);
+  push(t6, 4);
+  const t7 = ((((t1 & 0xffff)) << 16) >> 16);
+  push(t7, 4);
+  push(arg1, 4);
+  push(arg0, 4);
+  push(0x11eda, 4);
+  setReg('d0', t6);
+  setReg('d1', t7);
+  setReg('d2', arg1);
+  setReg('d3', arg0);
+  callRom(0x0357a, 0x03620);
+  drop(24);
+  drop(8);
+}
+
+export function fn_0362a(d1: number, d2: number, d3: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number): void {
+  push(d3, 4);
+  push(d2, 4);
+  const t0 = (arg2 & 0xffff);
+  const t1 = ((d1 & 0xffff0000) | (t0 & 0xffff));
+  const t2 = (arg4 & 0xffff);
+  const t3 = ((0 & 0xffff0000) | (t2 & 0xffff));
+  push(t3, 4);
+  const t4 = (arg3 & 0xffff);
+  const t5 = ((t3 & 0xffff0000) | (t4 & 0xffff));
+  const t6 = ((((t5 & 0xffff)) << 16) >> 16);
+  push(t6, 4);
+  const t7 = ((((t1 & 0xffff)) << 16) >> 16);
+  push(t7, 4);
+  push(arg1, 4);
+  push(arg0, 4);
+  push(0x11efe, 4);
+  setReg('d0', t6);
+  setReg('d1', t7);
+  setReg('d2', arg1);
+  setReg('d3', arg0);
+  callRom(0x0357a, 0x0365c);
+  drop(24);
+  drop(8);
+}
+
+export function fn_03666(d1: number, d2: number, d3: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number): void {
+  push(d3, 4);
+  push(d2, 4);
+  const t0 = (arg2 & 0xffff);
+  const t1 = ((d1 & 0xffff0000) | (t0 & 0xffff));
+  const t2 = (arg4 & 0xffff);
+  const t3 = ((0 & 0xffff0000) | (t2 & 0xffff));
+  push(t3, 4);
+  const t4 = (arg3 & 0xffff);
+  const t5 = ((t3 & 0xffff0000) | (t4 & 0xffff));
+  const t6 = ((((t5 & 0xffff)) << 16) >> 16);
+  push(t6, 4);
+  const t7 = ((((t1 & 0xffff)) << 16) >> 16);
+  push(t7, 4);
+  push(arg1, 4);
+  push(arg0, 4);
+  push(0x11ee6, 4);
+  setReg('d0', t6);
+  setReg('d1', t7);
+  setReg('d2', arg1);
+  setReg('d3', arg0);
+  callRom(0x0357a, 0x03698);
+  drop(24);
+  drop(8);
+}
+
 export function fn_03726(): void {
   // nothing observable
 }
@@ -4768,6 +4857,39 @@ export function fn_046c2(): void {
   push(0, 4);
   callRom(0x0c832, 0x046da);
   drop(20);
+}
+
+export function fn_0472a(a2: number, d2: number): void {
+  push(a2, 4);
+  push(d2, 4);
+  push(0, 4);
+  push(0x1f420, 4);
+  setReg('a2', 0x450c);
+  setReg('d2', 0x1f420);
+  callRom(0x450c, 0x0473e);
+  push(0x1, 4);
+  const t0 = getReg('d2');
+  push(t0, 4);
+  const t1 = getReg('a2');
+  setReg('a2', t1);
+  setReg('d2', t0);
+  callRom(t1, 0x04746);
+  push(0x4, 4);
+  const t2 = getReg('d2');
+  push(t2, 4);
+  const t3 = getReg('a2');
+  setReg('a2', t3);
+  setReg('d2', t2);
+  callRom(t3, 0x0474e);
+  push(0x7, 4);
+  const t4 = getReg('d2');
+  push(t4, 4);
+  const t5 = getReg('a2');
+  setReg('a2', t5);
+  setReg('d2', t4);
+  callRom(t5, 0x04756);
+  drop(32);
+  drop(8);
 }
 
 export function fn_0482e(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, d0_: number, d1_: number, d2_: number): void {
@@ -7800,6 +7922,19 @@ export function fn_06420(a0_: number, a2_: number, a3_: number, a6_: number, d0_
   setReg('d2', d2);
   setReg('d4', d4);
   setReg('d5', d5);
+}
+
+export function fn_0661a(a2: number, a3: number): void {
+  push(a3, 4);
+  push(a2, 4);
+  const t0 = load32(0x3e209c);
+  store32(0x3e209c, (load32(0x3e209c) - 0x2));
+  store8(0x3e1f1a, load8(t0));
+  store8((0x3e1f1a + 1), load8((t0 + 1)));
+  drop(8);
+  setReg('a0', ((0x3e1f1a + 1) + 1));
+  setReg('a1', ((t0 + 1) + 1));
+  setReg('d0', 0x3e1f1a);
 }
 
 export function fn_0663c(): void {
@@ -15562,6 +15697,15 @@ export function fn_0ef58(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   setReg('d2', d2);
 }
 
+export function fn_0effa(a1: number, d1: number, d2: number): void {
+  push(a1, 4);
+  push(d2, 4);
+  push(d1, 4);
+  setReg('d0', 0);
+  jumpRom(0x0f000);
+  return;
+}
+
 export function fn_0f1fa(a1_: number, a2_: number, a3_: number, d0_: number, d1_: number): void {
   let _guard = 0;
   void _guard;
@@ -15672,6 +15816,18 @@ export function fn_0f26a(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   setReg('a3', a3);
   setReg('d0', d0);
   setReg('d1', d1);
+}
+
+export function fn_0f2cc(a3: number, d2: number, arg0: number): void {
+  push(a3, 4);
+  push(d2, 4);
+  const t0 = (0x1f7f0 + load16(arg0));
+  const t1 = ((0x1f7f0 & 0xffff0000) | (t0 & 0xffff));
+  const t2 = load16(t1);
+  const t3 = ((0 & 0xffff0000) | (t2 & 0xffff));
+  const t4 = (t3 + 0x1f7f0);
+  drop(8);
+  setReg('d0', t4);
 }
 
 export function fn_0f2ee(arg0: number): void {
@@ -16246,6 +16402,14 @@ export function fn_11bec(arg0: number): void {
   const t10 = (t9 >= 32 ? 0 : ((t8) << t9));
   const t11 = (t10 + 0x200004);
   setReg('d0', t11);
+}
+
+export function fn_11ce2(a0: number, arg0: number, arg1: number): void {
+  push(a0, 4);
+  store16(arg1, (arg0 & 0xffff));
+  store8((arg1 + 2), (arg0 & 0xff));
+  drop(4);
+  setReg('d0', arg0);
 }
 
 export function fn_11cf8(d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, arg0: number, arg1: number): void {
@@ -16951,6 +17115,34 @@ export function fn_12066(a1_: number, d0_: number, d1_: number, d2_: number): vo
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', d2);
+}
+
+export function fn_12078(a1: number, d1: number, d2: number, d3: number, d4: number, d5: number, arg0: number, arg1: number): void {
+  push(a1, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  push(d1, 4);
+  const t0 = load8(arg0);
+  const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
+  const t2 = ((0x8) & 63);
+  const t3 = (t2 >= 16 ? 0 : (((t1 & 0xffff)) << t2));
+  const t4 = ((t1 & 0xffff0000) | (t3 & 0xffff));
+  const t5 = ((t4 & 0xff) + load8((arg0 + 1)));
+  const t6 = ((t4 & 0xffffff00) | (t5 & 0xff));
+  const t7 = (0x200 - t6);
+  const t8 = (t6 - 0x1);
+  setReg('a0', ((arg0 + 1) + 1));
+  setReg('a1', arg1);
+  setReg('d2', 0);
+  setReg('d4', t8);
+  setReg('d5', t7);
+  callRom(0x120a2, 0x1209a);
+  const t9 = getReg('a0');
+  drop(24);
+  setReg('a0', t9);
+  setReg('d0', t9);
 }
 
 export function fn_120a2(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number): void {
@@ -17821,6 +18013,28 @@ export function fn_1238c(a0_: number, a1_: number, a2_: number, d0_: number, d1_
   setReg('d3', d3);
   setReg('d4', d4);
   setReg('d5', d5);
+}
+
+export function fn_124be(a1: number, a2: number, d1: number, d2: number, d3: number, d4: number, d5: number, arg0: number, arg1: number): void {
+  push(a2, 4);
+  push(a1, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  push(d1, 4);
+  const t0 = (0x200 - 8);
+  const t1 = (8 - 0x1);
+  setReg('a0', arg0);
+  setReg('a1', arg1);
+  setReg('d2', 0);
+  setReg('d4', t1);
+  setReg('d5', t0);
+  callRom(0x124e2, 0x124da);
+  const t2 = getReg('a0');
+  drop(28);
+  setReg('a0', t2);
+  setReg('d0', t2);
 }
 
 export function fn_124e2(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number): void {
@@ -78133,6 +78347,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0042a, fn: fn_0042a as (...a: number[]) => void, params: [] },
 
+  { at: 0x00430, fn: fn_00430 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+
   { at: 0x00512, fn: fn_00512 as (...a: number[]) => void, params: [] },
 
   { at: 0x0052a, fn: fn_0052a as (...a: number[]) => void, params: [] },
@@ -78227,6 +78443,12 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x033f4, fn: fn_033f4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
 
+  { at: 0x035ee, fn: fn_035ee as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
+
+  { at: 0x0362a, fn: fn_0362a as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
+
+  { at: 0x03666, fn: fn_03666 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
+
   { at: 0x03726, fn: fn_03726 as (...a: number[]) => void, params: [] },
 
   { at: 0x03728, fn: fn_03728 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }] },
@@ -78266,6 +78488,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x046b0, fn: fn_046b0 as (...a: number[]) => void, params: [] },
 
   { at: 0x046c2, fn: fn_046c2 as (...a: number[]) => void, params: [] },
+
+  { at: 0x0472a, fn: fn_0472a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x0482e, fn: fn_0482e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
@@ -78350,6 +78574,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x063ca, fn: fn_063ca as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
   { at: 0x06420, fn: fn_06420 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+
+  { at: 0x0661a, fn: fn_0661a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
 
   { at: 0x0663c, fn: fn_0663c as (...a: number[]) => void, params: [] },
 
@@ -78545,9 +78771,13 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0ef58, fn: fn_0ef58 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
 
+  { at: 0x0effa, fn: fn_0effa as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+
   { at: 0x0f1fa, fn: fn_0f1fa as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x0f26a, fn: fn_0f26a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+
+  { at: 0x0f2cc, fn: fn_0f2cc as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
 
   { at: 0x0f2ee, fn: fn_0f2ee as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
@@ -78573,6 +78803,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x11bec, fn: fn_11bec as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
+  { at: 0x11ce2, fn: fn_11ce2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+
   { at: 0x11cf8, fn: fn_11cf8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
   { at: 0x11d96, fn: fn_11d96 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
@@ -78587,6 +78819,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x12066, fn: fn_12066 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
+  { at: 0x12078, fn: fn_12078 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+
   { at: 0x120a2, fn: fn_120a2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x1217e, fn: fn_1217e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
@@ -78598,6 +78832,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x12354, fn: fn_12354 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd7' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
   { at: 0x1238c, fn: fn_1238c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+
+  { at: 0x124be, fn: fn_124be as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
   { at: 0x124e2, fn: fn_124e2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
