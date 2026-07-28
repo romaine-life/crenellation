@@ -974,6 +974,21 @@ const widthMask = (bits: number): number => (bits === 32 ? 0xffffffff : (1 << bi
 // A compare leaves X alone; a subtract sets it from the borrow. One helper
 // each, because the difference is visible the moment a routine saves sr.
 // `btst` touches Z and nothing else.
+// A branch whose flags nothing here set - at a routine's entry, or straight
+// after a call - is asking about the machine's real flags, which at that point
+// are current precisely because the lifted code has not touched them.
+const cc = (name: string): boolean => {
+  switch (name) {
+    case 'eq': return M.z; case 'ne': return !M.z;
+    case 'mi': return M.n; case 'pl': return !M.n;
+    case 'cs': return M.c; case 'cc': return !M.c;
+    case 'vs': return M.v; case 'vc': return !M.v;
+    case 'hi': return !M.c && !M.z; case 'ls': return M.c || M.z;
+    case 'ge': return M.n === M.v; case 'lt': return M.n !== M.v;
+    case 'gt': return !M.z && M.n === M.v; case 'le': return M.z || M.n !== M.v;
+    default: throw new Error(`condition ${name}`);
+  }
+};
 const setFlagsBit = (v: number, n: number, mask: number): void => {
   M.z = ((v >>> (n & mask)) & 1) === 0;
 };

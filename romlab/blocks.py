@@ -515,7 +515,14 @@ class BlockLifter(Lifter):
     def condition(self, mnemonic):
         """The branch's test, as an expression."""
         if self.flags is None:
-            raise Bail(f"{mnemonic} with no flag-setter before it")
+            if not self.flags_certain:
+                raise Bail(f"{mnemonic} with no flag-setter before it")
+            # Nothing since entry - or since the last call, which really ran on
+            # the machine - has set flags here, so the machine's are the ones
+            # this branch is asking about. Rampart has entry points into the
+            # middle of a routine whose first instruction is a conditional
+            # branch on the caller's flags.
+            return f"cc('{mnemonic[1:]}')"
         return self.condition_of(*self.flags, mnemonic=mnemonic)
 
     def condition_of(self, kind, lhs, rhs, bits, mnemonic="b"):
@@ -1088,6 +1095,15 @@ def lift_once(lo, hi, names, seed=()):
                 lifter.stmts.append(f"jumpRom(0x{tgt:05x});")
                 lifter.stmts.append("return;")
                 continue
+            if "([" in (i.op_str or ""):
+                # The 68000 has no memory-indirect addressing, so this is
+                # capstone decoding data. Rampart's exception stubs are a `jsr`
+                # to a printer followed by the message inline - "1111 EXCEPT"
+                # and friends - which the callee reads off the return address
+                # and steps past. Code ends here.
+                lifter.flush()
+                lifter.stmts.append("return;")
+                break
             before_f = lifter.flags
             lifter.step(i)
             if lifter.flags is not before_f:
