@@ -768,7 +768,7 @@ export function fn_00dda(a2_: number, d0_: number, d2_: number, arg0: number): v
   }
   if (((load8(a2)) & 255) !== ((0x1e) & 255)) {
   } else {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
     push(d0, 4);
     push(0x11b30, 4);
@@ -811,10 +811,10 @@ export function fn_014dc(a0_: number, a2_: number, d0_: number, d2_: number, d3_
         save_d3_1 = d3;
         save_d4_2 = d4;
         save_a2_3 = a2;
-        d2 = 0xf;
+        d2 = 15;
         d4 = ((d4 & 0xffff0000) | (load16(0x3e0dc6) & 65535));
         store16(0x3e0dc6, 0);
-        d3 = 0x0;
+        d3 = 0;
         a2 = 0xfcf6;
         _at = 1; continue dispatch;
       }
@@ -888,9 +888,9 @@ export function fn_01512(a0_: number, a2_: number, d0_: number, d2_: number, d3_
         save_d3_1 = d3;
         save_d4_2 = d4;
         save_a2_3 = a2;
-        d2 = 0xf;
+        d2 = 15;
         d4 = ((d4 & 0xffff0000) | (load16(0x3e0dc8) & 65535));
-        d3 = 0x0;
+        d3 = 0;
         a2 = 0xfcf2;
         _at = 1; continue dispatch;
       }
@@ -1031,7 +1031,7 @@ export function fn_015d6(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   let d3 = d3_;
   const save_d2_0 = d2;
   const save_d3_1 = d3;
-  d1 = 0x3;
+  d1 = 3;
   d2 = ((d2 & 0xffff0000) | (0x6bff & 65535));
   a0 = 0x3e1968;
   d3 = ((d3 & 0xffff0000) | (0 & 65535));
@@ -1040,7 +1040,7 @@ export function fn_015d6(a0_: number, d0_: number, d1_: number, d2_: number, d3_
     store16(a0, (load16(a0) & (d2 & 65535)));
     a0 = (a0 + 0x7e);
     d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + 0x1) & 65535));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
     if (d0 < d1) {
       continue;
@@ -1084,7 +1084,7 @@ export function fn_01836(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         save_a2_3 = a2;
         save_a3_4 = a3;
         save_a4_5 = a4;
-        d2 = 0xff;
+        d2 = -1;
         setReg('a2', a2);
         setReg('a3', a3);
         setReg('a4', a4);
@@ -1151,7 +1151,7 @@ export function fn_01836(a0_: number, a2_: number, a3_: number, a4_: number, d0_
       }
       case 6: {
         d3 = (d3 + 0x30c);
-        d0 = 0x7e;
+        d0 = 126;
         a4 = (a4 + d0);
         d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
         _at = ((((d4 & 65535)) & 65535) < ((0x3) & 65535)) ? 1 : 7; continue dispatch;
@@ -1203,13 +1203,13 @@ export function fn_018a6(a0_: number, a1_: number, d0_: number, d1_: number): vo
       }
       case 2: {
         a0 = load32(0x3e0dca);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a1 + 0x3) & 255));
         t0 = ((0x2) & 63);
         d0 = ((d0 & 0xffff0000) | ((t0 >= 16 ? 0 : (((d0 & 65535)) << t0)) & 65535));
         a0 = (a0 + 0x16);
         a0 = load32((a0 + ((d0 << 16) >> 16)));
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a1 + 0x1d) & 255));
         _at = 5; continue dispatch;
       }
@@ -1230,7 +1230,7 @@ export function fn_018a6(a0_: number, a1_: number, d0_: number, d1_: number): vo
         _at = 7; continue dispatch;
       }
       case 7: {
-        d0 = 0x7e;
+        d0 = 126;
         a1 = (a1 + d0);
         d1 = ((d1 & 0xffff0000) | (((d1 & 65535) + 0x1) & 65535));
         _at = (((((d1 & 65535)) << 16) >> 16) < (((0x3) << 16) >> 16)) ? 1 : 8; continue dispatch;
@@ -1345,7 +1345,7 @@ export function fn_019ee(a2_: number, a3_: number, d0_: number, d1_: number, d2_
         _at = (((((d3 & 65535)) << 16) >> 16) < (((0x3) << 16) >> 16)) ? 1 : 6; continue dispatch;
       }
       case 6: {
-        d1 = 0x3;
+        d1 = 3;
         d2 = ((d2 & 0xffff0000) | (0xb7ff & 65535));
         a3 = 0x3e1968;
         d3 = ((d3 & 0xffff0000) | (0 & 65535));
@@ -1398,7 +1398,7 @@ export function fn_01a70(a0_: number, d0_: number, d2_: number, d3_: number, d4_
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_d4_2 = d4;
-        d2 = 0x3;
+        d2 = 3;
         a0 = 0x3e1968;
         d3 = ((d3 & 0xffff0000) | (0 & 65535));
         d4 = ((d4 & 0xffff0000) | (0 & 65535));
@@ -1413,7 +1413,7 @@ export function fn_01a70(a0_: number, d0_: number, d2_: number, d3_: number, d4_
         _at = (((load8(a0 + 0x1f)) & 255) <= ((0) & 255)) ? 4 : 3; continue dispatch;
       }
       case 3: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a0 + 0x16) & 255));
         d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + (d0 & 65535)) & 65535));
         _at = 4; continue dispatch;
@@ -1442,21 +1442,21 @@ export function fn_01a70(a0_: number, d0_: number, d2_: number, d3_: number, d4_
         _at = (((load8(a0 + 0x1e)) & 255) < ((0x1) & 255)) ? 8 : 7; continue dispatch;
       }
       case 7: {
-        d3 = 0x2;
+        d3 = 2;
         _at = 12; continue dispatch;
       }
       case 8: {
         _at = (((((d3 & 65535)) << 16) >> 16) <= (((0x4) << 16) >> 16)) ? 10 : 9; continue dispatch;
       }
       case 9: {
-        d3 = 0x4;
+        d3 = 4;
         _at = 12; continue dispatch;
       }
       case 10: {
         _at = (((((d3 & 65535)) << 16) >> 16) >= (((0x1) << 16) >> 16)) ? 12 : 11; continue dispatch;
       }
       case 11: {
-        d3 = 0x1;
+        d3 = 1;
         _at = 12; continue dispatch;
       }
       case 12: {
@@ -1504,7 +1504,7 @@ export function fn_01aea(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         save_d5_3 = d5;
         save_d6_4 = d6;
         save_a2_5 = a2;
-        d2 = 0x8;
+        d2 = 8;
         d3 = 0x30c;
         a2 = 0x3e1968;
         d5 = 0x3e0f48;
@@ -1545,7 +1545,7 @@ export function fn_01aea(a2_: number, d0_: number, d2_: number, d3_: number, d4_
       }
       case 3: {
         d5 = (d5 + d3);
-        d0 = 0x7e;
+        d0 = 126;
         a2 = (a2 + d0);
         d6 = ((d6 & 0xffff0000) | (((d6 & 65535) + 0x1) & 65535));
         _at = (((((d6 & 65535)) << 16) >> 16) < (((0x3) << 16) >> 16)) ? 1 : 4; continue dispatch;
@@ -1660,7 +1660,7 @@ export function fn_01b96(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         _at = (((load8(a0)) & 255) <= ((0x1) & 255)) ? 7 : 6; continue dispatch;
       }
       case 6: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a3) & 255));
         push(d0, 4);
         setReg('a0', a0);
@@ -1719,7 +1719,7 @@ export function fn_01b96(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         _at = 8; continue dispatch;
       }
       case 8: {
-        d0 = 0x7e;
+        d0 = 126;
         d3 = (d3 + d0);
         d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
         a3 = (a3 + 0x1);
@@ -1769,7 +1769,7 @@ export function fn_01c34(a2_: number, d0_: number, d2_: number, d3_: number): vo
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_a2_2 = a2;
-        d2 = 0x3;
+        d2 = 3;
         a2 = 0x3e1968;
         d3 = ((d3 & 0xffff0000) | (0 & 65535));
         _at = 1; continue dispatch;
@@ -1822,7 +1822,7 @@ export function fn_01f3a(a0_: number, d0_: number, d1_: number, arg0: number): v
   let d0 = d0_;
   let d1 = d1_;
   d1 = ((d1 & 0xffff0000) | ((arg0 & 0xffff) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   d0 = (d0 + d0);
   d1 = d0;
@@ -1879,9 +1879,9 @@ export function fn_01fd6(d0_: number, d2_: number, d3_: number, d4_: number, d5_
   d4 = ((d4 & 0xffff0000) | (0 & 65535));
   if ((((d4 & 65535)) & 65535) === ((0x2) & 65535)) {
   } else {
-    d2 = 0x1;
-    d3 = 0x2;
-    d4 = 0x2;
+    d2 = 1;
+    d3 = 2;
+    d4 = 2;
     d5 = ((d5 & 0xffff0000) | (0 & 65535));
     for (;;) {
       if (++_guard > 4000000) throw new Error('loop 2 did not end');
@@ -1944,7 +1944,7 @@ export function fn_0219a(a0_: number, a2_: number, a7_: number, d0_: number, d1_
   if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
   } else {
     store16(a2, load16(0x284));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | (load16(0x284) & 65535));
     push(d0, 4);
     push(0x15, 4);
@@ -1958,17 +1958,17 @@ export function fn_0219a(a0_: number, a2_: number, a7_: number, d0_: number, d1_
   d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
   d0 = ((d0 & 0xffffff00) | (((d0 & 255) & 0x3) & 255));
   store8(0x3e0dda, (d0 & 255));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
-  d1 = 0xc;
+  d1 = 12;
   d0 = (d0 & d1);
   const t0 = ((0x2) & 63);
   d0 = (t0 >= 32 ? (((d0) < 0) ? -1 : 0) : ((d0) >> t0));
   a0 = 0xfd0e;
   store8(0x3e0ddc, load8((a0 + ((d0 << 16) >> 16))));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
-  d1 = 0x30;
+  d1 = 48;
   d0 = (d0 & d1);
   const t1 = ((0x4) & 63);
   d0 = (t1 >= 32 ? (((d0) < 0) ? -1 : 0) : ((d0) >> t1));
@@ -2028,7 +2028,7 @@ export function fn_02248(a2_: number, a3_: number, d0_: number, d2_: number, d3_
     d4 = getReg('d4');
     d5 = getReg('d5');
     push(0x3, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
     push(d0, 4);
     setReg('a2', a2);
@@ -2051,9 +2051,9 @@ export function fn_02248(a2_: number, a3_: number, d0_: number, d2_: number, d3_
     a3 = (a3 + 0x7e);
     drop(12);
     d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + 0x1) & 65535));
-    d0 = 0x28;
+    d0 = 40;
     d4 = (d4 + d0);
-    d0 = 0x10;
+    d0 = 16;
     d3 = (d3 + d0);
     d2 = (d2 + d0);
     if ((((d5 & 65535)) & 65535) < ((0x3) & 65535)) {
@@ -2091,10 +2091,10 @@ export function fn_022ba(a0_: number, a2_: number, a3_: number, d0_: number, d2_
   const save_d4_2 = d4;
   const save_a2_3 = a2;
   const save_a3_4 = a3;
-  d3 = 0x3;
+  d3 = 3;
   a3 = 0x3e1968;
   d4 = ((d4 & 0xffff0000) | (0 & 65535));
-  d2 = 0x1;
+  d2 = 1;
   a2 = 0x3e02d8;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
@@ -2123,7 +2123,7 @@ export function fn_022ba(a0_: number, a2_: number, a3_: number, d0_: number, d2_
     drop(16);
     d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
     d2 = (d2 + 0x1);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
     if (d0 < d3) {
       continue;
@@ -2206,28 +2206,28 @@ export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d2 = arg2;
   d4 = ((d4 & 0xffffff00) | (load8(a0) & 255));
   d4 = ((d4 & 0xffffff00) | (((d4 & 255) & 0xc0) & 255));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | ((d4 & 255) & 255));
   a1 = (a0 + 0x20);
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | (load8(a1) & 255));
   d1 = (d1 & 0xc0);
   if (d0 !== d1) {
   } else {
     a1 = (a0 + -0x20);
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8(a1) & 255));
     d1 = (d1 & 0xc0);
     if (d0 !== d1) {
     } else {
       a1 = a0;
       a1 = (a1 + 0x1);
-      d1 = 0x0;
+      d1 = 0;
       d1 = ((d1 & 0xffffff00) | (load8(a1) & 255));
       d1 = (d1 & 0xc0);
       if (d0 !== d1) {
       } else {
-        d1 = 0x0;
+        d1 = 0;
         a0 = (a0 - 1);
         d1 = ((d1 & 0xffffff00) | (load8(a0) & 255));
         d1 = (d1 & 0xc0);
@@ -2236,17 +2236,17 @@ export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
         } else {
           const t3 = ((0x6) & 63);
           d4 = ((d4 & 0xffffff00) | ((t3 >= 8 ? 0 : (((d4 & 255)) >>> t3)) & 255));
-          d0 = 0x0;
+          d0 = 0;
           d0 = ((d0 & 0xffffff00) | ((d4 & 255) & 255));
           a0 = 0xfe02;
-          d1 = 0x0;
+          d1 = 0;
           d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
         }
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
         push(d0, 4);
         push(d2, 4);
-        d1 = 0x0;
+        d1 = 0;
         d1 = ((d1 & 0xffff0000) | ((d3 & 65535) & 65535));
         push(d1, 4);
         setReg('a0', a0);
@@ -2272,11 +2272,11 @@ export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
     }
   }
   d1 = ((d1 & 0xffff0000) | (0xb0 & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d1, 4);
   setReg('a0', a0);
@@ -2349,19 +2349,19 @@ export function fn_0255c(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   } else {
     d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + 0x8) & 65535));
   }
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   d0 = (d0 + d0);
   a0 = d0;
   const t2 = ((0x6) & 63);
   d2 = ((d2 & 0xffffff00) | ((t2 >= 8 ? 0 : (((d2 & 255)) >>> t2)) & 255));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | ((d2 & 255) & 255));
   const t3 = ((0x2) & 63);
   d0 = (t3 >= 32 ? 0 : ((d0) << t3));
   a1 = 0x2063a;
   a0 = (a0 + load32((a1 + (d0 | 0))));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | (load16(a0) & 65535));
   d2 = save_d2_0;
   d3 = save_d3_1;
@@ -2414,30 +2414,30 @@ export function fn_025f4(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   d2 = getReg('d2');
   d3 = getReg('d3');
   a0 = d0;
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | (load8(a0) & 255));
   const t4 = ((0x6) & 63);
   d1 = ((d1 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d1 & 65535)) >>> t4)) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
   d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
   drop(4);
   if ((((d1 & 65535)) & 65535) !== ((0) & 65535)) {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
     a0 = 0xfe02;
-    d3 = 0x0;
+    d3 = 0;
     d3 = ((d3 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
   } else {
     d3 = ((d3 & 0xffff0000) | (0xe0 & 65535));
     a2 = (a2 + 0x4);
   }
   a2 = load32(a2);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   a2 = (a2 + 2);
   d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
   push(d0, 4);
@@ -2457,11 +2457,11 @@ export function fn_025f4(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = d0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   a2 = (a2 + 2);
   d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
   push(d0, 4);
@@ -2481,11 +2481,11 @@ export function fn_025f4(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = (d2 + 0xff8);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   a2 = (a2 + 2);
   d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
   push(d0, 4);
@@ -2505,11 +2505,11 @@ export function fn_025f4(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = d0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
   push(d0, 4);
   setReg('a0', a0);
@@ -2573,22 +2573,22 @@ export function fn_02698(a0_: number, a1_: number, a2_: number, d0_: number, d1_
   d5 = getReg('d5');
   d0 = getReg('d0');
   a1 = d0;
-  d2 = 0x0;
+  d2 = 0;
   d2 = ((d2 & 0xffffff00) | (load8(a1) & 255));
   d4 = ((d4 & 0xffff0000) | ((d2 & 65535) & 65535));
   const t5 = ((0x6) & 63);
   d4 = ((d4 & 0xffff0000) | ((t5 >= 16 ? 0 : (((d4 & 65535)) >>> t5)) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
   a0 = 0xfe02;
-  d5 = 0x0;
+  d5 = 0;
   d5 = ((d5 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
   drop(2);
   if ((((d3 & 65535)) & 65535) === ((0x8) & 65535)) {
     d1 = load32(0x20652);
   } else {
     d0 = a1;
-    d1 = 0x20;
+    d1 = 32;
     d0 = (d0 + d1);
     d0 = (d0 + 0x1);
     d2 = ((d2 & 0xffffff00) | (((d2 & 255) & 0xc0) & 255));
@@ -2596,15 +2596,15 @@ export function fn_02698(a0_: number, a1_: number, a2_: number, d0_: number, d1_
     d2 = ((d2 & 0xffffff00) | (((d2 & 255) + (d3 & 255)) & 255));
     a2 = d0;
     store8(a2, (d2 & 255));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffff0000) | ((d4 & 65535) & 65535));
     a0 = 0x3e186c;
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8((a0 + (d1 | 0))) & 255));
     const t6 = ((0x3) & 63);
     d0 = ((d0 & 0xffff0000) | ((t6 >= 16 ? 0 : (((d0 & 65535)) << t6)) & 65535));
     d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + (d0 & 65535)) & 65535));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
     const t7 = ((0x2) & 63);
     d0 = (t7 >= 32 ? 0 : ((d0) << t7));
@@ -2615,7 +2615,7 @@ export function fn_02698(a0_: number, a1_: number, a2_: number, d0_: number, d1_
     a2 = d0;
     d1 = load32(a2);
   }
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
   push(d0, 4);
   push(((arg0 >>> 16) & 0xffff), 2);
@@ -2686,10 +2686,10 @@ export function fn_02a5c(a0_: number, d0_: number, d1_: number, d2_: number, d3_
     d1 = ((d1 & 0xffffff00) | (load8(a0) & 255));
     d1 = ((d1 & 0xffffff00) | (((d1 & 255) + 0xf8) & 255));
   }
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
   a0 = 0x3e186c;
-  d3 = 0x0;
+  d3 = 0;
   d3 = ((d3 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
   const t3 = ((0x1) & 63);
   d3 = (t3 >= 32 ? 0 : ((d3) << t3));
@@ -2755,13 +2755,13 @@ export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d5 = getReg('d5');
   d0 = getReg('d0');
   a2 = d0;
-  d4 = 0x0;
+  d4 = 0;
   d4 = ((d4 & 0xffffff00) | (load8(a2) & 255));
   d3 = ((d3 & 0xffff0000) | ((d4 & 65535) & 65535));
   const t6 = ((0x6) & 63);
   d3 = ((d3 & 0xffff0000) | ((t6 >= 16 ? 0 : (((d3 & 65535)) >>> t6)) & 65535));
   d0 = a2;
-  d1 = 0x20;
+  d1 = 32;
   d0 = (d0 + d1);
   d0 = (d0 + 0x1);
   d1 = ((d1 & 0xffffff00) | ((d4 & 255) & 255));
@@ -2769,20 +2769,20 @@ export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d1 = ((d1 & 0xffffff00) | (((d1 & 255) + 0xb) & 255));
   a3 = d0;
   store8(a3, (d1 & 255));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   a0 = 0xfe02;
-  d5 = 0x0;
+  d5 = 0;
   d5 = ((d5 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
-  d2 = 0x0;
+  d2 = 0;
   d2 = ((d2 & 0xffff0000) | ((d4 & 65535) & 65535));
-  d1 = 0x3f;
+  d1 = 63;
   d2 = (d2 & d1);
-  d0 = 0x4;
+  d0 = 4;
   drop(2);
   if (d0 !== d2) {
     if ((((d3 & 65535)) & 65535) !== ((0) & 65535)) {
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
       const t7 = ((0x2) & 63);
       d0 = (t7 >= 32 ? 0 : ((d0) << t7));
@@ -2797,15 +2797,15 @@ export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_
       d5 = ((d5 & 0xffff0000) | (0xe0 & 65535));
       d0 = a2;
       d0 = (d0 + 0x1);
-      d3 = 0x0;
+      d3 = 0;
       a0 = d0;
       d3 = ((d3 & 0xffffff00) | (load8(a0) & 255));
       d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + 0xfff8) & 65535));
     }
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffff0000) | ((d3 & 65535) & 65535));
     a0 = 0x3e186c;
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8((a0 + (d1 | 0))) & 255));
     const t8 = ((0x3) & 63);
     d0 = (t8 >= 32 ? 0 : ((d0) << t8));
@@ -2820,7 +2820,7 @@ export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_
       d5 = ((d5 & 0xffff0000) | (0xe0 & 65535));
     }
   }
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
   push(d0, 4);
   push(((arg0 >>> 16) & 0xffff), 2);
@@ -2901,25 +2901,25 @@ export function fn_02b88(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d3 = getReg('d3');
   d0 = getReg('d0');
   a1 = d0;
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | (load8(a1) & 255));
   const t4 = ((0x6) & 63);
   d1 = ((d1 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d1 & 65535)) >>> t4)) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
   d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
   drop(2);
   if ((((d1 & 65535)) & 65535) !== ((0) & 65535)) {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
     a0 = 0xfe02;
-    d3 = 0x0;
+    d3 = 0;
     d3 = ((d3 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a1) & 255));
-    d1 = 0x3f;
+    d1 = 63;
     d0 = (d0 & d1);
-    d1 = 0x1a;
+    d1 = 26;
     if (d1 !== d0) {
       a3 = load32(0x211c2);
     } else {
@@ -2927,11 +2927,11 @@ export function fn_02b88(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     }
   } else {
     d3 = ((d3 & 0xffff0000) | (0xe0 & 65535));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a1) & 255));
-    d1 = 0x3f;
+    d1 = 63;
     d0 = (d0 & d1);
-    d1 = 0x1a;
+    d1 = 26;
     if (d1 !== d0) {
       a3 = load32(0x211be);
     } else {
@@ -2957,11 +2957,11 @@ export function fn_02b88(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = d0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   a3 = (a3 + 2);
   d0 = ((d0 & 0xffff0000) | (load16(a3) & 65535));
   push(d0, 4);
@@ -2983,11 +2983,11 @@ export function fn_02b88(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = d0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   a3 = (a3 + 2);
   d0 = ((d0 & 0xffff0000) | (load16(a3) & 65535));
   push(d0, 4);
@@ -3009,11 +3009,11 @@ export function fn_02b88(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = (d2 + 0xff8);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   a3 = (a3 + 2);
   d0 = ((d0 & 0xffff0000) | (load16(a3) & 65535));
   push(d0, 4);
@@ -3035,11 +3035,11 @@ export function fn_02b88(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = d0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | (load16(a3) & 65535));
   push(d0, 4);
   setReg('a0', a0);
@@ -3125,10 +3125,10 @@ export function fn_02c86(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   a0 = d0;
   a1 = a0;
   a1 = (a1 + 0x1);
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | (load8(a1) & 255));
   d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - 0x12) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | (load8(a0) & 255));
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x3f) & 65535));
   drop(2);
@@ -3136,28 +3136,28 @@ export function fn_02c86(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     if ((((d0 & 65535)) & 65535) !== ((0x24) & 65535)) {
       if ((((d0 & 65535)) & 65535) !== ((0x25) & 65535)) {
       } else {
-        d3 = 0x0;
+        d3 = 0;
         d3 = ((d3 & 0xffffff00) | (load8(0x3e1ca8) & 255));
         d1 = ((d1 & 0xffff0000) | (((d1 & 65535) + 0x30) & 65535));
       }
     } else {
-      d3 = 0x0;
+      d3 = 0;
       d3 = ((d3 & 0xffffff00) | (load8(0x3e1ca7) & 255));
       d1 = ((d1 & 0xffff0000) | (((d1 & 65535) + 0x18) & 65535));
     }
   } else {
-    d3 = 0x0;
+    d3 = 0;
     d3 = ((d3 & 0xffffff00) | (load8(0x3e1ca6) & 255));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1cb6) & 255));
     a1 = d0;
-    d2 = 0x0;
+    d2 = 0;
     d2 = ((d2 & 0xffffff00) | (load8(a0) & 255));
     d2 = (d2 & 0xc0);
     a0 = d2;
     if (a1 !== a0) {
     } else {
-      d3 = 0x0;
+      d3 = 0;
       d3 = ((d3 & 0xffffff00) | (load8(0x3e1ca7) & 255));
     }
   }
@@ -3185,11 +3185,11 @@ export function fn_02c86(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = d0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   a3 = (a3 + 2);
   d0 = ((d0 & 0xffff0000) | (load16(a3) & 65535));
   push(d0, 4);
@@ -3211,11 +3211,11 @@ export function fn_02c86(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = d0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   a3 = (a3 + 2);
   d0 = ((d0 & 0xffff0000) | (load16(a3) & 65535));
   push(d0, 4);
@@ -3237,11 +3237,11 @@ export function fn_02c86(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = (d2 + 0xff8);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   a3 = (a3 + 2);
   d0 = ((d0 & 0xffff0000) | (load16(a3) & 65535));
   push(d0, 4);
@@ -3263,11 +3263,11 @@ export function fn_02c86(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d2 = d0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   push(d0, 4);
   push(d2, 4);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | (load16(a3) & 65535));
   push(d0, 4);
   setReg('a0', a0);
@@ -3323,10 +3323,10 @@ export function fn_02d78(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d0 = getReg('d0');
   a1 = d0;
   a0 = (a1 + 0x20);
-  d3 = 0x0;
+  d3 = 0;
   d3 = ((d3 & 0xffffff00) | (load8(a0) & 255));
   d3 = ((d3 & 0xffff0000) | (((d3 & 65535) - 0x12) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | (load8(a1) & 255));
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x3f) & 65535));
   drop(2);
@@ -3334,27 +3334,27 @@ export function fn_02d78(a0_: number, a1_: number, d0_: number, d1_: number, d2_
     if ((((d0 & 65535)) & 65535) !== ((0x24) & 65535)) {
       if ((((d0 & 65535)) & 65535) !== ((0x25) & 65535)) {
       } else {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca8) & 255));
         d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + 0x30) & 65535));
       }
     } else {
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca7) & 255));
       d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + 0x18) & 65535));
     }
   } else {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca6) & 255));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8(0x3e1cb6) & 255));
     a0 = d1;
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8(a1) & 255));
     d1 = (d1 & 0xc0);
     if (a0 !== d1) {
     } else {
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca7) & 255));
     }
   }
@@ -3368,7 +3368,7 @@ export function fn_02d78(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d3 = (t2 >= 32 ? 0 : ((d3) << t2));
   a0 = 0x21346;
   d2 = load32((a0 + (d3 | 0)));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
   push(d1, 4);
   push(((arg0 >>> 16) & 0xffff), 2);
@@ -3404,7 +3404,7 @@ export function fn_03194(arg0: number): void {
   const t0 = getReg('d0');
   push(t0, 4);
   const t1 = load16(0x21c04);
-  const t2 = ((0x0 & 0xffff0000) | (t1 & 0xffff));
+  const t2 = ((0 & 0xffff0000) | (t1 & 0xffff));
   push(t2, 4);
   setReg('d0', t2);
   callRom(0x11efe, 0x031b4);
@@ -3435,7 +3435,7 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d2 = getReg('d2');
   d3 = getReg('d3');
   d4 = getReg('d4');
-  d1 = 0x0;
+  d1 = 0;
   d0 = getReg('d0');
   a2 = d0;
   d1 = ((d1 & 0xffffff00) | (load8(a2) & 255));
@@ -3444,9 +3444,9 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   drop(2);
   if ((((d0 & 65535)) & 65535) !== ((0x27) & 65535)) {
     if ((((d0 & 65535)) & 65535) !== ((0x28) & 65535)) {
-      d2 = 0x2;
+      d2 = 2;
     } else {
-      d2 = 0x1;
+      d2 = 1;
     }
   } else {
     d2 = ((d2 & 0xffff0000) | (0 & 65535));
@@ -3456,10 +3456,10 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   if ((((d0 & 65535)) & 65535) !== ((0) & 65535)) {
     const t4 = ((0x6) & 63);
     d1 = ((d1 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d1 & 65535)) >>> t4)) & 65535));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
     a0 = 0xfe02;
-    d4 = 0x0;
+    d4 = 0;
     d4 = ((d4 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
   } else {
     d4 = ((d4 & 0xffff0000) | (0xb0 & 65535));
@@ -3481,7 +3481,7 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d3 = getReg('d3');
   d4 = getReg('d4');
   d3 = d0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
   push(d0, 4);
   push(d3, 4);
@@ -3492,11 +3492,11 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
   d0 = ((((d0 & 65535)) << 16) >> 16);
   d1 = (d1 + d0);
-  d0 = 0x1;
+  d0 = 1;
   d1 = (d1 & d0);
   d1 = (d1 + d1);
   a0 = 0x21be0;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | (load16((a0 + (d1 | 0))) & 65535));
   push(d0, 4);
   setReg('a0', a0);
@@ -3516,13 +3516,13 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d4 = getReg('d4');
   push(0x80, 4);
   push(d3, 4);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
   const t5 = ((0x2) & 63);
   d0 = (t5 >= 32 ? 0 : ((d0) << t5));
   a0 = 0x21332;
   a0 = load32((a0 + (d0 | 0)));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | (load16(a0) & 65535));
   push(d0, 4);
   setReg('a0', a0);
@@ -3634,7 +3634,7 @@ export function fn_03728(d0_: number, d1_: number, d2_: number, d3_: number, d4_
     d3 = (d3 + 0x1000);
   }
   push(0x70, 4);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   push(d0, 4);
   push(0xfdc0, 4);
@@ -3652,7 +3652,7 @@ export function fn_03728(d0_: number, d1_: number, d2_: number, d3_: number, d4_
   d3 = getReg('d3');
   d4 = getReg('d4');
   d5 = getReg('d5');
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
   push(d0, 4);
   setReg('d0', d0);
@@ -3725,10 +3725,10 @@ export function fn_03cee(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d3 = ((d3 & 0xffffff00) | (((d3 & 255) & 0xc0) & 255));
   a0 = (a2 + 0x20);
   d0 = ((d0 & 0xffffff00) | (load8(a0) & 255));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d3 & 255) & 255));
   a0 = d1;
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
   d1 = (d1 & 0xc0);
   drop(2);
@@ -3738,10 +3738,10 @@ export function fn_03cee(a0_: number, a2_: number, d0_: number, d1_: number, d2_
     } else {
       const t3 = ((0x6) & 63);
       d0 = ((d0 & 0xffffff00) | ((t3 >= 8 ? 0 : (((d0 & 255)) >>> t3)) & 255));
-      d1 = 0x0;
+      d1 = 0;
       d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
       a0 = 0xfdbc;
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffffff00) | (load8((a0 + ((d1 << 16) >> 16))) & 255));
       push(d0, 4);
       push(((arg0 >>> 16) & 0xffff), 2);
@@ -3779,10 +3779,10 @@ export function fn_03cee(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   }
   a2 = (a2 + -0x20);
   d0 = ((d0 & 0xffffff00) | (load8(a2) & 255));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d3 & 255) & 255));
   a0 = d1;
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
   d1 = (d1 & 0xc0);
   if (a0 !== d1) {
@@ -3791,10 +3791,10 @@ export function fn_03cee(a0_: number, a2_: number, d0_: number, d1_: number, d2_
     } else {
       const t4 = ((0x6) & 63);
       d0 = ((d0 & 0xffffff00) | ((t4 >= 8 ? 0 : (((d0 & 255)) >>> t4)) & 255));
-      d1 = 0x0;
+      d1 = 0;
       d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
       a0 = 0xfdbc;
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffffff00) | (load8((a0 + ((d1 << 16) >> 16))) & 255));
       push(d0, 4);
       push(((arg0 >>> 16) & 0xffff), 2);
@@ -3846,7 +3846,7 @@ export function fn_03e26(a0_: number, d0_: number): void {
   let a0 = a0_;
   let d0 = d0_;
   a0 = 0x3e0df6;
-  d0 = 0xf;
+  d0 = 15;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
     store32(a0, 0);
@@ -3900,11 +3900,11 @@ export function fn_03e84(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d0 = getReg('d0');
     d2 = d0;
     d3 = ((d3 & 0xffff0000) | (load16(a2 + 0x6) & 65535));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
     push(d0, 4);
     push(d2, 4);
-    d0 = 0x0;
+    d0 = 0;
     a4 = (a4 + 2);
     d0 = ((d0 & 0xffff0000) | (load16(a4) & 65535));
     push(d0, 4);
@@ -3924,11 +3924,11 @@ export function fn_03e84(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d2 = getReg('d2');
     d3 = getReg('d3');
     d2 = d0;
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
     push(d0, 4);
     push(d2, 4);
-    d0 = 0x0;
+    d0 = 0;
     a4 = (a4 + 2);
     d0 = ((d0 & 0xffff0000) | (load16(a4) & 65535));
     push(d0, 4);
@@ -3948,11 +3948,11 @@ export function fn_03e84(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d2 = getReg('d2');
     d3 = getReg('d3');
     d2 = (d2 + 0xff8);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
     push(d0, 4);
     push(d2, 4);
-    d0 = 0x0;
+    d0 = 0;
     a4 = (a4 + 2);
     d0 = ((d0 & 0xffff0000) | (load16(a4) & 65535));
     push(d0, 4);
@@ -3972,11 +3972,11 @@ export function fn_03e84(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d2 = getReg('d2');
     d3 = getReg('d3');
     d2 = d0;
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
     push(d0, 4);
     push(d2, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | (load16(a4) & 65535));
     push(d0, 4);
     setReg('a0', a0);
@@ -4045,10 +4045,10 @@ export function fn_0408e(arg0: number): void {
   const t10 = ((t8 & 0xffff0000) | (t9 & 0xffff));
   const t11 = ((((t10 & 0xffff)) << 16) >> 16);
   const t12 = (t5 + t11);
-  const t13 = (t12 & 0x1);
+  const t13 = (t12 & 1);
   const t14 = (t13 + t13);
   const t15 = load16((0x21be0 + (t14 | 0)));
-  const t16 = ((0x0 & 0xffff0000) | (t15 & 0xffff));
+  const t16 = ((0 & 0xffff0000) | (t15 & 0xffff));
   push(t16, 4);
   setReg('a0', 0x21be0);
   setReg('d0', t16);
@@ -4112,7 +4112,7 @@ export function fn_0435a(a0_: number, d0_: number, d1_: number, arg0: number): v
     a0 = 0x34faa;
   }
   d1 = ((d1 & 0xffff0000) | (load16((a0 + (d0 | 0))) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   setReg('a0', a0);
   setReg('d0', d0);
@@ -4158,13 +4158,13 @@ export function fn_043c2(a2_: number, a6_: number, d0_: number, d2_: number, d3_
         _at = 1; continue dispatch;
       }
       case 1: {
-        d2 = 0x2a;
+        d2 = 42;
         d6 = ((d6 & 0xffff0000) | (0 & 65535));
         _at = 2; continue dispatch;
       }
       case 2: {
         push(d5, 4);
-        d0 = 0x0;
+        d0 = 0;
         a2 = (a2 + 2);
         d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
         d0 = (d0 + d3);
@@ -4407,7 +4407,7 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     } else {
       a4 = (a4 + 0x7e);
     }
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a4 + 0x2) & 255));
     const t9 = ((0x4) & 63);
     d0 = (t9 >= 32 ? 0 : ((d0) << t9));
@@ -4415,11 +4415,11 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     a0 = 0x1f650;
     a0 = (a0 + d0);
     d3 = a0;
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca6) & 255));
     const t10 = ((0x4) & 63);
     d0 = (t10 >= 32 ? 0 : ((d0) >>> t10));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
     push(d3, 4);
@@ -4467,7 +4467,7 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     } else {
       a4 = (a4 + 0x7e);
     }
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a4 + 0x2) & 255));
     const t11 = ((0x4) & 63);
     d0 = (t11 >= 32 ? 0 : ((d0) << t11));
@@ -4475,11 +4475,11 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     a0 = 0x1f650;
     a0 = (a0 + d0);
     d3 = a0;
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca7) & 255));
     const t12 = ((0x4) & 63);
     d0 = (t12 >= 32 ? 0 : ((d0) >>> t12));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
     push(d3, 4);
@@ -4525,20 +4525,20 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     if (((load8(a0 + 0x1d)) & 255) < ((0x3) & 255)) {
       d2 = ((d2 & 0xffff0000) | (0 & 65535));
     } else {
-      d2 = 0x1;
+      d2 = 1;
     }
     d3 = 0x1f240;
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca6) & 255));
     const t5 = ((0x4) & 63);
     d0 = (t5 >= 32 ? 0 : ((d0) >>> t5));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
     a0 = 0xfe12;
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
     d1 = (d1 + d1);
     a0 = d1;
@@ -4562,10 +4562,10 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d2 = getReg('d2');
     d3 = getReg('d3');
     push(0x6, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
     a0 = 0xfe12;
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
     d1 = (d1 + d1);
     d1 = (d1 + d3);
@@ -4588,17 +4588,17 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d1 = getReg('d1');
     d2 = getReg('d2');
     d3 = getReg('d3');
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca8) & 255));
     const t6 = ((0x4) & 63);
     d0 = (t6 >= 32 ? 0 : ((d0) >>> t6));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
     a0 = 0xfe16;
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
     d1 = (d1 + d1);
     a0 = d1;
@@ -4622,10 +4622,10 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d2 = getReg('d2');
     d3 = getReg('d3');
     push(0xb, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
     a0 = 0xfe16;
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
     d1 = (d1 + d1);
     d1 = (d1 + d3);
@@ -4648,17 +4648,17 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d1 = getReg('d1');
     d2 = getReg('d2');
     d3 = getReg('d3');
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca7) & 255));
     const t7 = ((0x4) & 63);
     d0 = (t7 >= 32 ? 0 : ((d0) >>> t7));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
     a0 = 0xfe14;
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
     d1 = (d1 + d1);
     a0 = d1;
@@ -4682,10 +4682,10 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d2 = getReg('d2');
     d3 = getReg('d3');
     push(0x7, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
     a0 = 0xfe14;
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
     d1 = (d1 + d1);
     d1 = (d1 + d3);
@@ -4708,11 +4708,11 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d1 = getReg('d1');
     d2 = getReg('d2');
     d3 = getReg('d3');
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca9) & 255));
     const t8 = ((0x4) & 63);
     d0 = (t8 >= 32 ? 0 : ((d0) >>> t8));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
     a0 = d3;
@@ -4779,11 +4779,11 @@ export function fn_04a6a(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         save_d5_3 = d5;
         save_d6_4 = d6;
         save_a2_5 = a2;
-        d3 = 0xd;
-        d2 = 0x4;
-        d4 = 0x3;
+        d3 = 13;
+        d2 = 4;
+        d4 = 3;
         a2 = 0x3e1968;
-        d6 = 0x5;
+        d6 = 5;
         d5 = 0xfe18;
         _at = 1; continue dispatch;
       }
@@ -4798,7 +4798,7 @@ export function fn_04a6a(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         push(d2, 4);
         push(d3, 4);
         push(d5, 4);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
         push(d0, 4);
         push(0, 4);
@@ -4821,7 +4821,7 @@ export function fn_04a6a(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         _at = 3; continue dispatch;
       }
       case 3: {
-        d0 = 0x7e;
+        d0 = 126;
         a2 = (a2 + d0);
         d6 = ((d6 & 0xffff0000) | (((d6 & 65535) + 0x1) & 65535));
         _at = ((((d6 & 65535)) & 65535) < ((0x8) & 65535)) ? 1 : 4; continue dispatch;
@@ -4896,11 +4896,11 @@ export function fn_04b0a(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   a0 = (a0 + 0x340);
   a4 = (a0 + 0x20);
   a3 = 0x1f7c0;
-  d2 = 0x7;
+  d2 = 7;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
     push(a4, 4);
-    d0 = 0x0;
+    d0 = 0;
     a3 = (a3 + 2);
     d0 = ((d0 & 0xffff0000) | (load16(a3) & 65535));
     a0 = d0;
@@ -5080,11 +5080,11 @@ export function fn_04c80(a2_: number, a7_: number, d0_: number, d1_: number): vo
   push(0x3, 4);
   push(0x3, 4);
   push(0x1, 4);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca6) & 255));
   const t0 = ((0x4) & 63);
   d0 = (t0 >= 32 ? 0 : ((d0) >>> t0));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
   push(d1, 4);
   push(0, 4);
@@ -5110,11 +5110,11 @@ export function fn_04c80(a2_: number, a7_: number, d0_: number, d1_: number): vo
   push(0x3, 4);
   push(0x3, 4);
   push(0x1, 4);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca7) & 255));
   const t1 = ((0x4) & 63);
   d0 = (t1 >= 32 ? 0 : ((d0) >>> t1));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
   push(d1, 4);
   push(0, 4);
@@ -5143,11 +5143,11 @@ export function fn_04c80(a2_: number, a7_: number, d0_: number, d1_: number): vo
     push(0x3, 4);
     push(0x3, 4);
     push(0x1, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca8) & 255));
     const t2 = ((0x4) & 63);
     d0 = (t2 >= 32 ? 0 : ((d0) >>> t2));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
     push(0, 4);
@@ -5224,11 +5224,11 @@ export function fn_04d90(arg0: number): void {
   push(0x4, 4);
   push(0x1, 4);
   push(t5, 4);
-  const t6 = (arg0 + 0x9);
+  const t6 = (arg0 + 9);
   push(t6, 4);
   push(0, 4);
   setReg('a0', t5);
-  setReg('d0', 0x9);
+  setReg('d0', 9);
   setReg('d1', t6);
   callRom(0x0c724, 0x04dc8);
   callRom(0x04d6c, 0x04dcc);
@@ -5265,10 +5265,10 @@ export function fn_04dd2(a2_: number, a3_: number, d0_: number, d2_: number, d3_
         save_d6_4 = d6;
         save_a2_5 = a2;
         save_a3_6 = a3;
-        d2 = 0x1;
-        d3 = 0x3;
-        d4 = 0x4;
-        d5 = 0x7e;
+        d2 = 1;
+        d3 = 3;
+        d4 = 4;
+        d5 = 126;
         a3 = 0x3e1968;
         d6 = ((d6 & 0xffff0000) | (0 & 65535));
         a2 = 0xfe0a;
@@ -5283,7 +5283,7 @@ export function fn_04dd2(a2_: number, a3_: number, d0_: number, d2_: number, d3_
         push(d4, 4);
         push(d3, 4);
         push(d2, 4);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a2) & 255));
         push(d0, 4);
         push(d2, 4);
@@ -5351,7 +5351,7 @@ export function fn_04e20(a2_: number, a7_: number, d0_: number): void {
     push(0x5, 4);
     push(0x3, 4);
   } else {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e195a) & 255));
     d0 = (d0 + 0x1);
     const t0 = ((0x4) & 63);
@@ -5400,8 +5400,8 @@ export function fn_0512a(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   const save_d3_1 = d3;
   const save_d4_2 = d4;
   const save_a2_3 = a2;
-  d3 = 0x3;
-  d2 = 0x20;
+  d3 = 3;
+  d2 = 32;
   a2 = 0x3e1968;
   push(0x1f7f0, 4);
   setReg('a2', a2);
@@ -5513,7 +5513,7 @@ export function fn_0522e(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   d0 = ((((d0 & 65535)) << 16) >> 16);
   const t4 = ((0x3) & 63);
   d0 = (t4 >= 32 ? 0 : ((d0) << t4));
-  d1 = 0xc;
+  d1 = 12;
   d0 = (d0 - d1);
   store16(a2 + 0x6, (d0 & 65535));
   drop(4);
@@ -5638,10 +5638,10 @@ export function fn_0545a(a0_: number, d0_: number): void {
   let a0 = a0_;
   let d0 = d0_;
   if (load32(0x3e0ec2) === 0) {
-    d0 = 0x0;
+    d0 = 0;
   } else {
     a0 = load32(0x3e0ec2);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | (load16(a0 + 0x6) & 65535));
   }
   setReg('a0', a0);
@@ -5786,14 +5786,14 @@ export function fn_056f4(a0_: number, a6_: number, d0_: number, d1_: number, d2_
         _at = 1; continue dispatch;
       }
       case 1: {
-        d1 = 0x59;
+        d1 = 89;
         d3 = 0x200;
         d2 = 0x80;
-        d5 = 0x2;
+        d5 = 2;
         _at = 2; continue dispatch;
       }
       case 2: {
-        d4 = 0x2;
+        d4 = 2;
         d0 = ((d0 & 0xffff0000) | (load16(a6 + -0x4) & 65535));
         d0 = ((((d0 & 65535)) << 16) >> 16);
         _at = ((d0 | 0) >= (d2 | 0)) ? 4 : 3; continue dispatch;
@@ -5892,7 +5892,7 @@ export function fn_056f4(a0_: number, a6_: number, d0_: number, d1_: number, d2_
         push(0x7, 4);
         push(0xa, 4);
         push(d6, 4);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(0x3e0dd2) & 255));
         t9 = ((0x2) & 63);
         d0 = (t9 >= 32 ? 0 : ((d0) << t9));
@@ -6154,12 +6154,12 @@ export function fn_05afc(a0_: number, a1_: number, d0_: number, arg0: number): v
   store32(a0, (load32(a0) + 0x4));
   a1 = load32(a0);
   if (load32(a1) !== 0) {
-    d0 = 0x0;
+    d0 = 0;
   } else {
     store32(a0, (load32(a0) + 0x4));
     a1 = load32(a0);
     store32(a0, load32(a1));
-    d0 = 0x1;
+    d0 = 1;
   }
   setReg('a0', a0);
   setReg('a1', a1);
@@ -6184,9 +6184,9 @@ export function fn_05c80(a2_: number, d0_: number, d2_: number, d3_: number): vo
         save_d2_0 = d2;
         save_d3_1 = d3;
         save_a2_2 = a2;
-        d2 = 0x10;
+        d2 = 16;
         a2 = 0x3e02d8;
-        d3 = 0x45;
+        d3 = 69;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -6211,7 +6211,7 @@ export function fn_05c80(a2_: number, d0_: number, d2_: number, d3_: number): vo
         a2 = getReg('a2');
         d2 = getReg('d2');
         d3 = getReg('d3');
-        d0 = 0x10;
+        d0 = 16;
         a2 = (a2 + d0);
         d3 = ((d3 & 0xffff0000) | (((d3 & 0xffff) - 1) & 0xffff));
         _at = ((d3 & 0xffff) !== 0xffff) ? 1 : 4; continue dispatch;
@@ -6257,7 +6257,7 @@ export function fn_05cce(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   let d3 = d3_;
   const save_d2_0 = d2;
   const save_d3_1 = d3;
-  d2 = 0x56;
+  d2 = 86;
   setReg('d2', d2);
   setReg('d3', d3);
   callRom(0x0064a, 0x05cd8);
@@ -6272,7 +6272,7 @@ export function fn_05cce(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   store16(0x3e02b0, (d0 & 65535));
   a0 = 0x3e0000;
   d3 = ((d3 & 0xffff0000) | (0 & 65535));
-  d1 = 0x1;
+  d1 = 1;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
     d0 = ((d0 & 0xffff0000) | (0 & 65535));
@@ -6313,7 +6313,7 @@ export function fn_05cce(a0_: number, d0_: number, d1_: number, d2_: number, d3_
     }
     break;
   }
-  d1 = 0x9;
+  d1 = 9;
   d3 = ((d3 & 0xffff0000) | (0 & 65535));
   a0 = 0x3e02b4;
   for (;;) {
@@ -6420,15 +6420,15 @@ export function fn_060be(a6: number): void {
   store8(t2, (t4 & 0xff));
   const t5 = getReg('a6');
   const t6 = load16(t5 + -0xa);
-  const t7 = ((0x0 & 0xffff0000) | (t6 & 0xffff));
+  const t7 = ((0 & 0xffff0000) | (t6 & 0xffff));
   push(t7, 4);
   push(load32(t5 + -0x8), 4);
   const t8 = load16(t5 + -0x4);
-  const t9 = ((0x0 & 0xffff0000) | (t8 & 0xffff));
+  const t9 = ((0 & 0xffff0000) | (t8 & 0xffff));
   const t10 = (t9 + t9);
   const t11 = getReg('a4');
   const t12 = load16((t11 + (t10 | 0)));
-  const t13 = ((0x0 & 0xffff0000) | (t12 & 0xffff));
+  const t13 = ((0 & 0xffff0000) | (t12 & 0xffff));
   push(t13, 4);
   setReg('a4', t11);
   setReg('a5', t2);
@@ -6456,7 +6456,7 @@ export function fn_06114(a0_: number, a2_: number, a3_: number, a6_: number, d0_
   let d4 = d4_;
   let d5 = d5_;
   d1 = d5;
-  d0 = 0x20;
+  d0 = 32;
   d1 = (d1 + d0);
   d1 = (d1 + 0x1);
   a0 = d1;
@@ -6466,11 +6466,11 @@ export function fn_06114(a0_: number, a2_: number, a3_: number, a6_: number, d0_
   d2 = ((d2 & 0xffffff00) | (((d2 & 255) & 0x3f) & 255));
   d2 = ((d2 & 0xffffff00) | (((d2 & 255) | (d4 & 255)) & 255));
   store8(a0, (d2 & 255));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | (load8(a6 + -0x1) & 255));
-  d0 = 0x3f;
+  d0 = 63;
   d1 = (d1 & d0);
-  d0 = 0x2;
+  d0 = 2;
   if (d0 !== d1) {
     setReg('a0', a0);
     setReg('a6', a6);
@@ -6565,7 +6565,7 @@ export function fn_06166(a0_: number, a2_: number, a3_: number, a5_: number, a6_
   let d4 = d4_;
   let d5 = d5_;
   d1 = d5;
-  d0 = 0x20;
+  d0 = 32;
   d1 = (d1 + d0);
   d1 = (d1 + 0x1);
   a0 = d1;
@@ -6575,11 +6575,11 @@ export function fn_06166(a0_: number, a2_: number, a3_: number, a5_: number, a6_
   d2 = ((d2 & 0xffffff00) | (((d2 & 255) & 0x3f) & 255));
   d2 = ((d2 & 0xffffff00) | (((d2 & 255) | (d4 & 255)) & 255));
   store8(a0, (d2 & 255));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | (load8(a6 + -0x1) & 255));
-  d0 = 0x3f;
+  d0 = 63;
   d1 = (d1 & d0);
-  d0 = 0x1a;
+  d0 = 26;
   if (d0 !== d1) {
     setReg('a0', a0);
     setReg('a6', a6);
@@ -6659,15 +6659,15 @@ export function fn_063ca(a6: number): void {
   const t4 = (t2 + 1);
   const t5 = getReg('a6');
   const t6 = load16(t5 + -0xa);
-  const t7 = ((0x0 & 0xffff0000) | (t6 & 0xffff));
+  const t7 = ((0 & 0xffff0000) | (t6 & 0xffff));
   push(t7, 4);
   push(load32(t5 + -0x8), 4);
   const t8 = load16(t5 + -0x4);
-  const t9 = ((0x0 & 0xffff0000) | (t8 & 0xffff));
+  const t9 = ((0 & 0xffff0000) | (t8 & 0xffff));
   const t10 = (t9 + t9);
   const t11 = getReg('a4');
   const t12 = load16((t11 + (t10 | 0)));
-  const t13 = ((0x0 & 0xffff0000) | (t12 & 0xffff));
+  const t13 = ((0 & 0xffff0000) | (t12 & 0xffff));
   push(t13, 4);
   setReg('a4', t11);
   setReg('a5', (t2 + 1));
@@ -6695,7 +6695,7 @@ export function fn_06420(a0_: number, a2_: number, a3_: number, a6_: number, d0_
   let d4 = d4_;
   let d5 = d5_;
   d1 = d4;
-  d0 = 0x20;
+  d0 = 32;
   d1 = (d1 + d0);
   d1 = (d1 + 0x1);
   a0 = d1;
@@ -6705,11 +6705,11 @@ export function fn_06420(a0_: number, a2_: number, a3_: number, a6_: number, d0_
   d2 = ((d2 & 0xffffff00) | (((d2 & 255) & 0x3f) & 255));
   d2 = ((d2 & 0xffffff00) | (((d2 & 255) | (d5 & 255)) & 255));
   store8(a0, (d2 & 255));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | (load8(a6 + -0x1) & 255));
-  d0 = 0x3f;
+  d0 = 63;
   d1 = (d1 & d0);
-  d0 = 0x2;
+  d0 = 2;
   if (d0 !== d1) {
     setReg('a0', a0);
     setReg('a6', a6);
@@ -6778,7 +6778,7 @@ export function fn_066cc(): void {
 }
 
 export function fn_066ce(): void {
-  setReg('d4', 0x6);
+  setReg('d4', 6);
   jumpRom(0x066d4);
   return;
 }
@@ -6877,10 +6877,10 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   a4 = load32(a6 + 0x8);
   d4 = 0x3e0864;
   store32(a6 + -0x8, 0x200004);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | (load8(a4 + 0x2) & 255));
   store16(a6 + -0x4, (d0 & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | (load16(a6 + -0x4) & 65535));
   a0 = 0x1000a;
   store8(a6 + -0x1, load8((a0 + (d0 | 0))));
@@ -6891,7 +6891,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 17 did not end');
     if ((((load8(a6 + -0xc)) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
-      d3 = 0x2;
+      d3 = 2;
       d6 = ((d6 & 0xffffff00) | (load8(a6 + -0xc) & 255));
       d6 = ((d6 & 0xffff0000) | (((((d6 & 255)) << 24) >> 24) & 65535));
       d6 = ((d6 & 0xffff0000) | (((d6 & 65535) & 0x1) & 65535));
@@ -6902,22 +6902,22 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
       for (;;) {
         if (++_guard > 4000000) throw new Error('loop 15 did not end');
         if ((((load8(a2 + 0x1)) << 24) >> 24) < (((0x1e) << 24) >> 24)) {
-          d0 = 0x0;
+          d0 = 0;
           a0 = d4;
           d0 = ((d0 & 0xffffff00) | (load8(a0) & 255));
           store16(a6 + -0x4, (d0 & 65535));
-          d0 = 0x0;
+          d0 = 0;
           d0 = ((d0 & 0xffffff00) | (load8(a6 + -0x1) & 255));
-          d1 = 0x0;
+          d1 = 0;
           d1 = ((d1 & 0xffff0000) | (load16(a6 + -0x4) & 65535));
           d1 = (d1 & 0xc0);
           if (d0 === d1) {
             push(0xb0, 4);
             push(load32(a6 + -0x8), 4);
-            d0 = 0x0;
+            d0 = 0;
             d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
             d0 = (d0 + d0);
-            d1 = 0x0;
+            d1 = 0;
             d1 = ((d1 & 0xffff0000) | (load16((a3 + (d0 | 0))) & 65535));
             push(d1, 4);
             setReg('a0', a0);
@@ -6953,7 +6953,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
             store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
             d4 = (d4 + 0x1);
             d2 = (d2 + 0x1);
-            d1 = 0x1;
+            d1 = 1;
             d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
             d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
             store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
@@ -6962,10 +6962,10 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
             if (((load16(a6 + -0x4)) & 65535) === ((0x27) & 65535)) {
               push(0xb0, 4);
               push(load32(a6 + -0x8), 4);
-              d0 = 0x0;
+              d0 = 0;
               d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
               d0 = (d0 + d0);
-              d1 = 0x0;
+              d1 = 0;
               d1 = ((d1 & 0xffff0000) | (load16((a3 + (d0 | 0))) & 65535));
               push(d1, 4);
               setReg('a0', a0);
@@ -7001,7 +7001,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
               store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
               d4 = (d4 + 0x1);
               d2 = (d2 + 0x1);
-              d1 = 0x1;
+              d1 = 1;
               d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
               d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
               store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
@@ -7010,10 +7010,10 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
               if (((load16(a6 + -0x4)) & 65535) === ((0x28) & 65535)) {
                 push(0xb0, 4);
                 push(load32(a6 + -0x8), 4);
-                d0 = 0x0;
+                d0 = 0;
                 d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
                 d0 = (d0 + d0);
-                d1 = 0x0;
+                d1 = 0;
                 d1 = ((d1 & 0xffff0000) | (load16((a3 + (d0 | 0))) & 65535));
                 push(d1, 4);
                 setReg('a0', a0);
@@ -7049,7 +7049,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                 store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
                 d4 = (d4 + 0x1);
                 d2 = (d2 + 0x1);
-                d1 = 0x1;
+                d1 = 1;
                 d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
                 d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
                 store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
@@ -7062,13 +7062,13 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                       store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
                       d4 = (d4 + 0x1);
                       d2 = (d2 + 0x1);
-                      d1 = 0x1;
+                      d1 = 1;
                       d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
                       d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
                       store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
                       continue;
                     } else {
-                      d0 = 0x0;
+                      d0 = 0;
                       d0 = ((d0 & 0xffffff00) | (load8(a6 + -0x1) & 255));
                       push(d0, 4);
                       push(0, 4);
@@ -7102,10 +7102,10 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                       d6 = getReg('d6');
                       push(0xb0, 4);
                       push(load32(a6 + -0x8), 4);
-                      d0 = 0x0;
+                      d0 = 0;
                       d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
                       d0 = (d0 + d0);
-                      d1 = 0x0;
+                      d1 = 0;
                       d1 = ((d1 & 0xffff0000) | (load16((a3 + (d0 | 0))) & 65535));
                       push(d1, 4);
                       setReg('a0', a0);
@@ -7139,7 +7139,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                       store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
                       d4 = (d4 + 0x1);
                       d2 = (d2 + 0x1);
-                      d1 = 0x1;
+                      d1 = 1;
                       d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
                       d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
                       store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
@@ -7151,7 +7151,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                         store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
                         d4 = (d4 + 0x1);
                         d2 = (d2 + 0x1);
-                        d1 = 0x1;
+                        d1 = 1;
                         d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
                         d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
                         store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
@@ -7170,7 +7170,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                           store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
                           d4 = (d4 + 0x1);
                           d2 = (d2 + 0x1);
-                          d1 = 0x1;
+                          d1 = 1;
                           d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
                           d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
                           store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
@@ -7243,7 +7243,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                           store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
                           d4 = (d4 + 0x1);
                           d2 = (d2 + 0x1);
-                          d1 = 0x1;
+                          d1 = 1;
                           d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
                           d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
                           store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
@@ -7256,13 +7256,13 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                         store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
                         d4 = (d4 + 0x1);
                         d2 = (d2 + 0x1);
-                        d1 = 0x1;
+                        d1 = 1;
                         d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
                         d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
                         store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
                         continue;
                       } else {
-                        d0 = 0x0;
+                        d0 = 0;
                         d0 = ((d0 & 0xffffff00) | (load8(a6 + -0x1) & 255));
                         push(d0, 4);
                         push(0, 4);
@@ -7296,10 +7296,10 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                         d6 = getReg('d6');
                         push(0xb0, 4);
                         push(load32(a6 + -0x8), 4);
-                        d0 = 0x0;
+                        d0 = 0;
                         d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
                         d0 = (d0 + d0);
-                        d1 = 0x0;
+                        d1 = 0;
                         d1 = ((d1 & 0xffff0000) | (load16((a3 + (d0 | 0))) & 65535));
                         push(d1, 4);
                         setReg('a0', a0);
@@ -7333,7 +7333,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                         store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
                         d4 = (d4 + 0x1);
                         d2 = (d2 + 0x1);
-                        d1 = 0x1;
+                        d1 = 1;
                         d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
                         d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
                         store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
@@ -7344,10 +7344,10 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                 } else {
                   push(0xb0, 4);
                   push(load32(a6 + -0x8), 4);
-                  d0 = 0x0;
+                  d0 = 0;
                   d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
                   d0 = (d0 + d0);
-                  d1 = 0x0;
+                  d1 = 0;
                   d1 = ((d1 & 0xffff0000) | (load16((a3 + (d0 | 0))) & 65535));
                   push(d1, 4);
                   setReg('a0', a0);
@@ -7383,7 +7383,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
                   store32(a6 + -0x8, (load32(a6 + -0x8) + 0x1000));
                   d4 = (d4 + 0x1);
                   d2 = (d2 + 0x1);
-                  d1 = 0x1;
+                  d1 = 1;
                   d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - (d6 & 65535)) & 65535));
                   d6 = ((d6 & 0xffff0000) | ((d1 & 65535) & 65535));
                   store8(a2 + 0x1, (load8(a2 + 0x1) + 0x1));
@@ -7401,7 +7401,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
           store8(a6 + -0xc, (load8(a6 + -0xc) + 0x1));
           continue;
         }
-        d3 = 0x2;
+        d3 = 2;
         d6 = ((d6 & 0xffffff00) | (load8(a6 + -0xc) & 255));
         d6 = ((d6 & 0xffff0000) | (((((d6 & 255)) << 24) >> 24) & 65535));
         d6 = ((d6 & 0xffff0000) | (((d6 & 65535) & 0x1) & 65535));
@@ -7462,12 +7462,12 @@ export function fn_06988(arg0: number): void {
   const t7 = ((t5 & 0xffffff00) | (t6 & 0xff));
   store8(t0, (t7 & 0xff));
   store8((t0 + 1), (t7 & 0xff));
-  const t8 = ((t0 + 1) + 0x1f);
+  const t8 = ((t0 + 1) + 31);
   store8(t8, (t7 & 0xff));
   store8((t8 + 1), (t7 & 0xff));
   drop(2);
   setReg('a0', ((t8 + 1) + 1));
-  setReg('d0', 0x1f);
+  setReg('d0', 31);
   setReg('d1', t7);
 }
 
@@ -7492,10 +7492,10 @@ export function fn_069ae(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         save_d3_1 = d3;
         save_d4_2 = d4;
         save_a2_3 = a2;
-        d2 = 0xff;
-        d3 = 0x1a;
+        d2 = -1;
+        d3 = 26;
         a2 = 0x3e0f48;
-        d4 = 0x59;
+        d4 = 89;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -7588,7 +7588,7 @@ export function fn_06c20(a2_: number, a3_: number, d0_: number, d1_: number, d2_
       d1 = getReg('d1');
       d2 = getReg('d2');
       d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffffff00) | (load8(a3 + 0x4) & 255));
       d1 = ((((d1 & 65535)) << 16) >> 16);
       drop(8);
@@ -7603,7 +7603,7 @@ export function fn_06c20(a2_: number, a3_: number, d0_: number, d1_: number, d2_
           store8(a3 + 0x4, (load8(a3 + 0x4) + 0x1));
         }
         store8(a3 + 0x4, (load8(a3 + 0x4) & 0x7));
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a3 + 0x4) & 255));
         push(d0, 4);
         push(load16(a3), 2);
@@ -7621,7 +7621,7 @@ export function fn_06c20(a2_: number, a3_: number, d0_: number, d1_: number, d2_
         drop(6);
       }
     }
-    d0 = 0x1a;
+    d0 = 26;
     a3 = (a3 + d0);
   } else {
     a3 = load32(a2 + 0x6a);
@@ -7662,8 +7662,8 @@ export function fn_06fb4(a2_: number, a3_: number, d0_: number, d1_: number, arg
         _at = 2; continue dispatch;
       }
       case 2: {
-        d0 = 0x1a;
-        d1 = 0x3;
+        d0 = 26;
+        d1 = 3;
         _at = 3; continue dispatch;
       }
       case 3: {
@@ -7764,21 +7764,21 @@ export function fn_073dc(a0_: number, a1_: number, a2_: number, a3_: number, d0_
         save_a3_5 = a3;
         a2 = arg0;
         a1 = arg1;
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a1 + 0x2) & 255));
         a0 = 0x1000a;
         d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
         d3 = ((d3 & 0xffffff00) | (load8(a2) & 255));
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
-        d1 = 0x0;
+        d1 = 0;
         d1 = ((d1 & 0xffffff00) | ((d3 & 255) & 255));
         d1 = (d1 & 0xc0);
         _at = (d0 === d1) ? 8 : 1; continue dispatch;
       }
       case 1: {
-        d1 = 0x3;
-        d2 = 0x1;
+        d1 = 3;
+        d2 = 1;
         d5 = ((d5 & 0xffff0000) | (0 & 65535));
         d4 = ((d4 & 0xffff0000) | (0 & 65535));
         a0 = 0xfcca;
@@ -7790,7 +7790,7 @@ export function fn_073dc(a0_: number, a1_: number, a2_: number, a3_: number, d0_
         d0 = (d0 + a2);
         a3 = d0;
         d3 = ((d3 & 0xffffff00) | (load8(a3) & 255));
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | ((d3 & 255) & 255));
         d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0xc0) & 65535));
         _at = ((((d0 & 65535)) & 65535) !== ((0) & 65535)) ? 4 : 3; continue dispatch;
@@ -7802,7 +7802,7 @@ export function fn_073dc(a0_: number, a1_: number, a2_: number, a3_: number, d0_
       case 4: {
         d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
         a0 = (a0 + 0x2);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
         _at = (d0 <= d1) ? 2 : 5; continue dispatch;
       }
@@ -7958,15 +7958,15 @@ export function fn_07d50(d1: number, arg0: number): void {
   push(0x9, 4);
   push(0xc, 4);
   const t2 = (t1 & 0xffff);
-  const t3 = ((0x0 & 0xffff0000) | (t2 & 0xffff));
+  const t3 = ((0 & 0xffff0000) | (t2 & 0xffff));
   push(t3, 4);
-  const t4 = (t3 + 0xc);
+  const t4 = (t3 + 12);
   const t5 = ((0x2) & 63);
   const t6 = (t5 >= 32 ? 0 : ((t4) << t5));
   push(load32((0x21516 + (t6 | 0))), 4);
   setReg('a0', 0x21516);
   setReg('d0', t6);
-  setReg('d1', 0xc);
+  setReg('d1', 12);
   callRom(0x041be, 0x07d7a);
   drop(20);
 }
@@ -8001,10 +8001,10 @@ export function fn_07d80(a2_: number, a3_: number, d0_: number, d2_: number, d3_
         save_d6_4 = d6;
         save_a2_5 = a2;
         save_a3_6 = a3;
-        d5 = 0xc;
-        d4 = 0x7;
-        d3 = 0x1;
-        d2 = 0x2;
+        d5 = 12;
+        d4 = 7;
+        d3 = 1;
+        d2 = 2;
         a3 = 0x3e1968;
         d6 = ((d6 & 0xffff0000) | (0 & 65535));
         a2 = 0x215a6;
@@ -8044,7 +8044,7 @@ export function fn_07d80(a2_: number, a3_: number, d0_: number, d2_: number, d3_
         _at = 3; continue dispatch;
       }
       case 3: {
-        d0 = 0x7e;
+        d0 = 126;
         a3 = (a3 + d0);
         d6 = ((d6 & 0xffff0000) | (((d6 & 65535) + 0x1) & 65535));
         a2 = (a2 + 0x4);
@@ -8154,7 +8154,7 @@ export function fn_07dce(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         _at = 1; continue dispatch;
       }
       case 1: {
-        d1 = 0x0;
+        d1 = 0;
         d1 = ((d1 & 0xffffff00) | (load8(a3) & 255));
         t7 = ((0x3) & 63);
         d1 = (t7 >= 32 ? 0 : ((d1) << t7));
@@ -8192,7 +8192,7 @@ export function fn_07dce(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         _at = 4; continue dispatch;
       }
       case 3: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
         push(d0, 4);
         push(0x2, 4);
@@ -8224,7 +8224,7 @@ export function fn_07dce(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         _at = 4; continue dispatch;
       }
       case 4: {
-        d0 = 0x7e;
+        d0 = 126;
         d4 = (d4 + d0);
         d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + 0x1) & 65535));
         a3 = (a3 + 0x1);
@@ -8261,7 +8261,7 @@ export function fn_07e7a(d0: number, arg0: number): void {
   const t1 = ((d0 & 0xffffff00) | (t0 & 0xff));
   store8(0x3e1ae2, (t1 & 0xff));
   const t2 = load8(0x3e1ae2);
-  const t3 = ((0x0 & 0xffffff00) | (t2 & 0xff));
+  const t3 = ((0 & 0xffffff00) | (t2 & 0xff));
   const t4 = (t3 + t3);
   const t5 = ((0x6) & 63);
   const t6 = (t5 >= 32 ? 0 : ((t4) << t5));
@@ -8317,17 +8317,17 @@ export function fn_07ea4(a0_: number, a2_: number, d0_: number, d2_: number, d3_
     }
     d3 = (d3 + d0);
     d2 = (d2 - d0);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a2 + 0x2) & 255));
     a0 = 0x1178e;
-    d4 = 0x0;
+    d4 = 0;
     d4 = ((d4 & 0xffffff00) | (load8((a0 + ((d0 << 16) >> 16))) & 255));
     push(0x18f0, 4);
     push(0x1, 4);
     push(0x5, 4);
     push(d2, 4);
     push(0x12, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
     d0 = (d0 + 0x7);
     push(d0, 4);
@@ -8349,7 +8349,7 @@ export function fn_07ea4(a0_: number, a2_: number, d0_: number, d2_: number, d3_
     push(0x6, 4);
     push(d3, 4);
     push(0x17, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
     d0 = (d0 + 0x6);
     push(d0, 4);
@@ -8401,11 +8401,11 @@ export function fn_08536(): void {
   callRom(0x05020, 0x08540);
   push(0xffff, 4);
   callRom(0x04e82, 0x08548);
-  const t0 = (0x200004 + 0x20);
+  const t0 = (0x200004 + 32);
   const t1 = (t0 + 0x3000);
   push(t1, 4);
   push(0xb5b30, 4);
-  setReg('d0', 0x20);
+  setReg('d0', 32);
   setReg('d1', t1);
   callRom(0x12078, 0x08566);
   push(0x15, 4);
@@ -8452,7 +8452,7 @@ export function fn_08598(a0_: number, a2_: number, d0_: number, d1_: number, d2_
       }
       case 2: {
         a0 = load32(0x3e0dca);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a2 + 0x3) & 255));
         t2 = ((0x2) & 63);
         d0 = ((d0 & 0xffff0000) | ((t2 >= 16 ? 0 : (((d0 & 65535)) << t2)) & 65535));
@@ -8462,7 +8462,7 @@ export function fn_08598(a0_: number, a2_: number, d0_: number, d1_: number, d2_
         _at = (d1 === 0) ? 8 : 3; continue dispatch;
       }
       case 3: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a2 + 0x1d) & 255));
         _at = 6; continue dispatch;
       }
@@ -8538,7 +8538,7 @@ export function fn_0900a(arg0: number): void {
   push(load32(0x2157e), 4);
   callRom(0x041be, 0x0902c);
   drop(20);
-  setReg('d0', 0x1);
+  setReg('d0', 1);
 }
 
 export function fn_09034(a0_: number, a2_: number, a7_: number): void {
@@ -8606,10 +8606,10 @@ export function fn_09080(a0_: number, a2_: number, a7_: number, d0_: number, d1_
   d0 = ((d0 & 0xffffff00) | (load8(a2) & 255));
   if ((((d0 & 255)) & 255) === ((load8(0x3e1942)) & 255)) {
   } else {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a2) & 255));
     a0 = 0x3e1922;
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | (load8((a0 + ((d0 << 16) >> 16))) & 255));
     push(d1, 4);
     setReg('a0', a0);
@@ -8624,10 +8624,10 @@ export function fn_09080(a0_: number, a2_: number, a7_: number, d0_: number, d1_
     drop(4);
     if (d0 === 0) {
     } else {
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffffff00) | (load8(a2) & 255));
       d0 = (d0 + 0x1);
-      d1 = 0x1f;
+      d1 = 31;
       d0 = (d0 & d1);
       store8(a2, (d0 & 255));
     }
@@ -8649,7 +8649,7 @@ export function fn_090e6(d0_: number, d1_: number, arg0: number): void {
   d1 = ((d1 & 0xffffff00) | ((arg0 & 0xff) & 255));
   if (((load16(0x3e1948)) & 65535) === ((0) & 65535)) {
   } else {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
     push(d0, 4);
     setReg('d0', d0);
@@ -8667,7 +8667,7 @@ export function fn_090fe(d1: number, arg0: number): void {
   const t0 = (arg0 & 0xff);
   const t1 = ((d1 & 0xffffff00) | (t0 & 0xff));
   const t2 = (t1 & 0xff);
-  const t3 = ((0x0 & 0xffffff00) | (t2 & 0xff));
+  const t3 = ((0 & 0xffffff00) | (t2 & 0xff));
   push(t3, 4);
   setReg('d0', t3);
   setReg('d1', t1);
@@ -8690,10 +8690,10 @@ export function fn_0910e(a2_: number, d0_: number, d1_: number, d2_: number, arg
   if (((load16(0x3e1948)) & 65535) === ((0) & 65535)) {
   } else {
     if ((((load8(a2)) >>> ((0x0) & 7)) & 1) === 0) {
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffffff00) | ((d2 & 255) & 255));
     } else {
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
     }
     push(d0, 4);
@@ -8707,10 +8707,10 @@ export function fn_0910e(a2_: number, d0_: number, d1_: number, d2_: number, arg
     d1 = getReg('d1');
     d2 = getReg('d2');
     drop(4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a2) & 255));
     d0 = (d0 + 0x1);
-    d1 = 0x3;
+    d1 = 3;
     d0 = (d0 & d1);
     store8(a2, (d0 & 255));
   }
@@ -8786,7 +8786,7 @@ export function fn_0a80c(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         d5 = getReg('d5');
         d6 = getReg('d6');
         a0 = 0x3e1ae6;
-        d2 = 0xf;
+        d2 = 15;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -8798,9 +8798,9 @@ export function fn_0a80c(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         _at = ((d2 & 0xffff) !== 0xffff) ? 1 : 2; continue dispatch;
       }
       case 2: {
-        d0 = 0xff;
+        d0 = -1;
         a0 = 0x3e1c44;
-        d2 = 0x1f;
+        d2 = 31;
         _at = 3; continue dispatch;
       }
       case 3: {
@@ -8811,7 +8811,7 @@ export function fn_0a80c(a0_: number, a1_: number, a2_: number, a3_: number, a4_
       }
       case 4: {
         a0 = 0x3e1bc6;
-        d2 = 0x6;
+        d2 = 6;
         _at = 5; continue dispatch;
       }
       case 5: {
@@ -8868,7 +8868,7 @@ export function fn_0a80c(a0_: number, a1_: number, a2_: number, a3_: number, a4_
         a0 = d3;
         store32(a0 + 0x34, d1);
         d5 = (d5 + 0x30c);
-        d0 = 0x7e;
+        d0 = 126;
         d3 = (d3 + d0);
         d2 = ((d2 & 0xffff0000) | (((d2 & 65535) + 0x1) & 65535));
         a2 = (a2 + 0x1);
@@ -8975,7 +8975,7 @@ export function fn_0a90e(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   a0 = load32(0x3e1c84);
   store32(a0 + 0x2c, 0x3e1c44);
   if (((load8(0x3e1954)) & 255) !== ((0x2) & 255)) {
-    d2 = 0x3;
+    d2 = 3;
     setReg('a0', a0);
     setReg('a2', a2);
     setReg('a3', a3);
@@ -9084,7 +9084,7 @@ export function fn_0a90e(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d4 = getReg('d4');
     drop(24);
   } else {
-    d2 = 0x3;
+    d2 = 3;
     a4 = 0x3e1968;
     d4 = ((d4 & 0xffff0000) | (0 & 65535));
     d3 = 0x11b48;
@@ -9110,7 +9110,7 @@ export function fn_0a90e(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         a3 = save_a3_4;
         a4 = save_a4_5;
       } else {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a2) & 255));
         push(d0, 4);
         push(d3, 4);
@@ -9233,12 +9233,12 @@ export function fn_0af72(a0_: number, a2_: number, d0_: number, d2_: number, d3_
         save_d5_3 = d5;
         save_d6_4 = d6;
         save_a2_5 = a2;
-        d2 = 0x20;
-        d4 = 0x1;
-        d3 = 0x12;
+        d2 = 32;
+        d4 = 1;
+        d3 = 18;
         a2 = 0x3e1bc6;
         d6 = ((d6 & 0xffff0000) | (0 & 65535));
-        d5 = 0x6;
+        d5 = 6;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -9294,7 +9294,7 @@ export function fn_0af72(a0_: number, a2_: number, d0_: number, d2_: number, d3_
         _at = ((d5 & 0xffff) !== 0xffff) ? 1 : 6; continue dispatch;
       }
       case 6: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
         d2 = save_d2_0;
         d3 = save_d3_1;
@@ -9329,7 +9329,7 @@ export function fn_0b2b0(a0_: number, d0_: number, d1_: number): void {
     switch (_at) {
       case 0: {
         a0 = 0x3e1ae6;
-        d1 = 0xf;
+        d1 = 15;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -9368,7 +9368,7 @@ export function fn_0b2cc(a0_: number, d0_: number, d1_: number): void {
     switch (_at) {
       case 0: {
         a0 = 0x3e1bc6;
-        d1 = 0x6;
+        d1 = 6;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -9486,22 +9486,22 @@ export function fn_0b330(a0_: number, d0_: number, arg0: number): void {
                               } else {
                                 a0 = (a0 - 1);
                                 if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                                  d0 = 0x0;
+                                  d0 = 0;
                                 } else {
-                                  d0 = 0x1;
+                                  d0 = 1;
                                 }
                               }
-                              d0 = 0x0;
+                              d0 = 0;
                             }
                           }
                           a0 = (a0 - 1);
                           if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                            d0 = 0x0;
+                            d0 = 0;
                           } else {
-                            d0 = 0x1;
+                            d0 = 1;
                           }
                         }
-                        d0 = 0x0;
+                        d0 = 0;
                       }
                     }
                     a0 = (a0 + -0x20);
@@ -9515,24 +9515,24 @@ export function fn_0b330(a0_: number, d0_: number, arg0: number): void {
                         } else {
                           a0 = (a0 - 1);
                           if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                            d0 = 0x0;
+                            d0 = 0;
                           } else {
-                            d0 = 0x1;
+                            d0 = 1;
                           }
                         }
-                        d0 = 0x0;
+                        d0 = 0;
                       }
                     }
                     a0 = (a0 - 1);
                     if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                      d0 = 0x0;
+                      d0 = 0;
                     } else {
-                      d0 = 0x1;
+                      d0 = 1;
                     }
                   }
                 }
               }
-              d0 = 0x0;
+              d0 = 0;
             }
           }
           a0 = (a0 + 0x1);
@@ -9561,22 +9561,22 @@ export function fn_0b330(a0_: number, d0_: number, arg0: number): void {
                         } else {
                           a0 = (a0 - 1);
                           if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                            d0 = 0x0;
+                            d0 = 0;
                           } else {
-                            d0 = 0x1;
+                            d0 = 1;
                           }
                         }
-                        d0 = 0x0;
+                        d0 = 0;
                       }
                     }
                     a0 = (a0 - 1);
                     if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                      d0 = 0x0;
+                      d0 = 0;
                     } else {
-                      d0 = 0x1;
+                      d0 = 1;
                     }
                   }
-                  d0 = 0x0;
+                  d0 = 0;
                 }
               }
               a0 = (a0 + -0x20);
@@ -9590,24 +9590,24 @@ export function fn_0b330(a0_: number, d0_: number, arg0: number): void {
                   } else {
                     a0 = (a0 - 1);
                     if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                      d0 = 0x0;
+                      d0 = 0;
                     } else {
-                      d0 = 0x1;
+                      d0 = 1;
                     }
                   }
-                  d0 = 0x0;
+                  d0 = 0;
                 }
               }
               a0 = (a0 - 1);
               if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                d0 = 0x0;
+                d0 = 0;
               } else {
-                d0 = 0x1;
+                d0 = 1;
               }
             }
           }
         }
-        d0 = 0x0;
+        d0 = 0;
       }
     }
     a0 = (a0 + 0x20);
@@ -9645,22 +9645,22 @@ export function fn_0b330(a0_: number, d0_: number, arg0: number): void {
                         } else {
                           a0 = (a0 - 1);
                           if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                            d0 = 0x0;
+                            d0 = 0;
                           } else {
-                            d0 = 0x1;
+                            d0 = 1;
                           }
                         }
-                        d0 = 0x0;
+                        d0 = 0;
                       }
                     }
                     a0 = (a0 - 1);
                     if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                      d0 = 0x0;
+                      d0 = 0;
                     } else {
-                      d0 = 0x1;
+                      d0 = 1;
                     }
                   }
-                  d0 = 0x0;
+                  d0 = 0;
                 }
               }
               a0 = (a0 + -0x20);
@@ -9674,24 +9674,24 @@ export function fn_0b330(a0_: number, d0_: number, arg0: number): void {
                   } else {
                     a0 = (a0 - 1);
                     if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                      d0 = 0x0;
+                      d0 = 0;
                     } else {
-                      d0 = 0x1;
+                      d0 = 1;
                     }
                   }
-                  d0 = 0x0;
+                  d0 = 0;
                 }
               }
               a0 = (a0 - 1);
               if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                d0 = 0x0;
+                d0 = 0;
               } else {
-                d0 = 0x1;
+                d0 = 1;
               }
             }
           }
         }
-        d0 = 0x0;
+        d0 = 0;
       }
     }
     a0 = (a0 + 0x1);
@@ -9720,22 +9720,22 @@ export function fn_0b330(a0_: number, d0_: number, arg0: number): void {
                   } else {
                     a0 = (a0 - 1);
                     if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                      d0 = 0x0;
+                      d0 = 0;
                     } else {
-                      d0 = 0x1;
+                      d0 = 1;
                     }
                   }
-                  d0 = 0x0;
+                  d0 = 0;
                 }
               }
               a0 = (a0 - 1);
               if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                d0 = 0x0;
+                d0 = 0;
               } else {
-                d0 = 0x1;
+                d0 = 1;
               }
             }
-            d0 = 0x0;
+            d0 = 0;
           }
         }
         a0 = (a0 + -0x20);
@@ -9749,24 +9749,24 @@ export function fn_0b330(a0_: number, d0_: number, arg0: number): void {
             } else {
               a0 = (a0 - 1);
               if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-                d0 = 0x0;
+                d0 = 0;
               } else {
-                d0 = 0x1;
+                d0 = 1;
               }
             }
-            d0 = 0x0;
+            d0 = 0;
           }
         }
         a0 = (a0 - 1);
         if (((load8(a0)) & 255) !== ((0x5) & 255)) {
-          d0 = 0x0;
+          d0 = 0;
         } else {
-          d0 = 0x1;
+          d0 = 1;
         }
       }
     }
   }
-  d0 = 0x0;
+  d0 = 0;
   setReg('a0', a0);
   setReg('d0', d0);
 }
@@ -9808,7 +9808,7 @@ export function fn_0b958(a0_: number, d0_: number, d1_: number, d2_: number, d3_
         d2 = ((d2 & 0xffff0000) | ((t5 >= 16 ? 0 : (((d2 & 65535)) << t5)) & 65535));
         t6 = ((0x5) & 63);
         d1 = ((d1 & 0xffff0000) | ((t6 >= 16 ? 0 : (((d1 & 65535)) << t6)) & 65535));
-        d5 = 0x6;
+        d5 = 6;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -9857,11 +9857,11 @@ export function fn_0b958(a0_: number, d0_: number, d1_: number, d2_: number, d3_
         _at = (d0 === 0) ? 8 : 7; continue dispatch;
       }
       case 7: {
-        d0 = 0x2;
+        d0 = 2;
         _at = 11; continue dispatch;
       }
       case 8: {
-        d0 = 0x1;
+        d0 = 1;
         _at = 11; continue dispatch;
       }
       case 9: {
@@ -9870,7 +9870,7 @@ export function fn_0b958(a0_: number, d0_: number, d1_: number, d2_: number, d3_
         _at = ((d5 & 0xffff) !== 0xffff) ? 1 : 10; continue dispatch;
       }
       case 10: {
-        d0 = 0x0;
+        d0 = 0;
         _at = 11; continue dispatch;
       }
       case 11: {
@@ -9905,7 +9905,7 @@ export function fn_0c1ee(a0_: number, d0_: number): void {
     switch (_at) {
       case 0: {
         a0 = 0x3e1c44;
-        d0 = 0x1f;
+        d0 = 31;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -9936,11 +9936,11 @@ export function fn_0c4e8(arg0: number): void {
   store32(t0 + 0x4, load32(arg0 + 0x4));
   const t1 = load32(arg0 + 0x4);
   store32(t1, load32(arg0));
-  store32(arg0 + 0x4, 0x0);
-  store32(arg0, 0x0);
+  store32(arg0 + 0x4, 0);
+  store32(arg0, 0);
   setReg('a0', arg0);
   setReg('a1', t1);
-  setReg('d0', 0x0);
+  setReg('d0', 0);
 }
 
 export function fn_0c504(a2_: number, d0_: number, d1_: number, d2_: number, d3_: number): void {
@@ -9976,7 +9976,7 @@ export function fn_0c504(a2_: number, d0_: number, d1_: number, d2_: number, d3_
     d0 = d3;
     drop(4);
   } else {
-    d0 = 0x0;
+    d0 = 0;
   }
   d2 = save_d2_0;
   d3 = save_d3_1;
@@ -10000,7 +10000,7 @@ export function fn_0c568(d0_: number, d2_: number, d3_: number, d4_: number, d5_
   const save_d3_1 = d3;
   const save_d4_2 = d4;
   const save_d5_3 = d5;
-  d2 = 0x32;
+  d2 = 50;
   store8(0x3e2498, 0x1);
   d0 = 0x3e20a0;
   store32(0x3e20a4, d0);
@@ -10094,7 +10094,7 @@ export function fn_0cae2(d0_: number, d1_: number, d2_: number, d3_: number, arg
   d3 = ((d3 & 0xffff0000) | ((arg0 & 0xffff) & 65535));
   d2 = ((d2 & 0xffff0000) | ((arg1 & 0xffff) & 65535));
   d1 = ((d1 & 0xffff0000) | ((arg2 & 0xffff) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | (load8(0x3e195c) & 255));
   if ((((d0 & 65535)) & 65535) !== (((d1 & 65535)) & 65535)) {
   } else {
@@ -10104,7 +10104,7 @@ export function fn_0cae2(d0_: number, d1_: number, d2_: number, d3_: number, arg
     } else {
       if (((load8(0x3e1950)) & 255) !== ((0) & 255)) {
       } else {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
         push(d0, 4);
         setReg('d0', d0);
@@ -10152,7 +10152,7 @@ export function fn_0cb24(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         save_d4_2 = d4;
         save_d5_3 = d5;
         save_a2_4 = a2;
-        d2 = 0xf;
+        d2 = 15;
         a2 = 0x3e1968;
         d5 = ((d5 & 0xffff0000) | (0 & 65535));
         d4 = 0x11b0c;
@@ -10178,7 +10178,7 @@ export function fn_0cb24(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         _at = (d0 !== 0) ? 3 : 2; continue dispatch;
       }
       case 2: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a2 + 0x2) & 255));
         d0 = (d0 + 0x1);
         push(d0, 4);
@@ -10239,7 +10239,7 @@ export function fn_0cb24(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         d3 = getReg('d3');
         d4 = getReg('d4');
         d5 = getReg('d5');
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a2 + 0x2) & 255));
         d0 = (d0 + 0x1);
         push(d0, 4);
@@ -10261,7 +10261,7 @@ export function fn_0cb24(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         _at = 6; continue dispatch;
       }
       case 6: {
-        d0 = 0x7e;
+        d0 = 126;
         a2 = (a2 + d0);
         d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + 0x1) & 65535));
         _at = (((((d5 & 65535)) << 16) >> 16) < (((0x3) << 16) >> 16)) ? 1 : 7; continue dispatch;
@@ -10293,7 +10293,7 @@ export function fn_0cc18(a3_: number, a4_: number, a6_: number, d0_: number, d3_
   let a6 = a6_;
   let d0 = d0_;
   let d3 = d3_;
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | (load8(a3 + 0x14) & 255));
   store16(a6 + -0x2, (d0 & 65535));
   a4 = load32(0x21576);
@@ -10412,7 +10412,7 @@ export function fn_0ce48(a0_: number, d0_: number, d1_: number, arg0: number, ar
   if (((load8(a0 + 0x1d)) & 255) !== ((0) & 255)) {
   } else {
     store8(0x3e1950, 0x46);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a0 + 0x2) & 255));
     const t0 = ((0x2) & 63);
     d0 = (t0 >= 32 ? 0 : ((d0) << t0));
@@ -10452,14 +10452,14 @@ export function fn_0cee8(a2_: number, d0_: number, d2_: number, d3_: number, d4_
   a2 = 0x3e1968;
   if (((load8(0x3e1952)) & 255) < ((0x2) & 255)) {
   } else {
-    d3 = 0x18;
-    d2 = 0xff;
-    d4 = 0x7e;
+    d3 = 24;
+    d2 = -1;
+    d4 = 126;
     d6 = ((d6 & 0xffff0000) | (0 & 65535));
     d5 = 0x11bc0;
     for (;;) {
       if (++_guard > 4000000) throw new Error('loop 2 did not end');
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
       d0 = (d0 & 0x8000);
       if (d0 === 0) {
@@ -10475,7 +10475,7 @@ export function fn_0cee8(a2_: number, d0_: number, d2_: number, d3_: number, d4_
         d6 = save_d6_4;
         a2 = save_a2_5;
       } else {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a2 + 0x20) & 255));
         if (d0 <= d3) {
           a2 = (a2 + d4);
@@ -10569,9 +10569,9 @@ export function fn_0d696(a2_: number, d0_: number, d2_: number, d3_: number, d4_
   const save_d4_2 = d4;
   const save_d5_3 = d5;
   const save_a2_4 = a2;
-  d2 = 0x3;
+  d2 = 3;
   d4 = ((d4 & 0xffff0000) | (0xbfff & 65535));
-  d3 = 0x7e;
+  d3 = 126;
   setReg('a2', a2);
   setReg('d2', d2);
   setReg('d3', d3);
@@ -10669,7 +10669,7 @@ export function fn_0d696(a2_: number, d0_: number, d2_: number, d3_: number, d4_
     a2 = (a2 + d3);
     drop(4);
     d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + 0x1) & 65535));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
     if (d0 < d2) {
       continue;
@@ -10975,11 +10975,11 @@ export function fn_0dad6(): void {
   push(0xf0, 4);
   push(0x2, 4);
   push(0x12, 4);
-  const t0 = (0x200004 + 0x60);
+  const t0 = (0x200004 + 96);
   const t1 = (t0 + 0x18000);
   push(t1, 4);
   push(load32(0x214c2), 4);
-  setReg('d0', 0x60);
+  setReg('d0', 96);
   setReg('d1', t1);
   callRom(0x035ee, 0x0dafe);
   drop(20);
@@ -11025,7 +11025,7 @@ export function fn_0dbe6(d0_: number, d1_: number, arg0: number): void {
     d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   }
   d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   push(d0, 4);
   setReg('d0', d0);
@@ -11062,7 +11062,7 @@ export function fn_0dc10(d0_: number, d1_: number, arg0: number): void {
     d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   }
   d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   push(d0, 4);
   setReg('d0', d0);
@@ -11100,7 +11100,7 @@ export function fn_0de1a(a2_: number, a3_: number, d0_: number, d2_: number, d3_
         save_a2_3 = a2;
         save_a3_4 = a3;
         a3 = 0x3e1870;
-        d2 = 0x1;
+        d2 = 1;
         d4 = ((d4 & 0xffff0000) | (0 & 65535));
         a2 = 0x3e1968;
         d3 = ((d3 & 0xffff0000) | (0 & 65535));
@@ -11108,7 +11108,7 @@ export function fn_0de1a(a2_: number, a3_: number, d0_: number, d2_: number, d3_
       }
       case 1: {
         push(0x3, 4);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
         push(d0, 4);
         setReg('a2', a2);
@@ -11234,7 +11234,7 @@ export function fn_0de1a(a2_: number, a3_: number, d0_: number, d2_: number, d3_
         _at = ((((d3 & 65535)) & 65535) < ((0x3) & 65535)) ? 1 : 10; continue dispatch;
       }
       case 10: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
         d2 = save_d2_0;
         d3 = save_d3_1;
@@ -11259,7 +11259,7 @@ export function fn_0e000(): void {
   push(0x14, 4);
   callRom(0x0018a, 0x0e00a);
   const t0 = load16(0x284);
-  const t1 = ((0x0 & 0xffff0000) | (t0 & 0xffff));
+  const t1 = ((0 & 0xffff0000) | (t0 & 0xffff));
   push(t1, 4);
   push(0x15, 4);
   setReg('d0', t1);
@@ -11370,7 +11370,7 @@ export function fn_0e0ee(a0_: number, a2_: number, a3_: number, a4_: number, a5_
         push(0x6, 4);
         push(0x14, 4);
         d1 = 0x200004;
-        d0 = 0x58;
+        d0 = 88;
         d1 = (d1 + d0);
         d1 = (d1 + 0x4000);
         push(d1, 4);
@@ -11448,7 +11448,7 @@ export function fn_0e0ee(a0_: number, a2_: number, a3_: number, a4_: number, a5_
         push(0x6, 4);
         push(0x14, 4);
         d1 = 0x200004;
-        d0 = 0x58;
+        d0 = 88;
         d1 = (d1 + d0);
         d1 = (d1 + 0x4000);
         push(d1, 4);
@@ -11577,15 +11577,15 @@ export function fn_0e0ee(a0_: number, a2_: number, a3_: number, a4_: number, a5_
         d5 = getReg('d5');
         d6 = getReg('d6');
         drop(20);
-        d3 = 0x1;
+        d3 = 1;
         d4 = 0xf0;
         store8(a6 + -0x14, 0);
         store8(a6 + -0x1a, 0x12);
-        d0 = 0xc;
+        d0 = 12;
         store32(a6 + -0x4, d0);
         store8(a6 + -0x5, 0);
         store32(a6 + -0xe, 0);
-        d2 = 0x1;
+        d2 = 1;
         a4 = 0x1195c;
         a2 = (a6 + -0x1a);
         _at = 7; continue dispatch;
@@ -11836,7 +11836,7 @@ export function fn_0e0ee(a0_: number, a2_: number, a3_: number, a4_: number, a5_
         store32(a6 + -0x4, (load32(a6 + -0x4) + 0x1));
         store32(a6 + -0xe, (load32(a6 + -0xe) + 0x1));
         d2 = (d2 + 0x1);
-        d0 = 0xa;
+        d0 = 10;
         _at = ((d0 | 0) > (load32(a6 + -0xe) | 0)) ? 7 : 11; continue dispatch;
       }
       case 11: {
@@ -11881,8 +11881,8 @@ export function fn_0e332(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   let d3 = d3_;
   const save_d2_0 = d2;
   const save_d3_1 = d3;
-  d3 = 0x3;
-  d2 = 0x41;
+  d3 = 3;
+  d2 = 65;
   store8(0x3e1cd4, 0);
   store16(0x3e1cd2, 0x4b0);
   push(0x8, 4);
@@ -11956,7 +11956,7 @@ export function fn_0e516(d0_: number): void {
     d0 = getReg('d0');
     drop(4);
     if ((d0 | 0) < (0xc8 | 0)) {
-      d0 = 0x0;
+      d0 = 0;
     } else {
       setReg('d0', d0);
       callRom(0x0e546, 0x0e53c);
@@ -11964,10 +11964,10 @@ export function fn_0e516(d0_: number): void {
       setReg('d0', d0);
       callRom(0x0e554, 0x0e53e);
       d0 = getReg('d0');
-      d0 = 0x1;
+      d0 = 1;
     }
   }
-  d0 = 0x0;
+  d0 = 0;
   setReg('d0', d0);
 }
 
@@ -11995,7 +11995,7 @@ export function fn_0e7a8(a0_: number, a1_: number, a7_: number, d0_: number, d1_
   let d1 = d1_;
   let d2 = d2_;
   push(d2, 4);
-  d1 = 0x3;
+  d1 = 3;
   a1 = 0x3e1968;
   d2 = ((d2 & 0xffff0000) | (0 & 65535));
   for (;;) {
@@ -12013,7 +12013,7 @@ export function fn_0e7a8(a0_: number, a1_: number, a7_: number, d0_: number, d1_
     }
     break;
   }
-  d1 = 0x6;
+  d1 = 6;
   store32(0x3e1964, a1);
   store8(0x3e195a, (d2 & 255));
   d2 = ((d2 & 0xffff0000) | (0 & 65535));
@@ -12033,7 +12033,7 @@ export function fn_0e7a8(a0_: number, a1_: number, a7_: number, d0_: number, d1_
   store8(0x3e1cb4, 0);
   store8(0x3e0dd2, 0);
   store8(a1 + 0x1e, 0);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | (load8(a1 + 0x2) & 255));
   d0 = (d0 + 0x1);
   a0 = 0x3e186c;
@@ -12088,7 +12088,7 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   a4 = 0x3e0dd4;
   if (((load8(0x3e1954)) & 255) !== ((0x1) & 255)) {
     store8(a3, 0);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a4) & 255));
     const t3 = ((0x2) & 63);
     d0 = (t3 >= 32 ? 0 : ((d0) << t3));
@@ -12154,7 +12154,7 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     a3 = getReg('a3');
     a4 = getReg('a4');
     d0 = getReg('d0');
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a4) & 255));
     d0 = (d0 + d0);
     a0 = 0x104f8;
@@ -12166,10 +12166,10 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     a0 = (a0 + 1);
     store8(a1, load8(a0));
     a1 = (a1 + 1);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a4) & 255));
     push(d0, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e195a) & 255));
     push(d0, 4);
     setReg('a0', a0);
@@ -12198,14 +12198,14 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     a3 = getReg('a3');
     a4 = getReg('a4');
     d0 = getReg('d0');
-    d0 = 0x0;
+    d0 = 0;
     drop(24);
   } else {
     if (((load8(a3)) & 255) >= ((0x5) & 255)) {
       if (((load8(a3)) & 255) !== ((0x5) & 255)) {
-        d0 = 0x2;
+        d0 = 2;
       } else {
-        d0 = 0x1;
+        d0 = 1;
       }
     } else {
       setReg('a2', a2);
@@ -12296,7 +12296,7 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
       a4 = getReg('a4');
       drop(28);
       if (((load8(a3)) & 255) >= ((0x3) & 255)) {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a3) & 255));
         a1 = 0x11aae;
         store8(0x3e0de4, load8((a1 + ((d0 << 16) >> 16))));
@@ -12317,7 +12317,7 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
       }
       store8(0x3e1886, 0x13);
       store8(0x3e1887, 0x18);
-      d0 = 0x0;
+      d0 = 0;
     }
   }
   a2 = save_a2_0;
@@ -12408,19 +12408,19 @@ export function fn_0ecfa(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         save_a3_5 = a3;
         save_a4_6 = a4;
         a0 = arg0;
-        d2 = 0xc;
+        d2 = 12;
         a4 = load32(a0 + 0x4a);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(0x3e195a) & 255));
         t7 = ((0x2) & 63);
         d0 = (t7 >= 32 ? 0 : ((d0) << t7));
         a0 = 0x2159a;
         d5 = load32((a0 + (d0 | 0)));
-        d1 = 0x0;
+        d1 = 0;
         d1 = ((d1 & 0xffffff00) | (load8(0x3e195a) & 255));
         d1 = (d1 + 0x1);
         a0 = 0xfe02;
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8((a0 + (d1 | 0))) & 255));
         d4 = ((d4 & 0xffff0000) | ((d0 & 65535) & 65535));
         d3 = ((d3 & 0xffff0000) | (0 & 65535));
@@ -12447,7 +12447,7 @@ export function fn_0ecfa(a0_: number, a2_: number, a3_: number, a4_: number, d0_
         d1 = (d1 + d0);
         a0 = a3;
         a0 = (a0 + d1);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
         push(d0, 4);
         push(0x5, 4);
@@ -12527,7 +12527,7 @@ export function fn_0edea(a0_: number, a2_: number, a7_: number, d0_: number): vo
   } else {
     store8(a2, load8(0x3e0de4));
   }
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffffff00) | (load8(a2) & 255));
   a0 = 0x11ac0;
   store8(0x3e0dd4, load8((a0 + ((d0 << 16) >> 16))));
@@ -12541,7 +12541,7 @@ export function fn_0edea(a0_: number, a2_: number, a7_: number, d0_: number): vo
 
 export function fn_0ee22(): void {
   const t0 = load8(0x3e0dd2);
-  const t1 = ((0x0 & 0xffffff00) | (t0 & 0xff));
+  const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
   store8(0x3e0dd4, load8((0x140034 + (t1 | 0))));
   setReg('a0', 0x140034);
   setReg('d0', t1);
@@ -12947,8 +12947,8 @@ export function fn_11ff8(a1_: number, d0_: number, d1_: number, d2_: number, d3_
         save_a1_3 = a1;
         d2 = ((d2 & 0xffff0000) | ((arg1 & 0xffff) & 65535));
         a1 = arg0;
-        d1 = 0x7;
-        d3 = 0x7;
+        d1 = 7;
+        d3 = 7;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -12962,7 +12962,7 @@ export function fn_11ff8(a1_: number, d0_: number, d1_: number, d2_: number, d3_
       }
       case 2: {
         a1 = (a1 + 0x1f8);
-        d1 = 0x7;
+        d1 = 7;
         d3 = ((d3 & 0xffff0000) | (((d3 & 0xffff) - 1) & 0xffff));
         _at = ((d3 & 0xffff) !== 0xffff) ? 1 : 3; continue dispatch;
       }
@@ -13003,8 +13003,8 @@ export function fn_12026(a1_: number, d0_: number, d1_: number, d2_: number, arg
         save_a1_2 = a1;
         d0 = ((d0 & 0xffff0000) | ((arg1 & 0xffff) & 65535));
         a1 = arg0;
-        d1 = 0x3;
-        d2 = 0x7;
+        d1 = 3;
+        d2 = 7;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -13015,7 +13015,7 @@ export function fn_12026(a1_: number, d0_: number, d1_: number, d2_: number, arg
       }
       case 2: {
         a1 = (a1 + 0x1fc);
-        d1 = 0x3;
+        d1 = 3;
         d2 = ((d2 & 0xffff0000) | (((d2 & 0xffff) - 1) & 0xffff));
         _at = ((d2 & 0xffff) !== 0xffff) ? 1 : 3; continue dispatch;
       }
@@ -13041,7 +13041,7 @@ export function fn_12066(a1_: number, d0_: number, d1_: number, d2_: number): vo
   let d0 = d0_;
   let d1 = d1_;
   let d2 = d2_;
-  d2 = 0x7;
+  d2 = 7;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
     d1 = ((d1 & 0xffffff00) | (load8(a1) & 255));
@@ -13380,8 +13380,8 @@ export function fn_13000(a0_: number, a1_: number, d0_: number, d1_: number): vo
       }
       case 10: {
         a0 = 0x3e3f40;
-        d0 = 0x0;
-        d1 = 0x20;
+        d0 = 0;
+        d1 = 32;
         _at = 11; continue dispatch;
       }
       case 11: {
@@ -13392,8 +13392,8 @@ export function fn_13000(a0_: number, a1_: number, d0_: number, d1_: number): vo
       }
       case 12: {
         a0 = 0x3e3f00;
-        d0 = 0x0;
-        d1 = 0x20;
+        d0 = 0;
+        d1 = 32;
         _at = 13; continue dispatch;
       }
       case 13: {
@@ -13616,22 +13616,22 @@ export function fn_13f98(d0_: number, d1_: number): void {
     d0 = ((d0 & 0xffff0000) | (load16(0x3e3444) & 65535));
     d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x8000) & 65535));
     if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffff0000) | (load16(0x3e3444) & 65535));
-      d1 = 0xb;
+      d1 = 11;
       const t0 = ((d1) & 63);
       d0 = (t0 >= 32 ? 0 : ((d0) >>> t0));
-      d1 = 0x0;
+      d1 = 0;
       d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
       d0 = d1;
-      d1 = 0x7;
+      d1 = 7;
       d0 = (d0 & d1);
       d0 = (d0 + 0x1);
     } else {
-      d0 = 0x0;
+      d0 = 0;
     }
   } else {
-    d0 = 0xff;
+    d0 = -1;
   }
   setReg('d0', d0);
   setReg('d1', d1);
@@ -13657,12 +13657,12 @@ export function fn_141d4(d0_: number, d1_: number, d2_: number, d3_: number): vo
         _at = (((load8(0x3e344a)) & 255) !== ((0) & 255)) ? 2 : 1; continue dispatch;
       }
       case 1: {
-        d0 = 0xff;
+        d0 = -1;
         _at = 13; continue dispatch;
       }
       case 2: {
-        d3 = 0x0;
-        d2 = 0x2;
+        d3 = 0;
+        d2 = 2;
         _at = 3; continue dispatch;
       }
       case 3: {
@@ -13698,7 +13698,7 @@ export function fn_141d4(d0_: number, d1_: number, d2_: number, d3_: number): vo
         _at = 10; continue dispatch;
       }
       case 8: {
-        d0 = 0x1;
+        d0 = 1;
         _at = 10; continue dispatch;
       }
       case 9: {
@@ -13726,7 +13726,7 @@ export function fn_141d4(d0_: number, d1_: number, d2_: number, d3_: number): vo
         _at = (((load8(0x3e344a)) & 255) !== ((0) & 255)) ? 16 : 15; continue dispatch;
       }
       case 15: {
-        d0 = 0xff;
+        d0 = -1;
         _at = 19; continue dispatch;
       }
       case 16: {
@@ -13743,11 +13743,11 @@ export function fn_141d4(d0_: number, d1_: number, d2_: number, d3_: number): vo
         _at = ((((d1 & 65535)) & 65535) !== ((0) & 65535)) ? 18 : 17; continue dispatch;
       }
       case 17: {
-        d0 = 0x0;
+        d0 = 0;
         _at = 19; continue dispatch;
       }
       case 18: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
         push(d0, 4);
         setReg('d0', d0);
@@ -13797,13 +13797,13 @@ export function fn_144ae(d0_: number, d1_: number): void {
   void _guard;
   let d0 = d0_;
   let d1 = d1_;
-  d1 = 0x1;
+  d1 = 1;
   d0 = ((d0 & 0xffff0000) | (load16(0x3e352a) & 65535));
   if ((((d0 & 65535)) & 65535) !== ((load16(0x3e3528)) & 65535)) {
   } else {
     if (load32(0x3e3536) !== 0) {
     } else {
-      d1 = 0x0;
+      d1 = 0;
     }
   }
   d0 = d1;
@@ -13963,7 +13963,7 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         d0 = ((d0 & 0xffffff00) | (0 & 255));
         store8(a2 + 0x15, (d0 & 255));
         store8(a2 + 0x14, (d0 & 255));
-        d2 = 0x0;
+        d2 = 0;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -14084,18 +14084,18 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         _at = 6; continue dispatch;
       }
       case 5: {
-        d0 = 0xff;
+        d0 = -1;
         _at = ((d0 | 0) > (d3 | 0)) ? 7 : 6; continue dispatch;
       }
       case 6: {
-        d0 = 0xa;
+        d0 = 10;
         d4 = (d4 + d0);
         d2 = (d2 + 0x1);
-        d0 = 0x4;
+        d0 = 4;
         _at = ((d0 | 0) > (d2 | 0)) ? 1 : 7; continue dispatch;
       }
       case 7: {
-        d0 = 0xff;
+        d0 = -1;
         _at = ((d0 | 0) <= (d3 | 0)) ? 11 : 8; continue dispatch;
       }
       case 8: {
@@ -14138,7 +14138,7 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         d4 = getReg('d4');
         store8(0x3e34ed, 0x1a);
         d4 = 0x3e34cc;
-        d2 = 0x0;
+        d2 = 0;
         drop(12);
         _at = 9; continue dispatch;
       }
@@ -14185,31 +14185,31 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         d2 = getReg('d2');
         d3 = getReg('d3');
         d4 = getReg('d4');
-        d0 = 0xa;
+        d0 = 10;
         d4 = (d4 + d0);
         drop(24);
         d2 = (d2 + 0x1);
-        d0 = 0x4;
+        d0 = 4;
         _at = ((d0 | 0) <= (d2 | 0)) ? 20 : 10; continue dispatch;
       }
       case 10: {
         _at = 9; continue dispatch;
       }
       case 11: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(0x3e34ed) & 255));
         d3 = d0;
-        d0 = 0x1a;
+        d0 = 26;
         _at = ((d0 | 0) > (d3 | 0)) ? 13 : 12; continue dispatch;
       }
       case 12: {
-        d0 = 0x20;
+        d0 = 32;
         _at = ((d0 | 0) >= (d3 | 0)) ? 14 : 13; continue dispatch;
       }
       case 13: {
-        d3 = 0x1a;
+        d3 = 26;
         store8(0x3e34ed, (d3 & 255));
-        d2 = 0x3;
+        d2 = 3;
         d0 = d2;
         d0 = (d0 + d0);
         d1 = d0;
@@ -14270,7 +14270,7 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
       }
       case 14: {
         d4 = a4;
-        d2 = 0x0;
+        d2 = 0;
         _at = 15; continue dispatch;
       }
       case 15: {
@@ -14297,19 +14297,19 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         d3 = getReg('d3');
         d4 = getReg('d4');
         d1 = d0;
-        d0 = 0xff;
+        d0 = -1;
         drop(12);
         _at = ((d0 | 0) > (d1 | 0)) ? 17 : 16; continue dispatch;
       }
       case 16: {
-        d0 = 0xa;
+        d0 = 10;
         d4 = (d4 + d0);
         d2 = (d2 + 0x1);
-        d0 = 0x2;
+        d0 = 2;
         _at = ((d0 | 0) > (d2 | 0)) ? 15 : 17; continue dispatch;
       }
       case 17: {
-        d0 = 0xff;
+        d0 = -1;
         _at = ((d0 | 0) <= (d1 | 0)) ? 20 : 18; continue dispatch;
       }
       case 18: {
@@ -14334,7 +14334,7 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         d3 = getReg('d3');
         d4 = getReg('d4');
         d4 = a4;
-        d2 = 0x0;
+        d2 = 0;
         drop(12);
         _at = 19; continue dispatch;
       }
@@ -14361,11 +14361,11 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         d2 = getReg('d2');
         d3 = getReg('d3');
         d4 = getReg('d4');
-        d0 = 0xa;
+        d0 = 10;
         d4 = (d4 + d0);
         drop(12);
         d2 = (d2 + 0x1);
-        d0 = 0x2;
+        d0 = 2;
         _at = ((d0 | 0) > (d2 | 0)) ? 19 : 20; continue dispatch;
       }
       case 20: {
@@ -14410,9 +14410,9 @@ export function fn_14578(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         _at = (((load8(a2 + 0x14)) & 255) === ((0) & 255)) ? 23 : 22; continue dispatch;
       }
       case 22: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a2 + 0x14) & 255));
-        d1 = 0x0;
+        d1 = 0;
         d1 = ((d1 & 0xffffff00) | (load8(a2 + 0x15) & 255));
         d0 = (d0 + d1);
         push(d0, 4);
@@ -14492,7 +14492,7 @@ export function fn_14e5c(d0_: number, d1_: number, d2_: number, d3_: number, d4_
   const save_d2_0 = d2;
   const save_d3_1 = d3;
   const save_d4_2 = d4;
-  d2 = 0xe;
+  d2 = 14;
   d3 = 0x3e3454;
   d4 = ((d4 & 0xffff0000) | (0 & 65535));
   for (;;) {
@@ -14508,11 +14508,11 @@ export function fn_14e5c(d0_: number, d1_: number, d2_: number, d3_: number, d4_
     d3 = getReg('d3');
     d4 = getReg('d4');
     push(d3, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
     d1 = d0;
     d2 = ((d2 & 0xffff0000) | (((d2 & 65535) + 0x1) & 65535));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
     push(d0, 4);
     push(0x3e3536, 4);
@@ -14527,14 +14527,14 @@ export function fn_14e5c(d0_: number, d1_: number, d2_: number, d3_: number, d4_
     d2 = getReg('d2');
     d3 = getReg('d3');
     d4 = getReg('d4');
-    d0 = 0xa;
+    d0 = 10;
     d3 = (d3 + d0);
     push(d3, 4);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
     d1 = d0;
     d2 = ((d2 & 0xffff0000) | (((d2 & 65535) + 0x1) & 65535));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
     push(d0, 4);
     push(0x3e3536, 4);
@@ -14549,7 +14549,7 @@ export function fn_14e5c(d0_: number, d1_: number, d2_: number, d3_: number, d4_
     d2 = getReg('d2');
     d3 = getReg('d3');
     d4 = getReg('d4');
-    d0 = 0xa;
+    d0 = 10;
     d3 = (d3 + d0);
     drop(36);
     d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
@@ -14786,9 +14786,9 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
     d3 = getReg('d3');
     d4 = getReg('d4');
     d5 = getReg('d5');
-    d3 = 0x14;
-    d4 = 0x1;
-    d2 = 0x3;
+    d3 = 20;
+    d4 = 1;
+    d2 = 3;
     drop(40);
     for (;;) {
       if (++_guard > 4000000) throw new Error('loop 2 did not end');
@@ -14849,8 +14849,8 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
           d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
           d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x4f0) & 65535));
           if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
-            d4 = 0x1;
-            d3 = 0x14;
+            d4 = 1;
+            d3 = 20;
             if ((((d4 & 65535)) & 65535) !== ((0) & 65535)) {
               push(0x1020, 4);
               push(0x1, 4);
@@ -16368,7 +16368,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -18048,7 +18048,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -18270,7 +18270,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                   }
                 }
               } else {
-                d3 = 0x4;
+                d3 = 4;
                 d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
                 d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x430) & 65535));
                 if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
@@ -19716,7 +19716,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -21396,7 +21396,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -23138,7 +23138,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -24818,7 +24818,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -25040,7 +25040,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                   }
                 }
               } else {
-                d3 = 0x4;
+                d3 = 4;
                 d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
                 d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x430) & 65535));
                 if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
@@ -26486,7 +26486,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -28166,7 +28166,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -28412,8 +28412,8 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
           d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
           d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x4f0) & 65535));
           if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
-            d4 = 0x1;
-            d3 = 0x14;
+            d4 = 1;
+            d3 = 20;
             if ((((d4 & 65535)) & 65535) !== ((0) & 65535)) {
               push(0x1020, 4);
               push(0x1, 4);
@@ -29931,7 +29931,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -31611,7 +31611,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -31833,7 +31833,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                   }
                 }
               } else {
-                d3 = 0x4;
+                d3 = 4;
                 d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
                 d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x430) & 65535));
                 if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
@@ -33279,7 +33279,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -34959,7 +34959,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -36701,7 +36701,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -38381,7 +38381,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -38603,7 +38603,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                   }
                 }
               } else {
-                d3 = 0x4;
+                d3 = 4;
                 d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
                 d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x430) & 65535));
                 if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
@@ -40049,7 +40049,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -41729,7 +41729,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -42012,8 +42012,8 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
           d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
           d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x4f0) & 65535));
           if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
-            d4 = 0x1;
-            d3 = 0x14;
+            d4 = 1;
+            d3 = 20;
             if ((((d4 & 65535)) & 65535) !== ((0) & 65535)) {
               push(0x1020, 4);
               push(0x1, 4);
@@ -43531,7 +43531,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -45211,7 +45211,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -45433,7 +45433,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                   }
                 }
               } else {
-                d3 = 0x4;
+                d3 = 4;
                 d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
                 d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x430) & 65535));
                 if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
@@ -46879,7 +46879,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -48559,7 +48559,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -50301,7 +50301,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -51981,7 +51981,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -52203,7 +52203,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                   }
                 }
               } else {
-                d3 = 0x4;
+                d3 = 4;
                 d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
                 d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x430) & 65535));
                 if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
@@ -53649,7 +53649,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -55329,7 +55329,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -55575,8 +55575,8 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
           d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
           d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x4f0) & 65535));
           if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
-            d4 = 0x1;
-            d3 = 0x14;
+            d4 = 1;
+            d3 = 20;
             if ((((d4 & 65535)) & 65535) !== ((0) & 65535)) {
               push(0x1020, 4);
               push(0x1, 4);
@@ -57094,7 +57094,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -58774,7 +58774,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -58996,7 +58996,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                   }
                 }
               } else {
-                d3 = 0x4;
+                d3 = 4;
                 d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
                 d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x430) & 65535));
                 if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
@@ -60442,7 +60442,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -62122,7 +62122,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -63864,7 +63864,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -65544,7 +65544,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -65766,7 +65766,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                   }
                 }
               } else {
-                d3 = 0x4;
+                d3 = 4;
                 d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
                 d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x430) & 65535));
                 if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
@@ -67212,7 +67212,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -68892,7 +68892,7 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
                         drop(8);
                       }
                     } else {
-                      d2 = 0x1;
+                      d2 = 1;
                       for (;;) {
                         if (++_guard > 4000000) throw new Error('loop 18 did not end');
                         if (((((d2 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) {
@@ -69135,9 +69135,9 @@ export function fn_15672(d0: number, arg0: number): void {
   const t0 = (arg0 & 0xff);
   const t1 = ((d0 & 0xffffff00) | (t0 & 0xff));
   const t2 = ((t1) & 63);
-  const t3 = (t2 >= 32 ? 0 : ((0x1) << t2));
+  const t3 = (t2 >= 32 ? 0 : ((1) << t2));
   const t4 = load8(0x3e365a);
-  const t5 = ((0x0 & 0xffffff00) | (t4 & 0xff));
+  const t5 = ((0 & 0xffffff00) | (t4 & 0xff));
   const t6 = (t3 | t5);
   push(t6, 4);
   setReg('d0', t5);
@@ -69150,10 +69150,10 @@ export function fn_1568e(d1: number, arg0: number): void {
   const t0 = (arg0 & 0xff);
   const t1 = ((d1 & 0xffffff00) | (t0 & 0xff));
   const t2 = ((t1) & 63);
-  const t3 = (t2 >= 32 ? 0 : ((0x1) << t2));
+  const t3 = (t2 >= 32 ? 0 : ((1) << t2));
   const t4 = ((~(t3)) & 4294967295);
   const t5 = load8(0x3e365a);
-  const t6 = ((0x0 & 0xffffff00) | (t5 & 0xff));
+  const t6 = ((0 & 0xffffff00) | (t5 & 0xff));
   const t7 = (t4 & t6);
   push(t7, 4);
   setReg('d0', t7);
@@ -69170,11 +69170,11 @@ export function fn_15830(d0_: number, d1_: number, arg0: number): void {
   d1 = ((d1 & 0xffff0000) | ((arg0 & 0xffff) & 65535));
   if ((((d1 & 65535)) & 65535) <= ((0x13) & 65535)) {
   } else {
-    d1 = 0x13;
+    d1 = 19;
   }
   push(0, 4);
   push(0x1, 4);
-  d0 = 0x0;
+  d0 = 0;
   d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   push(d0, 4);
   push(0x5, 4);
@@ -69220,7 +69220,7 @@ export function fn_1684c(a7_: number, d0_: number, d1_: number, d2_: number, arg
   d2 = getReg('d2');
   drop(8);
   if (d2 !== 0) {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | (load16(0x284) & 65535));
     push(d0, 4);
     push(0x15, 4);
@@ -69238,7 +69238,7 @@ export function fn_1684c(a7_: number, d0_: number, d1_: number, d2_: number, arg
     d0 = getReg('d0');
     d2 = getReg('d2');
     d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
     push(d0, 4);
     push(0x15, 4);
@@ -69251,7 +69251,7 @@ export function fn_1684c(a7_: number, d0_: number, d1_: number, d2_: number, arg
     d2 = getReg('d2');
     drop(20);
   } else {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffff0000) | (load16(0x284) & 65535));
     push(d0, 4);
     push(0x15, 4);
@@ -69847,7 +69847,7 @@ export function fn_174a2(a0_: number, a1_: number, a7_: number, d0_: number, d1_
         push(d2, 4);
         d2 = ((d2 & 0xffff0000) | (0x101 & 65535));
         a1 = 0x200000;
-        d0 = 0x8;
+        d0 = 8;
         _at = 1; continue dispatch;
       }
       case 1: {
@@ -69876,7 +69876,7 @@ export function fn_174a2(a0_: number, a1_: number, a7_: number, d0_: number, d1_
         _at = 5; continue dispatch;
       }
       case 5: {
-        d1 = 0x4;
+        d1 = 4;
         _at = 6; continue dispatch;
       }
       case 6: {
@@ -69956,7 +69956,7 @@ export function fn_1753c(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   a0 = arg0;
   d0 = ((d0 & 0xffff0000) | ((arg1 & 0xffff) & 65535));
   d2 = arg2;
-  d3 = 0x0;
+  d3 = 0;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 2 did not end');
     if ((d3 | 0) < (d2 | 0)) {
@@ -70071,14 +70071,14 @@ export function fn_17ef4(d0_: number, d2_: number, d3_: number, d4_: number, d5_
         _at = 2; continue dispatch;
       }
       case 2: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
         push(d0, 4);
         d6 = ((((d6 & 65535)) << 16) >> 16);
         push(d6, 4);
         d5 = ((((d5 & 65535)) << 16) >> 16);
         push(d5, 4);
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
         push(d0, 4);
         setReg('d0', d0);
@@ -70168,7 +70168,7 @@ export function fn_183f2(a0_: number, d0_: number, arg0: number): void {
   a0 = 0x3e3d8e;
   store16(a0, (load16(a0) & 0x7fff));
   if ((((d0 & 65535)) & 65535) !== ((0) & 65535)) {
-    d0 = 0x0;
+    d0 = 0;
   } else {
     d0 = 0x8000;
   }
@@ -70183,7 +70183,7 @@ export function fn_18418(): void {
   push(0x14, 4);
   callRom(0x1485c, 0x18424);
   const t0 = load16(0x284);
-  const t1 = ((0x0 & 0xffff0000) | (t0 & 0xffff));
+  const t1 = ((0 & 0xffff0000) | (t0 & 0xffff));
   push(t1, 4);
   push(0x15, 4);
   setReg('d0', t1);
@@ -70249,7 +70249,7 @@ export function fn_1885a(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   let d2 = d2_;
   if (((load8((a2 + ((d2 << 16) >> 16) + 0x2c))) & 255) === ((0) & 255)) {
     store8((a2 + ((d2 << 16) >> 16) + 0x2c), 0x1);
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffff0000) | (load16((a2 + ((d0 << 16) >> 16) + 0x10)) & 65535));
     d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
     a0 = load32((a2 + ((d0 << 16) >> 16) + 0x34));
@@ -70300,7 +70300,7 @@ export function fn_1885a(a0_: number, a2_: number, d0_: number, d1_: number, d2_
 
 export function fn_1888c(a2: number, d0: number, d2: number): void {
   const t0 = load8((a2 + ((d2 << 16) >> 16) + 0x30));
-  const t1 = ((0x0 & 0xffffff00) | (t0 & 0xff));
+  const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
   store8((a2 + ((d2 << 16) >> 16) + 0x30), (load8((a2 + ((d2 << 16) >> 16) + 0x30)) + 0x1));
   const t2 = load16((a2 + ((d0 << 16) >> 16) + 0x10));
   const t3 = ((t1 & 0xffff0000) | (t2 & 0xffff));
@@ -70327,7 +70327,7 @@ export function fn_188aa(a0_: number, a1_: number, a2_: number, d0_: number, d1_
   let d0 = d0_;
   let d1 = d1_;
   let d2 = d2_;
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | (load8((a2 + ((d2 << 16) >> 16) + 0x30)) & 255));
   a1 = d1;
   store8((a2 + ((d2 << 16) >> 16) + 0x30), (load8((a2 + ((d2 << 16) >> 16) + 0x30)) + 0x1));
@@ -70361,7 +70361,7 @@ export function fn_188aa(a0_: number, a1_: number, a2_: number, d0_: number, d1_
   const t0 = ((0x2) & 63);
   d0 = ((d0 & 0xffff0000) | ((t0 >= 16 ? 0 : (((d0 & 65535)) << t0)) & 65535));
   a0 = load32((a2 + ((d0 << 16) >> 16) + 0x34));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | (load8(a0 + 0x6) & 255));
   d1 = ((d1 & 0xffff0000) | (((d1 & 65535) + load16(a2)) & 65535));
   d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - 0x1) & 65535));
@@ -70412,14 +70412,14 @@ export function fn_1890c(d0_: number, d1_: number, arg0: number, arg1: number): 
   let d0 = d0_;
   let d1 = d1_;
   if (((load16(0x3e340e)) & 65535) !== ((0) & 65535)) {
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | ((arg1 & 0xff) & 255));
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | ((arg0 & 0xff) & 255));
   } else {
-    d1 = 0x0;
+    d1 = 0;
     d1 = ((d1 & 0xffffff00) | ((arg1 & 0xff) & 255));
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | ((arg0 & 0xff) & 255));
   }
   const t0 = ((0x6) & 63);
@@ -70435,13 +70435,13 @@ export function fn_18cde(d0: number, d1: number, arg0: number, arg1: number): vo
   const t0 = ((d0 & 0xffff) + 0x13);
   const t1 = ((d0 & 0xffff0000) | (t0 & 0xffff));
   const t2 = (arg1 & 0xff);
-  const t3 = ((0x0 & 0xffffff00) | (t2 & 0xff));
+  const t3 = ((0 & 0xffffff00) | (t2 & 0xff));
   const t4 = ((((t3) >>> 16) & 0xffff) | (((t3) & 0xffff) << 16));
   const t5 = ((0x4) & 63);
   const t6 = (t5 >= 32 ? 0 : ((t4) >>> t5));
   const t7 = (0x200004 + t6);
   const t8 = (arg0 & 0xff);
-  const t9 = ((0x0 & 0xffffff00) | (t8 & 0xff));
+  const t9 = ((0 & 0xffffff00) | (t8 & 0xff));
   const t10 = ((0x3) & 63);
   const t11 = (t10 >= 32 ? 0 : ((t9) << t10));
   const t12 = (t7 + t11);
@@ -70463,7 +70463,7 @@ export function fn_18dc4(d1: number, arg0: number, arg1: number, arg2: number): 
   store16(0x3e3406, 0);
   push(arg1, 4);
   push(arg0, 4);
-  setReg('d0', 0x7);
+  setReg('d0', 7);
   setReg('d1', t1);
   callRom(0x18e06, 0x18de0);
   drop(8);
@@ -70476,7 +70476,7 @@ export function fn_18df6(d0_: number): void {
   let _guard = 0;
   void _guard;
   let d0 = d0_;
-  d0 = 0x2;
+  d0 = 2;
   setReg('d0', d0);
   jumpRom(0x18e02);
   return;
@@ -70495,14 +70495,14 @@ export function fn_19366(a0_: number, a1_: number, d0_: number, d1_: number): vo
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
-        d0 = 0x0;
+        d0 = 0;
         _at = (((load8(0x372)) & 255) === ((0) & 255)) ? 3 : 1; continue dispatch;
       }
       case 1: {
         _at = (((load16(0x300)) & 65535) !== ((0x4ef9) & 65535)) ? 3 : 2; continue dispatch;
       }
       case 2: {
-        d0 = 0x1;
+        d0 = 1;
         _at = 3; continue dispatch;
       }
       case 3: {
@@ -70512,11 +70512,11 @@ export function fn_19366(a0_: number, a1_: number, d0_: number, d1_: number): vo
         d0 = getReg('d0');
         a0 = 0x200000;
         a1 = 0x4;
-        d1 = 0x29;
+        d1 = 41;
         _at = 4; continue dispatch;
       }
       case 4: {
-        d0 = 0xe;
+        d0 = 14;
         _at = 5; continue dispatch;
       }
       case 5: {
@@ -70556,7 +70556,7 @@ export function fn_1939c(a0_: number, a1_: number, d0_: number, d1_: number, arg
   store16(a0 + -0x10, 0);
   store16(a0 + -0xe, 0);
   a1 = (a0 + 0x1c);
-  d1 = 0x3;
+  d1 = 3;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
     store8(a0, 0);
@@ -70597,13 +70597,13 @@ export function fn_1940a(a1_: number, d0_: number, d1_: number, arg0: number): v
   let d1 = d1_;
   d0 = ((d0 & 0xffff0000) | (0x7ff & 65535));
   a1 = 0x200004;
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((arg0 & 0xff) & 255));
   d1 = ((((d1) >>> 16) & 0xffff) | (((d1) & 0xffff) << 16));
   const t0 = ((0x4) & 63);
   d1 = (t0 >= 32 ? 0 : ((d1) >>> t0));
   a1 = (a1 + d1);
-  d1 = 0x0;
+  d1 = 0;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
     store32(a1, d1);
@@ -70625,7 +70625,7 @@ export function fn_1960a(a0_: number, d0_: number, d1_: number): void {
   let a0 = a0_;
   let d0 = d0_;
   let d1 = d1_;
-  d1 = 0x20;
+  d1 = 32;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
     a0 = (a0 - 1);
@@ -70828,7 +70828,7 @@ export function fn_1a14e(a0_: number, a7_: number, d0_: number, d1_: number, d2_
       store32(a0, 0x3e3d46);
     }
     a0 = load32(a0);
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8(a0) & 255));
     push(d0, 4);
     setReg('a0', a0);
@@ -70842,7 +70842,7 @@ export function fn_1a14e(a0_: number, a7_: number, d0_: number, d1_: number, d2_
     d2 = getReg('d2');
     drop(4);
   }
-  d2 = 0x0;
+  d2 = 0;
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 5 did not end');
     push(d2, 4);
@@ -70857,7 +70857,7 @@ export function fn_1a14e(a0_: number, a7_: number, d0_: number, d1_: number, d2_
     d2 = getReg('d2');
     drop(4);
     d2 = (d2 + 0x1);
-    d0 = 0x2;
+    d0 = 2;
     if ((d0 | 0) > (d2 | 0)) {
       continue;
     }
@@ -71046,7 +71046,7 @@ export function fn_1adb0(a2_: number, d0_: number, d1_: number, d4_: number): vo
   let d1 = d1_;
   let d4 = d4_;
   push(a2, 4);
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d4 & 255) & 255));
   push(d1, 4);
   setReg('a2', a2);
@@ -71088,7 +71088,7 @@ export function fn_1adcc(a2_: number, d0_: number, d1_: number, d4_: number): vo
   let d1 = d1_;
   let d4 = d4_;
   push(a2, 4);
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d4 & 255) & 255));
   push(d1, 4);
   setReg('a2', a2);
@@ -71129,7 +71129,7 @@ export function fn_1ade2(a2_: number, d0_: number, d1_: number, d4_: number): vo
   let d1 = d1_;
   let d4 = d4_;
   push(a2, 4);
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d4 & 255) & 255));
   push(d1, 4);
   setReg('a2', a2);
@@ -71170,7 +71170,7 @@ export function fn_1adf8(a2_: number, d0_: number, d1_: number, d4_: number): vo
   let d1 = d1_;
   let d4 = d4_;
   push(a2, 4);
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d4 & 255) & 255));
   push(d1, 4);
   setReg('a2', a2);
@@ -71208,7 +71208,7 @@ export function fn_1ae0e(a2: number, d3: number, d4: number): void {
   const t1 = ((d3 & 0xffffff00) | (t0 & 0xff));
   push(a2, 4);
   const t2 = (d4 & 0xff);
-  const t3 = ((0x0 & 0xffffff00) | (t2 & 0xff));
+  const t3 = ((0 & 0xffffff00) | (t2 & 0xff));
   push(t3, 4);
   setReg('d2', t3);
   setReg('d3', t1);
@@ -71231,7 +71231,7 @@ export function fn_1ae2a(a2: number, d0: number, d4: number): void {
   const t0 = load8(a2 + 0x5d);
   const t1 = ((d0 & 0xffffff00) | (t0 & 0xff));
   const t2 = (d4 & 0xff);
-  const t3 = ((0x0 & 0xffffff00) | (t2 & 0xff));
+  const t3 = ((0 & 0xffffff00) | (t2 & 0xff));
   const t4 = ((t1 & 0xff) - (t3 & 0xff));
   const t5 = ((t1 & 0xffffff00) | (t4 & 0xff));
   store8(a2 + 0x5e, (t5 & 0xff));
@@ -71322,7 +71322,7 @@ export function fn_1b11c(d0: number, arg0: number): void {
   store16(0x3e3d74, (t1 & 0xffff));
   store16(0x3e3d72, (t1 & 0xffff));
   const t2 = load16(0x3e3d8e);
-  const t3 = ((0x0 & 0xffff0000) | (t2 & 0xffff));
+  const t3 = ((0 & 0xffff0000) | (t2 & 0xffff));
   const t4 = (t3 & 0xffef);
   store16(t0, (t4 & 0xffff));
   store16(0x3e3d8e, (load16(0x3e3d8e) | 0x10));
@@ -71351,7 +71351,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   const save_a2_3 = a2;
   const save_a3_4 = a3;
   d1 = ((d1 & 0xffffff00) | ((arg0 & 0xff) & 255));
-  d2 = 0x0;
+  d2 = 0;
   d2 = ((d2 & 0xffffff00) | ((d1 & 255) & 255));
   d2 = (d2 + d2);
   d0 = d2;
@@ -71365,7 +71365,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   } else {
     a3 = 0x460000;
     a2 = 0x460000;
-    d3 = 0x0;
+    d3 = 0;
     d3 = ((d3 & 0xffffff00) | (load8(a1 + 0x6) & 255));
     a0 = 0x1ea90;
     d0 = ((d0 & 0xffffff00) | (load8((a0 + ((d3 << 16) >> 16))) & 255));
@@ -71373,7 +71373,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     if ((((d0 & 255)) & 255) === ((0) & 255)) {
     } else {
       a0 = 0x3e3d6e;
-      d0 = 0x0;
+      d0 = 0;
       d0 = ((d0 & 0xffffff00) | (load8((a0 + ((d3 << 16) >> 16))) & 255));
       d4 = d0;
       if (d4 === 0) {
@@ -71389,7 +71389,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
         d0 = ((d0 & 0xffffff00) | (load8(a0 + 0x2) & 255));
         if ((((d0 & 255)) & 255) > ((load8(a1 + 0x2)) & 255)) {
         } else {
-          d0 = 0x0;
+          d0 = 0;
           d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
           if (d0 !== d4) {
           } else {
@@ -71399,7 +71399,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
                 if (++_guard > 4000000) throw new Error('loop 6 did not end');
                 a0 = 0x1ea94;
                 store8(a2, load8((a0 + ((d3 << 16) >> 16))));
-                d2 = 0x32;
+                d2 = 50;
                 const t7 = ((d2) & 63);
                 d4 = (t7 >= 32 ? (((d4) < 0) ? -1 : 0) : ((d4) >> t7));
                 a0 = 0x1ea90;
@@ -71420,9 +71420,9 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
               d0 = ((d0 & 0xffffff00) | (((d0 & 255) | 0x80) & 255));
               store8(a2, (d0 & 255));
               a0 = 0x1ea8c;
-              d0 = 0x0;
+              d0 = 0;
               d0 = ((d0 & 0xffffff00) | (load8((a0 + ((d3 << 16) >> 16))) & 255));
-              d2 = 0x0;
+              d2 = 0;
               d2 = ((d2 & 0xffffff00) | (load8(a1 + 0x7) & 255));
               d0 = (d0 | d2);
               store8(a2, (d0 & 255));
@@ -71437,7 +71437,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
             if (++_guard > 4000000) throw new Error('loop 6 did not end');
             a0 = 0x1ea94;
             store8(a2, load8((a0 + ((d3 << 16) >> 16))));
-            d2 = 0x32;
+            d2 = 50;
             const t7 = ((d2) & 63);
             d4 = (t7 >= 32 ? (((d4) < 0) ? -1 : 0) : ((d4) >> t7));
             a0 = 0x1ea90;
@@ -71458,9 +71458,9 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
           d0 = ((d0 & 0xffffff00) | (((d0 & 255) | 0x80) & 255));
           store8(a2, (d0 & 255));
           a0 = 0x1ea8c;
-          d0 = 0x0;
+          d0 = 0;
           d0 = ((d0 & 0xffffff00) | (load8((a0 + ((d3 << 16) >> 16))) & 255));
-          d2 = 0x0;
+          d2 = 0;
           d2 = ((d2 & 0xffffff00) | (load8(a1 + 0x7) & 255));
           d0 = (d0 | d2);
           store8(a2, (d0 & 255));
@@ -71476,7 +71476,7 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
       if (++_guard > 4000000) throw new Error('loop 6 did not end');
       a0 = 0x1ea94;
       store8(a2, load8((a0 + ((d3 << 16) >> 16))));
-      d2 = 0x32;
+      d2 = 50;
       const t7 = ((d2) & 63);
       d4 = (t7 >= 32 ? (((d4) < 0) ? -1 : 0) : ((d4) >> t7));
       a0 = 0x1ea90;
@@ -71497,9 +71497,9 @@ export function fn_1b1d2(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     d0 = ((d0 & 0xffffff00) | (((d0 & 255) | 0x80) & 255));
     store8(a2, (d0 & 255));
     a0 = 0x1ea8c;
-    d0 = 0x0;
+    d0 = 0;
     d0 = ((d0 & 0xffffff00) | (load8((a0 + ((d3 << 16) >> 16))) & 255));
-    d2 = 0x0;
+    d2 = 0;
     d2 = ((d2 & 0xffffff00) | (load8(a1 + 0x7) & 255));
     d0 = (d0 | d2);
     store8(a2, (d0 & 255));
@@ -71545,10 +71545,10 @@ export function fn_1b2b2(a0_: number, a1_: number, d0_: number, d1_: number, d2_
         _at = 1; continue dispatch;
       }
       case 1: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | ((d3 & 255) & 255));
         a0 = 0x3e3d6e;
-        d2 = 0x0;
+        d2 = 0;
         d2 = ((d2 & 0xffffff00) | (load8((a0 + ((d0 << 16) >> 16))) & 255));
         d0 = d2;
         d0 = (d0 + d0);
@@ -71560,7 +71560,7 @@ export function fn_1b2b2(a0_: number, a1_: number, d0_: number, d1_: number, d2_
         _at = ((((d1 & 255)) & 255) !== ((load8((a0 + (d0 | 0) + 0x1))) & 255)) ? 3 : 2; continue dispatch;
       }
       case 2: {
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | ((d3 & 255) & 255));
         a0 = 0x1ea94;
         store8(a1, load8((a0 + ((d0 << 16) >> 16))));
@@ -71647,7 +71647,7 @@ export function fn_1b4be(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d1 = getReg('d1');
   d2 = getReg('d2');
   d3 = getReg('d3');
-  d2 = 0x7;
+  d2 = 7;
   drop(36);
   for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
@@ -71655,7 +71655,7 @@ export function fn_1b4be(a0_: number, a1_: number, d0_: number, d1_: number, d2_
     d1 = ((d1 & 0xffffff00) | ((d2 & 255) & 255));
     d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
     d1 = ((((d1 & 65535)) << 16) >> 16);
-    d0 = 0x20;
+    d0 = 32;
     d1 = (d1 + d0);
     push(d1, 4);
     push(d3, 4);
@@ -71714,7 +71714,7 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
   d4 = 0x480000;
   d0 = ((d0 & 0xffffff00) | (0 & 255));
   store8(0x3e3708, (d0 & 255));
-  d1 = 0x0;
+  d1 = 0;
   d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
   store16(a2, (d1 & 65535));
   store8(0x3e36fa, (d1 & 255));
@@ -71748,12 +71748,12 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
           store16(a2, (load16(a2) | 0x30));
         }
         store16(a2, (load16(a2) ^ 0xf));
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffff0000) | (load16(a2) & 65535));
         push(d0, 4);
         d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
         d0 = ((((d0 & 65535)) << 16) >> 16);
-        d1 = 0x30;
+        d1 = 48;
         d0 = (d0 + d1);
         push(d0, 4);
         push(d4, 4);
@@ -71777,7 +71777,7 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         push(load32(a3), 4);
         d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
         d0 = ((((d0 & 65535)) << 16) >> 16);
-        d1 = 0x10;
+        d1 = 16;
         d0 = (d0 + d1);
         push(d0, 4);
         push(d4, 4);
@@ -71802,11 +71802,11 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         const t6 = ((0x8) & 63);
         d1 = (t6 >= 32 ? 0 : ((d1) >>> t6));
         d1 = ((d1 & 0xffffff00) | (((d1 & 255) | 0x10) & 255));
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
         push(d0, 4);
         d2 = ((((d2 & 65535)) << 16) >> 16);
-        d1 = 0x20;
+        d1 = 32;
         d2 = (d2 + d1);
         push(d2, 4);
         push(d4, 4);
@@ -71827,7 +71827,7 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         d2 = getReg('d2');
         d3 = getReg('d3');
         d4 = getReg('d4');
-        d0 = 0x0;
+        d0 = 0;
         d0 = ((d0 & 0xffffff00) | (load8(a4) & 255));
         drop(36);
       }
@@ -71835,7 +71835,7 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
   } else {
     push(0, 4);
     d2 = ((((d2 & 65535)) << 16) >> 16);
-    d1 = 0x20;
+    d1 = 32;
     d2 = (d2 + d1);
     push(d2, 4);
     push(d4, 4);
@@ -71905,7 +71905,7 @@ export function fn_1e7b8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
       }
       case 2: {
         a1 = (a1 + 0x1f8);
-        d4 = 0x7;
+        d4 = 7;
         _at = 3; continue dispatch;
       }
       case 3: {
@@ -71916,7 +71916,7 @@ export function fn_1e7b8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
       }
       case 4: {
         a1 = (a1 + 0x1f8);
-        d4 = 0x7;
+        d4 = 7;
         _at = 5; continue dispatch;
       }
       case 5: {
@@ -71982,7 +71982,7 @@ export function fn_1e7e4(a1_: number, d0_: number, d1_: number, d2_: number, d3_
       }
       case 2: {
         a1 = (a1 + 0x1f8);
-        d4 = 0x7;
+        d4 = 7;
         _at = 3; continue dispatch;
       }
       case 3: {
@@ -72008,8 +72008,8 @@ export function fn_1e7e4(a1_: number, d0_: number, d1_: number, d2_: number, d3_
         t5 = ((0x4) & 63);
         d2 = ((d2 & 0xffff0000) | ((t5 >= 16 ? 0 : (((d2 & 65535)) >>> t5)) & 65535));
         a1 = arg0;
-        d1 = 0x7;
-        d3 = 0x7;
+        d1 = 7;
+        d3 = 7;
         _at = 6; continue dispatch;
       }
       case 6: {
@@ -72023,7 +72023,7 @@ export function fn_1e7e4(a1_: number, d0_: number, d1_: number, d2_: number, d3_
       }
       case 7: {
         a1 = (a1 + 0x1f8);
-        d1 = 0x7;
+        d1 = 7;
         d3 = ((d3 & 0xffff0000) | (((d3 & 0xffff) - 1) & 0xffff));
         _at = ((d3 & 0xffff) !== 0xffff) ? 6 : 8; continue dispatch;
       }

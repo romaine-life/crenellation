@@ -403,7 +403,13 @@ class Lifter:
             self.write(ops[1], self.read(ops[0], bits), bits)
             return
         if b == "moveq":
-            self.write(ops[1], Expr(hex(num(ops[0])), "imm"), 32)
+            # Sign-extended from eight bits to thirty-two. `moveq #$ff,d0` is
+            # how this ROM loads -1, and storing the raw 255 gives a number
+            # that is wrong by 4,294,967,040 and looks entirely plausible.
+            v = num(ops[0]) & 0xff
+            if v & 0x80:
+                v -= 0x100
+            self.write(ops[1], Expr(str(v), "imm"), 32)
             return
         if b == "clr":
             self.write(ops[0], Expr("0", "imm"), bits)
