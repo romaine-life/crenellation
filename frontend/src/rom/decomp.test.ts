@@ -80,6 +80,7 @@ describe('decompiled routines against the recompiled oracle', () => {
       for (let trial = 0; trial < 4; trial += 1) {
         const seed = (0x1234567 + trial * 7919 + addr) >>> 0;
         const args = params.map((_, i) => valueFor(i, seed));
+        const regParams: Array<[string, number]> = [];
 
         // The oracle takes its arguments where the ROM expects them: some in
         // registers, some on the stack, as the routine itself decided.
@@ -94,16 +95,31 @@ describe('decompiled routines against the recompiled oracle', () => {
         a.store(sp, SENTINEL, 32);
         a.a7 = sp;
         a.store(SENTINEL, 0x4e75, 16);      // rts, so a stray return lands somewhere valid
+        // Both machines. The oracle reads register arguments out of registers,
+        // and so does any ROM routine the decompiled version calls or jumps
+        // into - setting them only on the oracle makes the lifted side look
+        // wrong for a reason that is entirely the harness's.
         params.forEach((p, i) => {
-          if (p.from === 'reg') (a as never as Record<string, number>)[p.name] = args[i];
+          if (p.from !== 'reg') return;
+          (a as never as Record<string, number>)[p.name] = args[i];
+          regParams.push([p.name, args[i]]);
         });
 
         let oracleFailed = '';
         try { call(addr, a); } catch (e) { oracleFailed = (e as Error).message.slice(0, 40); }
 
         // the decompiled version: same machine, arguments passed as arguments
+        // The same stack, not just the same stack pointer. A lifted routine
+        // that jumps into ROM code hands it this frame, and that code reads
+        // the arguments and the return address out of it.
         const b = fresh(seed);
-        b.a7 = sp;
+        let bp = STACK;
+        for (let i = stack.length - 1; i >= 0; i -= 1) { bp -= 4; b.store(bp, stack[i].v, 32); }
+        bp -= 4;
+        b.store(bp, SENTINEL, 32);
+        b.a7 = bp;
+        b.store(SENTINEL, 0x4e75, 16);
+        for (const [name, v] of regParams) (b as never as Record<string, number>)[name] = v;
         bind(b);
         let liftedFailed = '';
         try { fn(...args); } catch (e) { liftedFailed = (e as Error).message.slice(0, 40); }

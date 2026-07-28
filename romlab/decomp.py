@@ -95,8 +95,9 @@ class Lifter:
         self.reg = {}               # register -> Expr
         self.stmts = []
         self.params = {}            # stack offset -> parameter name
-        self.pushed = []            # arguments pushed but not yet consumed
+        self.pushed = 0             # bytes pushed and not yet dropped
         self.temps = []             # named intermediates, in evaluation order
+        self.after_call = False     # registers now hold whatever the callee left
         self.used_regs = set()
 
     # ---- reading operands -------------------------------------------------
@@ -131,11 +132,17 @@ class Lifter:
         if r == "a7":
             raise Bail("bare a7")
         if r not in self.reg:
-            # Read before written: the routine expects it set by the caller, so
-            # it is a parameter. The 68000 has no fixed calling convention and
-            # this code uses both registers and the stack, sometimes together.
-            self.used_regs.add(r)
-            self.reg[r] = Expr(r, "reg")
+            if self.after_call:
+                # Whatever the callee left there. Not a parameter of this
+                # routine, and not knowable statically.
+                self.reg[r] = self.temp(Expr(f"getReg('{r}')", "expr"))
+            else:
+                # Read before written: the routine expects it set by the caller,
+                # so it is a parameter. The 68000 has no fixed calling
+                # convention and this code uses registers and the stack, at
+                # times in the same routine.
+                self.used_regs.add(r)
+                self.reg[r] = Expr(r, "reg")
         e = self.reg[r]
         if bits == 32 or e.kind == "imm":
             return e
@@ -144,8 +151,26 @@ class Lifter:
 
     def mem_read(self, r, off, bits):
         if r == "a7":
-            # a stack slot: an incoming argument, since nothing has pushed here
-            return Expr(self.param(off), "expr")
+            # An incoming argument - but relative to a stack pointer that has
+            # moved. A routine that pushes ten bytes and then reads 0xE(a7) is
+            # reading offset 4 of the frame it was given, its first argument,
+            # not its fourth. Arguments occupy four-byte slots, and a narrower
+            # read takes part of one, the high part first, because the 68000 is
+            # big-endian.
+            off -= self.pushed
+            if off < 0:
+                raise Bail("reads a value it pushed itself")
+            slot = off & ~3
+            name = self.param(slot)
+            if bits == 32:
+                if off != slot:
+                    raise Bail("long read straddling two argument slots")
+                return Expr(name, "expr")
+            within = off - slot
+            shift = (4 - within - (bits // 8)) * 8
+            mask = {8: "0xff", 16: "0xffff"}[bits]
+            inner = name if shift == 0 else f"({name} >>> {shift})"
+            return Expr(f"({inner} & {mask})", "expr")
         b = self.reg_value(r, 32)
         addr = b.text if off == 0 else f"{b.text} + {hex(off)}"
         return Expr(f"load{bits}({addr})", "expr")
@@ -180,6 +205,13 @@ class Lifter:
         self.temps.append(name)
         self.stmts.append(f"const {name} = {value.text};")
         return Expr(name, "expr")
+
+    def flush(self):
+        """Write every register this routine holds in a local back to the machine."""
+        for r, e in sorted(self.reg.items()):
+            if e.kind == "reg" and e.text == r:
+                continue
+            self.stmts.append(f"setReg('{r}', {e.text});")
 
     def write(self, tok, value, bits):
         tok = tok.strip()
@@ -219,7 +251,8 @@ class Lifter:
         if m:
             r = m.group(1)
             if r == "a7":
-                self.pushed.append(value)
+                self.stmts.append(f"push({value.text}, {bits // 8});")
+                self.pushed += bits // 8
                 return
             self.bump(r, -(bits // 8))
             b = self.reg_value(r, 32)
@@ -258,11 +291,13 @@ class Lifter:
             tok = ops[0].strip()
             m = re.fullmatch(r"\$([0-9a-fA-F]+)\.(w|l)", tok)
             if m:
-                self.pushed.append(Expr(f"0x{int(m.group(1), 16):x}", "imm"))
+                self.stmts.append(f"push(0x{int(m.group(1), 16):x}, 4);")
+                self.pushed += 4
                 return
             m = re.fullmatch(r"\((a\d)\)", tok)
             if m:
-                self.pushed.append(self.reg_value(m.group(1), 32))
+                self.stmts.append(f"push({self.reg_value(m.group(1), 32).text}, 4);")
+                self.pushed += 4
                 return
             raise Bail(f"pea {tok!r}")
         if b in ("jsr", "bsr"):
@@ -271,13 +306,16 @@ class Lifter:
             if not m:
                 raise Bail(f"indirect call {tok!r}")
             target = int(m.group(1), 16)
-            args = ", ".join(a.text for a in self.pushed)
-            self.pushed = []
-            self.stmts.append(f"{self.names.get(target, 'fn_%05x' % target)}({args});")
-            # a call clobbers the scratch registers
-            for r in ("d0", "d1", "a0", "a1"):
-                self.reg.pop(r, None)
-            self.reg["d0"] = Expr("_ret", "expr")
+            
+            # The callee reads its arguments where the ROM put them: some on the
+            # stack, some in registers. So everything this routine holds in a
+            # local has to be back in the machine before control leaves, and
+            # nothing may be assumed about it afterwards - the callee is free to
+            # use any register, and several do.
+            self.flush()
+            self.stmts.append(f"callRom(0x{target:05x});")
+            self.reg = {}
+            self.after_call = True
             return
         if b in ("jmp", "bra"):
             tok = ops[0].strip()
@@ -285,12 +323,30 @@ class Lifter:
             if not m:
                 raise Bail("computed jump")
             target = int(m.group(1), 16)
-            args = ", ".join(a.text for a in self.pushed)
-            self.pushed = []
-            self.stmts.append(f"return {self.names.get(target, 'fn_%05x' % target)}({args});")
+            if self.pushed:
+                raise Bail("tail jump with arguments still on the stack")
+            self.flush()
+            # A jump is not a call: it pushes no return address and hands the
+            # callee the frame this routine was given, so the arguments the
+            # original caller pushed are still where the callee expects them.
+            # Calling instead puts a return address on top and shifts them all.
+            self.stmts.append(f"jumpRom(0x{target:05x});")
+            self.stmts.append("return;")
             return
-        if b in ("addq", "adda", "add") and ops[-1].strip() == "a7":
-            # stack cleanup after a call - the arguments are already consumed
+        if b in ("addq", "adda", "add", "lea") and ops[-1].strip() == "a7":
+            # The ROM's own stack cleanup. It is not always one call's worth:
+            # a routine can push, call, push, call and then drop both at the
+            # end, so the arguments have to live on the stack exactly as long
+            # as the ROM leaves them there.
+            if b == "lea":
+                m2 = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\(a7\)", ops[0].strip())
+                if not m2:
+                    raise Bail(f"no rule for {mn} {ins.op_str}")
+                n = num(m2.group(1)) if m2.group(1) else 0
+            else:
+                n = num(ops[0])
+            self.stmts.append(f"drop({n});")
+            self.pushed -= n
             return
         if b in ("move", "movea"):
             self.write(ops[1], self.read(ops[0], bits), bits)
@@ -366,8 +422,11 @@ class Lifter:
         sig = ", ".join(f"{a}: number" for a in args)
         head = f"/** {label} */" if label else ""
         stmts = list(self.stmts)
-        for r, e in self.outputs():
-            stmts.append(f"setReg('{r}', {e.text});")
+        # A routine that ended in a tail jump has already handed control away
+        # and flushed what it held; anything after the return is dead.
+        if not (stmts and stmts[-1] == "return;"):
+            for r, e in self.outputs():
+                stmts.append(f"setReg('{r}', {e.text});")
         body = "\n".join("  " + s for s in stmts) or "  // nothing observable"
         return (f"{head}\nexport function fn_{addr:05x}({sig}): void {{\n{body}\n}}").strip()
 
@@ -381,6 +440,7 @@ TS_HEAD = """// Generated by romlab/decomp.py - do not edit by hand.
 // trusted without that.
 
 import type { Machine } from './machine';
+import { call as romCall } from './dispatch';
 
 let M: Machine;
 /** Point the decompiled code at a machine before calling anything. */
@@ -398,7 +458,39 @@ const store32 = (a: number, v: number): void => M.store(a, v, 32);
 const setReg = (r: string, v: number): void => {
   (M as unknown as Record<string, number>)[r] = v;
 };
-void load8; void load16; void load32; void store8; void store16; void store32; void setReg;
+/** Read a register back after a call left something in it. */
+const getReg = (r: string): number =>
+  ((M as unknown as Record<string, number>)[r] >>> 0);
+
+/**
+ * Call another ROM routine the way the machine calls it: arguments pushed on
+ * the machine's own stack, then the dispatcher, then the stack unwound. Once
+ * the callee is lifted too this becomes an ordinary call with ordinary
+ * arguments; until then it has to agree with the oracle exactly.
+ */
+/** An argument, at the width the ROM pushed it. */
+const push = (v: number, bytes: number): void => { M.storePre('a7', bytes, v, bytes * 8); };
+
+/** The ROM's own stack cleanup, `addq.l #n,a7`. */
+const drop = (n: number): void => { M.a7 = (M.a7 + n) >>> 0; };
+
+/**
+ * Call another ROM routine. `jsr` pushes a return address, so the callee finds
+ * its first argument at 4(a7); only that return address is removed here,
+ * because the arguments belong to the caller until it drops them - and a
+ * routine may push, call, push, call and drop both lots at the end.
+ */
+const callRom = (addr: number): void => {
+  M.storePre('a7', 4, 0, 32);
+  romCall(addr, M);
+  // No adjustment afterwards: the callee's own `rts` popped the return
+  // address. Removing it here as well pops a second four bytes and every
+  // argument still on the stack shifts under the next call.
+};
+void load8; void load16; void load32; void store8; void store16; void store32;
+/** Tail-jump to another routine: same stack, no return address. */
+const jumpRom = (addr: number): void => { romCall(addr, M); };
+void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
 """
 
 
