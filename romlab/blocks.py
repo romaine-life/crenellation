@@ -89,12 +89,17 @@ class BlockLifter(Lifter):
         return Expr(f"({r} & {(1 << bits) - 1})", "expr")
 
     def read(self, tok, bits):
+        if tok.strip() == "ccr":
+            return Expr("(getSr() & 0xff)", "expr")
         if tok.strip() == "sr":
             # The condition codes, which the lifted source does not keep - but
             # whatever set them last is known right here, so compute them and
             # give them to the machine, which composes the word.
             if self.flags is None:
-                raise Bail("reads the condition codes with none set")
+                # Nothing since entry - or since the last call, which really
+                # ran on the machine - has set flags here, so the machine's are
+                # the current ones and can be read straight out.
+                return Expr("getSr()", "expr")
             kind, lhs, rhs, fbits = self.flags
             if kind not in ("cmp", "add"):
                 raise Bail(f"reads the condition codes after {kind}")

@@ -400,6 +400,10 @@ class Lifter:
         if tok == "sr":
             self.stmts.append(f"setSr({value.text});")
             return
+        if tok == "ccr":
+            # The low byte of the status register: the condition codes alone.
+            self.stmts.append(f"setSr((getSr() & 0xff00) | (({value.text}) & 0xff));")
+            return
         raise Bail(f"destination {tok!r}")
 
     def rmw(self, tok, bits):
@@ -787,6 +791,15 @@ class Lifter:
                 self.write(ops[1], Expr("0"), bits)
                 self.stmts.append("movep(0);")
             return
+        if b == "rte":
+            # Return from exception: the status register and then the program
+            # counter come back off the stack. The dispatcher takes it from
+            # there, exactly as for any other jump.
+            self.stmts.append("setSr(popWord());")
+            self.flush()
+            self.stmts.append("jumpRom(popLong());")
+            self.stmts.append("return;")
+            return
         if b == "reset":
             # Asserts the RESET line to the peripherals. The CPU carries on and
             # nothing here models the chips it would reset.
@@ -989,6 +1002,7 @@ const jumpRom = (addr: number): void => { romCall(addr, M); };
 const stackPointer = (): number => M.a7 >>> 0;
 const setStackPointer = (v: number): void => { M.a7 = v >>> 0; };
 const popLong = (): number => { const v = M.load(M.a7 >>> 0, 32); M.a7 = (M.a7 + 4) >>> 0; return v; };
+const popWord = (): number => { const v = M.load(M.a7 >>> 0, 16); M.a7 = (M.a7 + 2) >>> 0; return v; };
 /** `stop` - the chip halts and nothing after it runs. */
 const halt = (): void => { M.stopped = true; };
 void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
