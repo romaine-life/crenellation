@@ -386,6 +386,58 @@ def split_nodes(edges, nblocks, limit):
     return None, None, None
 
 
+
+def dispatch_form(starts, edges, lifted, conds):
+    """Blocks in a loop that picks the next one, for graphs that will not nest.
+
+    Not a program counter and not the recompiler's switch over addresses: the
+    block bodies are recovered source, and only the sequencing is dynamic. It
+    is the shape a decompiler reaches for when the control flow genuinely has
+    no nested form.
+    """
+    # Each `case` is its own block scope, so a name declared in one is not in
+    # scope in another - and a value saved by `movem` in the first block is read
+    # back in the last. Every declaration is hoisted to the function.
+    names = []
+    hoisted = {}
+    for n in range(len(starts)):
+        rewritten = []
+        for s in lifted.get(n, []):
+            m = re.match(r"\s*(?:const|let)\s+(\w+)\s*=", s)
+            if m:
+                names.append(m.group(1))
+                s = re.sub(r"^(\s*)(?:const|let)\s+",
+                           lambda mm: mm.group(1), s, count=1)
+            rewritten.append(s)
+        hoisted[n] = rewritten
+
+    out = [f"let {x} = 0;" for x in names]
+    out += ["let _at = 0;", "dispatch: for (;;) {",
+            "  if (++_guard > 4000000) throw new Error('dispatch did not end');",
+            "  switch (_at) {"]
+    for n in range(len(starts)):
+        out.append(f"    case {n}: {{")
+        out.extend("      " + s for s in hoisted.get(n, []))
+        outs = edges.get(n, [])
+        if not outs:
+            out.append("      break dispatch;")
+        elif len(outs) == 1:
+            out.append(f"      _at = {outs[0]}; continue dispatch;")
+        else:
+            if n not in conds:
+                raise Bail("two-way branch with no condition")
+            cond, taken = conds[n]
+            other = [x for x in outs if x != taken]
+            if len(other) != 1:
+                raise Bail("branch whose two edges cannot be told apart")
+            out.append(f"      _at = ({cond}) ? {taken} : {other[0]}; continue dispatch;")
+        out.append("    }")
+    out.append("    default: break dispatch;")
+    out.append("  }")
+    out.append("}")
+    return out
+
+
 def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset(),
               open_loops=()):
     """Emit one region as nested if/else and for(;;)."""
@@ -480,10 +532,21 @@ def lift(lo, hi, names):
     starts, edges = g["blocks"], {int(k): v for k, v in g["edges"].items()}
     ok, back = reducible(len(starts), edges)
     clone_of = {}
+    dispatch = False
     if not ok:
-        edges, grown, clone_of = split_nodes(edges, len(starts), len(starts) * 4 + 8)
-        if edges is None:
-            raise Bail("irreducible even after splitting")
+        split, grown, cloned = split_nodes(edges, len(starts), len(starts) * 4 + 8)
+        if split is None:
+            # Genuinely irreducible: a loop entered at two places, which no
+            # arrangement of `if` and `for` expresses without duplicating the
+            # whole region. Every decompiler falls back here - Hex-Rays and
+            # Ghidra emit goto. JavaScript has no goto, so the blocks go in a
+            # dispatch loop. Everything inside them is still recovered source:
+            # real conditions, real locals, real calls. Only the order the
+            # blocks run in is decided at runtime rather than by nesting.
+            dispatch = True
+        else:
+            edges, clone_of = split, cloned
+            del grown
     ends = starts[1:] + [hi]
 
     index = {a: k for k, a in enumerate(starts)}
@@ -545,6 +608,8 @@ def lift(lo, hi, names):
         lifted[copy] = list(lifted[orig])
         if orig in conds:
             conds[copy] = conds[orig]
+    if dispatch:
+        return lifter, dispatch_form(starts, edges, lifted, conds)
     backs = frozenset(back_edges(edges, len(starts) + len(clone_of)))
     body = structure(starts, edges, lifted, conds, 0, None, 0, backs, ())
     return lifter, body
