@@ -292,6 +292,17 @@ class BlockLifter(Lifter):
                 and rereadable(ops[-1]) and rereadable(ops[0])):
             addends = (self.temp(self.read(ops[-1], bits)).text,
                        self.temp(self.read(ops[0], bits)).text)
+        # A shift by a literal count sets carry from the bit that left the
+        # register. `lsr.b #1,dN` followed by `bcs` is this ROM's bit walk, and
+        # as "the result against zero" that test can never fire.
+        shifted = None
+        if (b in ("lsr", "lsl", "asl", "asr") and ops and ops[-1].strip() in DATA
+                and (len(ops) == 1 or ops[0].strip().startswith("#"))):
+            cnt = num(ops[0]) if len(ops) == 2 else 1
+            if 1 <= cnt <= bits:
+                pre = self.temp(self.read(ops[-1], bits)).text
+                off = cnt - 1 if b in ("lsr", "asr") else bits - cnt
+                shifted = f"((({pre}) >>> {off}) & 1)"
         before = len(self.stmts)
         super().step(ins)
         # Anything that writes a data register also sets the flags from what it
@@ -306,6 +317,8 @@ class BlockLifter(Lifter):
                 # fell off the top rather than a borrow.
                 self.flags = (("add" if b.startswith("add") else "cmp"),
                               addends[0], addends[1], bits)
+            elif shifted is not None:
+                self.flags = ("shift", self.reg_value(dst, bits).text, shifted, bits)
             elif dst in DATA:
                 self.flags = ("cmp", self.reg_value(dst, bits).text, "0", bits)
             elif rereadable(dst) and dst not in DATA and dst not in ADDR:
@@ -462,6 +475,18 @@ class BlockLifter(Lifter):
             if mnemonic in SIGNED:
                 return f"{sx(res, bits)} {COMPARE[mnemonic]} 0"
             raise Bail(f"{mnemonic} after add")
+        if kind == "shift":
+            # Carry is the bit that left the register. Everything else is the
+            # ordinary "result against zero", so it falls through.
+            if mnemonic == "bcs":
+                return f"{rhs} !== 0"
+            if mnemonic == "bcc":
+                return f"{rhs} === 0"
+            if mnemonic == "bhi":
+                return f"{rhs} === 0 && {uz(lhs, bits)} !== 0"
+            if mnemonic == "bls":
+                return f"({rhs} !== 0 || {uz(lhs, bits)} === 0)"
+            kind, rhs = "cmp", "0"
         if mnemonic in ("bmi", "bpl"):
             # N alone, which is the sign of the result *truncated to the
             # operand width* - not the sign of the full difference. `sub.b`

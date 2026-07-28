@@ -557,6 +557,15 @@ class Lifter:
             self.stmts.append(f"jumpRom(0x{target:05x});")
             self.stmts.append("return;")
             return
+        if b in ("subq", "suba", "sub", "subi") and ops[-1].strip() == "a7":
+            # Reserving stack without pushing anything - `subq.w #4,a7` before
+            # a call that writes its result into the gap. Only the add family
+            # had a rule for a7, so this went through the ordinary address
+            # arithmetic and made the stack pointer a local.
+            n = num(ops[0])
+            self.stmts.append(f"drop({-n});")
+            self.pushed += n
+            return
         if b in ("addq", "adda", "add", "lea") and ops[-1].strip() == "a7":
             # The ROM's own stack cleanup. It is not always one call's worth:
             # a routine can push, call, push, call and then drop both at the
