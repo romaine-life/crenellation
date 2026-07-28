@@ -153,6 +153,21 @@ class BlockLifter(Lifter):
         self.stmts.append(f"{name} = {value.text};")
         return Expr(name, "expr")
 
+    def pin(self, value):
+        """Name a value unconditionally, however simple it looks.
+
+        `temp` hands back bare identifiers as they are, which is right for
+        keeping the source readable and wrong for anything that has to survive
+        the instruction that follows. A register is exactly the kind of value
+        that changes: capturing `d3` before `subq.l #1,d3` and then testing it
+        afterwards compares the decremented value, and the loop runs one
+        iteration short.
+        """
+        name = f"t{len(self.temps)}"
+        self.temps.append(name)
+        self.stmts.append(f"{name} = {value.text};")
+        return Expr(name, "expr")
+
     def mem_read(self, r, off, bits):
         """Pin the value where it was read.
 
@@ -299,8 +314,8 @@ class BlockLifter(Lifter):
         if (b in ("add", "addq", "addi", "sub", "subq", "subi")
                 and len(ops) == 2 and ops[-1].strip() not in ADDR
                 and rereadable(ops[-1]) and rereadable(ops[0])):
-            addends = (self.temp(self.read(ops[-1], bits)).text,
-                       self.temp(self.read(ops[0], bits)).text)
+            addends = (self.pin(self.read(ops[-1], bits)).text,
+                       self.pin(self.read(ops[0], bits)).text)
         # A shift by a literal count sets carry from the bit that left the
         # register. `lsr.b #1,dN` followed by `bcs` is this ROM's bit walk, and
         # as "the result against zero" that test can never fire.
@@ -309,7 +324,7 @@ class BlockLifter(Lifter):
                 and (len(ops) == 1 or ops[0].strip().startswith("#"))):
             cnt = num(ops[0]) if len(ops) == 2 else 1
             if 1 <= cnt <= bits:
-                pre = self.temp(self.read(ops[-1], bits)).text
+                pre = self.pin(self.read(ops[-1], bits)).text
                 off = cnt - 1 if b in ("lsr", "asr") else bits - cnt
                 shifted = f"((({pre}) >>> {off}) & 1)"
         before = len(self.stmts)
