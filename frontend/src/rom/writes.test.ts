@@ -18,8 +18,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 const FRAMES = Number(process.env.WRITE_FRAMES ?? 280);
-const LO = 0x3e0000;
-const HI = 0x400000;
+const LO = Number(process.env.W_LO ?? 0x3e0000);
+const HI = Number(process.env.W_HI ?? 0x400000);
 const CAP = 4_000_000;
 
 type Run = { addr: Int32Array; val: Int32Array; n: number };
@@ -50,7 +50,14 @@ function record(entry: (addr: number, m: System['m']) => void, stopAt = -1): {
   const STOP = new Error('enough');
   let n = 0;
   try {
-    sys.run(() => { n += 1; if (n > FRAMES) throw STOP; }, entry);
+    // Attract, a coin, then the join button - 0 means held. The palette is
+    // only written once the game is running.
+    sys.run(() => {
+      n += 1;
+      sys.inputs[3] = n > 500 && n < 515 ? 0xfe : 0xff;
+      sys.inputs[0] = n > 540 && n < 555 ? 0xf6 : 0xf7;
+      if (n > FRAMES) throw STOP;
+    }, entry);
   } catch (e) {
     // A run that has already diverged can branch somewhere the machine never
     // goes. That is the thing being measured, not a reason to stop measuring.

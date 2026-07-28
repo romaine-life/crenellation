@@ -1,5 +1,5 @@
-diverge at write 29770 of 40446/40241
-  recompiled: 0x3e3d7b=f/8 0x3e3d7a=f/8 0x3e3d7a=f/8
-  decompiled: 0x3e3d7a=f/8 0x3e0000=0/16 0x3e0000=0/8
-  before:     0x3e3ffd=0/8 0x3e3d7b=f/8
-  stack:      Machine <- store8 <- fn_135c2 <- call <- System <- record <- D <- file
+diverge at write 6139 of 13700/12300
+  recompiled: 0x3c0000=80/8 0x3c0000=c0/8 0x3c0000=c0/8
+  decompiled: 0x3c0000=c0/8 0x3c0000=e0/8 0x3c0000=f0/8
+  before:     0x3c07ff=0/8 0x3c0000=80/8
+  stack:      Machine <- store8 <- fn_1398c <- call <- System <- record <- D <- file

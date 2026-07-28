@@ -37,10 +37,14 @@ function snapshot(sys: System): Uint8Array {
   // recompiler charges cycles per instruction, the decompiled code per block.
   // That is a difference in when the snapshot was taken, not in what the game
   // did - and what the game did is entirely in memory.
-  const out = new Uint8Array(0x20000 + 0x20000);
+  const out = new Uint8Array(0x20000 + 0x20000 + 0x800);
   let o = 0;
   for (let a = 0x3e0000; a < 0x400000; a += 1) out[o++] = m.byte(a);
   for (let a = 0x200000; a < 0x220000; a += 1) out[o++] = m.byte(a);
+  // The palette. Leaving it out meant a run that drew the right playfield in
+  // the wrong colours - or in none at all - compared equal for nine hundred
+  // frames, which is exactly what happened.
+  for (let a = 0x3c0000; a < 0x3c0800; a += 1) out[o++] = m.byte(a);
   return out;
 }
 
@@ -49,7 +53,7 @@ function where(i: number): string {
   if (i < 0x20000) return `ram 0x${(0x3e0000 + i).toString(16)}`;
   i -= 0x20000;
   if (i < 0x20000) return `playfield 0x${(0x200000 + i).toString(16)}`;
-  return `playfield 0x${(0x200000 + i - 0x20000).toString(16)}`;
+  return `palette 0x${(0x3c0000 + i - 0x20000).toString(16)}`;
 }
 
 /** FNV-1a over work RAM, the playfield and the registers. */

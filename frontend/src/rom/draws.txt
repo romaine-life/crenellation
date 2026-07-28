@@ -1,2 +1,2 @@
-recompiled ran 900 frames, playfield bytes set: f1:0 f150:0 f300:0 f450:26880 f600:77952 f750:80640 f900:80640
-decompiled ran 900 frames, playfield bytes set: f1:0 f150:0 f300:0 f450:26880 f600:77952 f750:80640 f900:80640
+recompiled ran 1200 frames, playfield bytes set: f1:0 f150:0 f300:0 f450:26880 f600:77952 f750:80640 f900:80640 f1050:80640 f1200:80640
+decompiled ran 1200 frames, playfield bytes set: f1:0 f150:0 f300:0 f450:26880 f600:77952 f750:80640 f900:80640 f1050:80640 f1200:80640
