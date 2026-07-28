@@ -66,6 +66,7 @@ const LAYERS: Layer[] = [
   { name: 'Motion objects', state: 'none', note: 'a sprite layer the port never reads. The board keeps a display list that stays populated the whole time the game runs; terrain, castles, walls, cannons and ships all come from the playfield, so what is on that list has not been pinned down yet.' },
   { name: 'Sound', state: 'none', note: 'YM2413 and OKI6295 writes are seen and ignored. Nothing is audible.' },
   { name: 'Input', state: 'part', note: 'every bit measured; one player station of three is on the keyboard' },
+  { name: 'Timing', state: 'part', note: 'the game clock runs 1.4x slow, down from 7.6x. A round now plays through to its score screen.' },
 ];
 
 /** What is known about each of the 777 routines. */
@@ -79,12 +80,12 @@ const KNOWLEDGE = [
 const TOTAL = 777;
 
 const REMAINING = [
-  ['Motion objects', 'A video layer the port ignores. The captured display list holds 735,711 non-zero bytes across a run, so the board draws something the port does not — but the playfield already carries terrain, castles, walls and ships, so the first job is establishing what is actually on that list before building a renderer for it.'],
+  ['Decompile the rest', '30 of 777. The next step is control-flow structuring: 75% of the corpus needs only ordinary loops and branches, and 302 routines have no branches at all. Routines that call other routines need the call convention modelled before they can be proved.'],
+  ['Motion objects', 'A video layer the port ignores. The captured display list holds 735,711 non-zero bytes across a run, so the board draws something the port does not — but the playfield already carries terrain, castles, walls and ships, so the first job is establishing what is actually on that list.'],
   ['Audio', 'Both chips are written to correctly and neither is modelled. Needs YM2413 FM and OKI6295 ADPCM synthesised.'],
   ['Routine discovery', 'Has not converged. Every new input pattern finds routines nothing static points at. Needs a systematic sweep until it goes dry.'],
-  ['Frame pacing', 'Unverified. The phase countdown steps about every 420 frames — seven seconds a unit, which looks wrong.'],
   ['Two more stations', 'Four buttons and four trackball axes are measured but unwired. No two-player.'],
-  ['A round played to a score', 'Never observed. Likely blocked by the missing sprite layer.'],
+  ['The last 1.4x of pacing', 'The game clock ran 7.6x slow until the frame-handler status bit was measured rather than invented. It is now 1.4x, which may be nothing more than the per-instruction cycle estimates.'],
 ];
 
 function Dot({ state }: { state: 'done' | 'part' | 'none' }) {
@@ -137,8 +138,9 @@ export function Progress() {
           </div>
           <div style={{ flex: 1, minWidth: 260, color: C.dim, fontSize: 13.5 }}>
             Running code is machine code re-expressed as TypeScript — a program
-            counter and a switch. Decompiled code has parameters, loops and names,
-            and can be changed. None of it has been.
+            counter and a switch. Decompiled code has parameters, results and
+            names, and can be changed. Every decompiled routine here was proved
+            equal to the running one before it was counted.
           </div>
         </div>
 
