@@ -160,9 +160,12 @@ class Lifter:
             # not its fourth. Arguments occupy four-byte slots, and a narrower
             # read takes part of one, the high part first, because the 68000 is
             # big-endian.
+            if off < self.pushed:
+                # Inside what this routine pushed. The pushes are real machine
+                # stack operations, so this is simply a read of the machine's
+                # stack - no need to track the values symbolically.
+                return Expr(f"load{bits}(stackPointer() + {off})", "expr")
             off -= self.pushed
-            if off < 0:
-                raise Bail("reads a value it pushed itself")
             slot = off & ~3
             name = self.param(slot)
             if bits == 32:
@@ -262,7 +265,11 @@ class Lifter:
             off = num(m.group(1)) if m.group(1) else 0
             r = m.group(2)
             if r == "a7":
-                raise Bail("writes to the stack")
+                if off < self.pushed:
+                    self.stmts.append(
+                        f"store{bits}(stackPointer() + {off}, {value.text});")
+                    return
+                raise Bail("writes above its own frame")
             b = self.reg_value(r, 32)
             addr = b.text if off == 0 else f"{b.text} + {hex(off)}"
             self.stmts.append(f"store{bits}({addr}, {value.text});")
