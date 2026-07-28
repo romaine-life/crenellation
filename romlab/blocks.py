@@ -86,6 +86,18 @@ class BlockLifter(Lifter):
             return
         super().write(tok, value, bits)
 
+    def mem_read(self, r, off, bits):
+        """Pin the value where it was read.
+
+        The single-block pass learned this the hard way: an expression holding
+        `load8(a0)` that is used after `a0 = a0 + 1` reads the next byte. Here
+        it matters for every `(an)+` operand, which is how this ROM walks
+        strings - `tst.b (a0)+` followed by a branch tests the byte the pointer
+        has already moved past.
+        """
+        v = super().mem_read(r, off, bits)
+        return self.temp(v)
+
     def bump(self, r, by):
         self.used_regs.add(r)
         self.stmts.append(f"{r} = ({r} {'+' if by > 0 else '-'} {abs(by)});")
