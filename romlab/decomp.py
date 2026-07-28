@@ -118,6 +118,7 @@ class Lifter:
         self.saved = {}             # registers a movem is holding
         self.restored = set()       # registers a movem put back
         self.dirty = set()          # argument slots this routine wrote back
+        self.frame = None           # the register `link` made the frame pointer
 
     # ---- reading operands -------------------------------------------------
 
@@ -177,6 +178,14 @@ class Lifter:
         return Expr(f"({e.text} & {mask})", "expr")
 
     def mem_read(self, r, off, bits):
+        if r == self.frame and off >= 8:
+            # Through the frame pointer. After `link a6`, 0(a6) holds the saved
+            # a6 and 4(a6) the return address, so 8(a6) is the first argument -
+            # the same slot `4(a7)` names before anything is pushed. Reading it
+            # as ordinary memory instead of an argument leaves the harness with
+            # no reason to put a value there, and the routine then runs on
+            # whatever the stack happened to contain.
+            return self.slot_read(off - 4, bits, f"{r} + {hex(off)}")
         if r == "a7":
             # An incoming argument - but relative to a stack pointer that has
             # moved. A routine that pushes ten bytes and then reads 0xE(a7) is
@@ -189,21 +198,8 @@ class Lifter:
                 # stack operations, so this is simply a read of the machine's
                 # stack - no need to track the values symbolically.
                 return Expr(f"load{bits}(stackPointer() + {off})", "expr")
-            off -= self.pushed
-            slot = off & ~3
-            if slot in self.dirty:
-                # This routine already wrote the slot. Read what is there.
-                return Expr(f"load{bits}(stackPointer() + {off + self.pushed})", "expr")
-            name = self.param(slot)
-            if bits == 32:
-                if off != slot:
-                    raise Bail("long read straddling two argument slots")
-                return Expr(name, "expr")
-            within = off - slot
-            shift = (4 - within - (bits // 8)) * 8
-            mask = {8: "0xff", 16: "0xffff"}[bits]
-            inner = name if shift == 0 else f"({name} >>> {shift})"
-            return Expr(f"({inner} & {mask})", "expr")
+            return self.slot_read(off - self.pushed, bits,
+                                  f"stackPointer() + {off}")
         b = self.reg_value(r, 32)
         addr = b.text if off == 0 else f"{b.text} + {hex(off)}"
         return Expr(f"load{bits}({addr})", "expr")
@@ -234,6 +230,27 @@ class Lifter:
         if off not in self.params:
             self.params[off] = f"arg{(off - 4) // 4}"
         return self.params[off]
+
+    def slot_read(self, off, bits, live):
+        """Read argument slot `off` of the frame this routine was given.
+
+        Arguments occupy four-byte slots and a narrower read takes part of one,
+        the high part first, because the 68000 is big-endian. `live` is how to
+        reach the same bytes in memory, for a slot this routine has written.
+        """
+        slot = off & ~3
+        if slot in self.dirty:
+            return Expr(f"load{bits}({live})", "expr")
+        name = self.param(slot)
+        if bits == 32:
+            if off != slot:
+                raise Bail("long read straddling two argument slots")
+            return Expr(name, "expr")
+        within = off - slot
+        shift = (4 - within - (bits // 8)) * 8
+        mask = {8: "0xff", 16: "0xffff"}[bits]
+        inner = name if shift == 0 else f"({name} >>> {shift})"
+        return Expr(f"({inner} & {mask})", "expr")
 
     def bump(self, r, by):
         cur = self.reg_value(r, 32)
@@ -433,6 +450,7 @@ class Lifter:
                 return
             raise Bail(f"movem {ins.op_str!r}")
         if b == "link":
+            self.frame = ops[0].strip()
             self.stmts.append(f"push({self.reg_value(ops[0].strip(), 32).text}, 4);")
             self.stmts.append("__sp = stackPointer();")
             self.reg[ops[0].strip()] = Expr("__sp", "expr")

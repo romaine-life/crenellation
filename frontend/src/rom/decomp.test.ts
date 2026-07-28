@@ -164,6 +164,10 @@ describe('decompiled routines against the recompiled oracle', () => {
     // eslint-disable-next-line no-console
     console.log(note);
     writeFileSync(join(here, 'decomp.txt'), note);
+    // The full list, for classifying what is left. The report above stays
+    // short because a 200-line console dump is unreadable; this file is what
+    // gets grouped by cause to decide which fix is worth the most routines.
+    writeFileSync(join(here, 'decomp-all.txt'), bad.join('\n'));
     // Addresses that did not agree, for the lifter to stop emitting. A routine
     // that disagrees with the machine is not decompiled, and shipping it
     // because it looks plausible is exactly the failure this whole harness

@@ -75,6 +75,14 @@ class BlockLifter(Lifter):
     def write(self, tok, value, bits):
         tok = tok.strip()
         if tok in DATA or tok in ADDR:
+            if bits != 32 and tok in DATA:
+                # A byte or word write keeps the register's upper bits, so the
+                # destination is a source too. Going through reg_value is what
+                # makes a register first touched *after* a call get the value
+                # the callee left rather than the one this routine was passed -
+                # `move.b $21(a2),d0` following a `jsr` keeps 24 bits of d0,
+                # and taking them from the parameter is 24 bits of stale data.
+                self.reg_value(tok, 32)
             self.used_regs.add(tok)
             if tok in ADDR and bits == 16:
                 # Sign-extended to 32 bits: an address register has no partial
@@ -168,6 +176,7 @@ class BlockLifter(Lifter):
             # A stack frame: push the old frame pointer, point a6 at it, and
             # reserve locals below. The locals have to be real machine stack -
             # routines take their address and hand it to callees.
+            self.frame = ops[0].strip()
             self.used_regs.add("a6")
             self.stmts.append("push(a6, 4);")
             self.stmts.append("a6 = stackPointer();")
@@ -529,6 +538,12 @@ def dispatch_form(starts, edges, lifted, conds):
     return out
 
 
+# The writeback every `rts` has to do before returning. Set by lift_once once
+# the register set is known, which the two-pass lift guarantees is before the
+# structurer runs.
+EXIT = []
+
+
 def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset(),
               open_loops=(), entering=None):
     """Emit one region as nested if/else and for(;;).
@@ -568,6 +583,14 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset
         out.extend(lifted[node])
         outs = edges.get(node, [])
         if not outs:
+            # An `rts` block. Returning from the recursion is not the same as
+            # returning from the function: nested inside an `if`, the emitted
+            # block simply ends and control falls into whatever the structurer
+            # wrote after it. Node splitting duplicates tails, so that is the
+            # routine's own epilogue - run a second time, restoring saved
+            # registers over the values it just computed.
+            out.extend(EXIT)
+            out.append("return;")
             return out
         if len(outs) == 1:
             node = outs[0]
@@ -626,6 +649,22 @@ def meet(edges, a, b):
 
 
 def lift(lo, hi, names):
+    """Lift twice: once to learn which registers the routine touches, then
+    again knowing them.
+
+    A register first read inside a branch has its `getReg` emitted inside that
+    branch, while the epilogue writes every register back on every path. The
+    path that skipped the load therefore writes the value this routine was
+    entered with over whatever a call left in the machine. Knowing the whole
+    set up front makes each one a parameter, seeded from the machine at entry
+    and re-read after every call, so no path can carry a stale register.
+    """
+    first, _ = lift_once(lo, hi, names)
+    seed = frozenset(first.used_regs) - {"a7"}
+    return lift_once(lo, hi, names, seed)
+
+
+def lift_once(lo, hi, names, seed=()):
     g = build(lo, hi)
     if not g:
         raise Bail("nothing to decode")
@@ -651,6 +690,7 @@ def lift(lo, hi, names):
 
     index = {a: k for k, a in enumerate(starts)}
     lifter = BlockLifter(lo, hi, names)
+    lifter.used_regs.update(seed)
     lifted, conds = {}, {}
     for n, (s, e) in enumerate(zip(starts, ends)):
         lifter.stmts = []
@@ -733,6 +773,8 @@ def lift(lo, hi, names):
         lifted[len(starts) - 1] = lifted.get(len(starts) - 1, []) + list(lifter.stmts) + [
             f"jumpRom(0x{hi:05x});", "return;"]
 
+    global EXIT
+    EXIT = [f"setReg('{x}', {x});" for x in sorted(lifter.used_regs) if x != "a7"]
     if dispatch:
         return lifter, dispatch_form(starts, edges, lifted, conds)
     try:
