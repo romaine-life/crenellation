@@ -10,7 +10,7 @@
 // touched is compared byte for byte. A decompiled routine that differs
 // anywhere is not decompiled, it is wrong.
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -162,6 +162,19 @@ describe('decompiled routines against the recompiled oracle', () => {
     // eslint-disable-next-line no-console
     console.log(note);
     writeFileSync(join(here, 'decomp.txt'), note);
+    // Addresses that did not agree, for the lifter to stop emitting. A routine
+    // that disagrees with the machine is not decompiled, and shipping it
+    // because it looks plausible is exactly the failure this whole harness
+    // exists to prevent.
+    // Added to, not replaced. Each run only sees the routines currently in the
+    // module, so overwriting swaps one set of failures for the next and the
+    // list never grows.
+    const listPath = join(here, '..', '..', '..', 'romlab', 'out', 'unproven.json');
+    const already: number[] = existsSync(listPath)
+      ? (JSON.parse(readFileSync(listPath, 'utf8')) as number[]) : [];
+    const failing = new Set<number>(already);
+    for (const b of bad) failing.add(parseInt(b.split(' ')[0], 16));
+    writeFileSync(listPath, JSON.stringify([...failing].sort((x, y) => x - y)));
 
     expect(checked).toBeGreaterThan(0);
     // A decompiled routine that differs from the machine is simply wrong, so

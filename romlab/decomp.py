@@ -216,6 +216,11 @@ class Lifter:
     def write(self, tok, value, bits):
         tok = tok.strip()
         if tok in DATA or tok in ADDR:
+            if tok in ADDR and bits == 16:
+                # A word move to an address register sign-extends to all 32
+                # bits - there is no such thing as a partial write to one.
+                # Storing the bare word loses the top half of every address.
+                value = Expr(f"((({value.text}) << 16) >> 16)")
             value = self.temp(value)
             if bits == 32 or tok in ADDR:
                 self.reg[tok] = value
@@ -379,6 +384,41 @@ class Lifter:
             dst = ops[-1]
             self.write(dst, Expr(f"({self.read(dst, bits).text} ^ {self.read(ops[0], bits).text})"), bits)
             return
+        if b == "ext":
+            # Sign-extend in place: byte to word, or word to long.
+            src_bits = 8 if bits == 16 else 16
+            v = self.read(ops[0], src_bits)
+            shift = 32 - src_bits
+            self.write(ops[0], Expr(f"((({v.text}) << {shift}) >> {shift})"), bits)
+            return
+        if b in ("asl", "lsl", "asr", "lsr"):
+            if len(ops) == 1:
+                dst, cnt = ops[0], Expr("1", "imm")
+            else:
+                dst, cnt = ops[1], self.read(ops[0], 32)
+            cur = self.read(dst, bits)
+            if b in ("asl", "lsl"):
+                expr = f"(({cur.text}) << (({cnt.text}) & 63))"
+            elif b == "lsr":
+                expr = f"(({cur.text}) >>> (({cnt.text}) & 63))"
+            else:
+                shift = 32 - bits
+                signed = cur.text if bits == 32 else f"((({cur.text}) << {shift}) >> {shift})"
+                expr = f"(({signed}) >> (({cnt.text}) & 63))"
+            self.write(dst, Expr(expr), bits)
+            return
+        if b == "neg":
+            self.write(ops[0], Expr(f"(0 - ({self.read(ops[0], bits).text}))"), bits)
+            return
+        if b == "not":
+            mask = (1 << bits) - 1
+            self.write(ops[0], Expr(f"((~({self.read(ops[0], bits).text})) & {mask})"), bits)
+            return
+        if b == "swap":
+            v = self.read(ops[0], 32)
+            self.write(ops[0], Expr(
+                f"(((({v.text}) >>> 16) & 0xffff) | ((({v.text}) & 0xffff) << 16))"), 32)
+            return
         if b == "lea":
             tok = ops[0].strip()
             m = re.fullmatch(r"\$([0-9a-fA-F]+)(\.(w|l))?", tok)
@@ -490,7 +530,12 @@ const callRom = (addr: number): void => {
 void load8; void load16; void load32; void store8; void store16; void store32;
 /** Tail-jump to another routine: same stack, no return address. */
 const jumpRom = (addr: number): void => { romCall(addr, M); };
+/** The machine's stack pointer, for routines that build a frame with `link`. */
+const stackPointer = (): number => M.a7 >>> 0;
+const setStackPointer = (v: number): void => { M.a7 = v >>> 0; };
+const popLong = (): number => { const v = M.load(M.a7 >>> 0, 32); M.a7 = (M.a7 + 4) >>> 0; return v; };
 void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
+void stackPointer; void setStackPointer; void popLong;
 """
 
 
@@ -550,6 +595,23 @@ def main():
     # the way the machine models it, so the first proved batch is the ones that
     # call nothing. The rest are lifted and held back, not thrown away.
     pure = [(a, s, p) for a, s, p in ok if "fn_" not in s.split("{", 1)[1]]
+    # Routines that branch are lifted by blocks.py, which shares this lifter and
+    # this module - and, more to the point, the same oracle.
+    blocks = HERE / "out" / "blocks.json"
+    if blocks.exists():
+        for row in json.loads(blocks.read_text()):
+            if "fn_" in row["src"].split("{", 1)[1]:
+                continue
+            params = ([{"from": "reg", "name": r} for r in row["regs"]]
+                      + [{"from": "stack", "off": o} for o in row["stack"]])
+            pure.append((row["at"], row["src"], params))
+    # Anything the oracle caught disagreeing is held back until it is fixed.
+    # The list is written by decomp.test.ts and is deliberately visible.
+    unp = HERE / "out" / "unproven.json"
+    held = set(json.loads(unp.read_text())) if unp.exists() else set()
+    if held:
+        print(f"  held back, disagreed with the machine: {len(held)}")
+    pure = [x for x in pure if x[0] not in held]
     emit_ts(pure)
     print(f"  of those, {len(pure)} call nothing and go to the verifier")
     if ok:
