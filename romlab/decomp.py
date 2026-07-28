@@ -308,8 +308,7 @@ class Lifter:
         # machine carries on - which the oracle catches as a register left
         # unset, correctly.
         last = ins[-1].mnemonic.split(".")[0] if ins else ""
-        if last not in ("rts", "rte", "rtr", "jmp", "bra", "bral"):
-            raise Bail("falls through its end, so it is a block and not a function")
+        self.falls_through = last not in ("rts", "rte", "rtr", "jmp", "bra", "bral")
         for i in ins:
             self.step(i)
         return self
@@ -530,6 +529,14 @@ class Lifter:
         sig = ", ".join(f"{a}: number" for a in args)
         head = f"/** {label} */" if label else ""
         stmts = list(self.stmts)
+        if getattr(self, "falls_through", False):
+            # No terminator: the machine carries straight on into whatever
+            # follows, so this does too. Several map entries are labels the ROM
+            # jumps to rather than functions that return.
+            for r, e in self.outputs():
+                stmts.append(f"setReg('{r}', {e.text});")
+            stmts.append(f"jumpRom(0x{self.hi:05x});")
+            stmts.append("return;")
         # A routine that ended in a tail jump has already handed control away
         # and flushed what it held; anything after the return is dead.
         if not (stmts and stmts[-1] == "return;"):

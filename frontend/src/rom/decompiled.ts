@@ -394,6 +394,22 @@ export function fn_00306(): void {
   return;
 }
 
+export function fn_003ea(): void {
+  callRom(0x00618, 0x003f0);
+  store16(0x3e3f00, 0x9);
+  store16((0x3e3f00 + 2), 0xd);
+  store16(((0x3e3f00 + 2) + 2), 0xa);
+  store16((((0x3e3f00 + 2) + 2) + 2), 0xe);
+  store16(0x3e3f08, 0x5b95);
+  store16(0x3e3f0a, 0x1016);
+  store16(0x3e3f0c, 0xb087);
+  store16(0x3e0802, 0);
+  store16(0x3e0800, 0);
+  setReg('a0', ((((0x3e3f00 + 2) + 2) + 2) + 2));
+  jumpRom(0x0042a);
+  return;
+}
+
 export function fn_0042a(): void {
   jumpRom(0x09188);
   return;
@@ -5934,6 +5950,20 @@ export function fn_04f8c(a0_: number, a1_: number, d0_: number, arg0: number, ar
   setReg('d0', d0);
 }
 
+export function fn_04fea(a2: number): void {
+  push(a2, 4);
+  push(0x5, 4);
+  push(0xfde2, 4);
+  setReg('a2', 0xfde2);
+  callRom(0x0452e, 0x04ffc);
+  push(0, 4);
+  const t0 = getReg('a2');
+  push(t0, 4);
+  setReg('a2', t0);
+  jumpRom(0x05000);
+  return;
+}
+
 export function fn_0512a(a0_: number, a2_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number): void {
   let _guard = 0;
   void _guard;
@@ -7794,6 +7824,12 @@ export function fn_066cc(): void {
 
 export function fn_066ce(): void {
   setReg('d4', 6);
+  jumpRom(0x066d4);
+  return;
+}
+
+export function fn_066d2(): void {
+  setReg('d4', 5);
   jumpRom(0x066d4);
   return;
 }
@@ -15321,6 +15357,211 @@ export function fn_0ee3a(): void {
   store16(0x3e1cf4, 0xffff);
 }
 
+export function fn_0eeee(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let save_d1_0 = 0;
+  let save_d2_1 = 0;
+  let save_a1_2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a1, 4);
+        push(d2, 4);
+        push(d1, 4);
+        save_d1_0 = d1;
+        save_d2_1 = d2;
+        save_a1_2 = a1;
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | (load16(0x3e1cf4) & 65535));
+        _at = ((((((d0 & 65535)) << 16) >> 16) - (((0) << 16) >> 16)) < 0) ? 9 : 1; continue dispatch;
+      }
+      case 1: {
+        a1 = arg0;
+        t3 = load32(a1);
+        d1 = t3;
+        d2 = arg1;
+        a0 = 0x3e1cf6;
+        _at = 2; continue dispatch;
+      }
+      case 2: {
+        t4 = load32(a0 + 0x4);
+        _at = (d1 !== t4) ? 4 : 3; continue dispatch;
+      }
+      case 3: {
+        t5 = load32(a0 + 0x8);
+        _at = (d2 === t5) ? 6 : 4; continue dispatch;
+      }
+      case 4: {
+        a0 = (a0 + 0xc);
+        d0 = ((d0 & 0xffff0000) | (((d0 & 0xffff) - 1) & 0xffff));
+        _at = ((d0 & 0xffff) !== 0xffff) ? 2 : 5; continue dispatch;
+      }
+      case 5: {
+        _at = 9; continue dispatch;
+      }
+      case 6: {
+        a1 = a0;
+        a1 = (a1 + 0xc);
+        d0 = (d0 - 0x1);
+        _at = (((d0 | 0) - (0 | 0)) < 0) ? 8 : 7; continue dispatch;
+      }
+      case 7: {
+        t6 = load32(a1);
+        a1 = (a1 + 4);
+        store32(a0, t6);
+        a0 = (a0 + 4);
+        t7 = load32(a1);
+        a1 = (a1 + 4);
+        store32(a0, t7);
+        a0 = (a0 + 4);
+        t8 = load32(a1);
+        a1 = (a1 + 4);
+        store32(a0, t8);
+        a0 = (a0 + 4);
+        d0 = ((d0 & 0xffff0000) | (((d0 & 0xffff) - 1) & 0xffff));
+        _at = ((d0 & 0xffff) !== 0xffff) ? 7 : 8; continue dispatch;
+      }
+      case 8: {
+        store16(a0, 0x7fff);
+        store32(a0 + 0x4, 0);
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | (load16(0x3e1cf4) & 65535));
+        d0 = (d0 - 0x1);
+        store16(0x3e1cf4, (d0 & 65535));
+        _at = 9; continue dispatch;
+      }
+      case 9: {
+        d1 = save_d1_0;
+        d2 = save_d2_1;
+        a1 = save_a1_2;
+        drop(12);
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+}
+
+export function fn_0ef58(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, arg0: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let save_d1_0 = 0;
+  let save_d2_1 = 0;
+  let save_a1_2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a1, 4);
+        push(d2, 4);
+        push(d1, 4);
+        save_d1_0 = d1;
+        save_d2_1 = d2;
+        save_a1_2 = a1;
+        a1 = arg0;
+        t3 = load32(a1);
+        d1 = t3;
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | (load16(0x3e1cf4) & 65535));
+        _at = ((((((d0 & 65535)) << 16) >> 16) - (((0) << 16) >> 16)) < 0) ? 9 : 2; continue dispatch;
+      }
+      case 2: {
+        a0 = 0x3e1cf6;
+        _at = 3; continue dispatch;
+      }
+      case 3: {
+        t4 = load32(a0 + 0x4);
+        _at = (d1 === t4) ? 6 : 4; continue dispatch;
+      }
+      case 4: {
+        a0 = (a0 + 0xc);
+        d0 = ((d0 & 0xffff0000) | (((d0 & 0xffff) - 1) & 0xffff));
+        _at = ((d0 & 0xffff) !== 0xffff) ? 3 : 5; continue dispatch;
+      }
+      case 5: {
+        _at = 9; continue dispatch;
+      }
+      case 6: {
+        a1 = a0;
+        a1 = (a1 + 0xc);
+        d0 = (d0 - 0x1);
+        _at = (((d0 | 0) - (0 | 0)) < 0) ? 8 : 7; continue dispatch;
+      }
+      case 7: {
+        t5 = load32(a1);
+        a1 = (a1 + 4);
+        store32(a0, t5);
+        a0 = (a0 + 4);
+        t6 = load32(a1);
+        a1 = (a1 + 4);
+        store32(a0, t6);
+        a0 = (a0 + 4);
+        t7 = load32(a1);
+        a1 = (a1 + 4);
+        store32(a0, t7);
+        a0 = (a0 + 4);
+        d0 = ((d0 & 0xffff0000) | (((d0 & 0xffff) - 1) & 0xffff));
+        _at = ((d0 & 0xffff) !== 0xffff) ? 7 : 8; continue dispatch;
+      }
+      case 8: {
+        store16(a0, 0x7fff);
+        store32(a0 + 0x4, 0);
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | (load16(0x3e1cf4) & 65535));
+        d0 = (d0 - 0x1);
+        store16(0x3e1cf4, (d0 & 65535));
+        _at = 1; continue dispatch;
+      }
+      case 9: {
+        d1 = save_d1_0;
+        d2 = save_d2_1;
+        a1 = save_a1_2;
+        drop(12);
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+}
+
 export function fn_0f1fa(a1_: number, a2_: number, a3_: number, d0_: number, d1_: number): void {
   let _guard = 0;
   void _guard;
@@ -16007,6 +16248,90 @@ export function fn_11bec(arg0: number): void {
   setReg('d0', t11);
 }
 
+export function fn_11cf8(d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, arg0: number, arg1: number): void {
+  let _guard = 0;
+  void _guard;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  const save_d5_3 = d5;
+  const t4 = (arg0 & 0xffff);
+  d4 = ((d4 & 0xffff0000) | (t4 & 65535));
+  const t5 = (arg1 & 0xffff);
+  d5 = ((d5 & 0xffff0000) | (t5 & 65535));
+  d2 = 0;
+  d3 = 0;
+  d2 = ((d2 & 0xffff0000) | ((d4 & 65535) & 65535));
+  if ((((((d2 & 65535)) << 16) >> 16) - (((0) << 16) >> 16)) >= 0) {
+  } else {
+    d2 = ((d2 & 0xffff0000) | ((0 - ((d2 & 65535))) & 65535));
+  }
+  d3 = ((d3 & 0xffff0000) | ((d5 & 65535) & 65535));
+  if ((((((d3 & 65535)) << 16) >> 16) - (((0) << 16) >> 16)) >= 0) {
+  } else {
+    d3 = ((d3 & 0xffff0000) | ((0 - ((d3 & 65535))) & 65535));
+  }
+  d0 = d3;
+  const t6 = ((0x2) & 63);
+  d0 = (t6 >= 32 ? 0 : ((d0) << t6));
+  d0 = (d0 + d3);
+  d0 = (d0 + d3);
+  d0 = (d0 + d3);
+  d1 = d2;
+  const t7 = ((0x4) & 63);
+  d1 = (t7 >= 32 ? 0 : ((d1) << t7));
+  if ((d1 | 0) > (d0 | 0)) {
+    d0 = d2;
+    const t8 = ((0x2) & 63);
+    d0 = (t8 >= 32 ? 0 : ((d0) << t8));
+    d0 = (d0 + d2);
+    d0 = (d0 + d2);
+    d0 = (d0 + d2);
+    d1 = d3;
+    const t9 = ((0x4) & 63);
+    d1 = (t9 >= 32 ? 0 : ((d1) << t9));
+    if ((d1 | 0) > (d0 | 0)) {
+      d0 = 1;
+    } else {
+      d0 = 0;
+    }
+  } else {
+    d0 = 2;
+  }
+  if ((((((d4 & 65535)) << 16) >> 16) - (((0) << 16) >> 16)) >= 0) {
+  } else {
+    d0 = ((d0 & 0xffff0000) | ((0 - ((d0 & 65535))) & 65535));
+    d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + 0x4) & 65535));
+  }
+  if ((((((d5 & 65535)) << 16) >> 16) - (((0) << 16) >> 16)) >= 0) {
+  } else {
+    d0 = ((d0 & 0xffff0000) | ((0 - ((d0 & 65535))) & 65535));
+    d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + 0x8) & 65535));
+    d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x7) & 65535));
+  }
+  d2 = save_d2_0;
+  d3 = save_d3_1;
+  d4 = save_d4_2;
+  d5 = save_d5_3;
+  drop(16);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+}
+
 export function fn_11d96(a0_: number, a1_: number, a2_: number, a3_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number, arg0: number, arg1: number, arg2: number, arg3: number): void {
   let _guard = 0;
   void _guard;
@@ -16256,6 +16581,225 @@ export function fn_11e10(a0_: number, d0_: number, d1_: number, d2_: number): vo
   setReg('d2', d2);
 }
 
+export function fn_11f2a(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let t0 = 0;
+  let t1 = 0;
+  let t2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        d0 = 0;
+        t0 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t0 & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) >= 0) ? 30 : 1; continue dispatch;
+      }
+      case 1: {
+        d1 = 31;
+        d1 = ((d1 & 0xffff0000) | (((d1 & 65535) & (d0 & 65535)) & 65535));
+        t1 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t1 >= 8 ? 0 : (((d0 & 255)) << t1)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 15 : 2; continue dispatch;
+      }
+      case 2: {
+        t2 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t2 >= 8 ? 0 : (((d0 & 255)) << t2)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 7 : 3; continue dispatch;
+      }
+      case 3: {
+        a1 = (a1 + 0x1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 5 : 4; continue dispatch;
+      }
+      case 4: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 5; continue dispatch;
+      }
+      case 5: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 3 : 6; continue dispatch;
+      }
+      case 6: {
+        _at = 0; continue dispatch;
+      }
+      case 7: {
+        t3 = load8(a0);
+        a0 = (a0 + 1);
+        d3 = ((d3 & 0xffffff00) | (t3 & 255));
+        d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+        t4 = ((0x4) & 63);
+        d0 = ((d0 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d0 & 65535)) >>> t4)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 9 : 8; continue dispatch;
+      }
+      case 8: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 9; continue dispatch;
+      }
+      case 9: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 11 : 10; continue dispatch;
+      }
+      case 10: {
+        _at = 0; continue dispatch;
+      }
+      case 11: {
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) & 0xf) & 65535));
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + (d2 & 65535)) & 65535));
+        store8(a1, (d3 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 13 : 12; continue dispatch;
+      }
+      case 12: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 13; continue dispatch;
+      }
+      case 13: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 7 : 14; continue dispatch;
+      }
+      case 14: {
+        _at = 0; continue dispatch;
+      }
+      case 15: {
+        t5 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t5 >= 8 ? 0 : (((d0 & 255)) << t5)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 21 : 16; continue dispatch;
+      }
+      case 16: {
+        t6 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t6 & 255));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        _at = 17; continue dispatch;
+      }
+      case 17: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 19 : 18; continue dispatch;
+      }
+      case 18: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 19; continue dispatch;
+      }
+      case 19: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 17 : 20; continue dispatch;
+      }
+      case 20: {
+        _at = 0; continue dispatch;
+      }
+      case 21: {
+        _at = ((((d0 & 255)) & 255) !== ((0xfc) & 255)) ? 23 : 22; continue dispatch;
+      }
+      case 22: {
+        break dispatch;
+      }
+      case 23: {
+        t7 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t7 & 255));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        t8 = load8(a0);
+        a0 = (a0 + 1);
+        d3 = ((d3 & 0xffffff00) | (t8 & 255));
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + (d2 & 65535)) & 65535));
+        _at = 24; continue dispatch;
+      }
+      case 24: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 26 : 25; continue dispatch;
+      }
+      case 25: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 26; continue dispatch;
+      }
+      case 26: {
+        store8(a1, (d3 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 28 : 27; continue dispatch;
+      }
+      case 27: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 28; continue dispatch;
+      }
+      case 28: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 24 : 29; continue dispatch;
+      }
+      case 29: {
+        _at = 0; continue dispatch;
+      }
+      case 30: {
+        d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
+        t9 = ((0x4) & 63);
+        d1 = ((d1 & 0xffff0000) | ((t9 >= 16 ? (((((((d1 & 65535)) << 16) >> 16)) < 0) ? -1 : 0) : ((((((d1 & 65535)) << 16) >> 16)) >> t9)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0xf) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        _at = 31; continue dispatch;
+      }
+      case 31: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 33 : 32; continue dispatch;
+      }
+      case 32: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 33; continue dispatch;
+      }
+      case 33: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 31 : 34; continue dispatch;
+      }
+      case 34: {
+        _at = 0; continue dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+}
+
 export function fn_11ff8(a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, arg0: number, arg1: number): void {
   let _guard = 0;
   void _guard;
@@ -16409,6 +16953,246 @@ export function fn_12066(a1_: number, d0_: number, d1_: number, d2_: number): vo
   setReg('d2', d2);
 }
 
+export function fn_120a2(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let t0 = 0;
+  let t1 = 0;
+  let t2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        d3 = 0;
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        d0 = 0;
+        t0 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t0 & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) >= 0) ? 31 : 2; continue dispatch;
+      }
+      case 2: {
+        d1 = 31;
+        d1 = ((d1 & 0xffff0000) | (((d1 & 65535) & (d0 & 65535)) & 65535));
+        t1 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t1 >= 8 ? 0 : (((d0 & 255)) << t1)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 16 : 3; continue dispatch;
+      }
+      case 3: {
+        t2 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t2 >= 8 ? 0 : (((d0 & 255)) << t2)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 8 : 4; continue dispatch;
+      }
+      case 4: {
+        t3 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t3 & 255));
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 6 : 5; continue dispatch;
+      }
+      case 5: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 6; continue dispatch;
+      }
+      case 6: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 4 : 7; continue dispatch;
+      }
+      case 7: {
+        t4 = load8(a0 + -0x1);
+        d2 = ((d2 & 0xffffff00) | (t4 & 255));
+        d2 = ((d2 & 0xffff0000) | (((d2 & 65535) & 0xf0) & 65535));
+        _at = 1; continue dispatch;
+      }
+      case 8: {
+        t5 = load8(a0);
+        a0 = (a0 + 1);
+        d3 = ((d3 & 0xffffff00) | (t5 & 255));
+        d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+        t6 = ((0x4) & 63);
+        d0 = ((d0 & 0xffff0000) | ((t6 >= 16 ? 0 : (((d0 & 65535)) >>> t6)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 10 : 9; continue dispatch;
+      }
+      case 9: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 10; continue dispatch;
+      }
+      case 10: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 12 : 11; continue dispatch;
+      }
+      case 11: {
+        _at = 1; continue dispatch;
+      }
+      case 12: {
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) & 0xf) & 65535));
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + (d2 & 65535)) & 65535));
+        store8(a1, (d3 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 14 : 13; continue dispatch;
+      }
+      case 13: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 14; continue dispatch;
+      }
+      case 14: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 8 : 15; continue dispatch;
+      }
+      case 15: {
+        _at = 1; continue dispatch;
+      }
+      case 16: {
+        t7 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t7 >= 8 ? 0 : (((d0 & 255)) << t7)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 22 : 17; continue dispatch;
+      }
+      case 17: {
+        t8 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t8 & 255));
+        d2 = ((d2 & 0xffff0000) | ((d0 & 65535) & 65535));
+        d2 = ((d2 & 0xffff0000) | (((d2 & 65535) & 0xf0) & 65535));
+        _at = 18; continue dispatch;
+      }
+      case 18: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 20 : 19; continue dispatch;
+      }
+      case 19: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 20; continue dispatch;
+      }
+      case 20: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 18 : 21; continue dispatch;
+      }
+      case 21: {
+        _at = 1; continue dispatch;
+      }
+      case 22: {
+        _at = ((((d0 & 255)) & 255) !== ((0xfc) & 255)) ? 24 : 23; continue dispatch;
+      }
+      case 23: {
+        break dispatch;
+      }
+      case 24: {
+        t9 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t9 & 255));
+        t10 = load8(a0);
+        a0 = (a0 + 1);
+        d3 = ((d3 & 0xffffff00) | (t10 & 255));
+        _at = 25; continue dispatch;
+      }
+      case 25: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 27 : 26; continue dispatch;
+      }
+      case 26: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 27; continue dispatch;
+      }
+      case 27: {
+        store8(a1, (d3 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 29 : 28; continue dispatch;
+      }
+      case 28: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 29; continue dispatch;
+      }
+      case 29: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 25 : 30; continue dispatch;
+      }
+      case 30: {
+        _at = 1; continue dispatch;
+      }
+      case 31: {
+        d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
+        t11 = ((0x4) & 63);
+        d1 = ((d1 & 0xffff0000) | ((t11 >= 16 ? (((((((d1 & 65535)) << 16) >> 16)) < 0) ? -1 : 0) : ((((((d1 & 65535)) << 16) >> 16)) >> t11)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0xf) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        _at = 32; continue dispatch;
+      }
+      case 32: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 34 : 33; continue dispatch;
+      }
+      case 33: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 34; continue dispatch;
+      }
+      case 34: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 32 : 35; continue dispatch;
+      }
+      case 35: {
+        _at = 1; continue dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+}
+
 export function fn_1217e(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, arg0: number, arg1: number, arg2: number, arg3: number): void {
   let _guard = 0;
   void _guard;
@@ -16486,6 +17270,172 @@ export function fn_1217e(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   setReg('d3', d3);
 }
 
+export function fn_121c4(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a5_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number, d7_: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a5 = a5_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  let d7 = d7_;
+  push(a5, 4);
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(a1, 4);
+  push(d7, 4);
+  push(d6, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  push(d1, 4);
+  const save_d1_0 = d1;
+  const save_d2_1 = d2;
+  const save_d3_2 = d3;
+  const save_d4_3 = d4;
+  const save_d5_4 = d5;
+  const save_d6_5 = d6;
+  const save_d7_6 = d7;
+  const save_a1_7 = a1;
+  const save_a2_8 = a2;
+  const save_a3_9 = a3;
+  const save_a4_10 = a4;
+  const save_a5_11 = a5;
+  a0 = 0xdaddc;
+  d0 = 0;
+  const t12 = (arg0 & 0xffff);
+  d0 = ((d0 & 0xffff0000) | (t12 & 65535));
+  a0 = (a0 + d0);
+  const t13 = (arg1 & 0xffff);
+  d2 = ((d2 & 0xffff0000) | (t13 & 65535));
+  d3 = 0;
+  d1 = 0;
+  a3 = 0xdaddc;
+  d4 = 0;
+  const t14 = (arg2 & 0xffff);
+  d4 = ((d4 & 0xffff0000) | (t14 & 65535));
+  a3 = (a3 + d4);
+  const t15 = (arg3 & 0xffff);
+  d7 = ((d7 & 0xffff0000) | (t15 & 65535));
+  a5 = ((((d7 & 65535)) << 16) >> 16);
+  d7 = 0;
+  d5 = 0;
+  a1 = arg4;
+  d6 = 7;
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 1 did not end');
+    setReg('a0', a0);
+    setReg('a1', a1);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a4', a4);
+    setReg('a5', a5);
+    setReg('d0', d0);
+    setReg('d1', d1);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    setReg('d5', d5);
+    setReg('d6', d6);
+    setReg('d7', d7);
+    callRom(0x122c6, 0x12200);
+    a0 = getReg('a0');
+    a1 = getReg('a1');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a4 = getReg('a4');
+    a5 = getReg('a5');
+    d0 = getReg('d0');
+    d1 = getReg('d1');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    d5 = getReg('d5');
+    d6 = getReg('d6');
+    d7 = getReg('d7');
+    setReg('a0', a0);
+    setReg('a1', a1);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a4', a4);
+    setReg('a5', a5);
+    setReg('d0', d0);
+    setReg('d1', d1);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    setReg('d5', d5);
+    setReg('d6', d6);
+    setReg('d7', d7);
+    callRom(0x12222, 0x12202);
+    a0 = getReg('a0');
+    a1 = getReg('a1');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a4 = getReg('a4');
+    a5 = getReg('a5');
+    d0 = getReg('d0');
+    d1 = getReg('d1');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    d5 = getReg('d5');
+    d6 = getReg('d6');
+    d7 = getReg('d7');
+    if ((((((d2 & 65535)) << 16) >> 16) - (((0) << 16) >> 16)) < 0) {
+    } else {
+      a1 = (a1 + 0x1);
+      d6 = ((d6 & 0xffff0000) | (((d6 & 0xffff) - 1) & 0xffff));
+      if ((d6 & 0xffff) !== 0xffff) {
+      } else {
+        a1 = (a1 + 0x1f8);
+        d6 = 7;
+      }
+      continue;
+    }
+    break;
+  }
+  d0 = arg4;
+  d0 = (d0 + 0x8);
+  d1 = save_d1_0;
+  d2 = save_d2_1;
+  d3 = save_d3_2;
+  d4 = save_d4_3;
+  d5 = save_d5_4;
+  d6 = save_d6_5;
+  d7 = save_d7_6;
+  a1 = save_a1_7;
+  a2 = save_a2_8;
+  a3 = save_a3_9;
+  a4 = save_a4_10;
+  a5 = save_a5_11;
+  drop(48);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+  setReg('d7', d7);
+}
+
 export function fn_12306(a3: number, a5: number, d4: number, d5: number, d7: number): void {
   const t0 = load8(a3);
   const t1 = ((d4 & 0xffffff00) | (t0 & 0xff));
@@ -16535,6 +17485,530 @@ export function fn_12354(a0_: number, a1_: number, a2_: number, a4_: number, d0_
   setReg('d4', d4);
   setReg('d5', d5);
   setReg('d7', d7);
+}
+
+export function fn_1238c(a0_: number, a1_: number, a2_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let t0 = 0;
+  let t1 = 0;
+  let t2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let t17 = 0;
+  let t18 = 0;
+  let t19 = 0;
+  let t20 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        d3 = 0;
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        d0 = 0;
+        t0 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t0 & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) >= 0) ? 49 : 2; continue dispatch;
+      }
+      case 2: {
+        d1 = 31;
+        d1 = ((d1 & 0xffff0000) | (((d1 & 65535) & (d0 & 65535)) & 65535));
+        t1 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t1 >= 8 ? 0 : (((d0 & 255)) << t1)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 25 : 3; continue dispatch;
+      }
+      case 3: {
+        t2 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t2 >= 8 ? 0 : (((d0 & 255)) << t2)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 11 : 4; continue dispatch;
+      }
+      case 4: {
+        t3 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t3 & 255));
+        t4 = load8(a1);
+        _at = (((((t4) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 6 : 5; continue dispatch;
+      }
+      case 5: {
+        a1 = (a1 + 0x1);
+        _at = 7; continue dispatch;
+      }
+      case 6: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        _at = 7; continue dispatch;
+      }
+      case 7: {
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 9 : 8; continue dispatch;
+      }
+      case 8: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 9; continue dispatch;
+      }
+      case 9: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 4 : 10; continue dispatch;
+      }
+      case 10: {
+        t5 = load8(a0 + -0x1);
+        d2 = ((d2 & 0xffffff00) | (t5 & 255));
+        d2 = ((d2 & 0xffff0000) | (((d2 & 65535) & 0xf0) & 65535));
+        _at = 1; continue dispatch;
+      }
+      case 11: {
+        t6 = load8(a0);
+        a0 = (a0 + 1);
+        d3 = ((d3 & 0xffffff00) | (t6 & 255));
+        d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+        t7 = ((0x4) & 63);
+        d0 = ((d0 & 0xffff0000) | ((t7 >= 16 ? 0 : (((d0 & 65535)) >>> t7)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        t8 = load8(a1);
+        _at = (((((t8) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 13 : 12; continue dispatch;
+      }
+      case 12: {
+        a1 = (a1 + 0x1);
+        _at = 14; continue dispatch;
+      }
+      case 13: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        _at = 14; continue dispatch;
+      }
+      case 14: {
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 16 : 15; continue dispatch;
+      }
+      case 15: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 16; continue dispatch;
+      }
+      case 16: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 18 : 17; continue dispatch;
+      }
+      case 17: {
+        _at = 1; continue dispatch;
+      }
+      case 18: {
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) & 0xf) & 65535));
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + (d2 & 65535)) & 65535));
+        t9 = load8(a1);
+        _at = (((((t9) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 20 : 19; continue dispatch;
+      }
+      case 19: {
+        a1 = (a1 + 0x1);
+        _at = 21; continue dispatch;
+      }
+      case 20: {
+        store8(a1, (d3 & 255));
+        a1 = (a1 + 1);
+        _at = 21; continue dispatch;
+      }
+      case 21: {
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 23 : 22; continue dispatch;
+      }
+      case 22: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 23; continue dispatch;
+      }
+      case 23: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 11 : 24; continue dispatch;
+      }
+      case 24: {
+        _at = 1; continue dispatch;
+      }
+      case 25: {
+        t10 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t10 >= 8 ? 0 : (((d0 & 255)) << t10)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 34 : 26; continue dispatch;
+      }
+      case 26: {
+        t11 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t11 & 255));
+        d2 = ((d2 & 0xffff0000) | ((d0 & 65535) & 65535));
+        d2 = ((d2 & 0xffff0000) | (((d2 & 65535) & 0xf0) & 65535));
+        _at = 27; continue dispatch;
+      }
+      case 27: {
+        t12 = load8(a1);
+        _at = (((((t12) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 29 : 28; continue dispatch;
+      }
+      case 28: {
+        a1 = (a1 + 0x1);
+        _at = 30; continue dispatch;
+      }
+      case 29: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        _at = 30; continue dispatch;
+      }
+      case 30: {
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 32 : 31; continue dispatch;
+      }
+      case 31: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 32; continue dispatch;
+      }
+      case 32: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 27 : 33; continue dispatch;
+      }
+      case 33: {
+        _at = 1; continue dispatch;
+      }
+      case 34: {
+        _at = ((((d0 & 255)) & 255) !== ((0xfc) & 255)) ? 36 : 35; continue dispatch;
+      }
+      case 35: {
+        break dispatch;
+      }
+      case 36: {
+        t13 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t13 & 255));
+        t14 = load8(a0);
+        a0 = (a0 + 1);
+        d3 = ((d3 & 0xffffff00) | (t14 & 255));
+        _at = 37; continue dispatch;
+      }
+      case 37: {
+        t15 = load8(a1);
+        _at = (((((t15) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 39 : 38; continue dispatch;
+      }
+      case 38: {
+        a1 = (a1 + 0x1);
+        _at = 40; continue dispatch;
+      }
+      case 39: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        _at = 40; continue dispatch;
+      }
+      case 40: {
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 42 : 41; continue dispatch;
+      }
+      case 41: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 42; continue dispatch;
+      }
+      case 42: {
+        t16 = load8(a1);
+        _at = (((((t16) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 44 : 43; continue dispatch;
+      }
+      case 43: {
+        a1 = (a1 + 0x1);
+        _at = 45; continue dispatch;
+      }
+      case 44: {
+        store8(a1, (d3 & 255));
+        a1 = (a1 + 1);
+        _at = 45; continue dispatch;
+      }
+      case 45: {
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 47 : 46; continue dispatch;
+      }
+      case 46: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 47; continue dispatch;
+      }
+      case 47: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 37 : 48; continue dispatch;
+      }
+      case 48: {
+        _at = 1; continue dispatch;
+      }
+      case 49: {
+        d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
+        t17 = ((0x4) & 63);
+        d1 = ((d1 & 0xffff0000) | ((t17 >= 16 ? (((((((d1 & 65535)) << 16) >> 16)) < 0) ? -1 : 0) : ((((((d1 & 65535)) << 16) >> 16)) >> t17)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0xf) & 65535));
+        t18 = ((0x7) & 63);
+        d0 = ((d0 & 0xffff0000) | ((t18 >= 16 ? 0 : (((d0 & 65535)) << t18)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + load16(0x3e0e76)) & 65535));
+        store8(0x3e0e77, (load8(0x3e0e77) + 0xd));
+        store8(0x3e0e77, (load8(0x3e0e77) & 0x3f));
+        a2 = 0x3a390;
+        a2 = (a2 + d0);
+        _at = 50; continue dispatch;
+      }
+      case 50: {
+        t19 = load8(a1);
+        _at = (((((t19) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 52 : 51; continue dispatch;
+      }
+      case 51: {
+        a1 = (a1 + 0x1);
+        _at = 53; continue dispatch;
+      }
+      case 52: {
+        t20 = load8(a2);
+        a2 = (a2 + 1);
+        store8(a1, t20);
+        a1 = (a1 + 1);
+        _at = 53; continue dispatch;
+      }
+      case 53: {
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 55 : 54; continue dispatch;
+      }
+      case 54: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 55; continue dispatch;
+      }
+      case 55: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 50 : 56; continue dispatch;
+      }
+      case 56: {
+        _at = 1; continue dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+}
+
+export function fn_124e2(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let t0 = 0;
+  let t1 = 0;
+  let t2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        d3 = 0;
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        d0 = 0;
+        t0 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t0 & 255));
+        if ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) >= 0) {
+          setReg('a0', a0);
+          setReg('d0', d0);
+          setReg('d3', d3);
+          jumpRom(0x1259c);
+          return;
+        }
+        _at = 2; continue dispatch;
+      }
+      case 2: {
+        d1 = 31;
+        d1 = ((d1 & 0xffff0000) | (((d1 & 65535) & (d0 & 65535)) & 65535));
+        t1 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t1 >= 8 ? 0 : (((d0 & 255)) << t1)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 16 : 3; continue dispatch;
+      }
+      case 3: {
+        t2 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t2 >= 8 ? 0 : (((d0 & 255)) << t2)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 8 : 4; continue dispatch;
+      }
+      case 4: {
+        t3 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t3);
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 6 : 5; continue dispatch;
+      }
+      case 5: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 6; continue dispatch;
+      }
+      case 6: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 4 : 7; continue dispatch;
+      }
+      case 7: {
+        t4 = load8(a0 + -0x1);
+        d2 = ((d2 & 0xffffff00) | (t4 & 255));
+        d2 = ((d2 & 0xffff0000) | (((d2 & 65535) & 0xf0) & 65535));
+        _at = 1; continue dispatch;
+      }
+      case 8: {
+        t5 = load8(a0);
+        a0 = (a0 + 1);
+        d3 = ((d3 & 0xffffff00) | (t5 & 255));
+        d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+        t6 = ((0x4) & 63);
+        d0 = ((d0 & 0xffff0000) | ((t6 >= 16 ? 0 : (((d0 & 65535)) >>> t6)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 10 : 9; continue dispatch;
+      }
+      case 9: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 10; continue dispatch;
+      }
+      case 10: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 12 : 11; continue dispatch;
+      }
+      case 11: {
+        _at = 1; continue dispatch;
+      }
+      case 12: {
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) & 0xf) & 65535));
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + (d2 & 65535)) & 65535));
+        store8(a1, (d3 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 14 : 13; continue dispatch;
+      }
+      case 13: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 14; continue dispatch;
+      }
+      case 14: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 8 : 15; continue dispatch;
+      }
+      case 15: {
+        _at = 1; continue dispatch;
+      }
+      case 16: {
+        t7 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t7 >= 8 ? 0 : (((d0 & 255)) << t7)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 22 : 17; continue dispatch;
+      }
+      case 17: {
+        t8 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t8 & 255));
+        d2 = ((d2 & 0xffff0000) | ((d0 & 65535) & 65535));
+        d2 = ((d2 & 0xffff0000) | (((d2 & 65535) & 0xf0) & 65535));
+        _at = 18; continue dispatch;
+      }
+      case 18: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 20 : 19; continue dispatch;
+      }
+      case 19: {
+        a1 = (a1 + d5);
+        d4 = ((d4 & 0xffff0000) | (0x1ff & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - (d5 & 65535)) & 65535));
+        _at = 20; continue dispatch;
+      }
+      case 20: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 18 : 21; continue dispatch;
+      }
+      case 21: {
+        _at = 1; continue dispatch;
+      }
+      case 22: {
+        if ((((d0 & 255)) & 255) !== ((0xfc) & 255)) {
+          setReg('a0', a0);
+          setReg('a1', a1);
+          setReg('d0', d0);
+          setReg('d1', d1);
+          setReg('d2', d2);
+          setReg('d3', d3);
+          setReg('d4', d4);
+          setReg('d5', d5);
+          jumpRom(0x12574);
+          return;
+        }
+        _at = 23; continue dispatch;
+      }
+      case 23: {
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
 }
 
 export function fn_12574(a0_: number, a1_: number, d0_: number, d1_: number, d3_: number, d4_: number, d5_: number): void {
@@ -73983,6 +75457,36 @@ export function fn_1851c(a0_: number, a3_: number, a5_: number, d0_: number, d1_
   setReg('d2', d2);
 }
 
+export function fn_18564(): void {
+  callRom(0x18652, 0x1856a);
+  jumpRom(0x1856a);
+  return;
+}
+
+export function fn_18576(): void {
+  callRom(0x18652, 0x1857c);
+  jumpRom(0x1857c);
+  return;
+}
+
+export function fn_18598(): void {
+  callRom(0x18652, 0x1859e);
+  jumpRom(0x1859e);
+  return;
+}
+
+export function fn_18614(): void {
+  callRom(0x18652, 0x1861a);
+  jumpRom(0x1861a);
+  return;
+}
+
+export function fn_18652(): void {
+  callRom(0x19c2e, 0x18658);
+  jumpRom(0x18658);
+  return;
+}
+
 export function fn_18658(): void {
   jumpRom(0x1e8d2);
   return;
@@ -74224,6 +75728,207 @@ export function fn_1890c(d0_: number, d1_: number, arg0: number, arg1: number): 
   setReg('d1', d1);
 }
 
+export function fn_18a5e(d1: number, arg0: number, arg1: number): void {
+  const t0 = (arg1 & 0xffff);
+  const t1 = ((d1 & 0xffff0000) | (t0 & 0xffff));
+  setReg('a0', arg0);
+  setReg('d1', t1);
+  jumpRom(0x18a66);
+  return;
+}
+
+export function fn_18a66(a0_: number, a1_: number, a2_: number, d0_: number, d1_: number, d2_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let save_d2_0 = 0;
+  let save_a2_1 = 0;
+  let t2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a2, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_a2_1 = a2;
+        a2 = a0;
+        d2 = ((d2 & 0xffff0000) | ((d1 & 65535) & 65535));
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        d0 = 0;
+        t2 = load8(a2);
+        a2 = (a2 + 1);
+        d0 = ((d0 & 0xffffff00) | (t2 & 255));
+        a1 = (((0x40) << 16) >> 16);
+        d1 = 0;
+        t3 = load8(a2);
+        a2 = (a2 + 1);
+        d1 = ((d1 & 0xffffff00) | (t3 & 255));
+        d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+        d1 = ((d1 & 0xffff0000) | (((d1 & 65535) + load16(0x3e3406)) & 65535));
+        _at = ((((((d1 & 65535)) << 16) >> 16) - (((0) << 16) >> 16)) < 0) ? 3 : 2; continue dispatch;
+      }
+      case 2: {
+        _at = (((((d1 & 65535)) << 16) >> 16) < (((0x2a) << 16) >> 16)) ? 4 : 3; continue dispatch;
+      }
+      case 3: {
+        a2 = (a2 + (((0x4) << 16) >> 16));
+        d0 = 0;
+        _at = 15; continue dispatch;
+      }
+      case 4: {
+        d1 = ((((d1) >>> 16) & 0xffff) | (((d1) & 0xffff) << 16));
+        t4 = ((0x4) & 63);
+        d1 = (t4 >= 32 ? 0 : ((d1) >>> t4));
+        t5 = ((0x3) & 63);
+        d0 = (t5 >= 32 ? 0 : ((d0) << t5));
+        d0 = (d0 + d1);
+        d2 = ((((d2) >>> 16) & 0xffff) | (((d2) & 0xffff) << 16));
+        d1 = d0;
+        t6 = load32(a2);
+        a0 = t6;
+        _at = 5; continue dispatch;
+      }
+      case 5: {
+        t7 = load8(a0);
+        a0 = (a0 + 1);
+        d2 = ((d2 & 0xffffff00) | (t7 & 255));
+        _at = ((((d2 & 255)) & 255) === ((0) & 255)) ? 8 : 6; continue dispatch;
+      }
+      case 6: {
+        _at = ((((d2 & 255)) & 255) !== ((0x2c) & 255)) ? 5 : 7; continue dispatch;
+      }
+      case 7: {
+        d1 = (d1 + 0x3);
+        _at = 8; continue dispatch;
+      }
+      case 8: {
+        d2 = ((((d2) >>> 16) & 0xffff) | (((d2) & 0xffff) << 16));
+        _at = (((((d2 & 255)) >>> ((0xc) & 7)) & 1) === 0) ? 14 : 9; continue dispatch;
+      }
+      case 9: {
+        _at = (d1 === d0) ? 14 : 10; continue dispatch;
+      }
+      case 10: {
+        a0 = 0x200004;
+        a1 = a0;
+        a0 = (a0 + d0);
+        a1 = (a1 + d1);
+        d0 = d1;
+        _at = 11; continue dispatch;
+      }
+      case 11: {
+        d1 = 7;
+        _at = 12; continue dispatch;
+      }
+      case 12: {
+        store8(a0, (d2 & 255));
+        a0 = (a0 + (((0x200) << 16) >> 16));
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 12 : 13; continue dispatch;
+      }
+      case 13: {
+        a0 = (a0 - 0xfff);
+        _at = (a1 !== a0) ? 11 : 14; continue dispatch;
+      }
+      case 14: {
+        t8 = load32(a2);
+        a2 = (a2 + 4);
+        a0 = t8;
+        d1 = ((d1 & 0xffff0000) | ((d2 & 65535) & 65535));
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        callRom(0x18b92, 0x18ae2);
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        _at = 15; continue dispatch;
+      }
+      case 15: {
+        d1 = 0;
+        t9 = load8(a2);
+        d1 = ((d1 & 0xffffff00) | (t9 & 255));
+        d1 = ((d1 & 0xffff0000) | (((d1 & 65535) + load16(0x3e3400)) & 65535));
+        d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - 0x1) & 65535));
+        _at = (((((d1 & 65535)) << 16) >> 16) <= (((0) << 16) >> 16)) ? 17 : 16; continue dispatch;
+      }
+      case 16: {
+        t10 = load32(a2 + 0x2);
+        a2 = t10;
+        _at = 1; continue dispatch;
+      }
+      case 17: {
+        d2 = save_d2_0;
+        a2 = save_a2_1;
+        drop(8);
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+}
+
+export function fn_18b76(arg0: number, arg1: number, arg2: number, arg3: number): void {
+  const t0 = (arg1 & 0xff);
+  const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
+  const t2 = (arg0 & 0xff);
+  const t3 = ((0 & 0xffffff00) | (t2 & 0xff));
+  const t4 = ((((t1) >>> 16) & 0xffff) | (((t1) & 0xffff) << 16));
+  const t5 = ((0x4) & 63);
+  const t6 = (t5 >= 32 ? 0 : ((t4) >>> t5));
+  const t7 = ((0x3) & 63);
+  const t8 = (t7 >= 32 ? 0 : ((t3) << t7));
+  const t9 = (t8 + t6);
+  const t10 = (arg3 & 0xffff);
+  const t11 = ((t6 & 0xffff0000) | (t10 & 0xffff));
+  setReg('a0', arg2);
+  setReg('d0', t9);
+  setReg('d1', t11);
+  jumpRom(0x18b92);
+  return;
+}
+
+export function fn_18c3c(d0: number, d1: number, arg0: number, arg1: number, arg2: number): void {
+  const t0 = (arg1 & 0xffff);
+  const t1 = ((d1 & 0xffff0000) | (t0 & 0xffff));
+  const t2 = (arg2 & 0xffff);
+  const t3 = ((d0 & 0xffff0000) | (t2 & 0xffff));
+  setReg('a0', arg0);
+  setReg('d0', t3);
+  setReg('d1', t1);
+  jumpRom(0x18c48);
+  return;
+}
+
 export function fn_18caa(a0_: number, a1_: number, d0_: number): void {
   let _guard = 0;
   void _guard;
@@ -74258,6 +75963,19 @@ export function fn_18caa(a0_: number, a1_: number, d0_: number): void {
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('d0', d0);
+}
+
+export function fn_18cce(arg2: number, arg3: number): void {
+  const t0 = (arg2 & 0xffff);
+  const t1 = ((0 & 0xffff0000) | (t0 & 0xffff));
+  const t2 = (arg3 & 0xffff);
+  const t3 = ((0 & 0xffff0000) | (t2 & 0xffff));
+  const t4 = ((t3 & 0xffff) & 0x30f0);
+  const t5 = ((t3 & 0xffff0000) | (t4 & 0xffff));
+  setReg('d0', t1);
+  setReg('d1', t5);
+  jumpRom(0x18cde);
+  return;
 }
 
 export function fn_18cde(d0: number, d1: number, arg0: number, arg1: number): void {
@@ -75898,6 +77616,187 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
   setReg('d4', d4);
 }
 
+export function fn_1e720(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let t0 = 0;
+  let t1 = 0;
+  let t2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        d0 = 0;
+        t0 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t0 & 255));
+        if ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) >= 0) {
+          setReg('a0', a0);
+          setReg('d0', d0);
+          jumpRom(0x1e7e4);
+          return;
+        }
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        d1 = 31;
+        d1 = ((d1 & 0xffff0000) | (((d1 & 65535) & (d0 & 65535)) & 65535));
+        t1 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t1 >= 8 ? 0 : (((d0 & 255)) << t1)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 19 : 2; continue dispatch;
+      }
+      case 2: {
+        t2 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t2 >= 8 ? 0 : (((d0 & 255)) << t2)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 11 : 3; continue dispatch;
+      }
+      case 3: {
+        _at = (((((d2 & 255)) >>> ((0xd) & 7)) & 1) !== 0) ? 6 : 4; continue dispatch;
+      }
+      case 4: {
+        _at = (((((d2 & 255)) >>> ((0xc) & 7)) & 1) === 0) ? 7 : 5; continue dispatch;
+      }
+      case 5: {
+        d0 = 0;
+        _at = 21; continue dispatch;
+      }
+      case 6: {
+        d0 = ((d0 & 0xffffff00) | ((d2 & 255) & 255));
+        _at = 21; continue dispatch;
+      }
+      case 7: {
+        a1 = (a1 + 0x1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 9 : 8; continue dispatch;
+      }
+      case 8: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 9; continue dispatch;
+      }
+      case 9: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 3 : 10; continue dispatch;
+      }
+      case 10: {
+        _at = 0; continue dispatch;
+      }
+      case 11: {
+        t3 = load8(a0);
+        a0 = (a0 + 1);
+        d3 = ((d3 & 0xffffff00) | (t3 & 255));
+        d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+        t4 = ((0x4) & 63);
+        d0 = ((d0 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d0 & 65535)) >>> t4)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 13 : 12; continue dispatch;
+      }
+      case 12: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 13; continue dispatch;
+      }
+      case 13: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 15 : 14; continue dispatch;
+      }
+      case 14: {
+        _at = 0; continue dispatch;
+      }
+      case 15: {
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) & 0xf) & 65535));
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + (d2 & 65535)) & 65535));
+        store8(a1, (d3 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 17 : 16; continue dispatch;
+      }
+      case 16: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 17; continue dispatch;
+      }
+      case 17: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 11 : 18; continue dispatch;
+      }
+      case 18: {
+        _at = 0; continue dispatch;
+      }
+      case 19: {
+        t5 = ((0x1) & 63);
+        d0 = ((d0 & 0xffffff00) | ((t5 >= 8 ? 0 : (((d0 & 255)) << t5)) & 255));
+        _at = ((((((d0 & 255)) << 24) >> 24) - (((0) << 24) >> 24)) < 0) ? 25 : 20; continue dispatch;
+      }
+      case 20: {
+        t6 = load8(a0);
+        a0 = (a0 + 1);
+        d0 = ((d0 & 0xffffff00) | (t6 & 255));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d2 & 65535)) & 65535));
+        _at = 21; continue dispatch;
+      }
+      case 21: {
+        store8(a1, (d0 & 255));
+        a1 = (a1 + 1);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 23 : 22; continue dispatch;
+      }
+      case 22: {
+        a1 = (a1 + 0x1f8);
+        d4 = 7;
+        _at = 23; continue dispatch;
+      }
+      case 23: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 21 : 24; continue dispatch;
+      }
+      case 24: {
+        _at = 0; continue dispatch;
+      }
+      case 25: {
+        if ((((d0 & 255)) & 255) !== ((0xfc) & 255)) {
+          setReg('a0', a0);
+          setReg('a1', a1);
+          setReg('d0', d0);
+          setReg('d1', d1);
+          setReg('d2', d2);
+          setReg('d3', d3);
+          setReg('d4', d4);
+          jumpRom(0x1e7b8);
+          return;
+        }
+        _at = 26; continue dispatch;
+      }
+      case 26: {
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+}
+
 export function fn_1e7b8(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number): void {
   let _guard = 0;
   void _guard;
@@ -76230,6 +78129,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x00306, fn: fn_00306 as (...a: number[]) => void, params: [] },
 
+  { at: 0x003ea, fn: fn_003ea as (...a: number[]) => void, params: [] },
+
   { at: 0x0042a, fn: fn_0042a as (...a: number[]) => void, params: [] },
 
   { at: 0x00512, fn: fn_00512 as (...a: number[]) => void, params: [] },
@@ -76392,6 +78293,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x04f8c, fn: fn_04f8c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
+  { at: 0x04fea, fn: fn_04fea as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+
   { at: 0x0512a, fn: fn_0512a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x05168, fn: fn_05168 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a7' }, { from: 'reg', name: 'd0' }] },
@@ -76455,6 +78358,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x066cc, fn: fn_066cc as (...a: number[]) => void, params: [] },
 
   { at: 0x066ce, fn: fn_066ce as (...a: number[]) => void, params: [] },
+
+  { at: 0x066d2, fn: fn_066d2 as (...a: number[]) => void, params: [] },
 
   { at: 0x066d4, fn: fn_066d4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
@@ -76636,6 +78541,10 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0ee3a, fn: fn_0ee3a as (...a: number[]) => void, params: [] },
 
+  { at: 0x0eeee, fn: fn_0eeee as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+
+  { at: 0x0ef58, fn: fn_0ef58 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
+
   { at: 0x0f1fa, fn: fn_0f1fa as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x0f26a, fn: fn_0f26a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
@@ -76664,9 +78573,13 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x11bec, fn: fn_11bec as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
+  { at: 0x11cf8, fn: fn_11cf8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+
   { at: 0x11d96, fn: fn_11d96 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
   { at: 0x11e10, fn: fn_11e10 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+
+  { at: 0x11f2a, fn: fn_11f2a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x11ff8, fn: fn_11ff8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -76674,11 +78587,19 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x12066, fn: fn_12066 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
+  { at: 0x120a2, fn: fn_120a2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+
   { at: 0x1217e, fn: fn_1217e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
+
+  { at: 0x121c4, fn: fn_121c4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
 
   { at: 0x12306, fn: fn_12306 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd7' }] },
 
   { at: 0x12354, fn: fn_12354 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd7' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+
+  { at: 0x1238c, fn: fn_1238c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+
+  { at: 0x124e2, fn: fn_124e2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x12574, fn: fn_12574 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
@@ -76766,6 +78687,16 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1851c, fn: fn_1851c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
 
+  { at: 0x18564, fn: fn_18564 as (...a: number[]) => void, params: [] },
+
+  { at: 0x18576, fn: fn_18576 as (...a: number[]) => void, params: [] },
+
+  { at: 0x18598, fn: fn_18598 as (...a: number[]) => void, params: [] },
+
+  { at: 0x18614, fn: fn_18614 as (...a: number[]) => void, params: [] },
+
+  { at: 0x18652, fn: fn_18652 as (...a: number[]) => void, params: [] },
+
   { at: 0x18658, fn: fn_18658 as (...a: number[]) => void, params: [] },
 
   { at: 0x1868c, fn: fn_1868c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
@@ -76782,7 +78713,17 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1890c, fn: fn_1890c as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
+  { at: 0x18a5e, fn: fn_18a5e as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+
+  { at: 0x18a66, fn: fn_18a66 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+
+  { at: 0x18b76, fn: fn_18b76 as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
+
+  { at: 0x18c3c, fn: fn_18c3c as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
+
   { at: 0x18caa, fn: fn_18caa as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }] },
+
+  { at: 0x18cce, fn: fn_18cce as (...a: number[]) => void, params: [{ from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
   { at: 0x18cde, fn: fn_18cde as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -76867,6 +78808,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x1b4be, fn: fn_1b4be as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x1b538, fn: fn_1b538 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+
+  { at: 0x1e720, fn: fn_1e720 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x1e7b8, fn: fn_1e7b8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 

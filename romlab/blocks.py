@@ -287,6 +287,12 @@ class BlockLifter(Lifter):
             raise Bail(f"{mnemonic} after btst")
         if kind == "dbcc":
             return f"{lhs} !== {rhs}"
+        if mnemonic in ("bmi", "bpl"):
+            # The sign of `lhs - rhs`, which after a `tst` is just the sign of
+            # the value. Both operands are sign-extended first: comparing the
+            # raw words makes every negative number look large and positive.
+            op = "<" if mnemonic == "bmi" else ">="
+            return f"({sx(lhs, bits)} - {sx(rhs, bits)}) {op} 0"
         if mnemonic not in COMPARE:
             raise Bail(f"branch {mnemonic}")
         op = COMPARE[mnemonic]
