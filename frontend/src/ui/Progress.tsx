@@ -63,7 +63,7 @@ type Layer = { name: string; state: 'done' | 'part' | 'none'; note: string };
 const LAYERS: Layer[] = [
   { name: 'CPU', state: 'done', note: '68000 core, verified instruction by instruction against the chip' },
   { name: 'Playfield', state: 'done', note: '336×240 bitmap the ROM writes, with the palette decoded at its real stride' },
-  { name: 'Motion objects', state: 'none', note: 'the sprite layer — cursor, cannonballs, ships. Not drawn at all.' },
+  { name: 'Motion objects', state: 'none', note: 'a sprite layer the port never reads. The board keeps a display list that stays populated the whole time the game runs; terrain, castles, walls, cannons and ships all come from the playfield, so what is on that list has not been pinned down yet.' },
   { name: 'Sound', state: 'none', note: 'YM2413 and OKI6295 writes are seen and ignored. Nothing is audible.' },
   { name: 'Input', state: 'part', note: 'every bit measured; one player station of three is on the keyboard' },
 ];
@@ -79,7 +79,7 @@ const KNOWLEDGE = [
 const TOTAL = 777;
 
 const REMAINING = [
-  ['Motion objects', 'An entire video layer is missing. Needs the display list read per frame, sprite tiles decoded from the graphics ROM, and compositing with the right priority, flip and palette bank.'],
+  ['Motion objects', 'A video layer the port ignores. The captured display list holds 735,711 non-zero bytes across a run, so the board draws something the port does not — but the playfield already carries terrain, castles, walls and ships, so the first job is establishing what is actually on that list before building a renderer for it.'],
   ['Audio', 'Both chips are written to correctly and neither is modelled. Needs YM2413 FM and OKI6295 ADPCM synthesised.'],
   ['Routine discovery', 'Has not converged. Every new input pattern finds routines nothing static points at. Needs a systematic sweep until it goes dry.'],
   ['Frame pacing', 'Unverified. The phase countdown steps about every 420 frames — seven seconds a unit, which looks wrong.'],
