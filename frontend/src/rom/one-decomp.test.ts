@@ -86,6 +86,12 @@ describe('probe', () => {
       const rb = b as never as Record<string, number>;
       const diff = REGS.filter((r) => (ra[r] >>> 0) !== (rb[r] >>> 0))
         .map((r) => `${r} ${ra[r] >>> 0}!=${rb[r] >>> 0}`);
+      const mem: string[] = [];
+      for (let addr = 0x3e0000; addr < 0x3e8000; addr += 1) {
+        if (a.byte(addr) !== b.byte(addr)) mem.push(`${addr.toString(16)}:${a.byte(addr)}/${b.byte(addr)}`);
+        if (mem.length > 12) break;
+      }
+      out.push(`  memory ${mem.join(' ') || 'equal'}`);
       out.push(`trial ${trial}: machine[${oracleFailed || 'ok'}] lifted[${liftedFailed || 'ok'}]`
         + ` a7 ${a.a7.toString(16)}/${b.a7.toString(16)} :: ${diff.join(' ') || 'regs equal'}`);
     }

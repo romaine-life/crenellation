@@ -126,6 +126,12 @@ describe('decompiled routines against the recompiled oracle', () => {
         try { fn(...args); } catch (e) { liftedFailed = (e as Error).message.slice(0, 40); }
 
         if (oracleFailed) continue;          // the oracle could not run it; nothing to compare
+        // The oracle survived a bad pointer by vectoring an address error, the
+        // way the chip does. The decompiled routines have no exception path -
+        // they are the routine, not the CPU - so this trial is measuring the
+        // handler, not the lifting. It only happens on arguments outside the
+        // routine's domain, which the harness invents and the game does not.
+        if (a.addressErrors > 0) continue;
         checked += 1;
         if (liftedFailed) {
           bad.push(`0x${addr.toString(16)} trial ${trial}: decompiled threw - ${liftedFailed}`);

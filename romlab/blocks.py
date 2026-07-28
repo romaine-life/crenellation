@@ -56,6 +56,7 @@ class BlockLifter(Lifter):
         super().__init__(lo, hi, names)
         self.flags = None
         self.saved = {}
+        self.db_cond = None         # the loop test of the last dbcc
 
     def reg_value(self, r, bits):
         if r == "a7":
@@ -197,10 +198,19 @@ class BlockLifter(Lifter):
                 self.stmts.append(f"{name} = ({self.condition('b' + cc)});")
                 pre = name
             self.used_regs.add(reg)
-            self.stmts.append(
-                f"{reg} = (({reg} & 0xffff0000) | ((({reg} & 0xffff) - 1) & 0xffff));")
-            self.flags = (("dbcc" if pre is None else "dbcc-cc"),
-                          pre or f"({reg} & 0xffff)", f"({reg} & 0xffff)", 16)
+            # The decrement happens only when the condition is false. `dbeq`
+            # that stops on the first match leaves the counter untouched, and
+            # decrementing anyway puts every later index one slot low.
+            dec = f"{reg} = (({reg} & 0xffff0000) | ((({reg} & 0xffff) - 1) & 0xffff));"
+            self.stmts.append(dec if pre is None else f"if (!{pre}) {{ {dec} }}")
+            # `dbcc` does not touch the flags. Its own branch has a condition of
+            # its own, kept separately, and whatever set the flags before is
+            # still what the next branch tests - `dbeq` followed by `bne` is
+            # asking which way the loop ended, and answering it with the loop
+            # counter instead of the byte is a different question entirely.
+            self.db_cond = self.condition_of(
+                ("dbcc" if pre is None else "dbcc-cc"),
+                pre or f"({reg} & 0xffff)", f"({reg} & 0xffff)", 16)
             return
         if b == "movem":
             self.movem(ins, ops, bits)
@@ -354,7 +364,9 @@ class BlockLifter(Lifter):
         """The branch's test, as an expression."""
         if self.flags is None:
             raise Bail(f"{mnemonic} with no flag-setter before it")
-        kind, lhs, rhs, bits = self.flags
+        return self.condition_of(*self.flags, mnemonic=mnemonic)
+
+    def condition_of(self, kind, lhs, rhs, bits, mnemonic="b"):
         if kind == "bit":
             if mnemonic == "beq":
                 return f"((({lhs}) >>> (({rhs}) & 7)) & 1) === 0"
@@ -743,7 +755,7 @@ def lift_once(lo, hi, names, seed=()):
                 tgt = target_of(i)
                 if tgt is None or tgt not in index:
                     raise Bail("dbcc out of the routine")
-                conds[n] = (lifter.condition(b), index[tgt])
+                conds[n] = (lifter.db_cond, index[tgt])
                 continue
             if b in COND:
                 # Which successor is the taken one has to come from the branch

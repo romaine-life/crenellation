@@ -125,7 +125,14 @@ export class Machine {
    * is seven words: the special status word, the address that faulted, the
    * instruction register, the status register and the program counter.
    */
+  /** How many address-error exceptions this machine has vectored. The
+   *  decompiled routines model the routine, not the chip's fault handling, so
+   *  a run that went down this path is not something they can be compared
+   *  against. */
+  addressErrors = 0;
+
   addressErrorFrame(): number {
+    this.addressErrors += 1;
     // Taken from the chip rather than the manual. Faulting it deliberately -
     // `move.w (a0), d0` with a0 odd - and reading the stack back shows the
     // program counter pushed is the address *after* the instruction, not the
