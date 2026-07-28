@@ -97,6 +97,22 @@ class BlockLifter(Lifter):
             return
         super().write(tok, value, bits)
 
+    def temp(self, value):
+        """Named at function scope, not `const` inside the block.
+
+        The structurer emits a block's statements and then the condition that
+        leaves it, sometimes at a different nesting level, and node splitting
+        copies a block into several places. A `const` declared in one of those
+        is not in scope where it is read - which surfaced only as a
+        ReferenceError out of the generated module.
+        """
+        if value.kind == "imm" or re.fullmatch(r"[A-Za-z_]\w*", value.text):
+            return value
+        name = f"t{len(self.temps)}"
+        self.temps.append(name)
+        self.stmts.append(f"{name} = {value.text};")
+        return Expr(name, "expr")
+
     def mem_read(self, r, off, bits):
         """Pin the value where it was read.
 
@@ -164,10 +180,27 @@ class BlockLifter(Lifter):
             reg = ops[0].strip()
             if reg not in DATA:
                 raise Bail(f"{b} on {reg}")
+            # `dbcc` leaves the loop two ways: the condition came true, or the
+            # counter ran out. Only `dbra`/`dbf` have no condition - treating
+            # every one of them that way, as this did, drops the test entirely
+            # and `dbeq` then scans the whole array instead of stopping.
+            cc = b[2:]
+            pre = None
+            if cc not in ("ra", "f"):
+                if cc == "t":
+                    raise Bail("dbt never loops")
+                name = f"dbc_{len(self.temps)}"
+                self.temps.append(name)
+                # Pinned before the decrement: the test reads flags set by the
+                # instruction before, and the decrement is about to change the
+                # register those flags may have come from.
+                self.stmts.append(f"{name} = ({self.condition('b' + cc)});")
+                pre = name
             self.used_regs.add(reg)
             self.stmts.append(
                 f"{reg} = (({reg} & 0xffff0000) | ((({reg} & 0xffff) - 1) & 0xffff));")
-            self.flags = ("dbcc", f"({reg} & 0xffff)", "0xffff", 16)
+            self.flags = (("dbcc" if pre is None else "dbcc-cc"),
+                          pre or f"({reg} & 0xffff)", f"({reg} & 0xffff)", 16)
             return
         if b == "movem":
             self.movem(ins, ops, bits)
@@ -262,7 +295,7 @@ class BlockLifter(Lifter):
             for r in regs:
                 name = f"save_{r}_{len(self.temps)}"
                 self.temps.append(name)
-                self.stmts.append(f"const {name} = {r};")
+                self.stmts.append(f"{name} = {r};")
                 self.saved.setdefault(r, []).append(name)
             self.pushed += wide * len(regs)
             return
@@ -329,7 +362,11 @@ class BlockLifter(Lifter):
                 return f"((({lhs}) >>> (({rhs}) & 7)) & 1) !== 0"
             raise Bail(f"{mnemonic} after btst")
         if kind == "dbcc":
-            return f"{lhs} !== {rhs}"
+            return f"{lhs} !== 0xffff"
+        if kind == "dbcc-cc":
+            # Loop again only if the condition is still false and the counter
+            # has not wrapped past zero.
+            return f"!{lhs} && {rhs} !== 0xffff"
         if mnemonic in ("bmi", "bpl"):
             # The sign of `lhs - rhs`, which after a `tst` is just the sign of
             # the value. Both operands are sign-extended first: comparing the
@@ -803,7 +840,12 @@ def main():
             regs = sorted(lifter.used_regs)
             args = [f"{x}: number" for x in regs] + \
                    [f"{lifter.params[k]}: number" for k in sorted(lifter.params)]
-            decl = "\n".join(f"  let {x} = {x}_;" for x in regs)
+            # Temps at function scope, not `const` in a block: the structurer
+            # reads them from conditions emitted outside the block they were
+            # named in, and node splitting copies blocks around.
+            decl = "\n".join([f"  let {x} = {x}_;" for x in regs]
+                             + [f"  let {x} = {'false' if x.startswith('dbc_') else '0'};"
+                                for x in lifter.temps])
             sig = ", ".join(
                 [f"{x}_: number" for x in regs]
                 + [f"{lifter.params[k]}: number" for k in sorted(lifter.params)])
@@ -832,7 +874,7 @@ def main():
 
     print(f"branching routines: {len(targets)}")
     print(f"  lifted: {len(ok)} ({len(ok) * 100 // max(1, len(targets))}%)")
-    for k, n in sorted(failed.items(), key=lambda kv: -kv[1])[:8]:
+    for k, n in sorted(failed.items(), key=lambda kv: -kv[1])[:60]:
         print(f"    {n:4}  {k}")
     (HERE / "out" / "blocks.json").write_text(json.dumps(
         [{"at": a, "src": s, "regs": g, "stack": st} for a, s, g, st in ok]))

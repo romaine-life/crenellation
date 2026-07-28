@@ -143,7 +143,10 @@ class Lifter:
         m = re.fullmatch(r"\((a\d)\)\+", tok)
         if m:
             r = m.group(1)
-            v = self.mem_read(r, 0, bits)
+            # Pinned before the increment. Left as an expression it is
+            # materialised after the pointer has already moved, and for a7 the
+            # increment is a real `drop`, so the read lands a slot too high.
+            v = self.temp(self.mem_read(r, 0, bits))
             self.bump(r, bits // 8)
             return v
         m = re.fullmatch(r"-\((a\d)\)", tok)
@@ -151,6 +154,12 @@ class Lifter:
             r = m.group(1)
             self.bump(m.group(1), -(bits // 8))
             return self.mem_read(r, 0, bits)
+        if tok == "sr":
+            # `move sr,dN` reads the real condition codes, which nothing here
+            # models - the lifted code never sets N/Z/V/C, so it would return
+            # whatever the last machine instruction happened to leave. Writing
+            # sr is fine; reading it is not.
+            raise Bail("reads the condition codes")
         raise Bail(f"operand {tok!r}")
 
     def reg_value(self, r, bits):
@@ -241,10 +250,14 @@ class Lifter:
         slot = off & ~3
         if slot in self.dirty:
             return Expr(f"load{bits}({live})", "expr")
+        if bits == 32 and off != slot:
+            # Spanning two slots: the low half of one argument and the high
+            # half of the next. There is no parameter that names those bytes,
+            # but the frame is real memory holding exactly what the machine
+            # sees, so read it from there.
+            return Expr(f"load32({live})", "expr")
         name = self.param(slot)
         if bits == 32:
-            if off != slot:
-                raise Bail("long read straddling two argument slots")
             return Expr(name, "expr")
         within = off - slot
         shift = (4 - within - (bits // 8)) * 8
@@ -253,6 +266,15 @@ class Lifter:
         return Expr(f"({inner} & {mask})", "expr")
 
     def bump(self, r, by):
+        if r == "a7":
+            # The stack pointer belongs to the machine. Tracking it as an
+            # expression makes every later `stackPointer()` disagree with it -
+            # which is what `tst.l (a7)+` did the moment `tst` stopped bailing.
+            if by <= 0:
+                raise Bail("pre-decrement of the stack pointer")
+            self.stmts.append(f"drop({by});")
+            self.pushed -= by
+            return
         cur = self.reg_value(r, 32)
         self.reg[r] = Expr(f"({cur.text} + {by})" if by > 0 else f"({cur.text} - {-by})", "expr")
 
@@ -350,6 +372,9 @@ class Lifter:
             self.bump(r, -(bits // 8))
             b = self.reg_value(r, 32)
             self.stmts.append(f"store{bits}({b.text}, {value.text});")
+            return
+        if tok == "sr":
+            self.stmts.append(f"setSr({value.text});")
             return
         raise Bail(f"destination {tok!r}")
 
@@ -647,6 +672,62 @@ class Lifter:
         if b == "lea":
             self.write(ops[1], Expr(self.effective_address(ops[0])), 32)
             return
+        if b in ("divu", "divs"):
+            # 32 / 16, quotient in the low word and remainder in the high one.
+            # Division by zero traps on the 68000; the machine takes the vector
+            # and this cannot, so it is left to the machine.
+            src = self.read(ops[0], 16).text
+            dst = ops[1]
+            num32 = self.read(dst, 32).text
+            if b == "divs":
+                src = f"((({src}) << 16) >> 16)"
+                num32 = f"(({num32}) | 0)"
+            v = self.temp(Expr(f"div{'s' if b == 'divs' else 'u'}({num32}, {src})", "expr"))
+            self.write(dst, v, 32)
+            return
+        if b in ("bset", "bclr", "bchg", "btst"):
+            # The bit number is modulo 32 on a register and modulo 8 in memory,
+            # and only the memory forms are byte-sized.
+            wide = 32 if ops[1].strip() in DATA else 8
+            n = self.read(ops[0], 32).text
+            v, dst = self.rmw(ops[1], wide)
+            bit = f"(1 << (({n}) & {wide - 1}))"
+            if b == "btst":
+                return                    # tests only; the flags belong to the
+                                          # branching pass, which handles btst
+                                          # itself before reaching here
+            op = {"bset": "|", "bclr": "& ~", "bchg": "^"}[b]
+            self.write(dst, Expr(f"((({v.text}) {op}{bit}) >>> 0)"), wide)
+            return
+        if b == "exg":
+            a, c = ops[0].strip(), ops[1].strip()
+            va = self.temp(self.read(a, 32))
+            vc = self.read(c, 32)
+            self.write(a, vc, 32)
+            self.write(c, va, 32)
+            return
+        if b in ("addx", "subx"):
+            # X is the carry from the last arithmetic, which nothing here
+            # tracks. The ROM uses these to widen a single add, where the
+            # operands are registers and X is whatever the previous
+            # instruction left - so it comes from the machine.
+            src = self.read(ops[0], bits).text
+            dst = ops[1]
+            cur = self.read(dst, bits).text
+            sign = "+" if b == "addx" else "-"
+            self.write(dst, Expr(f"(({cur}) {sign} ({src}) {sign} extend())"), bits)
+            return
+        if b == "cmpm":
+            self.read(ops[0], bits)                 # both post-increment
+            self.read(ops[1], bits)
+            return
+        if b in ("tst", "cmp", "cmpi", "cmpa", "cmp2"):
+            # Flags only. A single-block routine has no branch to read them,
+            # and the branching pass models them itself - but the operands can
+            # post-increment, so they still have to be evaluated.
+            for tok in ops:
+                self.read(tok, 32 if b == "cmpa" else bits)
+            return
         raise Bail(f"no rule for {mn} {ins.op_str}")
 
     def effective_address(self, tok):
@@ -775,6 +856,16 @@ const drop = (n: number): void => { M.a7 = (M.a7 + n) >>> 0; };
 /** Whether the machine has halted. `stop` leaves it that way and nothing in
  *  the ROM runs afterwards, so decompiled code has to notice too. */
 const halted = (): boolean => M.stopped;
+// The status register is composed from the real flags, so it has to come from
+// the machine rather than be tracked here.
+const getSr = (): number => M.getSR();
+// The X flag, for addx/subx, and division, which sets flags the machine owns.
+const extend = (): number => (M.x ? 1 : 0);
+const divu = (n: number, d: number): number => (d === 0 ? n
+  : (((Math.floor((n >>> 0) / d) & 0xffff) | (((n >>> 0) % d) << 16)) >>> 0));
+const divs = (n: number, d: number): number => (d === 0 ? n
+  : (((Math.trunc((n | 0) / d) & 0xffff) | (((n | 0) % d) << 16)) >>> 0));
+const setSr = (v: number): void => { M.setSR(v & 0xffff); };
 
 const callRom = (addr: number, ret = 0): void => {
   // The real return address, not a placeholder. `jsr` pushes the address of
