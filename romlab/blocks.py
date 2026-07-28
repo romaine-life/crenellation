@@ -78,6 +78,7 @@ class BlockLifter(Lifter):
         # guess is fine for choosing a branch, which the oracle checks, but not
         # for writing the machine's condition codes, which a callee may save.
         self.flags_certain = True
+        self.last_written = None    # the value the last write stored
 
     def reg_value(self, r, bits):
         if r == "a7":
@@ -116,6 +117,10 @@ class BlockLifter(Lifter):
 
     def write(self, tok, value, bits):
         tok = tok.strip()
+        # What was last written, for a `move` whose destination cannot be read
+        # back - `move.b (a0)+,(a1)+` sets Z from the byte it moved, and the
+        # `bne` after it is what ends this ROM's string copies.
+        self.last_written = value
         if tok in DATA or tok in ADDR:
             if bits != 32 and tok in DATA:
                 # A byte or word write keeps the register's upper bits, so the
@@ -372,6 +377,12 @@ class BlockLifter(Lifter):
                 self.flags = ("shift", self.reg_value(dst, bits).text, shifted, bits)
             elif dst in DATA:
                 self.flags = ("cmp", self.reg_value(dst, bits).text, "0", bits)
+            elif (b in ("move", "moveq") and self.last_written is not None
+                  and re.fullmatch(r"[A-Za-z_]\w*|0x[0-9a-fA-F]+|\d+",
+                                   self.last_written.text)):
+                # A destination that cannot be read back, but the value it
+                # stored is already in a name of its own.
+                self.flags = ("cmp", self.last_written.text, "0", bits)
             elif rereadable(dst) and dst not in DATA and dst not in ADDR:
                 # A read-modify-write on memory sets the flags from what it
                 # wrote. This re-reads the destination, which
