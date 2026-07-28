@@ -335,7 +335,19 @@ class Lifter:
             tok = ops[0].strip()
             m = re.fullmatch(r"\$([0-9a-fA-F]+)(\.(w|l))?", tok)
             if not m:
-                raise Bail(f"indirect call {tok!r}")
+                # `jsr (a0)` - through a pointer the routine computed. The
+                # dispatcher takes an address either way; only the literal is
+                # missing, and refusing these turns away every routine that
+                # calls through a table.
+                m2 = re.fullmatch(r"\((a\d)\)", tok)
+                if not m2:
+                    raise Bail(f"indirect call {tok!r}")
+                where = self.reg_value(m2.group(1), 32).text
+                self.flush()
+                self.stmts.append(f"callRom({where});")
+                self.reg = {}
+                self.after_call = True
+                return
             target = int(m.group(1), 16)
             
             # The callee reads its arguments where the ROM put them: some on the

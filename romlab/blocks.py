@@ -500,8 +500,27 @@ def lift(lo, hi, names):
                 # for a forward branch the fall-through sorts first - reading
                 # them positionally inverts every condition in the routine.
                 tgt = target_of(i)
-                if tgt is None or tgt not in index:
-                    raise Bail("conditional branch out of the routine")
+                if tgt is None:
+                    raise Bail("conditional branch with no plain target")
+                if tgt not in index:
+                    # Conditionally leaves the routine: a tail jump under a
+                    # test. The graph has only the fall-through edge, so this
+                    # is emitted in the block itself and the structurer carries
+                    # on with the path that stays.
+                    if lifter.pushed:
+                        raise Bail("conditional tail jump with a loaded stack")
+                    cond = lifter.condition(b)
+                    lifter.stmts.append(f"if ({cond}) {{")
+                    saved = list(lifter.stmts)
+                    lifter.stmts = []
+                    lifter.flush()
+                    inner = lifter.stmts
+                    lifter.stmts = saved
+                    lifter.stmts.extend("  " + s for s in inner)
+                    lifter.stmts.append(f"  jumpRom(0x{tgt:05x});")
+                    lifter.stmts.append("  return;")
+                    lifter.stmts.append("}")
+                    continue
                 conds[n] = (lifter.condition(b), index[tgt])
                 continue
             if b in ("bra", "bral", "jmp"):
