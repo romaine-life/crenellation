@@ -57,6 +57,7 @@ class BlockLifter(Lifter):
     def reg_value(self, r, bits):
         if r == "a7":
             raise Bail("bare a7")
+        assert r != "a7"
         if r not in self.used_regs and self.after_call:
             # First touched after a call, so it holds what the callee left -
             # a return value, most often. Introducing it as a parameter gives
@@ -99,6 +100,15 @@ class BlockLifter(Lifter):
         return self.temp(v)
 
     def bump(self, r, by):
+        if r == "a7":
+            # The stack pointer is the machine's, not a local. Making it one
+            # means the pop never happens and, worse, the writeback at the end
+            # puts the local over the real stack pointer.
+            if by <= 0:
+                raise Bail("pre-decrement of the stack pointer")
+            self.stmts.append(f"drop({by});")
+            self.pushed -= by
+            return
         self.used_regs.add(r)
         self.stmts.append(f"{r} = ({r} {'+' if by > 0 else '-'} {abs(by)});")
 
