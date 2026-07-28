@@ -10,12 +10,7 @@
 // back once per frame, from inside the machine, and the caller draws.
 
 import { Machine, PendingInterrupt } from './machine';
-// The decompiled dispatcher is not the default yet: decompiled routines have
-// no instruction boundaries, so a busy-wait loop inside one can never be
-// interrupted, and the sound driver has one. `run` takes the dispatcher as a
-// parameter, and compose.test.ts drives the decompiled one.
-import { call } from './dispatch';
-import { bind } from './decompiled';
+import { call, bind } from './decompiled';
 
 /** Playfield bitmap: one byte per pixel, 512 across, 256 down. */
 export const PF_BASE = 0x200000;

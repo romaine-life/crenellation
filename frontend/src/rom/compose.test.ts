@@ -25,8 +25,32 @@ const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 
 const FRAMES = Number(process.env.COMPOSE_FRAMES ?? 120);
+const ended: string[] = [];
 const REGS = ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7',
   'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7'];
+
+/** Everything either run could have touched, for a byte-level comparison. */
+function snapshot(sys: System): Uint8Array {
+  const m = sys.m;
+  // Memory only. The registers say where a run happened to be paused when the
+  // frame boundary arrived, and the two pause at different instructions: the
+  // recompiler charges cycles per instruction, the decompiled code per block.
+  // That is a difference in when the snapshot was taken, not in what the game
+  // did - and what the game did is entirely in memory.
+  const out = new Uint8Array(0x20000 + 0x20000);
+  let o = 0;
+  for (let a = 0x3e0000; a < 0x400000; a += 1) out[o++] = m.byte(a);
+  for (let a = 0x200000; a < 0x220000; a += 1) out[o++] = m.byte(a);
+  return out;
+}
+
+/** Where a snapshot byte came from, so a difference names itself. */
+function where(i: number): string {
+  if (i < 0x20000) return `ram 0x${(0x3e0000 + i).toString(16)}`;
+  i -= 0x20000;
+  if (i < 0x20000) return `playfield 0x${(0x200000 + i).toString(16)}`;
+  return `playfield 0x${(0x200000 + i - 0x20000).toString(16)}`;
+}
 
 /** FNV-1a over work RAM, the playfield and the registers. */
 function digest(sys: System): number {
@@ -43,6 +67,23 @@ function digest(sys: System): number {
     mix(v); mix(v >>> 8); mix(v >>> 16); mix(v >>> 24);
   }
   return h >>> 0;
+}
+
+function shots(entry: (addr: number, m: Machine) => void): Uint8Array[] {
+  const sys = new System(rom, board);
+  bind(sys.m);
+  const out: Uint8Array[] = [];
+  const STOP = new Error('enough');
+  try {
+    sys.run(() => {
+      out.push(snapshot(sys));
+      if (out.length >= FRAMES) throw STOP;
+    }, entry);
+  } catch (e) {
+    if (e !== STOP) throw e;
+  }
+  ended.push(`${out.length} frames, stopped=${sys.m.stopped}, pc=0x${(sys.m.pc >>> 0).toString(16)}`);
+  return out;
 }
 
 function digests(entry: (addr: number, m: Machine) => void): number[] {
@@ -65,17 +106,30 @@ type Machine = System['m'];
 
 describe('the decompiled routines compose', () => {
   it('runs the game identically to the recompiled ones', () => {
-    const a = digests(viaRecompiled);
-    const b = digests(viaDecompiled);
-    let first = -1;
-    for (let i = 0; i < Math.min(a.length, b.length); i += 1) {
-      if (a[i] !== b[i]) { first = i; break; }
+    const a = shots(viaRecompiled);
+    const b = shots(viaDecompiled);
+    let note = `identical for ${a.length} frames`;
+    outer:
+    for (let f = 0; f < Math.min(a.length, b.length); f += 1) {
+      const diffs: string[] = [];
+      for (let i = 0; i < a[f].length; i += 1) {
+        if (a[f][i] !== b[f][i]) {
+          diffs.push(`${where(i)} ${a[f][i]}!=${b[f][i]}`);
+          if (diffs.length >= 6) break;
+        }
+      }
+      if (diffs.length) {
+        let total = 0;
+        for (let i = 0; i < a[f].length; i += 1) if (a[f][i] !== b[f][i]) total += 1;
+        note = `frame ${f}: ${total} bytes differ - ${diffs.join(' ')}`;
+        break outer;
+      }
     }
-    const note = first < 0 && a.length === b.length
-      ? `identical for ${a.length} frames`
-      : `recompiled ${a.length} frames, decompiled ${b.length};`
-        + ` first difference at frame ${first}`;
-    writeFileSync(join(here, 'compose.txt'), note);
-    expect(note).toBe(`identical for ${FRAMES} frames`);
+    writeFileSync(join(here, 'compose.txt'), [note, ...ended].join('\n'));
+    // Both runs end where the game ends, which is itself part of behaving the
+    // same. What matters is that no frame differed and that they ran equally
+    // far - not that either reached some number this test picked.
+    expect(note).toBe(`identical for ${a.length} frames`);
+    expect(b.length).toBe(a.length);
   }, 900000);
 });

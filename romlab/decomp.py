@@ -471,6 +471,8 @@ class Lifter:
         # unset, correctly.
         last = ins[-1].mnemonic.split(".")[0] if ins else ""
         self.falls_through = last not in ("rts", "rte", "rtr", "jmp", "bra", "bral")
+        from m68kts import cycles as insn_cycles
+        self.cost = sum(insn_cycles(i) for i in ins)
         for i in ins:
             self.step(i)
         return self
@@ -892,6 +894,10 @@ class Lifter:
         sig = ", ".join(f"{a}: number" for a in args)
         head = f"/** {label} */" if label else ""
         stmts = list(self.stmts)
+        # The single-block pass has one block, so its whole cost is charged at
+        # the top - same reason as the branching pass.
+        if getattr(self, 'cost', 0):
+            stmts.insert(0, f'tick({self.cost});')
         if getattr(self, "falls_through", False):
             # No terminator: the machine carries straight on into whatever
             # follows, so this does too. Several map entries are labels the ROM
@@ -988,7 +994,18 @@ const divs = (n: number, d: number): number => {
   if (q > 32767 || q < -32768) return n;
   return ((q & 0xffff) | (((n | 0) % d) << 16)) >>> 0;
 };
-const setSr = (v: number): void => { M.setSR(v & 0xffff); };
+const setSr = (v: number): void => {
+  // Lowering the mask lets a pending interrupt in as part of the instruction
+  // that lowered it, and the machine says so by raising. There is nothing to
+  // resume here - the write has happened - so the handler runs and returns.
+  try {
+    M.setSR(v & 0xffff);
+  } catch (e) {
+    if (!(e instanceof PendingInterrupt)) throw e;
+    if (M.clearOnTake) M.irqPending = 0;
+    call(M.interruptFrame(e.level), M);
+  }
+};
 // `move sr,dN` reads the real condition codes. Nothing in the lifted source
 // keeps them, but whatever set them last is known at the point of the read, so
 // they are computed there and handed to the machine, which composes the word.
@@ -1072,10 +1089,30 @@ const stackPointer = (): number => M.a7 >>> 0;
 const setStackPointer = (v: number): void => { M.a7 = v >>> 0; };
 const popLong = (): number => { const v = M.load(M.a7 >>> 0, 32); M.a7 = (M.a7 + 4) >>> 0; return v; };
 const popWord = (): number => { const v = M.load(M.a7 >>> 0, 16); M.a7 = (M.a7 + 2) >>> 0; return v; };
+/**
+ * Charge a block's cycles and let an interrupt in.
+ *
+ * The recompiler does this per instruction and unwinds with an exception,
+ * because it has to resume at a particular program counter inside a switch.
+ * Decompiled code has no such place to resume: it is ordinary statements, and
+ * the boundary between two of them is exactly as good as the boundary between
+ * two instructions. So the handler runs here and returns, and the block carries
+ * on. Without it nothing can ever interrupt a busy-wait - and the sound driver
+ * spins on a byte that only an interrupt changes.
+ */
+const tick = (n: number): void => {
+  M.cycles += n;
+  if (M.atPc) M.atPc(M.pc);
+  if (M.irqPending && ((M.sr >> 8) & 7) < M.irqPending) {
+    const lvl = M.irqPending;
+    if (M.clearOnTake) M.irqPending = 0;
+    call(M.interruptFrame(lvl), M);
+  }
+};
 /** `stop` - the chip halts and nothing after it runs. */
 const halt = (): void => { M.stopped = true; };
 void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
-void halted; void halt;
+void halted; void halt; void tick;
 let __sp = 0;
 void stackPointer; void setStackPointer; void popLong; void __sp;
 """

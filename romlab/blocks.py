@@ -20,6 +20,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from cfg import build, decode as cfg_decode, reducible, target_of
+from m68kts import cycles as insn_cycles
 from decomp import (ADDR, DATA, Bail, Expr, Lifter, SIZE_BITS, decode, ident, num,
                     split_ops)
 
@@ -1115,7 +1116,11 @@ def lift_once(lo, hi, names, seed=()):
             lifter.step(i)
             if lifter.flags is not before_f:
                 lifter.flags_certain = True
-        lifted[n] = list(lifter.stmts)
+        # What this block costs the chip, charged once at its head. The pacing
+        # only has to be close: a frame's worth of work should cost about what
+        # it costs on the chip, not any one instruction exactly.
+        cost = sum(insn_cycles(i) for i in ins)
+        lifted[n] = ([f"tick({cost});"] if cost else []) + list(lifter.stmts)
         end_flags[n] = lifter.flags
     for copy, orig in clone_of.items():
         lifted[copy] = list(lifted[orig])
