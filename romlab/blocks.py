@@ -57,6 +57,13 @@ class BlockLifter(Lifter):
     def reg_value(self, r, bits):
         if r == "a7":
             raise Bail("bare a7")
+        if r not in self.used_regs and self.after_call:
+            # First touched after a call, so it holds what the callee left -
+            # a return value, most often. Introducing it as a parameter gives
+            # it the value this routine's own caller passed, which is how a
+            # routine came to read the wrong d0 immediately after the call that
+            # produced it.
+            self.stmts.append(f"{r} = getReg('{r}');")
         self.used_regs.add(r)
         if bits == 32:
             return Expr(r, "reg")
@@ -142,12 +149,12 @@ class BlockLifter(Lifter):
             self.pushed = 0
             return
         if b in ("jsr", "bsr"):
-            # Not yet. A branching routine holds its registers in locals, and
-            # getting them out to the callee and back again correctly is a
-            # liveness question this pass does not answer yet - the first
-            # attempt disagreed with the machine, so nothing of this shape is
-            # emitted. The straight-line pass handles calls; these wait.
-            raise Bail("a call inside a branching routine")
+            super().step(ins)
+            for r in sorted(self.used_regs):
+                self.stmts.append(f"{r} = getReg('{r}');")
+            self.after_call = True
+            self.flags = None
+            return
         before = len(self.stmts)
         super().step(ins)
         # Anything that writes a data register also sets the flags from what it
