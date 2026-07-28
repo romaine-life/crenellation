@@ -136,6 +136,8 @@ class Lifter:
         m = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d),\s*([ad]\d)\.(w|l)\)", tok)
         if m:
             return Expr(f"load{bits}({self.indexed(m)})", "expr")
+        if re.fullmatch(r"\$[0-9a-fA-F]+\(pc(,\s*[ad]\d\.(w|l))?\)", tok):
+            return Expr(f"load{bits}({self.effective_address(tok)})", "expr")
         m = re.fullmatch(r"\((a\d)\)\+", tok)
         if m:
             r = m.group(1)
@@ -429,18 +431,9 @@ class Lifter:
             self.pushed = 0
             return
         if b == "pea":
-            tok = ops[0].strip()
-            m = re.fullmatch(r"\$([0-9a-fA-F]+)\.(w|l)", tok)
-            if m:
-                self.stmts.append(f"push(0x{int(m.group(1), 16):x}, 4);")
-                self.pushed += 4
-                return
-            m = re.fullmatch(r"\((a\d)\)", tok)
-            if m:
-                self.stmts.append(f"push({self.reg_value(m.group(1), 32).text}, 4);")
-                self.pushed += 4
-                return
-            raise Bail(f"pea {tok!r}")
+            self.stmts.append(f"push({self.effective_address(ops[0])}, 4);")
+            self.pushed += 4
+            return
         if b in ("jsr", "bsr"):
             tok = ops[0].strip()
             m = re.fullmatch(r"\$([0-9a-fA-F]+)(\.(w|l))?", tok)
@@ -593,20 +586,52 @@ class Lifter:
             self.write(ops[0], Expr(
                 f"(((({v.text}) >>> 16) & 0xffff) | ((({v.text}) & 0xffff) << 16))"), 32)
             return
+        if b in ("mulu", "muls"):
+            src = self.read(ops[0], 16).text
+            dst = ops[1]
+            cur = self.read(dst, 16).text
+            if b == "muls":
+                src = f"((({src}) << 16) >> 16)"
+                cur = f"((({cur}) << 16) >> 16)"
+            self.write(dst, Expr(f"Math.imul({cur}, {src})"), 32)
+            return
+        if b == "stop":
+            self.stmts.append("halt();")
+            self.stmts.append("return;")
+            return
         if b == "lea":
-            tok = ops[0].strip()
-            m = re.fullmatch(r"\$([0-9a-fA-F]+)(\.(w|l))?", tok)
-            if m:
-                self.write(ops[1], Expr(f"0x{int(m.group(1), 16):x}", "imm"), 32)
-                return
-            m = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d)\)", tok)
-            if m:
-                off = num(m.group(1)) if m.group(1) else 0
-                base = self.reg_value(m.group(2), 32)
-                self.write(ops[1], Expr(base.text if off == 0 else f"({base.text} + {hex(off)})"), 32)
-                return
-            raise Bail(f"lea {tok!r}")
+            self.write(ops[1], Expr(self.effective_address(ops[0])), 32)
+            return
         raise Bail(f"no rule for {mn} {ins.op_str}")
+
+    def effective_address(self, tok):
+        """The address an operand names, whatever mode it uses.
+
+        `pea` and `lea` both want exactly this and had separate half
+        implementations that each understood a different subset of the modes.
+        """
+        tok = tok.strip()
+        m = re.fullmatch(r"\$([0-9a-fA-F]+)(\.(w|l))?", tok)
+        if m:
+            return f"0x{int(m.group(1), 16):x}"
+        # pc-relative: capstone has already resolved it to an address
+        m = re.fullmatch(r"\$([0-9a-fA-F]+)\(pc\)", tok)
+        if m:
+            return f"0x{int(m.group(1), 16):x}"
+        m = re.fullmatch(r"\$([0-9a-fA-F]+)\(pc,\s*([ad]\d)\.(w|l)\)", tok)
+        if m:
+            idx = self.reg_value(m.group(2), 32).text
+            idx = f"(({idx} << 16) >> 16)" if m.group(3) == "w" else f"({idx} | 0)"
+            return f"(0x{int(m.group(1), 16):x} + {idx})"
+        m = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d),\s*([ad]\d)\.(w|l)\)", tok)
+        if m:
+            return self.indexed(m)
+        m = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d)\)", tok)
+        if m:
+            off = num(m.group(1)) if m.group(1) else 0
+            base = self.reg_value(m.group(2), 32).text
+            return base if off == 0 else f"({base} + {hex(off)})"
+        raise Bail(f"address of {tok!r}")
 
     def order(self):
         """Parameters in signature order, with where each comes from."""
@@ -724,7 +749,10 @@ const jumpRom = (addr: number): void => { romCall(addr, M); };
 const stackPointer = (): number => M.a7 >>> 0;
 const setStackPointer = (v: number): void => { M.a7 = v >>> 0; };
 const popLong = (): number => { const v = M.load(M.a7 >>> 0, 32); M.a7 = (M.a7 + 4) >>> 0; return v; };
-void setReg; void getReg; void callRom; void jumpRom; void push; void drop; void halted;
+/** `stop` - the chip halts and nothing after it runs. */
+const halt = (): void => { M.stopped = true; };
+void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
+void halted; void halt;
 let __sp = 0;
 void stackPointer; void setStackPointer; void popLong; void __sp;
 """
