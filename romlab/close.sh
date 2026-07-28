@@ -7,8 +7,9 @@ for round in 1 2 3 4 5 6; do
   n=$(python3 - "$root" <<'PY'
 import json, pathlib, sys, bisect
 root = pathlib.Path(sys.argv[1])
-miss = {int(x, 16) for x in
-        root.joinpath('frontend/src/rom/missing.txt').read_text().split() if x}
+p_missing = root.joinpath('frontend/src/rom/missing.txt')
+miss = set() if not p_missing.exists() else {int(x, 16) for x in
+        p_missing.read_text().split() if x}
 facts = json.loads(root.joinpath('romlab/out/facts.json').read_text())
 fs = sorted((f['at'] if isinstance(f, dict) else f[0],
              f['end'] if isinstance(f, dict) else f[1]) for f in facts['funcs'])

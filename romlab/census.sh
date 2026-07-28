@@ -39,7 +39,7 @@ describe('missing entry points', () => {
     const STOP = new Error('enough');
     let frames = 0;
     try {
-      sys.run(() => { frames += 1; if (frames > Number(process.env.CENSUS_FRAMES ?? 600)) throw STOP; },
+      sys.run(() => { frames += 1; if (frames > Number(process.env.CENSUS_FRAMES ?? 2000)) throw STOP; },
         viaDecompiled);
     } catch (e) { if (e !== STOP) throw e; }
     writeFileSync(join(here, 'missing.txt'),
