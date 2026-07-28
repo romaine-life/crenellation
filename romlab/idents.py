@@ -102,6 +102,33 @@ def main():
     # something actually distinguishes them.
     unique = {a: n for a, n in idents.items() if len(groups[n]) == 1}
 
+    # A routine whose whole body is `jmp $X` is a stub that goes somewhere, and
+    # where it goes is the only thing worth saying about it. `trampoline` said
+    # by sixty-seven of them says nothing.
+    import re as _re
+    hop = {}
+    for a in addrs:
+        d = described.get(a) or ""
+        m = _re.fullmatch(r"trampoline to (0x[0-9a-f]+)", d)
+        if m:
+            hop[a] = int(m.group(1), 16)
+    for a, target in hop.items():
+        want = unique.get(target) or (idents.get(target) if
+                                      len(groups.get(idents.get(target, ""), [])) == 1 else None)
+        if want and f"{want}Stub" not in set(unique.values()):
+            unique[a] = f"{want}Stub"
+    print(f"  jump stubs named after where they go: "
+          f"{sum(1 for a in hop if a in unique)} of {len(hop)}")
+
+    # A two-byte routine is a bare `rts`: a handler that exists so something
+    # has an address to call, and does nothing when called. Worth saying so.
+    extent = {(f["at"] if isinstance(f, dict) else f[0]):
+              (f["end"] if isinstance(f, dict) else f[1]) for f in facts["funcs"]}
+    blank = [a for a in addrs if extent.get(a, a) - a == 2 and a not in unique]
+    for k, a in enumerate(sorted(blank), start=1):
+        unique[a] = f"doesNothing{k}"
+    print(f"  routines that are a bare rts: {len(blank)}")
+
     # The entry points are not separate routines - they are places inside one,
     # reached by a tail jump or a jump table because a decompiled function has
     # only one way in. Named after the routine they continue, and numbered in
