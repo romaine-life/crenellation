@@ -49,7 +49,7 @@ export const INSTRUCTIONS_PER_FRAME = 5_454;
  * instruction count drifts from that because instructions differ so widely in
  * cost.
  */
-export const CYCLES_PER_FRAME = 27_774;
+export const CYCLES_PER_FRAME = 119_318;
 
 export class System {
   readonly m: Machine;
