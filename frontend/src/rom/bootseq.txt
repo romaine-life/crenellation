@@ -1,10 +1,11 @@
-chip sequence: 6000000 addresses; port: 40000000
-mask changes part at 5: chip 0x133ea->0, port 0x624->0   (chip had just done: 0x65c->7 0x654->5 0x65c->7 0x133b2->4)
-port runs the request path: 0x1578:true 0x157c:true 0x14dc:true 0x14e2:true 0x14f0:true 0x1500:true
-port runs the mask-setters: 0xf77e:true 0xf902:true 0xfb4e:true 0x650:true 0x64a:true 0x656:true 0x620:true
-at the divergence: sr=0x2400 mask=4 irqPending=0 cycles=32925586 nextIrqAt=-1
-anchored on the chip's 1336th address, a run of 24 with no repeats; found at the port's 12096th
-they part at 3867625: chip runs 0x133d2, port runs 0x133c6
-both had just run: 0x19772 0x19778 0x19782 0x19784 0x133bc 0x133c4
-chip continues: 0x133d2 0x133d8 0x133de 0x133e6 0x133ea 0x624
-port continues: 0x133c6 0x133ec 0x133f2 0x133f4 0x306 0x580
+chip sequence: 6000000 addresses; port: 0
+no alignment, so the masks cannot be compared
+port runs the request path: 0x1578:false 0x157c:false 0x14dc:false 0x14e2:false 0x14f0:false 0x1500:false
+port runs the mask-setters: 0xf77e:false 0xf902:false 0xfb4e:false 0x650:false 0x64a:false 0x656:false 0x620:false
+(not reached)
+the port never runs the chip's opening sequence, so there is nothing to align on - it diverges before the chip's trace begins
+chip opens: 0x135ae 0x135b4 0x135b8 0x135ba 0x135be 0x135c2 0x135c4 0x135c6
+port runs 0x135b8: false; port opens: 
+port first reaches 0x135b8 at index -1
+chip from there: 0x135ae 0x135b4 0x135b8 0x135ba 0x135be 0x135c2 0x135c4 0x135c6 0x135c8 0x135ca 0x135cc 0x135ce 0x135d2 0x1378e 0x13794 0x13796
+port from there: 

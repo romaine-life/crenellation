@@ -1,0 +1,38 @@
+0xe82 trial 3: decompiled threw - no decompiled routine at 0x11de
+0x634a trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x6420 trial 0: decompiled threw - no decompiled routine at 0x64c8
+0x6420 trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x6420 trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x6420 trial 3: decompiled threw - no decompiled routine at 0x64c8
+0x6460 trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x6472 trial 0: decompiled threw - no decompiled routine at 0x64c8
+0x6472 trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x6472 trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x64b4 trial 0: decompiled threw - no decompiled routine at 0x64c8
+0x64b4 trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x64b4 trial 3: decompiled threw - no decompiled routine at 0x64c8
+0x64ce trial 0: decompiled threw - no decompiled routine at 0x64c8
+0x64ce trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x64ce trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x64ce trial 3: decompiled threw - no decompiled routine at 0x64c8
+0x64ee trial 0: decompiled threw - no decompiled routine at 0x64c8
+0x64ee trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x64ee trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x64ee trial 3: decompiled threw - no decompiled routine at 0x64c8
+0x6504 trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x653e trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x653e trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x653e trial 3: decompiled threw - no decompiled routine at 0x64c8
+0x655e trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x655e trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x704e trial 0: decompiled threw - no decompiled routine at 0x71d0
+0x704e trial 3: decompiled threw - no decompiled routine at 0x737e
+0x73c0 trial 1: decompiled threw - no decompiled routine at 0x737e
+0x19786 trial 0: d3 differs - machine 0x3e, decompiled 0x3e4210
+0x19786 trial 1: d3 differs - machine 0x3e, decompiled 0x3e4220
+0x19786 trial 2: d3 differs - machine 0x3e, decompiled 0x3e4328
+0x19786 trial 3: d3 differs - machine 0x3e, decompiled 0x3e4338
+0x1a618 trial 2: decompiled threw - no decompiled routine at 0x1ae44
+0x1a810 trial 0: decompiled threw - no decompiled routine at 0x1ae44
+0x1a810 trial 2: decompiled threw - no decompiled routine at 0x1ae44
+0x1a810 trial 3: decompiled threw - no decompiled routine at 0x1ae44

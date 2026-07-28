@@ -1,2 +1,15 @@
-778 decompiled routines, 2523 comparisons against the machine
-all identical
+931 decompiled routines, 3011 comparisons against the machine
+38 disagree:
+0xe82 trial 3: decompiled threw - no decompiled routine at 0x11de
+0x634a trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x6420 trial 0: decompiled threw - no decompiled routine at 0x64c8
+0x6420 trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x6420 trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x6420 trial 3: decompiled threw - no decompiled routine at 0x64c8
+0x6460 trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x6472 trial 0: decompiled threw - no decompiled routine at 0x64c8
+0x6472 trial 1: decompiled threw - no decompiled routine at 0x64c8
+0x6472 trial 2: decompiled threw - no decompiled routine at 0x64c8
+0x64b4 trial 0: decompiled threw - no decompiled routine at 0x64c8
+0x64b4 trial 2: decompiled threw - no decompiled routine at 0x64c8
+  ... and 26 more

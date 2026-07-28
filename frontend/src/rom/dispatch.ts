@@ -16,7 +16,7 @@ import * as r11 from './routines11';
 type Routine = (m: Machine, at?: number) => void;
 
 /** Routine entry addresses, ascending, with their functions. */
-const STARTS: number[] = [
+export const STARTS: number[] = [
   0x00118,
   0x0011e,
   0x00124,

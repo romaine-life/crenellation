@@ -17,7 +17,7 @@ import { describe, expect, it } from 'vitest';
 
 import { Machine } from './machine';
 import { call } from './dispatch';
-import { DECOMPILED, bind } from './decompiled';
+import { DECOMPILED, bind, call as viaDecompiled, useCallee } from './decompiled';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
@@ -73,6 +73,10 @@ function window(m: Machine): Uint8Array {
 
 describe('decompiled routines against the recompiled oracle', () => {
   it('does exactly what the machine does', () => {
+    // Calls made from inside a decompiled routine go to the recompiler, so
+    // this proves one routine at a time. Whether they work together is
+    // compose.test.ts's question, and a different one.
+    useCallee(call);
     const bad: string[] = [];
     let checked = 0;
 
@@ -121,9 +125,12 @@ describe('decompiled routines against the recompiled oracle', () => {
         for (const { p, v } of stack) b.store(sp + (p as { off: number }).off, v, 32);
         b.store(SENTINEL, 0x4e75, 16);
         for (const [name, v] of regParams) (b as never as Record<string, number>)[name] = v;
+        // Through the dispatcher, not by calling the function: a tail jump is
+        // recorded for the dispatcher to carry on with, so calling directly
+        // stops at the jump and never runs what it jumped to.
         bind(b);
         let liftedFailed = '';
-        try { fn(...args); } catch (e) { liftedFailed = (e as Error).message.slice(0, 40); }
+        try { viaDecompiled(addr, b); } catch (e) { liftedFailed = (e as Error).message.slice(0, 40); }
 
         if (oracleFailed) continue;          // the oracle could not run it; nothing to compare
         // The oracle survived a bad pointer by vectoring an address error, the

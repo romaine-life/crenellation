@@ -20,7 +20,8 @@ from collections import defaultdict
 from pathlib import Path
 
 from cfg import build, decode as cfg_decode, reducible, target_of
-from decomp import ADDR, DATA, Bail, Expr, Lifter, SIZE_BITS, decode, num, split_ops
+from decomp import (ADDR, DATA, Bail, Expr, Lifter, SIZE_BITS, decode, ident, num,
+                    split_ops)
 
 HERE = Path(__file__).parent
 
@@ -37,6 +38,12 @@ COMPARE = {
     "bcs": "<", "bls": "<=", "bhi": ">", "bcc": ">=",   # the unsigned pair
 }
 SIGNED = {"blt", "ble", "bgt", "bge"}
+
+
+def decode_at(a):
+    """The instruction at `a`, decoded with room for its full length."""
+    from decomp import UP, md
+    return md.disasm(UP[a:a + 16], a, 1)
 
 
 def rereadable(tok):
@@ -1180,6 +1187,42 @@ def main():
     # in a conditional tail jump or use set-on-condition, and this pass is the
     # only one with flags - the first pass refuses those, and its refusals were
     # simply going nowhere.
+    # Plus an entry for every address the game can enter a routine *at* rather
+    # than from its start. The recompiler could do that with a switch on the
+    # program counter; a decompiled function has one entry, so each of those
+    # addresses needs a function of its own, lifted from there to the end of
+    # the routine it lands in.
+    inner = HERE / "out" / "inner_entries.json"
+    if inner.exists():
+        by_start = {r["at"]: r for r in rows}
+        los = sorted(by_start)
+        import bisect as _bisect
+        for e in json.loads(inner.read_text()):
+            k = _bisect.bisect_right(los, e) - 1
+            if k < 0:
+                continue
+            host = by_start[los[k]]
+            if not host["at"] < e < host["end"]:
+                continue
+            # It has to be an instruction boundary of that routine. Some
+            # addresses the static scan turns up land mid-instruction, or in a
+            # routine whose code overruns its declared end - lifting from there
+            # truncates the last instruction and capstone reads something else
+            # entirely.
+            try:
+                bounds = {i.address for i in decode(host["at"], host["end"])}
+            except Bail:
+                continue
+            if e not in bounds:
+                continue
+            # And the routine's declared end must not cut the entry's own
+            # instruction in half. 0xFC46 starts a six-byte `move.b` in a
+            # routine that ends four bytes later; capstone reads the truncated
+            # bytes as something else and the lift is of code that is not there.
+            wide = next(iter(decode_at(e)), None)
+            if wide is None or e + wide.size > host["end"]:
+                continue
+            rows = rows + [{"at": e, "end": host["end"], "blocks": 0, "entry": True}]
     targets = rows
     ok, failed = [], {}
     for r in targets:
@@ -1204,7 +1247,7 @@ def main():
             # ran correctly and failed to type-check, the one combination the
             # oracle cannot catch.
             guard = "  let _guard = 0;\n  void _guard;\n"
-            src = (f"export function fn_{r['at']:05x}({sig}): void {{\n"
+            src = (f"export function {ident(r['at'])}({sig}): void {{\n"
                    + guard
                    + (decl + "\n" if decl else "")
                    + "\n".join("  " + s for s in body)

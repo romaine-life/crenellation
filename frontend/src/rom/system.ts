@@ -10,7 +10,12 @@
 // back once per frame, from inside the machine, and the caller draws.
 
 import { Machine, PendingInterrupt } from './machine';
+// The decompiled dispatcher is not the default yet: decompiled routines have
+// no instruction boundaries, so a busy-wait loop inside one can never be
+// interrupted, and the sound driver has one. `run` takes the dispatcher as a
+// parameter, and compose.test.ts drives the decompiled one.
 import { call } from './dispatch';
+import { bind } from './decompiled';
 
 /** Playfield bitmap: one byte per pixel, 512 across, 256 down. */
 export const PF_BASE = 0x200000;
@@ -140,7 +145,7 @@ export class System {
    * Run the machine. Does not return: the game's main loop does not.
    * `onFrame` is called from inside it, once per frame's worth of work.
    */
-  run(onFrame: (sys: System) => void): void {
+  run(onFrame: (sys: System) => void, entry: (addr: number, m: Machine) => void = call): void {
     const pc = this.reset();
     this.m.wakeOnIrq = true;
     const m = this.m;
@@ -162,7 +167,8 @@ export class System {
       m.irqPending = 4;      // taken at the next instruction boundary
       onFrame(this);
     };
-    call(pc, m);
+    bind(m);
+    entry(pc, m);
   }
 
   /** The palette as packed RGBA, ready to index with a playfield byte. */
