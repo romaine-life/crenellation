@@ -470,14 +470,23 @@ def dispatch_form(starts, edges, lifted, conds):
 
 
 def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset(),
-              open_loops=()):
-    """Emit one region as nested if/else and for(;;)."""
+              open_loops=(), entering=None):
+    """Emit one region as nested if/else and for(;;).
+
+    `entering` is the loop header this call is the body of, if any. Reaching it
+    again means go round; reaching it the first time means emit it. Without that
+    distinction the header is treated as already open the moment the body starts
+    and the body becomes a bare `continue` - a loop that cannot do anything and
+    cannot stop, which is what fifty of the held-back routines were.
+    """
     out = []
     seen = set()
+    first = True
     while node is not None and node != stop:
-        if node in open_loops:
+        if node in open_loops and not (first and node == entering):
             out.append("continue;")
             return out
+        first = False
         if any(w == node for _, w in backs):
             header = node
             latches = [v for v, w in backs if w == header]
@@ -485,7 +494,7 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset
             after = loop_exit(edges, body)
             inner = structure(blocks, edges, lifted, conds, header, after, depth + 1,
                               frozenset((v, w) for v, w in backs if w != header),
-                              open_loops + (header,))
+                              open_loops + (header,), header)
             out.append("for (;;) {")
             out.append(f"  if (++_guard > 4000000) throw new Error('loop {header} did not end');")
             out.extend("  " + s for s in inner)
