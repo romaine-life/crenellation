@@ -115,6 +115,9 @@ class Lifter:
         if m:
             off = num(m.group(1)) if m.group(1) else 0
             return self.mem_read(m.group(2), off, bits)
+        m = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d),\s*([ad]\d)\.(w|l)\)", tok)
+        if m:
+            return Expr(f"load{bits}({self.indexed(m)})", "expr")
         m = re.fullmatch(r"\((a\d)\)\+", tok)
         if m:
             r = m.group(1)
@@ -174,6 +177,25 @@ class Lifter:
         b = self.reg_value(r, 32)
         addr = b.text if off == 0 else f"{b.text} + {hex(off)}"
         return Expr(f"load{bits}({addr})", "expr")
+
+    def indexed(self, m):
+        """`disp(an, xn.w)` - a base register, a displacement and an index.
+
+        The index is sign-extended from its stated width, so a negative index
+        walks backwards through the table. Taking it unsigned reads somewhere
+        far away that happens to exist, which is worse than crashing.
+        """
+        disp = num(m.group(1)) if m.group(1) else 0
+        base = self.reg_value(m.group(2), 32).text
+        idx = self.reg_value(m.group(3), 32).text
+        if m.group(4) == "w":
+            idx = f"(({idx} << 16) >> 16)"
+        else:
+            idx = f"({idx} | 0)"
+        addr = f"{base} + {idx}"
+        if disp:
+            addr += f" + {hex(disp)}" if disp > 0 else f" - {hex(-disp)}"
+        return f"({addr})"
 
     def param(self, off):
         # 4(a7) is the first argument: 0(a7) holds the return address
@@ -244,6 +266,10 @@ class Lifter:
             b = self.reg_value(r, 32)
             addr = b.text if off == 0 else f"{b.text} + {hex(off)}"
             self.stmts.append(f"store{bits}({addr}, {value.text});")
+            return
+        m = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d),\s*([ad]\d)\.(w|l)\)", tok)
+        if m:
+            self.stmts.append(f"store{bits}({self.indexed(m)}, {value.text});")
             return
         m = re.fullmatch(r"\((a\d)\)\+", tok)
         if m:
