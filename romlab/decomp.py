@@ -409,9 +409,14 @@ class Lifter:
             self.stmts.append(f"push({self.reg_value(ops[0].strip(), 32).text}, 4);")
             self.stmts.append("__sp = stackPointer();")
             self.reg[ops[0].strip()] = Expr("__sp", "expr")
-            n = -num(ops[1])
-            self.stmts.append(f"drop({-n});")
-            self.pushed += 4 + n
+            # The displacement is a signed word: `link a6,#$fffc` reserves
+            # four bytes, not 65,532. Reading it unsigned moved the stack
+            # pointer most of the way across memory in the wrong direction.
+            disp = num(ops[1]) & 0xffff
+            if disp & 0x8000:
+                disp -= 0x10000
+            self.stmts.append(f"drop({disp});")
+            self.pushed += 4 - disp
             return
         if b == "unlk":
             r = ops[0].strip()

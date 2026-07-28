@@ -749,6 +749,299 @@ export function fn_00686(a0_: number, a2_: number, d0_: number, d2_: number, d3_
   setReg('d3', d3);
 }
 
+export function fn_00cac(a0_: number, a2_: number, a3_: number, a4_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_d5_3 = 0;
+  let save_d6_4 = 0;
+  let save_a2_5 = 0;
+  let save_a3_6 = 0;
+  let save_a4_7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let t17 = 0;
+  let t18 = 0;
+  let t19 = 0;
+  let t20 = 0;
+  let t21 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-8);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_d5_3 = d5;
+        save_d6_4 = d6;
+        save_a2_5 = a2;
+        save_a3_6 = a3;
+        save_a4_7 = a4;
+        a2 = 0xfcca;
+        d2 = 1;
+        t8 = load16(a6 + 0x8);
+        push(t8, 2);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a6', a6);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x11bd8, 0x00cc6);
+        if (halted()) return;
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a6 = getReg('a6');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        d0 = getReg('d0');
+        store32(a6 + -0x4, d0);
+        store16(a6 + -0x6, 0);
+        a0 = load32(0x3e1960);
+        t9 = load8(a0 + 0x2);
+        d3 = ((d3 & 0xffffff00) | (t9 & 255));
+        d1 = 0;
+        d1 = ((d1 & 0xffffff00) | ((d3 & 255) & 255));
+        a0 = 0x1000a;
+        d6 = ((d6 & 0xffffff00) | (load8((a0 + (d1 | 0))) & 255));
+        d4 = ((d4 & 0xffffff00) | ((d6 & 255) & 255));
+        d4 = ((d4 & 0xffffff00) | (((d4 & 255) | 0x1) & 255));
+        d5 = ((d5 & 0xffffff00) | (0 & 255));
+        a3 = 0xfcea;
+        drop(2);
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        t10 = load16(a2);
+        d1 = ((d1 & 0xffff0000) | (t10 & 65535));
+        d1 = ((((d1 & 65535)) << 16) >> 16);
+        t11 = load32(a6 + -0x4);
+        d1 = (d1 + t11);
+        a0 = d1;
+        t12 = load8(a0);
+        _at = ((((d4 & 255)) & 255) !== ((t12) & 255)) ? 9 : 2; continue dispatch;
+      }
+      case 2: {
+        t13 = load16(a3);
+        d1 = ((d1 & 0xffff0000) | (t13 & 65535));
+        d1 = ((((d1 & 65535)) << 16) >> 16);
+        t14 = load32(a6 + -0x4);
+        d1 = (d1 + t14);
+        a4 = d1;
+        t15 = load8(a4);
+        d3 = ((d3 & 0xffffff00) | (t15 & 255));
+        d1 = 0;
+        d1 = ((d1 & 0xffffff00) | ((d6 & 255) & 255));
+        d0 = 0;
+        d0 = ((d0 & 0xffffff00) | ((d3 & 255) & 255));
+        d0 = (d0 & 0xc0);
+        _at = (d1 === d0) ? 5 : 3; continue dispatch;
+      }
+      case 3: {
+        d5 = ((d5 & 0xffff0000) | (((((d5 & 255)) << 24) >> 24) & 65535));
+        d5 = ((((d5 & 65535)) << 16) >> 16);
+        push(d5, 4);
+        t16 = load32(a6 + -0x4);
+        push(t16, 4);
+        setReg('a0', a0);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x00bc2, 0x00d30);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(8);
+        _at = (d0 === 0) ? 9 : 4; continue dispatch;
+      }
+      case 4: {
+        _at = 8; continue dispatch;
+      }
+      case 5: {
+        _at = ((((d3 & 255)) & 255) !== (((d4 & 255)) & 255)) ? 9 : 6; continue dispatch;
+      }
+      case 6: {
+        t17 = load16(a2);
+        d1 = ((d1 & 0xffff0000) | (t17 & 65535));
+        d1 = ((((d1 & 65535)) << 16) >> 16);
+        a4 = (a4 + d1);
+        t18 = load8(a4);
+        d3 = ((d3 & 0xffffff00) | (t18 & 255));
+        d1 = 0;
+        d1 = ((d1 & 0xffffff00) | ((d6 & 255) & 255));
+        d0 = 0;
+        d0 = ((d0 & 0xffffff00) | ((d3 & 255) & 255));
+        d0 = (d0 & 0xc0);
+        _at = (d1 === d0) ? 9 : 7; continue dispatch;
+      }
+      case 7: {
+        d5 = ((d5 & 0xffff0000) | (((((d5 & 255)) << 24) >> 24) & 65535));
+        d5 = ((((d5 & 65535)) << 16) >> 16);
+        push(d5, 4);
+        t19 = load16(a2);
+        d0 = ((d0 & 0xffff0000) | (t19 & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        t20 = load32(a6 + -0x4);
+        d0 = (d0 + t20);
+        push(d0, 4);
+        setReg('a0', a0);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x00bc2, 0x00d6a);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(8);
+        _at = (d0 === 0) ? 9 : 8; continue dispatch;
+      }
+      case 8: {
+        push(a4, 4);
+        setReg('a0', a0);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x05e38, 0x00d76);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        store16(a6 + -0x6, (d2 & 65535));
+        drop(4);
+        _at = 9; continue dispatch;
+      }
+      case 9: {
+        d5 = ((d5 & 0xffffff00) | (((d5 & 255) + 0x1) & 255));
+        a2 = (a2 + 0x2);
+        a3 = (a3 + 0x2);
+        _at = (((((d5 & 255)) << 24) >> 24) <= (((0x3) << 24) >> 24)) ? 1 : 10; continue dispatch;
+      }
+      case 10: {
+        d0 = 0;
+        t21 = load16(a6 + -0x6);
+        d0 = ((d0 & 0xffff0000) | (t21 & 65535));
+        d2 = load32((a6 + -0x28) + 0);
+        d3 = load32((a6 + -0x28) + 4);
+        d4 = load32((a6 + -0x28) + 8);
+        d5 = load32((a6 + -0x28) + 12);
+        d6 = load32((a6 + -0x28) + 16);
+        a2 = load32((a6 + -0x28) + 20);
+        a3 = load32((a6 + -0x28) + 24);
+        a4 = load32((a6 + -0x28) + 28);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+}
+
 export function fn_00d9a(a2_: number, d0_: number): void {
   let _guard = 0;
   void _guard;
@@ -876,6 +1169,442 @@ export function fn_00dda(a2_: number, d0_: number, d2_: number, arg0: number): v
   setReg('a2', a2);
   setReg('d0', d0);
   setReg('d2', d2);
+}
+
+export function fn_0122c(a0_: number, a1_: number, a2_: number, a3_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_d5_3 = 0;
+  let save_a2_4 = 0;
+  let save_a3_5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_d5_3 = d5;
+        save_a2_4 = a2;
+        save_a3_5 = a3;
+        a3 = 0x3e0864;
+        store8(a6 + -0x2, 0);
+        a2 = 0xfcca;
+        _at = 13; continue dispatch;
+      }
+      case 1: {
+        store8(a6 + -0x1, 0);
+        _at = 11; continue dispatch;
+      }
+      case 2: {
+        t6 = load8(a3);
+        d3 = ((d3 & 0xffffff00) | (t6 & 255));
+        d0 = 0;
+        d0 = ((d0 & 0xffffff00) | ((d3 & 255) & 255));
+        d1 = 63;
+        d0 = (d0 & d1);
+        d1 = 1;
+        _at = (d1 !== d0) ? 10 : 3; continue dispatch;
+      }
+      case 3: {
+        d1 = 3;
+        d5 = ((d5 & 0xffff0000) | (0 & 65535));
+        d2 = ((d2 & 0xffffff00) | ((d3 & 255) & 255));
+        d2 = ((d2 & 0xffffff00) | (((d2 & 255) & 0xc0) & 255));
+        d2 = ((d2 & 0xffffff00) | (((d2 & 255) | 0x3) & 255));
+        d4 = ((d4 & 0xffff0000) | (0 & 65535));
+        a1 = a2;
+        _at = 4; continue dispatch;
+      }
+      case 4: {
+        t7 = load16(a1);
+        d0 = ((d0 & 0xffff0000) | (t7 & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        a0 = d0;
+        a0 = (a0 + a3);
+        t8 = load8(a0);
+        d0 = ((d0 & 0xffffff00) | (t8 & 255));
+        _at = ((((d0 & 255)) & 255) === (((d3 & 255)) & 255)) ? 6 : 5; continue dispatch;
+      }
+      case 5: {
+        _at = ((((d0 & 255)) & 255) !== (((d2 & 255)) & 255)) ? 7 : 6; continue dispatch;
+      }
+      case 6: {
+        d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + 0x1) & 65535));
+        _at = 7; continue dispatch;
+      }
+      case 7: {
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
+        a1 = (a1 + 0x2);
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
+        a0 = d0;
+        _at = (a0 <= d1) ? 4 : 8; continue dispatch;
+      }
+      case 8: {
+        d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - 0x1) & 65535));
+        _at = ((((d5 & 65535)) & 65535) > ((0) & 65535)) ? 10 : 9; continue dispatch;
+      }
+      case 9: {
+        d0 = 0;
+        d0 = ((d0 & 0xffffff00) | ((d3 & 255) & 255));
+        d0 = (d0 & 0xc0);
+        d1 = 3;
+        d0 = (d0 | d1);
+        store8(a3, (d0 & 255));
+        _at = 10; continue dispatch;
+      }
+      case 10: {
+        a3 = (a3 + 0x1);
+        t9 = load8(a6 + -0x1);
+        store8(a6 + -0x1, (t9 + 0x1));
+        _at = 11; continue dispatch;
+      }
+      case 11: {
+        t10 = load8(a6 + -0x1);
+        _at = ((((t10) << 24) >> 24) < (((0x1e) << 24) >> 24)) ? 2 : 12; continue dispatch;
+      }
+      case 12: {
+        a3 = (a3 + 0x2);
+        t11 = load8(a6 + -0x2);
+        store8(a6 + -0x2, (t11 + 0x1));
+        _at = 13; continue dispatch;
+      }
+      case 13: {
+        t12 = load8(a6 + -0x2);
+        _at = ((((t12) << 24) >> 24) < (((0x2a) << 24) >> 24)) ? 1 : 14; continue dispatch;
+      }
+      case 14: {
+        d2 = load32((a6 + -0x1c) + 0);
+        d3 = load32((a6 + -0x1c) + 4);
+        d4 = load32((a6 + -0x1c) + 8);
+        d5 = load32((a6 + -0x1c) + 12);
+        a2 = load32((a6 + -0x1c) + 16);
+        a3 = load32((a6 + -0x1c) + 20);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+}
+
+export function fn_013b2(a0_: number, a1_: number, a2_: number, a3_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_d5_3 = 0;
+  let save_d6_4 = 0;
+  let save_a2_5 = 0;
+  let save_a3_6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let t17 = 0;
+  let t18 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_d5_3 = d5;
+        save_d6_4 = d6;
+        save_a2_5 = a2;
+        save_a3_6 = a3;
+        t7 = load16(a6 + 0xc);
+        d3 = ((d3 & 0xffff0000) | (t7 & 65535));
+        d2 = 3;
+        t8 = load16(a6 + 0x8);
+        push(t8, 2);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x11bd8, 0x013ca);
+        if (halted()) return;
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        d0 = getReg('d0');
+        a2 = d0;
+        t9 = load16(a6 + 0x8);
+        push(t9, 2);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x11bec, 0x013d6);
+        if (halted()) return;
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        a3 = d0;
+        t10 = load8(a6 + 0x8);
+        d4 = ((d4 & 0xffffff00) | (t10 & 255));
+        d4 = ((d4 & 0xffff0000) | (((((d4 & 255)) << 24) >> 24) & 65535));
+        t11 = load8(a6 + 0x9);
+        d1 = ((d1 & 0xffffff00) | (t11 & 255));
+        d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + (d1 & 65535)) & 65535));
+        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) & 0x1) & 65535));
+        d6 = 0;
+        t12 = load8(a2);
+        d6 = ((d6 & 0xffffff00) | (t12 & 255));
+        d5 = 4;
+        d6 = ((d6 & 0xffff0000) | (((d6 & 65535) & 0xc0) & 65535));
+        store16(a6 + -0x2, 0);
+        a1 = 0xfcca;
+        drop(4);
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        t13 = load16(a1);
+        d0 = ((d0 & 0xffff0000) | (t13 & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        a0 = d0;
+        a0 = (a0 + a2);
+        d1 = 0;
+        t14 = load8(a0);
+        d1 = ((d1 & 0xffffff00) | (t14 & 255));
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
+        a0 = d0;
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
+        d0 = (d0 & 0xc0);
+        _at = (a0 !== d0) ? 3 : 2; continue dispatch;
+      }
+      case 2: {
+        d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - 0x1) & 65535));
+        _at = 3; continue dispatch;
+      }
+      case 3: {
+        t15 = load16(a6 + -0x2);
+        store16(a6 + -0x2, (t15 + 0x1));
+        a1 = (a1 + 0x2);
+        d0 = 0;
+        t16 = load16(a6 + -0x2);
+        d0 = ((d0 & 0xffff0000) | (t16 & 65535));
+        a0 = d0;
+        _at = (a0 <= d2) ? 1 : 4; continue dispatch;
+      }
+      case 4: {
+        _at = ((((d5 & 65535)) & 65535) === ((0) & 65535)) ? 6 : 5; continue dispatch;
+      }
+      case 5: {
+        d1 = ((d1 & 0xffff0000) | (0 & 65535));
+        _at = 6; continue dispatch;
+      }
+      case 6: {
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
+        d0 = (d0 & 0xc0);
+        store8(a2, (d0 & 255));
+        _at = ((((d3 & 65535)) & 65535) !== ((0) & 65535)) ? 8 : 7; continue dispatch;
+      }
+      case 7: {
+        t17 = ((0x6) & 63);
+        d1 = ((d1 & 0xffff0000) | ((t17 >= 16 ? 0 : (((d1 & 65535)) >>> t17)) & 65535));
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
+        a0 = 0xfe02;
+        d1 = 0;
+        d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
+        push(d1, 4);
+        push(a3, 4);
+        d1 = 0;
+        d1 = ((d1 & 0xffff0000) | ((d4 & 65535) & 65535));
+        d1 = (d1 + d1);
+        a0 = 0x21be0;
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | (load16((a0 + (d1 | 0))) & 65535));
+        push(d0, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x11efe, 0x0147a);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        push(0, 4);
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
+        push(d0, 4);
+        t18 = load16(a6 + 0x8);
+        push(t18, 2);
+        push(a2, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x02338, 0x0148c);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(26);
+        _at = 8; continue dispatch;
+      }
+      case 8: {
+        d2 = load32((a6 + -0x20) + 0);
+        d3 = load32((a6 + -0x20) + 4);
+        d4 = load32((a6 + -0x20) + 8);
+        d5 = load32((a6 + -0x20) + 12);
+        d6 = load32((a6 + -0x20) + 16);
+        a2 = load32((a6 + -0x20) + 20);
+        a3 = load32((a6 + -0x20) + 24);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
 }
 
 export function fn_014dc(a0_: number, a2_: number, d0_: number, d2_: number, d3_: number, d4_: number): void {
@@ -1381,6 +2110,193 @@ export function fn_018a6(a0_: number, a1_: number, d0_: number, d1_: number): vo
   setReg('a1', a1);
   setReg('d0', d0);
   setReg('d1', d1);
+}
+
+export function fn_018fa(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a6_: number, d0_: number, d2_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d2 = d2_;
+  let save_d2_0 = 0;
+  let save_a2_1 = 0;
+  let save_a3_2 = 0;
+  let save_a4_3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_a2_1 = a2;
+        save_a3_2 = a3;
+        save_a4_3 = a4;
+        a3 = 0x3e1968;
+        d2 = ((d2 & 0xffff0000) | (0 & 65535));
+        a2 = (a6 + -0x2);
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        t4 = load16(a3);
+        d0 = ((d0 & 0xffff0000) | (t4 & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0xc000) & 65535));
+        _at = ((((d0 & 65535)) & 65535) === ((0) & 65535)) ? 8 : 2; continue dispatch;
+      }
+      case 2: {
+        a0 = (a3 + 0x48);
+        a1 = (a6 + -0x2);
+        t5 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t5);
+        a1 = (a1 + 1);
+        t6 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t6);
+        a1 = (a1 + 1);
+        t7 = load32(a3 + 0x4a);
+        a4 = t7;
+        _at = 3; continue dispatch;
+      }
+      case 3: {
+        t8 = load16(a2);
+        push(t8, 2);
+        push(a3, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        callRom(0x0149a, 0x0192e);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        drop(6);
+        _at = (d0 === 0) ? 5 : 4; continue dispatch;
+      }
+      case 4: {
+        a0 = (a6 + -0x2);
+        a1 = (a3 + 0x46);
+        t9 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t9);
+        a1 = (a1 + 1);
+        t10 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t10);
+        a1 = (a1 + 1);
+        _at = 6; continue dispatch;
+      }
+      case 5: {
+        a0 = a4;
+        a4 = (a4 + 0x2);
+        a1 = a2;
+        t11 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t11);
+        a1 = (a1 + 1);
+        t12 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t12);
+        a1 = (a1 + 1);
+        t13 = load8(a2);
+        _at = ((((t13) << 24) >> 24) >= (((0) << 24) >> 24)) ? 3 : 6; continue dispatch;
+      }
+      case 6: {
+        t14 = load8(a6 + -0x2);
+        _at = ((((t14) << 24) >> 24) >= (((0) << 24) >> 24)) ? 8 : 7; continue dispatch;
+      }
+      case 7: {
+        a0 = (a3 + 0x48);
+        a1 = (a3 + 0x46);
+        t15 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t15);
+        a1 = (a1 + 1);
+        t16 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t16);
+        a1 = (a1 + 1);
+        _at = 8; continue dispatch;
+      }
+      case 8: {
+        a3 = (a3 + 0x7e);
+        d2 = ((d2 & 0xffff0000) | (((d2 & 65535) + 0x1) & 65535));
+        _at = ((((d2 & 65535)) & 65535) < ((0x3) & 65535)) ? 1 : 9; continue dispatch;
+      }
+      case 9: {
+        push(0, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        callRom(0x01980, 0x01974);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        drop(4);
+        d2 = load32((a6 + -0x14) + 0);
+        a2 = load32((a6 + -0x14) + 4);
+        a3 = load32((a6 + -0x14) + 8);
+        a4 = load32((a6 + -0x14) + 12);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d2', d2);
 }
 
 export function fn_019d8(arg0: number): void {
@@ -2507,6 +3423,483 @@ export function fn_02300(a0_: number, d0_: number, d1_: number): void {
   setReg('a0', a0);
   setReg('d0', d0);
   setReg('d1', d1);
+}
+
+export function fn_02338(a0_: number, a2_: number, a3_: number, a4_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-8);
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d6, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  const save_d5_3 = d5;
+  const save_d6_4 = d6;
+  const save_a2_5 = a2;
+  const save_a3_6 = a3;
+  const save_a4_7 = a4;
+  const t8 = load32(a6 + 0x8);
+  d4 = t8;
+  const t9 = load8(a6 + 0x11);
+  d2 = ((d2 & 0xffffff00) | (t9 & 255));
+  const t10 = load16(a6 + 0x14);
+  d3 = ((d3 & 0xffff0000) | (t10 & 65535));
+  a2 = 0x25c2;
+  a4 = 0x24c8;
+  d5 = ((d5 & 0xffffff00) | ((d2 & 255) & 255));
+  d5 = ((d5 & 0xffffff00) | (((d5 & 255) & 0xc0) & 255));
+  d5 = ((d5 & 0xffffff00) | (((d5 & 255) | 0x1) & 255));
+  const t11 = load16(a6 + 0xc);
+  push(t11, 2);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+  callRom(0x11bec, 0x02368);
+  if (halted()) return;
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a4 = getReg('a4');
+  a6 = getReg('a6');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d4 = getReg('d4');
+  d5 = getReg('d5');
+  d6 = getReg('d6');
+  d0 = getReg('d0');
+  store32(a6 + -0x4, d0);
+  const t12 = ((0x6) & 63);
+  d2 = ((d2 & 0xffffff00) | ((t12 >= 8 ? 0 : (((d2 & 255)) >>> t12)) & 255));
+  d0 = 0;
+  d0 = ((d0 & 0xffffff00) | ((d2 & 255) & 255));
+  a0 = 0xfe02;
+  d6 = 0;
+  d6 = ((d6 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
+  drop(2);
+  if ((((d3 & 65535)) & 65535) === ((0) & 65535)) {
+    const t14 = load8(a6 + 0xd);
+    d0 = ((d0 & 0xffffff00) | (t14 & 255));
+    d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+    d0 = ((((d0 & 65535)) << 16) >> 16);
+    const t15 = load8(a6 + 0xc);
+    d1 = ((d1 & 0xffffff00) | (t15 & 255));
+    d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+    d1 = ((((d1 & 65535)) << 16) >> 16);
+    d0 = (d0 + d1);
+    d0 = (d0 + 0x1);
+    d1 = 1;
+    d0 = (d0 & d1);
+    d0 = (d0 + d0);
+    a0 = 0x21be0;
+    store16(a6 + -0x6, load16((a0 + (d0 | 0))));
+  } else {
+    push(0x1, 4);
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
+    push(d0, 4);
+    const t13 = load32(a6 + -0x4);
+    push(t13, 4);
+    push(d4, 4);
+    setReg('a0', a0);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a4', a4);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    setReg('d5', d5);
+    setReg('d6', d6);
+    callRom(a2, 0x02396);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a4 = getReg('a4');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    d5 = getReg('d5');
+    d6 = getReg('d6');
+    drop(16);
+  }
+  d0 = d4;
+  d1 = 32;
+  d0 = (d0 + d1);
+  a3 = d0;
+  const t16 = load8(a3);
+  if ((((d5 & 255)) & 255) !== ((t16) & 255)) {
+  } else {
+    const t17 = load32(a6 + -0x4);
+    d2 = t17;
+    d2 = (d2 + 0x8);
+    if ((((d3 & 65535)) & 65535) !== ((0) & 65535)) {
+    } else {
+      push(d2, 4);
+      d0 = 0;
+      const t18 = load16(a6 + -0x6);
+      d0 = ((d0 & 0xffff0000) | (t18 & 65535));
+      push(d0, 4);
+      push(a3, 4);
+      setReg('a0', a0);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a4', a4);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d1', d1);
+      setReg('d2', d2);
+      setReg('d3', d3);
+      setReg('d4', d4);
+      setReg('d5', d5);
+      setReg('d6', d6);
+      callRom(a4, 0x023e6);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a4 = getReg('a4');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d1 = getReg('d1');
+      d2 = getReg('d2');
+      d3 = getReg('d3');
+      d4 = getReg('d4');
+      d5 = getReg('d5');
+      d6 = getReg('d6');
+      drop(12);
+    }
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+    push(d0, 4);
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
+    push(d0, 4);
+    push(d2, 4);
+    push(a3, 4);
+    setReg('a0', a0);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a4', a4);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d1', d1);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    setReg('d5', d5);
+    setReg('d6', d6);
+    callRom(a2, 0x023fc);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a4 = getReg('a4');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d1 = getReg('d1');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    d5 = getReg('d5');
+    d6 = getReg('d6');
+    drop(16);
+  }
+  d0 = d4;
+  d1 = 32;
+  d0 = (d0 - d1);
+  a3 = d0;
+  const t19 = load8(a3);
+  if ((((d5 & 255)) & 255) !== ((t19) & 255)) {
+  } else {
+    const t20 = load32(a6 + -0x4);
+    d2 = t20;
+    d2 = (d2 - 0x8);
+    if ((((d3 & 65535)) & 65535) !== ((0) & 65535)) {
+    } else {
+      push(d2, 4);
+      d0 = 0;
+      const t21 = load16(a6 + -0x6);
+      d0 = ((d0 & 0xffff0000) | (t21 & 65535));
+      push(d0, 4);
+      push(a3, 4);
+      setReg('a0', a0);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a4', a4);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d1', d1);
+      setReg('d2', d2);
+      setReg('d3', d3);
+      setReg('d4', d4);
+      setReg('d5', d5);
+      setReg('d6', d6);
+      callRom(a4, 0x02424);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a4 = getReg('a4');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d1 = getReg('d1');
+      d2 = getReg('d2');
+      d3 = getReg('d3');
+      d4 = getReg('d4');
+      d5 = getReg('d5');
+      d6 = getReg('d6');
+      drop(12);
+    }
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+    push(d0, 4);
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
+    push(d0, 4);
+    push(d2, 4);
+    push(a3, 4);
+    setReg('a0', a0);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a4', a4);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d1', d1);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    setReg('d5', d5);
+    setReg('d6', d6);
+    callRom(a2, 0x0243a);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a4 = getReg('a4');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d1 = getReg('d1');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    d5 = getReg('d5');
+    d6 = getReg('d6');
+    drop(16);
+  }
+  d0 = d4;
+  d0 = (d0 - 0x1);
+  a3 = d0;
+  const t22 = load8(a3);
+  if ((((d5 & 255)) & 255) !== ((t22) & 255)) {
+  } else {
+    const t23 = load32(a6 + -0x4);
+    d2 = t23;
+    d2 = (d2 - 0x1000);
+    if ((((d3 & 65535)) & 65535) !== ((0) & 65535)) {
+    } else {
+      push(d2, 4);
+      d0 = 0;
+      const t24 = load16(a6 + -0x6);
+      d0 = ((d0 & 0xffff0000) | (t24 & 65535));
+      push(d0, 4);
+      push(a3, 4);
+      setReg('a0', a0);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a4', a4);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d1', d1);
+      setReg('d2', d2);
+      setReg('d3', d3);
+      setReg('d4', d4);
+      setReg('d5', d5);
+      setReg('d6', d6);
+      callRom(a4, 0x02464);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a4 = getReg('a4');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d1 = getReg('d1');
+      d2 = getReg('d2');
+      d3 = getReg('d3');
+      d4 = getReg('d4');
+      d5 = getReg('d5');
+      d6 = getReg('d6');
+      drop(12);
+    }
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+    push(d0, 4);
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
+    push(d0, 4);
+    push(d2, 4);
+    push(a3, 4);
+    setReg('a0', a0);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a4', a4);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d1', d1);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    setReg('d5', d5);
+    setReg('d6', d6);
+    callRom(a2, 0x0247a);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a4 = getReg('a4');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d1 = getReg('d1');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    d5 = getReg('d5');
+    d6 = getReg('d6');
+    drop(16);
+  }
+  d0 = d4;
+  d0 = (d0 + 0x1);
+  a3 = d0;
+  const t25 = load8(a3);
+  if ((((d5 & 255)) & 255) !== ((t25) & 255)) {
+  } else {
+    const t26 = load32(a6 + -0x4);
+    d2 = t26;
+    d2 = (d2 + 0x1000);
+    if ((((d3 & 65535)) & 65535) !== ((0) & 65535)) {
+    } else {
+      push(d2, 4);
+      d0 = 0;
+      const t27 = load16(a6 + -0x6);
+      d0 = ((d0 & 0xffff0000) | (t27 & 65535));
+      push(d0, 4);
+      push(a3, 4);
+      setReg('a0', a0);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a4', a4);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d1', d1);
+      setReg('d2', d2);
+      setReg('d3', d3);
+      setReg('d4', d4);
+      setReg('d5', d5);
+      setReg('d6', d6);
+      callRom(a4, 0x024a4);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a4 = getReg('a4');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d1 = getReg('d1');
+      d2 = getReg('d2');
+      d3 = getReg('d3');
+      d4 = getReg('d4');
+      d5 = getReg('d5');
+      d6 = getReg('d6');
+      drop(12);
+    }
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+    push(d0, 4);
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d6 & 65535) & 65535));
+    push(d0, 4);
+    push(d2, 4);
+    push(a3, 4);
+    setReg('a0', a0);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a4', a4);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d1', d1);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    setReg('d5', d5);
+    setReg('d6', d6);
+    callRom(a2, 0x024ba);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a4 = getReg('a4');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d1 = getReg('d1');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    d5 = getReg('d5');
+    d6 = getReg('d6');
+    drop(16);
+  }
+  d2 = load32((a6 + -0x28) + 0);
+  d3 = load32((a6 + -0x28) + 4);
+  d4 = load32((a6 + -0x28) + 8);
+  d5 = load32((a6 + -0x28) + 12);
+  d6 = load32((a6 + -0x28) + 16);
+  a2 = load32((a6 + -0x28) + 20);
+  a3 = load32((a6 + -0x28) + 24);
+  a4 = load32((a6 + -0x28) + 28);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
 }
 
 export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, arg0: number, arg1: number, arg2: number): void {
@@ -4337,6 +5730,139 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   setReg('d4', d4);
 }
 
+export function fn_0357a(a2_: number, a3_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d6, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  const save_d5_3 = d5;
+  const save_d6_4 = d6;
+  const save_a2_5 = a2;
+  const save_a3_6 = a3;
+  const t7 = load32(a6 + 0xc);
+  a2 = t7;
+  const t8 = load32(a6 + 0x10);
+  d1 = t8;
+  const t9 = load16(a6 + 0x1e);
+  store16(a6 + -0x4, t9);
+  const t10 = load16(a6 + 0x1a);
+  d5 = ((d5 & 0xffff0000) | (t10 & 65535));
+  d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - 0x1) & 65535));
+  d2 = 64;
+  const t11 = load16(a6 + 0x16);
+  d0 = ((d0 & 0xffff0000) | (t11 & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  d2 = (d2 - d0);
+  const t12 = ((0x3) & 63);
+  d2 = (t12 >= 32 ? 0 : ((d2) << t12));
+  d2 = (d2 + 0xe00);
+  const t13 = load16(a6 + 0x16);
+  d3 = ((d3 & 0xffff0000) | (t13 & 65535));
+  d3 = ((d3 & 0xffff0000) | (((d3 & 65535) - 0x1) & 65535));
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 5 did not end');
+    if (((((d5 & 65535)) << 16) >> 16) >= (((0) << 16) >> 16)) {
+      d6 = ((d6 & 0xffff0000) | ((d3 & 65535) & 65535));
+      for (;;) {
+        if (++_guard > 4000000) throw new Error('loop 3 did not end');
+        if (((((d6 & 65535)) << 16) >> 16) >= (((0) << 16) >> 16)) {
+          const t14 = load16(a2);
+          a2 = (a2 + 2);
+          store16(a6 + -0x2, t14);
+          d0 = 0;
+          const t15 = load16(a6 + -0x4);
+          d0 = ((d0 & 0xffff0000) | (t15 & 65535));
+          push(d0, 4);
+          push(d1, 4);
+          d0 = 0;
+          const t16 = load16(a6 + -0x2);
+          d0 = ((d0 & 0xffff0000) | (t16 & 65535));
+          push(d0, 4);
+          const t17 = load32(a6 + 0x8);
+          a3 = t17;
+          setReg('a2', a2);
+          setReg('a3', a3);
+          setReg('a6', a6);
+          setReg('d0', d0);
+          setReg('d1', d1);
+          setReg('d2', d2);
+          setReg('d3', d3);
+          setReg('d4', d4);
+          setReg('d5', d5);
+          setReg('d6', d6);
+          callRom(a3, 0x035d0);
+          if (halted()) return;
+          a2 = getReg('a2');
+          a3 = getReg('a3');
+          a6 = getReg('a6');
+          d0 = getReg('d0');
+          d1 = getReg('d1');
+          d2 = getReg('d2');
+          d3 = getReg('d3');
+          d4 = getReg('d4');
+          d5 = getReg('d5');
+          d6 = getReg('d6');
+          d1 = d0;
+          drop(12);
+          d6 = ((d6 & 0xffff0000) | (((d6 & 65535) - 0x1) & 65535));
+          continue;
+        } else {
+          d1 = (d1 + d2);
+          d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - 0x1) & 65535));
+          continue;
+        }
+        d6 = ((d6 & 0xffff0000) | ((d3 & 65535) & 65535));
+        continue;
+        break;
+      }
+      d1 = (d1 + d2);
+      d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - 0x1) & 65535));
+      continue;
+    }
+    break;
+  }
+  d2 = load32((a6 + -0x20) + 0);
+  d3 = load32((a6 + -0x20) + 4);
+  d4 = load32((a6 + -0x20) + 8);
+  d5 = load32((a6 + -0x20) + 12);
+  d6 = load32((a6 + -0x20) + 16);
+  a2 = load32((a6 + -0x20) + 20);
+  a3 = load32((a6 + -0x20) + 24);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+}
+
 export function fn_035ee(d1: number, d2: number, d3: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number): void {
   push(d3, 4);
   push(d2, 4);
@@ -4422,6 +5948,145 @@ export function fn_03666(d1: number, d2: number, d3: number, arg0: number, arg1:
   drop(8);
   setReg('d2', d2);
   setReg('d3', d3);
+}
+
+export function fn_036a2(a0_: number, a2_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a2 = a2_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a2, 4);
+  push(d6, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  const save_d5_3 = d5;
+  const save_d6_4 = d6;
+  const save_a2_5 = a2;
+  const t6 = load32(a6 + 0x8);
+  a2 = t6;
+  const t7 = load32(a6 + 0xc);
+  d2 = t7;
+  const t8 = load16(a6 + 0x12);
+  d3 = ((d3 & 0xffff0000) | (t8 & 65535));
+  const t9 = load16(a6 + 0x1e);
+  store16(a6 + -0x2, t9);
+  const t10 = load16(a6 + 0x16);
+  d5 = ((d5 & 0xffff0000) | (t10 & 65535));
+  d5 = ((((d5 & 65535)) << 16) >> 16);
+  d5 = (d5 - 0x1);
+  d4 = 64;
+  d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  d4 = (d4 - d0);
+  const t11 = ((0x3) & 63);
+  d4 = (t11 >= 32 ? 0 : ((d4) << t11));
+  d4 = (d4 + 0xe00);
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 5 did not end');
+    if ((d5 | 0) >= (0 | 0)) {
+      d6 = ((d6 & 0xffff0000) | ((d3 & 65535) & 65535));
+      d6 = ((((d6 & 65535)) << 16) >> 16);
+      for (;;) {
+        if (++_guard > 4000000) throw new Error('loop 3 did not end');
+        d6 = (d6 - 0x1);
+        if ((d6 | 0) >= (0 | 0)) {
+          const t12 = load16(a2);
+          a2 = (a2 + 2);
+          store16(a6 + -0x4, t12);
+          const t13 = load32(a6 + 0x18);
+          a0 = t13;
+          const t14 = load32(a6 + 0x18);
+          store32(a6 + 0x18, (t14 + 0x1));
+          d1 = 0;
+          const t15 = load8(a0);
+          d1 = ((d1 & 0xffffff00) | (t15 & 255));
+          const t16 = ((0x4) & 63);
+          d1 = (t16 >= 32 ? 0 : ((d1) << t16));
+          d0 = 0;
+          const t17 = load16(a6 + -0x2);
+          d0 = ((d0 & 0xffff0000) | (t17 & 65535));
+          d1 = (d1 + d0);
+          push(d1, 4);
+          push(d2, 4);
+          d0 = 0;
+          const t18 = load16(a6 + -0x4);
+          d0 = ((d0 & 0xffff0000) | (t18 & 65535));
+          push(d0, 4);
+          setReg('a0', a0);
+          setReg('a2', a2);
+          setReg('a6', a6);
+          setReg('d0', d0);
+          setReg('d1', d1);
+          setReg('d2', d2);
+          setReg('d3', d3);
+          setReg('d4', d4);
+          setReg('d5', d5);
+          setReg('d6', d6);
+          callRom(0x11eda, 0x03708);
+          if (halted()) return;
+          a0 = getReg('a0');
+          a2 = getReg('a2');
+          a6 = getReg('a6');
+          d0 = getReg('d0');
+          d1 = getReg('d1');
+          d2 = getReg('d2');
+          d3 = getReg('d3');
+          d4 = getReg('d4');
+          d5 = getReg('d5');
+          d6 = getReg('d6');
+          d2 = d0;
+          drop(12);
+          continue;
+        } else {
+          d2 = (d2 + d4);
+          d5 = (d5 - 0x1);
+          continue;
+        }
+        d6 = ((d6 & 0xffff0000) | ((d3 & 65535) & 65535));
+        d6 = ((((d6 & 65535)) << 16) >> 16);
+        continue;
+        break;
+      }
+      d2 = (d2 + d4);
+      d5 = (d5 - 0x1);
+      continue;
+    }
+    break;
+  }
+  d2 = load32((a6 + -0x1c) + 0);
+  d3 = load32((a6 + -0x1c) + 4);
+  d4 = load32((a6 + -0x1c) + 8);
+  d5 = load32((a6 + -0x1c) + 12);
+  d6 = load32((a6 + -0x1c) + 16);
+  a2 = load32((a6 + -0x1c) + 20);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
 }
 
 export function fn_03726(): void {
@@ -5069,6 +6734,259 @@ export function fn_03f1a(): void {
   store8(0x3e0e78, 0);
 }
 
+export function fn_03f94(a0_: number, a1_: number, a2_: number, a3_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_a2_2 = a2;
+  const save_a3_3 = a3;
+  const t4 = load32(a6 + 0x8);
+  a2 = t4;
+  a0 = (a2 + 0x4);
+  a1 = (a6 + -0x2);
+  const t5 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t5);
+  a1 = (a1 + 1);
+  const t6 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t6);
+  a1 = (a1 + 1);
+  const t7 = load16(a2 + 0x6);
+  d3 = ((d3 & 0xffff0000) | (t7 & 65535));
+  const t8 = load32(a2);
+  a0 = t8;
+  const t9 = load32(a0);
+  a3 = t9;
+  const t10 = load16(a6 + -0x2);
+  push(t10, 2);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  callRom(0x11bec, 0x03fbe);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a6 = getReg('a6');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d0 = getReg('d0');
+  d2 = d0;
+  const t11 = load16(a6 + -0x2);
+  push(t11, 2);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  callRom(0x02988, 0x03fc8);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
+  push(d2, 4);
+  d0 = 0;
+  d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
+  push(d0, 4);
+  push(0x1, 4);
+  const t12 = load16(a6 + -0x2);
+  push(t12, 2);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  callRom(0x0272e, 0x03fde);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  drop(6);
+  push(d0, 4);
+  d0 = 0;
+  d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+  push(d0, 4);
+  d0 = 0;
+  const t13 = load16(a3);
+  a3 = (a3 + 2);
+  d0 = ((d0 & 0xffff0000) | (t13 & 65535));
+  push(d0, 4);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  callRom(0x121c4, 0x03ff4);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d2 = d0;
+  const t14 = load8(a6 + -0x2);
+  store8(a6 + -0x2, (t14 + 0x1));
+  const t15 = load16(a6 + -0x2);
+  push(t15, 2);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  callRom(0x02988, 0x04002);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
+  push(d2, 4);
+  d0 = 0;
+  d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
+  push(d0, 4);
+  push(0x1, 4);
+  const t16 = load16(a6 + -0x2);
+  push(t16, 2);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  callRom(0x0272e, 0x04018);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  drop(6);
+  push(d0, 4);
+  d0 = 0;
+  d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+  push(d0, 4);
+  d0 = 0;
+  const t17 = load16(a3);
+  d0 = ((d0 & 0xffff0000) | (t17 & 65535));
+  push(d0, 4);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  callRom(0x121c4, 0x0402e);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  const t18 = load32(a2);
+  store32(a2, (t18 + 0x4));
+  const t19 = load32(a2);
+  a0 = t19;
+  const t20 = load32(a0);
+  drop(46);
+  if ((t20 | 0) >= (0 | 0)) {
+  } else {
+    const t21 = load32(a0);
+    d0 = t21;
+    const t22 = ((0x2) & 63);
+    d0 = (t22 >= 32 ? 0 : ((d0) << t22));
+    const t23 = load32(a2);
+    store32(a2, (t23 + d0));
+  }
+  d2 = load32((a6 + -0x14) + 0);
+  d3 = load32((a6 + -0x14) + 4);
+  a2 = load32((a6 + -0x14) + 8);
+  a3 = load32((a6 + -0x14) + 12);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+}
+
 export function fn_0408e(arg0: number): void {
   push(((arg0 >>> 16) & 0xffff), 2);
   callRom(0x11bec, 0x04098);
@@ -5099,6 +7017,691 @@ export function fn_0408e(arg0: number): void {
   callRom(0x11efe, 0x040cc);
   if (halted()) return;
   drop(14);
+}
+
+export function fn_040d2(a2_: number, a3_: number, a4_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-12);
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d6, 4);
+  push(d5, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  const save_d5_3 = d5;
+  const save_d6_4 = d6;
+  const save_a2_5 = a2;
+  const save_a3_6 = a3;
+  const save_a4_7 = a4;
+  const t8 = load16(a6 + 0xc);
+  d2 = ((d2 & 0xffff0000) | (t8 & 65535));
+  const t9 = load16(a6 + 0x10);
+  d5 = ((d5 & 0xffff0000) | (t9 & 65535));
+  const t10 = load8(a6 + 0x9);
+  d0 = ((d0 & 0xffffff00) | (t10 & 255));
+  d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  d0 = (d0 - 0x1);
+  const t11 = ((0x3) & 63);
+  d0 = (t11 >= 32 ? 0 : ((d0) << t11));
+  d1 = d0;
+  const t12 = ((0x2) & 63);
+  d0 = (t12 >= 32 ? 0 : ((d0) << t12));
+  d0 = (d0 + d1);
+  d0 = (d0 + d0);
+  const t13 = load8(a6 + 0x8);
+  d1 = ((d1 & 0xffffff00) | (t13 & 255));
+  d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+  d1 = ((((d1 & 65535)) << 16) >> 16);
+  d1 = (d1 - 0x1);
+  d1 = (d1 + d1);
+  d1 = (d1 + load32(0x3e0e7a));
+  d0 = (d0 + d1);
+  a4 = d0;
+  const t14 = load16(a6 + 0x8);
+  push(t14, 2);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+  callRom(0x11bec, 0x04116);
+  if (halted()) return;
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a4 = getReg('a4');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d4 = getReg('d4');
+  d5 = getReg('d5');
+  d6 = getReg('d6');
+  store32(a6 + -0xa, d0);
+  d6 = 40;
+  d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  d6 = (d6 - d0);
+  d6 = (d6 + d6);
+  a3 = 0x3e0de8;
+  drop(2);
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 11 did not end');
+    if (((((d5 & 65535)) << 16) >> 16) > (((0) << 16) >> 16)) {
+      d3 = 29;
+      d4 = 41;
+      const t15 = load32(a6 + -0xa);
+      store32(a6 + -0x6, t15);
+      store16(a6 + -0x2, (d2 & 65535));
+      const t16 = load16(a6 + -0x2);
+      store16(a6 + -0x2, (t16 - 0x1));
+      a2 = (a6 + 0x8);
+      for (;;) {
+        if (++_guard > 4000000) throw new Error('loop 9 did not end');
+        const t28 = load16(a6 + -0x2);
+        if ((((t28) << 16) >> 16) >= (((0) << 16) >> 16)) {
+          const t17 = load8(a2 + 0x1);
+          if (((t17) & 255) === ((0) & 255)) {
+            const t21 = load16(a2);
+            push(t21, 2);
+            setReg('a2', a2);
+            setReg('a3', a3);
+            setReg('a4', a4);
+            setReg('a6', a6);
+            setReg('d0', d0);
+            setReg('d1', d1);
+            setReg('d2', d2);
+            setReg('d3', d3);
+            setReg('d4', d4);
+            setReg('d5', d5);
+            setReg('d6', d6);
+            callRom(0x04332, 0x0416e);
+            if (halted()) return;
+            a2 = getReg('a2');
+            a3 = getReg('a3');
+            a4 = getReg('a4');
+            a6 = getReg('a6');
+            d0 = getReg('d0');
+            d1 = getReg('d1');
+            d2 = getReg('d2');
+            d3 = getReg('d3');
+            d4 = getReg('d4');
+            d5 = getReg('d5');
+            d6 = getReg('d6');
+            drop(2);
+            a4 = (a4 + 0x2);
+            const t25 = load32(a6 + -0x6);
+            store32(a6 + -0x6, (t25 + 0x8));
+            const t26 = load8(a2);
+            store8(a2, (t26 + 0x1));
+            const t27 = load16(a6 + -0x2);
+            store16(a6 + -0x2, (t27 - 0x1));
+            continue;
+          } else {
+            const t18 = load8(a2 + 0x1);
+            d0 = ((d0 & 0xffffff00) | (t18 & 255));
+            d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+            d0 = ((((d0 & 65535)) << 16) >> 16);
+            if (d0 === d3) {
+              const t21 = load16(a2);
+              push(t21, 2);
+              setReg('a2', a2);
+              setReg('a3', a3);
+              setReg('a4', a4);
+              setReg('a6', a6);
+              setReg('d0', d0);
+              setReg('d1', d1);
+              setReg('d2', d2);
+              setReg('d3', d3);
+              setReg('d4', d4);
+              setReg('d5', d5);
+              setReg('d6', d6);
+              callRom(0x04332, 0x0416e);
+              if (halted()) return;
+              a2 = getReg('a2');
+              a3 = getReg('a3');
+              a4 = getReg('a4');
+              a6 = getReg('a6');
+              d0 = getReg('d0');
+              d1 = getReg('d1');
+              d2 = getReg('d2');
+              d3 = getReg('d3');
+              d4 = getReg('d4');
+              d5 = getReg('d5');
+              d6 = getReg('d6');
+              drop(2);
+              a4 = (a4 + 0x2);
+              const t25 = load32(a6 + -0x6);
+              store32(a6 + -0x6, (t25 + 0x8));
+              const t26 = load8(a2);
+              store8(a2, (t26 + 0x1));
+              const t27 = load16(a6 + -0x2);
+              store16(a6 + -0x2, (t27 - 0x1));
+              continue;
+            } else {
+              const t19 = load8(a2);
+              if (((t19) & 255) === ((0) & 255)) {
+                const t21 = load16(a2);
+                push(t21, 2);
+                setReg('a2', a2);
+                setReg('a3', a3);
+                setReg('a4', a4);
+                setReg('a6', a6);
+                setReg('d0', d0);
+                setReg('d1', d1);
+                setReg('d2', d2);
+                setReg('d3', d3);
+                setReg('d4', d4);
+                setReg('d5', d5);
+                setReg('d6', d6);
+                callRom(0x04332, 0x0416e);
+                if (halted()) return;
+                a2 = getReg('a2');
+                a3 = getReg('a3');
+                a4 = getReg('a4');
+                a6 = getReg('a6');
+                d0 = getReg('d0');
+                d1 = getReg('d1');
+                d2 = getReg('d2');
+                d3 = getReg('d3');
+                d4 = getReg('d4');
+                d5 = getReg('d5');
+                d6 = getReg('d6');
+                drop(2);
+                a4 = (a4 + 0x2);
+                const t25 = load32(a6 + -0x6);
+                store32(a6 + -0x6, (t25 + 0x8));
+                const t26 = load8(a2);
+                store8(a2, (t26 + 0x1));
+                const t27 = load16(a6 + -0x2);
+                store16(a6 + -0x2, (t27 - 0x1));
+                continue;
+              } else {
+                const t20 = load8(a2);
+                d0 = ((d0 & 0xffffff00) | (t20 & 255));
+                d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+                d0 = ((((d0 & 65535)) << 16) >> 16);
+                if (d0 !== d4) {
+                  const t22 = load32(a6 + -0x6);
+                  push(t22, 4);
+                  d0 = 0;
+                  const t23 = load16(a4);
+                  d0 = ((d0 & 0xffff0000) | (t23 & 65535));
+                  const t24 = load32(a3);
+                  d0 = (d0 + t24);
+                  push(d0, 4);
+                  setReg('a2', a2);
+                  setReg('a3', a3);
+                  setReg('a4', a4);
+                  setReg('a6', a6);
+                  setReg('d0', d0);
+                  setReg('d1', d1);
+                  setReg('d2', d2);
+                  setReg('d3', d3);
+                  setReg('d4', d4);
+                  setReg('d5', d5);
+                  setReg('d6', d6);
+                  callRom(0x124be, 0x04184);
+                  if (halted()) return;
+                  a2 = getReg('a2');
+                  a3 = getReg('a3');
+                  a4 = getReg('a4');
+                  a6 = getReg('a6');
+                  d0 = getReg('d0');
+                  d1 = getReg('d1');
+                  d2 = getReg('d2');
+                  d3 = getReg('d3');
+                  d4 = getReg('d4');
+                  d5 = getReg('d5');
+                  d6 = getReg('d6');
+                  drop(8);
+                  a4 = (a4 + 0x2);
+                  const t25 = load32(a6 + -0x6);
+                  store32(a6 + -0x6, (t25 + 0x8));
+                  const t26 = load8(a2);
+                  store8(a2, (t26 + 0x1));
+                  const t27 = load16(a6 + -0x2);
+                  store16(a6 + -0x2, (t27 - 0x1));
+                  continue;
+                } else {
+                  const t21 = load16(a2);
+                  push(t21, 2);
+                  setReg('a2', a2);
+                  setReg('a3', a3);
+                  setReg('a4', a4);
+                  setReg('a6', a6);
+                  setReg('d0', d0);
+                  setReg('d1', d1);
+                  setReg('d2', d2);
+                  setReg('d3', d3);
+                  setReg('d4', d4);
+                  setReg('d5', d5);
+                  setReg('d6', d6);
+                  callRom(0x04332, 0x0416e);
+                  if (halted()) return;
+                  a2 = getReg('a2');
+                  a3 = getReg('a3');
+                  a4 = getReg('a4');
+                  a6 = getReg('a6');
+                  d0 = getReg('d0');
+                  d1 = getReg('d1');
+                  d2 = getReg('d2');
+                  d3 = getReg('d3');
+                  d4 = getReg('d4');
+                  d5 = getReg('d5');
+                  d6 = getReg('d6');
+                  drop(2);
+                  a4 = (a4 + 0x2);
+                  const t25 = load32(a6 + -0x6);
+                  store32(a6 + -0x6, (t25 + 0x8));
+                  const t26 = load8(a2);
+                  store8(a2, (t26 + 0x1));
+                  const t27 = load16(a6 + -0x2);
+                  store16(a6 + -0x2, (t27 - 0x1));
+                  continue;
+                }
+              }
+            }
+          }
+        } else {
+          a4 = (a4 + d6);
+          const t29 = load32(a6 + -0xa);
+          store32(a6 + -0xa, (t29 + 0x1000));
+          d0 = ((d0 & 0xffffff00) | ((d2 & 255) & 255));
+          const t30 = load8(a6 + 0x8);
+          store8(a6 + 0x8, (t30 - (d0 & 255)));
+          const t31 = load8(a6 + 0x9);
+          store8(a6 + 0x9, (t31 + 0x1));
+          d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - 0x1) & 65535));
+          continue;
+        }
+        d3 = 29;
+        d4 = 41;
+        const t15 = load32(a6 + -0xa);
+        store32(a6 + -0x6, t15);
+        store16(a6 + -0x2, (d2 & 65535));
+        const t16 = load16(a6 + -0x2);
+        store16(a6 + -0x2, (t16 - 0x1));
+        a2 = (a6 + 0x8);
+        continue;
+        break;
+      }
+      a4 = (a4 + d6);
+      const t29 = load32(a6 + -0xa);
+      store32(a6 + -0xa, (t29 + 0x1000));
+      d0 = ((d0 & 0xffffff00) | ((d2 & 255) & 255));
+      const t30 = load8(a6 + 0x8);
+      store8(a6 + 0x8, (t30 - (d0 & 255)));
+      const t31 = load8(a6 + 0x9);
+      store8(a6 + 0x9, (t31 + 0x1));
+      d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - 0x1) & 65535));
+      continue;
+    }
+    break;
+  }
+  d2 = load32((a6 + -0x2c) + 0);
+  d3 = load32((a6 + -0x2c) + 4);
+  d4 = load32((a6 + -0x2c) + 8);
+  d5 = load32((a6 + -0x2c) + 12);
+  d6 = load32((a6 + -0x2c) + 16);
+  a2 = load32((a6 + -0x2c) + 20);
+  a3 = load32((a6 + -0x2c) + 24);
+  a4 = load32((a6 + -0x2c) + 28);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+}
+
+export function fn_041be(a0_: number, a1_: number, a2_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a2, 4);
+  push(d4, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_d4_2 = d4;
+  const save_a2_3 = a2;
+  const t4 = load32(a6 + 0x8);
+  d4 = t4;
+  const t5 = load16(a6 + 0xe);
+  d1 = ((d1 & 0xffff0000) | (t5 & 65535));
+  const t6 = load16(a6 + 0x12);
+  d3 = ((d3 & 0xffff0000) | (t6 & 65535));
+  if (((((d1 & 65535)) << 16) >> 16) < (((0) << 16) >> 16)) {
+    a0 = load32(0x3e0dca);
+    a0 = (a0 + 0x12);
+    a1 = (a6 + -0x2);
+    const t11 = load8(a0);
+    a0 = (a0 + 1);
+    store8(a1, t11);
+    a1 = (a1 + 1);
+    const t12 = load8(a0);
+    a0 = (a0 + 1);
+    store8(a1, t12);
+    a1 = (a1 + 1);
+    a2 = (a2 - a2);
+    d1 = ((d1 & 0xffff0000) | (0xf0 & 65535));
+  } else {
+    d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
+    d0 = ((((d0 & 65535)) << 16) >> 16);
+    d0 = (d0 + d0);
+    d2 = d0;
+    const t7 = ((0x6) & 63);
+    d0 = (t7 >= 32 ? 0 : ((d0) << t7));
+    d0 = (d0 - d2);
+    a2 = 0x3e1968;
+    a2 = (a2 + d0);
+    a0 = load32(0x3e0dca);
+    d0 = 0;
+    const t8 = load8(a2 + 0x3);
+    d0 = ((d0 & 0xffffff00) | (t8 & 255));
+    d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
+    a1 = (a0 + 0xc);
+    a1 = (a1 + ((((d0 & 65535)) << 16) >> 16));
+    a0 = (a6 + -0x2);
+    const t9 = load8(a1);
+    a1 = (a1 + 1);
+    store8(a0, t9);
+    a0 = (a0 + 1);
+    const t10 = load8(a1);
+    a1 = (a1 + 1);
+    store8(a0, t10);
+    a0 = (a0 + 1);
+    d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
+    d0 = ((((d0 & 65535)) << 16) >> 16);
+    d0 = (d0 + 0x1);
+    a0 = 0xfe02;
+    d1 = 0;
+    d1 = ((d1 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
+  }
+  d0 = 0;
+  d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
+  push(d0, 4);
+  d0 = 0;
+  const t13 = load16(a6 + 0x16);
+  d0 = ((d0 & 0xffff0000) | (t13 & 65535));
+  push(d0, 4);
+  d0 = 0;
+  d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+  push(d0, 4);
+  const t14 = load16(a6 + -0x2);
+  push(t14, 2);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  callRom(0x11bec, 0x04250);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d4 = getReg('d4');
+  drop(2);
+  push(d0, 4);
+  push(d4, 4);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  callRom(0x03666, 0x0425a);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  d2 = getReg('d2');
+  d3 = getReg('d3');
+  d4 = getReg('d4');
+  const t15 = load16(a6 + 0x1a);
+  drop(20);
+  if (((t15) & 65535) === ((0) & 65535)) {
+  } else {
+    push(a2, 4);
+    push(0x11b06, 4);
+    setReg('a0', a0);
+    setReg('a1', a1);
+    setReg('a2', a2);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d1', d1);
+    setReg('d2', d2);
+    setReg('d3', d3);
+    setReg('d4', d4);
+    callRom(0x0ee90, 0x04272);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a1 = getReg('a1');
+    a2 = getReg('a2');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d1 = getReg('d1');
+    d2 = getReg('d2');
+    d3 = getReg('d3');
+    d4 = getReg('d4');
+    drop(8);
+  }
+  d2 = load32((a6 + -0x14) + 0);
+  d3 = load32((a6 + -0x14) + 4);
+  d4 = load32((a6 + -0x14) + 8);
+  a2 = load32((a6 + -0x14) + 12);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+}
+
+export function fn_0427e(a0_: number, a1_: number, a2_: number, a6_: number, d0_: number, d1_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a2, 4);
+  const t0 = load32(a6 + 0x8);
+  a2 = t0;
+  d0 = a2;
+  if (d0 === 0) {
+    a0 = load32(0x3e0dca);
+    a0 = (a0 + 0x12);
+    a1 = (a6 + -0x2);
+    const t4 = load8(a0);
+    a0 = (a0 + 1);
+    store8(a1, t4);
+    a1 = (a1 + 1);
+    const t5 = load8(a0);
+    a0 = (a0 + 1);
+    store8(a1, t5);
+    a1 = (a1 + 1);
+  } else {
+    a0 = load32(0x3e0dca);
+    d0 = 0;
+    const t1 = load8(a2 + 0x3);
+    d0 = ((d0 & 0xffffff00) | (t1 & 255));
+    d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
+    a1 = (a0 + 0xc);
+    a1 = (a1 + ((((d0 & 65535)) << 16) >> 16));
+    a0 = (a6 + -0x2);
+    const t2 = load8(a1);
+    a1 = (a1 + 1);
+    store8(a0, t2);
+    a0 = (a0 + 1);
+    const t3 = load8(a1);
+    a1 = (a1 + 1);
+    store8(a0, t3);
+    a0 = (a0 + 1);
+  }
+  push(0x1, 4);
+  const t6 = load8(a6 + -0x1);
+  d0 = ((d0 & 0xffffff00) | (t6 & 255));
+  d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  d1 = 11;
+  d0 = (d0 + d1);
+  push(d0, 4);
+  const t7 = load8(a6 + -0x2);
+  d1 = ((d1 & 0xffffff00) | (t7 & 255));
+  d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+  d1 = ((((d1 & 65535)) << 16) >> 16);
+  d0 = 12;
+  d1 = (d1 + d0);
+  push(d1, 4);
+  const t8 = load8(a6 + -0x1);
+  d0 = ((d0 & 0xffffff00) | (t8 & 255));
+  d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  d0 = (d0 - 0x1);
+  push(d0, 4);
+  const t9 = load8(a6 + -0x2);
+  d0 = ((d0 & 0xffffff00) | (t9 & 255));
+  d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  d0 = (d0 - 0x1);
+  push(d0, 4);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  callRom(0x00e4e, 0x042f8);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  push(a2, 4);
+  push(0x11b06, 4);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  callRom(0x0eeee, 0x04306);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  drop(28);
+  if ((((load8(0x3e1870)) << 24) >> 24) < (((0) << 24) >> 24)) {
+    d0 = 0;
+  } else {
+    d0 = ((d0 & 0xffffff00) | (load8(0x3e1870) & 255));
+    d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+  }
+  push(0, 4);
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  push(d0, 4);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  callRom(0x07a88, 0x04328);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = getReg('d1');
+  drop(8);
+  const t10 = load32(a6 + -0x8);
+  a2 = t10;
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
 }
 
 export function fn_04332(arg0: number): void {
@@ -5202,7 +7805,7 @@ export function fn_043c2(a2_: number, a6_: number, d0_: number, d2_: number, d3_
       case 0: {
         push(a6, 4);
         a6 = stackPointer();
-        drop(65532);
+        drop(-4);
         push(a2, 4);
         push(d6, 4);
         push(d5, 4);
@@ -5291,6 +7894,67 @@ export function fn_043c2(a2_: number, a6_: number, d0_: number, d2_: number, d3_
   setReg('d4', d4);
   setReg('d5', d5);
   setReg('d6', d6);
+}
+
+export function fn_044a2(a6: number, d2: number): void {
+  push(a6, 4);
+  __sp = stackPointer();
+  drop(-4);
+  push(d2, 4);
+  const t0 = load32(__sp + 0x8);
+  const t1 = ((0x8) & 63);
+  const t2 = (t1 >= 32 ? 0 : ((t0) >>> t1));
+  store8(__sp + -0x2, (t2 & 0xff));
+  const t3 = (t0 & 0xff);
+  const t4 = ((t2 & 0xffffff00) | (t3 & 0xff));
+  const t5 = ((t4 & 0xff) & 0xff);
+  const t6 = ((t4 & 0xffffff00) | (t5 & 0xff));
+  store8(__sp + -0x1, (t6 & 0xff));
+  push(0x1, 4);
+  const t7 = load8(__sp + -0x1);
+  const t8 = ((t6 & 0xffffff00) | (t7 & 0xff));
+  const t9 = ((((t8 & 0xff)) << 24) >> 24);
+  const t10 = ((t8 & 0xffff0000) | (t9 & 0xffff));
+  const t11 = ((((t10 & 0xffff)) << 16) >> 16);
+  const t12 = (t11 + 0x1);
+  push(t12, 4);
+  const t13 = load8(__sp + -0x2);
+  const t14 = ((t12 & 0xffffff00) | (t13 & 0xff));
+  const t15 = ((((t14 & 0xff)) << 24) >> 24);
+  const t16 = ((t14 & 0xffff0000) | (t15 & 0xffff));
+  const t17 = ((((t16 & 0xffff)) << 16) >> 16);
+  const t18 = (t17 + 0x1);
+  push(t18, 4);
+  const t19 = load8(__sp + -0x1);
+  const t20 = ((t18 & 0xffffff00) | (t19 & 0xff));
+  const t21 = ((((t20 & 0xff)) << 24) >> 24);
+  const t22 = ((t20 & 0xffff0000) | (t21 & 0xffff));
+  const t23 = ((((t22 & 0xffff)) << 16) >> 16);
+  push(t23, 4);
+  const t24 = load8(__sp + -0x2);
+  const t25 = ((t23 & 0xffffff00) | (t24 & 0xff));
+  const t26 = ((((t25 & 0xff)) << 24) >> 24);
+  const t27 = ((t25 & 0xffff0000) | (t26 & 0xffff));
+  const t28 = ((((t27 & 0xffff)) << 16) >> 16);
+  push(t28, 4);
+  setReg('a6', __sp);
+  setReg('d0', t28);
+  setReg('d2', t0);
+  callRom(0x00e4e, 0x044f2);
+  if (halted()) return;
+  const t29 = getReg('d2');
+  push(t29, 4);
+  push(0x11bd2, 4);
+  setReg('d2', t29);
+  callRom(0x0eeee, 0x04500);
+  if (halted()) return;
+  drop(28);
+  const t30 = getReg('a6');
+  const t31 = load32(t30 + -0x8);
+  setStackPointer(t30);
+  __sp = popLong();
+  setReg('a6', __sp);
+  setReg('d2', t31);
 }
 
 export function fn_0450c(arg0: number, arg1: number): void {
@@ -6928,6 +9592,79 @@ export function fn_05280(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   setReg('d0', d0);
 }
 
+export function fn_052e2(a0_: number, a1_: number, a2_: number, a6_: number, d0_: number, d1_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a2, 4);
+  a0 = load32(0x3e1960);
+  const t0 = load32(a0 + 0x42);
+  a2 = t0;
+  push(0x1fafe, 4);
+  setReg('a0', a0);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  callRom(0x0f2fa, 0x052fe);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a2 = getReg('a2');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
+  a0 = load32(0x3e1960);
+  a1 = (a0 + 0x48);
+  a0 = (a6 + -0x2);
+  const t1 = load8(a1);
+  a1 = (a1 + 1);
+  store8(a0, t1);
+  a0 = (a0 + 1);
+  const t2 = load8(a1);
+  a1 = (a1 + 1);
+  store8(a0, t2);
+  a0 = (a0 + 1);
+  const t3 = load8(a6 + -0x2);
+  d0 = ((d0 & 0xffffff00) | (t3 & 255));
+  d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+  const t4 = ((0x3) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d0 & 65535)) << t4)) & 65535));
+  d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + 0x8) & 65535));
+  store16(a2 + 0x8, (d0 & 65535));
+  const t5 = load8(a6 + -0x1);
+  d0 = ((d0 & 0xffffff00) | (t5 & 255));
+  d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  const t6 = ((0x3) & 63);
+  d0 = (t6 >= 32 ? 0 : ((d0) << t6));
+  d0 = (d0 + 0x8);
+  store16(a2 + 0x6, (d0 & 65535));
+  const t7 = load16(a2);
+  drop(4);
+  if ((((d1 & 65535)) & 65535) === ((t7) & 65535)) {
+  } else {
+    store16(a2, (d1 & 65535));
+    const t8 = load8(a2 + 0x2);
+    store8(a2 + 0x2, (t8 | 0x20));
+  }
+  const t9 = load32(a6 + -0x8);
+  a2 = t9;
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+}
+
 export function fn_053a6(a2_: number, a3_: number, d0_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number, arg0: number): void {
   let _guard = 0;
   void _guard;
@@ -7123,7 +9860,7 @@ export function fn_056f4(a0_: number, a6_: number, d0_: number, d1_: number, d2_
       case 0: {
         push(a6, 4);
         a6 = stackPointer();
-        drop(65532);
+        drop(-4);
         push(d6, 4);
         push(d5, 4);
         push(d4, 4);
@@ -8167,6 +10904,342 @@ export function fn_05e08(): void {
   // nothing observable
 }
 
+export function fn_05e38(a2: number, a6: number): void {
+  push(a6, 4);
+  __sp = stackPointer();
+  drop(-4);
+  push(a2, 4);
+  const t0 = load32(__sp + 0x8);
+  const t1 = (t0 - 0x3e0864);
+  const t2 = ((0x5) & 63);
+  const t3 = (t2 >= 32 ? (((t1) < 0) ? -1 : 0) : ((t1) >> t2));
+  store8(__sp + -0x2, (t3 & 0xff));
+  const t4 = ((t1 & 0xff) & 0x1f);
+  const t5 = ((t1 & 0xffffff00) | (t4 & 0xff));
+  store8(__sp + -0x1, (t5 & 0xff));
+  const t6 = load32(0x3e1960);
+  store32(0x3e209c, load32(t6 + 0x66));
+  setReg('a0', t6);
+  setReg('a2', 0x3e1960);
+  setReg('a6', __sp);
+  setReg('d0', t3);
+  setReg('d1', t5);
+  callRom(0x0663c, 0x05e6c);
+  if (halted()) return;
+  const t7 = getReg('d0');
+  const t8 = getReg('a6');
+  const t9 = (t8 + -0x2);
+  store8(t7, load8(t9));
+  store8((t7 + 1), load8((t9 + 1)));
+  const t10 = getReg('a2');
+  const t11 = load32(t10);
+  store32(t11 + 0x66, load32(0x3e209c));
+  store16(t11 + 0x58, 0);
+  store8(t11 + 0x3c, 0xff);
+  push(load32(t10), 4);
+  push(0x11ae2, 4);
+  setReg('a0', t11);
+  setReg('a1', ((t7 + 1) + 1));
+  setReg('a2', t10);
+  setReg('a6', t8);
+  setReg('d0', t7);
+  callRom(0x0ee90, 0x05e98);
+  if (halted()) return;
+  drop(8);
+  const t12 = getReg('a6');
+  const t13 = load32(t12 + -0x8);
+  setStackPointer(t12);
+  __sp = popLong();
+  setReg('a2', t13);
+  setReg('a6', __sp);
+}
+
+export function fn_05ea2(a0_: number, a1_: number, a2_: number, a3_: number, a6_: number, d0_: number, d1_: number, d2_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-8);
+  push(a3, 4);
+  push(a2, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_a2_1 = a2;
+  const save_a3_2 = a3;
+  const t3 = load32(a6 + 0x8);
+  a2 = t3;
+  d0 = 0;
+  const t4 = load8(a2 + 0x2);
+  d0 = ((d0 & 0xffffff00) | (t4 & 255));
+  a0 = 0x1000a;
+  d2 = ((d2 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
+  const t5 = load32(a2 + 0x66);
+  store32(0x3e209c, t5);
+  setReg('a0', a0);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  callRom(0x0661a, 0x05eca);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d2 = getReg('d2');
+  a0 = d0;
+  a1 = (a6 + -0x6);
+  const t6 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t6);
+  a1 = (a1 + 1);
+  const t7 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t7);
+  a1 = (a1 + 1);
+  const t8 = load8(a6 + -0x6);
+  if (((t8) & 255) !== ((0xff) & 255)) {
+    const t10 = load16(a6 + -0x6);
+    push(t10, 2);
+    setReg('a0', a0);
+    setReg('a1', a1);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d2', d2);
+    callRom(0x11bd8, 0x05f16);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a1 = getReg('a1');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d2 = getReg('d2');
+    a0 = d0;
+    d0 = 0;
+    d0 = ((d0 & 0xffffff00) | ((d2 & 255) & 255));
+    d1 = 0;
+    const t11 = load8(a0);
+    d1 = ((d1 & 0xffffff00) | (t11 & 255));
+    d1 = (d1 & 0xc0);
+    drop(2);
+    if (d0 === d1) {
+    } else {
+      push(a2, 4);
+      const t12 = load16(a6 + -0x6);
+      push(t12, 2);
+      setReg('a0', a0);
+      setReg('a1', a1);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d1', d1);
+      setReg('d2', d2);
+      callRom(0x05fa6, 0x05f36);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a1 = getReg('a1');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d1 = getReg('d1');
+      d2 = getReg('d2');
+      a0 = d0;
+      a1 = (a6 + -0x4);
+      const t13 = load8(a0);
+      a0 = (a0 + 1);
+      store8(a1, t13);
+      a1 = (a1 + 1);
+      const t14 = load8(a0);
+      a0 = (a0 + 1);
+      store8(a1, t14);
+      a1 = (a1 + 1);
+      push(a2, 4);
+      const t15 = load16(a6 + -0x6);
+      push(t15, 2);
+      setReg('a0', a0);
+      setReg('a1', a1);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d1', d1);
+      setReg('d2', d2);
+      callRom(0x062a6, 0x05f4a);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a1 = getReg('a1');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d1 = getReg('d1');
+      d2 = getReg('d2');
+      a0 = d0;
+      a1 = (a6 + -0x2);
+      const t16 = load8(a0);
+      a0 = (a0 + 1);
+      store8(a1, t16);
+      a1 = (a1 + 1);
+      const t17 = load8(a0);
+      a0 = (a0 + 1);
+      store8(a1, t17);
+      a1 = (a1 + 1);
+      const t18 = load8(a6 + -0x4);
+      store8(a6 + -0x4, (t18 - 0x1));
+      const t19 = load8(a6 + -0x2);
+      store8(a6 + -0x2, (t19 - 0x1));
+      d1 = 0;
+      d1 = ((d1 & 0xffffff00) | ((d2 & 255) & 255));
+      d0 = 1;
+      d1 = (d1 | d0);
+      push(d1, 4);
+      const t20 = load16(a6 + -0x2);
+      push(t20, 2);
+      const t21 = load16(a6 + -0x4);
+      push(t21, 2);
+      setReg('a0', a0);
+      setReg('a1', a1);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d1', d1);
+      setReg('d2', d2);
+      callRom(0x065aa, 0x05f72);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a1 = getReg('a1');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d1 = getReg('d1');
+      d2 = getReg('d2');
+      const t22 = load8(a6 + -0x4);
+      store8(a6 + -0x4, (t22 + 0x2));
+      const t23 = load8(a6 + -0x2);
+      store8(a6 + -0x2, (t23 + 0x2));
+      d1 = 0;
+      d1 = ((d1 & 0xffffff00) | ((d2 & 255) & 255));
+      d0 = 1;
+      d1 = (d1 | d0);
+      push(d1, 4);
+      const t24 = load16(a6 + -0x2);
+      push(t24, 2);
+      const t25 = load16(a6 + -0x4);
+      push(t25, 2);
+      setReg('a0', a0);
+      setReg('a1', a1);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d1', d1);
+      setReg('d2', d2);
+      callRom(0x065aa, 0x05f90);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a1 = getReg('a1');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d1 = getReg('d1');
+      d2 = getReg('d2');
+      drop(28);
+    }
+  } else {
+    setReg('a0', a0);
+    setReg('a1', a1);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d2', d2);
+    callRom(0x0663c, 0x05ee0);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a1 = getReg('a1');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d2 = getReg('d2');
+    a3 = d0;
+    store8(a3, 0xff);
+    push(a2, 4);
+    push(0x11ae2, 4);
+    setReg('a0', a0);
+    setReg('a1', a1);
+    setReg('a2', a2);
+    setReg('a3', a3);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d2', d2);
+    callRom(0x0eeee, 0x05ef4);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a1 = getReg('a1');
+    a2 = getReg('a2');
+    a3 = getReg('a3');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d2 = getReg('d2');
+    const t9 = load8(a2 + 0x3c);
+    drop(8);
+    if ((((t9) << 24) >> 24) <= (((0) << 24) >> 24)) {
+    } else {
+      push(a2, 4);
+      setReg('a0', a0);
+      setReg('a1', a1);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d2', d2);
+      callRom(0x0865e, 0x05f06);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a1 = getReg('a1');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d2 = getReg('d2');
+      drop(4);
+    }
+  }
+  store32(a2 + 0x66, load32(0x3e209c));
+  d2 = load32((a6 + -0x14) + 0);
+  a2 = load32((a6 + -0x14) + 4);
+  a3 = load32((a6 + -0x14) + 8);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+}
+
 export function fn_060be(a6: number): void {
   push(load16(a6 + 0x8), 2);
   callRom(0x0c206, 0x060c8);
@@ -8565,6 +11638,177 @@ export function fn_06420(a0_: number, a2_: number, a3_: number, a6_: number, d0_
   setReg('d5', d5);
 }
 
+export function fn_065aa(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a6_: number, d0_: number, d2_: number, d3_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_a2_2 = 0;
+  let save_a3_3 = 0;
+  let save_a4_4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_a2_2 = a2;
+        save_a3_3 = a3;
+        save_a4_4 = a4;
+        t5 = load8(a6 + 0xf);
+        d2 = ((d2 & 0xffffff00) | (t5 & 255));
+        t6 = load16(a6 + 0x8);
+        store16(a6 + -0x2, t6);
+        t7 = load16(a6 + -0x2);
+        push(t7, 2);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a6', a6);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        callRom(0x11bd8, 0x065c6);
+        if (halted()) return;
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a6 = getReg('a6');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d0 = getReg('d0');
+        a4 = d0;
+        t8 = load16(a6 + 0xa);
+        push(t8, 2);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        callRom(0x11bd8, 0x065d2);
+        if (halted()) return;
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        a1 = d0;
+        a1 = (a1 + 0x1);
+        d3 = a1;
+        a3 = (a6 + -0x2);
+        a2 = (a6 + -0x2);
+        drop(4);
+        _at = 2; continue dispatch;
+      }
+      case 1: {
+        a4 = (a4 + 0x1);
+        t9 = load8(a3 + 0x1);
+        store8(a3 + 0x1, (t9 + 0x1));
+        _at = (a4 === d3) ? 7 : 2; continue dispatch;
+      }
+      case 2: {
+        t10 = load8(a4);
+        _at = ((((d2 & 255)) & 255) === ((t10) & 255)) ? 1 : 3; continue dispatch;
+      }
+      case 3: {
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        callRom(0x0663c, 0x065f6);
+        if (halted()) return;
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        a1 = d0;
+        a0 = (a6 + -0x2);
+        t11 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t11);
+        a1 = (a1 + 1);
+        t12 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t12);
+        a1 = (a1 + 1);
+        _at = 4; continue dispatch;
+      }
+      case 4: {
+        a4 = (a4 + 0x1);
+        t13 = load8(a2 + 0x1);
+        store8(a2 + 0x1, (t13 + 0x1));
+        _at = (a4 === d3) ? 7 : 5; continue dispatch;
+      }
+      case 5: {
+        t14 = load8(a4);
+        _at = ((((d2 & 255)) & 255) === ((t14) & 255)) ? 2 : 6; continue dispatch;
+      }
+      case 6: {
+        _at = 4; continue dispatch;
+      }
+      case 7: {
+        d2 = load32((a6 + -0x18) + 0);
+        d3 = load32((a6 + -0x18) + 4);
+        a2 = load32((a6 + -0x18) + 8);
+        a3 = load32((a6 + -0x18) + 12);
+        a4 = load32((a6 + -0x18) + 16);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+}
+
 export function fn_0661a(a2: number, a3: number): void {
   push(a3, 4);
   push(a2, 4);
@@ -8698,7 +11942,7 @@ export function fn_067f6(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   let d6 = d6_;
   push(a6, 4);
   a6 = stackPointer();
-  drop(65524);
+  drop(-12);
   push(a5, 4);
   push(a4, 4);
   push(a3, 4);
@@ -10009,6 +13253,86 @@ export function fn_07a12(): void {
   drop(8);
 }
 
+export function fn_07a88(a6_: number, d0_: number, d2_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d2 = d2_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(d2, 4);
+  const t0 = load16(a6 + 0xa);
+  d2 = ((d2 & 0xffff0000) | (t0 & 65535));
+  const t1 = load16(a6 + 0xe);
+  d0 = ((d0 & 0xffff0000) | (t1 & 65535));
+  d0 = ((d0 & 0xffff0000) | (((d0 & 65535) - 0x1) & 65535));
+  if ((((d0 & 65535)) & 65535) !== ((0) & 65535)) {
+    store16(a6 + -0x2, load16(0x3e1886));
+  } else {
+    store16(a6 + -0x2, load16(0x117ac));
+    push(0xf0, 4);
+    push(0, 4);
+    push(0x2, 4);
+    d0 = 0;
+    d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
+    push(d0, 4);
+    const t2 = load8(a6 + -0x1);
+    d0 = ((d0 & 0xffffff00) | (t2 & 255));
+    d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+    d0 = ((((d0 & 65535)) << 16) >> 16);
+    push(d0, 4);
+    const t3 = load8(a6 + -0x2);
+    d0 = ((d0 & 0xffffff00) | (t3 & 255));
+    d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+    d0 = ((((d0 & 65535)) << 16) >> 16);
+    push(d0, 4);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d2', d2);
+    callRom(0x00260, 0x07aca);
+    if (halted()) return;
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d2 = getReg('d2');
+    store16(a6 + -0x2, load16(0x117aa));
+    drop(24);
+  }
+  push(0xf0, 4);
+  push(0, 4);
+  push(0x2, 4);
+  d0 = 0;
+  d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
+  push(d0, 4);
+  const t4 = load8(a6 + -0x1);
+  d0 = ((d0 & 0xffffff00) | (t4 & 255));
+  d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  push(d0, 4);
+  const t5 = load8(a6 + -0x2);
+  d0 = ((d0 & 0xffffff00) | (t5 & 255));
+  d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+  d0 = ((((d0 & 65535)) << 16) >> 16);
+  push(d0, 4);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  callRom(0x00260, 0x07b08);
+  if (halted()) return;
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  d2 = getReg('d2');
+  drop(24);
+  const t6 = load32(a6 + -0x8);
+  d2 = t6;
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d2', d2);
+}
+
 export function fn_07b14(d0_: number, d2_: number, d3_: number, d4_: number): void {
   let _guard = 0;
   void _guard;
@@ -10055,6 +13379,244 @@ export function fn_07b14(d0_: number, d2_: number, d3_: number, d4_: number): vo
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
+}
+
+export function fn_07b3e(a0_: number, a2_: number, a3_: number, a4_: number, a5_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a5 = a5_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_d5_3 = 0;
+  let save_d6_4 = 0;
+  let save_a2_5 = 0;
+  let save_a3_6 = 0;
+  let save_a4_7 = 0;
+  let save_a5_8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let t17 = 0;
+  let t18 = 0;
+  let t19 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_d5_3 = d5;
+        save_d6_4 = d6;
+        save_a2_5 = a2;
+        save_a3_6 = a3;
+        save_a4_7 = a4;
+        save_a5_8 = a5;
+        d4 = 0x3e1968;
+        d5 = 0x1178a;
+        push(0, 4);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x0dc10, 0x07b5a);
+        if (halted()) return;
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        d0 = getReg('d0');
+        drop(4);
+        _at = (d0 === 0) ? 2 : 1; continue dispatch;
+      }
+      case 1: {
+        d1 = 2;
+        _at = 3; continue dispatch;
+      }
+      case 2: {
+        d1 = ((d1 & 0xffffff00) | (0 & 255));
+        _at = 3; continue dispatch;
+      }
+      case 3: {
+        d6 = ((d6 & 0xffff0000) | (0 & 65535));
+        d0 = 0;
+        d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
+        d0 = (d0 + 0x1);
+        t9 = ((0x2) & 63);
+        d0 = (t9 >= 32 ? 0 : ((d0) << t9));
+        a3 = 0x214aa;
+        a3 = (a3 + d0);
+        d3 = 0x200004;
+        d3 = (d3 + 0xe000);
+        d0 = 0;
+        d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
+        t10 = ((0x2) & 63);
+        d0 = (t10 >= 32 ? 0 : ((d0) << t10));
+        a0 = 0x214aa;
+        a0 = (a0 + d0);
+        d2 = a0;
+        a2 = 0x11784;
+        a4 = 0x214aa;
+        _at = 4; continue dispatch;
+      }
+      case 4: {
+        a0 = d4;
+        t11 = load16(a0);
+        d0 = ((d0 & 0xffff0000) | (t11 & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x8000) & 65535));
+        _at = ((((d0 & 65535)) & 65535) !== ((0) & 65535)) ? 8 : 5; continue dispatch;
+      }
+      case 5: {
+        t12 = load16(a0);
+        d0 = ((d0 & 0xffff0000) | (t12 & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x1000) & 65535));
+        _at = ((((d0 & 65535)) & 65535) === ((0) & 65535)) ? 7 : 6; continue dispatch;
+      }
+      case 6: {
+        t13 = load32(a3);
+        d1 = t13;
+        _at = 9; continue dispatch;
+      }
+      case 7: {
+        a0 = d2;
+        t14 = load32(a0);
+        d1 = t14;
+        _at = 9; continue dispatch;
+      }
+      case 8: {
+        t15 = load32(a4 + 0x10);
+        d1 = t15;
+        _at = 9; continue dispatch;
+      }
+      case 9: {
+        t16 = load16(a2);
+        a2 = (a2 + 2);
+        store16(a6 + -0x2, t16);
+        d0 = 0;
+        a5 = d5;
+        t17 = load8(a5);
+        a5 = (a5 + 1);
+        d0 = ((d0 & 0xffffff00) | (t17 & 255));
+        d5 = a5;
+        t18 = ((0x3) & 63);
+        d0 = (t18 >= 32 ? 0 : ((d0) << t18));
+        d0 = (d0 + d3);
+        a0 = d0;
+        d0 = 0;
+        t19 = load16(a6 + -0x2);
+        d0 = ((d0 & 0xffff0000) | (t19 & 65535));
+        push(d0, 4);
+        push(0x9, 4);
+        push(0xc, 4);
+        push(a0, 4);
+        push(d1, 4);
+        setReg('a0', a0);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x035ee, 0x07bea);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        d0 = 126;
+        d4 = (d4 + d0);
+        drop(20);
+        d6 = ((d6 & 0xffff0000) | (((d6 & 65535) + 0x1) & 65535));
+        _at = (((((d6 & 65535)) << 16) >> 16) < (((0x3) << 16) >> 16)) ? 4 : 10; continue dispatch;
+      }
+      case 10: {
+        d2 = load32((a6 + -0x28) + 0);
+        d3 = load32((a6 + -0x28) + 4);
+        d4 = load32((a6 + -0x28) + 8);
+        d5 = load32((a6 + -0x28) + 12);
+        d6 = load32((a6 + -0x28) + 16);
+        a2 = load32((a6 + -0x28) + 20);
+        a3 = load32((a6 + -0x28) + 24);
+        a4 = load32((a6 + -0x28) + 28);
+        a5 = load32((a6 + -0x28) + 32);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
 }
 
 export function fn_07c04(a0_: number, d0_: number, d2_: number, arg0: number, arg1: number): void {
@@ -10718,6 +14280,722 @@ export function fn_07ea4(a0_: number, a2_: number, d0_: number, d2_: number, d3_
   setReg('d4', d4);
 }
 
+export function fn_08008(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a5_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a5 = a5_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_d5_3 = 0;
+  let save_d6_4 = 0;
+  let save_a2_5 = 0;
+  let save_a3_6 = 0;
+  let save_a4_7 = 0;
+  let save_a5_8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let t17 = 0;
+  let t18 = 0;
+  let t19 = 0;
+  let t20 = 0;
+  let t21 = 0;
+  let t22 = 0;
+  let t23 = 0;
+  let t24 = 0;
+  let t25 = 0;
+  let t26 = 0;
+  let t27 = 0;
+  let t28 = 0;
+  let t29 = 0;
+  let t30 = 0;
+  let t31 = 0;
+  let t32 = 0;
+  let t33 = 0;
+  let t34 = 0;
+  let t35 = 0;
+  let t36 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_d5_3 = d5;
+        save_d6_4 = d6;
+        save_a2_5 = a2;
+        save_a3_6 = a3;
+        save_a4_7 = a4;
+        save_a5_8 = a5;
+        t9 = load16(a6 + 0xa);
+        d2 = ((d2 & 0xffff0000) | (t9 & 65535));
+        d6 = 0xee90;
+        a0 = 0xfe02;
+        a4 = 0x3e1968;
+        store16(a6 + -0x2, 0);
+        a3 = 0x214fa;
+        a2 = (a0 + 0x1);
+        d5 = 0x11bba;
+        d4 = 0x11bb4;
+        d3 = 0x11ba8;
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        t10 = load16(a4);
+        d0 = ((d0 & 0xffff0000) | (t10 & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x8000) & 65535));
+        _at = ((((d0 & 65535)) & 65535) === ((0) & 65535)) ? 15 : 2; continue dispatch;
+      }
+      case 2: {
+        a0 = load32(0x3e0dca);
+        d0 = 0;
+        t11 = load8(a4 + 0x3);
+        d0 = ((d0 & 0xffffff00) | (t11 & 255));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
+        a0 = (a0 + 0xc);
+        a0 = (a0 + ((((d0 & 65535)) << 16) >> 16));
+        a1 = (a6 + -0x4);
+        t12 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t12);
+        a1 = (a1 + 1);
+        t13 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t13);
+        a1 = (a1 + 1);
+        _at = ((((d2 & 65535)) & 65535) !== ((0) & 65535)) ? 4 : 3; continue dispatch;
+      }
+      case 3: {
+        push(a4, 4);
+        push(d5, 4);
+        a5 = d6;
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(a5, 0x08078);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        d0 = 0;
+        t14 = load8(a2);
+        d0 = ((d0 & 0xffffff00) | (t14 & 255));
+        push(d0, 4);
+        push(0x9, 4);
+        push(0xc, 4);
+        t15 = load16(a6 + -0x4);
+        push(t15, 2);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x11bec, 0x08090);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(2);
+        push(d0, 4);
+        t16 = load32(a3);
+        push(t16, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x035ee, 0x0809a);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(28);
+        _at = 6; continue dispatch;
+      }
+      case 4: {
+        _at = (((((d2 & 65535)) << 16) >> 16) >= (((0) << 16) >> 16)) ? 6 : 5; continue dispatch;
+      }
+      case 5: {
+        push(0x1, 4);
+        t17 = load8(a6 + -0x3);
+        d0 = ((d0 & 0xffffff00) | (t17 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        d1 = 9;
+        d0 = (d0 + d1);
+        push(d0, 4);
+        t18 = load8(a6 + -0x4);
+        d1 = ((d1 & 0xffffff00) | (t18 & 255));
+        d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+        d1 = ((((d1 & 65535)) << 16) >> 16);
+        d0 = 13;
+        d1 = (d1 + d0);
+        push(d1, 4);
+        t19 = load8(a6 + -0x3);
+        d0 = ((d0 & 0xffffff00) | (t19 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        d0 = (d0 - 0x1);
+        push(d0, 4);
+        t20 = load8(a6 + -0x4);
+        d0 = ((d0 & 0xffffff00) | (t20 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        d0 = (d0 - 0x1);
+        push(d0, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x00e4e, 0x080e0);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(20);
+        _at = 15; continue dispatch;
+      }
+      case 6: {
+        t21 = load8(a6 + -0x4);
+        store8(a6 + -0x4, (t21 + 0x1));
+        t22 = load8(a6 + -0x3);
+        store8(a6 + -0x3, (t22 + 0x4));
+        d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
+        _at = (((((d0 & 65535)) << 16) >> 16) < (((0) << 16) >> 16)) ? 15 : 7; continue dispatch;
+      }
+      case 7: {
+        _at = (((((d0 & 65535)) << 16) >> 16) <= (((0) << 16) >> 16)) ? 11 : 8; continue dispatch;
+      }
+      case 8: {
+        _at = ((((d0 & 65535)) & 65535) === ((0x1) & 65535)) ? 12 : 9; continue dispatch;
+      }
+      case 9: {
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) - 0x2) & 65535));
+        _at = ((((d0 & 65535)) & 65535) !== ((0) & 65535)) ? 15 : 10; continue dispatch;
+      }
+      case 10: {
+        _at = 13; continue dispatch;
+      }
+      case 11: {
+        d0 = 0;
+        t23 = load8(a2);
+        d0 = ((d0 & 0xffffff00) | (t23 & 255));
+        push(d0, 4);
+        push(0x1, 4);
+        push(0xa, 4);
+        t24 = load16(a6 + -0x4);
+        push(t24, 2);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x11bec, 0x0811e);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(2);
+        push(d0, 4);
+        push(load32(0x21506), 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x035ee, 0x0812c);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        d0 = 0;
+        t25 = load8(a4 + 0x18);
+        d0 = ((d0 & 0xffffff00) | (t25 & 255));
+        d0 = (d0 + d0);
+        d1 = 0;
+        t26 = load8(a4 + 0x17);
+        d1 = ((d1 & 0xffffff00) | (t26 & 255));
+        t27 = ((0x4) & 63);
+        d1 = (t27 >= 32 ? 0 : ((d1) << t27));
+        d0 = (d0 + d1);
+        store32(a4 + 0x10, d0);
+        push(a4, 4);
+        push(d4, 4);
+        _at = 14; continue dispatch;
+      }
+      case 12: {
+        d0 = 0;
+        t28 = load8(a2);
+        d0 = ((d0 & 0xffffff00) | (t28 & 255));
+        push(d0, 4);
+        push(0x1, 4);
+        push(0xa, 4);
+        t29 = load16(a6 + -0x4);
+        push(t29, 2);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x11bec, 0x08162);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(2);
+        push(d0, 4);
+        push(load32(0x2150a), 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x035ee, 0x08170);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        d0 = 0;
+        t30 = load16(a4 + 0x56);
+        d0 = ((d0 & 0xffff0000) | (t30 & 65535));
+        store32(a4 + 0x10, d0);
+        push(a4, 4);
+        push(d3, 4);
+        _at = 14; continue dispatch;
+      }
+      case 13: {
+        d0 = 0;
+        t31 = load8(a2);
+        d0 = ((d0 & 0xffffff00) | (t31 & 255));
+        push(d0, 4);
+        push(0x1, 4);
+        push(0xa, 4);
+        t32 = load16(a6 + -0x4);
+        push(t32, 2);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x11bec, 0x08198);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(2);
+        push(d0, 4);
+        push(load32(0x2150e), 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x035ee, 0x081a6);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        d1 = 0;
+        t33 = load8(a4 + 0x14);
+        d1 = ((d1 & 0xffffff00) | (t33 & 255));
+        d1 = ((d1 & 0xffff0000) | (((d1 & 65535) + (d1 & 65535)) & 65535));
+        a0 = 0x117be;
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | (load16((a0 + ((d1 << 16) >> 16))) & 65535));
+        store32(a4 + 0x10, d0);
+        d0 = 0;
+        d0 = ((d0 & 0xffff0000) | (load16(0x3e1884) & 65535));
+        t34 = load32(a4 + 0x10);
+        store32(a4 + 0x10, (t34 + d0));
+        store16(0x3e1884, 0);
+        push(a4, 4);
+        push(0x11bae, 4);
+        _at = 14; continue dispatch;
+      }
+      case 14: {
+        a5 = d6;
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(a5, 0x081dc);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(28);
+        _at = 15; continue dispatch;
+      }
+      case 15: {
+        t35 = load16(a6 + -0x2);
+        store16(a6 + -0x2, (t35 + 0x1));
+        a2 = (a2 + 0x1);
+        a3 = (a3 + 0x4);
+        d0 = 126;
+        a4 = (a4 + d0);
+        t36 = load16(a6 + -0x2);
+        _at = (((t36) & 65535) < ((0x3) & 65535)) ? 1 : 16; continue dispatch;
+      }
+      case 16: {
+        d2 = load32((a6 + -0x28) + 0);
+        d3 = load32((a6 + -0x28) + 4);
+        d4 = load32((a6 + -0x28) + 8);
+        d5 = load32((a6 + -0x28) + 12);
+        d6 = load32((a6 + -0x28) + 16);
+        a2 = load32((a6 + -0x28) + 20);
+        a3 = load32((a6 + -0x28) + 24);
+        a4 = load32((a6 + -0x28) + 28);
+        a5 = load32((a6 + -0x28) + 32);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+}
+
+export function fn_08200(a0_: number, a1_: number, a2_: number, a6_: number, d0_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a6 = a6_;
+  let d0 = d0_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a2, 4);
+  const t0 = load32(a6 + 0x8);
+  a2 = t0;
+  a0 = load32(0x3e0dca);
+  d0 = 0;
+  const t1 = load8(a2 + 0x3);
+  d0 = ((d0 & 0xffffff00) | (t1 & 255));
+  d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
+  a1 = (a0 + 0xc);
+  a1 = (a1 + ((((d0 & 65535)) << 16) >> 16));
+  a0 = (a6 + -0x2);
+  const t2 = load8(a1);
+  a1 = (a1 + 1);
+  store8(a0, t2);
+  a0 = (a0 + 1);
+  const t3 = load8(a1);
+  a1 = (a1 + 1);
+  store8(a0, t3);
+  a0 = (a0 + 1);
+  push(0x11, 4);
+  const t4 = load16(a6 + -0x2);
+  push(t4, 2);
+  push(a2, 4);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  callRom(0x07f5a, 0x08234);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  drop(10);
+  if (d0 === 0) {
+  } else {
+    push(a2, 4);
+    push(0x11bb4, 4);
+    setReg('a0', a0);
+    setReg('a1', a1);
+    setReg('a2', a2);
+    setReg('a6', a6);
+    setReg('d0', d0);
+    callRom(0x0eeee, 0x0824a);
+    if (halted()) return;
+    a0 = getReg('a0');
+    a1 = getReg('a1');
+    a2 = getReg('a2');
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    drop(8);
+  }
+  const t5 = load32(a6 + -0x8);
+  a2 = t5;
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+}
+
 export function fn_0848e(a2_: number, d0_: number, d2_: number, d3_: number, d4_: number): void {
   let _guard = 0;
   void _guard;
@@ -11182,6 +15460,763 @@ export function fn_0865e(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   setReg('a2', a2);
   setReg('d0', d0);
   setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+}
+
+export function fn_086ae(a0_: number, a1_: number, a2_: number, a6_: number, d0_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a6 = a6_;
+  let d0 = d0_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a2, 4);
+  a2 = 0x3e1960;
+  const t0 = load32(a2);
+  a1 = t0;
+  a0 = (a1 + 0x46);
+  a1 = (a6 + -0x2);
+  const t1 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t1);
+  a1 = (a1 + 1);
+  const t2 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t2);
+  a1 = (a1 + 1);
+  const t3 = load32(a2);
+  a1 = t3;
+  const t4 = load32(a1 + 0x5e);
+  a0 = t4;
+  const t5 = load16(a0);
+  d0 = ((d0 & 0xffff0000) | (t5 & 65535));
+  if (((((d0 & 65535)) << 16) >> 16) < (((0x20) << 16) >> 16)) {
+    if (((((d0 & 65535)) << 16) >> 16) > (((0) << 16) >> 16)) {
+    } else {
+      const t7 = load8(a6 + -0x2);
+      store8(a6 + -0x2, (t7 - 0x1));
+      d0 = 16;
+      const t8 = load32(a2);
+      a1 = t8;
+      const t9 = load32(a1 + 0x5e);
+      a0 = t9;
+      store16(a0, (d0 & 65535));
+    }
+    const t10 = load32(a2);
+    a1 = t10;
+    const t11 = load32(a1 + 0x62);
+    a0 = t11;
+    const t12 = load16(a0);
+    d0 = ((d0 & 0xffff0000) | (t12 & 65535));
+    if (((((d0 & 65535)) << 16) >> 16) < (((0x20) << 16) >> 16)) {
+      if (((((d0 & 65535)) << 16) >> 16) > (((0) << 16) >> 16)) {
+      } else {
+        const t14 = load8(a6 + -0x1);
+        store8(a6 + -0x1, (t14 - 0x1));
+        d0 = 16;
+        const t15 = load32(a2);
+        a1 = t15;
+        const t16 = load32(a1 + 0x62);
+        a0 = t16;
+        store16(a0, (d0 & 65535));
+      }
+      const t17 = load8(a6 + -0x2);
+      if ((((t17) << 24) >> 24) >= (((0) << 24) >> 24)) {
+        const t18 = load8(a6 + -0x2);
+        if ((((t18) << 24) >> 24) < (((0x29) << 24) >> 24)) {
+        } else {
+          store8(a6 + -0x2, 0x29);
+        }
+      } else {
+        store8(a6 + -0x2, 0);
+      }
+      const t19 = load8(a6 + -0x1);
+      if ((((t19) << 24) >> 24) >= (((0) << 24) >> 24)) {
+        const t20 = load8(a6 + -0x1);
+        if ((((t20) << 24) >> 24) < (((0x1d) << 24) >> 24)) {
+        } else {
+          store8(a6 + -0x1, 0x1d);
+        }
+      } else {
+        store8(a6 + -0x1, 0);
+      }
+      const t21 = load32(a2);
+      a1 = t21;
+      a0 = (a6 + -0x2);
+      a1 = (a1 + 0x46);
+      const t22 = load8(a0);
+      a0 = (a0 + 1);
+      store8(a1, t22);
+      a1 = (a1 + 1);
+      const t23 = load8(a0);
+      a0 = (a0 + 1);
+      store8(a1, t23);
+      a1 = (a1 + 1);
+      const t24 = load32(a6 + -0x8);
+      a2 = t24;
+      setStackPointer(a6);
+      a6 = popLong();
+    } else {
+      const t13 = load8(a6 + -0x1);
+      store8(a6 + -0x1, (t13 + 0x1));
+    }
+    d0 = 16;
+    const t15 = load32(a2);
+    a1 = t15;
+    const t16 = load32(a1 + 0x62);
+    a0 = t16;
+    store16(a0, (d0 & 65535));
+    const t17 = load8(a6 + -0x2);
+    if ((((t17) << 24) >> 24) >= (((0) << 24) >> 24)) {
+      const t18 = load8(a6 + -0x2);
+      if ((((t18) << 24) >> 24) < (((0x29) << 24) >> 24)) {
+      } else {
+        store8(a6 + -0x2, 0x29);
+      }
+    } else {
+      store8(a6 + -0x2, 0);
+    }
+    const t19 = load8(a6 + -0x1);
+    if ((((t19) << 24) >> 24) >= (((0) << 24) >> 24)) {
+      const t20 = load8(a6 + -0x1);
+      if ((((t20) << 24) >> 24) < (((0x1d) << 24) >> 24)) {
+      } else {
+        store8(a6 + -0x1, 0x1d);
+      }
+    } else {
+      store8(a6 + -0x1, 0);
+    }
+    const t21 = load32(a2);
+    a1 = t21;
+    a0 = (a6 + -0x2);
+    a1 = (a1 + 0x46);
+    const t22 = load8(a0);
+    a0 = (a0 + 1);
+    store8(a1, t22);
+    a1 = (a1 + 1);
+    const t23 = load8(a0);
+    a0 = (a0 + 1);
+    store8(a1, t23);
+    a1 = (a1 + 1);
+    const t24 = load32(a6 + -0x8);
+    a2 = t24;
+    setStackPointer(a6);
+    a6 = popLong();
+  } else {
+    const t6 = load8(a6 + -0x2);
+    store8(a6 + -0x2, (t6 + 0x1));
+  }
+  d0 = 16;
+  const t8 = load32(a2);
+  a1 = t8;
+  const t9 = load32(a1 + 0x5e);
+  a0 = t9;
+  store16(a0, (d0 & 65535));
+  const t10 = load32(a2);
+  a1 = t10;
+  const t11 = load32(a1 + 0x62);
+  a0 = t11;
+  const t12 = load16(a0);
+  d0 = ((d0 & 0xffff0000) | (t12 & 65535));
+  if (((((d0 & 65535)) << 16) >> 16) < (((0x20) << 16) >> 16)) {
+    if (((((d0 & 65535)) << 16) >> 16) > (((0) << 16) >> 16)) {
+    } else {
+      const t14 = load8(a6 + -0x1);
+      store8(a6 + -0x1, (t14 - 0x1));
+      d0 = 16;
+      const t15 = load32(a2);
+      a1 = t15;
+      const t16 = load32(a1 + 0x62);
+      a0 = t16;
+      store16(a0, (d0 & 65535));
+    }
+    const t17 = load8(a6 + -0x2);
+    if ((((t17) << 24) >> 24) >= (((0) << 24) >> 24)) {
+      const t18 = load8(a6 + -0x2);
+      if ((((t18) << 24) >> 24) < (((0x29) << 24) >> 24)) {
+      } else {
+        store8(a6 + -0x2, 0x29);
+      }
+    } else {
+      store8(a6 + -0x2, 0);
+    }
+    const t19 = load8(a6 + -0x1);
+    if ((((t19) << 24) >> 24) >= (((0) << 24) >> 24)) {
+      const t20 = load8(a6 + -0x1);
+      if ((((t20) << 24) >> 24) < (((0x1d) << 24) >> 24)) {
+      } else {
+        store8(a6 + -0x1, 0x1d);
+      }
+    } else {
+      store8(a6 + -0x1, 0);
+    }
+    const t21 = load32(a2);
+    a1 = t21;
+    a0 = (a6 + -0x2);
+    a1 = (a1 + 0x46);
+    const t22 = load8(a0);
+    a0 = (a0 + 1);
+    store8(a1, t22);
+    a1 = (a1 + 1);
+    const t23 = load8(a0);
+    a0 = (a0 + 1);
+    store8(a1, t23);
+    a1 = (a1 + 1);
+    const t24 = load32(a6 + -0x8);
+    a2 = t24;
+    setStackPointer(a6);
+    a6 = popLong();
+  } else {
+    const t13 = load8(a6 + -0x1);
+    store8(a6 + -0x1, (t13 + 0x1));
+  }
+  d0 = 16;
+  const t15 = load32(a2);
+  a1 = t15;
+  const t16 = load32(a1 + 0x62);
+  a0 = t16;
+  store16(a0, (d0 & 65535));
+  const t17 = load8(a6 + -0x2);
+  if ((((t17) << 24) >> 24) >= (((0) << 24) >> 24)) {
+    const t18 = load8(a6 + -0x2);
+    if ((((t18) << 24) >> 24) < (((0x29) << 24) >> 24)) {
+    } else {
+      store8(a6 + -0x2, 0x29);
+    }
+  } else {
+    store8(a6 + -0x2, 0);
+  }
+  const t19 = load8(a6 + -0x1);
+  if ((((t19) << 24) >> 24) >= (((0) << 24) >> 24)) {
+    const t20 = load8(a6 + -0x1);
+    if ((((t20) << 24) >> 24) < (((0x1d) << 24) >> 24)) {
+    } else {
+      store8(a6 + -0x1, 0x1d);
+    }
+  } else {
+    store8(a6 + -0x1, 0);
+  }
+  const t21 = load32(a2);
+  a1 = t21;
+  a0 = (a6 + -0x2);
+  a1 = (a1 + 0x46);
+  const t22 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t22);
+  a1 = (a1 + 1);
+  const t23 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t23);
+  a1 = (a1 + 1);
+  const t24 = load32(a6 + -0x8);
+  a2 = t24;
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a6', a6);
+  setReg('d0', d0);
+}
+
+export function fn_08a9c(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_a2_2 = 0;
+  let save_a3_3 = 0;
+  let save_a4_4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_a2_2 = a2;
+        save_a3_3 = a3;
+        save_a4_4 = a4;
+        t5 = load32(a6 + 0x8);
+        a1 = t5;
+        d3 = ((d3 & 0xffff0000) | (0 & 65535));
+        t6 = load8(a1);
+        a1 = (a1 + 1);
+        store8(a6 + -0x4, t6);
+        t7 = load8(a1);
+        a1 = (a1 + 1);
+        store8(a6 + -0x3, t7);
+        d1 = a1;
+        a3 = 0xfcda;
+        a4 = 0xfce2;
+        a2 = (a6 + -0x4);
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        a0 = a2;
+        a1 = (a6 + -0x2);
+        t8 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t8);
+        a1 = (a1 + 1);
+        t9 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t9);
+        a1 = (a1 + 1);
+        t10 = load16(a6 + -0x2);
+        d0 = ((d0 & 0xffff0000) | (t10 & 65535));
+        t11 = load16(a6 + 0xc);
+        _at = ((((d0 & 65535)) & 65535) !== ((t11) & 65535)) ? 3 : 2; continue dispatch;
+      }
+      case 2: {
+        d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        _at = 5; continue dispatch;
+      }
+      case 3: {
+        a1 = d1;
+        t12 = load8(a1);
+        a1 = (a1 + 1);
+        d2 = ((d2 & 0xffffff00) | (t12 & 255));
+        d1 = a1;
+        d2 = ((d2 & 0xffff0000) | (((((d2 & 255)) << 24) >> 24) & 65535));
+        d2 = ((((d2 & 65535)) << 16) >> 16);
+        d0 = ((d0 & 0xffffff00) | (load8((a3 + (d2 | 0))) & 255));
+        t13 = load8(a2);
+        store8(a2, (t13 + (d0 & 255)));
+        d2 = ((d2 & 0xffff0000) | (((((d2 & 255)) << 24) >> 24) & 65535));
+        d2 = ((((d2 & 65535)) << 16) >> 16);
+        d0 = ((d0 & 0xffffff00) | (load8((a4 + (d2 | 0))) & 255));
+        t14 = load8(a2 + 0x1);
+        store8(a2 + 0x1, (t14 + (d0 & 255)));
+        d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + 0x1) & 65535));
+        _at = (((((d2 & 255)) << 24) >> 24) >= (((0) << 24) >> 24)) ? 1 : 4; continue dispatch;
+      }
+      case 4: {
+        d0 = -1;
+        _at = 5; continue dispatch;
+      }
+      case 5: {
+        d2 = load32((a6 + -0x18) + 0);
+        d3 = load32((a6 + -0x18) + 4);
+        a2 = load32((a6 + -0x18) + 8);
+        a3 = load32((a6 + -0x18) + 12);
+        a4 = load32((a6 + -0x18) + 16);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+}
+
+export function fn_08b0c(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a5_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a5 = a5_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_d5_3 = 0;
+  let save_d6_4 = 0;
+  let save_a2_5 = 0;
+  let save_a3_6 = 0;
+  let save_a4_7 = 0;
+  let save_a5_8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let t17 = 0;
+  let t18 = 0;
+  let t19 = 0;
+  let t20 = 0;
+  let t21 = 0;
+  let t22 = 0;
+  let t23 = 0;
+  let t24 = 0;
+  let t25 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-8);
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_d5_3 = d5;
+        save_d6_4 = d6;
+        save_a2_5 = a2;
+        save_a3_6 = a3;
+        save_a4_7 = a4;
+        save_a5_8 = a5;
+        t9 = load32(a6 + 0xa);
+        a3 = t9;
+        d4 = 1;
+        t10 = load8(a3);
+        a3 = (a3 + 1);
+        d0 = ((d0 & 0xffffff00) | (t10 & 255));
+        t11 = load8(a6 + 0x8);
+        store8(a6 + 0x8, (t11 + (d0 & 255)));
+        t12 = load8(a3);
+        a3 = (a3 + 1);
+        d0 = ((d0 & 0xffffff00) | (t12 & 255));
+        t13 = load8(a6 + 0x9);
+        store8(a6 + 0x9, (t13 + (d0 & 255)));
+        a0 = load32(0x3e1960);
+        t14 = load32(a0 + 0x7a);
+        store32(a6 + -0x4, t14);
+        a1 = (a0 + 0x30);
+        a0 = (a6 + -0x8);
+        t15 = load8(a1);
+        a1 = (a1 + 1);
+        store8(a0, t15);
+        a0 = (a0 + 1);
+        t16 = load8(a1);
+        a1 = (a1 + 1);
+        store8(a0, t16);
+        a0 = (a0 + 1);
+        d5 = -1;
+        d6 = ((d6 & 0xffff0000) | (0 & 65535));
+        a4 = 0xfcda;
+        d2 = 0xfce2;
+        a0 = (a6 + -0x8);
+        d3 = a0;
+        a2 = (a6 + 0x8);
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        a0 = a2;
+        a1 = (a6 + -0x6);
+        t17 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t17);
+        a1 = (a1 + 1);
+        t18 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t18);
+        a1 = (a1 + 1);
+        a5 = d3;
+        t19 = load16(a6 + -0x6);
+        d0 = ((d0 & 0xffff0000) | (t19 & 65535));
+        t20 = load16(a5);
+        _at = ((((d0 & 65535)) & 65535) !== ((t20) & 65535)) ? 3 : 2; continue dispatch;
+      }
+      case 2: {
+        d6 = ((d6 & 0xffff0000) | ((d4 & 65535) & 65535));
+        _at = 3; continue dispatch;
+      }
+      case 3: {
+        t21 = load16(a2);
+        push(t21, 2);
+        t22 = load32(a6 + -0x4);
+        push(t22, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x08a9c, 0x08b78);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        drop(6);
+        _at = (((((d5 & 65535)) << 16) >> 16) >= ((((d0 & 65535)) << 16) >> 16)) ? 5 : 4; continue dispatch;
+      }
+      case 4: {
+        d5 = ((d5 & 0xffff0000) | ((d0 & 65535) & 65535));
+        _at = 5; continue dispatch;
+      }
+      case 5: {
+        t23 = load8(a3);
+        a3 = (a3 + 1);
+        d1 = ((d1 & 0xffffff00) | (t23 & 255));
+        _at = (((((d1 & 255)) << 24) >> 24) < (((0) << 24) >> 24)) ? 7 : 6; continue dispatch;
+      }
+      case 6: {
+        d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+        d1 = ((((d1 & 65535)) << 16) >> 16);
+        d0 = ((d0 & 0xffffff00) | (load8((a4 + (d1 | 0))) & 255));
+        t24 = load8(a2);
+        store8(a2, (t24 + (d0 & 255)));
+        d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+        d1 = ((((d1 & 65535)) << 16) >> 16);
+        a1 = d2;
+        d0 = ((d0 & 0xffffff00) | (load8((a1 + (d1 | 0))) & 255));
+        t25 = load8(a2 + 0x1);
+        store8(a2 + 0x1, (t25 + (d0 & 255)));
+        _at = 1; continue dispatch;
+      }
+      case 7: {
+        _at = ((((d6 & 65535)) & 65535) !== ((0) & 65535)) ? 9 : 8; continue dispatch;
+      }
+      case 8: {
+        d5 = -1;
+        _at = 9; continue dispatch;
+      }
+      case 9: {
+        d0 = ((d0 & 0xffff0000) | ((d5 & 65535) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        d2 = load32((a6 + -0x2c) + 0);
+        d3 = load32((a6 + -0x2c) + 4);
+        d4 = load32((a6 + -0x2c) + 8);
+        d5 = load32((a6 + -0x2c) + 12);
+        d6 = load32((a6 + -0x2c) + 16);
+        a2 = load32((a6 + -0x2c) + 20);
+        a3 = load32((a6 + -0x2c) + 24);
+        a4 = load32((a6 + -0x2c) + 28);
+        a5 = load32((a6 + -0x2c) + 32);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+}
+
+export function fn_08c7a(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a6_: number, d0_: number, d2_: number, d3_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d2 = d2_;
+  let d3 = d3_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_a2_2 = a2;
+  const save_a3_3 = a3;
+  const save_a4_4 = a4;
+  const t5 = load32(a6 + 0x8);
+  a2 = t5;
+  a0 = (a2 + 0x46);
+  a1 = (a6 + -0x2);
+  const t6 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t6);
+  a1 = (a1 + 1);
+  const t7 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t7);
+  a1 = (a1 + 1);
+  const t8 = load32(a2 + 0x76);
+  d3 = t8;
+  d2 = 0xfcda;
+  a4 = 0xfce2;
+  a3 = (a6 + -0x2);
+  for (;;) {
+    if (++_guard > 4000000) throw new Error('loop 1 did not end');
+    a0 = d3;
+    const t9 = load8(a0);
+    if ((((t9) << 24) >> 24) < (((0) << 24) >> 24)) {
+    } else {
+      a1 = d3;
+      const t10 = load8(a1);
+      d0 = ((d0 & 0xffffff00) | (t10 & 255));
+      d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+      d0 = ((((d0 & 65535)) << 16) >> 16);
+      a1 = d2;
+      d0 = ((d0 & 0xffffff00) | (load8((a1 + (d0 | 0))) & 255));
+      const t11 = load8(a3);
+      store8(a3, (t11 + (d0 & 255)));
+      d3 = (d3 + 0x1);
+      const t12 = load8(a0);
+      d0 = ((d0 & 0xffffff00) | (t12 & 255));
+      d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+      d0 = ((((d0 & 65535)) << 16) >> 16);
+      d0 = ((d0 & 0xffffff00) | (load8((a4 + (d0 | 0))) & 255));
+      const t13 = load8(a3 + 0x1);
+      store8(a3 + 0x1, (t13 + (d0 & 255)));
+      const t14 = load16(a3);
+      push(t14, 2);
+      setReg('a0', a0);
+      setReg('a1', a1);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a4', a4);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d2', d2);
+      setReg('d3', d3);
+      callRom(0x11bd8, 0x08cd4);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a1 = getReg('a1');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a4 = getReg('a4');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d2 = getReg('d2');
+      d3 = getReg('d3');
+      a0 = d0;
+      const t15 = load8(a0);
+      d0 = ((d0 & 0xffffff00) | (t15 & 255));
+      d0 = ((d0 & 0xffffff00) | (((d0 & 255) & 0x3f) & 255));
+      drop(2);
+      if ((((d0 & 255)) & 255) === ((0) & 255)) {
+      } else {
+        if ((((d0 & 255)) & 255) !== ((0x30) & 255)) {
+          continue;
+        }
+      }
+    }
+    break;
+  }
+  a0 = (a6 + -0x2);
+  a1 = (a2 + 0x46);
+  const t16 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t16);
+  a1 = (a1 + 1);
+  const t17 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t17);
+  a1 = (a1 + 1);
+  a0 = (a6 + -0x2);
+  a1 = (a2 + 0x30);
+  const t18 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t18);
+  a1 = (a1 + 1);
+  const t19 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t19);
+  a1 = (a1 + 1);
+  store32(a2 + 0x76, d3);
+  d2 = load32((a6 + -0x18) + 0);
+  d3 = load32((a6 + -0x18) + 4);
+  a2 = load32((a6 + -0x18) + 8);
+  a3 = load32((a6 + -0x18) + 12);
+  a4 = load32((a6 + -0x18) + 16);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d0', d0);
   setReg('d2', d2);
   setReg('d3', d3);
 }
@@ -12318,6 +17353,181 @@ export function fn_0ab12(): void {
   drop(28);
 }
 
+export function fn_0aef2(a0_: number, a1_: number, a2_: number, a3_: number, a6_: number, d0_: number, d2_: number, d3_: number, d4_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_a2_3 = 0;
+  let save_a3_4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_a2_3 = a2;
+        save_a3_4 = a3;
+        d4 = 0x3e1ae4;
+        store8(a6 + -0x1, 0x1a);
+        push(0xa, 4);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x11e58, 0x0af10);
+        if (halted()) return;
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d0 = getReg('d0');
+        d3 = ((d3 & 0xffff0000) | ((d0 & 65535) & 65535));
+        drop(4);
+        _at = (((((d3 & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) ? 2 : 1; continue dispatch;
+      }
+      case 1: {
+        d3 = 3;
+        _at = 2; continue dispatch;
+      }
+      case 2: {
+        a0 = load32(0x3e0dca);
+        t5 = load32(a0 + 0x1e);
+        a3 = t5;
+        a2 = a3;
+        d2 = 19;
+        _at = 3; continue dispatch;
+      }
+      case 3: {
+        d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
+        _at = 7; continue dispatch;
+      }
+      case 4: {
+        a2 = (a2 + 0x2);
+        t6 = load8(a2);
+        _at = ((((t6) << 24) >> 24) >= (((0) << 24) >> 24)) ? 6 : 5; continue dispatch;
+      }
+      case 5: {
+        a2 = a3;
+        _at = 6; continue dispatch;
+      }
+      case 6: {
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) - 0x1) & 65535));
+        _at = 7; continue dispatch;
+      }
+      case 7: {
+        _at = (((((d0 & 65535)) << 16) >> 16) >= (((0) << 16) >> 16)) ? 4 : 8; continue dispatch;
+      }
+      case 8: {
+        t7 = load16(a2);
+        push(t7, 2);
+        setReg('a0', a0);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x0b330, 0x0af42);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        drop(2);
+        _at = (d0 === 0) ? 10 : 9; continue dispatch;
+      }
+      case 9: {
+        a1 = (a6 + -0x2);
+        t8 = load8(a2);
+        a2 = (a2 + 1);
+        store8(a1, t8);
+        a1 = (a1 + 1);
+        t9 = load8(a2);
+        a2 = (a2 + 1);
+        store8(a1, t9);
+        a1 = (a1 + 1);
+        _at = 12; continue dispatch;
+      }
+      case 10: {
+        d2 = ((d2 & 0xffff0000) | (((d2 & 0xffff) - 1) & 0xffff));
+        _at = ((d2 & 0xffff) !== 0xffff) ? 3 : 11; continue dispatch;
+      }
+      case 11: {
+        store8(a6 + -0x2, 0xff);
+        _at = 12; continue dispatch;
+      }
+      case 12: {
+        a0 = d4;
+        a1 = (a6 + -0x2);
+        t10 = load8(a1);
+        a1 = (a1 + 1);
+        store8(a0, t10);
+        a0 = (a0 + 1);
+        t11 = load8(a1);
+        a1 = (a1 + 1);
+        store8(a0, t11);
+        a0 = (a0 + 1);
+        d0 = d4;
+        d2 = load32((a6 + -0x18) + 0);
+        d3 = load32((a6 + -0x18) + 4);
+        d4 = load32((a6 + -0x18) + 8);
+        a2 = load32((a6 + -0x18) + 12);
+        a3 = load32((a6 + -0x18) + 16);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+}
+
 export function fn_0af72(a0_: number, a2_: number, d0_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
@@ -12995,6 +18205,908 @@ export function fn_0b5b8(d2: number, d3: number, arg0: number, arg1: number, arg
   setReg('d3', d3);
 }
 
+export function fn_0b5e4(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a5_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a5 = a5_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a5, 4);
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  push(d3, 4);
+  push(d2, 4);
+  const save_d2_0 = d2;
+  const save_d3_1 = d3;
+  const save_a2_2 = a2;
+  const save_a3_3 = a3;
+  const save_a4_4 = a4;
+  const save_a5_5 = a5;
+  const t6 = load32(a6 + 0x8);
+  a2 = t6;
+  a3 = 0x3e1c84;
+  d3 = 0x3e1cb0;
+  const t7 = load32(a2 + 0x34);
+  a4 = t7;
+  const t8 = load32(a3);
+  if (a2 !== t8) {
+    d1 = 0;
+    const t9 = load8(a2 + 0x2);
+    d1 = ((d1 & 0xffffff00) | (t9 & 255));
+    a0 = 0x1000a;
+    d0 = 0;
+    d0 = ((d0 & 0xffffff00) | (load8((a0 + (d1 | 0))) & 255));
+    d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
+  } else {
+    d1 = ((d1 & 0xffff0000) | (0 & 65535));
+  }
+  const t10 = load32(a4 + 0x4);
+  d2 = t10;
+  if (d2 === 0) {
+  } else {
+    d0 = 0;
+    const t11 = load8(a4 + 0x3);
+    d0 = ((d0 & 0xffffff00) | (t11 & 255));
+    if ((((d0 & 65535)) & 65535) !== (((d1 & 65535)) & 65535)) {
+    } else {
+      a0 = d2;
+      const t12 = load32(a0 + 0x16);
+      if (t12 === 0) {
+        a0 = d2;
+        a1 = (a6 + -0x2);
+        const t13 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t13);
+        a1 = (a1 + 1);
+        const t14 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t14);
+        a1 = (a1 + 1);
+        const t15 = load8(a6 + -0x2);
+        if (((t15) & 255) !== ((0) & 255)) {
+        } else {
+          const t16 = load8(a2 + 0x22);
+          if ((((t16) << 24) >> 24) < (((0) << 24) >> 24)) {
+          } else {
+            a0 = (a2 + 0x3a);
+            a1 = (a6 + -0x2);
+            const t17 = load8(a0);
+            a0 = (a0 + 1);
+            store8(a1, t17);
+            a1 = (a1 + 1);
+            const t18 = load8(a0);
+            a0 = (a0 + 1);
+            store8(a1, t18);
+            a1 = (a1 + 1);
+            store8(a2 + 0x22, 0xff);
+            d0 = 0;
+            a5 = d3;
+            const t19 = load8(a5);
+            d0 = ((d0 & 0xffffff00) | (t19 & 255));
+            d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
+            a0 = 0x3e1c88;
+            a1 = (a6 + -0x2);
+            a0 = (a0 + ((((d0 & 65535)) << 16) >> 16));
+            const t20 = load8(a1);
+            a1 = (a1 + 1);
+            store8(a0, t20);
+            a0 = (a0 + 1);
+            const t21 = load8(a1);
+            a1 = (a1 + 1);
+            store8(a0, t21);
+            a0 = (a0 + 1);
+            const t22 = load8(a5);
+            d0 = ((d0 & 0xffffff00) | (t22 & 255));
+            d0 = ((d0 & 0xffffff00) | (((d0 & 255) + 0x1) & 255));
+            d0 = ((d0 & 0xffffff00) | (((d0 & 255) & 0x7) & 255));
+            store8(a5, (d0 & 255));
+            const t23 = load32(a4 + 0x8);
+            a0 = t23;
+            if (a0 === 0x0) {
+              a0 = (a4 + 0xc);
+              a1 = d2;
+              const t28 = load8(a0);
+              a0 = (a0 + 1);
+              store8(a1, t28);
+              a1 = (a1 + 1);
+              const t29 = load8(a0);
+              a0 = (a0 + 1);
+              store8(a1, t29);
+              a1 = (a1 + 1);
+            } else {
+              const t24 = load16(a0 + 0xa);
+              d0 = ((d0 & 0xffff0000) | (t24 & 65535));
+              d0 = ((((d0 & 65535)) << 16) >> 16);
+              const t25 = ((0x8) & 63);
+              d0 = (t25 >= 32 ? (((d0) < 0) ? -1 : 0) : ((d0) >> t25));
+              d0 = ((d0 & 0xffffff00) | (((d0 & 255) - 0x1) & 255));
+              a1 = d2;
+              store8(a1, (d0 & 255));
+              const t26 = load16(a0 + 0xc);
+              d0 = ((d0 & 0xffff0000) | (t26 & 65535));
+              d0 = ((((d0 & 65535)) << 16) >> 16);
+              const t27 = ((0x8) & 63);
+              d0 = (t27 >= 32 ? (((d0) < 0) ? -1 : 0) : ((d0) >> t27));
+              d0 = ((d0 & 0xffffff00) | (((d0 & 255) + 0x1) & 255));
+              store8(a1 + 0x1, (d0 & 255));
+            }
+            const t30 = load32(a3);
+            a0 = t30;
+            store32(a0 + 0x72, d2);
+            const t31 = load8(a6 + -0x2);
+            d0 = ((d0 & 0xffffff00) | (t31 & 255));
+            d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+            const t32 = ((0x3) & 63);
+            d0 = ((d0 & 0xffff0000) | ((t32 >= 16 ? 0 : (((d0 & 65535)) << t32)) & 65535));
+            d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + 0x4) & 65535));
+            store16(a0 + 0x52, (d0 & 65535));
+            const t33 = load8(a6 + -0x1);
+            d0 = ((d0 & 0xffffff00) | (t33 & 255));
+            d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+            const t34 = ((0x3) & 63);
+            d0 = ((d0 & 0xffff0000) | ((t34 >= 16 ? 0 : (((d0 & 65535)) << t34)) & 65535));
+            d0 = ((d0 & 0xffff0000) | (((d0 & 65535) - 0x4) & 65535));
+            store16(a0 + 0x54, (d0 & 65535));
+            const t35 = load8(a4);
+            if (((t35) & 255) !== ((0x11) & 255)) {
+              const t36 = load32(a3);
+              a0 = t36;
+              store8(a0 + 0x1e, 0);
+            } else {
+              store8(a0 + 0x1e, 0x1);
+            }
+            if (((load8(0x3e1954)) & 255) !== ((0x1) & 255)) {
+            } else {
+              const t37 = load32(a3);
+              a0 = t37;
+              const t38 = load8(a0 + 0x1f);
+              if (((t38) & 255) <= ((0x4) & 255)) {
+              } else {
+                const t39 = load8(a0 + 0x1e);
+                store8(a0 + 0x1e, (t39 + 0x1));
+              }
+            }
+            const t40 = load32(a3);
+            a0 = t40;
+            const t41 = load8(a4);
+            store8(a0 + 0x23, t41);
+            const t42 = load32(a3);
+            push(t42, 4);
+            setReg('a0', a0);
+            setReg('a1', a1);
+            setReg('a2', a2);
+            setReg('a3', a3);
+            setReg('a4', a4);
+            setReg('a5', a5);
+            setReg('a6', a6);
+            setReg('d0', d0);
+            setReg('d1', d1);
+            setReg('d2', d2);
+            setReg('d3', d3);
+            callRom(0x06cae, 0x0b728);
+            if (halted()) return;
+            a0 = getReg('a0');
+            a1 = getReg('a1');
+            a2 = getReg('a2');
+            a3 = getReg('a3');
+            a4 = getReg('a4');
+            a5 = getReg('a5');
+            a6 = getReg('a6');
+            d0 = getReg('d0');
+            d1 = getReg('d1');
+            d2 = getReg('d2');
+            d3 = getReg('d3');
+            a2 = d2;
+            store8(a2, 0);
+            drop(4);
+          }
+          d2 = load32((a6 + -0x1c) + 0);
+          d3 = load32((a6 + -0x1c) + 4);
+          a2 = load32((a6 + -0x1c) + 8);
+          a3 = load32((a6 + -0x1c) + 12);
+          a4 = load32((a6 + -0x1c) + 16);
+          a5 = load32((a6 + -0x1c) + 20);
+          setStackPointer(a6);
+          a6 = popLong();
+        }
+        const t23 = load32(a4 + 0x8);
+        a0 = t23;
+        if (a0 === 0x0) {
+          a0 = (a4 + 0xc);
+          a1 = d2;
+          const t28 = load8(a0);
+          a0 = (a0 + 1);
+          store8(a1, t28);
+          a1 = (a1 + 1);
+          const t29 = load8(a0);
+          a0 = (a0 + 1);
+          store8(a1, t29);
+          a1 = (a1 + 1);
+        } else {
+          const t24 = load16(a0 + 0xa);
+          d0 = ((d0 & 0xffff0000) | (t24 & 65535));
+          d0 = ((((d0 & 65535)) << 16) >> 16);
+          const t25 = ((0x8) & 63);
+          d0 = (t25 >= 32 ? (((d0) < 0) ? -1 : 0) : ((d0) >> t25));
+          d0 = ((d0 & 0xffffff00) | (((d0 & 255) - 0x1) & 255));
+          a1 = d2;
+          store8(a1, (d0 & 255));
+          const t26 = load16(a0 + 0xc);
+          d0 = ((d0 & 0xffff0000) | (t26 & 65535));
+          d0 = ((((d0 & 65535)) << 16) >> 16);
+          const t27 = ((0x8) & 63);
+          d0 = (t27 >= 32 ? (((d0) < 0) ? -1 : 0) : ((d0) >> t27));
+          d0 = ((d0 & 0xffffff00) | (((d0 & 255) + 0x1) & 255));
+          store8(a1 + 0x1, (d0 & 255));
+        }
+        const t30 = load32(a3);
+        a0 = t30;
+        store32(a0 + 0x72, d2);
+        const t31 = load8(a6 + -0x2);
+        d0 = ((d0 & 0xffffff00) | (t31 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        const t32 = ((0x3) & 63);
+        d0 = ((d0 & 0xffff0000) | ((t32 >= 16 ? 0 : (((d0 & 65535)) << t32)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + 0x4) & 65535));
+        store16(a0 + 0x52, (d0 & 65535));
+        const t33 = load8(a6 + -0x1);
+        d0 = ((d0 & 0xffffff00) | (t33 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        const t34 = ((0x3) & 63);
+        d0 = ((d0 & 0xffff0000) | ((t34 >= 16 ? 0 : (((d0 & 65535)) << t34)) & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) - 0x4) & 65535));
+        store16(a0 + 0x54, (d0 & 65535));
+        const t35 = load8(a4);
+        if (((t35) & 255) !== ((0x11) & 255)) {
+          const t36 = load32(a3);
+          a0 = t36;
+          store8(a0 + 0x1e, 0);
+        } else {
+          store8(a0 + 0x1e, 0x1);
+        }
+        if (((load8(0x3e1954)) & 255) !== ((0x1) & 255)) {
+        } else {
+          const t37 = load32(a3);
+          a0 = t37;
+          const t38 = load8(a0 + 0x1f);
+          if (((t38) & 255) <= ((0x4) & 255)) {
+          } else {
+            const t39 = load8(a0 + 0x1e);
+            store8(a0 + 0x1e, (t39 + 0x1));
+          }
+        }
+        const t40 = load32(a3);
+        a0 = t40;
+        const t41 = load8(a4);
+        store8(a0 + 0x23, t41);
+        const t42 = load32(a3);
+        push(t42, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d1', d1);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        callRom(0x06cae, 0x0b728);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d1 = getReg('d1');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        a2 = d2;
+        store8(a2, 0);
+        drop(4);
+      } else {
+        d0 = 0x3e1bc6;
+        a4 = (a4 + 0xe);
+        if (d0 !== a4) {
+        } else {
+          a4 = 0x3e1ae6;
+        }
+        store32(a2 + 0x34, a4);
+      }
+      d2 = load32((a6 + -0x1c) + 0);
+      d3 = load32((a6 + -0x1c) + 4);
+      a2 = load32((a6 + -0x1c) + 8);
+      a3 = load32((a6 + -0x1c) + 12);
+      a4 = load32((a6 + -0x1c) + 16);
+      a5 = load32((a6 + -0x1c) + 20);
+      setStackPointer(a6);
+      a6 = popLong();
+    }
+  }
+  d0 = 0x3e1bc6;
+  a4 = (a4 + 0xe);
+  if (d0 !== a4) {
+  } else {
+    a4 = 0x3e1ae6;
+  }
+  store32(a2 + 0x34, a4);
+  d2 = load32((a6 + -0x1c) + 0);
+  d3 = load32((a6 + -0x1c) + 4);
+  a2 = load32((a6 + -0x1c) + 8);
+  a3 = load32((a6 + -0x1c) + 12);
+  a4 = load32((a6 + -0x1c) + 16);
+  a5 = load32((a6 + -0x1c) + 20);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+}
+
+export function fn_0b738(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a5_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a5 = a5_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_d5_3 = 0;
+  let save_a2_4 = 0;
+  let save_a3_5 = 0;
+  let save_a4_6 = 0;
+  let save_a5_7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let t17 = 0;
+  let t18 = 0;
+  let t19 = 0;
+  let t20 = 0;
+  let t21 = 0;
+  let t22 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_d5_3 = d5;
+        save_a2_4 = a2;
+        save_a3_5 = a3;
+        save_a4_6 = a4;
+        save_a5_7 = a5;
+        t8 = load32(a6 + 0x8);
+        a2 = t8;
+        a3 = 0x3e1cb0;
+        t9 = load32(a2 + 0x34);
+        a4 = t9;
+        _at = (a2 !== load32(0x3e1c84)) ? 2 : 1; continue dispatch;
+      }
+      case 1: {
+        d5 = ((d5 & 0xffff0000) | (0 & 65535));
+        _at = 3; continue dispatch;
+      }
+      case 2: {
+        d1 = 0;
+        t10 = load8(a2 + 0x2);
+        d1 = ((d1 & 0xffffff00) | (t10 & 255));
+        a0 = 0x1000a;
+        d5 = 0;
+        d5 = ((d5 & 0xffffff00) | (load8((a0 + (d1 | 0))) & 255));
+        _at = 3; continue dispatch;
+      }
+      case 3: {
+        d1 = 14;
+        d4 = 7;
+        d2 = 0x3e1bc6;
+        a0 = 0x3e1ae6;
+        _at = 4; continue dispatch;
+      }
+      case 4: {
+        t11 = load32(a4 + 0x4);
+        d3 = t11;
+        d0 = 0;
+        t12 = load8(a4 + 0x3);
+        d0 = ((d0 & 0xffffff00) | (t12 & 255));
+        _at = ((((d0 & 65535)) & 65535) !== (((d5 & 65535)) & 65535)) ? 9 : 5; continue dispatch;
+      }
+      case 5: {
+        _at = (d3 === 0) ? 9 : 6; continue dispatch;
+      }
+      case 6: {
+        a0 = d3;
+        t13 = load8(a0);
+        _at = (((t13) & 255) !== ((0) & 255)) ? 12 : 7; continue dispatch;
+      }
+      case 7: {
+        t14 = load8(a2 + 0x22);
+        _at = ((((t14) << 24) >> 24) < (((0) << 24) >> 24)) ? 12 : 8; continue dispatch;
+      }
+      case 8: {
+        a0 = (a2 + 0x3a);
+        a1 = (a6 + -0x2);
+        t15 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t15);
+        a1 = (a1 + 1);
+        t16 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t16);
+        a1 = (a1 + 1);
+        a0 = (a6 + -0x2);
+        a1 = d3;
+        t17 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t17);
+        a1 = (a1 + 1);
+        t18 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t18);
+        a1 = (a1 + 1);
+        d0 = 0;
+        t19 = load8(a3);
+        d0 = ((d0 & 0xffffff00) | (t19 & 255));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
+        a0 = 0x3e1c88;
+        a1 = (a6 + -0x2);
+        a0 = (a0 + ((((d0 & 65535)) << 16) >> 16));
+        t20 = load8(a1);
+        a1 = (a1 + 1);
+        store8(a0, t20);
+        a0 = (a0 + 1);
+        t21 = load8(a1);
+        a1 = (a1 + 1);
+        store8(a0, t21);
+        a0 = (a0 + 1);
+        d0 = 0;
+        t22 = load8(a3);
+        d0 = ((d0 & 0xffffff00) | (t22 & 255));
+        d0 = (d0 + 0x1);
+        d1 = 7;
+        d0 = (d0 & d1);
+        store8(a3, (d0 & 255));
+        store8(a2 + 0x22, 0xff);
+        _at = 12; continue dispatch;
+      }
+      case 9: {
+        a4 = (a4 + d1);
+        _at = (d2 !== a4) ? 11 : 10; continue dispatch;
+      }
+      case 10: {
+        a4 = a0;
+        _at = 11; continue dispatch;
+      }
+      case 11: {
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 4 : 12; continue dispatch;
+      }
+      case 12: {
+        a0 = load32(0x3e1c84);
+        store32(a0 + 0x34, a4);
+        d2 = load32((a6 + -0x24) + 0);
+        d3 = load32((a6 + -0x24) + 4);
+        d4 = load32((a6 + -0x24) + 8);
+        d5 = load32((a6 + -0x24) + 12);
+        a2 = load32((a6 + -0x24) + 16);
+        a3 = load32((a6 + -0x24) + 20);
+        a4 = load32((a6 + -0x24) + 24);
+        a5 = load32((a6 + -0x24) + 28);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+}
+
+export function fn_0b7fa(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a5_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a5 = a5_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_d5_3 = 0;
+  let save_d6_4 = 0;
+  let save_a2_5 = 0;
+  let save_a3_6 = 0;
+  let save_a4_7 = 0;
+  let save_a5_8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let t17 = 0;
+  let t18 = 0;
+  let t19 = 0;
+  let t20 = 0;
+  let t21 = 0;
+  let t22 = 0;
+  let t23 = 0;
+  let t24 = 0;
+  let t25 = 0;
+  let t26 = 0;
+  let t27 = 0;
+  let t28 = 0;
+  let t29 = 0;
+  let t30 = 0;
+  let t31 = 0;
+  let t32 = 0;
+  let t33 = 0;
+  let t34 = 0;
+  let t35 = 0;
+  let t36 = 0;
+  let t37 = 0;
+  let t38 = 0;
+  let t39 = 0;
+  let t40 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-8);
+        push(a5, 4);
+        push(a4, 4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_d5_3 = d5;
+        save_d6_4 = d6;
+        save_a2_5 = a2;
+        save_a3_6 = a3;
+        save_a4_7 = a4;
+        save_a5_8 = a5;
+        t9 = load32(a6 + 0x8);
+        a2 = t9;
+        d6 = 20;
+        a0 = (a2 + 0x38);
+        a1 = (a6 + -0x8);
+        t10 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t10);
+        a1 = (a1 + 1);
+        t11 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t11);
+        a1 = (a1 + 1);
+        d0 = 0;
+        t12 = load8(a2 + 0x2);
+        d0 = ((d0 & 0xffffff00) | (t12 & 255));
+        a0 = 0x1000a;
+        d3 = ((d3 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
+        d3 = ((d3 & 0xffffff00) | (((d3 & 255) + 0x1) & 255));
+        _at = 20; continue dispatch;
+      }
+      case 1: {
+        t13 = load8(a6 + -0x7);
+        store8(a6 + -0x7, (t13 + 0x1));
+        t14 = load16(a6 + -0x8);
+        push(t14, 2);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a4', a4);
+        setReg('a5', a5);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        setReg('d5', d5);
+        setReg('d6', d6);
+        callRom(0x11bd8, 0x0b838);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a4 = getReg('a4');
+        a5 = getReg('a5');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        d5 = getReg('d5');
+        d6 = getReg('d6');
+        a4 = d0;
+        drop(2);
+        _at = 18; continue dispatch;
+      }
+      case 2: {
+        t15 = load8(a4);
+        _at = ((((d3 & 255)) & 255) === ((t15) & 255)) ? 16 : 3; continue dispatch;
+      }
+      case 3: {
+        d1 = 0;
+        t16 = load8(a4);
+        d1 = ((d1 & 0xffffff00) | (t16 & 255));
+        d0 = 63;
+        d1 = (d1 & d0);
+        d0 = 1;
+        _at = (d0 !== d1) ? 16 : 4; continue dispatch;
+      }
+      case 4: {
+        d1 = 3;
+        t17 = load8(a4);
+        d4 = ((d4 & 0xffffff00) | (t17 & 255));
+        d4 = ((d4 & 0xffffff00) | (((d4 & 255) & 0xc0) & 255));
+        d5 = ((d5 & 0xffff0000) | (0 & 65535));
+        store16(a6 + -0x2, 0);
+        store16(a6 + -0x4, 0);
+        a0 = 0xfcca;
+        _at = 5; continue dispatch;
+      }
+      case 5: {
+        t18 = load16(a0);
+        d0 = ((d0 & 0xffff0000) | (t18 & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        d0 = (d0 + a4);
+        a1 = d0;
+        t19 = load8(a1);
+        d0 = ((d0 & 0xffffff00) | (t19 & 255));
+        d2 = ((d2 & 0xffffff00) | ((d0 & 255) & 255));
+        d2 = ((d2 & 0xffffff00) | (((d2 & 255) & 0x3f) & 255));
+        d0 = ((d0 & 0xffffff00) | (((d0 & 255) - (d2 & 255)) & 255));
+        _at = ((((d0 & 255)) & 255) !== (((d4 & 255)) & 255)) ? 8 : 6; continue dispatch;
+      }
+      case 6: {
+        t20 = load16(a6 + -0x2);
+        store16(a6 + -0x2, (t20 + 0x1));
+        d0 = 0;
+        d0 = ((d0 & 0xffffff00) | ((d2 & 255) & 255));
+        _at = (d0 !== d1) ? 10 : 7; continue dispatch;
+      }
+      case 7: {
+        d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - 0xc) & 65535));
+        _at = 10; continue dispatch;
+      }
+      case 8: {
+        _at = ((((d2 & 255)) & 255) === ((0) & 255)) ? 10 : 9; continue dispatch;
+      }
+      case 9: {
+        d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + 0x5) & 65535));
+        _at = 10; continue dispatch;
+      }
+      case 10: {
+        t21 = load16(a6 + -0x4);
+        store16(a6 + -0x4, (t21 + 0x1));
+        a0 = (a0 + 0x2);
+        t22 = load16(a6 + -0x4);
+        _at = ((((t22) << 16) >> 16) <= (((0x3) << 16) >> 16)) ? 5 : 11; continue dispatch;
+      }
+      case 11: {
+        t23 = load16(a6 + -0x2);
+        d0 = ((d0 & 0xffff0000) | (t23 & 65535));
+        a0 = 0x118b8;
+        store8(a6 + -0x5, load8((a0 + ((d0 << 16) >> 16))));
+        t24 = load8(a6 + -0x5);
+        d1 = ((d1 & 0xffffff00) | (t24 & 255));
+        d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+        store16(a6 + -0x6, (d1 & 65535));
+        t25 = load16(a6 + -0x6);
+        d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + t25) & 65535));
+        t26 = load8(a2 + 0x22);
+        store8(a6 + -0x5, t26);
+        t27 = load8(a6 + -0x5);
+        d1 = ((d1 & 0xffffff00) | (t27 & 255));
+        d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
+        store16(a6 + -0x6, (d1 & 65535));
+        t28 = load16(a6 + -0x6);
+        d1 = ((d1 & 0xffff0000) | (t28 & 65535));
+        _at = (((((d1 & 65535)) << 16) >> 16) >= ((((d5 & 65535)) << 16) >> 16)) ? 16 : 12; continue dispatch;
+      }
+      case 12: {
+        d2 = 0x3e1c88;
+        d1 = 7;
+        a3 = (a6 + -0x8);
+        _at = 13; continue dispatch;
+      }
+      case 13: {
+        a0 = a3;
+        a1 = (a6 + -0x6);
+        t29 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t29);
+        a1 = (a1 + 1);
+        t30 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t30);
+        a1 = (a1 + 1);
+        d0 = d2;
+        d2 = (d2 + 0x2);
+        a5 = d0;
+        t31 = load16(a6 + -0x6);
+        d4 = ((d4 & 0xffff0000) | (t31 & 65535));
+        t32 = load16(a5);
+        _at = ((((d4 & 65535)) & 65535) === ((t32) & 65535)) ? 16 : 14; continue dispatch;
+      }
+      case 14: {
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 13 : 15; continue dispatch;
+      }
+      case 15: {
+        a0 = (a6 + -0x8);
+        a1 = (a2 + 0x3a);
+        t33 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t33);
+        a1 = (a1 + 1);
+        t34 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t34);
+        a1 = (a1 + 1);
+        store8(a2 + 0x22, (d5 & 255));
+        _at = 16; continue dispatch;
+      }
+      case 16: {
+        d6 = ((d6 & 0xffff0000) | (((d6 & 65535) - 0x1) & 65535));
+        _at = ((((d6 & 65535)) & 65535) === ((0) & 65535)) ? 22 : 17; continue dispatch;
+      }
+      case 17: {
+        t35 = load8(a6 + -0x7);
+        store8(a6 + -0x7, (t35 + 0x1));
+        a4 = (a4 + 0x1);
+        _at = 18; continue dispatch;
+      }
+      case 18: {
+        t36 = load8(a6 + -0x7);
+        _at = ((((t36) << 24) >> 24) < (((0x1e) << 24) >> 24)) ? 2 : 19; continue dispatch;
+      }
+      case 19: {
+        store8(a6 + -0x7, 0);
+        t37 = load8(a6 + -0x8);
+        store8(a6 + -0x8, (t37 + 0x1));
+        _at = 20; continue dispatch;
+      }
+      case 20: {
+        t38 = load8(a6 + -0x8);
+        _at = ((((t38) << 24) >> 24) < (((0x2a) << 24) >> 24)) ? 1 : 21; continue dispatch;
+      }
+      case 21: {
+        store8(a6 + -0x8, 0);
+        _at = 22; continue dispatch;
+      }
+      case 22: {
+        a0 = (a6 + -0x8);
+        a1 = (a2 + 0x38);
+        t39 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t39);
+        a1 = (a1 + 1);
+        t40 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t40);
+        a1 = (a1 + 1);
+        d2 = load32((a6 + -0x2c) + 0);
+        d3 = load32((a6 + -0x2c) + 4);
+        d4 = load32((a6 + -0x2c) + 8);
+        d5 = load32((a6 + -0x2c) + 12);
+        d6 = load32((a6 + -0x2c) + 16);
+        a2 = load32((a6 + -0x2c) + 20);
+        a3 = load32((a6 + -0x2c) + 24);
+        a4 = load32((a6 + -0x2c) + 28);
+        a5 = load32((a6 + -0x2c) + 32);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a5', a5);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
+}
+
 export function fn_0b958(a0_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number, arg0: number, arg1: number): void {
   let _guard = 0;
   void _guard;
@@ -13137,6 +19249,87 @@ export function fn_0b958(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   setReg('d6', d6);
 }
 
+export function fn_0bb38(a0_: number, a1_: number, a2_: number, a3_: number, a6_: number, d0_: number, d1_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let save_a2_0 = 0;
+  let save_a3_1 = 0;
+  let t2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a3, 4);
+        push(a2, 4);
+        save_a2_0 = a2;
+        save_a3_1 = a3;
+        a3 = 0x3e1ae6;
+        t2 = load16(a6 + 0x8);
+        store16(a6 + -0x4, t2);
+        d1 = 15;
+        a2 = (a6 + -0x4);
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        a0 = a2;
+        a1 = (a6 + -0x2);
+        t3 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t3);
+        a1 = (a1 + 1);
+        t4 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t4);
+        a1 = (a1 + 1);
+        t5 = load16(a6 + -0x2);
+        d0 = ((d0 & 0xffff0000) | (t5 & 65535));
+        t6 = load16(a3 + 0xc);
+        _at = ((((d0 & 65535)) & 65535) === ((t6) & 65535)) ? 4 : 2; continue dispatch;
+      }
+      case 2: {
+        a3 = (a3 + 0xe);
+        d1 = ((d1 & 0xffff0000) | (((d1 & 0xffff) - 1) & 0xffff));
+        _at = ((d1 & 0xffff) !== 0xffff) ? 1 : 3; continue dispatch;
+      }
+      case 3: {
+        a3 = (a3 - a3);
+        _at = 4; continue dispatch;
+      }
+      case 4: {
+        d0 = a3;
+        a2 = load32((a6 + -0xc) + 0);
+        a3 = load32((a6 + -0xc) + 4);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+}
+
 export function fn_0c1ee(a0_: number, d0_: number): void {
   let _guard = 0;
   void _guard;
@@ -13176,6 +19369,84 @@ export function fn_0c1ee(a0_: number, d0_: number): void {
   setReg('d0', d0);
 }
 
+export function fn_0c206(a0_: number, a1_: number, a2_: number, a3_: number, a6_: number, d0_: number, d1_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let save_a2_0 = 0;
+  let save_a3_1 = 0;
+  let t2 = 0;
+  let t3 = 0;
+  let t4 = 0;
+  let t5 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a3, 4);
+        push(a2, 4);
+        save_a2_0 = a2;
+        save_a3_1 = a3;
+        a3 = 0x3e1c44;
+        d0 = 31;
+        a2 = (a6 + 0x8);
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        a0 = a2;
+        a1 = (a6 + -0x2);
+        t2 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t2);
+        a1 = (a1 + 1);
+        t3 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t3);
+        a1 = (a1 + 1);
+        t4 = load16(a6 + -0x2);
+        d1 = ((d1 & 0xffff0000) | (t4 & 65535));
+        t5 = load16(a3);
+        _at = ((((d1 & 65535)) & 65535) === ((t5) & 65535)) ? 4 : 2; continue dispatch;
+      }
+      case 2: {
+        a3 = (a3 + 0x2);
+        d0 = ((d0 & 0xffff0000) | (((d0 & 0xffff) - 1) & 0xffff));
+        _at = ((d0 & 0xffff) !== 0xffff) ? 1 : 3; continue dispatch;
+      }
+      case 3: {
+        a3 = (a3 - a3);
+        _at = 4; continue dispatch;
+      }
+      case 4: {
+        d0 = a3;
+        a2 = load32((a6 + -0xc) + 0);
+        a3 = load32((a6 + -0xc) + 4);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+}
+
 export function fn_0c2bc(a0_: number, a2_: number, d0_: number, arg0: number): void {
   let _guard = 0;
   void _guard;
@@ -13205,6 +19476,316 @@ export function fn_0c2bc(a0_: number, a2_: number, d0_: number, arg0: number): v
   setReg('a0', a0);
   setReg('a2', a2);
   setReg('d0', d0);
+}
+
+export function fn_0c2dc(a0_: number, a1_: number, a2_: number, a3_: number, a6_: number, d0_: number, d2_: number, d3_: number, d4_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_a2_3 = 0;
+  let save_a3_4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let t11 = 0;
+  let t12 = 0;
+  let t13 = 0;
+  let t14 = 0;
+  let t15 = 0;
+  let t16 = 0;
+  let t17 = 0;
+  let t18 = 0;
+  let t19 = 0;
+  let t20 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(a3, 4);
+        push(a2, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_a2_3 = a2;
+        save_a3_4 = a3;
+        t5 = load16(a6 + 0xa);
+        d3 = ((d3 & 0xffff0000) | (t5 & 65535));
+        _at = ((((d3 & 65535)) & 65535) !== ((0) & 65535)) ? 5 : 1; continue dispatch;
+      }
+      case 1: {
+        d2 = 1;
+        a3 = 0x3e1c44;
+        d4 = 31;
+        a2 = (a6 + -0x2);
+        _at = 2; continue dispatch;
+      }
+      case 2: {
+        a0 = a3;
+        a1 = a2;
+        t6 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t6);
+        a1 = (a1 + 1);
+        t7 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t7);
+        a1 = (a1 + 1);
+        t8 = load8(a2);
+        _at = ((((t8) << 24) >> 24) < (((0) << 24) >> 24)) ? 4 : 3; continue dispatch;
+      }
+      case 3: {
+        push(a3, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x0c2bc, 0x0c30a);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        push(d2, 4);
+        t9 = load8(a2 + 0x1);
+        d0 = ((d0 & 0xffffff00) | (t9 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        push(d0, 4);
+        t10 = load8(a2);
+        d0 = ((d0 & 0xffffff00) | (t10 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        push(d0, 4);
+        t11 = load8(a2 + 0x1);
+        d0 = ((d0 & 0xffffff00) | (t11 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        push(d0, 4);
+        t12 = load8(a2);
+        d0 = ((d0 & 0xffffff00) | (t12 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        push(d0, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x00e4e, 0x0c334);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        drop(24);
+        _at = 4; continue dispatch;
+      }
+      case 4: {
+        a3 = (a3 + 0x2);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 2 : 5; continue dispatch;
+      }
+      case 5: {
+        d2 = 1;
+        a3 = 0x3e1ae6;
+        d4 = 15;
+        a2 = (a6 + -0x2);
+        _at = 6; continue dispatch;
+      }
+      case 6: {
+        d0 = 0;
+        t13 = load8(a3 + 0x3);
+        d0 = ((d0 & 0xffffff00) | (t13 & 255));
+        _at = ((((d0 & 65535)) & 65535) !== (((d3 & 65535)) & 65535)) ? 9 : 7; continue dispatch;
+      }
+      case 7: {
+        t14 = load32(a3 + 0x4);
+        _at = (t14 === 0) ? 9 : 8; continue dispatch;
+      }
+      case 8: {
+        a0 = (a3 + 0xc);
+        a1 = a2;
+        t15 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t15);
+        a1 = (a1 + 1);
+        t16 = load8(a0);
+        a0 = (a0 + 1);
+        store8(a1, t16);
+        a1 = (a1 + 1);
+        push(a3, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x0b2e8, 0x0c36c);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        push(d2, 4);
+        t17 = load8(a2 + 0x1);
+        d0 = ((d0 & 0xffffff00) | (t17 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        d0 = (d0 + 0x1);
+        push(d0, 4);
+        t18 = load8(a2);
+        d0 = ((d0 & 0xffffff00) | (t18 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        d0 = (d0 + 0x1);
+        push(d0, 4);
+        t19 = load8(a2 + 0x1);
+        d0 = ((d0 & 0xffffff00) | (t19 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        push(d0, 4);
+        t20 = load8(a2);
+        d0 = ((d0 & 0xffffff00) | (t20 & 255));
+        d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        push(d0, 4);
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x00e4e, 0x0c39a);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        drop(24);
+        _at = 9; continue dispatch;
+      }
+      case 9: {
+        a3 = (a3 + 0xe);
+        d4 = ((d4 & 0xffff0000) | (((d4 & 0xffff) - 1) & 0xffff));
+        _at = ((d4 & 0xffff) !== 0xffff) ? 6 : 10; continue dispatch;
+      }
+      case 10: {
+        _at = ((((d3 & 65535)) & 65535) !== ((0) & 65535)) ? 12 : 11; continue dispatch;
+      }
+      case 11: {
+        setReg('a0', a0);
+        setReg('a1', a1);
+        setReg('a2', a2);
+        setReg('a3', a3);
+        setReg('a6', a6);
+        setReg('d0', d0);
+        setReg('d2', d2);
+        setReg('d3', d3);
+        setReg('d4', d4);
+        callRom(0x0ab58, 0x0c3ae);
+        if (halted()) return;
+        a0 = getReg('a0');
+        a1 = getReg('a1');
+        a2 = getReg('a2');
+        a3 = getReg('a3');
+        a6 = getReg('a6');
+        d0 = getReg('d0');
+        d2 = getReg('d2');
+        d3 = getReg('d3');
+        d4 = getReg('d4');
+        _at = 15; continue dispatch;
+      }
+      case 12: {
+        d0 = 0;
+        d0 = ((d0 & 0xffffff00) | (load8(0x3e1cb6) & 255));
+        _at = ((((d0 & 65535)) & 65535) === (((d3 & 65535)) & 65535)) ? 14 : 13; continue dispatch;
+      }
+      case 13: {
+        store8(0x3e1c9e, 0x2);
+        store8(0x3e1c9f, 0xff);
+        _at = 15; continue dispatch;
+      }
+      case 14: {
+        store8(0x3e1c9e, 0xff);
+        store8(0x3e1c9f, 0x2);
+        _at = 15; continue dispatch;
+      }
+      case 15: {
+        d2 = load32((a6 + -0x18) + 0);
+        d3 = load32((a6 + -0x18) + 4);
+        d4 = load32((a6 + -0x18) + 8);
+        a2 = load32((a6 + -0x18) + 12);
+        a3 = load32((a6 + -0x18) + 16);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
 }
 
 export function fn_0c4e8(arg0: number): void {
@@ -14403,6 +20984,54 @@ export function fn_0cce6(a0_: number, arg0: number): void {
   setReg('a0', a0);
 }
 
+export function fn_0cd4a(a2: number, a6: number): void {
+  push(a6, 4);
+  __sp = stackPointer();
+  drop(-4);
+  push(a2, 4);
+  const t0 = load32(__sp + 0x8);
+  const t1 = load32(__sp + 0xc);
+  const t2 = load32(0x3e0dca);
+  const t3 = load8(t1 + 0x3);
+  const t4 = ((0 & 0xffffff00) | (t3 & 0xff));
+  const t5 = ((t4 & 0xffff) + (t4 & 0xffff));
+  const t6 = ((t4 & 0xffff0000) | (t5 & 0xffff));
+  const t7 = (t2 + 0xc);
+  const t8 = (t7 + ((((t6 & 0xffff)) << 16) >> 16));
+  const t9 = (__sp + -0x2);
+  store8(t9, load8(t8));
+  store8((t9 + 1), load8((t8 + 1)));
+  const t10 = load8(t1 + 0x2);
+  const t11 = ((0 & 0xffffff00) | (t10 & 0xff));
+  const t12 = (t11 + 0x1);
+  push(t12, 4);
+  push(0x1, 4);
+  push(0x2, 4);
+  push(load16(__sp + -0x2), 2);
+  push(t0, 4);
+  setReg('a0', ((t9 + 1) + 1));
+  setReg('a1', ((t8 + 1) + 1));
+  setReg('a2', t1);
+  setReg('a6', __sp);
+  setReg('d0', t12);
+  setReg('d1', t0);
+  callRom(0x05622, 0x0cd90);
+  if (halted()) return;
+  const t13 = getReg('a2');
+  store8(t13 + 0x1a, 0x2);
+  store8(0x3e1950, 0x46);
+  setReg('a2', t13);
+  callRom(0x07a02, 0x0cda2);
+  if (halted()) return;
+  drop(18);
+  const t14 = getReg('a6');
+  const t15 = load32(t14 + -0x8);
+  setStackPointer(t14);
+  __sp = popLong();
+  setReg('a2', t15);
+  setReg('a6', __sp);
+}
+
 export function fn_0cdae(arg0: number): void {
   push(arg0, 4);
   push(0x1fb10, 4);
@@ -14452,7 +21081,7 @@ export function fn_0cdf6(a0_: number, a6_: number, d0_: number): void {
   let d0 = d0_;
   push(a6, 4);
   a6 = stackPointer();
-  drop(65532);
+  drop(-4);
   const t0 = load16(a6 + 0xa);
   d0 = ((d0 & 0xffff0000) | (t0 & 65535));
   if ((((d0 & 65535)) & 65535) !== ((0) & 65535)) {
@@ -14523,6 +21152,135 @@ export function fn_0ce48(a0_: number, d0_: number, d1_: number, arg0: number, ar
   setReg('a0', a0);
   setReg('d0', d0);
   setReg('d1', d1);
+}
+
+export function fn_0ce76(a0_: number, a6_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d1 = d1_;
+  let d2 = d2_;
+  let d3 = d3_;
+  let d4 = d4_;
+  let d5 = d5_;
+  let d6 = d6_;
+  let save_d2_0 = 0;
+  let save_d3_1 = 0;
+  let save_d4_2 = 0;
+  let save_d5_3 = 0;
+  let save_d6_4 = 0;
+  let t5 = 0;
+  let t6 = 0;
+  let t7 = 0;
+  let t8 = 0;
+  let t9 = 0;
+  let t10 = 0;
+  let _at = 0;
+  dispatch: for (;;) {
+    if (++_guard > 4000000) throw new Error('dispatch did not end');
+    switch (_at) {
+      case 0: {
+        push(a6, 4);
+        a6 = stackPointer();
+        drop(-4);
+        push(d6, 4);
+        push(d5, 4);
+        push(d4, 4);
+        push(d3, 4);
+        push(d2, 4);
+        save_d2_0 = d2;
+        save_d3_1 = d3;
+        save_d4_2 = d4;
+        save_d5_3 = d5;
+        save_d6_4 = d6;
+        d1 = 96;
+        d3 = 3;
+        d2 = 24;
+        d4 = 126;
+        a0 = 0x3e1968;
+        store16(a6 + -0x2, 0);
+        _at = 1; continue dispatch;
+      }
+      case 1: {
+        t5 = load16(a0);
+        d0 = ((d0 & 0xffff0000) | (t5 & 65535));
+        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0x8000) & 65535));
+        _at = ((((d0 & 65535)) & 65535) === ((0) & 65535)) ? 9 : 2; continue dispatch;
+      }
+      case 2: {
+        d6 = 0;
+        t6 = load8(a0 + 0x16);
+        d6 = ((d6 & 0xffffff00) | (t6 & 255));
+        d5 = ((d5 & 0xffff0000) | ((d6 & 65535) & 65535));
+        d6 = ((d6 & 0xffff0000) | (((d6 & 65535) + (d6 & 65535)) & 65535));
+        d6 = ((d6 & 0xffff0000) | (((d6 & 65535) + (d5 & 65535)) & 65535));
+        d6 = ((((d6 & 65535)) << 16) >> 16);
+        _at = ((d6 | 0) <= (d2 | 0)) ? 4 : 3; continue dispatch;
+      }
+      case 3: {
+        d6 = ((d6 & 0xffff0000) | ((d2 & 65535) & 65535));
+        _at = 4; continue dispatch;
+      }
+      case 4: {
+        d5 = 0;
+        t7 = load8(a0 + 0x20);
+        d5 = ((d5 & 0xffffff00) | (t7 & 255));
+        d0 = 0;
+        t8 = load8(a0 + 0x18);
+        d0 = ((d0 & 0xffffff00) | (t8 & 255));
+        d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - (d0 & 65535)) & 65535));
+        d6 = ((d6 & 0xffff0000) | (((d6 & 65535) + (d5 & 65535)) & 65535));
+        _at = (((((d6 & 65535)) << 16) >> 16) >= (((0) << 16) >> 16)) ? 6 : 5; continue dispatch;
+      }
+      case 5: {
+        d6 = ((d6 & 0xffff0000) | (0 & 65535));
+        _at = 8; continue dispatch;
+      }
+      case 6: {
+        d6 = ((((d6 & 65535)) << 16) >> 16);
+        _at = ((d6 | 0) <= (d1 | 0)) ? 8 : 7; continue dispatch;
+      }
+      case 7: {
+        d6 = ((d6 & 0xffffff00) | ((d1 & 255) & 255));
+        _at = 8; continue dispatch;
+      }
+      case 8: {
+        store8(a0 + 0x20, (d6 & 255));
+        _at = 9; continue dispatch;
+      }
+      case 9: {
+        a0 = (a0 + d4);
+        t9 = load16(a6 + -0x2);
+        store16(a6 + -0x2, (t9 + 0x1));
+        t10 = load16(a6 + -0x2);
+        d0 = ((d0 & 0xffff0000) | (t10 & 65535));
+        d0 = ((((d0 & 65535)) << 16) >> 16);
+        _at = ((d0 | 0) < (d3 | 0)) ? 1 : 10; continue dispatch;
+      }
+      case 10: {
+        d2 = load32((a6 + -0x18) + 0);
+        d3 = load32((a6 + -0x18) + 4);
+        d4 = load32((a6 + -0x18) + 8);
+        d5 = load32((a6 + -0x18) + 12);
+        d6 = load32((a6 + -0x18) + 16);
+        setStackPointer(a6);
+        a6 = popLong();
+        break dispatch;
+      }
+      default: break dispatch;
+    }
+  }
+  setReg('a0', a0);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d1', d1);
+  setReg('d2', d2);
+  setReg('d3', d3);
+  setReg('d4', d4);
+  setReg('d5', d5);
+  setReg('d6', d6);
 }
 
 export function fn_0cee8(a2_: number, d0_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
@@ -15160,7 +21918,7 @@ export function fn_0d854(a0_: number, a1_: number, a2_: number, a6_: number, d0_
   let d2 = d2_;
   push(a6, 4);
   a6 = stackPointer();
-  drop(65532);
+  drop(-4);
   push(a2, 4);
   push(d2, 4);
   const save_d2_0 = d2;
@@ -15374,6 +22132,86 @@ export function fn_0db72(arg0: number): void {
 
 export function fn_0db78(arg0: number): void {
   setReg('d0', arg0);
+}
+
+export function fn_0db7e(a6_: number, d0_: number, d2_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a6 = a6_;
+  let d0 = d0_;
+  let d2 = d2_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(d2, 4);
+  const t0 = load16(a6 + 0xa);
+  d2 = ((d2 & 0xffff0000) | (t0 & 65535));
+  setReg('a6', a6);
+  setReg('d2', d2);
+  callRom(0x00206, 0x0db8c);
+  if (halted()) return;
+  a6 = getReg('a6');
+  d2 = getReg('d2');
+  d0 = getReg('d0');
+  d0 = d0;
+  if (d0 === 0) {
+    d0 = 0x20000;
+  } else {
+    setReg('a6', a6);
+    setReg('d0', d0);
+    setReg('d2', d2);
+    callRom(0x00212, 0x0db94);
+    if (halted()) return;
+    a6 = getReg('a6');
+    d0 = getReg('d0');
+    d2 = getReg('d2');
+  }
+  store32(a6 + -0x4, d0);
+  d0 = load32(0x3e1cce);
+  const t1 = load32(a6 + -0x4);
+  if (d0 === t1) {
+    d0 = 0;
+  } else {
+    d0 = ((d0 & 0xffff0000) | (load16(0x3e1cce) & 65535));
+    const t2 = load16(a6 + -0x4);
+    if ((((d0 & 65535)) & 65535) >= ((t2) & 65535)) {
+    } else {
+      push(0x18, 4);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d2', d2);
+      callRom(0x090fe, 0x0dbc2);
+      if (halted()) return;
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d2 = getReg('d2');
+      drop(4);
+    }
+    const t3 = load32(a6 + -0x4);
+    store32(0x3e1cce, t3);
+    if ((((d2 & 65535)) & 65535) === ((0) & 65535)) {
+    } else {
+      const t4 = load32(a6 + -0x4);
+      push(t4, 4);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      setReg('d2', d2);
+      callRom(0x0dc3a, 0x0dbd6);
+      if (halted()) return;
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      d2 = getReg('d2');
+      drop(4);
+    }
+    d0 = 1;
+  }
+  const t5 = load32(a6 + -0x8);
+  d2 = t5;
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a6', a6);
+  setReg('d0', d0);
+  setReg('d2', d2);
 }
 
 export function fn_0dbe6(d0_: number, d1_: number, arg0: number): void {
@@ -15728,7 +22566,7 @@ export function fn_0e0ee(a0_: number, a2_: number, a3_: number, a4_: number, a5_
       case 0: {
         push(a6, 4);
         a6 = stackPointer();
-        drop(65508);
+        drop(-28);
         push(a5, 4);
         push(a4, 4);
         push(a3, 4);
@@ -16852,6 +23690,157 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
   setReg('a2', a2);
   setReg('a3', a3);
   setReg('a4', a4);
+  setReg('d0', d0);
+}
+
+export function fn_0e98c(a0_: number, a1_: number, a2_: number, a3_: number, a4_: number, a6_: number, d0_: number): void {
+  let _guard = 0;
+  void _guard;
+  let a0 = a0_;
+  let a1 = a1_;
+  let a2 = a2_;
+  let a3 = a3_;
+  let a4 = a4_;
+  let a6 = a6_;
+  let d0 = d0_;
+  push(a6, 4);
+  a6 = stackPointer();
+  drop(-4);
+  push(a4, 4);
+  push(a3, 4);
+  push(a2, 4);
+  const save_a2_0 = a2;
+  const save_a3_1 = a3;
+  const save_a4_2 = a4;
+  const t3 = load32(a6 + 0x8);
+  a2 = t3;
+  a3 = 0x3e195c;
+  a4 = 0x3e0dd2;
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  callRom(0x0fc9c, 0x0e9aa);
+  if (halted()) return;
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a4 = getReg('a4');
+  a6 = getReg('a6');
+  push(a2, 4);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  callRom(0x0ea7a, 0x0e9b0);
+  if (halted()) return;
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a4 = getReg('a4');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  store8(a4, (d0 & 255));
+  d0 = 0;
+  const t4 = load8(a4);
+  d0 = ((d0 & 0xffffff00) | (t4 & 255));
+  a0 = 0x3e1ce6;
+  store8((a0 + ((d0 << 16) >> 16)), 0x1);
+  const t5 = load8(a3);
+  drop(4);
+  if (((t5) & 255) !== ((0) & 255)) {
+    const t7 = load8(a3);
+    if (((t7) & 255) <= ((0x4) & 255)) {
+    } else {
+      store8(a3, 0x4);
+    }
+  } else {
+    const t6 = load8(a4);
+    if (((t6) & 255) === ((0) & 255)) {
+      push(0x1, 4);
+      push(0xf, 4);
+      setReg('a0', a0);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a4', a4);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      callRom(0x00178, 0x0ea00);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a4 = getReg('a4');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+    } else {
+      push(0x1, 4);
+      push(0x10, 4);
+      setReg('a0', a0);
+      setReg('a2', a2);
+      setReg('a3', a3);
+      setReg('a4', a4);
+      setReg('a6', a6);
+      setReg('d0', d0);
+      callRom(0x00178, 0x0e9d8);
+      if (halted()) return;
+      a0 = getReg('a0');
+      a2 = getReg('a2');
+      a3 = getReg('a3');
+      a4 = getReg('a4');
+      a6 = getReg('a6');
+      d0 = getReg('d0');
+      store16(0x3e1884, 0x1388);
+      store8(a3, 0x2);
+      store8(a2 + 0x1d, 0x1);
+      store8(0x3e1cb4, 0x1);
+    }
+    drop(8);
+    store8(0x3e0de6, 0x3);
+    store8(0x3e0de4, 0x7);
+  }
+  a0 = (a2 + 0x48);
+  a1 = (a6 + -0x2);
+  const t8 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t8);
+  a1 = (a1 + 1);
+  const t9 = load8(a0);
+  a0 = (a0 + 1);
+  store8(a1, t9);
+  a1 = (a1 + 1);
+  const t10 = load8(a6 + -0x2);
+  store8(a6 + -0x2, (t10 + 0x1));
+  const t11 = load8(a6 + -0x1);
+  store8(a6 + -0x1, (t11 + 0x1));
+  const t12 = load16(a6 + -0x2);
+  push(t12, 2);
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
+  setReg('d0', d0);
+  callRom(0x056f4, 0x0ea3a);
+  if (halted()) return;
+  a0 = getReg('a0');
+  a1 = getReg('a1');
+  a2 = getReg('a2');
+  a3 = getReg('a3');
+  a4 = getReg('a4');
+  a6 = getReg('a6');
+  d0 = getReg('d0');
+  drop(2);
+  a2 = load32((a6 + -0x10) + 0);
+  a3 = load32((a6 + -0x10) + 4);
+  a4 = load32((a6 + -0x10) + 8);
+  setStackPointer(a6);
+  a6 = popLong();
+  setReg('a0', a0);
+  setReg('a1', a1);
+  setReg('a2', a2);
+  setReg('a3', a3);
+  setReg('a4', a4);
+  setReg('a6', a6);
   setReg('d0', d0);
 }
 
@@ -20660,7 +27649,7 @@ export function fn_144d0(a0_: number, a2_: number, a6_: number, d0_: number, d2_
   let d3 = d3_;
   push(a6, 4);
   a6 = stackPointer();
-  drop(65532);
+  drop(-4);
   push(a2, 4);
   push(d3, 4);
   push(d2, 4);
@@ -83070,9 +90059,15 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x00686, fn: fn_00686 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
+  { at: 0x00cac, fn: fn_00cac as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+
   { at: 0x00d9a, fn: fn_00d9a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x00dda, fn: fn_00dda as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
+
+  { at: 0x0122c, fn: fn_0122c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+
+  { at: 0x013b2, fn: fn_013b2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x014dc, fn: fn_014dc as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
@@ -83097,6 +90092,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x01836, fn: fn_01836 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x018a6, fn: fn_018a6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+
+  { at: 0x018fa, fn: fn_018fa as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x019d8, fn: fn_019d8 as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
@@ -83127,6 +90124,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x022ba, fn: fn_022ba as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x02300, fn: fn_02300 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+
+  { at: 0x02338, fn: fn_02338 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x024c8, fn: fn_024c8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
@@ -83162,11 +90161,15 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x033f4, fn: fn_033f4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
 
+  { at: 0x0357a, fn: fn_0357a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+
   { at: 0x035ee, fn: fn_035ee as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
 
   { at: 0x0362a, fn: fn_0362a as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
 
   { at: 0x03666, fn: fn_03666 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
+
+  { at: 0x036a2, fn: fn_036a2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x03726, fn: fn_03726 as (...a: number[]) => void, params: [] },
 
@@ -83188,13 +90191,23 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x03f1a, fn: fn_03f1a as (...a: number[]) => void, params: [] },
 
+  { at: 0x03f94, fn: fn_03f94 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+
   { at: 0x0408e, fn: fn_0408e as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
+
+  { at: 0x040d2, fn: fn_040d2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+
+  { at: 0x041be, fn: fn_041be as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+
+  { at: 0x0427e, fn: fn_0427e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x04332, fn: fn_04332 as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
   { at: 0x0435a, fn: fn_0435a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
   { at: 0x043c2, fn: fn_043c2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+
+  { at: 0x044a2, fn: fn_044a2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x0450c, fn: fn_0450c as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -83246,6 +90259,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x05280, fn: fn_05280 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
+  { at: 0x052e2, fn: fn_052e2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+
   { at: 0x053a6, fn: fn_053a6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }] },
 
   { at: 0x0545a, fn: fn_0545a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }] },
@@ -83288,6 +90303,10 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x05e08, fn: fn_05e08 as (...a: number[]) => void, params: [] },
 
+  { at: 0x05e38, fn: fn_05e38 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }] },
+
+  { at: 0x05ea2, fn: fn_05ea2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+
   { at: 0x060be, fn: fn_060be as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
   { at: 0x06114, fn: fn_06114 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
@@ -83297,6 +90316,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x063ca, fn: fn_063ca as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
   { at: 0x06420, fn: fn_06420 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+
+  { at: 0x065aa, fn: fn_065aa as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x0661a, fn: fn_0661a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
 
@@ -83338,7 +90359,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x07a12, fn: fn_07a12 as (...a: number[]) => void, params: [] },
 
+  { at: 0x07a88, fn: fn_07a88 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+
   { at: 0x07b14, fn: fn_07b14 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+
+  { at: 0x07b3e, fn: fn_07b3e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x07c04, fn: fn_07c04 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -83356,6 +90381,10 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x07ea4, fn: fn_07ea4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
 
+  { at: 0x08008, fn: fn_08008 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+
+  { at: 0x08200, fn: fn_08200 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
+
   { at: 0x0848e, fn: fn_0848e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x084da, fn: fn_084da as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
@@ -83369,6 +90398,14 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x08606, fn: fn_08606 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
   { at: 0x0865e, fn: fn_0865e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }] },
+
+  { at: 0x086ae, fn: fn_086ae as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
+
+  { at: 0x08a9c, fn: fn_08a9c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+
+  { at: 0x08b0c, fn: fn_08b0c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+
+  { at: 0x08c7a, fn: fn_08c7a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x0900a, fn: fn_0900a as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
@@ -83394,6 +90431,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0ab12, fn: fn_0ab12 as (...a: number[]) => void, params: [] },
 
+  { at: 0x0aef2, fn: fn_0aef2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+
   { at: 0x0af72, fn: fn_0af72 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x0b2b0, fn: fn_0b2b0 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
@@ -83406,11 +90445,23 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0b5b8, fn: fn_0b5b8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
+  { at: 0x0b5e4, fn: fn_0b5e4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+
+  { at: 0x0b738, fn: fn_0b738 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+
+  { at: 0x0b7fa, fn: fn_0b7fa as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+
   { at: 0x0b958, fn: fn_0b958 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+
+  { at: 0x0bb38, fn: fn_0bb38 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x0c1ee, fn: fn_0c1ee as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }] },
 
+  { at: 0x0c206, fn: fn_0c206 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+
   { at: 0x0c2bc, fn: fn_0c2bc as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
+
+  { at: 0x0c2dc, fn: fn_0c2dc as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x0c4e8, fn: fn_0c4e8 as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
@@ -83444,6 +90495,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0cce6, fn: fn_0cce6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'stack', off: 4 }] },
 
+  { at: 0x0cd4a, fn: fn_0cd4a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }] },
+
   { at: 0x0cdae, fn: fn_0cdae as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
   { at: 0x0cdc0, fn: fn_0cdc0 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'stack', off: 4 }] },
@@ -83451,6 +90504,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x0cdf6, fn: fn_0cdf6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x0ce48, fn: fn_0ce48 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+
+  { at: 0x0ce76, fn: fn_0ce76 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x0cee8, fn: fn_0cee8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
@@ -83476,6 +90531,8 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0db78, fn: fn_0db78 as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
+  { at: 0x0db7e, fn: fn_0db7e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+
   { at: 0x0dbe6, fn: fn_0dbe6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
   { at: 0x0dc10, fn: fn_0dc10 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
@@ -83497,6 +90554,8 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x0e7a8, fn: fn_0e7a8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x0e824, fn: fn_0e824 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
+
+  { at: 0x0e98c, fn: fn_0e98c as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x0ea46, fn: fn_0ea46 as (...a: number[]) => void, params: [] },
 

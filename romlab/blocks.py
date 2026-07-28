@@ -169,9 +169,14 @@ class BlockLifter(Lifter):
             self.used_regs.add("a6")
             self.stmts.append("push(a6, 4);")
             self.stmts.append("a6 = stackPointer();")
-            n = -num(ops[1])
-            self.stmts.append(f"drop({-n});")
-            self.pushed += 4 + n
+            # The displacement is a signed word: `link a6,#$fffc` reserves
+            # four bytes, not 65,532. Reading it unsigned moved the stack
+            # pointer most of the way across memory in the wrong direction.
+            disp = num(ops[1]) & 0xffff
+            if disp & 0x8000:
+                disp -= 0x10000
+            self.stmts.append(f"drop({disp});")
+            self.pushed += 4 - disp
             return
         if b == "unlk":
             self.used_regs.add("a6")
