@@ -101,6 +101,33 @@ def main():
     # cannot share one in TypeScript anyway. Those keep their address until
     # something actually distinguishes them.
     unique = {a: n for a, n in idents.items() if len(groups[n]) == 1}
+
+    # The entry points are not separate routines - they are places inside one,
+    # reached by a tail jump or a jump table because a decompiled function has
+    # only one way in. Named after the routine they continue, and numbered in
+    # address order, which is what they are.
+    import bisect
+    inner_p = HERE / "out" / "inner_entries.json"
+    if inner_p.exists():
+        inner = sorted(json.loads(inner_p.read_text()))
+        ends = {a: e for a, e in
+                ((f["at"], f["end"]) if isinstance(f, dict) else (f[0], f[1])
+                 for f in facts["funcs"])}
+        starts = sorted(ends)
+        seen_host = {}
+        for e in inner:
+            k = bisect.bisect_right(starts, e) - 1
+            if k < 0:
+                continue
+            host = starts[k]
+            if not host < e < ends[host] or host not in unique:
+                continue
+            seen_host[host] = seen_host.get(host, 0) + 1
+            want = f"{unique[host]}From{seen_host[host]}"
+            if want not in set(unique.values()):
+                unique[e] = want
+        print(f"  entry points named after the routine they continue: "
+              f"{sum(1 for a in unique if a in set(inner))}")
     print(f"  usable, unique names: {len(unique)}")
     (HERE / "out" / "idents.json").write_text(json.dumps(
         {"idents": {hex(a): n for a, n in unique.items()},
