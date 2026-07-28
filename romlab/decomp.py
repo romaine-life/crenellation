@@ -257,6 +257,9 @@ class Lifter:
 
     def write(self, tok, value, bits):
         tok = tok.strip()
+        if tok.startswith("__at:"):
+            self.stmts.append(f"store{bits}({tok[5:]}, {value.text});")
+            return
         if tok in DATA or tok in ADDR:
             if tok in ADDR and bits == 16:
                 # A word move to an address register sign-extends to all 32
@@ -314,6 +317,35 @@ class Lifter:
             self.stmts.append(f"store{bits}({b.text}, {value.text});")
             return
         raise Bail(f"destination {tok!r}")
+
+    def rmw(self, tok, bits):
+        """An operand that is read and then written, with its side effect once.
+
+        `neg.b -(a0)` decrements a0 once and negates the byte there. Reading the
+        operand and writing it separately applies the pre-decrement twice, so
+        the value comes from one address and goes to another. The recompiler
+        solved this long ago; this pass was written without it.
+
+        Returns the value read and a token to write through.
+        """
+        tok = tok.strip()
+        m = re.fullmatch(r"-\((a\d)\)", tok)
+        if m:
+            r = m.group(1)
+            if r == "a7":
+                raise Bail("read-modify-write through the stack pointer")
+            self.bump(r, -(bits // 8))
+            addr = self.temp(self.reg_value(r, 32))
+            return Expr(f"load{bits}({addr.text})", "expr"), f"__at:{addr.text}"
+        m = re.fullmatch(r"\((a\d)\)\+", tok)
+        if m:
+            r = m.group(1)
+            if r == "a7":
+                raise Bail("read-modify-write through the stack pointer")
+            addr = self.temp(self.reg_value(r, 32))
+            self.bump(r, bits // 8)
+            return Expr(f"load{bits}({addr.text})", "expr"), f"__at:{addr.text}"
+        return self.read(tok, bits), tok
 
     # ---- the pass ---------------------------------------------------------
 
@@ -531,11 +563,13 @@ class Lifter:
             self.write(dst, Expr(expr), bits)
             return
         if b == "neg":
-            self.write(ops[0], Expr(f"(0 - ({self.read(ops[0], bits).text}))"), bits)
+            _v, _dst = self.rmw(ops[0], bits)
+            self.write(_dst, Expr(f"(0 - ({_v.text}))"), bits)
             return
         if b == "not":
+            _v, _dst = self.rmw(ops[0], bits)
             mask = (1 << bits) - 1
-            self.write(ops[0], Expr(f"((~({self.read(ops[0], bits).text})) & {mask})"), bits)
+            self.write(_dst, Expr(f"((~({_v.text})) & {mask})"), bits)
             return
         if b == "swap":
             v = self.read(ops[0], 32)
