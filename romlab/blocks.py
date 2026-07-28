@@ -448,11 +448,14 @@ class BlockLifter(Lifter):
         if ops[0].strip() == "(a7)+":
             regs = self.regs_of(ops[1])
             for n, r in enumerate(regs):
-                if not self.saved.get(r):
-                    # Not this routine's push - it is unwinding a frame built
-                    # elsewhere, or sharing another routine's epilogue. Read the
-                    # value off the machine stack, where it actually is. A word
-                    # restore sign-extends across the whole register.
+                if True:  # always: the stack is the machine's
+                    # Read off the machine stack, where the value actually
+                    # is. Restoring the temps this routine pushed looks
+                    # equivalent and is not: a routine whose stack discipline
+                    # is deliberately unbalanced - it consumes an argument and
+                    # leaves a7 four bytes higher - pops from somewhere else
+                    # entirely, and the machine is the thing being matched. A
+                    # word restore sign-extends across the whole register.
                     self.used_regs.add(r)
                     at = f"stackPointer() + {n * wide}" if n else "stackPointer()"
                     self.stmts.append(
