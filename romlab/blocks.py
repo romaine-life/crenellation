@@ -230,7 +230,7 @@ class BlockLifter(Lifter):
             return
         kind, lhs, rhs, bits = self.flags
         if kind == "bit":
-            self.stmts.append(f"setFlagsBit({lhs}, {rhs});")
+            self.stmts.append(f"setFlagsBit({lhs}, {rhs}, {bits - 1});")
             return
         if kind not in ("cmp", "sub", "add"):
             return
@@ -259,9 +259,12 @@ class BlockLifter(Lifter):
             self.flags = ("cmp", v.text, "0", bits)
             return
         if b == "btst":
+            # A bit number is modulo 32 on a register and modulo 8 in memory.
+            # Taking it modulo 8 either way makes `btst #$b,d1` test bit 3.
+            wide = 32 if ops[1].strip() in DATA else 8
             n = self.read(ops[0], 32)
-            v = self.read(ops[1], bits)
-            self.flags = ("bit", v.text, n.text, bits)
+            v = self.read(ops[1], wide)
+            self.flags = ("bit", v.text, n.text, wide)
             return
         if b.startswith("db") and b != "divs":
             reg = ops[0].strip()
@@ -521,10 +524,11 @@ class BlockLifter(Lifter):
             # reads X.
             kind = "cmp"
         if kind == "bit":
+            wide = bits - 1
             if mnemonic == "beq":
-                return f"((({lhs}) >>> (({rhs}) & 7)) & 1) === 0"
+                return f"((({lhs}) >>> (({rhs}) & {wide})) & 1) === 0"
             if mnemonic == "bne":
-                return f"((({lhs}) >>> (({rhs}) & 7)) & 1) !== 0"
+                return f"((({lhs}) >>> (({rhs}) & {wide})) & 1) !== 0"
             raise Bail(f"{mnemonic} after btst")
         if kind == "dbcc":
             return f"{lhs} !== 0xffff"

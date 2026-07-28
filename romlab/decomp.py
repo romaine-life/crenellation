@@ -974,7 +974,9 @@ const widthMask = (bits: number): number => (bits === 32 ? 0xffffffff : (1 << bi
 // A compare leaves X alone; a subtract sets it from the borrow. One helper
 // each, because the difference is visible the moment a routine saves sr.
 // `btst` touches Z and nothing else.
-const setFlagsBit = (v: number, n: number): void => { M.z = ((v >>> (n & 7)) & 1) === 0; };
+const setFlagsBit = (v: number, n: number, mask: number): void => {
+  M.z = ((v >>> (n & mask)) & 1) === 0;
+};
 const setFlagsCmp = (a: number, b: number, bits: number): void => {
   const x = M.x; setFlagsSub(a, b, bits); M.x = x;
 };
