@@ -447,6 +447,7 @@ class Lifter:
                 where = self.reg_value(m2.group(1), 32).text
                 self.flush()
                 self.stmts.append(f"callRom({where}, 0x{nxt:05x});")
+                self.stmts.append("if (halted()) return;")
                 self.reg = {}
                 self.after_call = True
                 return
@@ -459,6 +460,7 @@ class Lifter:
             # use any register, and several do.
             self.flush()
             self.stmts.append(f"callRom(0x{target:05x}, 0x{nxt:05x});")
+            self.stmts.append("if (halted()) return;")
             self.reg = {}
             self.after_call = True
             return
@@ -692,6 +694,10 @@ const drop = (n: number): void => { M.a7 = (M.a7 + n) >>> 0; };
  * because the arguments belong to the caller until it drops them - and a
  * routine may push, call, push, call and drop both lots at the end.
  */
+/** Whether the machine has halted. `stop` leaves it that way and nothing in
+ *  the ROM runs afterwards, so decompiled code has to notice too. */
+const halted = (): boolean => M.stopped;
+
 const callRom = (addr: number, ret = 0): void => {
   // The real return address, not a placeholder. `jsr` pushes the address of
   // the instruction after it, and ROM code reads that value off the stack -
@@ -710,7 +716,7 @@ const jumpRom = (addr: number): void => { romCall(addr, M); };
 const stackPointer = (): number => M.a7 >>> 0;
 const setStackPointer = (v: number): void => { M.a7 = v >>> 0; };
 const popLong = (): number => { const v = M.load(M.a7 >>> 0, 32); M.a7 = (M.a7 + 4) >>> 0; return v; };
-void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
+void setReg; void getReg; void callRom; void jumpRom; void push; void drop; void halted;
 let __sp = 0;
 void stackPointer; void setStackPointer; void popLong; void __sp;
 """
