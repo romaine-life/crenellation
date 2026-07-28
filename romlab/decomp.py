@@ -320,6 +320,7 @@ class Lifter:
         size = mn.rsplit(".", 1)[1] if "." in mn else "w"
         bits = SIZE_BITS.get(size, 16)
         ops = split_ops(ins.op_str or "")
+        nxt = ins.address + ins.size          # what `jsr` pushes as the return
 
         if b == "rts":
             return
@@ -351,7 +352,7 @@ class Lifter:
                     raise Bail(f"indirect call {tok!r}")
                 where = self.reg_value(m2.group(1), 32).text
                 self.flush()
-                self.stmts.append(f"callRom({where});")
+                self.stmts.append(f"callRom({where}, 0x{nxt:05x});")
                 self.reg = {}
                 self.after_call = True
                 return
@@ -363,7 +364,7 @@ class Lifter:
             # nothing may be assumed about it afterwards - the callee is free to
             # use any register, and several do.
             self.flush()
-            self.stmts.append(f"callRom(0x{target:05x});")
+            self.stmts.append(f"callRom(0x{target:05x}, 0x{nxt:05x});")
             self.reg = {}
             self.after_call = True
             return
@@ -572,8 +573,12 @@ const drop = (n: number): void => { M.a7 = (M.a7 + n) >>> 0; };
  * because the arguments belong to the caller until it drops them - and a
  * routine may push, call, push, call and drop both lots at the end.
  */
-const callRom = (addr: number): void => {
-  M.storePre('a7', 4, 0, 32);
+const callRom = (addr: number, ret = 0): void => {
+  // The real return address, not a placeholder. `jsr` pushes the address of
+  // the instruction after it, and ROM code reads that value off the stack -
+  // one routine popped it straight into d2. A zero there is a wrong answer
+  // that only shows up in routines that look at their own return address.
+  M.storePre('a7', 4, ret, 32);
   romCall(addr, M);
   // No adjustment afterwards: the callee's own `rts` popped the return
   // address. Removing it here as well pops a second four bytes and every
