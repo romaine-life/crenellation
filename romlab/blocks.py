@@ -221,7 +221,38 @@ class BlockLifter(Lifter):
                 self.stmts.append(f"{r} = {self.saved[r].pop()};")
             self.pushed -= wide * len(regs)
             return
-        raise Bail(f"movem {ins.op_str!r}")
+        # To or from ordinary memory rather than the stack. The registers go in
+        # ascending address order, d0-d7 then a0-a7, whatever order the operand
+        # lists them in.
+        def slot(base_tok, k):
+            return f"{base_tok} + {k * wide}"
+
+        if re.fullmatch(r"[ad]\d(-[ad]\d)?(/[ad]\d(-[ad]\d)?)*", ops[0].strip()):
+            regs = self.regs_of(ops[0])
+            dest = ops[1].strip()
+            base = self.mem_base(dest)
+            for k, r in enumerate(regs):
+                self.used_regs.add(r)
+                self.stmts.append(f"store{bits}({slot(base, k)}, {r});")
+            return
+        regs = self.regs_of(ops[1])
+        base = self.mem_base(ops[0].strip())
+        for k, r in enumerate(regs):
+            self.used_regs.add(r)
+            self.stmts.append(f"{r} = load{bits}({slot(base, k)});")
+        return
+
+    def mem_base(self, tok):
+        """The address an operand names, as an expression."""
+        m = re.fullmatch(r"\$([0-9a-fA-F]+)\.(w|l)", tok)
+        if m:
+            return f"0x{int(m.group(1), 16):x}"
+        m = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d)\)", tok)
+        if m:
+            off = num(m.group(1)) if m.group(1) else 0
+            base = self.reg_value(m.group(2), 32).text
+            return base if off == 0 else f"({base} + {hex(off)})"
+        raise Bail(f"movem through {tok!r}")
 
     def condition(self, mnemonic):
         """The branch's test, as an expression."""
