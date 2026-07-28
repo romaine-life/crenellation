@@ -27,6 +27,9 @@ COND = {"bhi", "bls", "bcc", "bcs", "bne", "beq", "bvc", "bvs",
         "bpl", "bmi", "bge", "blt", "bgt", "ble"}
 
 # how a branch reads the flags of `lhs - rhs`
+SET_CC = {"st", "sf", "shi", "sls", "scc", "scs", "sne", "seq",
+          "spl", "smi", "sge", "slt", "sgt", "sle"}
+
 COMPARE = {
     "beq": "===", "bne": "!==",
     "blt": "<", "ble": "<=", "bgt": ">", "bge": ">=",
@@ -190,6 +193,14 @@ class BlockLifter(Lifter):
             self.after_call = True
             self.flags = None
             return
+        # Set-on-condition: the same test a branch would take, written into a
+        # byte as all-ones or all-zeroes instead of jumping. Only this pass can
+        # do it, because only this pass knows what set the flags.
+        if b in SET_CC:
+            cond = self.condition("b" + b[1:]) if b not in ("st", "sf") else None
+            text = {"st": "0xff", "sf": "0"}.get(b, f"(({cond}) ? 0xff : 0)")
+            self.write(ops[0], Expr(text, "expr"), 8)
+            return
         before = len(self.stmts)
         super().step(ins)
         # Anything that writes a data register also sets the flags from what it
@@ -248,9 +259,18 @@ class BlockLifter(Lifter):
             return
         if ops[0].strip() == "(a7)+":
             regs = self.regs_of(ops[1])
-            for r in regs:
+            for n, r in enumerate(regs):
                 if not self.saved.get(r):
-                    raise Bail("restores a register it never saved")
+                    # Not this routine's push - it is unwinding a frame built
+                    # elsewhere, or sharing another routine's epilogue. Read the
+                    # value off the machine stack, where it actually is. A word
+                    # restore sign-extends across the whole register.
+                    self.used_regs.add(r)
+                    at = f"stackPointer() + {n * wide}" if n else "stackPointer()"
+                    self.stmts.append(
+                        f"{r} = " + (f"load32({at});" if wide == 4
+                                     else f"((load16({at}) << 16 >> 16) >>> 0);"))
+                    continue
                 self.stmts.append(f"{r} = {self.saved[r].pop()};")
             self.stmts.append(f"drop({wide * len(regs)});")
             self.pushed -= wide * len(regs)

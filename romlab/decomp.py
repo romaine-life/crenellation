@@ -117,6 +117,7 @@ class Lifter:
         self.used_regs = set()
         self.saved = {}             # registers a movem is holding
         self.restored = set()       # registers a movem put back
+        self.dirty = set()          # argument slots this routine wrote back
 
     # ---- reading operands -------------------------------------------------
 
@@ -190,6 +191,9 @@ class Lifter:
                 return Expr(f"load{bits}(stackPointer() + {off})", "expr")
             off -= self.pushed
             slot = off & ~3
+            if slot in self.dirty:
+                # This routine already wrote the slot. Read what is there.
+                return Expr(f"load{bits}(stackPointer() + {off + self.pushed})", "expr")
             name = self.param(slot)
             if bits == 32:
                 if off != slot:
@@ -295,7 +299,15 @@ class Lifter:
                     self.stmts.append(
                         f"store{bits}(stackPointer() + {off}, {value.text});")
                     return
-                raise Bail("writes above its own frame")
+                # Above the frame is an argument slot: the routine is writing
+                # its result back through the stack. The machine stack is the
+                # real one, so the store lands where the caller will read it -
+                # but the slot was also bound to a parameter, and a later read
+                # of it has to see the new value, not the incoming one.
+                self.dirty.add((off - self.pushed) & ~3)
+                self.stmts.append(
+                    f"store{bits}(stackPointer() + {off}, {value.text});")
+                return
             b = self.reg_value(r, 32)
             addr = b.text if off == 0 else f"{b.text} + {hex(off)}"
             self.stmts.append(f"store{bits}({addr}, {value.text});")
@@ -396,9 +408,19 @@ class Lifter:
                 return
             if ops[0].strip() == "(a7)+":
                 regs = expand_regs(ops[1])
-                for r in regs:
+                for n, r in enumerate(regs):
                     if not self.saved.get(r):
-                        raise Bail("restores a register it never saved")
+                        # Popping something this routine did not push - it is
+                        # unwinding a frame its caller built, or a jump target
+                        # sharing another routine's epilogue. The stack is the
+                        # machine's, so read the value off it. A word restore
+                        # sign-extends across the whole register.
+                        at = f"stackPointer() + {n * wide}" if n else "stackPointer()"
+                        text = (f"load32({at})" if wide == 4
+                                else f"((load16({at}) << 16 >> 16) >>> 0)")
+                        self.reg[r] = self.temp(Expr(text, "expr"))
+                        self.restored.add(r)
+                        continue
                     self.reg[r] = self.saved[r].pop()
                     # Restoring puts the entry value back, so nothing about the
                     # symbolic value changed and the writeback would be skipped
