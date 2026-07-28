@@ -39,6 +39,20 @@ COMPARE = {
 SIGNED = {"blt", "ble", "bgt", "bge"}
 
 
+def rereadable(tok):
+    """Whether an operand can be read a second time without side effects.
+
+    Registers, immediates and plain memory qualify; anything that moves a
+    pointer does not, so `(a0)+` and `-(a0)` are out.
+    """
+    tok = tok.strip()
+    return bool(
+        tok in DATA or tok in ADDR or tok.startswith("#")
+        or re.fullmatch(r"\$[0-9a-fA-F]+\.(w|l)", tok)
+        or re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d)\)", tok)
+        or re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d),\s*[ad]\d\.(w|l)\)", tok))
+
+
 def sx(text, bits):
     """Sign-extend a value of `bits` width to a JavaScript number."""
     if bits == 32:
@@ -273,11 +287,10 @@ class BlockLifter(Lifter):
         # them, so a later `bcc` can be answered with the real carry rather
         # than a comparison that never sees it.
         addends = None
-        if (b in ("add", "addq", "addi", "adda") and len(ops) == 2
-                and ops[-1].strip() in DATA
-                and (ops[0].strip() in DATA or ops[0].strip() in ADDR
-                     or ops[0].strip().startswith("#"))):
-            addends = (self.temp(self.reg_value(ops[-1].strip(), bits)).text,
+        if (b in ("add", "addq", "addi", "sub", "subq", "subi")
+                and len(ops) == 2 and ops[-1].strip() not in ADDR
+                and rereadable(ops[-1]) and rereadable(ops[0])):
+            addends = (self.temp(self.read(ops[-1], bits)).text,
                        self.temp(self.read(ops[0], bits)).text)
         before = len(self.stmts)
         super().step(ins)
@@ -288,10 +301,14 @@ class BlockLifter(Lifter):
                  "lsl", "lsr", "neg", "not", "ext") and ops:
             dst = ops[-1].strip()
             if addends is not None:
-                self.flags = ("add", addends[0], addends[1], bits)
+                # A subtract's flags are exactly a compare's: `dst - src`. An
+                # add needs its own kind because carry there is the bit that
+                # fell off the top rather than a borrow.
+                self.flags = (("add" if b.startswith("add") else "cmp"),
+                              addends[0], addends[1], bits)
             elif dst in DATA:
                 self.flags = ("cmp", self.reg_value(dst, bits).text, "0", bits)
-            elif re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d)\)|\$[0-9a-fA-F]+\.(w|l)", dst):
+            elif rereadable(dst) and dst not in DATA and dst not in ADDR:
                 # A read-modify-write on memory sets the flags from what it
                 # wrote. `subq.w #1,(a2)` followed by `bgt` is the ROM's
                 # countdown, and without this the branch reads whatever set
@@ -446,11 +463,17 @@ class BlockLifter(Lifter):
                 return f"{sx(res, bits)} {COMPARE[mnemonic]} 0"
             raise Bail(f"{mnemonic} after add")
         if mnemonic in ("bmi", "bpl"):
-            # The sign of `lhs - rhs`, which after a `tst` is just the sign of
-            # the value. Both operands are sign-extended first: comparing the
-            # raw words makes every negative number look large and positive.
+            # N alone, which is the sign of the result *truncated to the
+            # operand width* - not the sign of the full difference. `sub.b`
+            # of 0x80 from 0 is +128 in full precision and 0x80, negative, in
+            # a byte. The signed comparisons below are different: N != V is
+            # exactly the full-precision comparison, which is why they can use
+            # it directly.
             op = "<" if mnemonic == "bmi" else ">="
-            return f"({sx(lhs, bits)} - {sx(rhs, bits)}) {op} 0"
+            mask = (1 << bits) - 1
+            diff = (f"(({uz(lhs, bits)} - {uz(rhs, bits)}) & {mask})" if bits < 32
+                    else f"(({lhs} - {rhs}) | 0)")
+            return f"{sx(diff, bits)} {op} 0"
         if mnemonic not in COMPARE:
             raise Bail(f"branch {mnemonic}")
         op = COMPARE[mnemonic]
@@ -821,8 +844,23 @@ def lift_once(lo, hi, names, seed=()):
     for a, outs in edges.items():
         for b_ in outs:
             preds[b_].add(a)
+    # Blocks the entry cannot reach are not this routine's code. Rampart has
+    # routines that share a tail, so a second `movem ...,-(a7)` sits in the
+    # middle as another entry point - lifting it pushes onto the same
+    # saved-register stack the real restore pops from, and the routine comes
+    # back with a register it never held.
+    reach, seen_r = [0], {0}
+    while reach:
+        v = reach.pop()
+        for w in edges.get(v, []):
+            if w not in seen_r:
+                seen_r.add(w)
+                reach.append(w)
     end_flags = {}
     for n, (s, e) in enumerate(zip(starts, ends)):
+        if n not in seen_r:
+            lifted[n] = []
+            continue
         lifter.stmts = []
         if n:
             known = {end_flags[p] for p in preds.get(n, ()) if p in end_flags}
