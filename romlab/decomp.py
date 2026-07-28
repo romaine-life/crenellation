@@ -147,12 +147,12 @@ class Lifter:
             # materialised after the pointer has already moved, and for a7 the
             # increment is a real `drop`, so the read lands a slot too high.
             v = self.temp(self.mem_read(r, 0, bits))
-            self.bump(r, bits // 8)
+            self.bump(r, self.step_of(r, bits))
             return v
         m = re.fullmatch(r"-\((a\d)\)", tok)
         if m:
             r = m.group(1)
-            self.bump(m.group(1), -(bits // 8))
+            self.bump(r, -self.step_of(r, bits))
             return self.mem_read(r, 0, bits)
         if tok == "sr":
             # `move sr,dN` reads the real condition codes, which nothing here
@@ -271,6 +271,17 @@ class Lifter:
         inner = name if shift == 0 else f"({name} >>> {shift})"
         return Expr(f"({inner} & {mask})", "expr")
 
+    def step_of(self, r, bits):
+        """How far a pre-decrement or post-increment moves the register.
+
+        A byte access through the stack pointer moves it by two, not one: the
+        68000 keeps the stack word-aligned, so a7 never lands on an odd
+        address. The recompiler has had this rule since it was checked against
+        the chip; this pass did not, and a byte pushed onto the stack left it
+        odd for the word pop that followed.
+        """
+        return 2 if r == "a7" and bits == 8 else bits // 8
+
     def bump(self, r, by):
         if r == "a7":
             # The stack pointer belongs to the machine. Tracking it as an
@@ -372,6 +383,13 @@ class Lifter:
         if m:
             r = m.group(1)
             if r == "a7":
+                if bits == 8:
+                    # Two bytes of stack for one byte of data, and the byte
+                    # lands at the new, even, stack pointer.
+                    self.stmts.append("drop(-2);")
+                    self.stmts.append(f"store8(stackPointer(), {value.text});")
+                    self.pushed += 2
+                    return
                 self.stmts.append(f"push({value.text}, {bits // 8});")
                 self.pushed += bits // 8
                 return
@@ -878,6 +896,9 @@ const store32 = (a: number, v: number): void => M.store(a, v, 32);
  *  values once the call sites are lifted too; for now they go back where the
  *  ROM's caller expects to find them. */
 const setReg = (r: string, v: number): void => {
+  // 32 bits unsigned, always - an expression that overflowed on its way here
+  // must not be stored as a number the machine can never produce.
+  v = v >>> 0;
   (M as unknown as Record<string, number>)[r] = v;
 };
 /** Read a register back after a call left something in it. */

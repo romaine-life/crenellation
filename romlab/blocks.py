@@ -120,7 +120,11 @@ class BlockLifter(Lifter):
                 # writes.
                 value = Expr(f"((({value.text}) << 16) >> 16)")
             if bits == 32 or tok in ADDR:
-                self.stmts.append(f"{tok} = {value.text};")
+                # Registers are 32 bits unsigned. Without the mask a running
+                # total - `add.l (a1)+,d0` round a loop - grows past 2^32 in
+                # JavaScript and stops comparing equal to anything read back
+                # out of memory.
+                self.stmts.append(f"{tok} = ({value.text}) >>> 0;")
             else:
                 keep = {8: "0xffffff00", 16: "0xffff0000"}[bits]
                 mask = (1 << bits) - 1
