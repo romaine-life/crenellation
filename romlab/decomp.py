@@ -442,14 +442,21 @@ class Lifter:
             else:
                 dst, cnt = ops[1], self.read(ops[0], 32)
             cur = self.read(dst, bits)
+            # The 68000 takes the count modulo 64 and a count at or past the
+            # operand's width shifts every bit out. JavaScript's shift operators
+            # use only the low five bits of the count, so `x >> 40` becomes
+            # `x >> 8` and the result is wrong in exactly the cases the chip
+            # makes trivial. The count is clamped, not masked.
+            c = self.temp(Expr(f"(({cnt.text}) & 63)", "expr"))
             if b in ("asl", "lsl"):
-                expr = f"(({cur.text}) << (({cnt.text}) & 63))"
+                expr = f"({c.text} >= {bits} ? 0 : (({cur.text}) << {c.text}))"
             elif b == "lsr":
-                expr = f"(({cur.text}) >>> (({cnt.text}) & 63))"
+                expr = f"({c.text} >= {bits} ? 0 : (({cur.text}) >>> {c.text}))"
             else:
                 shift = 32 - bits
                 signed = cur.text if bits == 32 else f"((({cur.text}) << {shift}) >> {shift})"
-                expr = f"(({signed}) >> (({cnt.text}) & 63))"
+                expr = (f"({c.text} >= {bits} ? ((({signed}) < 0) ? -1 : 0)"
+                        f" : (({signed}) >> {c.text}))")
             self.write(dst, Expr(expr), bits)
             return
         if b == "neg":

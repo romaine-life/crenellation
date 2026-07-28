@@ -766,7 +766,8 @@ export function fn_01f3a(a0_: number, d0_: number, d1_: number, arg0: number): v
   d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   d0 = (d0 + d0);
   d1 = d0;
-  d0 = ((d0) << ((0x6) & 63));
+  const t0 = ((0x6) & 63);
+  d0 = (t0 >= 32 ? 0 : ((d0) << t0));
   d0 = (d0 - d1);
   a0 = 0x3e1968;
   a0 = (a0 + d0);
@@ -849,7 +850,8 @@ export function fn_024c8(a0_: number, a1_: number, d0_: number, d1_: number, d2_
         if (d0 !== d1) {
           d1 = ((d1 & 0xffff0000) | (0xb0 & 65535));
         } else {
-          d4 = ((d4 & 0xffffff00) | ((((d4 & 255)) >>> ((0x6) & 63)) & 255));
+          const t3 = ((0x6) & 63);
+          d4 = ((d4 & 0xffffff00) | ((t3 >= 8 ? 0 : (((d4 & 255)) >>> t3)) & 255));
           d0 = 0x0;
           d0 = ((d0 & 0xffffff00) | ((d4 & 255) & 255));
           a0 = 0xfe02;
@@ -967,10 +969,12 @@ export function fn_0255c(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
   d0 = (d0 + d0);
   a0 = d0;
-  d2 = ((d2 & 0xffffff00) | ((((d2 & 255)) >>> ((0x6) & 63)) & 255));
+  const t2 = ((0x6) & 63);
+  d2 = ((d2 & 0xffffff00) | ((t2 >= 8 ? 0 : (((d2 & 255)) >>> t2)) & 255));
   d0 = 0x0;
   d0 = ((d0 & 0xffffff00) | ((d2 & 255) & 255));
-  d0 = ((d0) << ((0x2) & 63));
+  const t3 = ((0x2) & 63);
+  d0 = (t3 >= 32 ? 0 : ((d0) << t3));
   a1 = 0x2063a;
   a0 = (a0 + load32((a1 + (d0 | 0))));
   d0 = 0x0;
@@ -1028,7 +1032,8 @@ export function fn_025f4(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   a0 = d0;
   d1 = 0x0;
   d1 = ((d1 & 0xffffff00) | (load8(a0) & 255));
-  d1 = ((d1 & 0xffff0000) | ((((d1 & 65535)) >>> ((0x6) & 63)) & 65535));
+  const t4 = ((0x6) & 63);
+  d1 = ((d1 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d1 & 65535)) >>> t4)) & 65535));
   d0 = 0x0;
   d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
   d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
@@ -1187,7 +1192,8 @@ export function fn_02698(a0_: number, a1_: number, a2_: number, d0_: number, d1_
   d2 = 0x0;
   d2 = ((d2 & 0xffffff00) | (load8(a1) & 255));
   d4 = ((d4 & 0xffff0000) | ((d2 & 65535) & 65535));
-  d4 = ((d4 & 0xffff0000) | ((((d4 & 65535)) >>> ((0x6) & 63)) & 65535));
+  const t5 = ((0x6) & 63);
+  d4 = ((d4 & 0xffff0000) | ((t5 >= 16 ? 0 : (((d4 & 65535)) >>> t5)) & 65535));
   d0 = 0x0;
   d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
   a0 = 0xfe02;
@@ -1211,12 +1217,15 @@ export function fn_02698(a0_: number, a1_: number, a2_: number, d0_: number, d1_
     a0 = 0x3e186c;
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8((a0 + (d1 | 0))) & 255));
-    d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x3) & 63)) & 65535));
+    const t6 = ((0x3) & 63);
+    d0 = ((d0 & 0xffff0000) | ((t6 >= 16 ? 0 : (((d0 & 65535)) << t6)) & 65535));
     d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + (d0 & 65535)) & 65535));
     d0 = 0x0;
     d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
-    d0 = ((d0) << ((0x2) & 63));
-    d1 = ((d1) << ((0x2) & 63));
+    const t7 = ((0x2) & 63);
+    d0 = (t7 >= 32 ? 0 : ((d0) << t7));
+    const t8 = ((0x2) & 63);
+    d1 = (t8 >= 32 ? 0 : ((d1) << t8));
     a0 = 0x20682;
     d0 = (d0 + load32((a0 + (d1 | 0))));
     a2 = d0;
@@ -1283,7 +1292,8 @@ export function fn_02a5c(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   d0 = getReg('d0');
   a0 = d0;
   d1 = ((d1 & 0xffffff00) | (load8(a0) & 255));
-  d1 = ((d1 & 0xffffff00) | ((((d1 & 255)) >>> ((0x6) & 63)) & 255));
+  const t2 = ((0x6) & 63);
+  d1 = ((d1 & 0xffffff00) | ((t2 >= 8 ? 0 : (((d1 & 255)) >>> t2)) & 255));
   d1 = ((d1 & 0xffffff00) | ((d1 & 255) & 255));
   drop(2);
   if ((((d1 & 255)) & 255) !== ((0) & 255)) {
@@ -1297,8 +1307,10 @@ export function fn_02a5c(a0_: number, d0_: number, d1_: number, d2_: number, d3_
   a0 = 0x3e186c;
   d3 = 0x0;
   d3 = ((d3 & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
-  d3 = ((d3) << ((0x1) & 63));
-  d3 = ((d3) << ((0x2) & 63));
+  const t3 = ((0x1) & 63);
+  d3 = (t3 >= 32 ? 0 : ((d3) << t3));
+  const t4 = ((0x2) & 63);
+  d3 = (t4 >= 32 ? 0 : ((d3) << t4));
   a0 = d3;
   d2 = (d2 + a0);
   push(((arg0 >>> 16) & 0xffff), 2);
@@ -1362,7 +1374,8 @@ export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   d4 = 0x0;
   d4 = ((d4 & 0xffffff00) | (load8(a2) & 255));
   d3 = ((d3 & 0xffff0000) | ((d4 & 65535) & 65535));
-  d3 = ((d3 & 0xffff0000) | ((((d3 & 65535)) >>> ((0x6) & 63)) & 65535));
+  const t6 = ((0x6) & 63);
+  d3 = ((d3 & 0xffff0000) | ((t6 >= 16 ? 0 : (((d3 & 65535)) >>> t6)) & 65535));
   d0 = a2;
   d1 = 0x20;
   d0 = (d0 + d1);
@@ -1387,7 +1400,8 @@ export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     if ((((d3 & 65535)) & 65535) !== ((0) & 65535)) {
       d0 = 0x0;
       d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
-      d0 = ((d0) << ((0x2) & 63));
+      const t7 = ((0x2) & 63);
+      d0 = (t7 >= 32 ? 0 : ((d0) << t7));
       a0 = 0x20682;
       d0 = load32((a0 + (d0 | 0)));
       d0 = (d0 + 0x8);
@@ -1409,8 +1423,10 @@ export function fn_02aae(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     a0 = 0x3e186c;
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8((a0 + (d1 | 0))) & 255));
-    d0 = ((d0) << ((0x3) & 63));
-    d0 = ((d0) << ((0x2) & 63));
+    const t8 = ((0x3) & 63);
+    d0 = (t8 >= 32 ? 0 : ((d0) << t8));
+    const t9 = ((0x2) & 63);
+    d0 = (t9 >= 32 ? 0 : ((d0) << t9));
     a1 = (a1 + d0);
   } else {
     a1 = 0x20652;
@@ -1503,7 +1519,8 @@ export function fn_02b88(a0_: number, a1_: number, a2_: number, a3_: number, d0_
   a1 = d0;
   d1 = 0x0;
   d1 = ((d1 & 0xffffff00) | (load8(a1) & 255));
-  d1 = ((d1 & 0xffff0000) | ((((d1 & 65535)) >>> ((0x6) & 63)) & 65535));
+  const t4 = ((0x6) & 63);
+  d1 = ((d1 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d1 & 65535)) >>> t4)) & 65535));
   d0 = 0x0;
   d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
   d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
@@ -1761,7 +1778,8 @@ export function fn_02c86(a0_: number, a1_: number, a2_: number, a3_: number, d0_
     }
   }
   d1 = ((((d1 & 65535)) << 16) >> 16);
-  d1 = ((d1) << ((0x2) & 63));
+  const t4 = ((0x2) & 63);
+  d1 = (t4 >= 32 ? 0 : ((d1) << t4));
   a0 = 0x21346;
   a3 = load32((a0 + (d1 | 0)));
   push(((arg0 >>> 16) & 0xffff), 2);
@@ -1962,7 +1980,8 @@ export function fn_02d78(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   }
   d3 = ((((d3 & 65535)) << 16) >> 16);
   d3 = (d3 + 0x8);
-  d3 = ((d3) << ((0x2) & 63));
+  const t2 = ((0x2) & 63);
+  d3 = (t2 >= 32 ? 0 : ((d3) << t2));
   a0 = 0x21346;
   d2 = load32((a0 + (d3 | 0)));
   d1 = 0x0;
@@ -2051,7 +2070,8 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0xc0) & 65535));
   if ((((d0 & 65535)) & 65535) !== ((0) & 65535)) {
-    d1 = ((d1 & 0xffff0000) | ((((d1 & 65535)) >>> ((0x6) & 63)) & 65535));
+    const t4 = ((0x6) & 63);
+    d1 = ((d1 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d1 & 65535)) >>> t4)) & 65535));
     d0 = 0x0;
     d0 = ((d0 & 0xffff0000) | ((d1 & 65535) & 65535));
     a0 = 0xfe02;
@@ -2114,7 +2134,8 @@ export function fn_033f4(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   push(d3, 4);
   d0 = 0x0;
   d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
-  d0 = ((d0) << ((0x2) & 63));
+  const t5 = ((0x2) & 63);
+  d0 = (t5 >= 32 ? 0 : ((d0) << t5));
   a0 = 0x21332;
   a0 = load32((a0 + (d0 | 0)));
   d0 = 0x0;
@@ -2331,7 +2352,8 @@ export function fn_03cee(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   } else {
     if ((((d0 & 255)) & 255) === (((d2 & 255)) & 255)) {
     } else {
-      d0 = ((d0 & 0xffffff00) | ((((d0 & 255)) >>> ((0x6) & 63)) & 255));
+      const t3 = ((0x6) & 63);
+      d0 = ((d0 & 0xffffff00) | ((t3 >= 8 ? 0 : (((d0 & 255)) >>> t3)) & 255));
       d1 = 0x0;
       d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
       a0 = 0xfdbc;
@@ -2383,7 +2405,8 @@ export function fn_03cee(a0_: number, a2_: number, d0_: number, d1_: number, d2_
   } else {
     if ((((d0 & 255)) & 255) === (((d2 & 255)) & 255)) {
     } else {
-      d0 = ((d0 & 0xffffff00) | ((((d0 & 255)) >>> ((0x6) & 63)) & 255));
+      const t4 = ((0x6) & 63);
+      d0 = ((d0 & 0xffffff00) | ((t4 >= 8 ? 0 : (((d0 & 255)) >>> t4)) & 255));
       d1 = 0x0;
       d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
       a0 = 0xfdbc;
@@ -2571,7 +2594,8 @@ export function fn_03e84(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     if ((load32(a0) | 0) >= (0 | 0)) {
     } else {
       d0 = load32(a0);
-      d0 = ((d0) << ((0x2) & 63));
+      const t5 = ((0x2) & 63);
+      d0 = (t5 >= 32 ? 0 : ((d0) << t5));
       store32(a2, (load32(a2) + d0));
     }
   }
@@ -2786,14 +2810,16 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     }
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(a4 + 0x2) & 255));
-    d0 = ((d0) << ((0x4) & 63));
+    const t9 = ((0x4) & 63);
+    d0 = (t9 >= 32 ? 0 : ((d0) << t9));
     d0 = (d0 + d0);
     a0 = 0x1f650;
     a0 = (a0 + d0);
     d3 = a0;
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca6) & 255));
-    d0 = ((d0) >>> ((0x4) & 63));
+    const t10 = ((0x4) & 63);
+    d0 = (t10 >= 32 ? 0 : ((d0) >>> t10));
     d1 = 0x0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
@@ -2844,14 +2870,16 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     }
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(a4 + 0x2) & 255));
-    d0 = ((d0) << ((0x4) & 63));
+    const t11 = ((0x4) & 63);
+    d0 = (t11 >= 32 ? 0 : ((d0) << t11));
     d0 = (d0 + d0);
     a0 = 0x1f650;
     a0 = (a0 + d0);
     d3 = a0;
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca7) & 255));
-    d0 = ((d0) >>> ((0x4) & 63));
+    const t12 = ((0x4) & 63);
+    d0 = (t12 >= 32 ? 0 : ((d0) >>> t12));
     d1 = 0x0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
@@ -2903,7 +2931,8 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d3 = 0x1f240;
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca6) & 255));
-    d0 = ((d0) >>> ((0x4) & 63));
+    const t5 = ((0x4) & 63);
+    d0 = (t5 >= 32 ? 0 : ((d0) >>> t5));
     d1 = 0x0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
@@ -2962,7 +2991,8 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d3 = getReg('d3');
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca8) & 255));
-    d0 = ((d0) >>> ((0x4) & 63));
+    const t6 = ((0x4) & 63);
+    d0 = (t6 >= 32 ? 0 : ((d0) >>> t6));
     d1 = 0x0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
@@ -3021,7 +3051,8 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d3 = getReg('d3');
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca7) & 255));
-    d0 = ((d0) >>> ((0x4) & 63));
+    const t7 = ((0x4) & 63);
+    d0 = (t7 >= 32 ? 0 : ((d0) >>> t7));
     d1 = 0x0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
@@ -3080,7 +3111,8 @@ export function fn_048ae(a0_: number, a2_: number, a3_: number, a4_: number, d0_
     d3 = getReg('d3');
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e1ca9) & 255));
-    d0 = ((d0) >>> ((0x4) & 63));
+    const t8 = ((0x4) & 63);
+    d0 = (t8 >= 32 ? 0 : ((d0) >>> t8));
     d1 = 0x0;
     d1 = ((d1 & 0xffffff00) | ((d0 & 255) & 255));
     push(d1, 4);
@@ -3345,21 +3377,22 @@ export function fn_04d6c(): void {
 
 export function fn_04d90(arg0: number): void {
   const t0 = (arg0 + 0x5);
-  const t1 = ((t0) << ((0x4) & 63));
-  const t2 = (t1 + t1);
-  const t3 = (0x1f040 + t2);
-  const t4 = (t3 + 0x2);
+  const t1 = ((0x4) & 63);
+  const t2 = (t1 >= 32 ? 0 : ((t0) << t1));
+  const t3 = (t2 + t2);
+  const t4 = (0x1f040 + t3);
+  const t5 = (t4 + 0x2);
   push(0x8, 4);
   push(0x1, 4);
   push(0x4, 4);
   push(0x1, 4);
-  push(t4, 4);
-  const t5 = (arg0 + 0x9);
   push(t5, 4);
+  const t6 = (arg0 + 0x9);
+  push(t6, 4);
   push(0, 4);
-  setReg('a0', t4);
+  setReg('a0', t5);
   setReg('d0', 0x9);
-  setReg('d1', t5);
+  setReg('d1', t6);
   callRom(0x0c724);
   callRom(0x04d6c);
   drop(28);
@@ -3381,7 +3414,8 @@ export function fn_04e20(a2_: number, a7_: number, d0_: number): void {
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(0x3e195a) & 255));
     d0 = (d0 + 0x1);
-    d0 = ((d0) << ((0x4) & 63));
+    const t0 = ((0x4) & 63);
+    d0 = (t0 >= 32 ? 0 : ((d0) << t0));
     d0 = (d0 + d0);
     a2 = 0x1ee00;
     a2 = (a2 + d0);
@@ -3442,12 +3476,14 @@ export function fn_0522e(a0_: number, a2_: number, a3_: number, d0_: number, d1_
   a0 = load32(a3);
   d0 = ((d0 & 0xffffff00) | (load8(a0 + 0x46) & 255));
   d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
-  d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x3) & 63)) & 65535));
+  const t3 = ((0x3) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t3 >= 16 ? 0 : (((d0 & 65535)) << t3)) & 65535));
   store16(a2 + 0x8, (d0 & 65535));
   d0 = ((d0 & 0xffffff00) | (load8(a0 + 0x47) & 255));
   d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
   d0 = ((((d0 & 65535)) << 16) >> 16);
-  d0 = ((d0) << ((0x3) & 63));
+  const t4 = ((0x3) & 63);
+  d0 = (t4 >= 32 ? 0 : ((d0) << t4));
   d1 = 0xc;
   d0 = (d0 - d1);
   store16(a2 + 0x6, (d0 & 65535));
@@ -3623,8 +3659,10 @@ export function fn_05892(a0_: number, a1_: number, d0_: number, d1_: number, d2_
   d2 = ((d2 & 0xffff0000) | ((arg2 & 0xffff) & 65535));
   d3 = 0x200;
   d0 = ((((d0 & 65535)) << 16) >> 16);
-  d0 = ((d0) << ((0x8) & 63));
-  d0 = ((d0) << ((0x1) & 63));
+  const t2 = ((0x8) & 63);
+  d0 = (t2 >= 32 ? 0 : ((d0) << t2));
+  const t3 = ((0x1) & 63);
+  d0 = (t3 >= 32 ? 0 : ((d0) << t3));
   d1 = ((((d1 & 65535)) << 16) >> 16);
   d0 = (d0 + d1);
   a0 = 0x200004;
@@ -4155,12 +4193,14 @@ export function fn_06c20(a2_: number, a3_: number, d0_: number, d1_: number, d2_
       d2 = ((d2 & 0xffff0000) | (load16(a2 + 0x4e) & 65535));
       d0 = ((d0 & 0xffffff00) | (load8(a3) & 255));
       d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
-      d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x3) & 63)) & 65535));
+      const t3 = ((0x3) & 63);
+      d0 = ((d0 & 0xffff0000) | ((t3 >= 16 ? 0 : (((d0 & 65535)) << t3)) & 65535));
       d2 = ((d2 & 0xffff0000) | (((d2 & 65535) - (d0 & 65535)) & 65535));
       d0 = ((d0 & 0xffff0000) | (load16(a2 + 0x50) & 65535));
       d1 = ((d1 & 0xffffff00) | (load8(a3 + 0x1) & 255));
       d1 = ((d1 & 0xffff0000) | (((((d1 & 255)) << 24) >> 24) & 65535));
-      d1 = ((d1 & 0xffff0000) | ((((d1 & 65535)) << ((0x3) & 63)) & 65535));
+      const t4 = ((0x3) & 63);
+      d1 = ((d1 & 0xffff0000) | ((t4 >= 16 ? 0 : (((d1 & 65535)) << t4)) & 65535));
       d0 = ((d0 & 0xffff0000) | (((d0 & 65535) - (d1 & 65535)) & 65535));
       d0 = ((d0 & 0xffff0000) | ((0 - ((d0 & 65535))) & 65535));
       d0 = ((((d0 & 65535)) << 16) >> 16);
@@ -4257,7 +4297,8 @@ export function fn_076ee(a0_: number, a1_: number, a2_: number, a7_: number, d0_
   a1 = load32(a2);
   a1 = load32(a1 + 0x5e);
   d0 = ((d0 & 0xffff0000) | (load16(a1) & 65535));
-  d0 = ((d0 & 0xffff0000) | (((((((d0 & 65535)) << 16) >> 16)) >> ((0x3) & 63)) & 65535));
+  const t0 = ((0x3) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t0 >= 16 ? (((((((d0 & 65535)) << 16) >> 16)) < 0) ? -1 : 0) : ((((((d0 & 65535)) << 16) >> 16)) >> t0)) & 65535));
   store16(a0 + 0x4e, (d0 & 65535));
   if ((((load16(a0 + 0x4e)) << 16) >> 16) >= (((0) << 16) >> 16)) {
     a0 = load32(a2);
@@ -4266,7 +4307,8 @@ export function fn_076ee(a0_: number, a1_: number, a2_: number, a7_: number, d0_
       store16(a0 + 0x4e, 0x148);
       a1 = load32(a0 + 0x5e);
       d0 = ((d0 & 0xffff0000) | (load16(a0 + 0x4e) & 65535));
-      d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x3) & 63)) & 65535));
+      const t1 = ((0x3) & 63);
+      d0 = ((d0 & 0xffff0000) | ((t1 >= 16 ? 0 : (((d0 & 65535)) << t1)) & 65535));
       store16(a1, (d0 & 65535));
     }
   } else {
@@ -4278,7 +4320,8 @@ export function fn_076ee(a0_: number, a1_: number, a2_: number, a7_: number, d0_
   a1 = load32(a2);
   a1 = load32(a1 + 0x62);
   d0 = ((d0 & 0xffff0000) | (load16(a1) & 65535));
-  d0 = ((d0 & 0xffff0000) | (((((((d0 & 65535)) << 16) >> 16)) >> ((0x3) & 63)) & 65535));
+  const t2 = ((0x3) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t2 >= 16 ? (((((((d0 & 65535)) << 16) >> 16)) < 0) ? -1 : 0) : ((((((d0 & 65535)) << 16) >> 16)) >> t2)) & 65535));
   store16(a0 + 0x50, (d0 & 65535));
   if ((((load16(a0 + 0x50)) << 16) >> 16) >= (((0) << 16) >> 16)) {
     a0 = load32(a2);
@@ -4288,7 +4331,8 @@ export function fn_076ee(a0_: number, a1_: number, a2_: number, a7_: number, d0_
       a1 = load32(a0 + 0x62);
       d0 = ((d0 & 0xffff0000) | (load16(a0 + 0x50) & 65535));
       d0 = ((((d0 & 65535)) << 16) >> 16);
-      d0 = ((d0) << ((0x3) & 63));
+      const t3 = ((0x3) & 63);
+      d0 = (t3 >= 32 ? 0 : ((d0) << t3));
       store16(a1, (d0 & 65535));
     }
   } else {
@@ -4357,10 +4401,11 @@ export function fn_07d50(d1: number, arg0: number): void {
   const t3 = ((0x0 & 0xffff0000) | (t2 & 0xffff));
   push(t3, 4);
   const t4 = (t3 + 0xc);
-  const t5 = ((t4) << ((0x2) & 63));
-  push(load32((0x21516 + (t5 | 0))), 4);
+  const t5 = ((0x2) & 63);
+  const t6 = (t5 >= 32 ? 0 : ((t4) << t5));
+  push(load32((0x21516 + (t6 | 0))), 4);
   setReg('a0', 0x21516);
-  setReg('d0', t5);
+  setReg('d0', t6);
   setReg('d1', 0xc);
   callRom(0x041be);
   drop(20);
@@ -4373,11 +4418,12 @@ export function fn_07e7a(d0: number, arg0: number): void {
   const t2 = load8(0x3e1ae2);
   const t3 = ((0x0 & 0xffffff00) | (t2 & 0xff));
   const t4 = (t3 + t3);
-  const t5 = ((t4) << ((0x6) & 63));
-  const t6 = (t5 - t4);
-  store32((0x3e1968 + (t6 | 0) + 0xc), (load32((0x3e1968 + (t6 | 0) + 0xc)) + 0x3e8));
+  const t5 = ((0x6) & 63);
+  const t6 = (t5 >= 32 ? 0 : ((t4) << t5));
+  const t7 = (t6 - t4);
+  store32((0x3e1968 + (t7 | 0) + 0xc), (load32((0x3e1968 + (t7 | 0) + 0xc)) + 0x3e8));
   setReg('a0', 0x3e1968);
-  setReg('d0', t6);
+  setReg('d0', t7);
   setReg('d1', t4);
 }
 
@@ -5303,7 +5349,8 @@ export function fn_0ce48(a0_: number, d0_: number, d1_: number, arg0: number, ar
     store8(0x3e1950, 0x46);
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(a0 + 0x2) & 255));
-    d0 = ((d0) << ((0x2) & 63));
+    const t0 = ((0x2) & 63);
+    d0 = (t0 >= 32 ? 0 : ((d0) << t0));
     a0 = d0;
     a0 = (a0 + d1);
     push(load32(a0), 4);
@@ -5725,7 +5772,8 @@ export function fn_0e824(a0_: number, a1_: number, a2_: number, a3_: number, a4_
     store8(a3, 0);
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | (load8(a4) & 255));
-    d0 = ((d0) << ((0x2) & 63));
+    const t3 = ((0x2) & 63);
+    d0 = (t3 >= 32 ? 0 : ((d0) << t3));
     a1 = 0x104e0;
     store32(a2 + 0x4a, load32((a1 + (d0 | 0))));
     a0 = load32(a2 + 0x4a);
@@ -6036,7 +6084,8 @@ export function fn_0f1fa(a1_: number, a2_: number, a3_: number, d0_: number, d1_
   d0 = ((d0 & 0xffffff00) | (load8(a1 + 0x3) & 255));
   d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + load16(0x3e02b2)) & 65535));
-  d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x7) & 63)) & 65535));
+  const t0 = ((0x7) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t0 >= 16 ? 0 : (((d0 & 65535)) << t0)) & 65535));
   d0 = ((d0 & 0xffffff00) | (((d0 & 255) | load8(a1 + 0x2)) & 255));
   d1 = ((d1 & 0xffffff00) | (load8(a3 + 0x2) & 255));
   d1 = ((d1 & 0xffff0000) | (((d1 & 65535) & 0x8) & 65535));
@@ -6045,7 +6094,8 @@ export function fn_0f1fa(a1_: number, a2_: number, a3_: number, d0_: number, d1_
   d0 = ((d0 & 0xffffff00) | (load8(a1 + 0x1) & 255));
   d0 = ((d0 & 0xffff0000) | (((((d0 & 255)) << 24) >> 24) & 65535));
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + load16(0x3e02b0)) & 65535));
-  d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x7) & 63)) & 65535));
+  const t1 = ((0x7) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t1 >= 16 ? 0 : (((d0 & 65535)) << t1)) & 65535));
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) & 0xff80) & 65535));
   d1 = ((d1 & 0xffff0000) | (load16(a3 + 0xc) & 65535));
   d1 = ((d1 & 0xffff0000) | (((d1 & 65535) & 0x7f) & 65535));
@@ -6138,25 +6188,29 @@ export function fn_0fc9c(d0_: number, d1_: number): void {
 export function fn_11bd8(arg0: number): void {
   const t0 = ((arg0 >>> 24) & 0xff);
   const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
-  const t2 = (((t1 & 0xffff)) << ((0x5) & 63));
-  const t3 = ((t1 & 0xffff0000) | (t2 & 0xffff));
-  const t4 = ((t3 & 0xff) + ((arg0 >>> 16) & 0xff));
-  const t5 = ((t3 & 0xffffff00) | (t4 & 0xff));
-  const t6 = (t5 + 0x3e0864);
-  setReg('d0', t6);
+  const t2 = ((0x5) & 63);
+  const t3 = (t2 >= 16 ? 0 : (((t1 & 0xffff)) << t2));
+  const t4 = ((t1 & 0xffff0000) | (t3 & 0xffff));
+  const t5 = ((t4 & 0xff) + ((arg0 >>> 16) & 0xff));
+  const t6 = ((t4 & 0xffffff00) | (t5 & 0xff));
+  const t7 = (t6 + 0x3e0864);
+  setReg('d0', t7);
 }
 
 export function fn_11bec(arg0: number): void {
   const t0 = ((arg0 >>> 16) & 0xff);
   const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
-  const t2 = (((t1 & 0xffff)) << ((0x8) & 63));
-  const t3 = ((t1 & 0xffff0000) | (t2 & 0xffff));
-  const t4 = ((t3) << ((0x1) & 63));
-  const t5 = ((t4 & 0xff) + ((arg0 >>> 24) & 0xff));
-  const t6 = ((t4 & 0xffffff00) | (t5 & 0xff));
-  const t7 = ((t6) << ((0x3) & 63));
-  const t8 = (t7 + 0x200004);
-  setReg('d0', t8);
+  const t2 = ((0x8) & 63);
+  const t3 = (t2 >= 16 ? 0 : (((t1 & 0xffff)) << t2));
+  const t4 = ((t1 & 0xffff0000) | (t3 & 0xffff));
+  const t5 = ((0x1) & 63);
+  const t6 = (t5 >= 32 ? 0 : ((t4) << t5));
+  const t7 = ((t6 & 0xff) + ((arg0 >>> 24) & 0xff));
+  const t8 = ((t6 & 0xffffff00) | (t7 & 0xff));
+  const t9 = ((0x3) & 63);
+  const t10 = (t9 >= 32 ? 0 : ((t8) << t9));
+  const t11 = (t10 + 0x200004);
+  setReg('d0', t11);
 }
 
 export function fn_12306(a3: number, a5: number, d4: number, d5: number, d7: number): void {
@@ -6370,7 +6424,8 @@ export function fn_13f98(d0_: number, d1_: number): void {
       d0 = 0x0;
       d0 = ((d0 & 0xffff0000) | (load16(0x3e3444) & 65535));
       d1 = 0xb;
-      d0 = ((d0) >>> ((d1) & 63));
+      const t0 = ((d1) & 63);
+      d0 = (t0 >= 32 ? 0 : ((d0) >>> t0));
       d1 = 0x0;
       d1 = ((d1 & 0xffff0000) | ((d0 & 65535) & 65535));
       d0 = d1;
@@ -6683,13 +6738,14 @@ export function fn_1520e(a2_: number, a3_: number, d0_: number, d2_: number, d3_
 export function fn_15672(d0: number, arg0: number): void {
   const t0 = (arg0 & 0xff);
   const t1 = ((d0 & 0xffffff00) | (t0 & 0xff));
-  const t2 = ((0x1) << ((t1) & 63));
-  const t3 = load8(0x3e365a);
-  const t4 = ((0x0 & 0xffffff00) | (t3 & 0xff));
-  const t5 = (t2 | t4);
-  push(t5, 4);
-  setReg('d0', t4);
-  setReg('d1', t5);
+  const t2 = ((t1) & 63);
+  const t3 = (t2 >= 32 ? 0 : ((0x1) << t2));
+  const t4 = load8(0x3e365a);
+  const t5 = ((0x0 & 0xffffff00) | (t4 & 0xff));
+  const t6 = (t3 | t5);
+  push(t6, 4);
+  setReg('d0', t5);
+  setReg('d1', t6);
   callRom(0x155a0);
   drop(4);
 }
@@ -6697,14 +6753,15 @@ export function fn_15672(d0: number, arg0: number): void {
 export function fn_1568e(d1: number, arg0: number): void {
   const t0 = (arg0 & 0xff);
   const t1 = ((d1 & 0xffffff00) | (t0 & 0xff));
-  const t2 = ((0x1) << ((t1) & 63));
-  const t3 = ((~(t2)) & 4294967295);
-  const t4 = load8(0x3e365a);
-  const t5 = ((0x0 & 0xffffff00) | (t4 & 0xff));
-  const t6 = (t3 & t5);
-  push(t6, 4);
-  setReg('d0', t6);
-  setReg('d1', t5);
+  const t2 = ((t1) & 63);
+  const t3 = (t2 >= 32 ? 0 : ((0x1) << t2));
+  const t4 = ((~(t3)) & 4294967295);
+  const t5 = load8(0x3e365a);
+  const t6 = ((0x0 & 0xffffff00) | (t5 & 0xff));
+  const t7 = (t4 & t6);
+  push(t7, 4);
+  setReg('d0', t7);
+  setReg('d1', t6);
   callRom(0x155a0);
   drop(4);
 }
@@ -7066,7 +7123,8 @@ export function fn_16e2c(a0_: number, a2_: number, a4_: number, d0_: number, d4_
   d4 = getReg('d4');
   push(0x2040, 4);
   d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
-  d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x2) & 63)) & 65535));
+  const t0 = ((0x2) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t0 >= 16 ? 0 : (((d0 & 65535)) << t0)) & 65535));
   a0 = 0x1e434;
   push(load32((a0 + ((d0 << 16) >> 16))), 4);
   push(0x2, 4);
@@ -7172,7 +7230,8 @@ export function fn_16eec(a0_: number, a2_: number, a3_: number, a4_: number, d0_
   d4 = getReg('d4');
   push(0x2010, 4);
   d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
-  d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x2) & 63)) & 65535));
+  const t0 = ((0x2) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t0 >= 16 ? 0 : (((d0 & 65535)) << t0)) & 65535));
   a0 = 0x1e448;
   push(load32((a0 + ((d0 << 16) >> 16))), 4);
   push(0x2, 4);
@@ -7907,7 +7966,8 @@ export function fn_188aa(a0_: number, a1_: number, a2_: number, d0_: number, d1_
     return;
   }
   d0 = ((d0 & 0xffff0000) | ((d2 & 65535) & 65535));
-  d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x2) & 63)) & 65535));
+  const t0 = ((0x2) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t0 >= 16 ? 0 : (((d0 & 65535)) << t0)) & 65535));
   a0 = load32((a2 + ((d0 << 16) >> 16) + 0x34));
   d1 = 0x0;
   d1 = ((d1 & 0xffffff00) | (load8(a0 + 0x6) & 255));
@@ -7970,7 +8030,8 @@ export function fn_1890c(d0_: number, d1_: number, arg0: number, arg1: number): 
     d0 = 0x0;
     d0 = ((d0 & 0xffffff00) | ((arg0 & 0xff) & 255));
   }
-  d0 = ((d0 & 0xffff0000) | ((((d0 & 65535)) << ((0x6) & 63)) & 65535));
+  const t0 = ((0x6) & 63);
+  d0 = ((d0 & 0xffff0000) | ((t0 >= 16 ? 0 : (((d0 & 65535)) << t0)) & 65535));
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d1 & 65535)) & 65535));
   d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
   d0 = (d0 + 0x200000);
@@ -7984,19 +8045,21 @@ export function fn_18cde(d0: number, d1: number, arg0: number, arg1: number): vo
   const t2 = (arg1 & 0xff);
   const t3 = ((0x0 & 0xffffff00) | (t2 & 0xff));
   const t4 = ((((t3) >>> 16) & 0xffff) | (((t3) & 0xffff) << 16));
-  const t5 = ((t4) >>> ((0x4) & 63));
-  const t6 = (0x200004 + t5);
-  const t7 = (arg0 & 0xff);
-  const t8 = ((0x0 & 0xffffff00) | (t7 & 0xff));
-  const t9 = ((t8) << ((0x3) & 63));
-  const t10 = (t6 + t9);
+  const t5 = ((0x4) & 63);
+  const t6 = (t5 >= 32 ? 0 : ((t4) >>> t5));
+  const t7 = (0x200004 + t6);
+  const t8 = (arg0 & 0xff);
+  const t9 = ((0x0 & 0xffffff00) | (t8 & 0xff));
+  const t10 = ((0x3) & 63);
+  const t11 = (t10 >= 32 ? 0 : ((t9) << t10));
+  const t12 = (t7 + t11);
   push(d1, 4);
-  push(t10, 4);
+  push(t12, 4);
   push(t1, 4);
   setReg('a0', d1);
-  setReg('a1', t10);
+  setReg('a1', t12);
   setReg('d0', t1);
-  setReg('d1', t9);
+  setReg('d1', t11);
   callRom(0x1e6dc);
   drop(12);
 }
@@ -8192,6 +8255,29 @@ export function fn_1ad6e(a2_: number, a6_: number, d4_: number): void {
   setReg('a2', a2);
   setReg('a6', a6);
   setReg('d4', d4);
+}
+
+export function fn_1ad9a(a2: number, d0: number, d4: number): void {
+  const t0 = load8(a2 + 0x5d);
+  const t1 = ((d0 & 0xffffff00) | (t0 & 0xff));
+  const t2 = ((d4) & 63);
+  const t3 = (t2 >= 8 ? (((((((t1 & 0xff)) << 24) >> 24)) < 0) ? -1 : 0) : ((((((t1 & 0xff)) << 24) >> 24)) >> t2));
+  const t4 = ((t1 & 0xffffff00) | (t3 & 0xff));
+  setReg('d0', t4);
+  jumpRom(0x1ada8);
+  return;
+}
+
+export function fn_1ada2(a2: number, d0: number, d4: number): void {
+  const t0 = load8(a2 + 0x5d);
+  const t1 = ((d0 & 0xffffff00) | (t0 & 0xff));
+  const t2 = ((d4) & 63);
+  const t3 = (t2 >= 8 ? 0 : (((t1 & 0xff)) << t2));
+  const t4 = ((t1 & 0xffffff00) | (t3 & 0xff));
+  store8(a2 + 0x5d, (t4 & 0xff));
+  setReg('d0', t4);
+  jumpRom(0x1b048);
+  return;
 }
 
 export function fn_1adb0(a2_: number, d0_: number, d1_: number, d4_: number): void {
@@ -8527,7 +8613,8 @@ export function fn_1b538(a2_: number, a3_: number, a4_: number, d0_: number, d1_
         d3 = getReg('d3');
         d4 = getReg('d4');
         d1 = load32(a3);
-        d1 = ((d1) >>> ((0x8) & 63));
+        const t6 = ((0x8) & 63);
+        d1 = (t6 >= 32 ? 0 : ((d1) >>> t6));
         d1 = ((d1 & 0xffffff00) | (((d1 & 255) | 0x10) & 255));
         d0 = 0x0;
         d0 = ((d0 & 0xffffff00) | ((d1 & 255) & 255));
@@ -9154,6 +9241,10 @@ export const DECOMPILED: ReadonlyArray<{
   { at: 0x1ad60, fn: fn_1ad60 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x1ad6e, fn: fn_1ad6e as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd4' }] },
+
+  { at: 0x1ad9a, fn: fn_1ad9a as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+
+  { at: 0x1ada2, fn: fn_1ada2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x1adb0, fn: fn_1adb0 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
 
