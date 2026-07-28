@@ -414,15 +414,24 @@ class Lifter:
         if b == "clr":
             self.write(ops[0], Expr("0", "imm"), bits)
             return
-        if b in ("add", "addq", "adda", "addi"):
-            dst = ops[-1]
+        if b in ("add", "addq", "adda", "addi", "sub", "subq", "suba", "subi"):
+            dst = ops[-1].strip()
+            sign = "-" if b.startswith("sub") else "+"
+            if dst in ADDR:
+                # Address arithmetic is always on all 32 bits, and a word source
+                # is sign-extended first. Reading the register at the
+                # instruction's size instead - `adda.w d1,a0` as
+                # `(a0 & 0xffff) + (d1 & 0xffff)` - throws away the top half of
+                # the address and gets the sign of the offset wrong.
+                src = self.read(ops[0], bits).text
+                if bits == 16:
+                    src = f"((({src}) << 16) >> 16)"
+                elif bits == 8:
+                    src = f"((({src}) << 24) >> 24)"
+                self.write(dst, Expr(f"({self.reg_value(dst, 32).text} {sign} {src})"), 32)
+                return
             cur = self.read(dst, bits)
-            self.write(dst, Expr(f"({cur.text} + {self.read(ops[0], bits).text})"), bits)
-            return
-        if b in ("sub", "subq", "suba", "subi"):
-            dst = ops[-1]
-            cur = self.read(dst, bits)
-            self.write(dst, Expr(f"({cur.text} - {self.read(ops[0], bits).text})"), bits)
+            self.write(dst, Expr(f"({cur.text} {sign} {self.read(ops[0], bits).text})"), bits)
             return
         if b in ("and", "andi"):
             dst = ops[-1]
