@@ -107,6 +107,45 @@ def main():
             elif ops and ops[-1].strip() in ADDRS:
                 holds.pop(ops[-1].strip(), None)
 
+    # What a routine's *parameters* are, taken from its callers. A routine that
+    # is always called with a2 pointing at a player has a player as its second
+    # argument, whatever the register happens to be called.
+    argof = defaultdict(lambda: defaultdict(set))
+    for lo, hi in funcs:
+        try:
+            ins = decode(lo, hi)
+        except Exception:                     # noqa: BLE001
+            continue
+        holds = {}
+        for i in ins:
+            b = i.mnemonic.split(".")[0]
+            ops = split_ops(i.op_str or "")
+            if b in ("jsr", "bsr"):
+                tok = (ops[0] if ops else "").strip()
+                m = re.fullmatch(r"\$([0-9a-fA-F]+)(\.(w|l))?", tok)
+                if m:
+                    for reg, what in holds.items():
+                        argof[int(m.group(1), 16)][reg].add(what[0])
+                continue
+            if b in ("lea", "movea") and len(ops) == 2 and ops[1].strip() in ADDRS:
+                dst = ops[1].strip()
+                m = re.fullmatch(r"\$([0-9a-fA-F]+)\.(w|l)", ops[0].strip())
+                got = struct_of(int(m.group(1), 16)) if m else None
+                if got:
+                    holds[dst] = got
+                else:
+                    holds.pop(dst, None)
+            elif ops and ops[-1].strip() in ADDRS:
+                holds.pop(ops[-1].strip(), None)
+
+    named = {a: {r: next(iter(v)) for r, v in regs.items() if len(v) == 1}
+             for a, regs in argof.items()}
+    named = {a: r for a, r in named.items() if r}
+    (HERE / "out" / "argnames.json").write_text(json.dumps(
+        {hex(a): r for a, r in named.items()}))
+    print(f"routines whose callers agree on what a register holds: {len(named)}")
+    print(f"  parameters named that way: {sum(len(r) for r in named.values())}")
+
     lines = []
     for struct, _, _, _ in STRUCTS:
         fields = use[struct]

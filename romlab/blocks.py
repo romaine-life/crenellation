@@ -19,6 +19,8 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+import roles
+
 from cfg import build, decode as cfg_decode, reducible, target_of
 from m68kts import cycles as insn_cycles
 from decomp import (ADDR, DATA, Bail, Expr, Lifter, SIZE_BITS, decode, ident, num,
@@ -1252,6 +1254,18 @@ def main():
             # ran correctly and failed to type-check, the one combination the
             # oracle cannot catch.
             guard = "  let _guard = 0;\n  void _guard;\n"
+            # Parameters named for what the routine does with them. The body is
+            # the evidence: a register only ever dereferenced is a pointer, one
+            # a `dbra` counts down is a count, one set from a known structure's
+            # base is that structure.
+            names = roles.rename("\n".join(body), regs,
+                                 [lifter.params[k] for k in sorted(lifter.params)],
+                                 decl, tail)
+            if names:
+                decl = roles.apply(decl, names)
+                tail = roles.apply(tail, names)
+                sig = roles.apply(sig, names)
+                body = [roles.apply(b, names) for b in body]
             src = (f"export function {ident(r['at'])}({sig}): void {{\n"
                    + guard
                    + (decl + "\n" if decl else "")
