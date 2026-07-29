@@ -10,7 +10,7 @@
 // touched is compared byte for byte. A decompiled routine that differs
 // anywhere is not decompiled, it is wrong.
 
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -193,7 +193,12 @@ describe('decompiled routines against the recompiled oracle', () => {
     // Added to, not replaced. Each run only sees the routines currently in the
     // module, so overwriting swaps one set of failures for the next and the
     // list never grows.
-    const listPath = join(here, '..', '..', '..', 'romlab', 'out', 'unproven.json');
+    // romlab/out/ is generated and gitignored, so on a clean checkout - which
+    // is what CI has - the directory does not exist and writing the gate list
+    // takes the whole build down with ENOENT.
+    const outDir = join(here, '..', '..', '..', 'romlab', 'out');
+    mkdirSync(outDir, { recursive: true });
+    const listPath = join(outDir, 'unproven.json');
     const already: number[] = existsSync(listPath)
       ? (JSON.parse(readFileSync(listPath, 'utf8')) as number[]) : [];
     const failing = new Set<number>(already);
