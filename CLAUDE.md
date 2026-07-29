@@ -1,37 +1,109 @@
 # crenellation
 
-Rampart-like castles-and-cannons arcade game (2P couch, controllers, one URL) —
-**mid-port from the chess-tactics engine** (imported at chess-tactics@09cc849b,
-no history carried). The chess screens still exist as reference while the port
-proceeds; Rampart code lives in `frontend/src/rampart/` and mounts at `/play`
-(`/skirmish` is the inherited chess game, which dies when the port no longer
-needs it).
+Rampart (Atari, 1990), recreated. Not a lookalike: the real ROM, translated to
+TypeScript twice over, and the game runs on the second translation.
 
-Ground rules settled at kickoff (don't relitigate):
+- **`frontend/src/rom/dispatch.ts`** — the *recompilation*. One function per ROM
+  routine, each a program counter and a switch over transliterated instructions.
+  Verified instruction-by-instruction against real silicon (9,169/9,173 cases
+  exact). It understands nothing, and it is right. **It is the oracle, and
+  nothing the game runs imports it** — only tests do.
+- **`frontend/src/rom/decompiled.ts`** — the *decompilation*. Recovered source:
+  parameters, locals, real control flow, `if`/`for`. **This is what the game
+  runs, and it is the source**, not a build artifact.
+- **`romlab/`** — Python that produced it. Still live, because the lifter still
+  improves; see "Regenerating" before running it.
 
+`/play` mounts the game (`frontend/src/rom/RomScreen.tsx`, machine in a Web
+Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
+`/progress` is the status page.
+
+## Where it stands
+
+- 1,064 decompiled functions: 778 ROM routines plus ~300 entry points.
+- The game boots, draws the attract screen in colour, and reaches gameplay
+  running on decompiled code alone.
+- **425 of 1,064 routines are named.** The rest are `fn_0ccb2`. Parameters are
+  ~34% named.
+- One deliberate rule change is live: `wallCellSet` no longer counts the cell
+  above as connected (see `romlab/handedits.py`).
+- Known divergence: 7 bytes of sound-sequencer state from frame 276, in the
+  boot tail. Not on the visible path.
+
+## Regenerating
+
+`cd romlab && python3 idents.py && python3 blocks.py && rm -f out/unproven.json
+&& python3 decomp.py && python3 handedits.py`
+
+Order matters and two steps are easy to get wrong:
+
+- **`rm out/unproven.json` before `decomp.py`, not after.** It is read at
+  generation time; clearing it afterwards silently emits the previous run's
+  held-back set and every count is wrong.
+- **`handedits.py` last.** Regeneration overwrites `decompiled.ts`, so every
+  deliberate edit lives there too and is re-applied. An edit that no longer
+  applies is an *error* — the lifter now produces different text and the change
+  has to be re-expressed, or taught to the lifter.
+- **`rm -rf romlab/__pycache__`** after editing a module another script imports.
+  Stale bytecode has survived edits here more than once.
+
+## Verifying
+
+- **`decomp.test.ts`** — every routine against the oracle on random machine
+  states. Calls from inside a routine go to the *recompiled* callee, so each
+  test isolates one routine. `DECOMP_ONLY=13000-13a00` restricts the range; the
+  full run is slow.
+- **`compose.test.ts`** — the same ROM booted both ways, all of work RAM, the
+  playfield **and the palette** compared every frame. `MODIFIED=1` flips it to
+  assert the opposite — that a deliberate change is present — which is the
+  right question once a rule has been changed on purpose.
+- **`writes.test.ts`** — every write to a region from both runs, first
+  difference, plus the JavaScript stack that made it. `W_LO`/`W_HI` set the
+  window. This is the instrument that works: call sequences are *not*
+  comparable between the two dispatchers, because the recompiled one only sees
+  calls that leave a routine's own switch while the decompiled one routes every
+  call through.
+
+Per-routine verification passing does **not** mean the game works. `movep` was
+stubbed as a no-op and every routine still verified clean, because the harness
+never built a state where it mattered; the game drew every frame perfectly in
+black for hours. Ask what is on screen, not only whether memory matched.
+
+## Things that cost hours
+
+- **A decompiled function has one entry.** The recompiler can start a routine at
+  any address; this cannot, so every address the game enters at needs its own
+  function. They come from tail jumps, jump tables and `lea $X(pc),a6`
+  continuations — a scan of branch targets finds none of the last two. Each one
+  fixed lets the game run further and reveals the next, so close the set against
+  the *pure* decompiled run: a census that falls back to the recompiler takes a
+  different path and misses them.
+- **Decompiled code has no instruction boundaries**, so interrupts are polled at
+  block heads with cycles charged from the recompiler's own cost model. Without
+  it the sound driver's busy-wait never ends.
+- **`\b` inside a bash heredoc becomes a literal backspace byte**, and both grep
+  and the file reader render it invisibly — a regex that can never match, in a
+  function whose source looks correct. Prefer the editor tool for anything with
+  escapes.
+- **A truncated dump lies.** `decode(lo, lo+90)` cuts the last instruction and
+  capstone reports a different one entirely. Always use the routine's real
+  extent from `facts.json`.
+
+## Ground rules (settled; don't relitigate)
+
+- **The ROM stays in the repo.** Decided deliberately.
 - **Binary assets are data, never source.** `frontend/public/assets/` is
-  gitignored (present locally for the dev server); art/music ship from the
-  `crenellationmedia` storage account, not the repo or the image.
-- **Persistence**: own Azure Postgres (`crenellation-pg`, db `crenellation`,
-  workload identity `crenellation-identity`) — maps, profiles, in-progress
-  battles as jsonb-style documents. The game must stay playable with the DB
-  down. Provisioned by `tofu/` (state key `crenellation.tfstate`).
-- **Deploys**: ArgoCD watches the `prod` branch (`k8s/`), host
-  crenellation.romaine.life. Deliberately not cut until the port has something
-  worth serving; build-and-deploy on main fails at the sprite guard until the
-  frontend checks are reshaped for rampart — known, not worth fixing early.
-- Gameplay constants (phase timers, scoring) are placeholders in
-  `frontend/src/rampart/phases.ts` pending extraction from the Rampart ROM —
-  numbers only; no ripped art or audio (repo and site are public).
-- **Local dev is the live-db flow, same shape as chess-tactics**: set
-  `DATABASE_URL` in the shell (pgadmin + the break-glass password from
+  gitignored; art/music ship from the `crenellationmedia` storage account.
+- **Persistence**: Azure Postgres (`crenellation-pg`, db `crenellation`,
+  workload identity `crenellation-identity`), provisioned by `tofu/` (state key
+  `crenellation.tfstate`). The game must stay playable with the DB down.
+- **Deploys**: push `main` → build → the workflow publishes the image tag to the
+  `prod` branch, which ArgoCD watches. Host **rampart.romaine.life**
+  (`k8s/values.yaml`; the description in `k8s/Chart.yaml` is stale).
+- **Local dev**: set `DATABASE_URL` (pgadmin + break-glass password from
   ng6-crenellation, `sslmode=require`, password URL-encoded), then
-  `devctl up crenellation-backend` — plain `node supervisor.js`, inherits the
-  env, talks straight to the PROD `crenellation-pg`. The workstation IP is a
-  hand-added server firewall rule (`dev-nelson-laptop`, not in tofu — same as
-  chess-tactics-pg). Frontend iteration stays on `devctl up
-  crenellation-frontend` (vite, no proxy); persistence testing runs against
-  the backend's baked preview, same as chess-tactics.
+  `devctl up crenellation-backend`. Frontend on `devctl up crenellation-frontend`.
+  The workstation IP is a hand-added firewall rule (`dev-nelson-laptop`).
 
 # Working in this repo
 
@@ -41,6 +113,10 @@ Ground rules settled at kickoff (don't relitigate):
 machine — its capture step hangs (every grab times out at ~30s, even on a blank
 page). The dev server is fine; only the pixel grab is broken.** Don't retry it,
 and don't tell the user screenshots are impossible. Use the helper below.
+
+For the ROM game specifically there is a shorter path: the tests render the
+machine's own framebuffer to PNG via `frontend/src/rom/png.ts`, no browser
+involved.
 
 ### How
 
@@ -56,27 +132,10 @@ and don't tell the user screenshots are impossible. Use the helper below.
    ```
    npm run shot -- <url> [--select <css>] [--out <path>] [--size <WxH>] [--ready <jsExpr>] [--full]
    ```
-   Examples:
-   ```
-   # one element off a REAL screen — small, exact, no fixture needed:
-   npm run shot -- http://127.0.0.1:5199/skirmish --select '[data-testid=skirmish-board]'
-   npm run shot -- http://127.0.0.1:5199/skirmish --select '.skirmish-board-unit' --out tmp-shots/unit.png
-   # whole viewport / a small fixture page:
-   npm run shot -- http://127.0.0.1:5199/unit-studio --size 1200x800
-   ```
    Output defaults to `frontend/tmp-shots/shot.png` (gitignored). **Default to showing the
    small PNG inline — never substitute a link + description for the pixels.**
 
-This works on ANY live route by selector — no per-target fixture, so there's no "new
-screen ⇒ flail" cliff. `frontend/scripts/shot.mjs` is the implementation.
-
-### Reaching a specific UI state
-
-The Studio encodes its state in the URL, so deep-link instead of clicking:
-- `mode=catalog|lab`
-- `lab=board|tile|unit` (Lab component view)
-- `view=board`, `family=<id>`, `collection=<id>`, `asset=<id>`, `unit=<id>`, `seed=<n>`
-- `/unit-studio` is an alias for the Studio with the Units shelf preselected.
+`frontend/scripts/shot.mjs` is the implementation.
 
 ## Dev environment gotchas (git worktrees)
 
