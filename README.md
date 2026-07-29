@@ -1,9 +1,51 @@
-# Chess Tactics
+# crenellation
 
-Chess-based squad combat prototype.
+Rampart (Atari, 1990), recreated. Not a lookalike: the arcade ROM, translated
+to TypeScript, running in a browser at [rampart.romaine.life](https://rampart.romaine.life).
 
-The sample is a small tactical browser game served by Node/Express. Three
-hybrid chess units defend anchors against enemy telegraphs across six breaches.
+There are two translations of the same ROM in this repo, and the difference
+matters.
+
+**`frontend/src/rom/dispatch.ts` is the recompilation** — one function per ROM
+routine, each a program counter and a switch over transliterated instructions.
+It was checked instruction by instruction against real silicon under MAME:
+9,169 of 9,173 cases exact. It runs the game and understands none of it. Today
+it is the *oracle*, and nothing the game runs imports it.
+
+**`frontend/src/rom/decompiled.ts` is the decompilation** — recovered source.
+Stack arguments became parameters, registers became locals, the control-flow
+graph became `if` and `for`, and a `jsr` became a call. Every function in it is
+proved against the routine at the same address in the recompilation, on random
+machine states, by `src/rom/decomp.test.ts`.
+
+**The game runs on the decompilation.** `/play` boots the machine from its reset
+vector through decompiled routines, draws from the playfield the ROM's own code
+fills in, and takes live input. `/progress` shows where the work stands.
+
+That is the point of the exercise: a version of Rampart that can be *changed*.
+One rule already has been — walls no longer count the cell above them as
+connected — by editing the TypeScript, not by patching the ROM.
+
+## Where the work stands
+
+- 1,064 decompiled functions: 778 ROM routines plus the entry points a
+  decompiled function needs, since unlike a switch it has only one way in.
+- 425 of them are named. The rest are `fn_0ccb2`, which is uninformative and
+  honest; a plausible name nobody checked would be neither.
+- `romlab/DECOMPILER.md` is the design and the hard-won rules. `ROUTINES.md`
+  and `DISASSEMBLY.md` cover the recompilation and the overlay map.
+
+## Layout
+
+| | |
+|---|---|
+| `frontend/src/rom/` | the machine, both translations, the harnesses |
+| `romlab/` | Python that produced them, and the analysis |
+| `frontend/src/ui/` | the site around the game |
+| `backend/`, `k8s/`, `tofu/` | serving, deploy, infrastructure |
+
+Binary assets are data, never source: art and music ship from storage, not the
+repo or the image. The ROM itself is in the repo, deliberately.
 
 ## Local Dev
 

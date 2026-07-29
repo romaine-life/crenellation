@@ -25,6 +25,42 @@ one as verified only if every piece it was later split into is.
 nothing injected - it comes back with exactly 593, which is the check that it is
 the right list - and none of them are outstanding.
 
+## The decompilation
+
+The table above is the *recompilation* - the transliteration checked against
+hardware. It is now the oracle for a second translation rather than the thing
+that runs.
+
+`frontend/src/rom/decompiled.ts` is recovered source: parameters, locals, real
+control flow. Every function in it is run twice from identical machines, once
+through the recompiled routine at the same address and once as itself, and
+compared on every register and every byte either could have touched
+(`src/rom/decomp.test.ts`). A function that disagrees is held back and not
+emitted.
+
+| | |
+|---|---|
+| Decompiled functions | 1,064 |
+| ROM routines among them | 778 |
+| Entry points | ~300 |
+| Named | 425 |
+
+The entry points are not extra routines. A decompiled function has one way in
+where a switch has many, so every address the game enters at - tail jumps, jump
+table cases, `lea $X(pc),a6` continuations - needs a function of its own,
+lifted from there to the end of the routine it lands in.
+
+**Verifying every routine is not the same as the game working.** `movep` was
+stubbed as a no-op on the assumption only the unmodelled sound chips used it;
+every routine still verified clean, because the harness never built a state
+where it mattered. The palette is wired through `movep`, so the game drew every
+frame correctly in black. `src/rom/compose.test.ts` boots the ROM both ways and
+compares work RAM, the playfield and the palette every frame; that is the check
+that would have caught it, once the palette was in it.
+
+Known outstanding: seven bytes of sound-sequencer state diverge from frame 276,
+in the boot tail, off the visible path.
+
 Five harnesses, in the order they were needed:
 
 1. **Generated arguments, three shapes in a pass.** Call the routine, compare
