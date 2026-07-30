@@ -1032,6 +1032,18 @@ def lift_once(lo, hi, names, seed=()):
             # the graph cannot answer, and the oracle is the thing deciding
             # whether it was right - taking None here instead costs five
             # routines and gains one.
+        # The condition codes as they stand at this block's head, for the
+        # interrupt poll below. A handler saves the status register of what it
+        # interrupted, and the lifted world keeps its flags as JavaScript
+        # values, so without this it saves whatever the machine last held - the
+        # Z bit of the sound driver's spin was the visible half of it. They
+        # have to be taken here: after the block is lifted they are the flags
+        # at its end, which is a different state entirely.
+        _stash = lifter.stmts
+        lifter.stmts = []
+        lifter.sync_flags()
+        irq_flags = " ".join(lifter.stmts)
+        lifter.stmts = _stash
         ins = decode(s, e)
         for i in ins:
             b = i.mnemonic.split(".")[0]
@@ -1150,7 +1162,21 @@ def lift_once(lo, hi, names, seed=()):
         # only has to be close: a frame's worth of work should cost about what
         # it costs on the chip, not any one instruction exactly.
         cost = sum(insn_cycles(i) for i in ins)
-        lifted[n] = ([f"tick({cost});"] if cost else []) + list(lifter.stmts)
+        # The block's own address goes with its cost. An interrupt taken at
+        # this poll stacks a return address, and the lifted world had none to
+        # give: `interruptFrame` stacks `next`, which only the recompiler ever
+        # set, so every exception frame the decompiled game pushed carried a
+        # program counter of zero. The block head is the right value and the
+        # honest one - it is where this code would resume, and it is exactly
+        # the address the chip was at when it took the same interrupt.
+        head = ins[0].address if ins else 0
+        # The poll reports; the block takes. __IRQSPILL__ is replaced at
+        # assembly time with this function's register spill, once the full set
+        # of register locals is known - a block cannot know it, because the
+        # lifter discovers registers as it goes.
+        lifted[n] = [f"if (tick({cost}, 0x{head:05x})) {{ "
+                     f"{irq_flags + ' ' if irq_flags else ''}__IRQSPILL__takeIrq(); }}"] \
+            + list(lifter.stmts)
         end_flags[n] = lifter.flags
     for copy, orig in clone_of.items():
         lifted[copy] = list(lifted[orig])
@@ -1294,6 +1320,13 @@ def main():
                 tail = roles.apply(tail, names)
                 sig = roles.apply(sig, names)
                 body = [roles.apply(b, names) for b in body]
+            # Now the register locals are known, so each block head's interrupt
+            # poll can say what to put back in the machine before the handler
+            # saves it. Renaming has already run, so the names here are the
+            # ones the body uses.
+            spill = "".join(f"setReg('{x}', {names.get(x, x) if names else x}); "
+                            for x in regs if x != "a7")
+            body = [b.replace("__IRQSPILL__", spill) for b in body]
             src = (f"export function {ident(r['at'])}({sig}): void {{\n"
                    + guard
                    + (decl + "\n" if decl else "")

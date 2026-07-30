@@ -4,13 +4,18 @@
 // That is not the same claim as "the game runs on them": routines call each
 // other, share memory, and are entered at addresses the harness never picks.
 // This boots the same ROM twice - once through the recompiled dispatcher, once
-// through the decompiled one - and compares a digest of everything either
-// could have touched, once per frame.
+// through the decompiled one - and compares everything either could have
+// touched, once per frame, for a whole game.
 //
 // The two runs cannot be interleaved. `run` never returns, because the game's
 // main loop does not, and the nesting of `jsr` lives on the JavaScript stack -
 // unwinding out of it to swap machines would leave a resumed `rts` with no
-// caller. So each runs to completion and is compared by digest afterwards.
+// caller. So each runs to completion and is compared afterwards.
+//
+// Comparison is by digest per frame, not by keeping the frames. A snapshot is
+// 264 KB and a pattern runs thousands of frames: holding both runs' snapshots
+// would be gigabytes. The digests say which frame first differs, and the two
+// runs are then repeated to that frame to say which bytes.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -19,25 +24,24 @@ import { describe, it, expect } from 'vitest';
 import { System } from './system';
 import { call as viaRecompiled } from './dispatch';
 import { call as viaDecompiled, bind } from './decompiled';
+import { PATTERNS, type Pattern } from './patterns';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
+
+type Machine = System['m'];
+type Entry = (addr: number, m: Machine) => void;
 
 // Once a rule has been changed on purpose, "identical to the original" is the
 // wrong question - the decompiled source is no longer trying to be the ROM. The
 // matching decompilation projects handle this with a build flag; same idea.
 const MODIFIED = process.env.MODIFIED === '1';
 
-// The deliberate change is to the wall-adjacency rule, and walls first exist
-// when the attract demo lays them - around frame 900. 120 frames of boot
-// cannot see it; the assertion used to pass anyway on an incidental early
-// divergence in the self test, and stopped the day that was fixed and the
-// two runs became identical through the whole window.
-const FRAMES = Number(process.env.COMPOSE_FRAMES ?? (MODIFIED ? 1200 : 120));
-const ended: string[] = [];
-const REGS = ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7',
-  'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7'];
+// A single pattern, by name, when chasing one divergence. Empty means all.
+const ONLY = process.env.COMPOSE_ONLY ?? '';
+// A cap, for a quick run. Zero means each pattern's own full length.
+const CAP = Number(process.env.COMPOSE_FRAMES ?? 0);
 
 /** Everything either run could have touched, for a byte-level comparison. */
 function snapshot(sys: System): Uint8Array {
@@ -66,98 +70,97 @@ function where(i: number): string {
   return `palette 0x${(0x3c0000 + i - 0x20000).toString(16)}`;
 }
 
-/** FNV-1a over work RAM, the playfield and the registers. */
-function digest(sys: System): number {
-  const m = sys.m;
+/** FNV-1a over a snapshot. */
+function digestOf(s: Uint8Array): number {
   let h = 0x811c9dc5;
-  const mix = (v: number): void => {
-    h ^= v & 0xff;
+  for (let i = 0; i < s.length; i += 1) {
+    h ^= s[i];
     h = Math.imul(h, 0x01000193) >>> 0;
-  };
-  for (let a = 0x3e0000; a < 0x400000; a += 1) mix(m.byte(a));
-  for (let a = 0x200000; a < 0x220000; a += 1) mix(m.byte(a));
-  for (const r of REGS) {
-    const v = (m as unknown as Record<string, number>)[r] >>> 0;
-    mix(v); mix(v >>> 8); mix(v >>> 16); mix(v >>> 24);
   }
   return h >>> 0;
 }
 
-function shots(entry: (addr: number, m: Machine) => void): Uint8Array[] {
+/**
+ * Run one pattern. `upto` stops at that frame and returns its snapshot;
+ * otherwise the whole pattern runs and only digests come back.
+ */
+function play(p: Pattern, entry: Entry, upto = 0): {
+  digests: number[]; frames: number; shot: Uint8Array | null; ended: string;
+} {
   const sys = new System(rom, board);
   bind(sys.m);
-  const out: Uint8Array[] = [];
+  const digests: number[] = [];
+  let shot: Uint8Array | null = null;
+  const limit = CAP || p.frames;
   const STOP = new Error('enough');
+  let frames = 0;
+  let died = '';
   try {
     sys.run(() => {
-      out.push(snapshot(sys));
-      if (out.length >= FRAMES) throw STOP;
+      frames += 1;
+      p.at(frames, sys);
+      if (upto) {
+        if (frames === upto) { shot = snapshot(sys); throw STOP; }
+      } else {
+        digests.push(digestOf(snapshot(sys)));
+        if (frames >= limit) throw STOP;
+      }
     }, entry);
   } catch (e) {
-    if (e !== STOP) throw e;
+    if (e !== STOP) died = (e as Error).message.slice(0, 90);
   }
-  ended.push(`${out.length} frames, stopped=${sys.m.stopped}, pc=0x${(sys.m.pc >>> 0).toString(16)}`);
-  return out;
+  return { digests, frames, shot,
+    ended: `${frames} frames, stopped=${sys.m.stopped}${died ? `, died: ${died}` : ''}` };
 }
 
-function digests(entry: (addr: number, m: Machine) => void): number[] {
-  const sys = new System(rom, board);
-  bind(sys.m);
-  const out: number[] = [];
-  const STOP = new Error('enough');
-  try {
-    sys.run(() => {
-      out.push(digest(sys));
-      if (out.length >= FRAMES) throw STOP;
-    }, entry);
-  } catch (e) {
-    if (e !== STOP) throw e;
-  }
-  return out;
+/** The first frame whose digests differ, or -1. */
+function firstDiff(a: number[], b: number[]): number {
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i += 1) if (a[i] !== b[i]) return i + 1;
+  return a.length === b.length ? -1 : n + 1;
 }
 
-type Machine = System['m'];
+function compare(p: Pattern): string {
+  const a = play(p, viaRecompiled);
+  const b = play(p, viaDecompiled);
+  const f = firstDiff(a.digests, b.digests);
+  if (f < 0) return `${p.name}: identical for ${a.frames} frames`;
+  // Say which bytes, by replaying both to that frame. Only then is a snapshot
+  // worth keeping.
+  const sa = play(p, viaRecompiled, f).shot;
+  const sb = play(p, viaDecompiled, f).shot;
+  if (!sa || !sb) {
+    return `${p.name}: diverges at frame ${f} (${a.frames} vs ${b.frames} frames run)`;
+  }
+  const diffs: string[] = [];
+  let total = 0;
+  for (let i = 0; i < sa.length; i += 1) {
+    if (sa[i] !== sb[i]) {
+      total += 1;
+      if (diffs.length < 6) diffs.push(`${where(i)} ${sa[i]}!=${sb[i]}`);
+    }
+  }
+  return `${p.name}: frame ${f} of ${a.frames}, ${total} bytes differ - ${diffs.join(' ')}`;
+}
 
 describe('the decompiled routines compose', () => {
+  const chosen = PATTERNS.filter((p) => !ONLY || p.name.includes(ONLY));
+
   it.skipIf(MODIFIED)('runs the game identically to the recompiled ones', () => {
-    const a = shots(viaRecompiled);
-    const b = shots(viaDecompiled);
-    let note = `identical for ${a.length} frames`;
-    outer:
-    for (let f = 0; f < Math.min(a.length, b.length); f += 1) {
-      const diffs: string[] = [];
-      for (let i = 0; i < a[f].length; i += 1) {
-        if (a[f][i] !== b[f][i]) {
-          diffs.push(`${where(i)} ${a[f][i]}!=${b[f][i]}`);
-          if (diffs.length >= 6) break;
-        }
-      }
-      if (diffs.length) {
-        let total = 0;
-        for (let i = 0; i < a[f].length; i += 1) if (a[f][i] !== b[f][i]) total += 1;
-        note = `frame ${f}: ${total} bytes differ - ${diffs.join(' ')}`;
-        break outer;
-      }
-    }
-    writeFileSync(join(here, 'compose.txt'), [note, ...ended].join('\n'));
-    // Both runs end where the game ends, which is itself part of behaving the
-    // same. What matters is that no frame differed and that they ran equally
-    // far - not that either reached some number this test picked.
-    expect(note).toBe(`identical for ${a.length} frames`);
-    expect(b.length).toBe(a.length);
-  }, 900000);
+    const lines = chosen.map(compare);
+    writeFileSync(join(here, 'compose.txt'), lines.join('\n') + '\n');
+    const bad = lines.filter((l) => !l.includes('identical'));
+    expect(bad).toEqual([]);
+  }, 3600000);
 
   // With a rule changed, the useful claim is the opposite one: the change is
-  // actually in the running game rather than in a file nothing reads.
+  // actually in the running game rather than in a file nothing reads. Walls
+  // first exist when the demo lays them, which is why this needs a pattern
+  // that plays rather than the first frames of boot.
   it.skipIf(!MODIFIED)('differs from the original where it was changed', () => {
-    const a = shots(viaRecompiled);
-    const b = shots(viaDecompiled);
-    let differs = false;
-    for (let f = 0; f < Math.min(a.length, b.length) && !differs; f += 1) {
-      for (let i = 0; i < a[f].length; i += 1) {
-        if (a[f][i] !== b[f][i]) { differs = true; break; }
-      }
-    }
-    expect(differs).toBe(true);
-  }, 900000);
+    const p = chosen[0];
+    const a = play(p, viaRecompiled);
+    const b = play(p, viaDecompiled);
+    expect(firstDiff(a.digests, b.digests)).toBeGreaterThan(0);
+  }, 3600000);
 });

@@ -868,12 +868,20 @@ class Lifter:
             self.write(dst, Expr(f"(({keep}({parts})) >>> 0)"), 32)
             return
         if b == "rte":
-            # Return from exception: the status register and then the program
-            # counter come back off the stack. The dispatcher takes it from
-            # there, exactly as for any other jump.
+            # Return from exception. The status register and the program
+            # counter come back off the stack, and the stack has to be
+            # balanced - but the resume is a JavaScript return, not a jump.
+            # Every exception in the lifted world is entered by a call: the
+            # interrupt poll at a block head calls the handler, and so does
+            # `trap`. Jumping to the popped address instead asks the
+            # dispatcher to enter mid-routine, which a decompiled function
+            # cannot do - it worked only while the stacked address was zero,
+            # and the census duly recorded a jump to 0x0. With a real address
+            # stacked it fails loudly at 0x14510 instead, which is how this
+            # was found.
             self.stmts.append("setSr(popWord());")
             self.flush()
-            self.stmts.append("jumpRom(popLong());")
+            self.stmts.append("popLong();")
             self.stmts.append("return;")
             return
         if b == "reset":
@@ -954,8 +962,16 @@ class Lifter:
         stmts = list(self.stmts)
         # The single-block pass has one block, so its whole cost is charged at
         # the top - same reason as the branching pass.
+        # The routine's own address goes with the cost, so an interrupt taken
+        # at this poll has a return address to stack - see blocks.py. The
+        # registers this routine holds in locals go back to the machine first,
+        # because the handler saves them with movem and would otherwise save
+        # whatever the machine last held.
         if getattr(self, 'cost', 0):
-            stmts.insert(0, f'tick({self.cost});')
+            spill = "".join(f"setReg('{r}', {r}); "
+                            for r in sorted(self.used_regs) if r != "a7")
+            stmts.insert(0, f'if (tick({self.cost}, 0x{addr:05x})) '
+                            f'{{ {spill}takeIrq(); }}')
         if getattr(self, "falls_through", False):
             # No terminator: the machine carries straight on into whatever
             # follows, so this does too. Several map entries are labels the ROM
@@ -1190,15 +1206,16 @@ const popWord = (): number => { const v = M.load(M.a7 >>> 0, 16); M.a7 = (M.a7 +
  * on. Without it nothing can ever interrupt a busy-wait - and the sound driver
  * spins on a byte that only an interrupt changes.
  */
-const tick = (n: number): void => {
+const tick = (n: number, at = 0): boolean => {
   M.cycles += n;
   M.steps += 1;
+  // Where the machine is, as far as the lifted world can say: the head of the
+  // block about to run. `interruptFrame` stacks `next`, so without this every
+  // exception frame the decompiled game pushed carried a program counter of
+  // zero where the chip pushed a real address - seven bytes of difference per
+  // interrupt, in the middle of the sound driver's busy-waits.
+  if (at) { M.pc = at; M.next = at; }
   if (M.atPc) M.atPc(M.pc);
-  if (M.irqPending && ((M.sr >> 8) & 7) < M.irqPending) {
-    const lvl = M.irqPending;
-    if (M.clearOnTake) M.irqPending = 0;
-    call(M.interruptFrame(lvl), M);
-  }
   // The same bound the machine enforces per instruction, charged per block:
   // several routines loop forever on arbitrary input, and an unbounded lifted
   // side turns a comparison harness into a hang. Composed runs set the budget
@@ -1206,11 +1223,32 @@ const tick = (n: number): void => {
   if (M.steps > M.budget) {
     throw new Error('instruction budget exhausted after ' + M.steps + ' blocks; recent transfers ' + __ring.map((a) => a.toString(16)).join(' '));
   }
+  // Whether an interrupt is waiting, rather than taking it here. The caller
+  // has to put its registers back in the machine first, and only the caller
+  // knows where they are - see takeIrq.
+  return M.irqPending !== 0 && ((M.sr >> 8) & 7) < M.irqPending;
+};
+/**
+ * Take the interrupt the poll found.
+ *
+ * The handler's first act is `movem.l d2-d7/a2-a3,-(a7)`: it saves the
+ * registers of whatever it interrupted. On the chip those are in the chip. In
+ * the lifted world they are JavaScript locals, so the block head spills them
+ * before calling in - otherwise the handler saves whatever the machine last
+ * happened to hold, restores that afterwards, and the two runs' stacks differ
+ * by eight longs every time an interrupt lands. The spill is emitted inside
+ * the `if`, so it costs nothing on the blocks where no interrupt is waiting -
+ * which is nearly all of them.
+ */
+const takeIrq = (): void => {
+  const lvl = M.irqPending;
+  if (M.clearOnTake) M.irqPending = 0;
+  call(M.interruptFrame(lvl), M);
 };
 /** `stop` - the chip halts and nothing after it runs. */
 const halt = (): void => { M.stopped = true; };
 void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
-void halted; void halt; void tick;
+void halted; void halt; void tick; void takeIrq;
 let __sp = 0;
 void stackPointer; void setStackPointer; void popLong; void __sp;
 """
