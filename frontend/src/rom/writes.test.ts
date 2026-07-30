@@ -45,7 +45,11 @@ function record(entry: (addr: number, m: System['m']) => void, stopAt = -1): {
   const note = (a: number, v: number, bits: number): void => {
     if (a < LO || a >= HI || run.n >= CAP) return;
     if (run.n === stopAt) {
-      stack = (new Error().stack ?? '').split('\n').slice(2, 10)
+      // Deep enough to reach the caller that passed the wrong value, not just
+      // the routine that stored it. Eight frames stopped at the callRom into
+      // the routine under suspicion, which is one frame short of the answer
+      // every time the bug is in an argument.
+      stack = (new Error().stack ?? '').split('\n').slice(2, 30)
         .map((l) => (l.match(/at (\w+)/) ?? [])[1]).filter(Boolean).join(' <- ');
     }
     run.addr[run.n] = a;
@@ -90,10 +94,18 @@ describe('writes to work RAM', () => {
       // separate fault. The stack is captured before that happens.
       let who = '';
       try { who = record(viaDecompiled, i).stack; } catch (e) { who = `(${(e as Error).message})`; }
+      // A window either side, not three writes. The first differing write is
+      // often several writes downstream of the cause, and the run up to it is
+      // what says which.
+      const run = (r: Run, from: number, to: number): string => {
+        const out: string[] = [];
+        for (let k = Math.max(0, from); k <= to; k += 1) out.push(show(r, k));
+        return out.join(' ');
+      };
       note = [`diverge at write ${i} of ${a.n}/${b.n}`,
-        `  recompiled: ${show(a, i)} ${show(a, i + 1)} ${show(a, i + 2)}`,
-        `  decompiled: ${show(b, i)} ${show(b, i + 1)} ${show(b, i + 2)}`,
-        `  before:     ${show(a, i - 2)} ${show(a, i - 1)}`,
+        `  common:     ${run(a, i - 8, i - 1)}`,
+        `  recompiled: ${run(a, i, i + 9)}`,
+        `  decompiled: ${run(b, i, i + 9)}`,
         `  stack:      ${who}`].join('\n');
     }
     writeFileSync(join(here, 'writes.txt'), note);
