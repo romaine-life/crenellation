@@ -746,6 +746,15 @@ class Lifter:
             self.write(dst, Expr(f"Math.imul({cur}, {src})"), 32)
             return
         if b == "stop":
+            # A stopped machine is still a machine somebody looks at: the
+            # crash screen dumps every register, and the frozen state the
+            # step-state harness compares is read after the stop. The lifted
+            # registers live in locals until something flushes them, so a
+            # bare halt-and-return left every one of them at its entry value
+            # - 0x19B06 reached its stop having walked a table and counted
+            # down, and the machine afterwards showed the arguments it was
+            # called with.
+            self.flush()
             self.stmts.append("halt();")
             self.stmts.append("return;")
             return
