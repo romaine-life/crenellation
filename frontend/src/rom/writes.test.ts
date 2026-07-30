@@ -146,6 +146,19 @@ function compare(p: Pattern): { note: string; agreed: number } {
     // model, and it moves every interrupt after it.
     let ci = 0;
     while (ci < a.n && ci < b.n && a.cyc[ci] === b.cyc[ci]) ci += 1;
+    // Phase or drift. The lifted code charges a block's cycles at its head
+    // where the recompiler charges each instruction as it runs, so mid-block
+    // the two are apart by the rest of the block - bounded, and harmless. A
+    // gap that grows without bound is a cost model that disagrees, which
+    // moves every interrupt after it. The spread says which.
+    let lo = 0; let hi = 0;
+    const n = Math.min(a.n, b.n);
+    for (let k = 0; k < n; k += 1) {
+      const d = b.cyc[k] - a.cyc[k];
+      if (d < lo) lo = d;
+      if (d > hi) hi = d;
+    }
+    const spread = `clock gap over ${n} writes: ${lo}..${hi}`;
     let note = `identical: ${a.n} writes`      + (ci < a.n && ci < b.n        ? `, but the cycle clocks part at write ${ci}`          + ` (${a.cyc[ci]} vs ${b.cyc[ci]}, at 0x${a.addr[ci].toString(16)})`        : ', and the cycle clocks agree');
     if (i < a.n || i < b.n) {
       const show = (r: Run, k: number): string => (k < r.n
@@ -174,7 +187,8 @@ function compare(p: Pattern): { note: string; agreed: number } {
         `  decompiled: ${run(b, i, i + 9)}`,
         `  stack:      ${who}`].join('\n');
     }
-    return { note: `${p.name}: ${note}`, agreed: i };
+    return { note: `${p.name}: ${note}
+  ${spread}`, agreed: i };
 }
 
 // The write stream needs no common clock. Two runs that do the same thing
