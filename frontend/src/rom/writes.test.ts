@@ -151,8 +151,12 @@ function compare(p: Pattern): { note: string; agreed: number } {
     // the two are apart by the rest of the block - bounded, and harmless. A
     // gap that grows without bound is a cost model that disagrees, which
     // moves every interrupt after it. The spread says which.
+    // Only over the prefix the two runs share. Past the first differing
+    // write they are doing different things, so their clocks are not
+    // comparable and the extremes out there are noise - which is what the
+    // quarter-million-cycle excursion turned out to be.
     let lo = 0; let hi = 0;
-    const n = Math.min(a.n, b.n);
+    const n = Math.min(a.n, b.n, i);
     for (let k = 0; k < n; k += 1) {
       const d = b.cyc[k] - a.cyc[k];
       if (d < lo) lo = d;
@@ -162,6 +166,9 @@ function compare(p: Pattern): { note: string; agreed: number } {
     // Where it first goes badly wrong, and who was running. A thousand
     // cycles is more than any block costs, so the first write past that is
     // past the phase and into whatever charges asymmetrically.
+    // The negative side is the bigger signal: the recompiled run a quarter
+    // of a million cycles ahead is what charging for a wait the other skips
+    // looks like, and it dwarfs anything on the positive side.
     let gi = 0;
     while (gi < n && Math.abs(b.cyc[gi] - a.cyc[gi]) < 1000) gi += 1;
     let gwho = '';

@@ -4,6 +4,4 @@ attract, two demo loops: diverge at write 30693 of 300000/300000; cycles first d
   recompiled: 0x3e0802=0/16 0x3e32e8=500/16 0x3e32e6=0/16 0x3e32e4=fffe/16 0x3e32e2=21/16 0x3e1cf2=ff/8 0x3e0800=1/16 0x3e32fc=91fa/16 0x3e32fa=0/16 0x3e32f8=fffe/16
   decompiled: 0x3e32e8=5555/16 0x3e32e6=5555/16 0x3e32e4=0/16 0x3e32e2=0/16 0x3e32e0=ffff/16 0x3e32de=ffff/16 0x3e32dc=aaaa/16 0x3e32da=aaaa/16 0x3e32e8=aaaa/16 0x3e32e6=aaaa/16
   stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
-  clock gap over 300000 writes: -279304..6164
-  gap passes 1000 at write 33447 (-1072, at 0x3e32cc)
-  gap stack: Machine <- Machine <- push <- fn_14044 <- call <- callDecompiled <- callRom <- textLineDraw <- call
+  clock gap over 30693 writes: -246..914
