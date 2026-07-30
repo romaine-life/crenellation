@@ -53,9 +53,22 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
   frame ~270.
 - One deliberate rule change is live: `wallCellSet` no longer counts the cell
   above as connected (see `romlab/handedits.py`).
-- Known divergence: 7 bytes of sound-sequencer state from frame 276, in the
-  boot tail. Not on the visible path — and now the *first* divergence: the
-  writes instrument's floor sits at write 29,770, up from 6,139.
+- **What still differs between the two runs is the seam, not the game.** An
+  exception frame carries the program counter and condition codes of whatever
+  was interrupted, and the two dispatchers interrupt at different points by
+  design: the chip between instructions, the decompiled code at the head of a
+  block, because its expressions span instructions and there is no boundary
+  inside one to poll at. So a frame pushed mid-block differs in six bytes, and
+  a loop that spins until an interrupt arrives — `fn_00430` rotating four
+  register patterns until 0x3E0802 goes non-zero — stops on a different
+  iteration. `interruptFrame` marks the frame so `writes.test` can skip it;
+  what is left agrees for 27,627 writes under every input pattern.
+- Both composed instruments carry floors rather than demanding identity, and
+  both are bounded: `writes` records 300,000 writes and stops, `compose` runs
+  one pattern by default. Unbounded they took the suite 3h41m; bounded it is
+  nine minutes and measures the same things. Pacing interrupts off the write
+  count was tried to remove the spin-loop difference and made it worse — the
+  reasoning is in `writes.test.ts` so nobody repeats it.
 
 ## Regenerating
 
