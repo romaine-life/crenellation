@@ -44,7 +44,7 @@ const HI = Number(process.env.W_HI ?? 0x400000);
 const CAP = Number(process.env.WRITE_CAP ?? 300_000);
 
 type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
-  irq: Int32Array; n: number };
+  irq: Int32Array; pol: Int32Array; n: number };
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string } {
@@ -60,7 +60,8 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     setByte(a: number, v: number): void; store(a: number, v: number, b: number): void;
   };
   const run: Run = { addr: new Int32Array(CAP), val: new Int32Array(CAP),
-    cyc: new Int32Array(CAP), irq: new Int32Array(CAP), n: 0 };
+    cyc: new Int32Array(CAP), irq: new Int32Array(CAP),
+    pol: new Int32Array(CAP), n: 0 };
   let stack = '';
   const FULL = new Error('recorded enough');
   const note = (a: number, v: number, bits: number): void => {
@@ -87,6 +88,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // where in a block each may take an interrupt.
     run.cyc[run.n] = sys.m.cycles | 0;
     run.irq[run.n] = sys.m.irqTaken | 0;
+    run.pol[run.n] = totalPolls | 0;
     run.addr[run.n] = a;
     run.val[run.n] = (v & ((1 << bits) - 1 || -1)) | (bits << 24);
     run.n += 1;
@@ -138,11 +140,13 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const PER_FRAME = Number(process.env.POLLS_PER_FRAME ?? 9000);
   const isRecompiled = entry === viaRecompiled;
   let polls = 0;
+  let totalPolls = 0;
   let rerun = false;
   sys.pacedIrq = () => {
     if (!POLL_AT.has(sys.m.pc)) return false;
     if (rerun) { rerun = false; return false; }
     polls += 1;
+    totalPolls += 1;
     if (polls < PER_FRAME) return false;
     polls = 0;
     rerun = isRecompiled;
@@ -197,7 +201,9 @@ function compare(p: Pattern): { note: string; agreed: number } {
     }
     const spread = `clock gap over ${n} writes: ${lo}..${hi}`
       + `; interrupts taken at the last common write:`
-      + ` ${a.irq[Math.max(0, i - 1)]} vs ${b.irq[Math.max(0, i - 1)]}`;
+      + ` ${a.irq[Math.max(0, i - 1)]} vs ${b.irq[Math.max(0, i - 1)]}`
+      + `; poll points reached: ${a.pol[Math.max(0, i - 1)]}`
+      + ` vs ${b.pol[Math.max(0, i - 1)]}`;
     // Where it first goes badly wrong, and who was running. A thousand
     // cycles is more than any block costs, so the first write past that is
     // past the phase and into whatever charges asymmetrically.
