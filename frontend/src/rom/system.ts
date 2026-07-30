@@ -156,6 +156,14 @@ export class System {
         if (this.pacedIrq(m.steps)) { this.frames += 1; m.irqPending = 4; onFrame(this); }
         return;
       }
+      // Tested where the interrupt may be taken, not everywhere. The
+      // recompiled dispatcher calls this once per instruction and the
+      // decompiled one once per block, so inside a two-instruction wait the
+      // recompiled sees the threshold crossed half an iteration sooner and
+      // leaves the wait first - which is how the sound driver's spin ended
+      // forty-four iterations apart in the two runs. pollAt is set only by the
+      // comparisons; with it null this is every instruction, as the chip is.
+      if (m.pollAt !== null && !m.pollAt.has(pc)) return;
       if (m.cycles < next) return;
       next = m.cycles + CYCLES_PER_FRAME;
       this.frames += 1;
