@@ -36,7 +36,7 @@ const PIPELINE: Stage[] = [
     name: 'Disassemble',
     what: 'bytes → 68000 instructions',
     state: 'done',
-    detail: 'Capstone over the whole image, then the hard part: telling code from data. 907 routine boundaries - the classifier found most, and the rest came from instruments: the lifter’s own transfers, the running game under every input pattern, the jump tables whose cases live inside their own data, and a byte-level census that alarms on any branch into a byte no routine covers. It found two live routines in the protection ROM and a crash screen behind the halt stub. Every byte of the image now carries exactly one verdict: code in a routine, or data with recorded evidence.',
+    detail: 'Capstone over the whole image, then the hard part: telling code from data. 906 routine boundaries - the classifier found most, and the rest came from instruments: the lifter’s own transfers, the running game under every input pattern, the jump tables whose cases live inside their own data, and a byte-level census that alarms on any branch into a byte no routine covers. It found two live routines in the protection ROM and a crash screen behind the halt stub. Every byte of the image now carries exactly one verdict: code in a routine, or data with recorded evidence.',
   },
   {
     name: 'Translate',
@@ -54,7 +54,7 @@ const PIPELINE: Stage[] = [
     name: 'Decompile',
     what: 'machine code → source a person can change',
     state: 'part',
-    detail: 'A lifter recovers parameters, results and expressions, and every routine it produces is proved against the recompiled one on random machine states - all 907, with none held back and one disagreeing, named. 901 are also matched against a frozen 68000: 24,097 step-state snapshots, and the baselines of two capture sessions hours apart are byte-identical.',
+    detail: 'A lifter recovers parameters, results and expressions, and every routine it produces is proved against the recompiled one on random machine states - all 906, with none held back and one disagreeing, named. 901 are also matched against a frozen 68000: 24,097 step-state snapshots, and the baselines of two capture sessions hours apart are byte-identical.',
   },
 ];
 
@@ -69,18 +69,19 @@ const LAYERS: Layer[] = [
   { name: 'Timing', state: 'part', note: 'the game clock runs 1.4x slow, down from 7.6x. A round now plays through to its score screen.' },
 ];
 
-/** What is known about each of the 907 routines. Every routine is in exactly
- *  one class and the classes sum to 907, which is the point of the page. */
+/** What is known about each of the 906 routines. Every routine is in exactly
+ *  one class and the classes sum to 906, which is the point of the page. */
 const KNOWLEDGE = [
   { label: 'Matched against the frozen chip — silicon agrees, snapshot by snapshot', n: 901, colour: C.done },
   { label: 'Silicon cases voided — every trial stubbed a call the chip made, so nothing was comparable', n: 4, colour: '#3d5a80' },
   { label: 'Incomparable, with the reason on record — both halves of the protection probe', n: 2, colour: '#2d4f6b' },
 ];
 
-const TOTAL = 907;
+const TOTAL = 906;
 
 const REMAINING = [
   ['The one routine that disagrees with the oracle', '0xB032 writes 0x1B where the machine writes 0x05, at one byte inside the board structures, on every trial. It walks the entity list and copies through a link frame, so the suspect is the frame or the walk rather than an instruction rule. Named in baseline.json, which is what keeps the harness green without hiding it.'],
+  ['How far the two translations agree', 'The recompiled and decompiled games are run side by side and compared two ways. Their writes to work RAM are identical for 27,004 of them under the worst input pattern and 30,693 under attract, and identical for 300,000 when every region is recorded. Their screens differ in 380 pixels of 80,640 at frame 600. Both numbers have the same cause, measured rather than supposed: the two cycle clocks part at the first write of the boot - 82 against 100 - and cost decides which iteration a loop that spins for an interrupt stops on.'],
   ['Motion objects', 'A video layer the port ignores. The captured display list holds 735,711 non-zero bytes across a run, so the board draws something the port does not — but the playfield already carries terrain, castles, walls and ships, so the first job is establishing what is actually on that list.'],
   ['Audio', 'Both chips are written to correctly and neither is modelled. Needs YM2413 FM and OKI6295 ADPCM synthesised.'],
   ['Two more stations', 'Four buttons and four trackball axes are measured but unwired. No two-player.'],
@@ -127,7 +128,7 @@ export function Progress() {
           display: 'flex', gap: 32, alignItems: 'center', flexWrap: 'wrap',
         }}>
           <div>
-            <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1, color: C.done }}>907</div>
+            <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1, color: C.done }}>906</div>
             <div style={{ color: C.dim, fontSize: 13, marginTop: 4 }}>routines, run and decompiled</div>
           </div>
           <div style={{ width: 1, alignSelf: 'stretch', background: C.line }} />
@@ -244,7 +245,7 @@ export function Progress() {
         }}>
           Verified against hardware, not asserted: 9,169 of 9,173 instruction
           cases exact including condition codes, the other four never start an
-          instruction anywhere in the map · 901 of 907 routines matched against
+          instruction anywhere in the map · 901 of 906 routines matched against
           a frozen 68000 across 24,097 snapshots, every capture run freezing the
           identical machine, and two sessions hours apart froze byte-identical
           machines · 589 of the original 593 routines have a silicon verdict for
@@ -254,7 +255,9 @@ export function Progress() {
           carries one verdict — code in a routine, or data with recorded
           evidence · 1,916 interrupted runs identical to undisturbed ones.
           <br /><br />
-          Discovery went dry on 29 July 2026, at 907 routines: three
+          Discovery went dry on 29 July 2026, at 907 routines, of which one
+          later proved never to have existed - an entry that fell inside an
+          instruction, truncating the routine before it: three
           consecutive sweeps of the protocol in romlab/SWEEP.md found nothing —
           no program counter outside the map across 10,558 addresses the real
           chip executed, and no missing routine in the port under any input
