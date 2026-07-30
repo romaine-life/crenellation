@@ -6,6 +6,7 @@ import { describe, it, expect } from 'vitest';
 import { System } from './system';
 import { call as viaRecompiled } from './dispatch';
 import { call as viaDecompiled, bind } from './decompiled';
+import { png } from './png';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
@@ -29,6 +30,11 @@ function lit(entry: (a: number, m: System['m']) => void, label: string): string 
       if (n >= FRAMES) throw STOP;
     }, entry);
   } catch (e) { if (e !== STOP) marks.push(`threw ${(e as Error).message.slice(0, 40)}`); }
+  // Counting lit bytes says drawing happened, not that it is the right
+  // picture - a run that drew every frame perfectly in black counted the same
+  // as one that drew the game. Write the framebuffer out so both screens can
+  // be looked at, which is the only check that catches that.
+  writeFileSync(join(here, `draws-${label}.png`), png(336, 240, sys.screen()));
   return `${label} ran ${n} frames, playfield bytes set: ${marks.join(' ')}`;
 }
 
