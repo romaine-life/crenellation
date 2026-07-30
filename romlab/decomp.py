@@ -1157,7 +1157,14 @@ void load8; void load16; void load32; void store8; void store16; void store32;
  *  Recorded rather than called, so the dispatcher below can carry on with it
  *  at the same depth. A chain of tail jumps is a loop on the chip; calling
  *  through would make it a stack of frames deep enough to overflow. */
-const jumpRom = (addr: number): void => { M.jump = addr >>> 0; };
+// The last transfers before a budget blowout name the loop that blew it -
+// dispatch cycles have no program counter to point at.
+const __ring: number[] = [];
+const __note = (a: number): void => {
+  __ring.push(a);
+  if (__ring.length > 12) __ring.shift();
+};
+const jumpRom = (addr: number): void => { __note(addr); M.jump = addr >>> 0; };
 /** The machine's stack pointer, for routines that build a frame with `link`. */
 const stackPointer = (): number => M.a7 >>> 0;
 const setStackPointer = (v: number): void => { M.a7 = v >>> 0; };
@@ -1188,7 +1195,7 @@ const tick = (n: number): void => {
   // side turns a comparison harness into a hang. Composed runs set the budget
   // to MAX_SAFE_INTEGER and never feel this.
   if (M.steps > M.budget) {
-    throw new Error('instruction budget exhausted after ' + M.steps + ' blocks');
+    throw new Error('instruction budget exhausted after ' + M.steps + ' blocks; recent transfers ' + __ring.map((a) => a.toString(16)).join(' '));
   }
 };
 /** `stop` - the chip halts and nothing after it runs. */

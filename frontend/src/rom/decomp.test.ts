@@ -135,7 +135,7 @@ describe('decompiled routines against the recompiled oracle', () => {
         // stops at the jump and never runs what it jumped to.
         bind(b);
         let liftedFailed = '';
-        try { viaDecompiled(addr, b); } catch (e) { liftedFailed = (e as Error).message.slice(0, 40); }
+        try { viaDecompiled(addr, b); } catch (e) { liftedFailed = (e as Error).message.slice(0, 160); }
 
         if (oracleFailed) continue;          // the oracle could not run it; nothing to compare
         // The oracle survived a bad pointer by vectoring an address error, the
