@@ -141,15 +141,20 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const isRecompiled = entry === viaRecompiled;
   let polls = 0;
   let totalPolls = 0;
-  let rerun = false;
+  // The re-run is at the same address, and it arrives after the handler has
+  // returned - not on the next poll point, which is inside the handler. That
+  // is what the first version of this discounted, which was simply the wrong
+  // event.
+  let rerunAt = -1;
   sys.pacedIrq = () => {
-    if (!POLL_AT.has(sys.m.pc)) return false;
-    if (rerun) { rerun = false; return false; }
+    const pc = sys.m.pc;
+    if (!POLL_AT.has(pc)) return false;
+    if (rerunAt === pc) { rerunAt = -1; return false; }
     polls += 1;
     totalPolls += 1;
     if (polls < PER_FRAME) return false;
     polls = 0;
-    rerun = isRecompiled;
+    if (isRecompiled) rerunAt = pc;
     return true;
   };
   const STOP = new Error('enough');
