@@ -1,9 +1,11 @@
 {
   "_comment": "What each harness reaches now. The assertions check that a run does not fall below these, rather than demanding a perfect match - a suite that can never be green is a suite nobody reads, which is how a test that had stopped compiling went unread for several rounds. Raise a floor when something improves. A zero means the harness does not report its count yet.",
+  "_insn_remainder": "The four cases of 9173 that do not match are two encodings that never start an instruction anywhere in the function map: E034 appears only as the low word of pea.l operands (capstone also misdecodes it - roxr.l #8 for what silicon runs as roxr.b d0,d4 - but no rox instruction exists at any boundary in the map, so no rule is wrong on a path that exists), and 0072 00F6 01A0 01A0 sits inside data at 0x276c. The harness executes every distinct encoding it finds, code or not; silicon obliged, the port's rules for junk stay unverified, and that is the right place to leave them.",
   "insn": 9169,
   "fuzz": 1301,
   "fuzz-shapes": 0,
   "stepstate": 0,
   "write": 0,
+  "writes": 29770,
   "replay": 1258
 }

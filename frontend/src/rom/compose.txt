@@ -1,3 +1,3 @@
-frame 276: 7 bytes differ - ram 0x3e3269 62!=0 ram 0x3e326a 52!=0 ram 0x3e326b 204!=0 ram 0x3e3289 62!=0 ram 0x3e328a 52!=0 ram 0x3e328b 204!=0
-900 frames, stopped=false, pc=0x44e
-900 frames, stopped=false, pc=0x0
+identical for 120 frames
+120 frames, stopped=false, pc=0x1311e
+120 frames, stopped=false, pc=0x0

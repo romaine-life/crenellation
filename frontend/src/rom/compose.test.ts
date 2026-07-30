@@ -24,7 +24,17 @@ const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 
-const FRAMES = Number(process.env.COMPOSE_FRAMES ?? 120);
+// Once a rule has been changed on purpose, "identical to the original" is the
+// wrong question - the decompiled source is no longer trying to be the ROM. The
+// matching decompilation projects handle this with a build flag; same idea.
+const MODIFIED = process.env.MODIFIED === '1';
+
+// The deliberate change is to the wall-adjacency rule, and walls first exist
+// when the attract demo lays them - around frame 900. 120 frames of boot
+// cannot see it; the assertion used to pass anyway on an incidental early
+// divergence in the self test, and stopped the day that was fixed and the
+// two runs became identical through the whole window.
+const FRAMES = Number(process.env.COMPOSE_FRAMES ?? (MODIFIED ? 1200 : 120));
 const ended: string[] = [];
 const REGS = ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7',
   'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7'];
@@ -107,11 +117,6 @@ function digests(entry: (addr: number, m: Machine) => void): number[] {
 }
 
 type Machine = System['m'];
-
-// Once a rule has been changed on purpose, "identical to the original" is the
-// wrong question - the decompiled source is no longer trying to be the ROM. The
-// matching decompilation projects handle this with a build flag; same idea.
-const MODIFIED = process.env.MODIFIED === '1';
 
 describe('the decompiled routines compose', () => {
   it.skipIf(MODIFIED)('runs the game identically to the recompiled ones', () => {
