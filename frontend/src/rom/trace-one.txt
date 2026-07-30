@@ -1,9 +1,5 @@
-entry 0xb032 trial 0
-lifted snapshot 118 has no oracle match from oracle[151] on
-  previous match: 4 7 3e42a0 3e1af4 b5b8 11808 3e43a8 3e4328 3e4f5e
-  lifted now:     4 7 3e42a0 3e1af4 b5b8 11808 3e43a8 3e4328 3e4f74
-  oracle[151]:    4 7 3e42a0 3e1af4 b5b8 11808 3e43a8 3e4328 3e4f5e
-  oracle[151+1]:  4 7 3e42a0 3e1af4 b5b8 11808 3e43a8 3e4328 3e4f62
-  oracle pc at 151: 0xb030
-after oracle: 402 a0f2 3e42a0 3e4260 3e4faa 3e1b02 3e42e8 3e4fc4 stopped=false missing=0 fault=0x0
-after lifted: 402 a0f2 3e42a0 3e4260 3e4faa 3e1b02 3e42e8 3e4fc0 stopped=false missing=0 fault=0x0
+entry 0x19786 trial 0
+aligned all 12 lifted snapshots against 23 oracle ticks
+after oracle: 3e43c8 0 0 3e 0 3e43c8 3e4038 3e4fa8 stopped=true missing=0 fault=0x0
+after lifted: 3e43c8 0 0 3e 0 3e43c8 3e4038 3e4fa8 stopped=true missing=0 fault=0x0
+lifted stopped at 0x1e8d6; last pcs 18652 19c2e 18658 18658 1e8d2 1e8d2 1e8d6 18658

@@ -1,0 +1,148 @@
+// The dynamic half of the discovery sweep: drive the pure decompiled game
+// through every input pattern in SWEEP.md and record every address the map
+// has no function for.
+//
+// The pure run is the point. A census that falls back to the recompiler takes
+// a different path from the first gap onward and never sees the rest, which is
+// why this file patches the decompiled dispatcher rather than using the
+// composed harnesses.
+//
+// This is a template, not a test: census.sh-style seams are patched into the
+// generated decompiled.ts and removed afterwards, so it lives in romlab and is
+// copied into src/rom for the duration of a sweep.
+import { readFileSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { describe, it, expect } from 'vitest';
+import { System } from './system';
+import { call as viaRecompiled } from './dispatch';
+import { call as viaDecompiled, bind, census } from './decompiled';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
+const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
+
+const IDLE = [0xf7, 0xff, 0xff, 0xff];
+
+/** Active-low: pressing a button clears its bit. */
+function press(inputs: Uint8Array, byte: number, bit: number, down: boolean): void {
+  const base = IDLE[byte];
+  inputs[byte] = down ? (base & ~(1 << bit)) & 0xff : base;
+}
+
+type Pattern = {
+  name: string;
+  frames: number;
+  /** What is held at frame n, and how the trackball moves. */
+  at: (n: number, sys: System) => void;
+};
+
+// One coin is 20 frames of the slot held; a station's button one joins the
+// game. The waits between events are what the attract and join screens need
+// to advance, measured by watching the port rather than guessed.
+const coin = (sys: System, n: number, from: number, slot = 0): void => {
+  press(sys.inputs, 3, slot, n > from && n < from + 20);
+};
+const button = (sys: System, n: number, byte: number, bit: number,
+                from: number, len = 15): void => {
+  press(sys.inputs, byte, bit, n > from && n < from + len);
+};
+
+const PATTERNS: Pattern[] = [
+  {
+    name: 'attract, two demo loops',
+    frames: 2400,
+    at: () => {},
+  },
+  {
+    name: 'one player: coin, join at the middle station, then fire',
+    frames: 3600,
+    at: (n, sys) => {
+      coin(sys, n, 500);
+      button(sys, n, 0, 0, 540);
+      // From the moment play could have started, mash button one and walk the
+      // trackball: a wall goes down where the cursor is, so the cursor has to
+      // move for the piece code to see anything but one cell.
+      if (n > 700) {
+        press(sys.inputs, 0, 0, (n % 24) < 8);
+        sys.track[0] = (sys.track[0] + ((n % 96) < 48 ? 1 : 255)) & 0xff;
+        sys.track[1] = (sys.track[1] + ((n % 160) < 80 ? 1 : 255)) & 0xff;
+      }
+    },
+  },
+  {
+    name: 'two players: both coin slots, left and right stations',
+    frames: 3600,
+    at: (n, sys) => {
+      coin(sys, n, 400, 0);
+      coin(sys, n, 440, 1);
+      button(sys, n, 1, 0, 500);
+      button(sys, n, 2, 0, 540);
+      if (n > 700) {
+        press(sys.inputs, 1, 0, (n % 30) < 10);
+        press(sys.inputs, 2, 0, (n % 40) < 12);
+        sys.track[2] = (sys.track[2] + 1) & 0xff;
+        sys.track[4] = (sys.track[4] + 255) & 0xff;
+      }
+    },
+  },
+  {
+    name: 'three stations at once, second buttons too',
+    frames: 3000,
+    at: (n, sys) => {
+      coin(sys, n, 300, 0);
+      coin(sys, n, 330, 1);
+      coin(sys, n, 360, 0);
+      if (n > 420) {
+        press(sys.inputs, 0, n % 2, (n % 20) < 7);
+        press(sys.inputs, 1, (n >> 1) % 2, (n % 26) < 9);
+        press(sys.inputs, 2, (n >> 2) % 2, (n % 34) < 11);
+        for (let k = 0; k < 8; k += 1) {
+          sys.track[k] = (sys.track[k] + ((n + k) % 3 === 0 ? 1 : 0)) & 0xff;
+        }
+      }
+    },
+  },
+  {
+    name: 'service switch held, then released',
+    frames: 1800,
+    at: (n, sys) => {
+      press(sys.inputs, 2, 3, n > 200 && n < 900);
+      // buttons inside service mode walk its menus
+      if (n > 300 && n < 900) press(sys.inputs, 0, 0, (n % 60) < 20);
+    },
+  },
+  {
+    name: 'no input at all, long run',
+    frames: 4800,
+    at: () => {},
+  },
+];
+
+describe('discovery sweep', () => {
+  it('finds every address the decompiled map has no function for', () => {
+    const lines: string[] = [];
+    for (const p of PATTERNS) {
+      const sys = new System(rom, board);
+      bind(sys.m);
+      const missing = new Map<number, number>();
+      census(viaRecompiled, (a: number) => missing.set(a, (missing.get(a) ?? 0) + 1));
+      const STOP = new Error('enough');
+      let frames = 0;
+      let died = '';
+      try {
+        sys.run(() => {
+          frames += 1;
+          p.at(frames, sys);
+          if (frames > p.frames) throw STOP;
+        }, viaDecompiled);
+      } catch (e) { if (e !== STOP) died = (e as Error).message.slice(0, 90); }
+      const found = [...missing.keys()].map((a) => `0x${a.toString(16)}`);
+      lines.push(`${p.name}: ${frames} frames, `
+        + `${found.length ? `MISSING ${found.join(' ')}` : 'no missing addresses'}`
+        + (died ? `, died: ${died}` : ''));
+    }
+    writeFileSync(join(here, 'sweep.txt'), lines.join('\n') + '\n');
+    expect(lines.length).toBe(PATTERNS.length);
+  }, 1800000);
+});

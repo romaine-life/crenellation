@@ -46,21 +46,35 @@ def main():
     failed = set(result.get("fail", [])) - set(incomparable)
     never = [e for e in entries if e not in snapshot]
 
+    # Routines the map has gained since the capture session. They are proved
+    # against the oracle on random machine states like every other routine,
+    # but no silicon snapshot exists for them yet, and that is a different and
+    # weaker claim - so it gets its own class rather than being folded into
+    # "verified". A capture top-up moves them across; averaging them in would
+    # only hide which is which.
+    facts = json.loads((HERE / "out" / "facts.json").read_text())
+    mapped = sorted(a for a, _ in facts["funcs"])
+    uncaptured = [a for a in mapped if a not in set(entries)]
+
     out = {
-        "total": len(entries),
+        "total": len(mapped),
+        "captured": len(entries),
         "verified": sorted(passed - failed),
         "outstanding": sorted(failed),
         "failing": [],
         "conflicted": [],
         "stepStateOnlyMismatch": sorted(failed),
         "incomparable": incomparable,
+        "oracleOnlyUncaptured": uncaptured,
         "neverJudged": sorted(never),
         "midRunOnly": [],
     }
     (FRONT / "verified.json").write_text(json.dumps(out))
-    print(f"total {out['total']}  verified {len(out['verified'])}  "
+    print(f"mapped {out['total']}  captured {len(entries)}  "
+          f"verified {len(out['verified'])}  "
           f"outstanding {len(out['outstanding'])}  "
-          f"incomparable {len(incomparable)}  neverJudged {len(never)}")
+          f"incomparable {len(incomparable)}  "
+          f"oracle-only {len(uncaptured)}  neverJudged {len(never)}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,6 @@
+attract, two demo loops: 2401 frames, no missing addresses
+one player: coin, join at the middle station, then fire: 3601 frames, no missing addresses
+two players: both coin slots, left and right stations: 3601 frames, no missing addresses
+three stations at once, second buttons too: 3001 frames, no missing addresses
+service switch held, then released: 1801 frames, no missing addresses
+no input at all, long run: 3435 frames, no missing addresses

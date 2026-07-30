@@ -20,19 +20,29 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
 
 ## Where it stands
 
-- 1,113 decompiled functions: 836 ROM routines plus entry points. Every byte
+- 1,183 decompiled functions: 907 ROM routines plus entry points. Every byte
   of the image — overlay, upper half, both board regions — carries exactly one
   verdict: code in a routine, or data with recorded evidence
   (`romlab/census_image.py` is the auditor; zero alarms is the bar).
-- 832 of 836 routines are matched against a frozen 68000 (22,500 step-state
-  snapshots, every capture run freezing the identical machine); one is
-  incomparable with the reason on record (the protection bank probe at
-  0x140010 — the 0x140000 window is served by a state machine, and fetching
-  differs from reading); one, the computed-jump entry at 0x1A256, is still
+- **Discovery went dry on 2026-07-29 at 907 routines**: three consecutive
+  sweeps of the protocol in `romlab/SWEEP.md` found nothing, by both
+  instruments — no PC outside the map across 10,558 addresses real silicon
+  executed, and no missing routine in the port under any input pattern.
+  `SWEEPLOG.md` is the ledger. A new input pattern resets the count.
+- Every routine is proved against the oracle on random machine states, none
+  held back. One disagrees — 0xB032, named in `baseline.json` with what it
+  does wrong. 831 are also matched against a frozen 68000 (22,500 step-state
+  snapshots, every capture run freezing the identical machine); 72 found after
+  that session carry the oracle claim only and say so; two have every silicon
+  trial voided by a stubbed call; one is incomparable with the reason on
+  record (the protection bank probe at 0x140010 — that window is served by a
+  state machine, and fetching differs from reading); one, 0x1A256, is
   outstanding.
-- The game boots, draws the attract screen in colour, and reaches gameplay
-  running on decompiled code alone. The composed decompiled run is
-  byte-identical to the recompiled one through frame ~270.
+- The game boots, draws the attract screen in colour, and plays. Under the
+  pure decompiled dispatcher every sweep pattern runs its full length —
+  including games on all three stations — with no missing routines. The
+  composed decompiled run is byte-identical to the recompiled one through
+  frame ~270.
 - One deliberate rule change is live: `wallCellSet` no longer counts the cell
   above as connected (see `romlab/handedits.py`).
 - Known divergence: 7 bytes of sound-sequencer state from frame 276, in the
@@ -97,7 +107,17 @@ each with its own instrument:
   one verdict (code in a routine / data with evidence), and it alarms on any
   branch into an uncovered byte and any data run that looks like prologues.
   Run it after any map change; zero alarms and zero unjudged suspects is the
-  bar.
+  bar. **`jumptables.py` and `account.py`/`name_data.py` must be re-run when
+  funcs changes too** — the first finds cases whose targets sit inside the
+  table's own data region, the other two recompute the data map as the
+  complement of the current code map.
+- **`sweep.sh` / `sweeploop.sh`** — the dynamic instrument: the pure
+  decompiled game under every input pattern in `sweep.test.ts.tmpl` (attract,
+  one/two/three players actually playing, service switch, idle), recording
+  every address with no function. The loop feeds finds back and repeats until
+  a sweep is empty. **Attract alone is not a sweep** — it was dry at 901
+  routines while a joined player found six more. `SWEEP.md` is the protocol,
+  `SWEEPLOG.md` the ledger, and `exectrace.lua` the silicon half.
 
 A worktree can run all of this after one deliberate copy of the gitignored
 inputs from the main checkout: `romlab/out/*.json`, `prog_ext.bin`,

@@ -286,6 +286,29 @@ entries = sorted(set(entries))
 code_runs = sorted(set(code_runs))
 data_runs = sorted({(x, y) for x, y in data_runs if y > x})
 
+# Two entries can overlap: one's first instruction covers where the other
+# claims to start, and only one of them is real. Which is decided by what
+# reaches them, and it has to be decided HERE, before extents are worked out -
+# an extent that stops inside an instruction hands the lifter four bytes of a
+# six-byte move, capstone reads the truncation as something else entirely, and
+# the routine comes out reading 0xAAAAAAAA. 0xFC46 and 0xFC4A are the pair:
+# the game transfers to 0xFC46, nothing reaches 0xFC4A.
+_reached = (set(reached_at_runtime()) | set(reached_statically())
+            | set(pointer_table_handlers())
+            | {a for a, _ in jump_table_cases()})
+_phantom = set()
+for _e in entries:
+    _i = next(md.disasm(UP[_e:_e + 16], _e, 1), None)
+    if _i is None or _e not in _reached:
+        continue
+    for _s in entries:
+        if _e < _s < _e + _i.size and _s not in _reached:
+            _phantom.add(_s)
+if _phantom:
+    print("phantom entries inside another entry's first instruction:",
+          ", ".join("%05x" % s for s in sorted(_phantom)))
+entries = [e for e in entries if e not in _phantom]
+
 # map each function to its extent (entry -> next entry within the same code run)
 funcs = []
 for a, b in code_runs:
@@ -312,6 +335,9 @@ for _a, _b in funcs:
     # instruction starts. 0x18544 is the case: 0x18542 is an rts, the four
     # bytes after it are padding, and reading them as code swallows the `jsr`
     # that begins the exception stub at 0x18548.
+    # Overlapping pairs where one side is reachable were settled before the
+    # extents were computed; anything still overlapping here is padding read
+    # as code, and the later start is the one to keep.
     if any(_a < s < _a + _i.size for s in _starts):
         continue
     _ok.append((_a, _b))

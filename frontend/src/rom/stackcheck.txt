@@ -1,5 +1,5 @@
-frames: 300   instructions: 0   stopped: enough
-routines whose stack use is not a plain call and return: 58
+frames: 300   instructions: 1331845   stopped: enough
+routines whose stack use is not a plain call and return: 61
 last pass through 0x450C: 
 calls to 0x512: 
    0x618  moves a7 by 0  (28 times)
@@ -7,6 +7,7 @@ calls to 0x512:
    0x306  moves a7 by 0  (25 times)
    0x125da  moves a7 by -32  (25 times)
    0x1288a  moves a7 by 32  (25 times)
+   0x1288e  moves a7 by 0  (25 times)
    0xf13e  moves a7 by 0  (25 times)
    0x1512  moves a7 by 0  (25 times)
    0x53f8  moves a7 by 0  (25 times)
@@ -14,11 +15,10 @@ calls to 0x512:
    0x133ec  moves a7 by 0  (25 times)
    0x198c0  moves a7 by -16  (25 times)
    0x1425c  moves a7 by 0  (25 times)
-   0x1997c  moves a7 by 16  (25 times)
+   0x1997c  moves a7 by 0  (25 times)
+   0x19a1e  moves a7 by 16  (25 times)
    0x14492  moves a7 by 0  (25 times)
    0x133b2  moves a7 by 6  (25 times)
    0x19a24  moves a7 by 0  (24 times)
    0x144d0  moves a7 by 0  (24 times)
    0xc4ca  moves a7 by 0  (20 times)
-   0x19cd0  moves a7 by 0  (11 times)
-   0x19ccc  moves a7 by 0  (10 times)
