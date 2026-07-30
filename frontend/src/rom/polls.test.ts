@@ -29,7 +29,9 @@ const FRAMES = Number(process.env.POLL_FRAMES ?? 400);
 const SKIP = new Set((process.env.POLL_SKIP ?? '').split(',')
   .filter(Boolean).map((s) => Number.parseInt(s, 16)));
 
-type Seq = { pc: Int32Array; cyc: Int32Array };
+const WATCH = Number.parseInt(process.env.POLL_WATCH ?? '0', 16);
+
+type Seq = { pc: Int32Array; cyc: Int32Array; watched: number[][] };
 
 function sequence(entry: (a: number, m: System['m']) => void): Seq {
   const sys = new System(rom, board);
@@ -42,6 +44,7 @@ function sequence(entry: (a: number, m: System['m']) => void): Seq {
   // that charges differently - which the write comparison can only report as
   // "cycles first differ at write 0", 26 apart, with no way to say where.
   const cyc = new Int32Array(CAP);
+  const watched: number[][] = [];
   let n = 0;
   // Same pacing the write comparison uses, so this measures the same runs it
   // does rather than a differently-timed pair.
@@ -61,6 +64,14 @@ function sequence(entry: (a: number, m: System['m']) => void): Seq {
     if (SKIP.has(pc)) return false;
     if (rerunAt === pc) { rerunAt = -1; return false; }
     if (n >= CAP) throw FULL;
+    // The registers at a chosen block head. The poll sequence says the two
+    // runs part inside a loop; it cannot say why, because the reason is the
+    // state the loop was entered with. WATCH records that state so the first
+    // differing register is named rather than inferred.
+    if (pc === WATCH) {
+      const r = sys.m as unknown as Record<string, number>;
+      watched.push([r.a0 | 0, r.a1 | 0, r.a2 | 0, r.a3 | 0, r.d0 | 0]);
+    }
     seq[n] = pc | 0;
     cyc[n] = sys.m.cycles | 0;
     n += 1;
@@ -78,10 +89,10 @@ function sequence(entry: (a: number, m: System['m']) => void): Seq {
     if (e !== STOP && e !== FULL) {
       // A run that has already parted company can reach somewhere the machine
       // never models. That is a result, not a crash - record how far it got.
-      return { pc: seq.subarray(0, n), cyc: cyc.subarray(0, n) };
+      return { pc: seq.subarray(0, n), cyc: cyc.subarray(0, n), watched };
     }
   }
-  return { pc: seq.subarray(0, n), cyc: cyc.subarray(0, n) };
+  return { pc: seq.subarray(0, n), cyc: cyc.subarray(0, n), watched };
 }
 
 describe('poll points', () => {
@@ -148,6 +159,18 @@ describe('poll points', () => {
           + `@${A.cyc[from + k]}/${B.cyc[from + k]}`).join(' '));
     } else {
       lines.push(`clocks agree over all ${i} shared polls`);
+    }
+    if (WATCH) {
+      const R = ['a0', 'a1', 'a2', 'a3', 'd0'];
+      const lim2 = Math.min(A.watched.length, B.watched.length);
+      let w = 0;
+      while (w < lim2 && R.every((_, k) => A.watched[w][k] === B.watched[w][k])) w += 1;
+      lines.push(`watched 0x${WATCH.toString(16)}: ${A.watched.length}`
+        + ` vs ${B.watched.length} entries`);
+      lines.push(w === lim2 ? `  registers agree over all ${lim2}`
+        : `  first differing entry ${w}: `
+          + R.map((r, k) => `${r} ${A.watched[w][k].toString(16)}`
+            + `/${B.watched[w][k].toString(16)}`).join(' '));
     }
     const report = lines.join('\n');
     writeFileSync(join(here, 'polls.txt'), report);
