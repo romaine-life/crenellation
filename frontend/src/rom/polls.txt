@@ -4,3 +4,4 @@ first difference at poll 5031: recompiled 0x1378e vs decompiled 0x1380e
   recompiled next: 1378e 1380e 13812 13812 13812 13812 13812 13812 13812 13812 13812 13812
   decompiled next: 1380e 13812 13812 13812 13812 13812 13812 13812 13812 13812 13812 13812
   decompiled skipped one poll at 0x1378e; the streams re-synchronise and stay together for 1116 more
+clocks agree over all 5031 shared polls

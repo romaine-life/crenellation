@@ -29,11 +29,19 @@ const FRAMES = Number(process.env.POLL_FRAMES ?? 400);
 const SKIP = new Set((process.env.POLL_SKIP ?? '').split(',')
   .filter(Boolean).map((s) => Number.parseInt(s, 16)));
 
-function sequence(entry: (a: number, m: System['m']) => void): Int32Array {
+type Seq = { pc: Int32Array; cyc: Int32Array };
+
+function sequence(entry: (a: number, m: System['m']) => void): Seq {
   const sys = new System(rom, board);
   bind(sys.m);
   sys.m.pollAt = POLL_AT as Set<number>;
   const seq = new Int32Array(CAP);
+  // The clock at each poll point. Two runs that execute the same code reach
+  // the same block heads *having spent the same cycles getting there*, so the
+  // first poll where the addresses agree and the clocks do not is the block
+  // that charges differently - which the write comparison can only report as
+  // "cycles first differ at write 0", 26 apart, with no way to say where.
+  const cyc = new Int32Array(CAP);
   let n = 0;
   // Same pacing the write comparison uses, so this measures the same runs it
   // does rather than a differently-timed pair.
@@ -54,6 +62,7 @@ function sequence(entry: (a: number, m: System['m']) => void): Int32Array {
     if (rerunAt === pc) { rerunAt = -1; return false; }
     if (n >= CAP) throw FULL;
     seq[n] = pc | 0;
+    cyc[n] = sys.m.cycles | 0;
     n += 1;
     polls += 1;
     if (polls < PER_FRAME) return false;
@@ -69,16 +78,17 @@ function sequence(entry: (a: number, m: System['m']) => void): Int32Array {
     if (e !== STOP && e !== FULL) {
       // A run that has already parted company can reach somewhere the machine
       // never models. That is a result, not a crash - record how far it got.
-      return seq.subarray(0, n);
+      return { pc: seq.subarray(0, n), cyc: cyc.subarray(0, n) };
     }
   }
-  return seq.subarray(0, n);
+  return { pc: seq.subarray(0, n), cyc: cyc.subarray(0, n) };
 }
 
 describe('poll points', () => {
   it('are reached in the same order', () => {
-    const a = sequence(viaRecompiled);
-    const b = sequence(viaDecompiled);
+    const A = sequence(viaRecompiled);
+    const B = sequence(viaDecompiled);
+    const a = A.pc; const b = B.pc;
     const lim = Math.min(a.length, b.length);
     let i = 0;
     while (i < lim && a[i] === b[i]) i += 1;
@@ -110,6 +120,24 @@ describe('poll points', () => {
         if (k > 32) lines.push(`  ${side} one poll at 0x${lead[i].toString(16)}`
           + `; the streams re-synchronise and stay together for ${k} more`);
       }
+    }
+    // The clocks part long before the paths do, and that is the fault worth
+    // fixing: while both runs still reach the same blocks in the same order,
+    // one has spent more cycles doing it, and a frame boundary eventually
+    // lands between them. The first poll where the addresses agree and the
+    // clocks do not names the block that charges differently.
+    let c = 0;
+    while (c < i && A.cyc[c] === B.cyc[c]) c += 1;
+    if (c < i) {
+      lines.push(`clocks first differ at poll ${c} (0x${a[c].toString(16)}):`
+        + ` recompiled ${A.cyc[c]} vs decompiled ${B.cyc[c]}`
+        + ` (${B.cyc[c] - A.cyc[c]} apart)`);
+      const from = Math.max(0, c - 6);
+      lines.push('  blocks before it: '
+        + Array.from(a.subarray(from, c + 1)).map((x, k) => `${x.toString(16)}`
+          + `@${A.cyc[from + k]}/${B.cyc[from + k]}`).join(' '));
+    } else {
+      lines.push(`clocks agree over all ${i} shared polls`);
     }
     const report = lines.join('\n');
     writeFileSync(join(here, 'polls.txt'), report);

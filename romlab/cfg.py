@@ -26,7 +26,15 @@ UP = (HERE / "prog_ext.bin").read_bytes()
 # decompiled function has one way in; each is also a block head *inside* the
 # routine that contains it, which is what `build` uses this for.
 _inner = HERE / "out" / "inner_entries.json"
-INNER = frozenset(json.loads(_inner.read_text())) if _inner.exists() else frozenset()
+INNER = set(json.loads(_inner.read_text())) if _inner.exists() else set()
+# Routine starts belong here too. The classifier's extents are not disjoint -
+# one routine can run into the start of another, and the recompiler, which
+# begins wherever it is told, polls at that start while the containing
+# function has merged straight through it. 0x1378e is exactly that case and
+# the inner-entry set does not contain it, because it is not inner.
+INNER |= {a for a, _ in json.loads(
+    (HERE / "out" / "facts.json").read_text())["funcs"]}
+INNER = frozenset(INNER)
 FACTS = json.loads((HERE / "out" / "facts.json").read_text())
 
 md = capstone.Cs(capstone.CS_ARCH_M68K, capstone.CS_MODE_BIG_ENDIAN | capstone.CS_MODE_M68K_000)
