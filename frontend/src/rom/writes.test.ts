@@ -43,7 +43,7 @@ const HI = Number(process.env.W_HI ?? 0x400000);
 // green.
 const CAP = Number(process.env.WRITE_CAP ?? 300_000);
 
-type Run = { addr: Int32Array; val: Int32Array; n: number };
+type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array; n: number };
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string } {
@@ -58,7 +58,8 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const m = sys.m as unknown as {
     setByte(a: number, v: number): void; store(a: number, v: number, b: number): void;
   };
-  const run: Run = { addr: new Int32Array(CAP), val: new Int32Array(CAP), n: 0 };
+  const run: Run = { addr: new Int32Array(CAP), val: new Int32Array(CAP),
+    cyc: new Int32Array(CAP), n: 0 };
   let stack = '';
   const FULL = new Error('recorded enough');
   const note = (a: number, v: number, bits: number): void => {
@@ -80,6 +81,10 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
       stack = (new Error().stack ?? '').split('\n').slice(2, 30)
         .map((l) => (l.match(/at (\w+)/) ?? [])[1]).filter(Boolean).join(' <- ');
     }
+    // The cycle clock at each write. If the two runs disagree here, the
+    // pacing is wrong and fixable; if they agree, what differs is only
+    // where in a block each may take an interrupt.
+    run.cyc[run.n] = sys.m.cycles | 0;
     run.addr[run.n] = a;
     run.val[run.n] = (v & ((1 << bits) - 1 || -1)) | (bits << 24);
     run.n += 1;
@@ -136,7 +141,12 @@ function compare(p: Pattern): { note: string; agreed: number } {
     const b = record(p, viaDecompiled).run;
     let i = 0;
     while (i < a.n && i < b.n && a.addr[i] === b.addr[i] && a.val[i] === b.val[i]) i += 1;
-    let note = `identical: ${a.n} writes`;
+    // Where the two clocks first part, which is upstream of where the writes
+    // do: identical work costing different cycles is a fault in the cost
+    // model, and it moves every interrupt after it.
+    let ci = 0;
+    while (ci < a.n && ci < b.n && a.cyc[ci] === b.cyc[ci]) ci += 1;
+    let note = `identical: ${a.n} writes`      + (ci < a.n && ci < b.n        ? `, but the cycle clocks part at write ${ci}`          + ` (${a.cyc[ci]} vs ${b.cyc[ci]}, at 0x${a.addr[ci].toString(16)})`        : ', and the cycle clocks agree');
     if (i < a.n || i < b.n) {
       const show = (r: Run, k: number): string => (k < r.n
         ? `0x${r.addr[k].toString(16)}=${(r.val[k] & 0xffffff).toString(16)}/${r.val[k] >>> 24}`
@@ -154,7 +164,11 @@ function compare(p: Pattern): { note: string; agreed: number } {
         for (let k = Math.max(0, from); k <= to; k += 1) out.push(show(r, k));
         return out.join(' ');
       };
-      note = [`diverge at write ${i} of ${a.n}/${b.n}`,
+      let cwho = '';
+      if (ci < i) { try { cwho = record(p, viaDecompiled, ci).stack; }
+        catch (e) { cwho = `(${(e as Error).message})`; } }
+      note = [`diverge at write ${i} of ${a.n}/${b.n}`        + (ci < i ? `; cycles first differ at write ${ci}`          + ` (${a.cyc[ci]} vs ${b.cyc[ci]}, ${a.addr[ci].toString(16)})`          + `
+  cycle stack: ${cwho}` : '')        + ` (cycles ${a.cyc[i - 1]} vs ${b.cyc[i - 1]} at the last common write,`        + ` ${a.cyc[i]} vs ${b.cyc[i]} at this one)`,
         `  common:     ${run(a, i - 8, i - 1)}`,
         `  recompiled: ${run(a, i, i + 9)}`,
         `  decompiled: ${run(b, i, i + 9)}`,

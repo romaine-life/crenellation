@@ -1,34 +1,5 @@
-attract, two demo loops: diverge at write 30693 of 300000/300000
-  common:     0x3e32a0=3e/16 0x3e329e=0/16 0x3e329c=0/16 0x3e329a=ffff/16 0x3e3298=ffff/16 0x3e3296=0/16 0x3e3294=0/16 0x3e3d90=5/16
-  recompiled: 0x3e0802=0/16 0x3e32e8=500/16 0x3e32e6=0/16 0x3e32e4=fffe/16 0x3e32e2=21/16 0x3e1cf2=ff/8 0x3e0800=1/16 0x3e32fc=91fa/16 0x3e32fa=0/16 0x3e32f8=fffe/16
-  decompiled: 0x3e32e8=5555/16 0x3e32e6=5555/16 0x3e32e4=0/16 0x3e32e2=0/16 0x3e32e0=ffff/16 0x3e32de=ffff/16 0x3e32dc=aaaa/16 0x3e32da=aaaa/16 0x3e32e8=aaaa/16 0x3e32e6=aaaa/16
-  stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
-
-one player: coin, join at the middle station, then fire: diverge at write 30693 of 300000/300000
-  common:     0x3e32a0=3e/16 0x3e329e=0/16 0x3e329c=0/16 0x3e329a=ffff/16 0x3e3298=ffff/16 0x3e3296=0/16 0x3e3294=0/16 0x3e3d90=5/16
-  recompiled: 0x3e0802=0/16 0x3e32e8=500/16 0x3e32e6=0/16 0x3e32e4=fffe/16 0x3e32e2=21/16 0x3e1cf2=ff/8 0x3e0800=1/16 0x3e32fc=91fa/16 0x3e32fa=0/16 0x3e32f8=fffe/16
-  decompiled: 0x3e32e8=5555/16 0x3e32e6=5555/16 0x3e32e4=0/16 0x3e32e2=0/16 0x3e32e0=ffff/16 0x3e32de=ffff/16 0x3e32dc=aaaa/16 0x3e32da=aaaa/16 0x3e32e8=aaaa/16 0x3e32e6=aaaa/16
-  stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
-
-two players: both coin slots, left and right stations: diverge at write 30693 of 300000/300000
-  common:     0x3e32a0=3e/16 0x3e329e=0/16 0x3e329c=0/16 0x3e329a=ffff/16 0x3e3298=ffff/16 0x3e3296=0/16 0x3e3294=0/16 0x3e3d90=5/16
-  recompiled: 0x3e0802=0/16 0x3e32e8=500/16 0x3e32e6=0/16 0x3e32e4=fffe/16 0x3e32e2=21/16 0x3e1cf2=ff/8 0x3e0800=1/16 0x3e32fc=91fa/16 0x3e32fa=0/16 0x3e32f8=fffe/16
-  decompiled: 0x3e32e8=5555/16 0x3e32e6=5555/16 0x3e32e4=0/16 0x3e32e2=0/16 0x3e32e0=ffff/16 0x3e32de=ffff/16 0x3e32dc=aaaa/16 0x3e32da=aaaa/16 0x3e32e8=aaaa/16 0x3e32e6=aaaa/16
-  stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
-
-three stations at once, second buttons too: diverge at write 30693 of 300000/300000
-  common:     0x3e32a0=3e/16 0x3e329e=0/16 0x3e329c=0/16 0x3e329a=ffff/16 0x3e3298=ffff/16 0x3e3296=0/16 0x3e3294=0/16 0x3e3d90=5/16
-  recompiled: 0x3e0802=0/16 0x3e32e8=500/16 0x3e32e6=0/16 0x3e32e4=fffe/16 0x3e32e2=21/16 0x3e1cf2=ff/8 0x3e0800=1/16 0x3e32fc=91fa/16 0x3e32fa=0/16 0x3e32f8=fffe/16
-  decompiled: 0x3e32e8=5555/16 0x3e32e6=5555/16 0x3e32e4=0/16 0x3e32e2=0/16 0x3e32e0=ffff/16 0x3e32de=ffff/16 0x3e32dc=aaaa/16 0x3e32da=aaaa/16 0x3e32e8=aaaa/16 0x3e32e6=aaaa/16
-  stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
-
-service switch held, then released: diverge at write 27004 of 300000/300000
-  common:     0x3e32b8=1/16 0x3e32b6=0/16 0x3e32b4=0/16 0x3e32b2=0/16 0x3e32b0=6b08/16 0x3e32ae=1/16 0x3e32a6=34cc/16 0x3e32a4=3e/16
-  recompiled: 0x3e32a2=3ecc/16 0x3e32a0=20/16 0x3e329e=1f/16 0x3e329c=0/16 0x3e329a=0/16 0x3e3298=0/16 0x3e3296=33bc/16 0x3e3294=1/16 0x3e3292=0/16 0x3e3290=0/16
-  decompiled: 0x3e32a2=3edc/16 0x3e32a0=20/16 0x3e329e=1f/16 0x3e329c=0/16 0x3e329a=0/16 0x3e3298=0/16 0x3e3296=33bc/16 0x3e3294=1/16 0x3e3292=0/16 0x3e3290=0/16
-  stack:      Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- fn_17500 <- call <- callDecompiled
-
-no input at all, long run: diverge at write 30693 of 300000/300000
+attract, two demo loops: diverge at write 30693 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
+  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 41768650 vs 41770040 at the last common write, 41768772 vs 41770110 at this one)
   common:     0x3e32a0=3e/16 0x3e329e=0/16 0x3e329c=0/16 0x3e329a=ffff/16 0x3e3298=ffff/16 0x3e3296=0/16 0x3e3294=0/16 0x3e3d90=5/16
   recompiled: 0x3e0802=0/16 0x3e32e8=500/16 0x3e32e6=0/16 0x3e32e4=fffe/16 0x3e32e2=21/16 0x3e1cf2=ff/8 0x3e0800=1/16 0x3e32fc=91fa/16 0x3e32fa=0/16 0x3e32f8=fffe/16
   decompiled: 0x3e32e8=5555/16 0x3e32e6=5555/16 0x3e32e4=0/16 0x3e32e2=0/16 0x3e32e0=ffff/16 0x3e32de=ffff/16 0x3e32dc=aaaa/16 0x3e32da=aaaa/16 0x3e32e8=aaaa/16 0x3e32e6=aaaa/16
