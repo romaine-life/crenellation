@@ -49,9 +49,22 @@ evidence pass already knows the kind (43 sound-driver helpers, 42 player-state
 accessors) and only needs them told apart — cheap, because reading one teaches
 the rest. The other ~246 have no stated purpose at all.
 
-Data matters as much as code. The game's state is still addressed as
-`load8(0x3e0de4)` where it should read `player.credits`; the board is at
-0x3E0864 and the player structs at 0x3E1968.
+Data matters as much as code — and `distinguish.py` shows it is not merely
+parallel work but the *lever*. A colliding name is a name for a **region**
+("touches the player structs"), and the fact that separates its members is
+one level finer: the `d(An)` displacement, i.e. which field. None of the 42
+player routines reaches the struct by absolute address; every one goes
+through a base register, so the field offsets are the entire distinguishing
+evidence. Offset 0x2 appears in 15 of them, 0xE in 9, 0x10 in 6.
+
+So the order inside naming is: **name the struct, and the routines name
+themselves.** Doing it the other way round means reading 42 disassemblies to
+recover the same field map 42 times.
+
+`python3 distinguish.py [group|0xaddr]` prints, for every colliding and
+unnamed routine, the evidence needed to name it — fields, region slots,
+constants, callers, callees — so this is 638 short reads, not 638
+disassemblies.
 
 **Bar:** no `fn_[0-9a-f]+` identifier survives, every name carries recorded
 evidence the way `reviewed_entries.json` records data verdicts, and a test
