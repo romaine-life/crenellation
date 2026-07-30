@@ -1,7 +1,7 @@
 chip reached 6232 distinct addresses; port reached 1
 first address the chip reached and the port never did: 0x13012 (chip's 0th)
 chip's path around it: 0x13012 0x13014 0x13010 0x13018
-routines: chip entered 221, port entered 1
+routines: chip entered 215, port entered 1
 the routine orders agree as far as they go
 first routine the chip entered and the port never did: 0x13000 (at the chip's 0th address)
 port inside 0x1425C-0x143B0: 

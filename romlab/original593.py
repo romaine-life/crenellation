@@ -35,7 +35,10 @@ def main():
     v = json.loads(VERIFIED.read_text())
     ok = set(v["verified"])
     now = sorted(set(ok) | set(v["failing"]) | set(v["conflicted"])
-                 | set(v["stepStateOnlyMismatch"]) | set(v["neverJudged"]))
+                 | set(v["stepStateOnlyMismatch"]) | set(v["neverJudged"])
+                 | set(v.get("siliconVoided", []))
+                 | set(v.get("oracleOnlyUncaptured", []))
+                 | set(v.get("incomparable", [])))
     # the current map's own extents, so an original entry that is no longer a
     # start can be attributed to whichever function absorbed it rather than
     # counted as unknown
@@ -64,8 +67,17 @@ def main():
         else:
             none += 1
 
-    blocked = {"mid-run only": set(v.get("midRunOnly",[])), "failing": set(v["failing"]), "input-dependent": set(v["conflicted"]),
+    # Every class the ledger knows, so an unverified original says why rather
+    # than "unknown". The three that remain are all "no silicon verdict" for
+    # reasons already on record, not routines nobody has looked at.
+    blocked = {"mid-run only": set(v.get("midRunOnly", [])),
+               "failing": set(v["failing"]),
+               "input-dependent": set(v["conflicted"]),
                "stopping-point": set(v["stepStateOnlyMismatch"]),
+               "oracle-proved, no capture yet": set(v.get("oracleOnlyUncaptured", [])),
+               "incomparable - protection state machine": set(v.get("incomparable", [])),
+               "silicon trials voided - the harness stubbed a call":
+                   set(v.get("siliconVoided", [])),
                "never judged": set(v["neverJudged"])}
     rows = []
     for a, b in funcs:

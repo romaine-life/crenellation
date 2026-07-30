@@ -54,7 +54,7 @@ const PIPELINE: Stage[] = [
     name: 'Decompile',
     what: 'machine code → source a person can change',
     state: 'part',
-    detail: 'A lifter recovers parameters, results and expressions, and every routine it produces is proved against the recompiled one on random machine states - all 907, with none held back and one disagreeing, named. 831 are also matched against a frozen 68000: 22,500 step-state snapshots, one machine, every run identical.',
+    detail: 'A lifter recovers parameters, results and expressions, and every routine it produces is proved against the recompiled one on random machine states - all 907, with none held back and one disagreeing, named. 901 are also matched against a frozen 68000: 24,097 step-state snapshots, and the baselines of two capture sessions hours apart are byte-identical.',
   },
 ];
 
@@ -72,21 +72,17 @@ const LAYERS: Layer[] = [
 /** What is known about each of the 907 routines. Every routine is in exactly
  *  one class and the classes sum to 907, which is the point of the page. */
 const KNOWLEDGE = [
-  { label: 'Matched against the frozen chip — silicon agrees, snapshot by snapshot', n: 831, colour: C.done },
-  { label: 'Proved against the oracle, no silicon capture yet — found after the capture session', n: 72, colour: C.part },
-  { label: 'Silicon cases voided — every trial stubbed a call the chip made', n: 2, colour: '#3d5a80' },
-  { label: 'Incomparable, with the reason on record — the protection bank probe', n: 1, colour: '#2d4f6b' },
-  { label: 'Outstanding — one routine writes one byte the machine does not', n: 1, colour: C.bad },
+  { label: 'Matched against the frozen chip — silicon agrees, snapshot by snapshot', n: 901, colour: C.done },
+  { label: 'Silicon cases voided — every trial stubbed a call the chip made, so nothing was comparable', n: 4, colour: '#3d5a80' },
+  { label: 'Incomparable, with the reason on record — both halves of the protection probe', n: 2, colour: '#2d4f6b' },
 ];
 
 const TOTAL = 907;
 
 const REMAINING = [
-  ['The one routine that disagrees', '0xB032 writes 0x1B where the machine writes 0x05, at one byte inside the board structures, on every trial. It walks the entity list and copies through a link frame, so the suspect is the frame or the walk rather than an instruction rule. Named in baseline.json, which is what keeps the harness green without hiding it.'],
-  ['Silicon captures for the last 72', 'The map grew after the capture session, so 72 routines are proved against the oracle but have no frozen-chip snapshot yet. The matrix that produces them takes about two hours of MAME; until it runs, those routines carry the weaker claim and say so.'],
+  ['The one routine that disagrees with the oracle', '0xB032 writes 0x1B where the machine writes 0x05, at one byte inside the board structures, on every trial. It walks the entity list and copies through a link frame, so the suspect is the frame or the walk rather than an instruction rule. Named in baseline.json, which is what keeps the harness green without hiding it.'],
   ['Motion objects', 'A video layer the port ignores. The captured display list holds 735,711 non-zero bytes across a run, so the board draws something the port does not — but the playfield already carries terrain, castles, walls and ships, so the first job is establishing what is actually on that list.'],
   ['Audio', 'Both chips are written to correctly and neither is modelled. Needs YM2413 FM and OKI6295 ADPCM synthesised.'],
-  ['The last outstanding capture', 'The computed-jump entry at 0x1A256 loads a handler pointer from a structure and calls it; under one argument shape its state after the call differs from the frozen chip, and the localiser finds nothing at its snapshot points. One routine of 831 captured.'],
   ['Two more stations', 'Four buttons and four trackball axes are measured but unwired. No two-player.'],
   ['The last 1.4x of pacing', 'The game clock ran 7.6x slow until the frame-handler status bit was measured rather than invented. It is now 1.4x, which may be nothing more than the per-instruction cycle estimates.'],
 ];
@@ -136,7 +132,7 @@ export function Progress() {
           </div>
           <div style={{ width: 1, alignSelf: 'stretch', background: C.line }} />
           <div>
-            <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1, color: C.part }}>831</div>
+            <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1, color: C.part }}>901</div>
             <div style={{ color: C.dim, fontSize: 13, marginTop: 4 }}>matched against the chip</div>
           </div>
           <div style={{ flex: 1, minWidth: 260, color: C.dim, fontSize: 13.5 }}>
@@ -248,10 +244,13 @@ export function Progress() {
         }}>
           Verified against hardware, not asserted: 9,169 of 9,173 instruction
           cases exact including condition codes, the other four never start an
-          instruction anywhere in the map · 831 routines matched against a
-          frozen 68000 across 22,500 snapshots, every capture run freezing the
-          identical machine · 591 of 593 of the original routines fully
-          verified · every byte of the 1 MiB image and both board regions
+          instruction anywhere in the map · 901 of 907 routines matched against
+          a frozen 68000 across 24,097 snapshots, every capture run freezing the
+          identical machine, and two sessions hours apart froze byte-identical
+          machines · 589 of the original 593 routines have a silicon verdict for
+          every piece they were split into, and the other four name which
+          weaker claim they carry rather than reading as unknown ·
+          every byte of the 1 MiB image and both board regions
           carries one verdict — code in a routine, or data with recorded
           evidence · 1,916 interrupted runs identical to undisturbed ones.
           <br /><br />

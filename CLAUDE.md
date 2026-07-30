@@ -31,13 +31,21 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
   `SWEEPLOG.md` is the ledger. A new input pattern resets the count.
 - Every routine is proved against the oracle on random machine states, none
   held back. One disagrees — 0xB032, named in `baseline.json` with what it
-  does wrong. 831 are also matched against a frozen 68000 (22,500 step-state
-  snapshots, every capture run freezing the identical machine); 72 found after
-  that session carry the oracle claim only and say so; two have every silicon
-  trial voided by a stubbed call; one is incomparable with the reason on
-  record (the protection bank probe at 0x140010 — that window is served by a
-  state machine, and fetching differs from reading); one, 0x1A256, is
-  outstanding.
+  does wrong. **901 of 907 are also matched against a frozen 68000** (24,097
+  step-state snapshots; two capture sessions hours apart froze byte-identical
+  machines, which is the determinism claim that makes the rest mean
+  anything). Of the six: four have every silicon trial voided because the
+  port skipped a call the chip made, and two are incomparable with the reason
+  on record — both halves of the protection probe at 0x140010/0x1400E4, where
+  that window is served by a state machine and fetching differs from reading.
+  The classes sum to 907 with nothing unaccounted; `romlab/ledger.py` builds
+  them and `original593.py` reports the same for the original 593.
+- **Capture data is not derived data.** `entries.txt` is the fuzz and
+  call-and-return sessions' entry list and their random stream is consumed in
+  its exact order — regenerating it took fuzz from 1,301 matches to 130.
+  Step-state has its own `step-entries.txt`. Every harness now has a non-zero
+  floor in `baseline.json` for the same reason: a zero floor hid stepstate
+  falling from 832 to 95.
 - The game boots, draws the attract screen in colour, and plays. Under the
   pure decompiled dispatcher every sweep pattern runs its full length —
   including games on all three stations — with no missing routines. The

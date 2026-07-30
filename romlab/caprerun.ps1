@@ -30,6 +30,15 @@ foreach ($shape in 0, 1, 2, 3) {
       }
       $done = (Test-Path $log) -and ((Get-Content $log -Tail 1) -match '^done ')
       Write-Output "  $(if ($done) { 'complete' } else { 'incomplete' })"
+      # Keep the first completed run's baselines, so capintegrate can check
+      # that the last run froze the identical machine. Without this the check
+      # has nothing to compare against and passes vacuously.
+      if ($done -and -not (Test-Path (Join-Path $step 'ram-baseline2.first'))) {
+        foreach ($f in 'ram-baseline2', 'pf-baseline2', 'io-baseline2') {
+          Copy-Item (Join-Path $step "$f.bin") (Join-Path $step "$f.first") -Force
+        }
+        Copy-Item (Join-Path $step 'io-track.bin') (Join-Path $step 'io-track.first') -Force
+      }
     }
   }
 }

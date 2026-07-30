@@ -4,12 +4,13 @@
   "insn": 9169,
   "fuzz": 1301,
   "fuzz-shapes": 0,
-  "stepstate": 0,
+  "stepstate": 901,
   "write": 0,
   "writes": 29770,
   "replay": 1258,
   "decompKnownWrong": [
     "0xb032"
   ],
-  "_decompKnownWrong": "Routines whose lift disagrees with the oracle, by address. One left of 1,161: 0xB032 writes 0x1B where the machine writes 0x05 at 0x3E0A69, one byte inside the board structures, on every trial - it walks the entity list at 0x3E1C84 and copies through a link frame, so the suspect is the frame or the list walk rather than an instruction rule. Anything not named here fails the harness."
+  "_decompKnownWrong": "Routines whose lift disagrees with the oracle, by address. One left of 1,161: 0xB032 writes 0x1B where the machine writes 0x05 at 0x3E0A69, one byte inside the board structures, on every trial - it walks the entity list at 0x3E1C84 and copies through a link frame, so the suspect is the frame or the list walk rather than an instruction rule. Anything not named here fails the harness.",
+  "_stepstate": "Routines whose state the port reproduces at the address the frozen chip stopped on. It was 0 - a zero floor, which hid a regression that took this harness from 832 to 95 when its entry list was regenerated out from under its captures. The floor is the measurement now."
 }

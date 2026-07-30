@@ -23,8 +23,12 @@ FRONT = HERE.parent / "frontend" / "src" / "rom"
 
 def main():
     result = json.loads((FRONT / "stepstate-result.json").read_text())
+    # The step-state session's entry list, which is what the verdicts above
+    # were produced against. entries.txt is the older sessions' capture data
+    # and reading it here counted 754 routines as captured while 901 had
+    # verdicts.
     entries = [int(line, 16) for line in
-               (FRONT / "entries.txt").read_text().splitlines() if line.strip()]
+               (FRONT / "step-entries.txt").read_text().splitlines() if line.strip()]
 
     # reviewed_entries.json carries verdicts from reading; an entry judged
     # incomparable there leaves the outstanding list with its reason on
@@ -56,6 +60,14 @@ def main():
     mapped = sorted(a for a, _ in facts["funcs"])
     uncaptured = [a for a in mapped if a not in set(entries)]
 
+    # Captured, but every trial voided: the port skipped a call the chip made,
+    # so there was nothing comparable to judge. stepstate.test records the
+    # reason per routine; carrying it here means an unverified routine can say
+    # which kind of unverified it is instead of landing in "unknown".
+    voided = sorted({int(r["entry"], 16) for r in result.get("skipped", [])
+                     if int(r["entry"], 16) in set(entries)}
+                    - passed - failed - set(incomparable))
+
     out = {
         "total": len(mapped),
         "captured": len(entries),
@@ -66,6 +78,7 @@ def main():
         "stepStateOnlyMismatch": sorted(failed),
         "incomparable": incomparable,
         "oracleOnlyUncaptured": uncaptured,
+        "siliconVoided": voided,
         "neverJudged": sorted(never),
         "midRunOnly": [],
     }
@@ -74,7 +87,8 @@ def main():
           f"verified {len(out['verified'])}  "
           f"outstanding {len(out['outstanding'])}  "
           f"incomparable {len(incomparable)}  "
-          f"oracle-only {len(uncaptured)}  neverJudged {len(never)}")
+          f"oracle-only {len(uncaptured)}  voided {len(voided)}  "
+          f"neverJudged {len(never)}")
 
 
 if __name__ == "__main__":

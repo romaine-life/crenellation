@@ -3,6 +3,10 @@
     "verdict": "incomparable",
     "why": "a protection bank probe: the 0x140000 window is served by a state machine, and what the chip FETCHES there depends on the access sequence - the forced-PC capture executed it as moveq #2 (the live bank) while every byte-wise READ of the window, including the io capture itself, returns the moveq #0 image prog_ext.bin holds. The port pins that read-view bank and returns 0. The caller at 0xEDEA uses d0 to seed the difficulty table when the difficulty byte is out of range - protection sabotage; 0 is a safe clamp. The case measures protection state, not translation"
   },
+  "0x1400e4": {
+    "verdict": "incomparable",
+    "why": "the other half of the protection pair: it cmpm-compares a table at 0x1432A0 in the board ROM against the program image, and that window is served by the same state machine as its sibling at 0x140010 - what a fetch sees there depends on the access sequence, so the frozen io snapshot the harness serves is one bank and the chip under the capture was reading another. The port's lift matches the read-view image; the case measures protection state, not translation"
+  },
   "0x1996a": {
     "verdict": "data",
     "why": "base of a descending byte table: three routines read load8(0x1996a + index) and fn_19a24 walks it backwards with post-decrement loads; the host routine's own flow at 0x19966 branches over these bytes; lifted as a function it is or-noise ending in a movep with a wild displacement"

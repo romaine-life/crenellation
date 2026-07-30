@@ -38,7 +38,9 @@ const verdicts = JSON.parse(readFileSync(join(here, 'verified.json'), 'utf8')) a
 const TARGETS = new Set<number>([...verdicts.failing, ...verdicts.conflicted,
   ...verdicts.stepStateOnlyMismatch, ...(verdicts.midRunOnly ?? [])]);
 
-const entries: number[] = readFileSync(join(here, 'entries.txt'), 'utf8')
+// The step-state session's own entry list; entries.txt belongs to the older
+// capture sessions and its order is load-bearing for them.
+const entries: number[] = readFileSync(join(here, 'step-entries.txt'), 'utf8')
   .split('\n').map((s) => s.trim()).filter(Boolean).map((s) => parseInt(s, 16));
 
 const RAM_LO = 0x3e0000;

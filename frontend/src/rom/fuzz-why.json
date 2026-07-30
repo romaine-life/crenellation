@@ -18,7 +18,7 @@
  },
  {
   "cause": "off-map hardware",
-  "routines": 91,
+  "routines": 90,
   "sample": "0x980001 0x980001 0x16494c 0x16494d",
   "entries": [
    "0x142",
@@ -61,6 +61,14 @@
    "0x14dc",
    "0xf630",
    "0xf936"
+  ]
+ },
+ {
+  "cause": "threw",
+  "routines": 1,
+  "sample": "instruction budget exhausted after 2000001 steps",
+  "entries": [
+   "0xfc4a"
   ]
  }
 ]
