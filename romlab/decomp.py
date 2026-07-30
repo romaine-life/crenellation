@@ -1007,9 +1007,23 @@ class Lifter:
             stmts.append("return;")
         # A routine that ended in a tail jump has already handed control away
         # and flushed what it held; anything after the return is dead.
-        if not (stmts and stmts[-1] == "return;"):
-            for r, e in self.outputs():
-                stmts.append(f"setReg('{r}', {e.text});")
+        # ...but `rts` emits `return;` as well, and it is *not* a tail jump: the
+        # routine hands control back with its registers still live, and the
+        # caller - or the next entry the dispatcher reaches - reads them from
+        # the machine. Skipping the spill there stranded every register a
+        # returning routine computed inside a JavaScript local, which is how
+        # `a3` arrived at 0x1378E as 0 where the chip had the watchdog pointer
+        # it was given at 0x1397A. Only a jumpRom-then-return is already
+        # flushed; anything else spills, and spills *before* the return rather
+        # than after it, where it would be dead.
+        tail_jump = (len(stmts) >= 2 and stmts[-1] == "return;"
+                     and "jumpRom(" in stmts[-2])
+        if not tail_jump:
+            spill = [f"setReg('{r}', {e.text});" for r, e in self.outputs()]
+            if stmts and stmts[-1] == "return;":
+                stmts[-1:-1] = spill
+            else:
+                stmts.extend(spill)
         body = "\n".join("  " + s for s in stmts) or "  // nothing observable"
         return (f"{head}\nexport function {ident(addr)}({sig}): void {{\n{body}\n}}").strip()
 
