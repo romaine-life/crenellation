@@ -26,6 +26,11 @@ const ramBaseline = new Uint8Array(readFileSync(join(here, 'step-ram-baseline.bi
 const pfBaseline = new Uint8Array(readFileSync(join(here, 'step-pf-baseline.bin')));
 // what the palette, sound chips and input ports held while the chip was frozen
 const ioBaseline = new Uint8Array(readFileSync(join(here, 'step-io-baseline.bin')));
+// the input latches at 0x6c0000, captured with the machine frozen: idle and
+// active-low, eight bytes of 0xff. The original block list left them out, so
+// the port handed back zero and every routine that reads the trackball
+// mismatched against silicon - three of the six outstanding entries.
+const ioTrack = new Uint8Array(readFileSync(join(here, 'io-track.bin')));
 // which registers each instruction writes, used to recognise a snapshot taken
 // from part-way through one
 const WRITTEN = JSON.parse(readFileSync(join(here, 'written-regs.json'), 'utf8')) as
@@ -105,6 +110,7 @@ describe('routines compared at the instruction the chip stopped on', () => {
         io += len;
       }
       m.ioModelled = true;
+      m.trackAt = (at) => ioTrack[at - 0x6c0000] ?? 0xff;
       m.store(SENTINEL, 0x60fe, 16);
       for (let i = 0; i < SCRATCH_LEN; i += 1) m.setByte(SCRATCH + i, rand.next() % 256);
       const d: number[] = [];
@@ -223,6 +229,35 @@ describe('routines compared at the instruction the chip stopped on', () => {
         if (msg !== FOUND) threw = msg;
       }
       m.atPc = null;
+
+      // A chip that parked at the sentinel returned all the way out, and its
+      // resting state is as comparable as any other stopping point. The
+      // port's rts returns through the JavaScript call, so it can never
+      // arrive at a RAM address - a routine that returns within a step or
+      // two used to be unjudgeable here for exactly that reason. Compare the
+      // state the port returned with instead; the park loop the capture spun
+      // in (bra.s to itself) touches nothing, so silicon's registers at the
+      // sentinel are its post-return registers.
+      if (!hit && !threw && wanted.has(SENTINEL)) {
+        const got = [m.d0, m.d1, m.d2, m.d3, m.d4, m.d5, m.d6, m.d7,
+                     m.a0, m.a1, m.a2, m.a3, m.a4, m.a5, m.a6].map((v) => v >>> 0);
+        for (const x of cs) {
+          if (x.pc !== SENTINEL) continue;
+          arrivals += 1;
+          const diff = NAMES.filter((_, i) => got[i] !== (x.regs[i] >>> 0));
+          if (diff.length) {
+            if (!closest || diff.length < (closest as { diff: string[] }).diff.length) {
+              closest = { pc: SENTINEL, diff };
+            }
+            continue;
+          }
+          let hh = 0;
+          for (let i = 0; i < 0x2000; i += 1) hh = (hh * 31 + m.byte(SCRATCH + i)) >>> 0;
+          if (hh !== (x.hash >>> 0)) continue;
+          hit = true;
+          break;
+        }
+      }
 
       m.trackOffMap = false;
       // A skipped call means the port did not run what the chip ran.

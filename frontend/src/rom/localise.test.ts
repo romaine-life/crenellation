@@ -75,6 +75,9 @@ describe('where each divergence starts', () => {
       const m = new Machine(rom);
       for (let i = 0; i < ramBaseline.length; i += 1) m.setByte(RAM_LO + i, ramBaseline[i]);
       for (let i = 0; i < pfBaseline.length; i += 1) m.setByte(PF_LO + i, pfBaseline[i]);
+      // the frozen input latches, same as stepstate.test.ts serves - a
+      // divergence localised here has to replay the environment that judged it
+      m.trackAt = () => 0xff;
       m.store(SENTINEL, 0x60fe, 16);
       for (let i = 0; i < SCRATCH_LEN; i += 1) m.setByte(SCRATCH + i, rand.next() % 256);
       const d: number[] = [];
