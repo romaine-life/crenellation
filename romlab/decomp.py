@@ -434,7 +434,10 @@ class Lifter:
             self.stmts.append(f"store{bits}({b.text}, {value.text});")
             return
         if tok == "sr":
-            self.stmts.append(f"setSr({value.text});")
+            # With the address of the next instruction, so that an interrupt
+            # let in by lowering the mask stacks what the chip stacks.
+            at = getattr(self, "nxt", 0)
+            self.stmts.append(f"setSr({value.text}, 0x{at:05x});")
             return
         if tok == "ccr":
             # The low byte of the status register: the condition codes alone.
@@ -495,6 +498,11 @@ class Lifter:
         bits = SIZE_BITS.get(size, 16)
         ops = split_ops(ins.op_str or "")
         nxt = ins.address + ins.size          # what `jsr` pushes as the return
+        # ...and what an interrupt taken *inside* this instruction stacks. A
+        # `move to sr` that lowers the mask is the case: the chip lets the
+        # interrupt in as part of that instruction and stacks the instruction
+        # after it, not the head of the block the lifted world polls at.
+        self.nxt = nxt
 
         if b == "rts":
             return
@@ -1081,16 +1089,27 @@ const divs = (n: number, d: number, next: number): number => {
   if (q > 32767 || q < -32768) return n;
   return ((q & 0xffff) | (((n | 0) % d) << 16)) >>> 0;
 };
-const setSr = (v: number): void => {
+const setSr = (v: number, at = 0): void => {
   // Lowering the mask lets a pending interrupt in as part of the instruction
   // that lowered it, and the machine says so by raising. There is nothing to
   // resume here - the write has happened - so the handler runs and returns.
+  //
+  // `at` is the instruction after this one, which is what the chip stacks:
+  // the interrupt belongs to this instruction, so the address to come back to
+  // is past it, not the head of the block the poll normally reports.
+  if (at) M.next = at;
   try {
     M.setSR(v & 0xffff);
   } catch (e) {
     if (!(e instanceof PendingInterrupt)) throw e;
     if (M.clearOnTake) M.irqPending = 0;
-    call(M.interruptFrame(e.level), M);
+    M.irqDepth += 1;
+    try {
+      call(M.interruptFrame(e.level), M);
+    } finally {
+      M.irqDepth -= 1;
+      if (M.irqDepth === 0 && M.onIrqReturn) M.onIrqReturn();
+    }
   }
 };
 // `move sr,dN` reads the real condition codes. Nothing in the lifted source
@@ -1135,6 +1154,28 @@ const setFlagsAdd = (a: number, b: number, bits: number): void => {
   const sa = (ua << sh) >> sh; const sb = (ub << sh) >> sh; const sr = (r << sh) >> sh;
   M.z = r === 0; M.n = sr < 0; M.c = wide > mask; M.x = M.c; M.v = (sa + sb) !== sr;
 };
+// X alone, from the last instruction that set it.
+//
+// X is the one condition code that outlives the instruction after it: a move,
+// a compare or a logic op leaves it exactly as it was, so on the chip it can
+// have been set by arithmetic long ago and several routines away. The lifted
+// world computes its branches in JavaScript and only puts flags in the machine
+// at a call boundary, from whatever set them last - and if that was a move, X
+// never arrives at all. `move sr` then saves a word with X clear where the
+// chip has it set, which is where all six input patterns' write streams parted
+// company.
+const setXAdd = (a: number, b: number, bits: number): void => {
+  const mask = widthMask(bits);
+  M.x = (((a & mask) >>> 0) + ((b & mask) >>> 0)) > mask;
+};
+const setXSub = (a: number, b: number, bits: number): void => {
+  const mask = widthMask(bits);
+  M.x = ((a & mask) >>> 0) < ((b & mask) >>> 0);
+};
+/** A shift's X is the last bit shifted out; a zero count leaves it alone. */
+const setXShift = (out: number, count: number): void => {
+  if (count !== 0) M.x = (out & 1) !== 0;
+};
 const movep = (v: number): void => { M.movep(v); };
 // A trap is not a no-op: the chip stacks the next instruction and the status
 // register and vectors through the table, and this ROM leans on it - TRAP #0's
@@ -1177,6 +1218,7 @@ const callRom = (addr: number, ret = 0): void => {
   callee(addr, M);
 };
 void load8; void load16; void load32; void store8; void store16; void store32;
+void setXAdd; void setXSub; void setXShift;
 /** Tail-jump to another routine: same stack, no return address.
  *
  *  Recorded rather than called, so the dispatcher below can carry on with it
@@ -1243,7 +1285,13 @@ const tick = (n: number, at = 0): boolean => {
 const takeIrq = (): void => {
   const lvl = M.irqPending;
   if (M.clearOnTake) M.irqPending = 0;
-  call(M.interruptFrame(lvl), M);
+  M.irqDepth += 1;
+  try {
+    call(M.interruptFrame(lvl), M);
+  } finally {
+    M.irqDepth -= 1;
+    if (M.irqDepth === 0 && M.onIrqReturn) M.onIrqReturn();
+  }
 };
 /** `stop` - the chip halts and nothing after it runs. */
 const halt = (): void => { M.stopped = true; };

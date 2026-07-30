@@ -73,7 +73,10 @@ export function fn_02d78(m: Machine, at = 0x02d78): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -137,7 +140,10 @@ export function fn_02e28(m: Machine, at = 0x02e28): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -185,7 +191,10 @@ export function fn_02eb8(m: Machine, at = 0x02eb8): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -267,7 +276,10 @@ export function fn_02f18(m: Machine, at = 0x02f18): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -464,7 +476,10 @@ export function fn_02fb6(m: Machine, at = 0x02fb6): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -492,7 +507,10 @@ export function fn_03194(m: Machine, at = 0x03194): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -559,7 +577,10 @@ export function fn_031ba(m: Machine, at = 0x031ba): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -670,7 +691,10 @@ export function fn_03242(m: Machine, at = 0x03242): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -748,7 +772,10 @@ export function fn_03354(m: Machine, at = 0x03354): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -831,7 +858,10 @@ export function fn_033f4(m: Machine, at = 0x033f4): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -916,7 +946,10 @@ export function fn_034b2(m: Machine, at = 0x034b2): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -974,7 +1007,10 @@ export function fn_0357a(m: Machine, at = 0x0357a): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1011,7 +1047,10 @@ export function fn_035ee(m: Machine, at = 0x035ee): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1048,7 +1087,10 @@ export function fn_0362a(m: Machine, at = 0x0362a): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1085,7 +1127,10 @@ export function fn_03666(m: Machine, at = 0x03666): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1149,7 +1194,10 @@ export function fn_036a2(m: Machine, at = 0x036a2): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1168,7 +1216,10 @@ export function fn_03726(m: Machine, at = 0x03726): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1230,7 +1281,10 @@ export function fn_03728(m: Machine, at = 0x03728): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1253,7 +1307,10 @@ export function fn_037d2(m: Machine, at = 0x037d2): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1279,7 +1336,10 @@ export function fn_037e8(m: Machine, at = 0x037e8): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1337,7 +1397,10 @@ export function fn_03802(m: Machine, at = 0x03802): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1452,7 +1515,10 @@ export function fn_038b0(m: Machine, at = 0x038b0): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1479,7 +1545,10 @@ export function fn_03a08(m: Machine, at = 0x03a08): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1617,7 +1686,10 @@ export function fn_03a4a(m: Machine, at = 0x03a4a): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1675,7 +1747,10 @@ export function fn_03ba4(m: Machine, at = 0x03ba4): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1716,7 +1791,10 @@ export function fn_03c00(m: Machine, at = 0x03c00): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1786,7 +1864,10 @@ export function fn_03c44(m: Machine, at = 0x03c44): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1817,7 +1898,10 @@ export function fn_03ccc(m: Machine, at = 0x03ccc): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1896,7 +1980,10 @@ export function fn_03cee(m: Machine, at = 0x03cee): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1943,7 +2030,10 @@ export function fn_03da0(m: Machine, at = 0x03da0): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -1985,7 +2075,10 @@ export function fn_03de8(m: Machine, at = 0x03de8): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2010,7 +2103,10 @@ export function fn_03e26(m: Machine, at = 0x03e26): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2050,7 +2146,10 @@ export function fn_03e3e(m: Machine, at = 0x03e3e): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2124,7 +2223,10 @@ export function fn_03e84(m: Machine, at = 0x03e84): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2144,7 +2246,10 @@ export function fn_03f10(m: Machine, at = 0x03f10): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2164,7 +2269,10 @@ export function fn_03f1a(m: Machine, at = 0x03f1a): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2219,7 +2327,10 @@ export function fn_03f22(m: Machine, at = 0x03f22): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2301,7 +2412,10 @@ export function fn_03f94(m: Machine, at = 0x03f94): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2343,7 +2457,10 @@ export function fn_0404a(m: Machine, at = 0x0404a): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2383,7 +2500,10 @@ export function fn_0408e(m: Machine, at = 0x0408e): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2482,7 +2602,10 @@ export function fn_040d2(m: Machine, at = 0x040d2): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2563,7 +2686,10 @@ export function fn_041be(m: Machine, at = 0x041be): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2643,7 +2769,10 @@ export function fn_0427e(m: Machine, at = 0x0427e): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2672,7 +2801,10 @@ export function fn_04332(m: Machine, at = 0x04332): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2725,7 +2857,10 @@ export function fn_0435a(m: Machine, at = 0x0435a): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2772,7 +2907,10 @@ export function fn_043c2(m: Machine, at = 0x043c2): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2830,7 +2968,10 @@ export function fn_0441c(m: Machine, at = 0x0441c): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2884,7 +3025,10 @@ export function fn_044a2(m: Machine, at = 0x044a2): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2912,7 +3056,10 @@ export function fn_0450c(m: Machine, at = 0x0450c): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2940,7 +3087,10 @@ export function fn_0452e(m: Machine, at = 0x0452e): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -2989,7 +3139,10 @@ export function fn_04552(m: Machine, at = 0x04552): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3018,7 +3171,10 @@ export function fn_045ca(m: Machine, at = 0x045ca): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3054,7 +3210,10 @@ export function fn_045fa(m: Machine, at = 0x045fa): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3098,7 +3257,10 @@ export function fn_0463c(m: Machine, at = 0x0463c): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3121,7 +3283,10 @@ export function fn_0469e(m: Machine, at = 0x0469e): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3144,7 +3309,10 @@ export function fn_046b0(m: Machine, at = 0x046b0): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3170,7 +3338,10 @@ export function fn_046c2(m: Machine, at = 0x046c2): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3208,7 +3379,10 @@ export function fn_046e0(m: Machine, at = 0x046e0): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3244,7 +3418,10 @@ export function fn_0472a(m: Machine, at = 0x0472a): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3291,7 +3468,10 @@ export function fn_04760(m: Machine, at = 0x04760): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3349,7 +3529,10 @@ export function fn_047c6(m: Machine, at = 0x047c6): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3392,7 +3575,10 @@ export function fn_0482e(m: Machine, at = 0x0482e): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3416,7 +3602,10 @@ export function fn_04880(m: Machine, at = 0x04880): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3589,7 +3778,10 @@ export function fn_048ae(m: Machine, at = 0x048ae): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3635,7 +3827,10 @@ export function fn_04a6a(m: Machine, at = 0x04a6a): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3673,7 +3868,10 @@ export function fn_04ab8(m: Machine, at = 0x04ab8): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3756,7 +3954,10 @@ export function fn_04b0a(m: Machine, at = 0x04b0a): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3811,7 +4012,10 @@ export function fn_04bfa(m: Machine, at = 0x04bfa): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3889,7 +4093,10 @@ export function fn_04c80(m: Machine, at = 0x04c80): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3917,7 +4124,10 @@ export function fn_04d44(m: Machine, at = 0x04d44): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3946,7 +4156,10 @@ export function fn_04d6c(m: Machine, at = 0x04d6c): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -3986,7 +4199,10 @@ export function fn_04d90(m: Machine, at = 0x04d90): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -4033,7 +4249,10 @@ export function fn_04dd2(m: Machine, at = 0x04dd2): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -4079,7 +4298,10 @@ export function fn_04e20(m: Machine, at = 0x04e20): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -4170,7 +4392,10 @@ export function fn_04e82(m: Machine, at = 0x04e82): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }
@@ -4194,7 +4419,10 @@ export function fn_04f8c(m: Machine, at = 0x04f8c): void {
     } catch (e) {
       if (!(e instanceof PendingInterrupt)) throw e;
       if (e.afterInstruction) pc = m.next;
-      call(m.interruptFrame(e.level), m);
+      m.irqDepth += 1;
+      try { call(m.interruptFrame(e.level), m); }
+      finally { m.irqDepth -= 1;
+        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }
     }
   }
 }

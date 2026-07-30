@@ -82,6 +82,9 @@ class BlockLifter(Lifter):
         self.flags = None
         self.saved = {}
         self.db_cond = None         # the loop test of the last dbcc
+        # The last instruction that set X, which is not always the last that
+        # set the flags: move, compare and the logic ops leave X alone.
+        self.xstate = None
         # Whether `flags` is known for certain on this path. Inherited from a
         # single predecessor, or set by an instruction just lifted, it is. Fallen
         # back to whatever the previous block in memory left, it is not - and a
@@ -243,6 +246,21 @@ class BlockLifter(Lifter):
         machine, saves the real thing. Only cmp- and add-shaped states can be
         reconstructed; the rest leave the machine as it is.
         """
+        # X first, and separately, because it is the flag that outlives the
+        # instruction after it. `setFlagsSub` and `setFlagsAdd` set it as part
+        # of the whole state; `setFlagsCmp` and the logic ops leave it alone,
+        # correctly - but then a value the chip has held since some earlier
+        # arithmetic never reaches the machine at all, and `move sr` saves a
+        # word with X clear. Emitted before the rest so that a state which does
+        # set X overwrites this with its own.
+        if self.xstate and self.flags_certain:
+            xkind, xl, xr, xb = self.xstate
+            if xkind == "add":
+                self.stmts.append(f"setXAdd({xl}, {xr}, {xb});")
+            elif xkind == "sub":
+                self.stmts.append(f"setXSub({xl}, {xr}, {xb});")
+            elif xkind == "shift":
+                self.stmts.append(f"setXShift({xr}, 1);")
         if not self.flags or not self.flags_certain:
             return
         kind, lhs, rhs, bits = self.flags
@@ -399,8 +417,13 @@ class BlockLifter(Lifter):
                 # fell off the top rather than a borrow.
                 self.flags = (("add" if b.startswith("add") else "sub"),
                               addends[0], addends[1], bits)
+                # X outlives the flags. Remembered separately so a later move
+                # or compare, which leave X alone on the chip, do not lose it
+                # here - see sync_flags.
+                self.xstate = self.flags
             elif shifted is not None:
                 self.flags = ("shift", self.reg_value(dst, bits).text, shifted, bits)
+                self.xstate = self.flags
             elif dst in DATA:
                 self.flags = ("cmp", self.reg_value(dst, bits).text, "0", bits)
             elif (b in ("move", "moveq") and self.last_written is not None

@@ -69,6 +69,37 @@ only an interrupt changes — never ends.
 instruction, and the machine raises to say so. Nothing needs resuming there
 either: the write has happened, so the handler runs and returns.
 
+**The handler still sees a machine, and the machine has to be true when it
+looks.** An exception is the one moment the lifted world's shorthand shows:
+registers live in JavaScript locals, flags live as values, and the program
+counter lives nowhere at all. All three are visible to a handler.
+
+- **The stacked program counter.** `interruptFrame` pushes `next`, which only
+  the recompiler ever set. Every exception frame the decompiled game pushed
+  carried a program counter of zero until each block began passing its own
+  address to `tick`. The block head is the honest answer: it is where this
+  code would resume.
+- **`rte` returns, it does not jump.** Every exception in the lifted world is
+  entered by a JavaScript call, so the resume is a return and the stacked
+  address is data — the stack only has to be balanced. Jumping to it asks the
+  dispatcher to enter a routine at an address that is not its entry, which a
+  decompiled function cannot do. It went unnoticed while the stacked value was
+  zero; the discovery census recorded a jump to `0x0` and nobody read it.
+- **The registers the handler saves are the interrupted routine's.**
+  `movem.l d2-d7/a2-a3,-(a7)` is the first thing the vblank handler does. Those
+  registers are locals, so the poll spills them — and the condition codes with
+  them — before calling in. The game ran without this, because save and restore
+  cancel, but the two runs' stacks differed by eight longs per interrupt. The
+  spill sits inside the `if` that asks whether an interrupt is waiting, so it
+  costs nothing on the blocks where none is.
+
+What remains is the granularity itself, and it is visible in exactly two bytes:
+the chip takes the interrupt at `0x14514` having just set Z with a `tst`, and
+the lifted world takes it at the head of the block containing that `tst`,
+`0x14510`. So the stacked program counter differs in its low byte and the
+stacked condition codes in the Z bit, for as long as that frame is in flight.
+Polling at block heads is the design; this is what it costs.
+
 ## Flags
 
 The 68000 branches on condition codes; the lifted source has values. Conditions

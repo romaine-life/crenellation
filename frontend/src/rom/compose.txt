@@ -1,3 +1,1 @@
-identical for 120 frames
-120 frames, stopped=false, pc=0x1311e
-120 frames, stopped=false, pc=0x1311c
+attract, two demo loops: frame 350 of 1200, 4 bytes differ (sp 0x3e32e6 vs 0x3e32ea) - ram 0x3e32e6 85!=0 ram 0x3e32e7 85!=0 ram 0x3e32e8 85!=0 ram 0x3e32e9 85!=0

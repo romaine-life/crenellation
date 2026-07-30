@@ -77,6 +77,39 @@ export class Machine {
   atPc: ((pc: number) => void) | null = null;
   /** A second hook, so the system can own atPc and a caller can still watch. */
   atPcExtra: ((pc: number) => void) | null = null;
+
+  /**
+   * How many exception handlers are running.
+   *
+   * The two dispatchers take an interrupt at different instants by design -
+   * the recompiler between instructions, the decompiled code at the head of a
+   * block - so a comparison made while one of them is inside a handler is a
+   * comparison of two different moments. The frame in flight differs in the
+   * stacked program counter and the Z bit of the stacked condition codes, and
+   * the handler's own work is half done in one run and not begun in the other.
+   * Both dispatchers maintain this around the call, so a harness can wait for
+   * a moment when neither is in one.
+   */
+  irqDepth = 0;
+
+  /** How many interrupts have been taken. A frame clock both dispatchers
+   *  agree on, unlike a cycle count: they charge cycles differently, so the
+   *  same wall-clock moment finds them at different instructions. */
+  irqTaken = 0;
+
+  /** True while an exception frame is being pushed - see interruptFrame. */
+  inFrame = false;
+
+  /**
+   * Called when the outermost exception handler returns.
+   *
+   * The one moment in a frame that means the same thing in both dispatchers:
+   * the handler has finished, `rte` has put the stack back, and neither run is
+   * part way through anything the other has not started. Comparing two runs
+   * anywhere else compares two different moments, because a cycle count is not
+   * a program point.
+   */
+  onIrqReturn: (() => void) | null = null;
   /** Called after every dispatched routine with the stack pointer before and
    *  after, so an imbalance is attributed to the routine that caused it. */
   onCall: ((addr: number, before: number, after: number) => void) | null = null;
@@ -477,9 +510,21 @@ export class Machine {
 
   /** Stack an interrupt frame and give back the handler address. */
   interruptFrame(level: number): number {
+    this.irqTaken += 1;
     const sr = this.getSR();
+    // The six bytes of the frame are the seam between the two dispatchers, not
+    // the game: the chip takes an interrupt between instructions and the
+    // decompiled code at the head of a block, so the stacked program counter
+    // and the stacked condition codes differ by where in a block the interrupt
+    // landed. That is not a difference in what the game did, and it cannot be
+    // removed without giving up the thing that makes the decompilation a
+    // decompilation - its expressions span instructions, so there is no
+    // instruction boundary to poll at. Marked so a harness can tell the seam
+    // from the game.
+    this.inFrame = true;
     this.storePre('a7', 4, this.next >>> 0, 32);
     this.storePre('a7', 2, sr, 16);
+    this.inFrame = false;
     this.sr = ((sr & 0xf8ff) | 0x2000 | (level << 8)) & 0xffff;
     return this.load(0x60 + level * 4, 32);
   }

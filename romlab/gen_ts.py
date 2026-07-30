@@ -98,7 +98,13 @@ def emit_function(entry, end, label):
     lines.append("    } catch (e) {")
     lines.append("      if (!(e instanceof PendingInterrupt)) throw e;")
     lines.append("      if (e.afterInstruction) pc = m.next;")
-    lines.append("      call(m.interruptFrame(e.level), m);")
+    # Counted so a harness can tell when a handler is running. The two
+    # dispatchers enter one at different instants by design, and a comparison
+    # made while either is inside is a comparison of two different moments.
+    lines.append("      m.irqDepth += 1;")
+    lines.append("      try { call(m.interruptFrame(e.level), m); }")
+    lines.append("      finally { m.irqDepth -= 1;")
+    lines.append("        if (m.irqDepth === 0 && m.onIrqReturn) m.onIrqReturn(); }")
     lines.append("    }")
     lines.append("  }")
     lines.append("}")

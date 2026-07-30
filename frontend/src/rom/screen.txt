@@ -55,7 +55,7 @@ sequence around 0x20202020: 8a 8a 8a 8a ff 00 00 00 00 00 00 00 00 00 87 85
 channel struct at 0x3E3536: 20202020 2020201f 0 20202020 20202020 292085a5 a5a52020 a5202020
 writes to 0x3E34EA: f60 0x3e3528=0 by 0x13096 | f60 0x3e3529=0 by 0x13096 | f60 0x3e352a=0 by 0x13096 | f60 0x3e352b=0 by 0x13096 | f3434 0x3e3528=32 by 0x19578 | f3434 0x3e3529=32 by 0x19578 | f3434 0x3e352a=32 by 0x19578 | f3434 0x3e352b=32 by 0x19578
 who writes it: 0x13096x4 0x19578x4
-work RAM differs in 7425 of 65536 bytes across 51 pages
+work RAM differs in 7421 of 65536 bytes across 51 pages
    worst pages: 0x3e3300:256 0x3e3600:256 0x3e3900:256 0x3e3a00:256 0x3e3b00:256 0x3e3c00:256 0x3e3e00:256 0x3e4000:256
    first differing bytes: 0x3e0004: chip 0 port 254 | 0x3e0006: chip 0 port 254 | 0x3e0013: chip 66 port 0 | 0x3e0014: chip 64 port 84 | 0x3e0016: chip 240 port 232 | 0x3e0017: chip 33 port 0 | 0x3e0021: chip 5 port 6 | 0x3e0024: chip 0 port 6 | 0x3e0025: chip 48 port 60 | 0x3e0029: chip 6 port 25
 sound area differs in 862 of 1024 bytes
