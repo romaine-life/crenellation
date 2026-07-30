@@ -1350,6 +1350,14 @@ def main():
             spill = "".join(f"setReg('{x}', {names.get(x, x) if names else x}); "
                             for x in regs if x != "a7")
             body = [b.replace("__IRQSPILL__", spill) for b in body]
+            # The tail spill below is appended after the whole body, so every
+            # `return;` inside a block jumps clean over it and the function
+            # exits with its registers still in JavaScript locals. That is how
+            # `a3` reached 0x1378E as 0 when the chip had the watchdog pointer
+            # loaded at 0x1397A: the routine that loaded it returned from
+            # inside a block and the tail never ran. Spill at each return too.
+            # Redundant after a tail jump, which already spilled - harmless.
+            body = [(spill + b if b.strip() == "return;" else b) for b in body]
             src = (f"export function {ident(r['at'])}({sig}): void {{\n"
                    + guard
                    + (decl + "\n" if decl else "")
