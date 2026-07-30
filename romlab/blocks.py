@@ -1094,7 +1094,7 @@ def lift_once(lo, hi, names, seed=()):
                     lifter.stmts = saved
                     lifter.stmts.append(f"if ({lifter.db_cond}) {{")
                     lifter.stmts.extend("  " + s for s in inner)
-                    lifter.stmts.append(f"  jumpRom(0x{tgt:05x});")
+                    lifter.stmts.append(f"  __IRQSPILL__jumpRom(0x{tgt:05x});")
                     lifter.stmts.append("  return;")
                     lifter.stmts.append("}")
                     continue
@@ -1121,7 +1121,7 @@ def lift_once(lo, hi, names, seed=()):
                     inner = lifter.stmts
                     lifter.stmts = saved
                     lifter.stmts.extend("  " + s for s in inner)
-                    lifter.stmts.append(f"  jumpRom(0x{tgt:05x});")
+                    lifter.stmts.append(f"  __IRQSPILL__jumpRom(0x{tgt:05x});")
                     lifter.stmts.append("  return;")
                     lifter.stmts.append("}")
                     continue
@@ -1142,7 +1142,7 @@ def lift_once(lo, hi, names, seed=()):
                     inner = lifter.stmts
                     lifter.stmts = saved
                     lifter.stmts.extend("  " + s for s in inner)
-                    lifter.stmts.append(f"  jumpRom(0x{nxt_addr:05x});")
+                    lifter.stmts.append(f"  __IRQSPILL__jumpRom(0x{nxt_addr:05x});")
                     lifter.stmts.append("  return;")
                     lifter.stmts.append("}")
                     continue
@@ -1157,7 +1157,7 @@ def lift_once(lo, hi, names, seed=()):
                     # address either way, and the callee inherits this frame.
                     lifter.flush()
                     ops = split_ops(i.op_str or "")
-                    lifter.stmts.append(f"jumpRom({lifter.effective_address(ops[0])});")
+                    lifter.stmts.append(f"__IRQSPILL__jumpRom({lifter.effective_address(ops[0])});")
                     lifter.stmts.append("return;")
                     continue
                 # Outside this routine: a tail jump, which hands the callee the
@@ -1165,7 +1165,7 @@ def lift_once(lo, hi, names, seed=()):
                 # without this the block simply runs off its end and control
                 # never goes anywhere.
                 lifter.flush()
-                lifter.stmts.append(f"jumpRom(0x{tgt:05x});")
+                lifter.stmts.append(f"__IRQSPILL__jumpRom(0x{tgt:05x});")
                 lifter.stmts.append("return;")
                 continue
             if "([" in (i.op_str or ""):
