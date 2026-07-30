@@ -1,7 +1,59 @@
-attract, two demo loops: diverge at write 30693 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
-  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 41770060 vs 41770040 at the last common write, 41770182 vs 41770110 at this one)
-  common:     0x3e32a0=3e/16 0x3e329e=0/16 0x3e329c=0/16 0x3e329a=ffff/16 0x3e3298=ffff/16 0x3e3296=0/16 0x3e3294=0/16 0x3e3d90=5/16
-  recompiled: 0x3e0802=0/16 0x3e32e8=500/16 0x3e32e6=0/16 0x3e32e4=fffe/16 0x3e32e2=21/16 0x3e1cf2=ff/8 0x3e0800=1/16 0x3e32fc=91fa/16 0x3e32fa=0/16 0x3e32f8=fffe/16
-  decompiled: 0x3e32e8=5555/16 0x3e32e6=5555/16 0x3e32e4=0/16 0x3e32e2=0/16 0x3e32e0=ffff/16 0x3e32de=ffff/16 0x3e32dc=aaaa/16 0x3e32da=aaaa/16 0x3e32e8=aaaa/16 0x3e32e6=aaaa/16
+attract, two demo loops: diverge at write 40611 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
+  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 49635528 vs 49644282 at the last common write, 49635626 vs 49644372 at this one)
+  common:     0x3e32e4=5555/16 0x3e32e2=5555/16 0x3e32e0=0/16 0x3e32de=0/16 0x3e32dc=ffff/16 0x3e32da=ffff/16 0x3e32e8=ffff/16 0x3e32e6=ffff/16
+  recompiled: 0x3e32e2=35e5/16 0x3e32e0=3e/16 0x3e32de=1ac0/16 0x3e32dc=1/16 0x3e32da=5555/16 0x3e32d8=5555/16 0x3e32d6=0/16 0x3e32d4=0/16 0x3e32d2=33bc/16 0x3e32d0=1/16
+  decompiled: 0x3e32e8=ffff/16 0x3e32e6=ffff/16 0x3e32e4=aaaa/16 0x3e32e2=aaaa/16 0x3e32e0=5555/16 0x3e32de=5555/16 0x3e32dc=0/16 0x3e32da=0/16 0x3e32e8=0/16 0x3e32e6=0/16
   stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
-  clock gap over 30693 writes: -246..914; interrupts taken at the last common write: 76 vs 76
+  clock gap over 40611 writes: -1864..9072; interrupts taken at the last common write: 75 vs 75
+  gap passes 1000 at write 12626 (-1694, at 0x3e32b6)
+  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+
+one player: coin, join at the middle station, then fire: diverge at write 40611 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
+  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 49635528 vs 49644282 at the last common write, 49635626 vs 49644372 at this one)
+  common:     0x3e32e4=5555/16 0x3e32e2=5555/16 0x3e32e0=0/16 0x3e32de=0/16 0x3e32dc=ffff/16 0x3e32da=ffff/16 0x3e32e8=ffff/16 0x3e32e6=ffff/16
+  recompiled: 0x3e32e2=35e5/16 0x3e32e0=3e/16 0x3e32de=1ac0/16 0x3e32dc=1/16 0x3e32da=5555/16 0x3e32d8=5555/16 0x3e32d6=0/16 0x3e32d4=0/16 0x3e32d2=33bc/16 0x3e32d0=1/16
+  decompiled: 0x3e32e8=ffff/16 0x3e32e6=ffff/16 0x3e32e4=aaaa/16 0x3e32e2=aaaa/16 0x3e32e0=5555/16 0x3e32de=5555/16 0x3e32dc=0/16 0x3e32da=0/16 0x3e32e8=0/16 0x3e32e6=0/16
+  stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
+  clock gap over 40611 writes: -1864..9072; interrupts taken at the last common write: 75 vs 75
+  gap passes 1000 at write 12626 (-1694, at 0x3e32b6)
+  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+
+two players: both coin slots, left and right stations: diverge at write 40611 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
+  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 49635528 vs 49644282 at the last common write, 49635626 vs 49644372 at this one)
+  common:     0x3e32e4=5555/16 0x3e32e2=5555/16 0x3e32e0=0/16 0x3e32de=0/16 0x3e32dc=ffff/16 0x3e32da=ffff/16 0x3e32e8=ffff/16 0x3e32e6=ffff/16
+  recompiled: 0x3e32e2=35e5/16 0x3e32e0=3e/16 0x3e32de=1ac0/16 0x3e32dc=1/16 0x3e32da=5555/16 0x3e32d8=5555/16 0x3e32d6=0/16 0x3e32d4=0/16 0x3e32d2=33bc/16 0x3e32d0=1/16
+  decompiled: 0x3e32e8=ffff/16 0x3e32e6=ffff/16 0x3e32e4=aaaa/16 0x3e32e2=aaaa/16 0x3e32e0=5555/16 0x3e32de=5555/16 0x3e32dc=0/16 0x3e32da=0/16 0x3e32e8=0/16 0x3e32e6=0/16
+  stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
+  clock gap over 40611 writes: -1864..9072; interrupts taken at the last common write: 75 vs 75
+  gap passes 1000 at write 12626 (-1694, at 0x3e32b6)
+  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+
+three stations at once, second buttons too: diverge at write 40611 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
+  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 49635528 vs 49644282 at the last common write, 49635626 vs 49644372 at this one)
+  common:     0x3e32e4=5555/16 0x3e32e2=5555/16 0x3e32e0=0/16 0x3e32de=0/16 0x3e32dc=ffff/16 0x3e32da=ffff/16 0x3e32e8=ffff/16 0x3e32e6=ffff/16
+  recompiled: 0x3e32e2=35e5/16 0x3e32e0=3e/16 0x3e32de=1ac0/16 0x3e32dc=1/16 0x3e32da=5555/16 0x3e32d8=5555/16 0x3e32d6=0/16 0x3e32d4=0/16 0x3e32d2=33bc/16 0x3e32d0=1/16
+  decompiled: 0x3e32e8=ffff/16 0x3e32e6=ffff/16 0x3e32e4=aaaa/16 0x3e32e2=aaaa/16 0x3e32e0=5555/16 0x3e32de=5555/16 0x3e32dc=0/16 0x3e32da=0/16 0x3e32e8=0/16 0x3e32e6=0/16
+  stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
+  clock gap over 40611 writes: -1864..9072; interrupts taken at the last common write: 75 vs 75
+  gap passes 1000 at write 12626 (-1694, at 0x3e32b6)
+  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+
+service switch held, then released: diverge at write 39666 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
+  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 63385960 vs 63400344 at the last common write, 63385960 vs 63400344 at this one)
+  common:     0x3e32b8=1/16 0x3e32b6=0/16 0x3e32b4=0/16 0x3e32b2=0/16 0x3e32b0=6b08/16 0x3e32ae=1/16 0x3e32a6=34cc/16 0x3e32a4=3e/16
+  recompiled: 0x3e32a2=44a8/16 0x3e32a0=20/16 0x3e329e=1f/16 0x3e329c=0/16 0x3e329a=0/16 0x3e3298=0/16 0x3e3296=33bc/16 0x3e3294=1/16 0x3e3292=0/16 0x3e3290=0/16
+  decompiled: 0x3e32a2=44bc/16 0x3e32a0=20/16 0x3e329e=1f/16 0x3e329c=0/16 0x3e329a=0/16 0x3e3298=0/16 0x3e3296=33bc/16 0x3e3294=1/16 0x3e3292=0/16 0x3e3290=0/16
+  stack:      Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- fn_17500 <- call <- callDecompiled
+  clock gap over 39666 writes: -1864..14592; interrupts taken at the last common write: 99 vs 99
+  gap passes 1000 at write 12626 (-1694, at 0x3e32b6)
+  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+
+no input at all, long run: diverge at write 40611 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
+  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 49635528 vs 49644282 at the last common write, 49635626 vs 49644372 at this one)
+  common:     0x3e32e4=5555/16 0x3e32e2=5555/16 0x3e32e0=0/16 0x3e32de=0/16 0x3e32dc=ffff/16 0x3e32da=ffff/16 0x3e32e8=ffff/16 0x3e32e6=ffff/16
+  recompiled: 0x3e32e2=35e5/16 0x3e32e0=3e/16 0x3e32de=1ac0/16 0x3e32dc=1/16 0x3e32da=5555/16 0x3e32d8=5555/16 0x3e32d6=0/16 0x3e32d4=0/16 0x3e32d2=33bc/16 0x3e32d0=1/16
+  decompiled: 0x3e32e8=ffff/16 0x3e32e6=ffff/16 0x3e32e4=aaaa/16 0x3e32e2=aaaa/16 0x3e32e0=5555/16 0x3e32de=5555/16 0x3e32dc=0/16 0x3e32da=0/16 0x3e32e8=0/16 0x3e32e6=0/16
+  stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
+  clock gap over 40611 writes: -1864..9072; interrupts taken at the last common write: 75 vs 75
+  gap passes 1000 at write 12626 (-1694, at 0x3e32b6)
+  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled

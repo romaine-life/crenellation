@@ -117,6 +117,37 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   // the two dispatchers do not share: `steps` counts instructions on one side
   // and blocks on the other. Pacing by writes made the streams part earlier,
   // at 14,464 rather than 27,627.
+  // The frame interrupt, driven off poll points rather than cycles.
+  //
+  // Both runs execute the same code, so they arrive at the same block heads in
+  // the same order - that is the one sequence they share exactly. A cycle
+  // total is not: the lifted code pays for a whole block on entry and the
+  // recompiler pays per instruction, so between block heads they are apart by
+  // up to the rest of the block. Nine hundred cycles against a frame of a
+  // quarter of a million almost never matters, and then once it lands either
+  // side of the threshold and the decompiled run misses a frame - the
+  // semaphore at 0x3E0802 reaching two where the other run had already
+  // consumed it. Counting block heads removes the dependence entirely.
+  // One asymmetry survives even then. When the recompiler takes an interrupt
+  // it resumes by re-running the instruction it was interrupted at, so that
+  // block head arrives twice; the lifted side takes the interrupt inside the
+  // block it has already entered and arrives once. That is one extra poll per
+  // interrupt on one side, which is exactly the sort of slow creep that ends a
+  // spin loop an iteration early. The re-run is skipped, and only on the side
+  // that makes it.
+  const PER_FRAME = Number(process.env.POLLS_PER_FRAME ?? 9000);
+  const isRecompiled = entry === viaRecompiled;
+  let polls = 0;
+  let rerun = false;
+  sys.pacedIrq = () => {
+    if (!POLL_AT.has(sys.m.pc)) return false;
+    if (rerun) { rerun = false; return false; }
+    polls += 1;
+    if (polls < PER_FRAME) return false;
+    polls = 0;
+    rerun = isRecompiled;
+    return true;
+  };
   const STOP = new Error('enough');
   let n = 0;
   try {
