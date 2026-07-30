@@ -20,6 +20,13 @@ import capstone
 
 HERE = Path(__file__).parent
 UP = (HERE / "prog_ext.bin").read_bytes()
+
+# Addresses the game enters at that are not routine starts - tail jumps, jump
+# tables, `lea $X(pc),a6` continuations. Each gets its own function because a
+# decompiled function has one way in; each is also a block head *inside* the
+# routine that contains it, which is what `build` uses this for.
+_inner = HERE / "out" / "inner_entries.json"
+INNER = frozenset(json.loads(_inner.read_text())) if _inner.exists() else frozenset()
 FACTS = json.loads((HERE / "out" / "facts.json").read_text())
 
 md = capstone.Cs(capstone.CS_ARCH_M68K, capstone.CS_MODE_BIG_ENDIAN | capstone.CS_MODE_M68K_000)
@@ -81,6 +88,16 @@ def build(lo, hi):
 
     # leaders: the entry, every branch target, and everything after a branch
     leaders = {lo}
+    # ...and every address something else enters at. An inner entry is a block
+    # head in the function generated for it, and without this it is *interior*
+    # to a merged block in the routine that contains it - so the host runs
+    # straight through where the recompiler, which polls per instruction at
+    # every block head in any function, stops to poll. That mismatch is the
+    # whole of the twenty-seven poll points the two dispatchers differed by:
+    # 276 inner entries sit in POLL_AT and about that many execute in attract.
+    # An entry is a block head; saying so here makes the two agree by
+    # construction instead of by discount.
+    leaders |= {e for e in INNER if lo < e < hi}
     for i in ins:
         b = base(i.mnemonic)
         t = target_of(i)

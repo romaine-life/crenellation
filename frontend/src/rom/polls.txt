@@ -1,0 +1,6 @@
+recompiled polled 2000000, decompiled polled 2000000
+first difference at poll 5031: recompiled 0x1378e vs decompiled 0x1380e
+  run-up (shared): 135ae 135ae 135ae 135ae 135ae 135ae 135b8 135ba 135c2 135c6 135ce 1378e
+  recompiled next: 1378e 1380e 13812 13812 13812 13812 13812 13812 13812 13812 13812 13812
+  decompiled next: 1380e 13812 13812 13812 13812 13812 13812 13812 13812 13812 13812 13812
+  decompiled skipped one poll at 0x1378e; the streams re-synchronise and stay together for 1116 more
