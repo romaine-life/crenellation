@@ -129,6 +129,16 @@ describe('poll points', () => {
     let c = 0;
     while (c < i && A.cyc[c] === B.cyc[c]) c += 1;
     if (c < i) {
+      // At the frame boundary the recompiled side's post-interrupt re-tick is
+      // discounted, so a poll goes unrecorded and its clock lands on the next
+      // one - which reads as a gap of exactly one block. Confirmed by moving
+      // the pacing: at 9000 the gap sits at poll 9000, at 7000 at poll 7000.
+      // Say so, or it looks like drift and gets chased. Again.
+      const perFrame = Number(process.env.POLLS_PER_FRAME ?? 9000);
+      if (c > 0 && c % perFrame === 0) {
+        lines.push(`clocks first differ at poll ${c}, which is the frame`
+          + ` boundary (${perFrame}): the discounted re-tick, not drift`);
+      }
       lines.push(`clocks first differ at poll ${c} (0x${a[c].toString(16)}):`
         + ` recompiled ${A.cyc[c]} vs decompiled ${B.cyc[c]}`
         + ` (${B.cyc[c] - A.cyc[c]} apart)`);
