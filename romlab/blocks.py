@@ -1090,6 +1090,27 @@ def lift_once(lo, hi, names, seed=()):
                     lifter.stmts.append("  return;")
                     lifter.stmts.append("}")
                     continue
+                nxt_addr = i.address + i.size
+                if nxt_addr not in index:
+                    # The mirror of the case above: the branch stays inside
+                    # and the fall-through leaves - a conditional whose
+                    # not-taken path is the routine's end. With the edge
+                    # simply dropped, the structurer saw one successor and
+                    # folded the test into an unconditional loop-back, which
+                    # is how the bit-walk at 0x19A18 spun forever: its
+                    # zero-exit fell exactly on the extent end.
+                    cond = lifter.condition(b)
+                    lifter.stmts.append(f"if (!({cond})) {{")
+                    saved = list(lifter.stmts)
+                    lifter.stmts = []
+                    lifter.flush()
+                    inner = lifter.stmts
+                    lifter.stmts = saved
+                    lifter.stmts.extend("  " + s for s in inner)
+                    lifter.stmts.append(f"  jumpRom(0x{nxt_addr:05x});")
+                    lifter.stmts.append("  return;")
+                    lifter.stmts.append("}")
+                    continue
                 conds[n] = (lifter.condition(b), index[tgt])
                 continue
             if b in ("bra", "bral", "jmp"):
