@@ -135,7 +135,17 @@ export class Machine {
 
   tick(pc = 0): void {
     this.pc = pc;
-    if (this.atPc) this.atPc(pc);
+    // A routine that runs past the end of its own case range ticks at the
+    // address first, then hands it back with `m.jump`; the dispatcher enters
+    // whichever routine covers it, and *that* loop ticks at the same address
+    // again. One instruction, two ticks - invisible to the game, but the
+    // decompiled side transfers once, so the two runs' poll counts part by
+    // one every time code runs from one routine into the next. Falling out is
+    // normal here (routine bounds come from call targets), so this is not
+    // rare. Charge the second tick to the first: skip it, once.
+    const handed = this.handoff === pc;
+    this.handoff = 0;
+    if (!handed && this.atPc) this.atPc(pc);
     this.steps += 1;
     // An interrupt is taken between instructions, never inside one. Raised
     // here, the instruction about to run has not started, so the address to
@@ -487,7 +497,18 @@ export class Machine {
    * grow. The routine hands the address back here and the dispatcher continues
    * there, so a loop that jumps between routines costs no JavaScript stack.
    */
-  jump = 0;
+  private _jump = 0;
+
+  get jump(): number { return this._jump; }
+
+  /** Recording the hand-off, not just performing it: the address is about to
+   *  be ticked a second time by the routine that takes it over, and `tick`
+   *  needs to know which one to let through. The dispatcher clears `jump`
+   *  before re-entering, so it cannot be read there. */
+  set jump(v: number) { this._jump = v; if (v) this.handoff = v; }
+
+  /** The address a routine just handed back, live for exactly one tick. */
+  handoff = 0;
 
   /** Whether the board has an interrupt waiting. The harness sets this. */
   irqPending = 0;
