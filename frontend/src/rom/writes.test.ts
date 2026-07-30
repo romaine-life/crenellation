@@ -159,6 +159,22 @@ function compare(p: Pattern): { note: string; agreed: number } {
       if (d > hi) hi = d;
     }
     const spread = `clock gap over ${n} writes: ${lo}..${hi}`;
+    // Where it first goes badly wrong, and who was running. A thousand
+    // cycles is more than any block costs, so the first write past that is
+    // past the phase and into whatever charges asymmetrically.
+    let gi = 0;
+    while (gi < n && Math.abs(b.cyc[gi] - a.cyc[gi]) < 1000) gi += 1;
+    let gwho = '';
+    if (gi < n) {
+      try { gwho = record(p, viaDecompiled, gi).stack; }
+      catch (e) { gwho = `(${(e as Error).message})`; }
+    }
+    const gap = gi < n
+      ? `
+  gap passes 1000 at write ${gi} (${b.cyc[gi] - a.cyc[gi]}, at`
+        + ` 0x${a.addr[gi].toString(16)})
+  gap stack: ${gwho}`
+      : '';
     let note = `identical: ${a.n} writes`      + (ci < a.n && ci < b.n        ? `, but the cycle clocks part at write ${ci}`          + ` (${a.cyc[ci]} vs ${b.cyc[ci]}, at 0x${a.addr[ci].toString(16)})`        : ', and the cycle clocks agree');
     if (i < a.n || i < b.n) {
       const show = (r: Run, k: number): string => (k < r.n
@@ -188,7 +204,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
         `  stack:      ${who}`].join('\n');
     }
     return { note: `${p.name}: ${note}
-  ${spread}`, agreed: i };
+  ${spread}${gap}`, agreed: i };
 }
 
 // The write stream needs no common clock. Two runs that do the same thing

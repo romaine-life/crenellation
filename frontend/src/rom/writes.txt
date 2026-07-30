@@ -5,3 +5,5 @@ attract, two demo loops: diverge at write 30693 of 300000/300000; cycles first d
   decompiled: 0x3e32e8=5555/16 0x3e32e6=5555/16 0x3e32e4=0/16 0x3e32e2=0/16 0x3e32e0=ffff/16 0x3e32de=ffff/16 0x3e32dc=aaaa/16 0x3e32da=aaaa/16 0x3e32e8=aaaa/16 0x3e32e6=aaaa/16
   stack:      Machine <- Machine <- push <- fn_00430 <- call <- callDecompiled <- callRom <- fn_091b2 <- call
   clock gap over 300000 writes: -279796..7574
+  gap passes 1000 at write 12626 (1144, at 0x3e32b6)
+  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
