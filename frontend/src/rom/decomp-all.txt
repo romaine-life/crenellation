@@ -1,0 +1,21 @@
+0x760a trial 0: d0 differs - machine 0x11, decompiled 0x5f2
+0x760a trial 1: d0 differs - machine 0x11, decompiled 0x5f2
+0x760a trial 2: d0 differs - machine 0x11, decompiled 0x5f2
+0x760a trial 3: d0 differs - machine 0x11, decompiled 0x5f2
+0xb032 trial 0: memory differs at 0x3e0a69 - machine 5, decompiled 27
+0xb032 trial 1: memory differs at 0x3e0a69 - machine 5, decompiled 27
+0xb032 trial 2: memory differs at 0x3e0a69 - machine 5, decompiled 27
+0xb032 trial 3: memory differs at 0x3e0a69 - machine 5, decompiled 27
+0x198c0 trial 0: decompiled threw - instruction budget exhausted after 20000
+0x198c0 trial 3: decompiled threw - instruction budget exhausted after 20000
+0x1997a trial 0: decompiled threw - instruction budget exhausted after 20000
+0x1997a trial 1: decompiled threw - instruction budget exhausted after 20000
+0x1997a trial 2: decompiled threw - instruction budget exhausted after 20000
+0x1997a trial 3: decompiled threw - instruction budget exhausted after 20000
+0x1997c trial 0: decompiled threw - instruction budget exhausted after 20000
+0x1997c trial 1: decompiled threw - instruction budget exhausted after 20000
+0x1997c trial 2: decompiled threw - instruction budget exhausted after 20000
+0x1997c trial 3: decompiled threw - instruction budget exhausted after 20000
+0x19b06 trial 0: d0 differs - machine 0x94980009, decompiled 0x3e4318
+0x19b06 trial 1: d0 differs - machine 0xbc2c0009, decompiled 0x3e4318
+0x19b06 trial 2: d0 differs - machine 0x4cae0007, decompiled 0x3e42f0

@@ -339,6 +339,17 @@ class Lifter:
                 continue
             self.stmts.append(f"setReg('{r}', {e.text});")
 
+    def reload(self):
+        """Forget the register locals: control left through the machine and
+        whatever ran there was free to change any of them. From here a read of
+        an untouched register is what the handler left, not a parameter - the
+        same rule a call boundary already applies. Clearing without setting
+        after_call handed the final `move.w d1,d0` of the divide helper its
+        entry d0 back, and the quotient came out wearing the caller's high
+        word."""
+        self.reg.clear()
+        self.after_call = True
+
     def write(self, tok, value, bits):
         tok = tok.strip()
         if tok.startswith("__at:"):
@@ -743,15 +754,30 @@ class Lifter:
             return
         if b in ("divu", "divs"):
             # 32 / 16, quotient in the low word and remainder in the high one.
-            # Division by zero traps on the 68000; the machine takes the vector
-            # and this cannot, so it is left to the machine.
+            # Division by zero traps on the 68000: the helper stacks the next
+            # instruction and vectors through 0x14, and the guard emitted here
+            # stops the lifted flow when the handler halts the machine - this
+            # ROM's handler prints and stops, and running on would spill stale
+            # shadow registers over the state the crash dump just wrote. The
+            # divide-by-zero paths were invisible while the lifted helper
+            # quietly returned the numerator; the oracle vectored, and the two
+            # parted by an exception frame's worth of stack.
             src = self.read(ops[0], 16).text
             dst = ops[1]
             num32 = self.read(dst, 32).text
             if b == "divs":
                 src = f"((({src}) << 16) >> 16)"
                 num32 = f"(({num32}) | 0)"
-            v = self.temp(Expr(f"div{'s' if b == 'divs' else 'u'}({num32}, {src})", "expr"))
+            nxt = ins.address + ins.size
+            # A trap boundary is a call boundary: the handler dumps and can
+            # change registers, so the shadows go to the machine first and
+            # come back after, exactly as around a callRom.
+            self.flush()
+            v = self.temp(Expr(
+                f"div{'s' if b == 'divs' else 'u'}({num32}, {src}, 0x{nxt:05x})",
+                "expr"))
+            self.stmts.append("if (halted()) return;")
+            self.reload()
             self.write(dst, v, 32)
             return
         if b in ("bset", "bclr", "bchg", "btst"):
@@ -846,8 +872,17 @@ class Lifter:
             # nothing here models the chips it would reset.
             return
         if b == "trap":
-            self.stmts.append(f"trap({num(ops[0])});")
-            self.stmts.append("return;")
+            # The handler runs inline through the dispatcher. If it halted the
+            # machine - trap #0 in the exception stubs resolves to the halt
+            # trampoline - the guard stops the lifted flow before it can spill
+            # stale shadows over what the handler wrote; if it returned, the
+            # flow continues at the next statement, which is the stacked
+            # address.
+            nxt = ins.address + ins.size
+            self.flush()
+            self.stmts.append(f"trap({num(ops[0])}, 0x{nxt:05x});")
+            self.stmts.append("if (halted()) return;")
+            self.reload()
             return
         raise Bail(f"no rule for {mn} {ins.op_str}")
 
@@ -996,14 +1031,27 @@ const extend = (): number => (M.x ? 1 : 0);
 // Quotient in the low word, remainder in the high one. A quotient too wide for
 // the low word overflows: the 68000 sets V and leaves the destination alone,
 // where truncating it would silently write a plausible wrong number.
-const divu = (n: number, d: number): number => {
-  if (d === 0) return n;
+// Dividing by zero is an exception, not an error: the chip stacks the next
+// instruction and the status register and vectors through 0x14. The handler
+// runs here through the dispatcher, the same shape as an interrupt at a
+// block head. In this ROM the handler prints and halts, and the caller's
+// `if (halted()) return` stops the lifted flow before it can spill stale
+// shadows over the registers the crash dump just wrote; a handler that
+// came back with rte would resume at the next instruction, which is exactly
+// where the lifted flow continues.
+const divZero = (next: number): void => {
+  M.storePre('a7', 4, next, 32);
+  M.storePre('a7', 2, M.getSR(), 16);
+  call(M.load(0x14, 32), M);
+};
+const divu = (n: number, d: number, next: number): number => {
+  if (d === 0) { divZero(next); return n; }
   const q = Math.floor((n >>> 0) / d);
   if (q > 0xffff) return n;
   return ((q & 0xffff) | (((n >>> 0) % d) << 16)) >>> 0;
 };
-const divs = (n: number, d: number): number => {
-  if (d === 0) return n;
+const divs = (n: number, d: number, next: number): number => {
+  if (d === 0) { divZero(next); return n; }
   const q = Math.trunc((n | 0) / d);
   if (q > 32767 || q < -32768) return n;
   return ((q & 0xffff) | (((n | 0) % d) << 16)) >>> 0;
@@ -1063,7 +1111,19 @@ const setFlagsAdd = (a: number, b: number, bits: number): void => {
   M.z = r === 0; M.n = sr < 0; M.c = wide > mask; M.x = M.c; M.v = (sa + sb) !== sr;
 };
 const movep = (v: number): void => { M.movep(v); };
-const trap = (n: number): void => { M.trap(n); };
+// A trap is not a no-op: the chip stacks the next instruction and the status
+// register and vectors through the table, and this ROM leans on it - TRAP #0's
+// vector holds 0x18658, the continuation after the jsr that reached the
+// printer, so for the exception stubs "trap #0" means "halt". The handler runs
+// through the dispatcher like an interrupt at a block head; when it comes back
+// the lifted flow continues at the next statement, which is exactly the
+// address the frame carries.
+const trap = (n: number, next: number): void => {
+  M.trap(n);
+  M.storePre('a7', 4, next, 32);
+  M.storePre('a7', 2, M.getSR(), 16);
+  call(M.load((32 + n) * 4, 32), M);
+};
 const rot = (v: number, c: number, bits: number, left: boolean): number => {
   const n = (c & 63) % bits;
   const mask = bits === 32 ? 0xffffffff : (1 << bits) - 1;
