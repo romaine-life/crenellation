@@ -20,23 +20,44 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
 
 ## Where it stands
 
-- 1,064 decompiled functions: 778 ROM routines plus ~300 entry points.
+- 1,113 decompiled functions: 836 ROM routines plus entry points. Every byte
+  of the image — overlay, upper half, both board regions — carries exactly one
+  verdict: code in a routine, or data with recorded evidence
+  (`romlab/census_image.py` is the auditor; zero alarms is the bar).
+- 832 of 836 routines are matched against a frozen 68000 (22,500 step-state
+  snapshots, every capture run freezing the identical machine); one is
+  incomparable with the reason on record (the protection bank probe at
+  0x140010 — the 0x140000 window is served by a state machine, and fetching
+  differs from reading); one, the computed-jump entry at 0x1A256, is still
+  outstanding.
 - The game boots, draws the attract screen in colour, and reaches gameplay
-  running on decompiled code alone.
-- **425 of 1,064 routines are named.** The rest are `fn_0ccb2`. Parameters are
-  ~34% named.
+  running on decompiled code alone. The composed decompiled run is
+  byte-identical to the recompiled one through frame ~270.
 - One deliberate rule change is live: `wallCellSet` no longer counts the cell
   above as connected (see `romlab/handedits.py`).
 - Known divergence: 7 bytes of sound-sequencer state from frame 276, in the
-  boot tail. Not on the visible path.
+  boot tail. Not on the visible path — and now the *first* divergence: the
+  writes instrument's floor sits at write 29,770, up from 6,139.
 
 ## Regenerating
+
+When only names or the lifter changed:
 
 `cd romlab && python3 idents.py && python3 blocks.py && rm -f out/unproven.json
 && python3 decomp.py && python3 handedits.py`
 
-Order matters and two steps are easy to get wrong:
+When the *map* changed — funcs, entries, extents — the chain starts earlier
+and regenerates both translations:
 
+`python3 describe.py && python3 gen_ts.py && python3 cfg.py && python3
+idents.py && python3 blocks.py && rm -f out/unproven.json && python3 decomp.py
+&& python3 handedits.py`
+
+Order matters and these steps are easy to get wrong:
+
+- **`cfg.py` after any funcs change.** `blocks.py` and `decomp.py` read
+  `cfg.json`, not `facts.json`; skipping it silently lifts the previous map —
+  a new routine simply fails to appear and nothing errors.
 - **`rm out/unproven.json` before `decomp.py`, not after.** It is read at
   generation time; clearing it afterwards silently emits the previous run's
   held-back set and every count is wrong.
@@ -46,6 +67,41 @@ Order matters and two steps are easy to get wrong:
   has to be re-expressed, or taught to the lifter.
 - **`rm -rf romlab/__pycache__`** after editing a module another script imports.
   Stale bytecode has survived edits here more than once.
+
+## The map, and how it grows
+
+`describe.py` assembles the function map from the classifier's runs plus every
+entry source; `facts.json` is its output, never edited by hand. Entry sources,
+each with its own instrument:
+
+- **`staticentries.py`** — every `callRom`/`jumpRom` in the lifted sources
+  landing outside all routines. The lifter derived those transfers by
+  following real flow, so inline data cannot fabricate them. The output
+  **accumulates** (like `unproven.json`); it lists only what is uncovered *at
+  that moment*, so overwriting forgets consumed entries and the map regresses.
+  Loop `describe → gen_ts → cfg → idents → blocks → decomp → handedits →
+  staticentries` until it reports zero: two clean rounds is converged.
+- **`prune_entries.py`** — drops accumulated inner entries nothing can reach.
+  Reach is control evidence only: a `load8(base + i)` citation is a data use
+  and argues for dropping, which is how twelve bytes of index table at
+  0x1996A stopped being a "function".
+- **`reviewed_entries.json`** — verdicts from reading, with the evidence
+  recorded. A `code` verdict becomes an entry (dead code has no callers, so
+  no reachability instrument can find it); a `data` verdict retires a
+  suspect; `ranges` records region-level judgments (the upper image, the
+  board regions, the exception-stub strings).
+- **`extents.curated.json`** — measured ends for functions the classifier
+  overshot, applied like hand edits: an entry that no longer matches is an
+  error.
+- **`census_image.py`** — the auditor: every byte of the image gets exactly
+  one verdict (code in a routine / data with evidence), and it alarms on any
+  branch into an uncovered byte and any data run that looks like prologues.
+  Run it after any map change; zero alarms and zero unjudged suspects is the
+  bar.
+
+A worktree can run all of this after one deliberate copy of the gitignored
+inputs from the main checkout: `romlab/out/*.json`, `prog_ext.bin`,
+`prog_upper.bin`. Outputs then land in the worktree's own `frontend/src/rom/`.
 
 ## Verifying
 

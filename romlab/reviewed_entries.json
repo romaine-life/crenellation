@@ -1,0 +1,76 @@
+{
+  "0x140010": {
+    "verdict": "incomparable",
+    "why": "a protection bank probe: the 0x140000 window is served by a state machine, and what the chip FETCHES there depends on the access sequence - the forced-PC capture executed it as moveq #2 (the live bank) while every byte-wise READ of the window, including the io capture itself, returns the moveq #0 image prog_ext.bin holds. The port pins that read-view bank and returns 0. The caller at 0xEDEA uses d0 to seed the difficulty table when the difficulty byte is out of range - protection sabotage; 0 is a safe clamp. The case measures protection state, not translation"
+  },
+  "0x1996a": {
+    "verdict": "data",
+    "why": "base of a descending byte table: three routines read load8(0x1996a + index) and fn_19a24 walks it backwards with post-decrement loads; the host routine's own flow at 0x19966 branches over these bytes; lifted as a function it is or-noise ending in a movep with a wild displacement"
+  },
+  "0x13dda": {
+    "verdict": "data",
+    "why": "month-name table JANFEBMAR...DEC followed by a days-per-month byte table (0x1f/0x1e), read by the self-test clock display; real code resumes at the movem.l at 0x13e0a; the citation was a junk block fabricated from the table's first bytes after the host's closing bra.b at 0x13dd4"
+  },
+  "0x197f4": {
+    "verdict": "code",
+    "why": "complete routine: signed halving and negation of a stacked step (asr/neg/ext.l/add.l on 4(a7) and a(a7)), runs to its rts; nothing known reaches it - unreached code, not data"
+  },
+  "0x19b06": {
+    "verdict": "code",
+    "why": "complete routine behind twelve bytes of table (ffff ff00 ff01 ...): loads 0(a2), early-out beq, walks a structure through a3; the data prefix 0x19af4-0x19b06 stays data; nothing known reaches it"
+  },
+  "0x767c": {
+    "verdict": "code",
+    "why": "complete function with link/movem prologue: copies a two-byte key to the frame, walks a list comparing a 6-bit field (andi #$3f) against the key; nothing known reaches it"
+  },
+  "0x16958": {
+    "verdict": "code",
+    "why": "complete function with link/movem prologue in the service-mode cluster: loads three word arguments, 180 as a limit, accumulates through a loop; nothing known reaches it"
+  },
+  "0xe562": {
+    "verdict": "code",
+    "why": "counter-clamp pair: pea 1/pea $13, call the read thunk at 0x178, if above 2000 write 2000 back through the thunk at 0x18a; twin at 0xe588 does counter $12; nothing known reaches either"
+  },
+  "0xe588": {
+    "verdict": "code",
+    "why": "second member of the counter-clamp pair at 0xe562, for counter $12"
+  },
+  "0x1e834": {
+    "verdict": "code",
+    "why": "the crash screen's column fill: writes a byte four times through (a1)+, skips 0x1fc to the next playfield row group, eight groups; complete to its rts at 0x1e858; nothing lifted cites it, so either the dump's deeper blocks were pruned or it is dead - unreached code either way"
+  },
+  "0x19af4": {
+    "verdict": "data",
+    "why": "the eighteen bytes before the routine at 0x19b06: three ff-words of table then movep-flavoured junk around an accidental rts; markers 5.56 is six words doing their worst"
+  },
+  "0x11e7e": {
+    "verdict": "data",
+    "why": "ori-noise with undecodable words and branches to misaligned neighbourhoods; marker score 1.09 is the accident of 92 bytes, not a prologue; sits between the dissolve and RNG routines as their table"
+  },
+  "ranges": [
+    {
+      "lo": "0x18540",
+      "hi": "0x18652",
+      "verdict": "data",
+      "why": "the exception stubs' message text: each stub is one jsr to 0x18652, which prints the text after the jsr through the stacked return address and jumps to the halt stub at 0x1e8d2 - the call never returns, so a lifted fall-through target inside this range is the message, not code"
+    },
+    {
+      "lo": "0x20000",
+      "hi": "0x100000",
+      "verdict": "data",
+      "why": "the upper program image: pictures and their tables. Zero control transfers from any routine land here, opcode-marker density is 0.00 per 100 bytes across 917504 bytes (real code runs 2-6), and the art tooling decodes graphics from it; the 24610 aligned values that look like overlay pointers are what a million bytes of art encodes by accident"
+    },
+    {
+      "lo": "0x140000",
+      "hi": "0x180000",
+      "verdict": "data",
+      "why": "the board ROM, pictures plus the protection furniture, except the two measured code islands the map carries: 0x140010 (moveq #0; rts) and 0x1400e4-0x14010e (the table compare). The knock addresses the power-on probe reads (0x140000, 0x1400a8, 0x1400e8, 0x1432b0, 0x1460xx) and the table at 0x140034 are data the code touches, not code"
+    },
+    {
+      "lo": "0x500000",
+      "hi": "0x520000",
+      "verdict": "data",
+      "why": "a byte-wide device on the odd byte lane: every one of the 14336 nonzero bytes in the io-baseline capture sits at an odd address, and the two 64KB halves are identical - a mirrored byte device, the settings/bookkeeping store. No transfer lands here and marker density is zero. The port reads the captured bytes and discards writes (machine.ts)"
+    }
+  ]
+}

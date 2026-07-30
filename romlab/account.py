@@ -38,9 +38,28 @@ for a, b in M["code"]:
                     refs[v].add(addr)
         addr += ins.size
 
-data = [(a, b) for a, b in M["data"]]
+# The complement of the current function map, not the old classifier's
+# partition - funcs has grown past codemap2, and rows computed against the
+# old partition double-claim every byte the newer routines cover.
+FACTS = json.loads((HERE / "out" / "facts.json").read_text())
+_funcs = sorted((a, b) for a, b in FACTS["funcs"])
+_covered = bytearray(LIMIT)
+for _a, _b in _funcs:
+    for _i in range(_a, min(_b, LIMIT)):
+        _covered[_i] = 1
+data = []
+_i = 0
+while _i < LIMIT:
+    if not _covered[_i]:
+        _j = _i
+        while _j < LIMIT and not _covered[_j]:
+            _j += 1
+        data.append((_i, _j))
+        _i = _j
+    else:
+        _i += 1
 print(f"data runs: {len(data)}  bytes {sum(b-a for a,b in data)}")
-print(f"code runs: {len(M['code'])}  bytes {sum(b-a for a,b in M['code'])}")
+print(f"code bytes covered: {sum(b-a for a,b in _funcs if a < LIMIT)}")
 
 # for each data run, who points into it and what does it look like?
 rows = []

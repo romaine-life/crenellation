@@ -1,2 +1,15 @@
-1061 decompiled routines, 48 comparisons against the machine
-all identical
+1161 decompiled routines, 3766 comparisons against the machine
+25 disagree:
+0x760a trial 0: d0 differs - machine 0x11, decompiled 0x5f2
+0x760a trial 1: d0 differs - machine 0x11, decompiled 0x5f2
+0x760a trial 2: d0 differs - machine 0x11, decompiled 0x5f2
+0x760a trial 3: d0 differs - machine 0x11, decompiled 0x5f2
+0xb032 trial 0: memory differs at 0x3e0a69 - machine 5, decompiled 27
+0xb032 trial 1: memory differs at 0x3e0a69 - machine 5, decompiled 27
+0xb032 trial 2: memory differs at 0x3e0a69 - machine 5, decompiled 27
+0xb032 trial 3: memory differs at 0x3e0a69 - machine 5, decompiled 27
+0x19786 trial 0: d3 differs - machine 0x3e, decompiled 0x3e4210
+0x19786 trial 1: d3 differs - machine 0x3e, decompiled 0x3e4220
+0x19786 trial 2: d3 differs - machine 0x3e, decompiled 0x3e4328
+0x19786 trial 3: d3 differs - machine 0x3e, decompiled 0x3e4338
+  ... and 13 more

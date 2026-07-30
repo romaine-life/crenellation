@@ -61,8 +61,28 @@ def owners(a, b):
     return out
 
 
+# The runs are the complement of the current function map, not the old
+# classifier's partition: funcs has grown past codemap2 - jump-table cases,
+# runtime entries, the static census's finds - and data named against the
+# old partition double-claims every byte the new routines cover.
+covered = bytearray(LIMIT)
+for f, e in funcs:
+    for i in range(f, min(e, LIMIT)):
+        covered[i] = 1
+data_runs = []
+i = 0
+while i < LIMIT:
+    if not covered[i]:
+        j = i
+        while j < LIMIT and not covered[j]:
+            j += 1
+        data_runs.append((i, j))
+        i = j
+    else:
+        i += 1
+
 rows = []
-for a, b in M["data"]:
+for a, b in data_runs:
     name = why = None
     for lo, hi, n, w in KNOWN:
         if a >= lo and b <= hi:

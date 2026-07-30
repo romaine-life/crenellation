@@ -116,6 +116,53 @@ def jump_table_cases():
     return [(r[0], r[1]) for r in json.loads(f.read_text())] if f.exists() else []
 
 
+def board_rom_code():
+    """Code the program calls inside the graphics ROM at 0x140000.
+
+    The board ROM is nearly all pictures, but the program jsr's into it:
+    0xEE04 calls 0x140010 (moveq #0; rts) and 0x1810 calls 0x1400E4, which
+    pulls an argument off the stack and cmpm-compares a table at 0x1432A0
+    against the program image - protection living where a copier would not
+    look. A call target past the overlay used to be filed as hardware, which
+    is how 0x1400E4 went unported while the running game stubbed the call.
+
+    Extents are measured, not guessed: each island is walked to its
+    terminator. Both islands are straight-line stubs ending in rts; anything
+    less linear would show up in the census as a branch out of the island.
+    """
+    targets = set()
+    for a, b in code_runs:
+        addr = a
+        while addr < b:
+            ins = next(md.disasm(UP[addr:addr + 16], addr, 1), None)
+            if ins is None:
+                addr += 2
+                continue
+            if ins.mnemonic in ("jsr", "jmp", "bsr"):
+                op = (ins.op_str or "").strip()
+                if op.startswith("$") and op.endswith(".l"):
+                    try:
+                        t = int(op[1:-2], 16)
+                    except ValueError:
+                        t = -1
+                    if 0x140000 <= t < 0x180000:
+                        targets.add(t)
+            addr += ins.size
+    islands = []
+    for t in sorted(targets):
+        addr = t
+        while addr < min(t + 0x400, 0x180000):
+            ins = next(md.disasm(UP[addr:addr + 16], addr, 1), None)
+            if ins is None:
+                break
+            addr += ins.size
+            if ins.mnemonic in ("rts", "rte", "rtr") or \
+                    ins.mnemonic.startswith(("jmp", "bra")):
+                break
+        islands.append((t, addr))
+    return islands
+
+
 def pointer_table_handlers():
     """Handler addresses held in tables of 32-bit function pointers.
 
@@ -141,20 +188,96 @@ def reached_at_runtime():
     return json.loads(f.read_text()) if f.exists() else []
 
 
+def reached_statically():
+    """Targets the lifter itself proves reachable, landing in no routine.
+
+    staticentries.py harvests every callRom and jumpRom out of the lifted
+    sources - transfers the lifter derived by following each routine's own
+    flow, so inline data cannot fabricate them the way a linear scan does.
+    Any such target outside every routine is code the port cannot run today:
+    the static analogue of the runtime census, and where 0xAC1C and the rest
+    of the self-test's helpers were found without an input pattern reaching
+    them first.
+    """
+    f = HERE / "out" / "static-entries.json"
+    return json.loads(f.read_text()) if f.exists() else []
+
+
+def judged_code():
+    """Regions read by a person and judged code, with the reading recorded.
+
+    The census flags runs whose opcode-marker density says prologue but that
+    nothing lifted reaches - dead code has no callers by definition, so no
+    reachability instrument can find it. reviewed_entries.json holds each
+    verdict with its evidence; a "code" verdict here becomes an entry, the
+    oracle then proves the lift equal to the machine, and the routine is
+    carried as verified-against-oracle, unreached-on-silicon.
+    """
+    f = HERE / "reviewed_entries.json"
+    if not f.exists():
+        return []
+    reviewed = json.loads(f.read_text())
+    return sorted(int(k, 16) for k, v in reviewed.items()
+                  if isinstance(v, dict) and v.get("verdict") == "code")
+
+
 for a in pointer_table_handlers():
+    entries.append(a)
+
+
+def stop_successors():
+    """An entry after every stop instruction.
+
+    A stopped 68000 resumes at the instruction after the stop when an
+    interrupt above the mask arrives - machine.ts models exactly that in
+    halt(). The lifter prunes blocks its entry cannot reach, and nothing
+    reaches past a stop by ordinary flow, so without an entry there the
+    decompiled game loses the code silicon can still run. The case that
+    found the rule: 0x1E8D2 is stop #$2700, and behind it sits the ROM's
+    crash screen - raise the mask, save every register, and print them all
+    as hex into the playfield through the helpers at 0x1E862-0x1E8C8.
+    """
+    out = []
+    for a, b in code_runs:
+        addr = a
+        while addr < b:
+            ins = next(md.disasm(UP[addr:addr + 16], addr, 1), None)
+            if ins is None:
+                addr += 2
+                continue
+            nxt = addr + ins.size
+            if ins.mnemonic == "stop" and nxt < b:
+                follow = next(md.disasm(UP[nxt:nxt + 16], nxt, 1), None)
+                if follow is not None and not follow.mnemonic.startswith("dc."):
+                    out.append(nxt)
+            addr = nxt
+    return out
+
+
+_stops = stop_successors()
+if _stops:
+    print("entries after stop instructions:", ", ".join("%05x" % s for s in _stops))
+for a in _stops:
     entries.append(a)
 
 # A runtime address needs a run of its own, not just an entry: an entry that
 # falls in a data run is never turned into a function. The run ends at the
 # next thing already known to start something, which for a gap between two
-# classified functions is exactly the gap.
-_bounds = sorted({a for a, _ in code_runs} | set(entries))
+# classified functions is exactly the gap. A runtime address inside a measured
+# board island is dropped in favour of the island: the fallback extent below
+# is a guess (a + 0x200), and for 0x140010 that guess swallowed 508 bytes of
+# pictures that then decoded as switch cases nothing could ever enter.
+BOARD = board_rom_code()
 RUNTIME = []
-for a in reached_at_runtime():
+_bounds = sorted({a for a, _ in code_runs} | set(entries))
+for a in sorted(set(reached_at_runtime()) | set(reached_statically())
+                | set(judged_code())):
+    if any(x <= a < y for x, y in BOARD):
+        continue
     nxt = next((b for b in _bounds if b > a), a + 0x200)
     RUNTIME.append((a, nxt))
 
-THUNKS = thunks_below_first_function() + jump_table_cases() + RUNTIME
+THUNKS = thunks_below_first_function() + jump_table_cases() + RUNTIME + BOARD
 for a, b in THUNKS:
     entries.append(a)
     code_runs.append((a, b))
@@ -227,6 +350,56 @@ for a, b in funcs:
         widest[a] = b
 funcs = sorted(widest.items())
 
+# A call to 0x18652 never comes back: it prints the text sitting after its
+# caller's jsr (read through the stacked return address) and jumps to the
+# stopped-processor stub at 0x1E8D2. Bytes after such a call are the message,
+# not instructions - sixteen exception stubs carry their names that way - so
+# the function ends at the call, and the text falls to the data map, which
+# already names it. Without this clip the message bytes lift as junk cases
+# no execution can reach.
+NORETURN = {0x18652}
+_clipped = []
+for a, b in funcs:
+    addr = a
+    end = b
+    while addr < end:
+        ins = next(md.disasm(UP[addr:addr + 16], addr, 1), None)
+        if ins is None:
+            # Capstone decodes almost anything, so a word it refuses is data
+            # beyond doubt - an extent that runs into one has overshot its
+            # code. Seven routines were silently unliftable for exactly this;
+            # the lifter hit the junk and bailed on the whole routine. Any
+            # real code past the junk is reached by a branch, and the
+            # entry-aware harvest gives it a function of its own.
+            end = addr
+            break
+        if ins.mnemonic == "jsr":
+            tok = (ins.op_str or "").strip().lstrip("$").split(".")[0]
+            try:
+                if int(tok, 16) in NORETURN:
+                    end = addr + ins.size
+                    break
+            except ValueError:
+                pass
+        addr += ins.size
+    _clipped.append((a, end))
+funcs = _clipped
+
+# Extents that have been read and corrected by hand. The classifier's run for
+# 0x13D1E overshoots its closing bra.b by two junk words into the self-test's
+# month-name table, and the junk lifts into a block that fabricates a jump
+# into the table. The file records address -> measured end; an entry naming
+# an address that is no longer a function start is an error, the same rule
+# handedits.py applies.
+_curated = json.loads((HERE / "extents.curated.json").read_text()) \
+    if (HERE / "extents.curated.json").exists() else {}
+_starts_now = {a for a, _ in funcs}
+for _k in _curated:
+    assert int(_k, 16) in _starts_now, \
+        f"extents.curated.json names {_k}, which starts no function"
+funcs = [(a, min(b, int(_curated.get(hex(a), "0x%x" % b), 16)))
+         for a, b in funcs]
+
 callers = defaultdict(set)
 calls_of = defaultdict(set)
 data_of = defaultdict(set)
@@ -248,7 +421,10 @@ for e, end in funcs:
                 v = int(tok.split(".")[0].lstrip("$"), 16)
             except ValueError:
                 continue
-            if m in ("jsr", "bsr") and v < LIMIT:
+            if m in ("jsr", "bsr") and (v < LIMIT
+                                        or 0x140000 <= v < 0x180000):
+                # a call into the board ROM is a call, not a hardware touch -
+                # filing it as hardware is how 0x1400E4 went undiscovered
                 calls_of[e].add(v)
                 callers[v].add(e)
             elif v >= LIMIT:

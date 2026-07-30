@@ -1116,11 +1116,19 @@ const popWord = (): number => { const v = M.load(M.a7 >>> 0, 16); M.a7 = (M.a7 +
  */
 const tick = (n: number): void => {
   M.cycles += n;
+  M.steps += 1;
   if (M.atPc) M.atPc(M.pc);
   if (M.irqPending && ((M.sr >> 8) & 7) < M.irqPending) {
     const lvl = M.irqPending;
     if (M.clearOnTake) M.irqPending = 0;
     call(M.interruptFrame(lvl), M);
+  }
+  // The same bound the machine enforces per instruction, charged per block:
+  // several routines loop forever on arbitrary input, and an unbounded lifted
+  // side turns a comparison harness into a hang. Composed runs set the budget
+  // to MAX_SAFE_INTEGER and never feel this.
+  if (M.steps > M.budget) {
+    throw new Error('instruction budget exhausted after ' + M.steps + ' blocks');
   }
 };
 /** `stop` - the chip halts and nothing after it runs. */

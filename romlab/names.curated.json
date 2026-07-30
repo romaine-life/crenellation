@@ -66,5 +66,7 @@
   "0xee90": "event post",
   "0xeeee": "event remove",
   "0xeffa": "event test",
-  "0xfb80": "checksum a table against its stored sum"
+  "0xfb80": "checksum a table against its stored sum",
+  "0x140010": "board ROM zero stub",
+  "0x1400e4": "board ROM table compare"
 }
