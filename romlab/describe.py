@@ -341,6 +341,44 @@ for _a, _b in funcs:
     if any(_a < s < _a + _i.size for s in _starts):
         continue
     _ok.append((_a, _b))
+
+# The same fault one instruction further in. The check above only looks at each
+# entry's own first instruction, so a start that lands inside the *second*
+# instruction of the function before it survives - 0x438 did, sitting in the
+# last two bytes of `move.l #$55555555,d0` at 0x434. That truncated the routine
+# at 0x430, and the lifter, decoding only as far as the declared end, read the
+# cut instruction back as `move.l #$aaaaaaaa,d0`: the decompiled game loaded
+# the wrong constant into d0 for eight thousand writes before anything noticed.
+#
+# Evidence wins over a linear decode, because inline data derails one. The
+# exception stubs keep their message text between them and the crash screen
+# keeps its palette, so walking those regions as instructions makes real
+# entries look mid-instruction. An entry is only dropped if the walk says it is
+# inside an instruction *and* nothing reaches it: no jump table, no pointer
+# table, no lifted transfer, no run of the game.
+_vouched = {a for a, _ in jump_table_cases()} | set(reached_at_runtime()) \
+    | set(reached_statically()) | set(pointer_table_handlers()) | set(judged_code())
+# Decoded from the head of each code run, not each function: a function's own
+# extent is exactly what a bad entry has already truncated, so asking whether
+# the entry is a boundary of the function it ends would always say yes.
+_bounds = set()
+for _lo, _hi in code_runs:
+    _at = _lo
+    while _at < _hi:
+        _i = next(md.disasm(UP[_at:_at + 16], _at, 1), None)
+        if _i is None:
+            _at += 2
+            continue
+        _bounds.add(_at)
+        _at += _i.size
+_starts_now = {a for a, _ in _ok}
+_drop = {s for s in _starts_now
+         if any(lo < s < hi for lo, hi in code_runs)
+         and s not in _bounds and s not in _vouched}
+if _drop:
+    print("entries dropped, mid-instruction and unreachable: "
+          + ", ".join("%05x" % s for s in sorted(_drop)))
+_ok = [(a, b) for a, b in _ok if a not in _drop]
 # Dropping an entry leaves its bytes belonging to nothing, because the extents
 # were worked out before the drop. Give them to the function before them, which
 # is where padding after an rts belongs anyway.

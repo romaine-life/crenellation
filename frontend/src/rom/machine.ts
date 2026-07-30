@@ -101,6 +101,25 @@ export class Machine {
   inFrame = false;
 
   /**
+   * Addresses at which an interrupt may be taken, or null for every one.
+   *
+   * The chip takes an interrupt between any two instructions, and that is what
+   * null means and what the silicon harnesses use. But a decompiled function
+   * has no instruction boundaries - its expressions span them - so it can only
+   * poll at the head of a basic block, and a loop that spins until an
+   * interrupt arrives therefore stops on a different iteration in each run.
+   * That is not a difference in what the game does, and comparing the two
+   * implementations under different interrupt schedules measures the schedule.
+   *
+   * Set this to the decompiled side's block heads and the recompiled run polls
+   * where the decompiled one does, so both take the same interrupt at the same
+   * instruction and the comparison is of the code rather than of the seam.
+   * Only the composed comparisons set it; nothing that checks the port against
+   * hardware does.
+   */
+  pollAt: Set<number> | null = null;
+
+  /**
    * Called when the outermost exception handler returns.
    *
    * The one moment in a frame that means the same thing in both dispatchers:
@@ -126,7 +145,8 @@ export class Machine {
     // interrupt does not clear it. The mask the exception raises is what stops
     // it firing again immediately, and if the handler returns without
     // acknowledging, it fires again, which is what the chip does.
-    if (this.irqPending && ((this.sr >> 8) & 7) < this.irqPending) {
+    if (this.irqPending && ((this.sr >> 8) & 7) < this.irqPending
+        && (this.pollAt === null || this.pollAt.has(pc))) {
       const lvl = this.irqPending;
       if (this.clearOnTake) this.irqPending = 0;
       throw new PendingInterrupt(lvl);

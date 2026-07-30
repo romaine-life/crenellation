@@ -12,7 +12,7 @@ import { dirname, join } from 'node:path';
 import { describe, it, expect } from 'vitest';
 import { System } from './system';
 import { call as viaRecompiled } from './dispatch';
-import { call as viaDecompiled, bind } from './decompiled';
+import { call as viaDecompiled, bind, POLL_AT } from './decompiled';
 import { PATTERNS, type Pattern } from './patterns';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -49,6 +49,12 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string } {
   const sys = new System(rom, board);
   bind(sys.m);
+  // Both runs poll for interrupts at the same addresses - the decompiled
+  // side's block heads, which is the only granularity it has. Without this
+  // the recompiled run can take an interrupt between any two instructions
+  // and a spin loop stops on a different iteration, so the comparison
+  // measures the interrupt schedule rather than the code.
+  sys.m.pollAt = POLL_AT as Set<number>;
   const m = sys.m as unknown as {
     setByte(a: number, v: number): void; store(a: number, v: number, b: number): void;
   };

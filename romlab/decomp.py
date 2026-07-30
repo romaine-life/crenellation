@@ -54,9 +54,19 @@ class Bail(Exception):
 
 
 def decode(lo, hi):
+    """Every instruction from `lo` up to `hi`, decoded whole.
+
+    The window is sixteen bytes from the instruction's own address, not from
+    here to `hi`. Clamping it truncates the last instruction when a routine's
+    declared end falls inside one, and capstone then reports a different
+    instruction entirely - `move.l #$55555555,d0` at 0x434 read back as
+    `#$aaaaaaaa`, because an entry at 0x438 cut it in half. The recompiler
+    always decoded from the full image and was right; this was the only place
+    that trusted the boundary over the bytes.
+    """
     out, at = [], lo
     while at < hi:
-        ins = next(md.disasm(UP[at:min(at + 16, hi)], at, 1), None)
+        ins = next(md.disasm(UP[at:at + 16], at, 1), None)
         if ins is None:
             raise Bail(f"undecodable at 0x{at:x}")
         out.append(ins)
@@ -1249,7 +1259,6 @@ const popWord = (): number => { const v = M.load(M.a7 >>> 0, 16); M.a7 = (M.a7 +
  * spins on a byte that only an interrupt changes.
  */
 const tick = (n: number, at = 0): boolean => {
-  M.cycles += n;
   M.steps += 1;
   // Where the machine is, as far as the lifted world can say: the head of the
   // block about to run. `interruptFrame` stacks `next`, so without this every
@@ -1268,7 +1277,15 @@ const tick = (n: number, at = 0): boolean => {
   // Whether an interrupt is waiting, rather than taking it here. The caller
   // has to put its registers back in the machine first, and only the caller
   // knows where they are - see takeIrq.
-  return M.irqPending !== 0 && ((M.sr >> 8) & 7) < M.irqPending;
+  //
+  // Asked before this block's cycles are charged, which is what the recompiled
+  // dispatcher does too: its `tick` runs before the instruction's own
+  // `cycles +=`. Charging first put the decompiled run one block ahead on the
+  // clock, so the frame boundary arrived at a different point and a loop that
+  // spins until an interrupt comes stopped on a different iteration.
+  const take = M.irqPending !== 0 && ((M.sr >> 8) & 7) < M.irqPending;
+  M.cycles += n;
+  return take;
 };
 /**
  * Take the interrupt the poll found.
@@ -1385,6 +1402,23 @@ def emit_ts(rows):
             else ("{ from: 'stack', off: %d }" % q["off"]) for q in params)
         index.append(f"  {{ at: 0x{at:05x}, fn: {ident(at)} as (...a: number[]) => void,"
                      f" params: [{srcs}] }},")
+    # Every address this source polls an interrupt at - the head of each block,
+    # taken from the `tick` calls just emitted, which is where they come from
+    # in the first place. The recompiled dispatcher can be told to poll at
+    # exactly these and nowhere else, and then both runs take the same
+    # interrupt at the same instruction: a loop that spins until one arrives
+    # stops on the same iteration in both, instead of leaving the comparison to
+    # measure the schedule rather than the code.
+    heads = sorted({int(m.group(1), 16)
+                    for line in out
+                    for m in re.finditer(r"tick\(\d+, 0x([0-9a-fA-F]+)\)", line)})
+    out.append("/** Where the decompiled source polls for interrupts: one per")
+    out.append(" *  basic block. See Machine.pollAt. */")
+    out.append("export const POLL_AT: ReadonlySet<number> = new Set([")
+    for i in range(0, len(heads), 8):
+        out.append("  " + " ".join(f"0x{h:05x}," for h in heads[i:i + 8]))
+    out.append("]);")
+    out.append("")
     out.append("/** Where each routine's parameters come from - the 68000 has no")
     out.append(" *  fixed calling convention, and this code uses registers and the")
     out.append(" *  stack, sometimes in the same routine. */")
