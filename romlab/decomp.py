@@ -773,7 +773,14 @@ class Lifter:
             # down, and the machine afterwards showed the arguments it was
             # called with.
             self.flush()
-            self.stmts.append("halt();")
+            # With the address after the stop, because a stop is a wait rather
+            # than an end: the chip halts until an interrupt arrives and then
+            # carries on at the next instruction, charging cycles the whole
+            # time it waits. The recompiler has always modelled that - it is
+            # Machine.halt - and the lifted world only set the flag, so the two
+            # clocks parted every time the game waited.
+            at = getattr(self, "nxt", 0)
+            self.stmts.append(f"halt(0x{at:05x});")
             self.stmts.append("return;")
             return
         if b == "lea":
@@ -1310,8 +1317,12 @@ const takeIrq = (): void => {
     if (M.irqDepth === 0 && M.onIrqReturn) M.onIrqReturn();
   }
 };
-/** `stop` - the chip halts and nothing after it runs. */
-const halt = (): void => { M.stopped = true; };
+/** `stop` - the chip halts until an interrupt arrives, charging cycles while
+ *  it waits, and then carries on at `at`. The same Machine.halt the recompiled
+ *  dispatcher uses: modelling it as "set the flag and stop" made the lifted
+ *  world skip the wait entirely, so the two ran different numbers of cycles
+ *  every time the game stopped for one. */
+const halt = (at = 0): void => { M.halt(at); };
 void setReg; void getReg; void callRom; void jumpRom; void push; void drop;
 void halted; void halt; void tick; void takeIrq;
 let __sp = 0;
