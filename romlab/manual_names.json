@@ -1,4 +1,20 @@
 {
+  "0x1228c": [
+    "decoder state: emit the high nibble, then the low",
+    "fetches the next source byte, writes its high nibble plus d2 to the destination, and leaves a2 pointing at 0x1229E. The decompressor keeps its state in that register rather than in a variable: each state ends by naming its successor, and the caller jumps through a2. This is the `lea $X(pc),aN` continuation shape CLAUDE.md flags, and it is why each state needs its own decompiled function. Read at 0x1228C-0x1229E."
+  ],
+  "0x1229e": [
+    "decoder state: emit the low nibble, then the high",
+    "the other half of 0x1228C. Writes the low nibble of the byte already fetched, plus d2, and points a2 back at 0x1228C so the next call fetches again. Two states alternating gives one byte per two output pixels. Read at 0x1229E-0x122AE."
+  ],
+  "0x1232e": [
+    "second decoder state: emit the high nibble, then the low",
+    "the same alternation as 0x1228C over a different register set - source a3, byte d7, bias a5, continuation a4 - so the decompressor has two independent instances of the state machine. Read at 0x1232E-0x12340."
+  ],
+  "0x12340": [
+    "second decoder state: emit the low nibble, then the high",
+    "the partner of 0x1232E, writing the low nibble of d7 plus a5 and pointing a4 back. Note the map's extent runs two instructions past the rts into 0x12350, which stores d4 and returns - a third fragment sharing the range. Read at 0x12340-0x12354."
+  ],
   "0xf2ee": [
     "pointer from an offset into the record table",
     "adds 0x1F7F0 to its argument, the exact inverse of 0xF2FA which subtracts it. Offset in, pointer out. Read at 0xF2EE-0xF2FA."
