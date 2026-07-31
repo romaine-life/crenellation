@@ -49,6 +49,7 @@ const CAP = Number(process.env.WRITE_CAP ?? 300_000);
 const WAIT_LO = 0x00430;
 const WAIT_HI = 0x00512;
 const WAIT_SKIP = process.env.WAIT_SKIP === '1';
+const FRAME_BYTES = process.env.FRAME_BYTES === '1';
 
 type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
   irq: Int32Array; pol: Int32Array; n: number };
@@ -83,7 +84,11 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // an interrupt at different points within a block by design, so the
     // stacked program counter and condition codes differ there and nowhere
     // else. Skipping the six bytes measures what the game did.
-    if (sys.m.inFrame) return;
+    // FRAME_BYTES=1 stops skipping them, which is how to ask whether a value
+    // the two runs disagree on was *read back* from a frame either of them
+    // pushed. Every write outside the frames now matches for 300,000, so
+    // anything still differing has to come from bytes this skip hides.
+    if (sys.m.inFrame && !FRAME_BYTES) return;
     // The other face of the same seam. fn_00430 rotates four register patterns
     // until the frame handler sets 0x3E0802, and the two dispatchers resume
     // from an interrupt at different points inside a block - the chip at the
