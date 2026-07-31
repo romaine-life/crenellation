@@ -202,7 +202,22 @@ function play(p: Pattern, entry: Entry, upto = 0): {
     mirror.set(save, lo);
     return h;
   };
+  // The playfield on its own, over the mirror's middle third. Additive on
+  // purpose: `digestOf` and the combined digest above are untouched, so the
+  // main comparison cannot be weakened by anything here - only MODIFIED
+  // reads this.
+  //
+  // It exists because one number over work RAM, playfield and palette
+  // together cannot answer "is the deliberate change live": work RAM diverges
+  // at frame 351 for its own reason (the self-test spin loop's register), and
+  // that swallows a playfield-only difference completely. wallCellSet moves a
+  // tile index, so the playfield is exactly where it shows and work RAM is
+  // exactly where it does not.
+  //
+  // No dead-stack mask: the stack is in work RAM, not here.
+  const pfDigest = (): number => digestOf(mirror.subarray(0x20000, 0x40000));
   const digests: number[] = [];
+  const pf: number[] = [];
   let shot: Uint8Array | null = null;
   const limit = CAP || p.frames;
   const STOP = new Error('enough');
@@ -240,7 +255,7 @@ function play(p: Pattern, entry: Entry, upto = 0): {
             + `${digests.length}: ${h} vs ${want}`);
         }
       }
-      digests.push(h); lastTook = frames;
+      digests.push(h); pf.push(pfDigest()); lastTook = frames;
       if (digests.length >= limit) throw STOP;
     }
   };
@@ -279,7 +294,7 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   } catch (e) {
     if (e !== STOP) died = (e as Error).message.slice(0, 90);
   }
-  return { digests, frames, shot, sp: sys.m.a7 >>> 0,
+  return { digests, pf, frames, shot, sp: sys.m.a7 >>> 0,
     ended: `${frames} frames, stopped=${sys.m.stopped}${died ? `, died: ${died}` : ''}` };
 }
 
@@ -370,7 +385,24 @@ describe('the decompiled routines compose', () => {
     for (const p of chosen) {
       const a = play(p, viaRecompiled);
       const b = play(p, viaDecompiled);
-      const at = firstDiff(a.digests, b.digests);
+      // The playfield alone, which is finer than the combined digest - but
+      // MEASURED, and it does not make this a proof either. The combined
+      // digest parts at frame 351 whether or not the edit is present; the
+      // playfield parts at ~390 with it and ~391 without. Regenerate without
+      // handedits.py and this test still passes. So the playfield diverges
+      // on its own, transiently, for a reason unrelated to wallCellSet.
+      //
+      // Not a contradiction with draws.test reporting the screens identical
+      // without the edit: that compares the 336x240 *visible* screen at one
+      // frame, this digests the whole 512x256 buffer every frame. A
+      // difference that appears at 391 and is gone by 600 shows here and not
+      // there.
+      //
+      // draws.test remains the real proof the change is live - exact 380
+      // pixels with it, 0 without. Making this one a proof needs the
+      // transient playfield divergence understood first; it is not simply a
+      // matter of digesting a smaller region.
+      const at = firstDiff(a.pf, b.pf);
       if (at > 0) seen += 1;
       lines.push(`${p.name}: ${at > 0 ? `change visible from frame ${at}`
         : `no wall laid, so nothing to see (${a.digests.length} frames)`}`);
