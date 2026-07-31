@@ -68,6 +68,7 @@ FRAME = re.compile(r"\(a7|sp\)")
 # reported "fields 0x10" when the routine actually reads $1f(a0) and
 # $16(a0) and strides by $7e. Accept all three spellings.
 DISP = re.compile(r"(-?(?:\$|0x)?[0-9a-fA-F]+)\((a[0-7])\)")
+ADDRREG = [f"a{n}" for n in range(8)]
 ABS = re.compile(r"0x([0-9a-f]{4,8})")
 
 
@@ -85,6 +86,17 @@ def evidence(a):
     slots = Counter()       # absolute addresses inside a known region
     consts = Counter()      # immediates, which name magic numbers
     mnem = Counter()
+    # Which struct each address register currently points at, so a
+    # displacement can be attributed to the right one. Without this every
+    # `$16(aN)` is the same "offset 0x16" whether aN holds the player base
+    # or the level pointer, and the map silently merges two structs.
+    #
+    # Deliberately shallow: set on a load from a known absolute, carried
+    # through a stride step (`lea $7e(a0),a0`), and dropped the moment the
+    # register is loaded from anything else. A wrong attribution is worse
+    # than none, so unknown stays unknown.
+    base = {}
+    owned = Counter()   # (struct, offset) -> uses, only where the base is known
     at = a
     while at < end:
         ins = next(md.disasm(UP[at:at + 16], at, 1), None)
@@ -93,6 +105,23 @@ def evidence(a):
             continue
         mnem[ins.mnemonic] += 1
         text = ins.op_str
+        # Track the bases before reading displacements off them.
+        m = re.fullmatch(r"\$([0-9a-fA-F]+)(?:\.l)?, ?(a[0-7])", text)
+        # capstone spells these `lea.l` / `movea.l`, with the size suffix.
+        if m and ins.mnemonic.split(".")[0] in ("lea", "movea"):
+            r, _ = region(int(m.group(1), 16))
+            if r:
+                base[m.group(2)] = r
+            else:
+                base.pop(m.group(2), None)
+        else:
+            step = re.fullmatch(r"-?\$?[0-9a-fA-F]+\((a[0-7])\), ?(a[0-7])", text)
+            if step and ins.mnemonic.split(".")[0] == "lea" and step.group(1) == step.group(2):
+                pass                      # stride: same struct, next element
+            elif ins.mnemonic.split(".")[0] in ("lea", "movea", "move") and text.endswith(
+                    tuple(f", {r}" for r in ADDRREG)):
+                base.pop(text.rsplit(", ", 1)[1], None)
+
         for disp, reg in DISP.findall(text):
             if reg == "a7":
                 continue
@@ -102,6 +131,8 @@ def evidence(a):
                 d = d[2:]
             v = int(d, 16)
             fields[-v if neg else v] += 1
+            if reg in base:
+                owned[(base[reg], -v if neg else v)] += 1
         for m in ABS.findall(text):
             v = int(m, 16)
             r, base = region(v)
@@ -113,7 +144,7 @@ def evidence(a):
                 consts[v] += 1
         at += ins.size
     return {"size": end - a, "fields": fields, "slots": slots,
-            "consts": consts, "mnem": mnem}
+            "consts": consts, "mnem": mnem, "owned": owned}
 
 
 def slotword(r, off):
@@ -171,35 +202,47 @@ def fieldmap(group):
         a6 is a frame pointer - which is most of the negative offsets here.
         Only a7 is filtered, because a6 is genuinely a struct pointer in
         some routines and guessing which would hide real fields.
-      * BIGGEST ONE: this does not know *which struct* a base register
-        holds, so it mixes them. 0x01A70 reads $16(a0) with a0 from
-        `lea $3e1968` - a real player field. 0x018A6 reads $16(a0) with a0
-        from 0x3E0DCA, the level pointer - a level field that has nothing
-        to do with the player struct. Both land on "offset 0x16" here.
-        That is why 42 routines yield 69 offsets.
+    `--fields` no longer has the worst of these. It used to merge structs -
+    0x01A70 reads $16(a0) with a0 from `lea $3e1968`, a real player field,
+    while 0x018A6 reads $16(a0) with a0 from 0x3E0DCA, the *level* pointer -
+    and both landed on "offset 0x16". Base registers are now traced to their
+    source within the routine, and a displacement is reported only when its
+    base is known. That took the player map from 72 merged offsets to 40
+    real ones.
 
-    So this is a *starting list*, not a struct definition. Before naming a
-    field, check what its base register was loaded from in each routine
-    that uses it. Making the tool itself right needs the base registers
-    tracked to their source - simple dataflow, not a regex - and until that
-    exists the offsets are leads to confirm, not facts.
+    The tracking is shallow on purpose: set by a load from a known absolute,
+    carried through a stride step, dropped the moment the register is loaded
+    from anything else. So it says nothing rather than guessing - which is
+    why `--fields soundDriverHelper` reports zero: those routines are handed
+    their pointers by callers and never load one from an absolute. Extending
+    it means following arguments across calls, which is a different and much
+    larger job.
     """
     members = IDENT["collisions"].get(group)
     if not members:
         print(f"no colliding group named {group}")
         return
+    # Only displacements whose base register was traced to a known struct.
+    # An unattributed `$16(aN)` is dropped rather than guessed at: before
+    # this, the level record's fields were being merged into the player's.
     use = {}
     for h in members:
         e = evidence(int(h, 16))
-        for off, n in e["fields"].items():
-            slot = use.setdefault(off, {"routines": 0, "uses": 0})
+        for (struct, off), n in e["owned"].items():
+            slot = use.setdefault(struct, {}).setdefault(
+                off, {"routines": 0, "uses": 0})
             slot["routines"] += 1
             slot["uses"] += n
-    print(f"{group}: {len(members)} routines, {len(use)} distinct offsets\n")
-    print(f"  {'offset':>8}  {'routines':>8}  {'uses':>5}")
-    for off, s in sorted(use.items(), key=lambda kv: -kv[1]["routines"]):
-        sign = f"0x{off:x}" if off >= 0 else f"-0x{-off:x}"
-        print(f"  {sign:>8}  {s['routines']:>8}  {s['uses']:>5}")
+    total = sum(len(v) for v in use.values())
+    print(f"{group}: {len(members)} routines, {total} attributed offsets "
+          f"across {len(use)} structs")
+    for struct in sorted(use, key=lambda s: -len(use[s])):
+        print(f"\n  {struct}:")
+        for off, s in sorted(use[struct].items(),
+                             key=lambda kv: -kv[1]["routines"]):
+            sign = f"0x{off:x}" if off >= 0 else f"-0x{-off:x}"
+            print(f"    {sign:>7}  {s['routines']:>3} routines"
+                  f"  {s['uses']:>3} uses")
 
 
 def main():
