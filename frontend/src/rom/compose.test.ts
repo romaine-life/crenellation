@@ -197,6 +197,8 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   // is real; the byte-level detail attached to it was not.
   const SAMPLE = Number(process.env.SAMPLE_POLLS ?? 0);
   let sampled = 0;
+  // Digests taken during a replay, so `upto` can mean a sample index.
+  let taken = 0;
   // A mirror of exactly what `snapshot` lays out, kept current by hooking every
   // byte written. Rebuilding the snapshot cost 264,000 `m.byte()` calls a
   // frame and work RAM is a Map, so every one was a hash lookup; maintaining
@@ -260,6 +262,17 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   // Waiting for the handler to finish compares the game, not the seam.
   const take = (): void => {
     if (upto) {
+      // When sampling by position, `upto` is a sample index, not a frame:
+      // count the digests this replay would have taken and stop on the same
+      // one the first pass differed at. Comparing a poll-sampled digest
+      // against a frame-stopped replay walks to a different place entirely
+      // and reports whatever is there - which is how this mode once said
+      // "frame 63 of 9708, 0 bytes differ".
+      if (SAMPLE) {
+        taken += 1;
+        if (taken >= upto) { shot = snapshot(sys); throw STOP; }
+        return;
+      }
       // `>=`, not `==`. A frame boundary that lands inside an interrupt
       // handler defers `take` until the handler finishes, and by then the
       // next boundary may already have incremented `frames` - so the exact
