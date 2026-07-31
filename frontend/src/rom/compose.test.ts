@@ -39,6 +39,12 @@ type Entry = (addr: number, m: Machine) => void;
 // wrong question - the decompiled source is no longer trying to be the ROM. The
 // matching decompilation projects handle this with a build flag; same idea.
 const MODIFIED = process.env.MODIFIED === '1';
+// How much of the stack below a7 counts as dead. The two dispatchers push
+// exception frames at different instants, so bytes under the stack pointer
+// legitimately differ; 0x100 was enough for boot. DEAD_BYTES widens it as a
+// diagnostic - if a difference vanishes at a larger window it was dead
+// stack, not a fault. Default unchanged.
+const DEAD = Number(process.env.DEAD_BYTES ?? 0x100);
 
 // Which patterns to run. One by default, and the reason is the cost of a
 // snapshot: work RAM is a Map, so every byte of the 264 KB compared per frame
@@ -125,7 +131,7 @@ function snapshot(sys: System): Uint8Array {
   // kilobyte is far more than any frame this ROM pushes and far less than the
   // stack itself, which starts at 0x3e32fe.
   const dead = (m.a7 >>> 0) - 0x3e0000;
-  for (let i = Math.max(0, dead - 0x100); i < dead; i += 1) out[i] = 0;
+  for (let i = Math.max(0, dead - DEAD); i < dead; i += 1) out[i] = 0;
   for (let a = 0x200000; a < 0x220000; a += 1) out[o++] = m.byte(a);
   // The palette. Leaving it out meant a run that drew the right playfield in
   // the wrong colours - or in none at all - compared equal for nine hundred
@@ -192,7 +198,7 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   // bytes below a7 that `snapshot` zeroes, for the same reason.
   const framed = (): number => {
     const dead = (sys.m.a7 >>> 0) - 0x3e0000;
-    const lo = Math.max(0, dead - 0x100);
+    const lo = Math.max(0, dead - DEAD);
     const save = mirror.slice(lo, dead);
     mirror.fill(0, lo, dead);
     const h = digestOf(mirror);
@@ -213,7 +219,13 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   // Waiting for the handler to finish compares the game, not the seam.
   const take = (): void => {
     if (upto) {
-      if (frames === upto) { shot = snapshot(sys); throw STOP; }
+      // `>=`, not `==`. A frame boundary that lands inside an interrupt
+      // handler defers `take` until the handler finishes, and by then the
+      // next boundary may already have incremented `frames` - so the exact
+      // value is skipped and the replay runs for ever. That is the whole of
+      // the "service switch hangs at frame 276": 275 quiesces outside a
+      // handler and 276 does not. It was the instrument, not the game.
+      if (frames >= upto) { shot = snapshot(sys); throw STOP; }
     } else {
       const h = framed();
       // The mirror is only worth having if it produces the *identical* number,
