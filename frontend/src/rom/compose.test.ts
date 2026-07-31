@@ -170,6 +170,33 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   // and a spin loop stops on a different iteration, so the comparison
   // measures the interrupt schedule rather than the code.
   sys.m.pollAt = POLL_AT as Set<number>;
+  // SAMPLE_POLLS compares state by *program position* rather than by time.
+  //
+  // A frame boundary is a time measure and the two runs do not share a clock:
+  // the lifted code charges a block's cycles on entry, the recompiler charges
+  // per instruction. Comparing state there catches two machines at slightly
+  // different moments - which is how a poll-paced run once reported fourteen
+  // bytes of palette differing at frame 8 while every single write matched.
+  //
+  // A poll count is a position measure: both runs poll at the same addresses
+  // running the same code, so poll N is the same instruction with the same
+  // call depth in both. That is what a frame boundary cannot promise, and it
+  // is the likeliest reason a difference survives at frame 351 while
+  // writes.test reports every write identical.
+  //
+  // Off by default. The two modes are exclusive - see the frame callback.
+  //
+  // INCOMPLETE, and the missing piece makes its output untrustworthy: the
+  // detail replay below stops on `frames >= upto`, a frame count, while this
+  // samples on a poll count. So when a digest differs the replay walks to a
+  // completely different place and reports whatever it finds there - a run at
+  // SAMPLE_POLLS=20000 said "frame 63 of 9708, 0 bytes differ", which is not
+  // a contradiction, just two different points being compared. Before
+  // trusting any result from this mode, make `upto` mean a sample index when
+  // SAMPLE is set. The first differing *digest* was sample 63 of 9708, which
+  // is real; the byte-level detail attached to it was not.
+  const SAMPLE = Number(process.env.SAMPLE_POLLS ?? 0);
+  let sampled = 0;
   // A mirror of exactly what `snapshot` lays out, kept current by hooking every
   // byte written. Rebuilding the snapshot cost 264,000 `m.byte()` calls a
   // frame and work RAM is a Map, so every one was a hash lookup; maintaining
@@ -274,11 +301,26 @@ function play(p: Pattern, entry: Entry, upto = 0): {
     sys.m.atPcExtra = null;
     take();
   };
+  if (SAMPLE) {
+    // Only at a poll point and only outside a handler: both runs are then at
+    // the same instruction with the same call depth.
+    sys.m.atPcExtra = (pc: number): void => {
+      if (!POLL_AT.has(pc) || sys.m.irqDepth !== 0) return;
+      sampled += 1;
+      if (sampled % SAMPLE === 0) take();
+    };
+  }
   try {
     sys.run(() => {
       frames += 1;
       p.at(frames, sys);
-      if (sys.m.irqDepth === 0) take();
+      // With position sampling the frame boundary only advances the pattern's
+      // input schedule; take() is driven from atPcExtra instead. Letting both
+      // push digests interleaves two sampling schemes and the counts stop
+      // meaning anything - a run that did that reported "diverges at frame
+      // 350" against 328 samples, which cannot both be true.
+      if (SAMPLE) { /* position sampling drives take() */ }
+      else if (sys.m.irqDepth === 0) take();
       else { deferred += 1; sys.m.atPcExtra = onQuiesce; }
       // A digest is only taken once the machine is out of any handler. If it
       // never comes out, no digest is ever taken, the run never reaches
