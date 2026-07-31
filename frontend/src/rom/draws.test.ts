@@ -58,14 +58,42 @@ describe('drawing', () => {
     // bytes are set whether or not the palette was ever written. Both screens
     // are rendered above; this asks whether they are the same picture.
     let differs = 0;
+    // Where they differ, not just how many. A count cannot tell a mis-drawn
+    // sprite from a shifted row from a wrong palette entry, and the bounding
+    // box plus the first pixel says which straight away.
+    let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1, first = '';
     for (let i = 0; i < a.screen.length; i += 1) {
-      if (a.screen[i] !== b.screen[i]) differs += 1;
+      if (a.screen[i] !== b.screen[i]) {
+        differs += 1;
+        const x = i % 336, y = (i / 336) | 0;
+        if (x < x0) x0 = x;
+        if (x > x1) x1 = x;
+        if (y < y0) y0 = y;
+        if (y > y1) y1 = y;
+        if (!first) first = `first at (${x},${y}) ${a.screen[i].toString(16)} vs ${b.screen[i].toString(16)}`;
+      }
+    }
+    if (differs) {
+      writeFileSync(join(here, 'draws-where.txt'),
+        `${differs} pixels differ, box x ${x0}..${x1} y ${y0}..${y1}`
+        + ` (${x1 - x0 + 1} wide, ${y1 - y0 + 1} tall)\n${first}\n`);
     }
     const lines = [a.note, b.note,
       differs ? `screens differ in ${differs} of ${a.screen.length} pixels`
         : `screens identical: ${a.screen.length} pixels`];
     writeFileSync(join(here, 'draws.txt'), lines.join('\n'));
+    // Not a floor. The two runs draw the *same picture*: regenerate without
+    // handedits.py and this is `screens identical: 80640 pixels`, measured,
+    // both ways. Every one of the 380 is the deliberate wallCellSet change -
+    // d3 is a tile index and the edit picks a different wall tile, which is
+    // why work RAM stays byte-identical while these pixels do not. They land
+    // inside the wall glyphs, x 36..262 y 16..78, and nowhere else.
+    //
+    // So assert the exact count, not "no worse than". A floor here would
+    // swallow a new fault as long as it stayed under the deliberate change's
+    // footprint; an exact number fails on a real regression *and* on the
+    // change being silently lost.
     if (MODIFIED) expect(differs).toBeGreaterThan(0);
-    else expect(differs).toBeLessThanOrEqual(floorPx);
+    else expect(differs).toBe(floorPx);
   }, 900000);
 });
