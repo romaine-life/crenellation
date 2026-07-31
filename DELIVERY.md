@@ -66,6 +66,29 @@ unnamed routine, the evidence needed to name it — fields, region slots,
 constants, callers, callees — so this is 638 short reads, not 638
 disassemblies.
 
+Two mechanical levers fall out of it, both reading evidence that already
+exists rather than inventing anything:
+
+1. **Fields name the routines.** Described above: name the struct, and its
+   forty-two accessors name themselves.
+2. **Callees name the callers.** 0x010DE has no stated purpose, and calls
+   `cellDraw`, `cellOwnerDraw` and `cellOverlayDrawSecondForm` — three named
+   routines sharing a theme. A routine whose named callees share a leading
+   token can be named from them, with the call graph as the recorded
+   evidence, exactly as `idents.py` already names a trampoline after where it
+   jumps. It compounds: each round of naming gives the next round more
+   callees to work from, so run it to a fixed point the way
+   `staticentries.py` is run.
+
+Naming is now ratcheted like everything else: `frontend/src/rom/names.test.ts`
+fails if `addressNamed` rises or `namedParams` falls, and `baseline.json`
+holds both. `git diff baseline.json` is the record that a session moved it.
+
+One trap, already hit: a duplicate key in `names.curated.json` is **silent**
+— `json` keeps the last and the earlier name vanishes with no error. It is a
+hard failure now (`idents.py`), but the same hazard applies to any
+hand-edited map here.
+
 **Bar:** no `fn_[0-9a-f]+` identifier survives, every name carries recorded
 evidence the way `reviewed_entries.json` records data verdicts, and a test
 fails if either breaks. A wrong name is worse than an address — `0x9080` was
