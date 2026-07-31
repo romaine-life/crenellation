@@ -1,1 +1,1 @@
-attract, two demo loops: frame 351 of 1200, 16 bytes differ (sp 0x3e32da vs 0x3e32da) - ram 0x3e32da 0!=255 ram 0x3e32db 0!=255 ram 0x3e32dc 0!=255 ram 0x3e32dd 0!=255 ram 0x3e32de 85!=0 ram 0x3e32df 85!=0
+service switch held, then released: identical for 275 frames

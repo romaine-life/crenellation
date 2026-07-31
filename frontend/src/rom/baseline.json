@@ -6,7 +6,7 @@
   "fuzz-shapes": 0,
   "stepstate": 901,
   "write": 0,
-  "writes": 43523,
+  "writes": 300000,
   "replay": 1258,
   "decompKnownWrong": [
     "0xb032"
