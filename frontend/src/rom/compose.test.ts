@@ -154,6 +154,38 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   // and a spin loop stops on a different iteration, so the comparison
   // measures the interrupt schedule rather than the code.
   sys.m.pollAt = POLL_AT as Set<number>;
+  // A mirror of exactly what `snapshot` lays out, kept current by hooking every
+  // byte written. Rebuilding the snapshot cost 264,000 `m.byte()` calls a
+  // frame and work RAM is a Map, so every one was a hash lookup; maintaining
+  // the mirror costs one array store per write, which is hundreds. Built
+  // unmasked - `snapshot` zeroes the dead stack, and baking that in at frame
+  // zero would lose the true bytes there for every later frame, once a7 moved.
+  const mirror = new Uint8Array(0x40800);
+  {
+    let o = 0;
+    for (let a = 0x3e0000; a < 0x400000; a += 1) mirror[o++] = sys.m.byte(a);
+    for (let a = 0x200000; a < 0x220000; a += 1) mirror[o++] = sys.m.byte(a);
+    for (let a = 0x3c0000; a < 0x3c0800; a += 1) mirror[o++] = sys.m.byte(a);
+  }
+  const mMem = sys.m as unknown as { setByte(a: number, v: number): void };
+  const setByte0 = mMem.setByte.bind(mMem);
+  mMem.setByte = (a: number, v: number): void => {
+    setByte0(a, v);
+    if (a >= 0x3e0000 && a < 0x400000) mirror[a - 0x3e0000] = v & 0xff;
+    else if (a >= 0x200000 && a < 0x220000) mirror[0x20000 + a - 0x200000] = v & 0xff;
+    else if (a >= 0x3c0000 && a < 0x3c0800) mirror[0x40000 + a - 0x3c0000] = v & 0xff;
+  };
+  // The dead-stack mask, applied to the mirror and put back - the same 0x100
+  // bytes below a7 that `snapshot` zeroes, for the same reason.
+  const framed = (): number => {
+    const dead = (sys.m.a7 >>> 0) - 0x3e0000;
+    const lo = Math.max(0, dead - 0x100);
+    const save = mirror.slice(lo, dead);
+    mirror.fill(0, lo, dead);
+    const h = digestOf(mirror);
+    mirror.set(save, lo);
+    return h;
+  };
   const digests: number[] = [];
   let shot: Uint8Array | null = null;
   const limit = CAP || p.frames;
@@ -170,7 +202,21 @@ function play(p: Pattern, entry: Entry, upto = 0): {
     if (upto) {
       if (frames === upto) { shot = snapshot(sys); throw STOP; }
     } else {
-      digests.push(digestOf(snapshot(sys)));
+      const h = framed();
+      // The mirror is only worth having if it produces the *identical* number,
+      // so the first frames of every run are checked against the path it
+      // replaces. A faster digest that quietly drifts would report agreement
+      // that is not there, which is worse than no digest at all - so this is
+      // not a debug flag, it runs always, and eight frames of it is nothing
+      // against the thousands it saves.
+      if (digests.length < 8) {
+        const want = digestOf(snapshot(sys));
+        if (h !== want) {
+          throw new Error(`mirror digest disagrees with snapshot at frame `
+            + `${digests.length}: ${h} vs ${want}`);
+        }
+      }
+      digests.push(h);
       if (digests.length >= limit) throw STOP;
     }
   };
