@@ -7,6 +7,7 @@ attract, two demo loops: diverge at write 55120 of 300000/300000; cycles first d
   clock gap over 55120 writes: -2926..540; interrupts taken at the last common write: 77 vs 77; poll points reached: 1881078 vs 1881078
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
   gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  main line: 44732 of 285692/285998; handler: 10920 of 14308/14002
 
 one player: coin, join at the middle station, then fire: diverge at write 55120 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
   cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 50010954 vs 50008326 at the last common write, 50010992 vs 50008354 at this one)
@@ -17,6 +18,7 @@ one player: coin, join at the middle station, then fire: diverge at write 55120 
   clock gap over 55120 writes: -2926..540; interrupts taken at the last common write: 77 vs 77; poll points reached: 1881078 vs 1881078
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
   gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  main line: 44732 of 285692/285998; handler: 10920 of 14308/14002
 
 two players: both coin slots, left and right stations: diverge at write 55120 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
   cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 50010954 vs 50008326 at the last common write, 50010992 vs 50008354 at this one)
@@ -27,6 +29,7 @@ two players: both coin slots, left and right stations: diverge at write 55120 of
   clock gap over 55120 writes: -2926..540; interrupts taken at the last common write: 77 vs 77; poll points reached: 1881078 vs 1881078
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
   gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  main line: 44732 of 285692/285998; handler: 10920 of 14308/14002
 
 three stations at once, second buttons too: diverge at write 55120 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
   cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 50010954 vs 50008326 at the last common write, 50010992 vs 50008354 at this one)
@@ -37,6 +40,7 @@ three stations at once, second buttons too: diverge at write 55120 of 300000/300
   clock gap over 55120 writes: -2926..540; interrupts taken at the last common write: 77 vs 77; poll points reached: 1881078 vs 1881078
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
   gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  main line: 44732 of 285692/285998; handler: 10920 of 14308/14002
 
 service switch held, then released: diverge at write 43523 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
   cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 64739832 vs 64736778 at the last common write, 64739832 vs 64736778 at this one)
@@ -47,6 +51,7 @@ service switch held, then released: diverge at write 43523 of 300000/300000; cyc
   clock gap over 43523 writes: -3106..540; interrupts taken at the last common write: 107 vs 107; poll points reached: 2446268 vs 2446268
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
   gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  main line: 15413 of 15413/15413 (identical); handler: 28110 of 284587/284587
 
 no input at all, long run: diverge at write 55120 of 300000/300000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
   cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 50010954 vs 50008326 at the last common write, 50010992 vs 50008354 at this one)
@@ -57,3 +62,4 @@ no input at all, long run: diverge at write 55120 of 300000/300000; cycles first
   clock gap over 55120 writes: -2926..540; interrupts taken at the last common write: 77 vs 77; poll points reached: 1881078 vs 1881078
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
   gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  main line: 44732 of 285692/285998; handler: 10920 of 14308/14002
