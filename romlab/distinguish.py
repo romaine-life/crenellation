@@ -140,8 +140,42 @@ def line(a):
     return "  " + "  ".join(bits)
 
 
+def fieldmap(group):
+    """The offsets a group of routines touches, as a struct skeleton.
+
+    Naming a struct is what unlocks its accessors - forty-two routines called
+    "player state access" differ only by which field they touch - but you
+    cannot name fields you have not enumerated. This gathers every `d(An)`
+    displacement across a colliding group and reports it by offset, with the
+    access widths and how many routines use it, so the reading pass has a
+    skeleton to fill in rather than forty-two disassemblies to hold at once.
+
+    Offsets only. What each field *means* still has to be read out of the
+    code - this says where to look and in what order, most-used first.
+    """
+    members = IDENT["collisions"].get(group)
+    if not members:
+        print(f"no colliding group named {group}")
+        return
+    use = {}
+    for h in members:
+        e = evidence(int(h, 16))
+        for off, n in e["fields"].items():
+            slot = use.setdefault(off, {"routines": 0, "uses": 0})
+            slot["routines"] += 1
+            slot["uses"] += n
+    print(f"{group}: {len(members)} routines, {len(use)} distinct offsets\n")
+    print(f"  {'offset':>8}  {'routines':>8}  {'uses':>5}")
+    for off, s in sorted(use.items(), key=lambda kv: -kv[1]["routines"]):
+        sign = f"0x{off:x}" if off >= 0 else f"-0x{-off:x}"
+        print(f"  {sign:>8}  {s['routines']:>8}  {s['uses']:>5}")
+
+
 def main():
     arg = sys.argv[1] if len(sys.argv) > 1 else None
+    if arg == "--fields":
+        fieldmap(sys.argv[2] if len(sys.argv) > 2 else "playerStateAccess")
+        return
     if arg and arg.startswith("0x"):
         print(line(int(arg, 16)))
         return
