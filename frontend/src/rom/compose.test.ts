@@ -214,15 +214,22 @@ function play(p: Pattern, entry: Entry, upto = 0): {
     const PER_FRAME = Number(process.env.POLLS_PER_FRAME ?? 9000);
     const isRecompiled = entry === viaRecompiled;
     let polls = 0;
-    let rerunAt = -1;
+    let inHandler = false;
     sys.pacedIrq = () => {
       const pc = sys.m.pc;
       if (!POLL_AT.has(pc)) return false;
-      if (rerunAt === pc) { rerunAt = -1; return false; }
+      // The re-run, exactly. Matching it by program counter - which is what
+      // writes.test does - is approximate: a tight loop whose body is one
+      // block revisits the same address legitimately, and the discount then
+      // fires on the wrong arrival. The transition is what identifies it:
+      // the recompiled side resumes by re-running the instruction it was
+      // interrupted at, so the *first poll back at depth zero after being
+      // inside a handler* is that re-run and nothing else is.
+      if (sys.m.irqDepth !== 0) { inHandler = true; return false; }
+      if (inHandler) { inHandler = false; if (isRecompiled) return false; }
       polls += 1;
       if (polls < PER_FRAME) return false;
       polls = 0;
-      if (isRecompiled) rerunAt = pc;
       return true;
     };
   }
