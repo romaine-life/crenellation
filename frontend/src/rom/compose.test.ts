@@ -86,19 +86,16 @@ const DEAD = Number(process.env.DEAD_BYTES ?? 0x100);
 //   * Either way, VALIDATE AGAINST THE OLD PATH over a few hundred frames -
 //     same digests, same first differing frame - before trusting a green run.
 //     Do not ship it on the strength of being faster.
-// The service switch pattern HANGS at frame 276, and this is not slowness:
+// The "service switch hangs at frame 276" was the instrument, not the game.
+// A frame boundary that lands inside an interrupt handler defers `take`
+// until the handler finishes, and by then `frames` has moved on - so the
+// replay's `frames == upto` was skipped and it ran for ever. It is `>=` now.
+// Frame 275 quiesced outside a handler and 276 did not, which is the entire
+// reason one number worked and the next did not.
 //
-//   COMPOSE_ONLY='service switch' COMPOSE_FRAMES=275   passes in 6s
-//   COMPOSE_ONLY='service switch' COMPOSE_FRAMES=276   never returns
-//
-// Every other pattern runs its 1,200 frames in about eleven seconds, so a
-// full sweep is under a minute *except* for this one, which is why the sweep
-// looked unaffordable and got blamed on cost. It is a hang at one frame.
-// Frame 276 is where the sound sequencer's boot tail diverges - the
-// recompiled run stores the pointer 0x3E34CC at 0x3E3268 and 0x3E3288 and the
-// decompiled run leaves both zero - so the service switch, which runs the
-// board's self test, is the pattern that drives straight into it. Anything
-// claiming compose passes on every pattern has to get past this first.
+// COMPOSE_ONLY='' now runs all six patterns in about 41 seconds. Nothing
+// about it was ever unaffordable; the cost story was one hang plus, on
+// 2026-07-30, four orphaned vitest workers holding ~270 CPU-hours.
 const ONLY = process.env.COMPOSE_ONLY ?? 'attract';
 // Frames per pattern. The default is a bound on the cost, not on the claim:
 // six patterns at their full length is twenty thousand frames of the game run
@@ -210,6 +207,8 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   const limit = CAP || p.frames;
   const STOP = new Error('enough');
   let frames = 0;
+  let lastTook = 0;
+  let deferred = 0;
   let died = '';
   // The frame boundary says when to look; this says when it is fair to. The
   // boundary arrives wherever the cycle count happens to cross it, which can
@@ -241,7 +240,7 @@ function play(p: Pattern, entry: Entry, upto = 0): {
             + `${digests.length}: ${h} vs ${want}`);
         }
       }
-      digests.push(h);
+      digests.push(h); lastTook = frames;
       if (digests.length >= limit) throw STOP;
     }
   };
@@ -265,7 +264,17 @@ function play(p: Pattern, entry: Entry, upto = 0): {
       frames += 1;
       p.at(frames, sys);
       if (sys.m.irqDepth === 0) take();
-      else sys.m.atPcExtra = onQuiesce;
+      else { deferred += 1; sys.m.atPcExtra = onQuiesce; }
+      // A digest is only taken once the machine is out of any handler. If it
+      // never comes out, no digest is ever taken, the run never reaches
+      // `limit`, and the test hangs with nothing to show for it - which is
+      // exactly what "service switch hangs at frame 276" looked like for a
+      // whole session. Fail instead, carrying the state that explains it.
+      if (frames - lastTook > 90) {
+        throw new Error(`no digest for 90 frames: at frame ${frames}, `
+          + `irqDepth ${sys.m.irqDepth}, digests ${digests.length}, `
+          + `last took at ${lastTook}, deferred ${deferred} times`);
+      }
     }, entry);
   } catch (e) {
     if (e !== STOP) died = (e as Error).message.slice(0, 90);

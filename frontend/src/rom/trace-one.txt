@@ -1,5 +1,5 @@
 entry 0x19786 trial 0
-aligned all 12 lifted snapshots against 23 oracle ticks
+aligned all 10 lifted snapshots against 18 oracle ticks
 after oracle: 3e43c8 0 0 3e 0 3e43c8 3e4038 3e4fa8 stopped=true missing=0 fault=0x0
 after lifted: 3e43c8 0 0 3e 0 3e43c8 3e4038 3e4fa8 stopped=true missing=0 fault=0x0
-lifted stopped at 0x1e8d6; last pcs 18652 19c2e 18658 18658 1e8d2 1e8d2 1e8d6 18658
+lifted stopped at 0x1e8d6; last pcs 197d8 18588 18652 19c2e 18658 1e8d2 1e8d6 18658

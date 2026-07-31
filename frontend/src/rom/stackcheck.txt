@@ -1,4 +1,4 @@
-frames: 300   instructions: 1331846   stopped: enough
+frames: 300   instructions: 1331847   stopped: enough
 routines whose stack use is not a plain call and return: 61
 last pass through 0x450C: 
 calls to 0x512: 
