@@ -180,6 +180,38 @@ def main():
     print(f"  wrappers named after the one routine they call: {wrapped}"
           f" (converged in {rounds} rounds)")
 
+    # The mirror of the wrapper rule: a routine with no stated purpose whose
+    # only caller is named, and which is that caller's only callee, is one
+    # half of a 1:1 pair. `<caller>Inner` says which - and because the pairing
+    # is one-to-one, the name is unique by construction rather than by a
+    # suffix nobody can interpret.
+    #
+    # Not extended to callers with several callees on purpose: that is the
+    # `helper for X` shape, and idents.py already refuses to number those -
+    # sixteen routines called `helperMainGameStateMachine1..16` would be a
+    # name for the caller, not for any of them. They need telling apart by
+    # what they touch, which is what distinguish.py --fields is for.
+    callers = {int(k, 16): v for k, v in facts.get("callers", {}).items()}
+    inner = 0
+    for a in addrs:
+        if a in unique or a in hop:
+            continue
+        cs = {c for c in (callers.get(a) or []) if c != a}
+        if len(cs) != 1:
+            continue
+        caller = next(iter(cs))
+        if len({c for c in (calls.get(caller) or []) if c != caller}) != 1:
+            continue
+        want = unique.get(caller)
+        if not want:
+            continue
+        name = f"{want}Inner"
+        if name in set(unique.values()):
+            continue
+        unique[a] = name
+        inner += 1
+    print(f"  one-to-one callees named after their only caller: {inner}")
+
     # A two-byte routine is a bare `rts`: a handler that exists so something
     # has an address to call, and does nothing when called. Worth saying so.
     extent = {(f["at"] if isinstance(f, dict) else f[0]):
