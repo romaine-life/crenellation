@@ -1,29 +1,29 @@
 attract, two demo loops: identical: 300000 writes, but the cycle clocks part at write 0 (139054 vs 139080, at 0x3e0000)
   clock gap over 300000 writes: -2926..540; interrupts taken at the last common write: 93 vs 93; poll points reached: 2033066 vs 2033066; a6 at the divergence: 0x0 vs 0x0 (same frame, so the contents differ)
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
 
 one player: coin, join at the middle station, then fire: identical: 300000 writes, but the cycle clocks part at write 0 (139054 vs 139080, at 0x3e0000)
   clock gap over 300000 writes: -2926..540; interrupts taken at the last common write: 93 vs 93; poll points reached: 2033066 vs 2033066; a6 at the divergence: 0x0 vs 0x0 (same frame, so the contents differ)
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
 
 two players: both coin slots, left and right stations: identical: 300000 writes, but the cycle clocks part at write 0 (139054 vs 139080, at 0x3e0000)
   clock gap over 300000 writes: -2926..540; interrupts taken at the last common write: 93 vs 93; poll points reached: 2033066 vs 2033066; a6 at the divergence: 0x0 vs 0x0 (same frame, so the contents differ)
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
 
 three stations at once, second buttons too: identical: 300000 writes, but the cycle clocks part at write 0 (139054 vs 139080, at 0x3e0000)
   clock gap over 300000 writes: -2926..540; interrupts taken at the last common write: 93 vs 93; poll points reached: 2033066 vs 2033066; a6 at the divergence: 0x0 vs 0x0 (same frame, so the contents differ)
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
 
 service switch held, then released: identical: 300000 writes, but the cycle clocks part at write 0 (139054 vs 139080, at 0x3e0000)
   clock gap over 300000 writes: -5930..540; interrupts taken at the last common write: 813 vs 813; poll points reached: 9983502 vs 9983502; a6 at the divergence: 0x0 vs 0x0 (same frame, so the contents differ)
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
 
 no input at all, long run: identical: 300000 writes, but the cycle clocks part at write 0 (139054 vs 139080, at 0x3e0000)
   clock gap over 300000 writes: -2926..540; interrupts taken at the last common write: 93 vs 93; poll points reached: 2033066 vs 2033066; a6 at the divergence: 0x0 vs 0x0 (same frame, so the contents differ)
   gap passes 1000 at write 12626 (-2420, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- fn_133b2 <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled

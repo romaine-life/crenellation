@@ -1,10 +1,22 @@
 {
+  "0xc4ca": [
+    "link a node into the list after another",
+    "a doubly-linked list insert. Takes the node to insert and the node to insert after: saves the second's successor, points it at the new node, sets the new node's back link, gives it the saved successor, and fixes that successor's back link. So the links are next at offset 4 and previous at offset 0. Read at 0xC4CA-0xC4E8."
+  ],
+  "0xc1ee": [
+    "find a free two-byte slot marked by a high bit",
+    "walks thirty-two two-byte slots from 0x3E1C44 and returns the first whose byte is negative, or null when none is (suba.l a0,a0). Note the convention differs from 0xB2B0 and 0xB2CC, where free means a zero long at offset 4: here it is the high bit of the first byte being set. Read at 0xC1EE-0xC206."
+  ],
+  "0xdabc": [
+    "copy 1344 bytes and return the count",
+    "takes a source and a destination and moves 0x540 bytes one at a time with a dbra over 0x53F, counting as it goes and returning the count. Read at 0xDABC-0xDAD6."
+  ],
   "0xb2cc": [
     "find a free slot in the moving-unit table",
     "walks seven eighteen-byte slots from 0x3E1BC6 - the moving-unit table - and returns the address of the first whose long at offset 4 is zero, or null when every slot is taken (suba.l a0,a0 zeroes the register). So a long at +4 of zero means free. Read at 0xB2CC-0xB2E8."
   ],
   "0xb2b0": [
-    "find a free slot in the table at 0x3E1AE6",
+    "find a free fourteen-byte slot past the player structs",
     "the same shape as 0xB2CC one table along: sixteen fourteen-byte slots from 0x3E1AE6, returning the first whose long at offset 4 is zero, or null when all are taken. 0x3E1AE6 sits just past the player structs, which end at 0x3E1AE2. Read at 0xB2B0-0xB2CC."
   ],
   "0x5dec": [
@@ -89,7 +101,7 @@
   ],
   "0x15a0": [
     "clear the two high flag bits and set the next",
-    "calls 0x1592 with 0x6000 to clear those two bits of the flag word at 0x3E0DC6, then 0x1578 with 0x1000 to set that one. So bits 13 and 14 are alternatives to bit 12 in whatever that word selects. Read at 0x15A0-0x15B4."
+    "calls 0x1592 with 0x6000 to clear those two bits of the word at 0x3E0DC6, then 0x1578 with 0x1000 to set that one. Renamed 2026-07-31 from 'interrupt mask set', which was wrong: the 68000's interrupt mask lives in the status register, and this touches a word in work RAM. Bits 13 and 14 are alternatives to bit 12 in whatever that word selects. Read at 0x15A0-0x15B4."
   ],
   "0xf2fa": [
     "offset from the record table base",
@@ -262,10 +274,6 @@
   "0x15830": [
     "voice index clamp",
     "clamps a voice number to at most 0x13"
-  ],
-  "0x15a0": [
-    "interrupt mask set",
-    "raises then lowers the mask through 0x1592 and 0x1578"
   ],
   "0x160ba": [
     "audio reset wrapper",

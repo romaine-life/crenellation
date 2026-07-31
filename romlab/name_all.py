@@ -43,8 +43,17 @@ NAMES = {}
 WHY = {}
 
 
-def setname(a, name, why):
-    if a not in NAMES:
+def setname(a, name, why, force=False):
+    """First rule to speak wins - except a hand-read name, which always does.
+
+    `force` exists because the docstring's promise that hand names take
+    precedence over every rule was not true: MANUAL is applied after the
+    pointer-table and jump-table rules, and those had already claimed their
+    routines, so a name added by hand for one of them was silently dropped.
+    That is the worst kind of failure here - the entry is in the file, the
+    evidence is written down, and nothing happens.
+    """
+    if force or a not in NAMES:
         NAMES[a] = name
         WHY[a] = why
 
@@ -107,11 +116,26 @@ for a, b in funcs:
 MANUAL = {}
 mp = HERE / "manual_names.json"
 if mp.exists():
-    for k, v in json.loads(mp.read_text()).items():
+    # A duplicate key here is silent - json keeps the last and the earlier
+    # name vanishes with no error, which is exactly how a hand-written name
+    # can be added, be visibly present in the file, and do nothing. The same
+    # guard is on names.curated.json in idents.py, for the same reason.
+    def _no_dupes(pairs):
+        seen = {}
+        for k, v in pairs:
+            if k in seen:
+                raise SystemExit(
+                    f"manual_names.json names {k} twice: {seen[k][0]!r} then "
+                    f"{v[0]!r}. json keeps only the last, so the first is "
+                    f"silently lost - delete one.")
+            seen[k] = v
+        return seen
+    for k, v in json.loads(mp.read_text(),
+                           object_pairs_hook=_no_dupes).items():
         MANUAL[int(k, 16)] = v
 for a, b in funcs:
     if a in MANUAL:
-        setname(a, MANUAL[a][0], MANUAL[a][1])
+        setname(a, MANUAL[a][0], MANUAL[a][1], force=True)
 
 for a, b in funcs:
     if a in verified:
