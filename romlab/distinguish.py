@@ -62,7 +62,12 @@ STRIDE = {"player": 0x7E, "entity": 0x1A, "unit": 0x0E, "shots": 0x1C}
 # Displacements off a7 are stack frame, not struct fields, and saying so for
 # every routine drowns the fields that matter.
 FRAME = re.compile(r"\(a7|sp\)")
-DISP = re.compile(r"(-?(?:0x[0-9a-f]+|\d+))\((a[0-7])\)")
+# capstone writes displacements as `$16(a0)`, with a dollar and no 0x. The
+# first version of this accepted only `0x16(a0)` or `16(a0)`, so it missed
+# almost every real field and the maps it printed were wrong - `0x01a70`
+# reported "fields 0x10" when the routine actually reads $1f(a0) and
+# $16(a0) and strides by $7e. Accept all three spellings.
+DISP = re.compile(r"(-?(?:\$|0x)?[0-9a-fA-F]+)\((a[0-7])\)")
 ABS = re.compile(r"0x([0-9a-f]{4,8})")
 
 
@@ -91,7 +96,12 @@ def evidence(a):
         for disp, reg in DISP.findall(text):
             if reg == "a7":
                 continue
-            fields[int(disp, 16) if disp.startswith(("0x", "-0x")) else int(disp)] += 1
+            neg = disp.startswith("-")
+            d = disp.lstrip("-").lstrip("$")
+            if d.startswith("0x"):
+                d = d[2:]
+            v = int(d, 16)
+            fields[-v if neg else v] += 1
         for m in ABS.findall(text):
             v = int(m, 16)
             r, base = region(v)
@@ -152,6 +162,15 @@ def fieldmap(group):
 
     Offsets only. What each field *means* still has to be read out of the
     code - this says where to look and in what order, most-used first.
+
+    Read it with two caveats, both visible in the player map:
+      * The stride shows up as the most common "field". `lea $7e(a0),a0`
+        steps to the next player, so 0x7e leads the table in 21 of 42
+        routines and is not a field at all. It does confirm the stride.
+      * Displacements off a6 are frame locals, not struct fields, wherever
+        a6 is a frame pointer - which is most of the negative offsets here.
+        Only a7 is filtered, because a6 is genuinely a struct pointer in
+        some routines and guessing which would hide real fields.
     """
     members = IDENT["collisions"].get(group)
     if not members:

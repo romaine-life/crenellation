@@ -89,6 +89,23 @@ One trap, already hit: a duplicate key in `names.curated.json` is **silent**
 hard failure now (`idents.py`), but the same hazard applies to any
 hand-edited map here.
 
+**Two shortcuts that would move the number without doing the work.** Both
+are rejected; the ratchet exists to stop exactly this.
+
+- *Numbering the collisions* — `helperMainGameStateMachine1..16`. That is a
+  name for the caller, not for any of the sixteen. `idents.py` already
+  refuses it and keeps the address instead.
+- *Suffixing them with the field offset* — `playerState2eAccess`. Tempting,
+  because it is genuinely evidence and it would clear ~392 routines in one
+  commit. It still says only *where* a routine reaches, not what it does,
+  and a reader is no better off. The field offset is how you **find** the
+  answer, not the answer.
+
+The honest route for those 392 is the one the field map serves: read enough
+routines touching a field to learn what the field *is*, name the field, and
+let the accessors take their names from it. That is reading work, and there
+is no rule that does it.
+
 **Bar:** no `fn_[0-9a-f]+` identifier survives, every name carries recorded
 evidence the way `reviewed_entries.json` records data verdicts, and a test
 fails if either breaks. A wrong name is worse than an address — `0x9080` was
