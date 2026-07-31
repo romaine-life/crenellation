@@ -291,6 +291,17 @@ class BlockLifter(Lifter):
             return
         if b == "tst":
             v = self.read(ops[0], bits)
+            # A `tst` on memory is still a read, and a read is not always
+            # free: the 0x140000 window is served by a state machine, where
+            # CLAUDE.md notes fetching differs from reading. The flags alone
+            # do not keep it - if nothing consumes them the expression is
+            # never emitted and the load disappears. fn_0fc32 is
+            # `tst.w $1460bc.l` followed by an add and a jump, and its lifted
+            # body had no read in it at all. Pin it into a temporary so the
+            # load is a statement either way.
+            tok = ops[0].strip()
+            if "(" in tok or tok.startswith("$"):
+                v = self.temp(v)
             self.flags = ("cmp", v.text, "0", bits)
             return
         if b == "btst":

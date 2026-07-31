@@ -880,8 +880,19 @@ class Lifter:
             # Flags only. A single-block routine has no branch to read them,
             # and the branching pass models them itself - but the operands can
             # post-increment, so they still have to be evaluated.
+            #
+            # And a memory operand has to be *read*, not merely evaluated: an
+            # expression nothing emits never runs. That is not free everywhere
+            # - the 0x140000 window is served by a state machine, where
+            # CLAUDE.md notes fetching differs from reading - and fn_0fc32,
+            # `tst.w $1460bc.l` followed by an add and a jump, was lifted with
+            # no read in it at all. Pin memory operands into a temporary so
+            # the load is emitted as a statement.
             for tok in ops:
-                self.read(tok, 32 if b == "cmpa" else bits)
+                v = self.read(tok, 32 if b == "cmpa" else bits)
+                t = tok.strip()
+                if "(" in t or t.startswith("$"):
+                    self.temp(v)
             return
         if b in ("rol", "ror"):
             # The count is modulo 64 when it comes from a register, and the
