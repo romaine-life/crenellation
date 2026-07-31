@@ -49,7 +49,32 @@ const MODIFIED = process.env.MODIFIED === '1';
 //
 // The real fix is to stop snapshotting: a checksum kept up to date by hooking
 // writes would make the per-frame digest free, the way writes.test already
-// hooks them. That is worth doing and is not done here.
+// hooks them. That is worth doing and is not done here. Measured 2026-07-30:
+// the full sweep was still running after 2h52m and was killed - though the
+// machine was also carrying four orphaned vitest workers from earlier days at
+// ~270 CPU-hours between them, so that figure is contention as well as cost.
+//
+// The design, so whoever does it does not have to rediscover it:
+//
+//   * FNV-1a cannot be updated in place - changing one byte changes every
+//     later step. Use an *order-independent sum* instead: keep
+//     `sum = (sum + contrib(addr, val)) >>> 0` over every live byte, where
+//     contrib mixes address and value (e.g. imul(addr+1, 0x9E3779B1) ^
+//     imul(val+1, 0x85EBCA6B)). Hook setByte as writes.test does: read the old
+//     byte, subtract its contribution, add the new one. Addition and
+//     subtraction are invertible where XOR-chaining is not, which is the whole
+//     trick.
+//   * The dead-stack mask does not survive this. `snapshot` zeroes the 0x100
+//     bytes below a7 because the two runs differ there by design, and that
+//     window moves every frame. So at each frame boundary, correct: read those
+//     256 bytes, subtract each one's contribution, add contrib(addr, 0). That
+//     is 256 lookups a frame instead of 264,000 - still a thousandfold win.
+//   * VALIDATE IT AGAINST THE OLD ONE. Run both for the first few hundred
+//     frames and assert they order-agree: same frames flagged, same first
+//     difference. A rolling checksum that is subtly wrong reports *agreement*
+//     that is not there, which turns this from the strongest instrument in the
+//     repo into a rubber stamp. Do not ship it on the strength of it being
+//     faster.
 const ONLY = process.env.COMPOSE_ONLY ?? 'attract';
 // Frames per pattern. The default is a bound on the cost, not on the claim:
 // six patterns at their full length is twenty thousand frames of the game run
