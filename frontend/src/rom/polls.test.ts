@@ -31,6 +31,14 @@ const SKIP = new Set((process.env.POLL_SKIP ?? '').split(',')
 
 const WATCH = Number.parseInt(process.env.POLL_WATCH ?? '0', 16);
 
+// Every register a routine can take an argument in. Sampling a handful is how
+// a watch reports "registers agree" about a function whose signature names
+// a5, d3, d6 and d7 - true of what was looked at, and useless. a7 is left out:
+// it is the stack pointer, and the two runs' dead stack below it differs by
+// design.
+const REGS = ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7',
+  'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6'];
+
 type Seq = { pc: Int32Array; cyc: Int32Array; watched: number[][] };
 
 function sequence(entry: (a: number, m: System['m']) => void): Seq {
@@ -70,7 +78,7 @@ function sequence(entry: (a: number, m: System['m']) => void): Seq {
     // differing register is named rather than inferred.
     if (pc === WATCH) {
       const r = sys.m as unknown as Record<string, number>;
-      watched.push([r.a0 | 0, r.a1 | 0, r.a2 | 0, r.a3 | 0, r.d0 | 0]);
+      watched.push(REGS.map((x) => r[x] | 0));
     }
     seq[n] = pc | 0;
     cyc[n] = sys.m.cycles | 0;
@@ -161,16 +169,20 @@ describe('poll points', () => {
       lines.push(`clocks agree over all ${i} shared polls`);
     }
     if (WATCH) {
-      const R = ['a0', 'a1', 'a2', 'a3', 'd0'];
+      const R = REGS;
       const lim2 = Math.min(A.watched.length, B.watched.length);
       let w = 0;
       while (w < lim2 && R.every((_, k) => A.watched[w][k] === B.watched[w][k])) w += 1;
       lines.push(`watched 0x${WATCH.toString(16)}: ${A.watched.length}`
-        + ` vs ${B.watched.length} entries`);
+        + ` vs ${B.watched.length} entries, ${R.length} registers each`);
+      // Only the registers that differ. Printing all fifteen buries the two
+      // that matter, and the whole point of this is to name them.
       lines.push(w === lim2 ? `  registers agree over all ${lim2}`
         : `  first differing entry ${w}: `
-          + R.map((r, k) => `${r} ${A.watched[w][k].toString(16)}`
-            + `/${B.watched[w][k].toString(16)}`).join(' '));
+          + R.map((r, k) => [r, k] as [string, number])
+            .filter(([, k]) => A.watched[w][k] !== B.watched[w][k])
+            .map(([r, k]) => `${r} ${A.watched[w][k].toString(16)}`
+              + `/${B.watched[w][k].toString(16)}`).join(' '));
     }
     const report = lines.join('\n');
     writeFileSync(join(here, 'polls.txt'), report);

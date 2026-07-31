@@ -6,5 +6,5 @@ first difference at poll 71677: recompiled 0x1381c vs decompiled 0x13812
 clocks first differ at poll 9000, which is the frame boundary (9000): the discounted re-tick, not drift
 clocks first differ at poll 9000 (0x13812): recompiled 288788 vs decompiled 288750 (-38 apart)
   blocks before it: 13812@288522/288522 13812@288560/288560 13812@288598/288598 13812@288636/288636 13812@288674/288674 13812@288712/288712 13812@288788/288750
-watched 0x1380e: 5 vs 5 entries
-  first differing entry 0: a0 3c07fc/3c07fc a1 3e0000/3e0000 a2 3e07fe/3e07fe a3 72fffe/0 d0 0/13176
+watched 0xf13e: 90 vs 90 entries, 15 registers each
+  first differing entry 81: d1 55555500/-55555600
