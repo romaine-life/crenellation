@@ -36,11 +36,20 @@ def role(name, body, is_addr):
     indexes = re.search(rf"\+ \(\(\({n}[ )]", body) or re.search(rf"\(\({n} << 16\) >> 16\)", body)
     stepped = re.search(rf"{n} = \({n} [-+] \d", body)
 
+    # An address register nothing ever reads or writes through, but which a
+    # pointer is compared against, is where a walk stops. `cmpa.l a2,a0` with
+    # `bcs` back to the top is this ROM's standard loop: a0 steps, a2 is the
+    # end. Naming it `end` says what it is; `a2_` says which register it
+    # arrived in, which the reader can already see.
+    compared = re.search(rf"[<>]=? *{n}\b|{n} *[<>]=?", body)
+
     if is_addr:
         if written_through and deref:
             return "dst" if re.search(rf"store\d+\({n}\b", body) else "ptr"
         if deref:
             return "src" if stepped else "ptr"
+        if compared and not stepped:
+            return "end"
         return None
     if counted:
         return "count"
