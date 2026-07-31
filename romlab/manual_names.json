@@ -1,4 +1,8 @@
 {
+  "0x19ee": [
+    "advance every active player to the next round",
+    "walks the three player structs at 0x3E1968, stride 0x7E, skipping any whose field 0 lacks bit 15. For each one: sets byte 0x15 to byte 0x14 plus one; if byte 0x1F is still zero - a player who has not played a round yet - also adds the result of 0x1A70, so someone joining an in-progress game starts near the others rather than at one; then increments 0x1F, clears 0x1C, adds 0x15 into the counter at 0x3E1CAA, and calls 0x5B16 with the player. Read at 0x19EE-0x1A5C."
+  ],
   "0x1a70": [
     "average over active players",
     "walks all three player structs from 0x3E1968 at stride 0x7E, skipping any whose field 0 has bit 15 clear or whose byte at 0x1F is zero; sums byte 0x16 across the rest and halves it (asr.l #1). Read at 0x1A70-0x1AEA."
