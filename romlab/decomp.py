@@ -738,7 +738,18 @@ class Lifter:
                 signed = cur.text if bits == 32 else f"((({cur.text}) << {shift}) >> {shift})"
                 expr = (f"({c.text} >= {bits} ? ((({signed}) < 0) ? -1 : 0)"
                         f" : (({signed}) >> {c.text}))")
-            self.write(dst, Expr(expr), bits)
+            # N and Z come from the shifted result, at the operand's width -
+            # and nothing here was setting them, so `bmi` after `asl.b #1,d0`
+            # tested whatever an earlier instruction had left in N. That is
+            # how graphicsDecompressor (0x11F2A) read a control byte's top
+            # bits: `asl.b`/`bmi` at 0x11F36 and 0x11F3A pick the run's kind,
+            # and taking the wrong arm emitted a run two bytes short, which is
+            # the 380-pixel screen difference. C and X are not set here - no
+            # branch in this ROM reads them off a shift - but N and Z are.
+            res = self.temp(Expr(expr))
+            self.write(dst, res, bits)
+            self.flags = ("cmp", res.text, "0", bits)
+            self.flags_certain = True
             return
         if b == "neg":
             _v, _dst = self.rmw(ops[0], bits)
