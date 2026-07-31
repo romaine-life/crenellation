@@ -1,4 +1,8 @@
 {
+  "0x482e": [
+    "gather the stations nobody is playing",
+    "walks the three structs at 0x3E1968, stride 0x7E, and acts on the ones whose field 0 has bit 15 CLEAR - the inverse of every other walk here, so this is about stations that are not in play. For each it copies a byte from the table at 0xFE03 and one from 0xFE07 into a pair at 0x3E1CA6/0x3E1CA7, advancing that destination only for unjoined stations so the result is compacted, then calls 0x48AE. Read at 0x482E-0x4880."
+  ],
   "0x4a6a": [
     "set each active player's palette",
     "walks the three structs at 0x3E1968, stride 0x7E, and for each whose field 0 has bits 14/15 set calls 0xC688 - the routine that writes the palette - passing the table at 0xFE18, the constants 13, 4, 3 and 4, and an index that runs 5, 6, 7, one per station. So each player gets its own palette entries. Read at 0x4A6A-0x4AB8."
