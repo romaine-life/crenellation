@@ -1,4 +1,20 @@
 {
+  "0xf2ee": [
+    "pointer from an offset into the record table",
+    "adds 0x1F7F0 to its argument, the exact inverse of 0xF2FA which subtracts it. Offset in, pointer out. Read at 0xF2EE-0xF2FA."
+  ],
+  "0x12066": [
+    "shift eight pixels' colour by a delta",
+    "takes a pointer in a1 and a delta in d0, and for eight consecutive bytes replaces each with its low nibble plus the delta. Register arguments, no stack frame - an inner helper of 0x1204C. Read at 0x12066-0x12078."
+  ],
+  "0x1204c": [
+    "shift an eight by two block's colour",
+    "calls 0x12066 on the pointer it is given and again 0x1F8 further on. 0x1F8 plus the eight bytes 0x12066 walks is 0x200, the playfield row stride, so this recolours two rows of eight pixels - an eight by two block. Read at 0x1204C-0x12066."
+  ],
+  "0xfc10": [
+    "read two protection locations",
+    "tst.w on 0x140000 and tst.l on 0x1432B0, both inside the window CLAUDE.md records as served by a state machine rather than plain memory. It keeps neither value; only the reads and the flags they leave. Compare 0xFC06, which reads 0x1400E8. Read at 0xFC10-0xFC1E."
+  ],
   "0xe776": [
     "look up the value paired with a byte",
     "walks the table at 0x11A90 a byte at a time until it finds one equal to the argument, then returns the byte after it. The table is therefore key/value pairs, and there is no bound on the search - a key that is not present runs off the end, so the table must be terminated by something the caller can only ever ask for. Read at 0xE776-0xE790."
