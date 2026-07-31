@@ -1,4 +1,12 @@
 {
+  "0x1867c": [
+    "jump through the slot only if it holds a trampoline",
+    "takes a pointer and compares the word there against 0x4EF9, the encoding of `jmp <abs>.l`. If it matches it jumps to that address; otherwise it returns zero without calling anything. 0x4EF9 is exactly the signature describe.py uses to find the trampoline block below the first routine, so this is a guarded dispatch: the slot is only entered when it really does hold a jump stub. Read at 0x1867C-0x1868C."
+  ],
+  "0xfb74": [
+    "return the argument as a pointer",
+    "one move and an rts, returning the first stack argument in a0. The map's twelve-byte extent covers a second identical fragment at 0x0FB7A, so the run is two copies of the same two instructions. Read at 0x0FB74-0x0FB80."
+  ],
   "0x122b2": [
     "decoder state: emit d0, then d3",
     "writes d0 to the destination and points a2 at 0x122BC. The whole-byte counterpart of the nibble pair at 0x1228C/0x1229E - same two-state machine held in a2, but emitting two registers in turn rather than splitting one byte. Read at 0x122B2-0x122BC."
