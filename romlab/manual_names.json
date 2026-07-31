@@ -1,4 +1,8 @@
 {
+  "0x149a": [
+    "does this board cell belong to the player",
+    "takes a player struct and a coordinate pair on the stack. Reads the player number from field 0x2, indexes the owner-code table at 0x1000A with it, turns the coordinate into a board cell address through 0x11BD8 (cell address), masks the cell's owner bits with 0xC0, and returns all-ones when they match the player's code and zero when they do not. This is what settles the coordinate pair at fields 0x46/0x47: it is a board cell, and 0x18FA is looking for a starting cell the player already owns. Read at 0x149A-0x14DC."
+  ],
   "0x18fa": [
     "choose each player's starting position",
     "walks the three structs at 0x3E1968, stride 0x7E, skipping any whose field 0 lacks bits 14/15. Copies the byte pair at fields 0x48/0x49 into a local, offers it to 0x149A together with the struct, and if that returns non-zero writes the pair into fields 0x46/0x47; otherwise it takes the next pair from the list pointed to by field 0x4A, stepping two bytes at a time, and tries again. 0x46/0x47 is therefore a coordinate pair - the same one 0x1980 writes out scaled by 64 through the pointers at 0x5E and 0x62, whose default 0x19D8 sets to 40. Read at 0x18FA-0x1980."
