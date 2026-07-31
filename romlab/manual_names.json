@@ -71,6 +71,18 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0x12354": [
+    "decoder state: emit d4",
+    "writes d4 to the destination and points a4 at 0x1235E. Part of the second instance of the decompressor's state machine, the one 0x1232E and 0x12340 belong to - state kept in a4 rather than a2. Read at 0x12354-0x1235E."
+  ],
+  "0x1e8be": [
+    "process two units and step to the next four-kilobyte block",
+    "sets d3 to 1, calls 0x1E862, then advances a0 by 0xFE0. The arithmetic says what that means: 0x1000 - 0xFE0 is 0x20, so the callee consumed two sixteen-byte units and this steps the pointer on to the next 4 KB boundary. Read at 0x1E8BE-0x1E8C8."
+  ],
+  "0x1e8c8": [
+    "process four units and step to the next four-kilobyte block",
+    "the same as 0x1E8BE with d3 set to 3 and a0 advanced by 0xFC0 - 0x1000 less four sixteen-byte units. The pair fixes both the unit size and the block size. Read at 0x1E8C8-0x1E8D2."
+  ],
   "0x1865e": [
     "save the machine state for a later jump",
     "setjmp. Takes a buffer pointer, reads the return address off the stack into d1, and movem.l's d1-d7 and a2-a7 into the buffer - so the buffer holds every callee-saved register plus where to come back to. Returns zero, which is the first-time return. Its partner is 0x1866C. Read at 0x1865E-0x1866C."
