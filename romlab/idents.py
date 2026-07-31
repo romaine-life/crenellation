@@ -54,7 +54,22 @@ def load():
     # edited: naming a routine should be a data change, not a code change.
     hand = HERE / "names.curated.json"
     if hand.exists():
-        for k, v in json.loads(hand.read_text()).items():
+        # A duplicate key here is silent: json keeps the last one and the
+        # earlier name simply disappears. In a file whose entire point is
+        # being edited by hand that is a trap - a name can be added, appear
+        # to do nothing, and leave no sign of why. Refuse instead.
+        def no_dupes(pairs):
+            seen = {}
+            for k, v in pairs:
+                if k in seen:
+                    raise SystemExit(
+                        f"names.curated.json names {k} twice: {seen[k]!r} then "
+                        f"{v!r}. json keeps only the last, so the first is "
+                        f"silently lost - delete one.")
+                seen[k] = v
+            return seen
+        for k, v in json.loads(hand.read_text(),
+                               object_pairs_hook=no_dupes).items():
             if v:
                 curated[int(k, 16)] = v
     return names, curated
