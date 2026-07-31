@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0xe562": [
+    "clamp cue nineteen to two thousand",
+    "asks 0x178 about cue 0x13 with a 1, and if the long that comes back is greater than 0x7D0 calls the cue starter through 0x18A with 0x13 and 0x7D0 - so it lowers the value to the ceiling and leaves anything at or under it alone. Pairs with 0xE546, which starts the same cue with zero. Read at 0xE562-0xE588."
+  ],
+  "0xe588": [
+    "clamp cue eighteen to two hundred",
+    "the same shape as 0xE562 for cue 0x12 with a ceiling of 0xC8. The pair fixes what the cue starter's second argument is: a value with a per-cue maximum, not a flag. Read at 0xE588-0xE5AE."
+  ],
   "0x660": [
     "wipe the board region and start the level",
     "clears every byte from 0x3E0844 up to and including 0x3E0DC3 - which spans the board array at 0x3E0864-0x3E0DA4 and the words either side of it - then reads the level pointer at 0x3E0DCA, pushes the long it points at, and calls 0x6648 with it and a zero. Read at 0x660-0x686."
