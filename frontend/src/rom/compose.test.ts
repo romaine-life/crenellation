@@ -345,9 +345,37 @@ describe('the decompiled routines compose', () => {
   // first exist when the demo lays them, which is why this needs a pattern
   // that plays rather than the first frames of boot.
   it.skipIf(!MODIFIED)('differs from the original where it was changed', () => {
-    const p = chosen[0];
-    const a = play(p, viaRecompiled);
-    const b = play(p, viaDecompiled);
-    expect(firstDiff(a.digests, b.digests)).toBeGreaterThan(0);
+    // Every chosen pattern, not just the first. This tested `chosen[0]` and
+    // so proved the change live under attract alone however many patterns
+    // were asked for - which is the same shape of gap as comparing work RAM
+    // and calling the screen covered.
+    //
+    // The assertion stays "somewhere", deliberately: the rule only shows
+    // where a wall is actually laid, so a pattern that never lays one is
+    // *expected* to match, and demanding a difference from all six would
+    // fail for the right behaviour. Per-pattern numbers are recorded so the
+    // reader can see which exercised it.
+    // WARNING - this cannot currently prove what it claims. `firstDiff` is
+    // 351 for five of six patterns *with the change reverted*, verified by
+    // regenerating without handedits.py and clearing node_modules/.vite. So
+    // the pre-existing divergence at 351 masks the edit entirely: this test
+    // would pass just the same if the change were silently lost. It only
+    // becomes a real proof once frame 351 is fixed and the unmodified sweep
+    // is identical. draws.test IS a real proof today - it asserts the exact
+    // 380 pixels, and 0 without the edit - so the change is demonstrably
+    // live; it is this instrument, not the change, that is not yet load
+    // bearing. Do not treat a green run here as evidence until 351 is gone.
+    const lines: string[] = [];
+    let seen = 0;
+    for (const p of chosen) {
+      const a = play(p, viaRecompiled);
+      const b = play(p, viaDecompiled);
+      const at = firstDiff(a.digests, b.digests);
+      if (at > 0) seen += 1;
+      lines.push(`${p.name}: ${at > 0 ? `change visible from frame ${at}`
+        : `no wall laid, so nothing to see (${a.digests.length} frames)`}`);
+    }
+    writeFileSync(join(here, 'compose-modified.txt'), lines.join('\n') + '\n');
+    expect(seen).toBeGreaterThan(0);
   }, 3600000);
 });

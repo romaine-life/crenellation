@@ -1,0 +1,6 @@
+attract, two demo loops: change visible from frame 351
+one player: coin, join at the middle station, then fire: change visible from frame 351
+two players: both coin slots, left and right stations: change visible from frame 351
+three stations at once, second buttons too: change visible from frame 351
+service switch held, then released: no wall laid, so nothing to see (275 frames)
+no input at all, long run: change visible from frame 351
