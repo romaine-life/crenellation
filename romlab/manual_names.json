@@ -1,4 +1,20 @@
 {
+  "0x512": [
+    "wait for the next frame",
+    "zeroes the word at 0x3E0802, spins until it becomes non-zero, then decrements it and returns. 0x3E0802 is the frame semaphore the interrupt handler sets - the same one CLAUDE.md names in the spin-loop seam - so this is the game's frame wait. Read at 0x512-0x52A."
+  ],
+  "0x52a": [
+    "clear the frame semaphore",
+    "one instruction: writes zero to the frame semaphore at 0x3E0802, without waiting. The bare counterpart of 0x512. Read at 0x52A-0x534."
+  ],
+  "0x156c": [
+    "set bits in the second flag word",
+    "takes a word on the stack and ORs it into 0x3E0DC8 - a second flag word beside the one at 0x3E0DC6 that 0x1578 and 0x1592 serve. Read at 0x156C-0x1578."
+  ],
+  "0x1584": [
+    "clear bits in the second flag word",
+    "takes a word on the stack, inverts it, and ANDs it into 0x3E0DC8. Exact counterpart of 0x156C, and the same pairing 0x1578/0x1592 have for 0x3E0DC6. Read at 0x1584-0x1592."
+  ],
   "0x618": [
     "kick the watchdog",
     "one instruction: clears the byte at 0x72FFFF. That is the watchdog the board resets by being written to - system.ts names it at 0x72FFFE and treats reads and writes across it as on-map for exactly this reason. Read at 0x618-0x620."
