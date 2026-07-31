@@ -59,6 +59,11 @@ def role(name, body, is_addr):
     # wrong. Do not re-add it without checking the count moves.
     if indexes and not deref:
         return "index"
+    # A value nothing writes through, indexes with, or counts down, but which
+    # a comparison tests, is a bound. `limit` says that; `d3_` says which
+    # register it arrived in, which the reader can already see.
+    if compared and not stepped:
+        return "limit"
     if written_through:
         return "value"
     return None
