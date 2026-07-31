@@ -53,6 +53,10 @@ def role(name, body, is_addr):
         return None
     if counted:
         return "count"
+    # Tried and dropped: a "shift" role for a value used as the distance of a
+    # shift. It named nothing - every shift in this ROM takes an immediate,
+    # not a register parameter - so it was a rule that could only ever be
+    # wrong. Do not re-add it without checking the count moves.
     if indexes and not deref:
         return "index"
     if written_through:
