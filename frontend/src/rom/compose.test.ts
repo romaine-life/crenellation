@@ -199,6 +199,33 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   let sampled = 0;
   // Digests taken during a replay, so `upto` can mean a sample index.
   let taken = 0;
+  // With SAMPLE set, drive the frame interrupt off poll count too. Both
+  // halves have to be position-based or the comparison is meaningless:
+  // sampling by position alone puts the two runs at the same instruction
+  // having taken 9,708 and 3,439 interrupts respectively, and pacing by
+  // position alone leaves them a few polls out of phase for a snapshot taken
+  // at a frame boundary. Together, both *when we look* and *what has
+  // happened by then* are measured in program positions.
+  //
+  // The re-run discount is the same one writes.test needs: the recompiled
+  // side resumes by re-running the instruction it was interrupted at, so a
+  // block head arrives twice there and once on the lifted side.
+  if (SAMPLE) {
+    const PER_FRAME = Number(process.env.POLLS_PER_FRAME ?? 9000);
+    const isRecompiled = entry === viaRecompiled;
+    let polls = 0;
+    let rerunAt = -1;
+    sys.pacedIrq = () => {
+      const pc = sys.m.pc;
+      if (!POLL_AT.has(pc)) return false;
+      if (rerunAt === pc) { rerunAt = -1; return false; }
+      polls += 1;
+      if (polls < PER_FRAME) return false;
+      polls = 0;
+      if (isRecompiled) rerunAt = pc;
+      return true;
+    };
+  }
   // A mirror of exactly what `snapshot` lays out, kept current by hooking every
   // byte written. Rebuilding the snapshot cost 264,000 `m.byte()` calls a
   // frame and work RAM is a Map, so every one was a hash lookup; maintaining
