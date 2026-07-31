@@ -1,1 +1,6 @@
-attract, two demo loops: diverges at frame 351 (1200 vs 1200 frames run)
+attract, two demo loops: diverges at frame 351 (2400 vs 2400 frames run)
+one player: coin, join at the middle station, then fire: diverges at frame 351 (3600 vs 3600 frames run)
+two players: both coin slots, left and right stations: diverges at frame 351 (3600 vs 3600 frames run)
+three stations at once, second buttons too: diverges at frame 351 (3000 vs 3000 frames run)
+service switch held, then released: identical for 366 frames
+no input at all, long run: diverges at frame 351 (4800 vs 3439 frames run)
