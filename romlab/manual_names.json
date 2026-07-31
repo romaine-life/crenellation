@@ -1,4 +1,8 @@
 {
+  "0x1836": [
+    "reset the players for a new game",
+    "walks the three structs at 0x3E1968, stride 0x7E. For each it points field 0x6A at the shot rings (0x3E0F48), clears the ring's first two bytes and marks it 0xFF, and clears byte 0x16 - the value averaged by 0x1A70 - then, if field 0 has bits 14/15 set, clears byte 0x14 (the round), word 0x56 and long 0x28 and calls 0x5948 with the struct. The reset is skipped for the player whose address matches the pointer at 0x3E1C84 when the flag at 0x3E1956 is set, which is how one player is carried over. Read at 0x1836-0x18A6."
+  ],
   "0x19d8": [
     "reset the player pair to forty",
     "takes a player struct as a stack argument and writes the word 40 through both of its pointers, fields 0x5E and 0x62. It is the default arm of 0x1980, which writes byte 0x46 shifted left six through 0x5E and byte 0x47 the same way through 0x62 when its flag is set. So the two locations hold a paired per-player value that is either derived from 0x46/0x47 or reset to 40; what they mean is still unread. Read at 0x19D8-0x19EE."
