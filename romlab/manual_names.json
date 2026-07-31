@@ -1,4 +1,20 @@
 {
+  "0x15be": [
+    "reset a record and arm it with five",
+    "takes a record pointer on the stack, clears the long at 0x4 and the bytes at 0x19 and 0x1D, then stores 5 in byte 0x21. Byte 0x1D is the same field 0x1F60 counts down, so this is the record's initial state. Read at 0x15BE-0x15D6."
+  ],
+  "0x1f60": [
+    "count down the record's delay",
+    "takes a record pointer and decrements its byte at 0x1D unless that byte is already zero (bls, so unsigned). The field 0x15BE clears when it resets the record. Read at 0x1F60-0x1F70."
+  ],
+  "0x1f70": [
+    "step the record's state down from four",
+    "takes a record pointer and decrements its byte at 0x1E only when that byte is exactly 4, leaving every other value alone - so it moves one specific state on and is a no-op otherwise. Read at 0x1F70-0x1F82."
+  ],
+  "0x37d2": [
+    "blit one fixed graphic to the playfield",
+    "calls 0x12078 with two constant arguments: the source 0xBB38A in the image and the destination 0x200004, four bytes into the playfield. No parameters and no state - it draws the same thing to the same place every time. Read at 0x37D2-0x37E8."
+  ],
   "0x512": [
     "wait for the next frame",
     "zeroes the word at 0x3E0802, spins until it becomes non-zero, then decrements it and returns. 0x3E0802 is the frame semaphore the interrupt handler sets - the same one CLAUDE.md names in the spin-loop seam - so this is the game's frame wait. Read at 0x512-0x52A."
