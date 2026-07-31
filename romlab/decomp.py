@@ -952,7 +952,18 @@ class Lifter:
         tok = tok.strip()
         m = re.fullmatch(r"\$([0-9a-fA-F]+)(\.(w|l))?", tok)
         if m:
-            return f"0x{int(m.group(1), 16):x}"
+            a = int(m.group(1), 16)
+            # Absolute short sign-extends. `$ffff.w` is 0xFFFFFFFF, not
+            # 0x0000FFFF - one word reaches both the bottom of the address
+            # space and the top. The suffix was captured here and thrown
+            # away, so every high short address became a different place:
+            # `pea $ffff.w` in fn_16af8 pushed 0x0000FFFF where the chip
+            # pushes 0xFFFFFFFF, which is the whole of the service-switch
+            # pattern's remaining write divergence. m68kts.abs_addr has had
+            # this right from the start; only the lift dropped it.
+            if m.group(3) == "w" and a & 0x8000:
+                a = (a - 0x10000) & 0xFFFFFFFF
+            return f"0x{a:x}"
         # pc-relative: capstone has already resolved it to an address
         m = re.fullmatch(r"\$([0-9a-fA-F]+)\(pc\)", tok)
         if m:
