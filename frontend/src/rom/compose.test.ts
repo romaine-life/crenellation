@@ -56,25 +56,30 @@ const MODIFIED = process.env.MODIFIED === '1';
 //
 // The design, so whoever does it does not have to rediscover it:
 //
-//   * FNV-1a cannot be updated in place - changing one byte changes every
-//     later step. Use an *order-independent sum* instead: keep
-//     `sum = (sum + contrib(addr, val)) >>> 0` over every live byte, where
-//     contrib mixes address and value (e.g. imul(addr+1, 0x9E3779B1) ^
-//     imul(val+1, 0x85EBCA6B)). Hook setByte as writes.test does: read the old
-//     byte, subtract its contribution, add the new one. Addition and
-//     subtraction are invertible where XOR-chaining is not, which is the whole
-//     trick.
-//   * The dead-stack mask does not survive this. `snapshot` zeroes the 0x100
-//     bytes below a7 because the two runs differ there by design, and that
-//     window moves every frame. So at each frame boundary, correct: read those
-//     256 bytes, subtract each one's contribution, add contrib(addr, 0). That
-//     is 256 lookups a frame instead of 264,000 - still a thousandfold win.
-//   * VALIDATE IT AGAINST THE OLD ONE. Run both for the first few hundred
-//     frames and assert they order-agree: same frames flagged, same first
-//     difference. A rolling checksum that is subtly wrong reports *agreement*
-//     that is not there, which turns this from the strongest instrument in the
-//     repo into a rubber stamp. Do not ship it on the strength of it being
-//     faster.
+//   * The cost is not the hashing, it is `snapshot`: 264,000 calls to
+//     `m.byte()` a frame, and work RAM is a Map, so every one is a hash
+//     lookup. Keep a **mirror Uint8Array** updated by hooking `setByte` the
+//     way writes.test already does - O(writes per frame), which is hundreds,
+//     not hundreds of thousands - and hash the mirror instead. Flat typed
+//     array reads, same FNV-1a, byte-for-byte the same digest.
+//   * Keep `digestOf` exactly as it is. That is the point: an *unchanged*
+//     hash over a mirror that is right by construction cannot disagree with
+//     the old path, so validating it is comparing two numbers rather than
+//     reasoning about a new algorithm.
+//   * The dead-stack mask still works: save the 0x100 bytes below a7 out of
+//     the mirror, zero them, hash, put them back. Cheap and identical to what
+//     `snapshot` does today.
+//   * A rolling *sum* (subtract the old byte's contribution, add the new)
+//     avoids the per-frame hash entirely and is tempting. It is also where
+//     this gets dangerous: it needs a new order-independent mix, it cannot
+//     reuse FNV-1a, and if it is subtly wrong it reports *agreement that is
+//     not there* - turning the strongest instrument in the repo into a rubber
+//     stamp, silently. The mirror gets the thousandfold win without that risk.
+//     Take it, and only reach for the sum if hashing the mirror is somehow
+//     still the bottleneck.
+//   * Either way, VALIDATE AGAINST THE OLD PATH over a few hundred frames -
+//     same digests, same first differing frame - before trusting a green run.
+//     Do not ship it on the strength of being faster.
 const ONLY = process.env.COMPOSE_ONLY ?? 'attract';
 // Frames per pattern. The default is a bound on the cost, not on the claim:
 // six patterns at their full length is twenty thousand frames of the game run
