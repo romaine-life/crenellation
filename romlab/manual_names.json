@@ -1,4 +1,20 @@
 {
+  "0xe776": [
+    "look up the value paired with a byte",
+    "walks the table at 0x11A90 a byte at a time until it finds one equal to the argument, then returns the byte after it. The table is therefore key/value pairs, and there is no bound on the search - a key that is not present runs off the end, so the table must be terminated by something the caller can only ever ask for. Read at 0xE776-0xE790."
+  ],
+  "0xe790": [
+    "look up the byte paired with a value",
+    "the inverse of 0xE776 over the same table: starts one byte later at 0x11A91, scans for a match, and returns the byte before it. So 0xE776 maps key to value and this maps value back to key. Read at 0xE790-0xE7A8."
+  ],
+  "0xea68": [
+    "work out and store the carry-over flag",
+    "passes its argument to 0xEA7A and stores the byte that comes back at 0x3E1956. That is the flag 0x1836 tests when deciding whether to skip one player during the new-game reset - the mechanism that carries a player over instead of wiping them. Read at 0xEA68-0xEA7A."
+  ],
+  "0xee22": [
+    "translate one byte through the board table",
+    "reads the byte at 0x3E0DD2, uses it to index the table at 0x140034 in the board data region, and stores the result at 0x3E0DD4. A single translation between two globals. Read at 0xEE22-0xEE3A."
+  ],
   "0xc4ca": [
     "link a node into the list after another",
     "a doubly-linked list insert. Takes the node to insert and the node to insert after: saves the second's successor, points it at the new node, sets the new node's back link, gives it the saved successor, and fixes that successor's back link. So the links are next at offset 4 and previous at offset 0. Read at 0xC4CA-0xC4E8."
