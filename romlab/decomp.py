@@ -826,7 +826,22 @@ class Lifter:
                                           # branching pass, which handles btst
                                           # itself before reaching here
             op = {"bset": "|", "bclr": "& ~", "bchg": "^"}[b]
-            self.write(dst, Expr(f"((({v.text}) {op}{bit}) >>> 0)"), wide)
+            # Z comes from the bit *before* the change - and nothing here was
+            # setting it. `bclr` left in Z whatever an earlier instruction had
+            # put there, so the `beq` two instructions after
+            # `bclr.b #5,$2(a3)` at 0xF1CE branched on a stale flag: the
+            # decompiled run skipped the `jsr $F1FA` the chip makes, the loop
+            # that call feeds never reached its exit, and the service-switch
+            # pattern hung at frame 276 pushing the same return address for
+            # ever. The recompiler had this right all along (m68kts.emit sets
+            # m.z from the pre-modification value); only the lift dropped it.
+            # The value has to be held before the write, hence the temporary.
+            pre = self.temp(v)
+            self.flags = ("cmp",
+                          f"((({pre.text}) >>> (({n}) & {wide - 1})) & 1)",
+                          "0", wide)
+            self.flags_certain = True
+            self.write(dst, Expr(f"((({pre.text}) {op}{bit}) >>> 0)"), wide)
             return
         if b == "exg":
             a, c = ops[0].strip(), ops[1].strip()
