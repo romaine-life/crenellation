@@ -1,4 +1,16 @@
 {
+  "0x122b2": [
+    "decoder state: emit d0, then d3",
+    "writes d0 to the destination and points a2 at 0x122BC. The whole-byte counterpart of the nibble pair at 0x1228C/0x1229E - same two-state machine held in a2, but emitting two registers in turn rather than splitting one byte. Read at 0x122B2-0x122BC."
+  ],
+  "0x122bc": [
+    "decoder state: emit d3, then d0",
+    "the other half of 0x122B2: writes d3 and points a2 back. Read at 0x122BC-0x122C6."
+  ],
+  "0x17ed4": [
+    "restore seven registers and unlink",
+    "a shared epilogue: movem.l from -0x24(a6) into d2-d6 and a2-a4, unlk a6, rts. The larger sibling of 0x7866, which restores only d2 and a2. Routines jump here to return. Read at 0x17ED4-0x17EDE."
+  ],
   "0x19c00": [
     "fill bytes with a long count",
     "memset. Fills count+1 bytes at the pointer with the given byte and returns the original pointer, using the same dbra plus `subi.l #$10000` extension as the copy at 0x19BC2 so the count can exceed 65,535. Read at 0x19C00-0x19C22."
