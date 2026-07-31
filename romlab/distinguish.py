@@ -171,6 +171,18 @@ def fieldmap(group):
         a6 is a frame pointer - which is most of the negative offsets here.
         Only a7 is filtered, because a6 is genuinely a struct pointer in
         some routines and guessing which would hide real fields.
+      * BIGGEST ONE: this does not know *which struct* a base register
+        holds, so it mixes them. 0x01A70 reads $16(a0) with a0 from
+        `lea $3e1968` - a real player field. 0x018A6 reads $16(a0) with a0
+        from 0x3E0DCA, the level pointer - a level field that has nothing
+        to do with the player struct. Both land on "offset 0x16" here.
+        That is why 42 routines yield 69 offsets.
+
+    So this is a *starting list*, not a struct definition. Before naming a
+    field, check what its base register was loaded from in each routine
+    that uses it. Making the tool itself right needs the base registers
+    tracked to their source - simple dataflow, not a regex - and until that
+    exists the offsets are leads to confirm, not facts.
     """
     members = IDENT["collisions"].get(group)
     if not members:
