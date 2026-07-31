@@ -1,4 +1,12 @@
 {
+  "0x618": [
+    "kick the watchdog",
+    "one instruction: clears the byte at 0x72FFFF. That is the watchdog the board resets by being written to - system.ts names it at 0x72FFFE and treats reads and writes across it as on-map for exactly this reason. Read at 0x618-0x620."
+  ],
+  "0xfc06": [
+    "test a word in the protection window",
+    "one instruction: tst.w on 0x1400E8, which lies in the window CLAUDE.md records as served by a state machine rather than plain memory - the protection probe's two halves sit at 0x140010 and 0x1400E4. The routine only sets the flags from it; the caller acts on them. Read at 0xFC06-0xFC0E."
+  ],
   "0x1578": [
     "set bits in the flag word",
     "takes a word on the stack and ORs it into the flag word at 0x3E0DC6. Three instructions. Read at 0x1578-0x1584."
