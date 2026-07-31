@@ -1,4 +1,8 @@
 {
+  "0x19d8": [
+    "reset the player pair to forty",
+    "takes a player struct as a stack argument and writes the word 40 through both of its pointers, fields 0x5E and 0x62. It is the default arm of 0x1980, which writes byte 0x46 shifted left six through 0x5E and byte 0x47 the same way through 0x62 when its flag is set. So the two locations hold a paired per-player value that is either derived from 0x46/0x47 or reset to 40; what they mean is still unread. Read at 0x19D8-0x19EE."
+  ],
   "0x5e0a": [
     "give the player its 128-byte block",
     "takes a player struct as a stack argument; reads byte 0x2 - the player number, which 0x2248 sets from the loop index - scales it by 128 (asl #6 then doubled), adds it to 0x3E1F1C to pick that player's block, writes 0xFF at the block's first byte, and stores the pointer both at 0x3E209C and in the struct's field 0x66. Read at 0x5E0A-0x5E38."
