@@ -135,6 +135,51 @@ def main():
     print(f"  jump stubs named after where they go: "
           f"{sum(1 for a in hop if a in unique)} of {len(hop)}")
 
+    # Callees name their callers. A routine with no stated purpose that calls
+    # exactly one named routine and nothing else is a wrapper around it: it
+    # sets something up, calls, and returns. That is the same argument the
+    # trampoline rule above makes - where it goes is the only thing worth
+    # saying - except a wrapper does work either side of the call, so it is
+    # named for what it wraps rather than treated as a jump.
+    #
+    # Deliberately the narrow case. A routine calling *several* named routines
+    # that share a theme can also be named from them (0x010DE calls cellDraw,
+    # cellOwnerDraw and cellOverlayDrawSecondForm, so it is doing cell work),
+    # but choosing that name needs judgement about what the combination means,
+    # and a plausible-but-unchecked name is worse than an address. This case
+    # needs none: one callee, one name.
+    #
+    # It compounds - every name added here is a callee for the next round - so
+    # run idents.py to a fixed point, the way staticentries.py is run.
+    calls = {int(k, 16): v for k, v in facts.get("calls", {}).items()}
+    wrapped, rounds = 0, 0
+    while True:
+        # To a fixed point: a wrapper named this round is a named callee for
+        # the next, so a chain of them resolves from the inside out. Two
+        # rounds is convergence, exactly as with staticentries.py.
+        taken = set(unique.values())
+        found = 0
+        for a in addrs:
+            if a in unique or a in hop:
+                continue
+            callees = [c for c in (calls.get(a) or []) if c != a]
+            if len(set(callees)) != 1:
+                continue
+            want = unique.get(callees[0])
+            if not want:
+                continue
+            name = f"{want}Wrapper"
+            if name in taken:
+                continue
+            unique[a], found = name, found + 1
+            taken.add(name)
+        wrapped += found
+        rounds += 1
+        if not found:
+            break
+    print(f"  wrappers named after the one routine they call: {wrapped}"
+          f" (converged in {rounds} rounds)")
+
     # A two-byte routine is a bare `rts`: a handler that exists so something
     # has an address to call, and does nothing when called. Worth saying so.
     extent = {(f["at"] if isinstance(f, dict) else f[0]):
