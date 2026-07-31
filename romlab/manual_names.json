@@ -1,4 +1,8 @@
 {
+  "0x1a70": [
+    "average over active players",
+    "walks all three player structs from 0x3E1968 at stride 0x7E, skipping any whose field 0 has bit 15 clear or whose byte at 0x1F is zero; sums byte 0x16 across the rest and halves it (asr.l #1). Read at 0x1A70-0x1AEA."
+  ],
   "0x12222": [
     "RLE decoder - variant A",
     "byte stream with a 0x1F run mask, high bit terminates"
