@@ -43,6 +43,13 @@ const HI = Number(process.env.W_HI ?? 0x400000);
 // green.
 const CAP = Number(process.env.WRITE_CAP ?? 300_000);
 
+// The interrupt-terminated rotate loop, from facts.json. Diagnostic only:
+// WAIT_SKIP is off unless asked for, so the default run still measures every
+// write the game makes.
+const WAIT_LO = 0x00430;
+const WAIT_HI = 0x00512;
+const WAIT_SKIP = process.env.WAIT_SKIP === '1';
+
 type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
   irq: Int32Array; pol: Int32Array; n: number };
 
@@ -56,6 +63,12 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   // and a spin loop stops on a different iteration, so the comparison
   // measures the interrupt schedule rather than the code.
   sys.m.pollAt = POLL_AT as Set<number>;
+  // Whether control is inside the wait loop, tracked at the same points the
+  // interrupt poll uses, which is the finest granularity either dispatcher has.
+  let inWait = false;
+  sys.m.atPcExtra = (pc: number): void => {
+    inWait = pc >= WAIT_LO && pc < WAIT_HI;
+  };
   const m = sys.m as unknown as {
     setByte(a: number, v: number): void; store(a: number, v: number, b: number): void;
   };
@@ -71,6 +84,15 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // stacked program counter and condition codes differ there and nowhere
     // else. Skipping the six bytes measures what the game did.
     if (sys.m.inFrame) return;
+    // The other face of the same seam. fn_00430 rotates four register patterns
+    // until the frame handler sets 0x3E0802, and the two dispatchers resume
+    // from an interrupt at different points inside a block - the chip at the
+    // next instruction, the lifted code at the block head - so the loop stops
+    // one rotation apart and pushes different patterns. Both runs enter it
+    // with identical registers (measured, all 15, over every call), so nothing
+    // about the game differs here. WAIT_SKIP=1 excludes it, which answers
+    // whether the spin loop is the *only* thing left or merely the first.
+    if (WAIT_SKIP && inWait) return;
     // Full: stop the run rather than carry on executing the game with a hook
     // on every store, recording nothing. Thrown from inside the machine, which
     // unwinds the dispatcher the same way the frame limit does.
