@@ -51,7 +51,7 @@ const WAIT_HI = 0x00512;
 const WAIT_SKIP = process.env.WAIT_SKIP === '1';
 
 type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
-  irq: Int32Array; pol: Int32Array; hnd: Uint8Array; n: number };
+  irq: Int32Array; pol: Int32Array; n: number };
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string } {
@@ -74,7 +74,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   };
   const run: Run = { addr: new Int32Array(CAP), val: new Int32Array(CAP),
     cyc: new Int32Array(CAP), irq: new Int32Array(CAP),
-    pol: new Int32Array(CAP), hnd: new Uint8Array(CAP), n: 0 };
+    pol: new Int32Array(CAP), n: 0 };
   let stack = '';
   const FULL = new Error('recorded enough');
   const note = (a: number, v: number, bits: number): void => {
@@ -108,13 +108,6 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // The cycle clock at each write. If the two runs disagree here, the
     // pacing is wrong and fixable; if they agree, what differs is only
     // where in a block each may take an interrupt.
-    // Which stream this write belongs to. The handler runs asynchronously with
-    // respect to the main line, and the two dispatchers admit it at different
-    // points inside a block by design, so *where* a handler write falls among
-    // the main line's writes is not something either run promises. Recording
-    // the stream lets the comparison check both in order without asserting an
-    // interleaving that is arbitrary.
-    run.hnd[run.n] = sys.m.irqDepth > 0 ? 1 : 0;
     run.cyc[run.n] = sys.m.cycles | 0;
     run.irq[run.n] = sys.m.irqTaken | 0;
     run.pol[run.n] = totalPolls | 0;
@@ -212,25 +205,6 @@ function compare(p: Pattern): { note: string; agreed: number } {
     const b = record(p, viaDecompiled).run;
     let i = 0;
     while (i < a.n && i < b.n && a.addr[i] === b.addr[i] && a.val[i] === b.val[i]) i += 1;
-    // The same comparison, but per stream. Interleaved, the two runs part
-    // where the handler's writes land relative to the main line's - which is
-    // the seam, not the game: both dispatchers admit the interrupt at the same
-    // poll point and take the same number of them, but one resumes at the next
-    // instruction and the other at the head of a block. Split apart, each
-    // stream is a sequence both runs do promise, and disagreement in either is
-    // a real fault.
-    const split = (r: Run, want: number): number[] => {
-      const out: number[] = [];
-      for (let k = 0; k < r.n; k += 1) if (r.hnd[k] === want) out.push(k);
-      return out;
-    };
-    const streams = [0, 1].map((want) => {
-      const ka = split(a, want); const kb = split(b, want);
-      let j = 0;
-      while (j < ka.length && j < kb.length
-             && a.addr[ka[j]] === b.addr[kb[j]] && a.val[ka[j]] === b.val[kb[j]]) j += 1;
-      return { agreed: j, na: ka.length, nb: kb.length };
-    });
     // Where the two clocks first part, which is upstream of where the writes
     // do: identical work costing different cycles is a fault in the cost
     // model, and it moves every interrupt after it.
@@ -252,12 +226,6 @@ function compare(p: Pattern): { note: string; agreed: number } {
       if (d < lo) lo = d;
       if (d > hi) hi = d;
     }
-    const [mainS, hndS] = streams;
-    const streamNote = `
-  main line: ${mainS.agreed} of ${mainS.na}/${mainS.nb}`
-      + `${mainS.agreed === mainS.na && mainS.na === mainS.nb ? ' (identical)' : ''}`
-      + `; handler: ${hndS.agreed} of ${hndS.na}/${hndS.nb}`
-      + `${hndS.agreed === hndS.na && hndS.na === hndS.nb ? ' (identical)' : ''}`;
     const spread = `clock gap over ${n} writes: ${lo}..${hi}`
       + `; interrupts taken at the last common write:`
       + ` ${a.irq[Math.max(0, i - 1)]} vs ${b.irq[Math.max(0, i - 1)]}`
@@ -311,7 +279,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
         `  stack:      ${who}`].join('\n');
     }
     return { note: `${p.name}: ${note}
-  ${spread}${gap}${streamNote}`, agreed: i };
+  ${spread}${gap}`, agreed: i };
 }
 
 // The write stream needs no common clock. Two runs that do the same thing
