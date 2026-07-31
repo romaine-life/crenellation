@@ -1,4 +1,12 @@
 {
+  "0x19c00": [
+    "fill bytes with a long count",
+    "memset. Fills count+1 bytes at the pointer with the given byte and returns the original pointer, using the same dbra plus `subi.l #$10000` extension as the copy at 0x19BC2 so the count can exceed 65,535. Read at 0x19C00-0x19C22."
+  ],
+  "0x19c22": [
+    "set the status register and return the old one",
+    "reads the status register into d0, writes the word it was given into it, and returns the previous value - the save-and-restore primitive for the interrupt mask, and the routine that raises or lowers it. Worth noting against 0x15A0, which carried the name 'interrupt mask set' until 2026-07-31 and does nothing of the kind: it ORs and ANDs a word in work RAM. This is the one that touches the mask. Read at 0x19C22-0x19C2E."
+  ],
   "0x1868c": [
     "string length",
     "strlen. Scans forward from the pointer it is given until it reads a zero byte, then returns the distance minus one. The minus one is `moveq #$ff,d0`, which sign-extends to -1 rather than loading 255 - read it as 255 and the routine looks like it returns the length plus 256. Read at 0x1868C-0x1869E."
