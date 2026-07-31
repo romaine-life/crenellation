@@ -1,4 +1,8 @@
 {
+  "0x1c34": [
+    "run the player flag handler for every active player",
+    "walks the three structs at 0x3E1968, stride 0x7E, and calls 0x5948 - the player flag handler - with each one whose field 0 has bit 15 set. Nothing else. Note the gate is bit 15 alone, where 0x1836 and 0x18FA test bits 14 and 15 together, so this runs for a strictly wider set of players than those do. Read at 0x1C34-0x1C66."
+  ],
   "0x149a": [
     "does this board cell belong to the player",
     "takes a player struct and a coordinate pair on the stack. Reads the player number from field 0x2, indexes the owner-code table at 0x1000A with it, turns the coordinate into a board cell address through 0x11BD8 (cell address), masks the cell's owner bits with 0xC0, and returns all-ones when they match the player's code and zero when they do not. This is what settles the coordinate pair at fields 0x46/0x47: it is a board cell, and 0x18FA is looking for a starting cell the player already owns. Read at 0x149A-0x14DC."
