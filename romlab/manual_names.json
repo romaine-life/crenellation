@@ -1,7 +1,11 @@
 {
+  "0xf2fa": [
+    "offset from the record table base",
+    "three instructions: takes a longword on the stack and returns it minus 0x1F7F0, turning a pointer into a record's own table into an offset from that table's base. Read at 0xF2FA-0xF306."
+  ],
   "0x512a": [
-    "write one shared value into every player's object",
-    "calls 0xF2FA once with a pointer to 0x1F7F0 and keeps the word it returns, then walks all three structs at 0x3E1968, stride 0x7E - with no active check, unlike every other walk here - and for each follows the pointer at field 0x42, stores that same word at its start, and ORs 0x20 into its byte 2. So field 0x42 points at a per-player object and all three receive the same value. What the value means needs 0xF2FA read; it is still called 'small leaf utility'. Read at 0x512A-0x5168."
+    "clear the index in every player's object",
+    "walks all three structs at 0x3E1968, stride 0x7E - with no active check, unlike every other walk here - and for each follows the pointer at field 0x42, stores a word at its start and ORs 0x20 into its byte 2. The word comes from calling 0xF2FA on 0x1F7F0, and 0xF2FA subtracts 0x1F7F0, so the value is exactly zero: the index is being reset rather than set. Field 0x42 therefore points at a per-player object whose first word is an offset into the table at 0x1F7F0. Read at 0x512A-0x5168."
   ],
   "0x482e": [
     "gather the stations nobody is playing",
