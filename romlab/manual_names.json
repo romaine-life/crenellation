@@ -1,4 +1,8 @@
 {
+  "0x18fa": [
+    "choose each player's starting position",
+    "walks the three structs at 0x3E1968, stride 0x7E, skipping any whose field 0 lacks bits 14/15. Copies the byte pair at fields 0x48/0x49 into a local, offers it to 0x149A together with the struct, and if that returns non-zero writes the pair into fields 0x46/0x47; otherwise it takes the next pair from the list pointed to by field 0x4A, stepping two bytes at a time, and tries again. 0x46/0x47 is therefore a coordinate pair - the same one 0x1980 writes out scaled by 64 through the pointers at 0x5E and 0x62, whose default 0x19D8 sets to 40. Read at 0x18FA-0x1980."
+  ],
   "0x1836": [
     "reset the players for a new game",
     "walks the three structs at 0x3E1968, stride 0x7E. For each it points field 0x6A at the shot rings (0x3E0F48), clears the ring's first two bytes and marks it 0xFF, and clears byte 0x16 - the value averaged by 0x1A70 - then, if field 0 has bits 14/15 set, clears byte 0x14 (the round), word 0x56 and long 0x28 and calls 0x5948 with the struct. The reset is skipped for the player whose address matches the pointer at 0x3E1C84 when the flag at 0x3E1956 is set, which is how one player is carried over. Read at 0x1836-0x18A6."
