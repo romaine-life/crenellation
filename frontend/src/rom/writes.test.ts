@@ -61,7 +61,7 @@ const seq: string[] = [];
 console.log(`PC_SEQ=${JSON.stringify(process.env.PC_SEQ)} -> ${PC_SEQ}, cap ${PC_CAP}`);
 
 type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
-  irq: Int32Array; pol: Int32Array; a6: Int32Array; d2: Int32Array; n: number };
+  irq: Int32Array; pol: Int32Array; a6: Int32Array; d2: Int32Array; wpc: Int32Array; n: number };
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
@@ -187,7 +187,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   };
   const run: Run = { addr: new Int32Array(CAP), val: new Int32Array(CAP),
     cyc: new Int32Array(CAP), irq: new Int32Array(CAP),
-    pol: new Int32Array(CAP), a6: new Int32Array(CAP), d2: new Int32Array(CAP), n: 0 };
+    pol: new Int32Array(CAP), a6: new Int32Array(CAP), d2: new Int32Array(CAP), wpc: new Int32Array(CAP), n: 0 };
   let stack = '';
   let romStack: number[] = [];
   const FULL = new Error('recorded enough');
@@ -257,6 +257,11 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // pointer itself differs or only what is under it: same a6 with
     // different contents means residue, different a6 means the caller.
     run.a6[run.n] = sys.m.a6 | 0;
+    // The emulated program counter, which names the INSTRUCTION that wrote.
+    // The JavaScript stack does not: `push` there is machine.ts's own helper
+    // and runs for a return address as readily as for data, so reading a
+    // routine name off it can attribute a write to the wrong thing entirely.
+    run.wpc[run.n] = sys.m.pc | 0;
     // d2 too. graphicsDecompressor stores (d3.w >>> 4) + d2.w, so d2 IS the
     // colour base the caller chose - if the banner's palette bank differs,
     // it differs here, one level above the pixel.
@@ -717,7 +722,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // Same frame pointer at the divergent write, or a different one? The
       // value the runs disagree on is read from `-$12(a6)`, so this splits
       // the two possible stories without any further guessing.
-      + `; d2 (the colour base) 0x${(a.d2[i] >>> 0).toString(16)} vs 0x${(b.d2[i] >>> 0).toString(16)}`
+      + `; WROTE AT pc 0x${(a.wpc[i] >>> 0).toString(16)} vs 0x${(b.wpc[i] >>> 0).toString(16)}`      + `; d2 (the colour base) 0x${(a.d2[i] >>> 0).toString(16)} vs 0x${(b.d2[i] >>> 0).toString(16)}`
       + `; a6 at the divergence: 0x${(a.a6[i] >>> 0).toString(16)}`
       + ` vs 0x${(b.a6[i] >>> 0).toString(16)}`
       + ` (${a.a6[i] === b.a6[i] ? 'same frame, so the contents differ'

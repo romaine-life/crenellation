@@ -6,6 +6,6 @@ two players: both coin slots, left and right stations: diverge at write 751 of 3
   stack:      Machine <- Machine <- push <- decompressOneEightPixelColumn <- call <- callDecompiled <- callRom <- extractsOwnerBitsCellByte <- call
   rom stack recompiled: 0x10002 <- 0x105c <- 0x504e <- 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
   rom stack decompiled: 0x10002 <- 0x105c <- 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  clock gap over 751 writes: -2926..0; interrupts taken at the last common write: 115 vs 115; poll points reached: 2225910 vs 2225910; d2 (the colour base) 0x1 vs 0x1; a6 at the divergence: 0x3e32c2 vs 0x3e32c2 (same frame, so the contents differ)
+  clock gap over 751 writes: -2926..0; interrupts taken at the last common write: 115 vs 115; poll points reached: 2225910 vs 2225910; WROTE AT pc 0x11efe vs 0x11efe; d2 (the colour base) 0x1 vs 0x1; a6 at the divergence: 0x3e32c2 vs 0x3e32c2 (same frame, so the contents differ)
   gap passes 1000 at write 0 (-2884, at 0x3e3276)
   gap stack: Machine <- Machine <- push <- displayListBuild <- call <- callDecompiled <- callRom <- helperStepsBoardDirectionWrapper <- call
