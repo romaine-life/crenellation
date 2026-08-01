@@ -89,7 +89,7 @@ describe('colour base', () => {
       // deduped, and only inside the routine, so the list stays short enough to
       // compare position by position.
       if (pc >= 0x11f2a && pc <= 0x12060 && a0seq.length < 400000) {
-        a0seq.push(pc, sys.m.a0 | 0);
+        a0seq.push(pc, sys.m.d0 | 0);
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
