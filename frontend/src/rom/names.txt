@@ -1,3 +1,3 @@
-functions: 1185, semantic 582, still an address 603
+functions: 1185, semantic 586, still an address 599
 parameters: 6154, named 2784
-remaining to the bar: 603 routines and 3370 parameters
+remaining to the bar: 599 routines and 3370 parameters

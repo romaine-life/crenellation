@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0x472a": [
+    "run the four-step sequence on the record at 0x1F420",
+    "calls 0x450C four times with the same record, 0x1F420, and the indices 0, 1, 4 and 7. Nothing else - a fixed script. The gaps in the index list are the interesting part: whatever 0x450C selects, this record uses four of the slots and skips the rest. Read at 0x472A-0x4760."
+  ],
+  "0x5020": [
+    "run the sequence on 0xFDC2, with a different routine at index five",
+    "calls 0x450C with the record 0xFDC2 at indices 0, 1 and 2, but routes index 5 through 0x452E instead. So the two routines are alternatives over the same (record, index) shape and the choice is per step, not per record - which is what distinguishes this from 0x472A's uniform script. Read at 0x5020-0x5056."
+  ],
   "0x14dc": [
     "run the handler for every flag bit set",
     "takes the word at 0x3E0DC6, clears it, and walks its sixteen bits from the top: each iteration shifts left and, when the result is negative, calls the routine whose pointer sits at the matching slot of the table at 0xFCF6. So 0x3E0DC6 is a pending-work bitmask and 0xFCF6 is its sixteen handlers - which is what 0x1578 and 0x1592 are really doing when they set and clear bits there: posting and cancelling work. Clearing the word before dispatching means a handler that posts again is served on the next pass, not this one. Read at 0x14DC-0x1512."
