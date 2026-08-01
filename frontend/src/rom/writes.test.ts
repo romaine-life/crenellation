@@ -419,6 +419,27 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // polls inside ONE run is exactly what that block was charged, so this
       // needs no new recording. A block that appears with different totals and
       // the same visit count is priced differently, which is the fault.
+      // The per-visit cost distribution for the one block that is mispriced.
+      // A block charged a constant should show a single value; anything else
+      // says the charge depends on something, and comparing the two runs'
+      // histograms says on what.
+      let hdiff = 'no histogram';
+      if (ra.cyc && rb.cyc && ra.pcs && rb.pcs) {
+        const hist = (r: typeof ra) => {
+          const h = new Map<number, number>();
+          for (let i = 1; i < r.pn; i += 1) {
+            if (r.pcs![i - 1] !== 0x14510) continue;
+            const dc = (r.cyc![i] - r.cyc![i - 1]) | 0;
+            if (dc < 0 || dc > 4096) continue;
+            h.set(dc, (h.get(dc) ?? 0) + 1);
+          }
+          return [...h.entries()].sort((x, y) => y[1] - x[1]);
+        };
+        const HA = hist(ra), HB = hist(rb);
+        hdiff = `0x14510 per-visit cost -- recompiled: `
+          + HA.slice(0, 6).map(([c, n]) => `${c}x${n}`).join(' ')
+          + ` | decompiled: ` + HB.slice(0, 6).map(([c, n]) => `${c}x${n}`).join(' ');
+      }
       let mdiff = 'no per-block cost comparison';
       if (ra.cyc && rb.cyc && ra.pcs && rb.pcs) {
         const cost = (r: typeof ra) => {
@@ -567,7 +588,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${mdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${hdiff}; ${mdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
