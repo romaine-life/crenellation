@@ -135,6 +135,14 @@
     "score three neighbours with weights one, one and two",
     "the sibling of 0x3DE8 over the same board stride of 0x20. It adds 1 when the byte one before the cell matches either of two values, 1 more when the byte 0x1F on does, and 2 when the byte 0x21 back does, returning the total. Between them the two routines weight four neighbours 1, 1, 2, 4 and 8 - a directional encoding, not a count. Read at 0x3DA0-0x3DE8."
   ],
+  "0x1e804": [
+    "recolour an eight by eight cell",
+    "walks eight rows of eight bytes, replacing each byte's low nibble with itself plus a bias taken from the caller's word shifted right four, and stepping 0x1F8 at the end of each row - eight bytes plus 0x1F8 is the 0x200 stride. The 8 by 8 counterpart of 0x1204C, which does the same for two rows. Read at 0x1E804-0x1E834."
+  ],
+  "0x160f8": [
+    "skip to the nth record in the packed list",
+    "steps over a variable-length list. Each record starts with a header byte whose two nibbles are subtracted to give a shift, and 2 shifted left by that is the number of NUL-terminated strings the record carries; the routine walks past exactly that many. A record whose first three bytes are all zero - tested through 0x160DC - ends the list and the answer is null. Returns the address of the record it stopped on. Read at 0x160F8-0x16148."
+  ],
   "0x1e6dc": [
     "decompress the tile with this id",
     "the indexed form of 0x11EFE: it looks the caller's tile id up in the word table at 0x2161A to get an offset, adds that to the tile set at 0xD2608, seeds d4 with 7 for the eight-pixel column, calls the decompressor, and returns the destination advanced by 8. So 0x2161A maps a tile id to its position in the compressed set, and 0x11EFE is the same thing when the caller already has the offset. Read at 0x1E6DC-0x1E720."
