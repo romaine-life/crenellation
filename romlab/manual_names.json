@@ -79,6 +79,14 @@
     "post each active player's entry and set state two",
     "walks the three structs at 0x3E1968 alongside the pointer table at 0x215A6, and for each whose field 0 has bit 15 set calls 0x41BE with that pointer, the player index and the constants 12, 7 and 1, then stamps byte 0x1A with 2 - the same state 0xCD0C sets when a record's countdown expires. Note the gate is bit 15 alone, not bits 14/15 as its neighbours use. Read at 0x7D80-0x7DCE."
   ],
+  "0x1a100": [
+    "dispatch the channel by its type byte",
+    "scales the channel index by six - doubling twice and adding, the shift-free way to multiply by six - indexes the records at 0x19CE4, copies the byte at offset 4 into 0x3E36FE, and calls 0x1B42E when it is 3, 0x1B612 when it is 4, and nothing otherwise. So 0x19CE4 holds six-byte channel records whose offset 4 is a type, and only two types have handlers. 0x1A14E calls this for channels 0, 1 and 2. Read at 0x1A100-0x1A14E."
+  ],
+  "0xc3e8": [
+    "deduct this item's cost",
+    "subtracts a cost from the counter at 0x3E1C98. Type 0x1C is special-cased to 4; every other type is looked up in the four-entry table at 0x117FA and its cost read from the matching slot of 0x11838. A type not in the table costs nothing, because the loop simply falls out. Read at 0xC3E8-0xC436."
+  ],
   "0x1a14e": [
     "drain one byte from the ring and service three channels",
     "the reader for the ring 0x1A0CC writes: read pointer at 0x3E3D56, write pointer at 0x3E3D5A, and the buffer 0x3E3D46-0x3E3D55 with the same wrap. When the two pointers meet the ring is empty and it skips the read; otherwise it advances, takes the byte and hands it to 0x1A1CA. Either way it then calls 0x1A100 for channels 0, 1 and 2, and bumps a counter at 0x3E36D4. Read at 0x1A14E-0x1A19A."
