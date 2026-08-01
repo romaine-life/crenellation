@@ -37,6 +37,7 @@ describe('colour base', () => {
     const STOP = new Error('enough');
     let n = 0;
     let prev = 0;
+    let dumped = false;
     sys.m.atPcExtra = (pc: number): void => {
       // At the decompressor's entry ONLY. Watching d2 wherever it happens to
       // hold a bank byte was a mistake: screenDissolve counts down through
@@ -86,6 +87,18 @@ describe('colour base', () => {
         // the instruction that transferred here.
         const kk = `ARG8=0x${(a8 & 0xffff).toString(16)} from 0x${prev.toString(16)}`;
         seen.set(kk, (seen.get(kk) ?? 0) + 1);
+        // The whole frame, once. The trampoline pushes six longs and JUMPS, so
+        // there is no return address and (a7) should be the last of the six.
+        // If the lift's slots are shifted by one, every stack argument reads
+        // its neighbour - which is the hypothesis this settles.
+        if (!dumped) {
+          dumped = true;
+          const slots: string[] = [];
+          for (let i = 0; i <= 40; i += 4) {
+            slots.push(`+${i}=0x${(sys.m.load((sys.m.a7 + i) >>> 0, 32) >>> 0).toString(16)}`);
+          }
+          seen.set(`FRAME ${slots.join(' ')}`, 1);
+        }
       }
       prev = pc;
       if (pc === 0x11f18 || pc === 0x11f2a) {
