@@ -34,17 +34,21 @@ describe('colour base', () => {
     if (who === 'lift') bind(sys.m);
     const pat = PATTERNS.find((p) => p.name.startsWith('two players'))!;
     const seen = new Map<string, number>();
-    let last = -1;
     const STOP = new Error('enough');
     let n = 0;
     sys.m.atPcExtra = (pc: number): void => {
-      const v = sys.m.d2 & 0xff;
-      // Only the banks the panels use, and only when d2 just became one.
-      if (v !== last && (v === 0x80 || v === 0x90 || v === 0xa0 || v === 0xb0)) {
-        const k = `0x${pc.toString(16)} -> d2.b=0x${v.toString(16)}`;
+      // At the decompressor's entry ONLY. Watching d2 wherever it happens to
+      // hold a bank byte was a mistake: screenDissolve counts down through
+      // 0xF000 and its low byte passes through all four, evenly, which reads
+      // exactly like enumerating them. Here d2 IS the colour base - the
+      // routine adds it to every pixel - so the value means what it says.
+      // The return address on top of the stack names who asked for it.
+      if (pc >= 0x11f08 && pc <= 0x11f2c) {
+        const v = sys.m.d2 & 0xff;
+        const from = sys.m.load(sys.m.a7 >>> 0, 32) >>> 0;
+        const k = `d2.b=0x${v.toString(16)} from 0x${from.toString(16)}`;
         seen.set(k, (seen.get(k) ?? 0) + 1);
       }
-      last = v;
     };
     try {
       sys.run(() => { n += 1; pat.at(n, sys); if (n >= 600) throw STOP; }, entry);
