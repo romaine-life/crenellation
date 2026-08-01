@@ -43,11 +43,27 @@ describe('colour base', () => {
       // exactly like enumerating them. Here d2 IS the colour base - the
       // routine adds it to every pixel - so the value means what it says.
       // The return address on top of the stack names who asked for it.
-      if (pc >= 0x11f08 && pc <= 0x11f2c) {
+      // ONE address, not a range: 0x11F18 is where the oracle was seen holding
+      // a bank, and sampling the whole routine caught d2 mid-computation.
+      // And the CALLER is not the word at (a7) - that is the wrapper's own
+      // return address - so walk the stack for ROM addresses the way
+      // writes.test's romStack does, and keep the first few.
+      // Two addresses, one per dispatcher, and that asymmetry is the point:
+      // the recompiler reports every instruction so 0x11F18 is visible to it,
+      // while the lift reports block heads and covers the same code at 0x11F2A.
+      // Sampling only the oracle's address gives the lift nothing at all -
+      // which looks like absence and is only a different reporting grain.
+      if (pc === 0x11f18 || pc === 0x11f2a) {
         const v = sys.m.d2 & 0xff;
-        const from = sys.m.load(sys.m.a7 >>> 0, 32) >>> 0;
-        const k = `d2.b=0x${v.toString(16)} from 0x${from.toString(16)}`;
-        seen.set(k, (seen.get(k) ?? 0) + 1);
+        if (v === 0x80 || v === 0x90 || v === 0xa0 || v === 0xb0) {
+          const chain: string[] = [];
+          for (let i = 0; i < 160 && chain.length < 4; i += 2) {
+            const w = sys.m.load((sys.m.a7 + i) >>> 0, 32) >>> 0;
+            if (w >= 0x400 && w < 0x20000 && (w & 1) === 0) chain.push('0x' + w.toString(16));
+          }
+          const k = `d2.b=0x${v.toString(16)} via ${chain.join(' <- ')}`;
+          seen.set(k, (seen.get(k) ?? 0) + 1);
+        }
       }
     };
     try {
