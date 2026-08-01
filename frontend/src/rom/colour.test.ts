@@ -104,7 +104,11 @@ describe('colour base', () => {
       // transition STOPS MOVING. It has moved every time the range widened -
       // decompressor, then callers - which is the signature of a fault being
       // inherited rather than found.
-      if (pc >= 0x00400 && pc < 0x20000 && a0seq.length < 400000) {
+      // Bounded by FRAMES, which both runs share, rather than by a sample
+      // count, which they do not: the oracle emits one sample per instruction
+      // and the lift one per block, so any sample bound compares different
+      // amounts of program and reports truncation as agreement.
+      if (n >= 380 && n < 392 && pc >= 0x00400 && pc < 0x20000) {
         // A checksum of all sixteen, so one pass covers every register without
         // a file of millions of numbers. Where the checksums first differ names
         // the address and the visit; which register it was is then one targeted
