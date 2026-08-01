@@ -1,0 +1,1 @@
+cycles 23984176 irqTaken 0 steps 858890
