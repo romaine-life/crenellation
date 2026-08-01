@@ -31,6 +31,12 @@ describe('colour base', () => {
   for (const [who, entry] of [['oracle', viaRecompiled], ['lift', viaDecompiled]] as const)
   it(`says where the ${who} sets it`, () => {
     const sys = new System(rom, board);
+    // The seam moves with the interrupt phase and a lifting fault does not -
+    // established by measurement, with a control showing irqPhase shifts the
+    // machine by thousands of cycles while the differing-pixel count does not
+    // move at all. So running this at two phases and intersecting the divergent
+    // addresses filters the seam out and leaves the fault.
+    sys.irqPhase = Number(process.env.IRQ_PHASE ?? 0);
     if (who === 'lift') bind(sys.m);
     const pat = PATTERNS.find((p) => p.name.startsWith('two players'))!;
     const seen = new Map<string, number>();
