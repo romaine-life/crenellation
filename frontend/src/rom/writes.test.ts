@@ -61,7 +61,7 @@ const seq: string[] = [];
 console.log(`PC_SEQ=${JSON.stringify(process.env.PC_SEQ)} -> ${PC_SEQ}, cap ${PC_CAP}`);
 
 type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
-  irq: Int32Array; pol: Int32Array; a6: Int32Array; d2: Int32Array; wpc: Int32Array; rg: Int32Array; n: number };
+  irq: Int32Array; pol: Int32Array; a6: Int32Array; d2: Int32Array; wpc: Int32Array; rg: Int32Array; a0pc: Int32Array; n: number };
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
@@ -125,7 +125,10 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   let hidx = 0;
   const fcyc: Int32Array | null = PC_SEQ ? new Int32Array(4096) : null;
   let pn = 0;
+  let lastA0 = -1;
+  let lastA0pc = 0;
   sys.m.atPcExtra = (pc: number): void => {
+    if ((sys.m.a0 | 0) !== lastA0) { lastA0 = sys.m.a0 | 0; lastA0pc = pc; }
     inWait = pc >= WAIT_LO && pc < WAIT_HI;
     // PC_SEQ=1: record the sequence of poll addresses. Both dispatchers are
     // forced to poll at exactly POLL_AT, so this sequence is directly
@@ -187,7 +190,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   };
   const run: Run = { addr: new Int32Array(CAP), val: new Int32Array(CAP),
     cyc: new Int32Array(CAP), irq: new Int32Array(CAP),
-    pol: new Int32Array(CAP), a6: new Int32Array(CAP), d2: new Int32Array(CAP), wpc: new Int32Array(CAP), rg: new Int32Array(CAP * 6), n: 0 };
+    pol: new Int32Array(CAP), a6: new Int32Array(CAP), d2: new Int32Array(CAP), wpc: new Int32Array(CAP), rg: new Int32Array(CAP * 6), a0pc: new Int32Array(CAP), n: 0 };
   let stack = '';
   let romStack: number[] = [];
   const FULL = new Error('recorded enough');
@@ -273,6 +276,11 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     run.rg[run.n * 6 + 3] = sys.m.d4 | 0;
     run.rg[run.n * 6 + 4] = sys.m.a0 | 0;
     run.rg[run.n * 6 + 5] = sys.m.a1 | 0;
+    // And the address of the last instruction to have changed a0. a0 is the
+    // register that differs at the divergence, so this names what set it -
+    // anchored to the moment the harness already finds, rather than recorded
+    // from the start of the run behind a cap that hid the answer three times.
+    run.a0pc[run.n] = lastA0pc | 0;
     // d2 too. graphicsDecompressor stores (d3.w >>> 4) + d2.w, so d2 IS the
     // colour base the caller chose - if the banner's palette bank differs,
     // it differs here, one level above the pixel.
@@ -734,7 +742,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // value the runs disagree on is read from `-$12(a6)`, so this splits
       // the two possible stories without any further guessing.
       + `; WROTE AT pc 0x${(a.wpc[i] >>> 0).toString(16)} vs 0x${(b.wpc[i] >>> 0).toString(16)}`
-      + `; REGS ${['d1', 'd2', 'd3', 'd4', 'a0', 'a1'].map((nm, q) => {
+      + `; a0 last set at pc 0x${(a.a0pc[i] >>> 0).toString(16)} vs 0x${(b.a0pc[i] >>> 0).toString(16)}`      + `; REGS ${['d1', 'd2', 'd3', 'd4', 'a0', 'a1'].map((nm, q) => {
         const x = a.rg[i * 6 + q] >>> 0, y = b.rg[i * 6 + q] >>> 0;
         return x === y ? '' : `${nm}=0x${x.toString(16)}/0x${y.toString(16)}`;
       }).filter(Boolean).join(' ') || 'all six identical'}`      + `; d2 (the colour base) 0x${(a.d2[i] >>> 0).toString(16)} vs 0x${(b.d2[i] >>> 0).toString(16)}`
