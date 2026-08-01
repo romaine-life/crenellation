@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0x1a14e": [
+    "drain one byte from the ring and service three channels",
+    "the reader for the ring 0x1A0CC writes: read pointer at 0x3E3D56, write pointer at 0x3E3D5A, and the buffer 0x3E3D46-0x3E3D55 with the same wrap. When the two pointers meet the ring is empty and it skips the read; otherwise it advances, takes the byte and hands it to 0x1A1CA. Either way it then calls 0x1A100 for channels 0, 1 and 2, and bumps a counter at 0x3E36D4. Read at 0x1A14E-0x1A19A."
+  ],
+  "0x1545c": [
+    "centre two strings in the forty-two column field",
+    "measures both strings with 0x1868C - strlen - subtracts each length from 0x2A, halves the remainder and passes it to 0x17FCC before drawing. 0x2A is 42, the board's width in cells, so text is centred across the same grid the playfield uses. Read at 0x1545C-0x154A8."
+  ],
   "0x8a24": [
     "is the run of cells free",
     "builds a step as (dy shifted left five) plus dx - the board's row stride is 0x20 - resolves the starting cell through 0x11BD8, and walks the given number of cells along that step. Each cell fails unless its low six bits are zero or exactly 0x30; anything else returns 0, and surviving the whole run returns 1. So a cell's low six bits are its occupancy and 0x30 is a value a piece may sit on. This is the can-it-be-placed test. Read at 0x8A24-0x8A70."
