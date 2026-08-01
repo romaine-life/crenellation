@@ -70,6 +70,9 @@ export class System {
 
   frames = 0;
   private statusToggle = 0;
+  /** Cycles at which the last frame boundary was crossed. Diagnostic. */
+  crossedAt = 0;
+
   /** Cycles to shift the first interrupt by. */
   irqPhase = 0;
   /** Set to drive interrupts from an external schedule. */
@@ -167,6 +170,11 @@ export class System {
       if (m.cycles < next) return;
       next = m.cycles + CYCLES_PER_FRAME;
       this.frames += 1;
+      // The cycle count at which this frame boundary was actually decided.
+      // A hook that runs before this test sees the poll AFTER the crossing,
+      // which is a different quantity and differs between runs even when the
+      // schedule is identical - so read it here or not at all.
+      this.crossedAt = m.cycles;
       m.irqPending = 4;      // taken at the next instruction boundary
       onFrame(this);
     };

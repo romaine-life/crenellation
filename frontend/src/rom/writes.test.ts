@@ -108,7 +108,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
       // means the same event in both runs - which it may not, since a skipped
       // poll is also an unrecorded one.
       if (fcyc && sys.frames > 0 && sys.frames < fcyc.length && fcyc[sys.frames] === 0) {
-        fcyc[sys.frames] = sys.m.cycles | 0;
+        fcyc[sys.frames] = sys.crossedAt | 0;
       }
       pn += 1;
     }
