@@ -98,6 +98,8 @@ const FRAMES = Number(process.env.REGDIFF_FRAMES ?? 500);
 const CAP = Number(process.env.REGDIFF_CAP ?? 4_000_000);
 /** Entry samples kept with full register state. ~28,700 at 500 frames. */
 const SAMPLES = Number(process.env.REGDIFF_SAMPLES ?? 80_000);
+/** Sample at interrupts (complete state) rather than routine entries. */
+const AT_IRQ = (process.env.REGDIFF_AT ?? 'irq') === 'irq';
 
 /** Every routine's first address. */
 const ENTRY: Set<number> = new Set(DECOMPILED.map((e) => e.at));
@@ -138,6 +140,7 @@ function scan(entry: (addr: number, m: System['m']) => void,
     });
   }
   let lastVer = -1;
+  let lastIrq = -1;
   sys.m.atPcExtra = (at: number): void => {
     // Routine entries, not poll points. The decompiled side syncs every live
     // register into the Machine immediately before a callRom, and a callee
@@ -146,7 +149,16 @@ function scan(entry: (addr: number, m: System['m']) => void,
     // the caller synced. That is the one place both dispatchers are known to
     // agree about what a register means. ENTRY is that set; POLL_AT is not,
     // which is what the header records.
-    if (!ENTRY.has(at)) return;
+    // Design six: sample at interrupts, not routine entries. The decompiled
+    // code emits a full setReg of every live register immediately before
+    // takeIrq(), so the first block head after irqTaken moves is the one place
+    // both dispatchers hold a COMPLETE register file. Entry sampling gave many
+    // partial ones, and that partiality is why it could not see this fault.
+    // REGDIFF_AT=entry restores the old behaviour.
+    if (AT_IRQ) {
+      if (sys.m.irqTaken === lastIrq) return;
+      lastIrq = sys.m.irqTaken;
+    } else if (!ENTRY.has(at)) return;
     // When did this side first have registers at all? The Machine's copy
     // starts at zero and is only ever written by a sync, so the first sample
     // with anything non-zero in it is the first sample worth comparing. That
@@ -206,7 +218,7 @@ describe('registers', () => {
     let cmp = 0;
     let bad = 0;
     for (let i = 0; i < Math.min(lim, SAMPLES); i += 1) {
-      const mk = b.mask[i];
+      const mk = AT_IRQ ? 0xffff : b.mask[i];
       if (!mk) continue;
       cmp += 1;
       for (let k = 0; k < 16; k += 1) {
@@ -222,7 +234,7 @@ describe('registers', () => {
       out += `registers agree at every one of ${compared} comparable entries`;
     } else {
       const rb = scan(viaDecompiled, at);
-      const mk = b.mask[at];
+      const mk = AT_IRQ ? 0xffff : b.mask[at];
       const which = REGS.filter((_, k) => (mk & (1 << k))
         && a.vals[at * 16 + k] !== b.vals[at * 16 + k]);
       const ra = { pc: rb.pc, regs: REGS.map((_, k) => a.vals[at * 16 + k] >>> 0) };
