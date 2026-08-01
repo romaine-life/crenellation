@@ -88,6 +88,13 @@ describe('colour base', () => {
       // bytes went down a different branch there. Recorded in sequence, not
       // deduped, and only inside the routine, so the list stays short enough to
       // compare position by position.
+      // KEYED BY PC, not by occurrence. The recompiled dispatcher reports every
+      // instruction and the lifted one only block heads, so a sequence indexed
+      // by position measures that difference rather than the program's - which
+      // it did, four separate times. Recording (pc, value) pairs and comparing
+      // per address instead is immune: an address either side reaches is
+      // reached with whatever value it has, and addresses only one side reports
+      // simply have no counterpart to disagree with.
       if (pc >= 0x11f2a && pc <= 0x12060 && a0seq.length < 400000) {
         a0seq.push(pc, sys.m.d0 | 0);
       }
