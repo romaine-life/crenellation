@@ -61,7 +61,7 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
-                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null } {
+                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null } {
   const sys = new System(rom, board);
   // Shift the first interrupt. This is the discriminator for "is a value that
   // differs between the two runs a real quantity the game computed, or residue
@@ -84,6 +84,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const cyc: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const srs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const frs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
+  const fcyc: Int32Array | null = PC_SEQ ? new Int32Array(4096) : null;
   let pn = 0;
   sys.m.atPcExtra = (pc: number): void => {
     inWait = pc >= WAIT_LO && pc < WAIT_HI;
@@ -102,6 +103,13 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
       if (pn < pcs.length) { pcs[pn] = pc | 0; if (cyc) cyc[pn] = sys.m.cycles | 0;
         if (srs) srs[pn] = ((sys.m.getSR ? sys.m.getSR() : sys.m.sr) | 0);
         if (frs) frs[pn] = sys.frames | 0; }
+      // Alignment-free: the cycle count at which each frame crossing happened.
+      // Indexed by frame number, so it needs no assumption that poll index i
+      // means the same event in both runs - which it may not, since a skipped
+      // poll is also an unrecorded one.
+      if (fcyc && sys.frames > 0 && sys.frames < fcyc.length && fcyc[sys.frames] === 0) {
+        fcyc[sys.frames] = sys.m.cycles | 0;
+      }
       pn += 1;
     }
   };
@@ -265,7 +273,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack, pcs, pn, cyc, srs, frs };
+  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc };
 }
 
 /** One pattern's two write streams, compared. */
@@ -309,7 +317,17 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; `
+      let fdiff = 'frame crossings identical';
+      if (ra.fcyc && rb.fcyc) {
+        for (let f = 1; f < 300; f += 1) {
+          if (ra.fcyc[f] !== rb.fcyc[f]) {
+            fdiff = `frame ${f} crossed at cycle ${ra.fcyc[f]} vs ${rb.fcyc[f]}`
+              + ` (delta ${rb.fcyc[f] - ra.fcyc[f]})`;
+            break;
+          }
+        }
+      }
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
