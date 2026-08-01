@@ -96,7 +96,15 @@ describe('colour base', () => {
       // reached with whatever value it has, and addresses only one side reports
       // simply have no counterpart to disagree with.
       if (pc >= 0x11f2a && pc <= 0x12060 && a0seq.length < 400000) {
-        a0seq.push(pc, sys.m.d0 | 0);
+        // A checksum of all sixteen, so one pass covers every register without
+        // a file of millions of numbers. Where the checksums first differ names
+        // the address and the visit; which register it was is then one targeted
+        // re-read away, and the code around that address usually says.
+        const M2 = sys.m;
+        if (pc === 0x11f9e) {
+          a0seq.push(M2.d0 | 0, M2.d1 | 0, M2.d2 | 0, M2.d3 | 0, M2.d4 | 0,
+                     M2.a0 | 0, M2.a1 | 0, M2.a2 | 0);
+        }
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
