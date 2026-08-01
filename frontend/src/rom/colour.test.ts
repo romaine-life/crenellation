@@ -108,7 +108,13 @@ describe('colour base', () => {
       // count, which they do not: the oracle emits one sample per instruction
       // and the lift one per block, so any sample bound compares different
       // amounts of program and reports truncation as agreement.
-      if (n >= 380 && n < 392 && pc >= 0x00400 && pc < 0x20000) {
+      // irqDepth === 0 drops everything inside a handler, and with it the
+      // seam: the two dispatchers take interrupts at different instants by
+      // design, so a path comparison that includes handler entry and rte
+      // return finds that difference and nothing else. writes.test excludes
+      // exception-frame writes for exactly this reason.
+      if (n >= 380 && n < 392 && sys.m.irqDepth === 0
+          && pc >= 0x00400 && pc < 0x20000) {
         // A checksum of all sixteen, so one pass covers every register without
         // a file of millions of numbers. Where the checksums first differ names
         // the address and the visit; which register it was is then one targeted
