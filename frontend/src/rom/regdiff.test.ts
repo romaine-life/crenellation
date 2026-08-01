@@ -156,8 +156,9 @@ function scan(entry: (addr: number, m: System['m']) => void,
     // partial ones, and that partiality is why it could not see this fault.
     // REGDIFF_AT=entry restores the old behaviour.
     if (AT_IRQ) {
-      if (sys.m.irqTaken === lastIrq) return;
-      lastIrq = sys.m.irqTaken;
+      const taken = sys.m.irqTaken | 0;
+      if (taken === lastIrq) return;
+      lastIrq = taken;
     } else if (!ENTRY.has(at)) return;
     // When did this side first have registers at all? The Machine's copy
     // starts at zero and is only ever written by a sync, so the first sample
