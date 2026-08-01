@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0x7d50": [
+    "hand the table entry twelve past the index to 0x41BE",
+    "takes a word index, reads the long at 0x21516 indexed by (index + 12) times four, and calls 0x41BE with that pointer, the index, and the constants 12, 9 and 1. The +12 before scaling means the table's first twelve entries belong to something else. Read at 0x7D50-0x7D80."
+  ],
+  "0xac1c": [
+    "raise the entry's counter by the phase step, or clear it",
+    "indexes the byte array at 0x3E1C9E. A negative entry is cleared to zero; otherwise the phase byte at 0x3E195C plus two, capped at 3, is added to it. So each entry accumulates faster in later phases and a negative value is the reset marker rather than a count. Read at 0xAC1C-0xAC4C."
+  ],
   "0x14eca": [
     "read the six by twenty table, or 0xFF",
     "takes two words, rejects a first at or above 6 and a second at or above 0x14 by returning 0xFF, and otherwise reads the byte at 0x3E3454 indexed as row times 20 plus column. So 0x3E3454 is a 6 by 20 byte table - 120 bytes - and 0xFF is its out-of-range answer rather than a value. Read at 0x14ECA-0x14EF8."
