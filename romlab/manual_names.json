@@ -73,7 +73,7 @@
   ],
   "0x3de8": [
     "score the neighbours one stride either side",
-    "takes a cell pointer and two byte values to match. It adds 4 when the byte at offset 0x21 equals either, and 8 when the byte at offset -0x1F does - the same column one stride of 0x20 forward and back - and returns the total. A neighbour-adjacency score, and worth reading beside handedits.py: the deliberate wallCellSet change neutralises exactly a `+ 0x4` on d3, which is this shape. Confirm which routine that edit lands in before assuming it is this one. Read at 0x3DE8-0x3E26."
+    "takes a cell pointer and two byte values to match. It adds 4 when the byte at offset 0x21 equals either, and 8 when the byte at offset -0x1F does - the same column one stride of 0x20 forward and back - and returns the total. A neighbour-adjacency score. It has the same shape as the deliberate wallCellSet change, which neutralises a `+ 0x4` on d3 - but checked and it is NOT this routine: wallCellSet is at 0x0255C, and this is a sibling with the same idiom. Two routines score neighbours this way; only the other one is edited. Read at 0x3DE8-0x3E26."
   ],
   "0x362a": [
     "draw an image column by column",
