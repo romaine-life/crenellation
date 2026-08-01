@@ -65,7 +65,7 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
-                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null; io: number[]; hpoll: Int32Array; hidx: number; irqRegs: number[] } {
+                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null; io: number[]; hpoll: Int32Array; hidx: number; irqRegs: number[]; pend: Int32Array | null } {
   const sys = new System(rom, board);
   // Every input the machine observes, in order. The registers part at an input
   // read (0x196BE reads 0x640003), and input is the one thing here that is not
@@ -118,6 +118,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const srs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const frs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const d2s: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
+  const pend: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const regs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const early: Int32Array | null = PC_SEQ ? new Int32Array(12000 * 8) : null;
   const hpoll = new Int32Array(12000);
@@ -141,6 +142,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
       if (pn < pcs.length) { pcs[pn] = pc | 0; if (cyc) cyc[pn] = sys.m.cycles | 0;
         if (srs) srs[pn] = ((sys.m.getSR ? sys.m.getSR() : sys.m.sr) | 0);
         if (frs) frs[pn] = sys.frames | 0;
+        if (pend) pend[pn] = ((sys.m.irqPending | 0) << 16) | ((sys.m.sr >> 8) & 7);
         if (d2s) d2s[pn] = sys.m.d2 | 0;
         // Only inside a handler. The decompiled dispatcher keeps its registers
         // in JavaScript locals and writes sys.m.dN only when it spills - before
@@ -344,7 +346,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early, io, hpoll, hidx, irqRegs };
+  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early, io, hpoll, hidx, irqRegs, pend };
 }
 
 /** One pattern's two write streams, compared. */
@@ -395,6 +397,19 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // point the sequences part, and report the addresses whose tallies
       // differ most: a busy-wait that exits a beat early shows up here as one
       // address off by one while everything around it matches.
+      let pdiff = 'no pending/mask comparison';
+      if (ra.pend && rb.pend && ra.pcs) {
+        const lim5 = Math.min(ra.pn, rb.pn);
+        for (let i = 0; i < lim5; i += 1) {
+          if (ra.pend[i] !== rb.pend[i]) {
+            const A = ra.pend[i], B = rb.pend[i];
+            pdiff = `PENDING/MASK first differ at poll ${i}, 0x${ra.pcs[i].toString(16)}: `
+              + `irqPending ${(A >> 16) & 7}/${(B >> 16) & 7}, mask ${A & 7}/${B & 7}`;
+            break;
+          }
+          if (i === lim5 - 1) pdiff = `pending and mask identical over ${lim5} polls`;
+        }
+      }
       let qdiff = 'no interrupt-register comparison';
       if (ra.irqRegs && rb.irqRegs) {
         const n2 = Math.min(ra.irqRegs.length, rb.irqRegs.length);
@@ -498,7 +513,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
