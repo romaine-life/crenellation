@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0x8a24": [
+    "is the run of cells free",
+    "builds a step as (dy shifted left five) plus dx - the board's row stride is 0x20 - resolves the starting cell through 0x11BD8, and walks the given number of cells along that step. Each cell fails unless its low six bits are zero or exactly 0x30; anything else returns 0, and surviving the whole run returns 1. So a cell's low six bits are its occupancy and 0x30 is a value a piece may sit on. This is the can-it-be-placed test. Read at 0x8A24-0x8A70."
+  ],
+  "0x9034": [
+    "commit the current player's pending piece",
+    "does nothing unless the current player's field 0x24 - the long 0x592A seeds from the rotation table - is non-zero. Then it calls 0x8BB2 with the struct and 1, calls 0x686, registers the struct twice through 0xEEEE with 0x11AD0 and 0xEE90 with 0x11ACA, and finishes with 0x90E6 and 0x19. Read at 0x9034-0x9080."
+  ],
   "0x1b11c": [
     "strobe the control register through its shadow",
     "offsets the caller's pointer by 0x1E0000 to reach a hardware register, sets 0x3E3D6C to 7, clears the four words 0x3E3D72 through 0x3E3D78, then writes the shadow word at 0x3E3D8E twice: once with bit 4 masked off, then with bits 4 and 0x400 set. A RAM shadow is how you read-modify-write a register that cannot be read, and writing it twice with one bit differing is a strobe rather than two settings. Read at 0x1B11C-0x1B166."
