@@ -25,12 +25,24 @@ const FRAMES = Number(process.env.DRAW_FRAMES ?? (MODIFIED ? 900 : 600));
 function lit(entry: (a: number, m: System['m']) => void, label: string,
              pat?: Pattern): { note: string; screen: Uint32Array } {
   const sys = new System(rom, board);
+  // IRQ_PHASE shifts the first interrupt by N cycles. A lifting fault is
+  // phase-independent; a seam effect is not - so if the differing-pixel count
+  // moves with the phase, the difference is interrupt timing that has entered
+  // game state rather than a mis-lifted instruction. The probe below is the
+  // CONTROL: without evidence that the phase actually perturbs the run,
+  // identical counts prove nothing, and an earlier attempt at this test failed
+  // exactly there - its probe never fired and the clean numbers meant nothing.
+  sys.irqPhase = Number(process.env.IRQ_PHASE ?? 0);
   bind(sys.m);
   const marks: string[] = [];
   const STOP = new Error('enough');
   let n = 0;
   try {
     sys.run(() => {
+      if (n === 200 && process.env.IRQ_PHASE !== undefined) {
+        writeFileSync(join(here, `draws-phase-${process.env.IRQ_PHASE}-${label}.txt`),
+          `cycles ${sys.m.cycles} irqTaken ${sys.m.irqTaken} steps ${sys.m.steps}`);
+      }
       n += 1;
       // Drive the pattern's inputs. Without this every run is attract, which
       // is why this test saw only one sixth of the game: the station-select
