@@ -65,7 +65,7 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
-                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null } {
+                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null } {
   const sys = new System(rom, board);
   // Shift the first interrupt. This is the discriminator for "is a value that
   // differs between the two runs a real quantity the game computed, or residue
@@ -88,6 +88,8 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const cyc: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const srs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const frs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
+  const d2s: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
+  const regs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const fcyc: Int32Array | null = PC_SEQ ? new Int32Array(4096) : null;
   let pn = 0;
   sys.m.atPcExtra = (pc: number): void => {
@@ -106,7 +108,18 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     if (pcs && (sys.m.pollAt === null || sys.m.pollAt.has(pc))) {
       if (pn < pcs.length) { pcs[pn] = pc | 0; if (cyc) cyc[pn] = sys.m.cycles | 0;
         if (srs) srs[pn] = ((sys.m.getSR ? sys.m.getSR() : sys.m.sr) | 0);
-        if (frs) frs[pn] = sys.frames | 0; }
+        if (frs) frs[pn] = sys.frames | 0;
+        if (d2s) d2s[pn] = sys.m.d2 | 0;
+        if (regs) {
+          const m2 = sys.m;
+          const r = [m2.d0, m2.d1, m2.d2, m2.d3, m2.d4, m2.d5, m2.d6, m2.d7];
+          let h = 0x811c9dc5;
+          for (let k = 0; k < 8; k += 1) {
+            h = (h ^ (r[k] | 0)) >>> 0;
+            h = Math.imul(h, 0x01000193) >>> 0;
+          }
+          regs[pn] = h | 0;
+        } }
       // Alignment-free: the cycle count at which each frame crossing happened.
       // Indexed by frame number, so it needs no assumption that poll index i
       // means the same event in both runs - which it may not, since a skipped
@@ -281,7 +294,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc };
+  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs };
 }
 
 /** One pattern's two write streams, compared. */
@@ -332,6 +345,31 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // point the sequences part, and report the addresses whose tallies
       // differ most: a busy-wait that exits a beat early shows up here as one
       // address off by one while everything around it matches.
+      let gdiff = 'no register-file comparison';
+      if (ra.regs && rb.regs && ra.pcs) {
+        const lim4 = Math.min(ra.pn, rb.pn);
+        for (let i = 0; i < lim4; i += 1) {
+          if (ra.regs[i] !== rb.regs[i]) {
+            gdiff = `REGISTER FILE first differs at poll ${i}, at 0x${ra.pcs[i].toString(16)}`
+              + ` (previous block 0x${ra.pcs[Math.max(0, i - 1)].toString(16)})`;
+            break;
+          }
+          if (i === lim4 - 1) gdiff = `register file identical over all ${lim4} polls`;
+        }
+      }
+      let rdiff = 'no register comparison';
+      if (ra.d2s && rb.d2s && ra.pcs && rb.pcs) {
+        const lim3 = Math.min(ra.pn, rb.pn);
+        for (let i = 0; i < lim3; i += 1) {
+          if (ra.d2s[i] !== rb.d2s[i]) {
+            rdiff = `d2 first differs at poll ${i}, at 0x${ra.pcs[i].toString(16)}`
+              + `: 0x${(ra.d2s[i] >>> 0).toString(16)} vs 0x${(rb.d2s[i] >>> 0).toString(16)}`
+              + `; previous block 0x${ra.pcs[Math.max(0, i - 1)].toString(16)}`;
+            break;
+          }
+          if (i === lim3 - 1) rdiff = `d2 identical over all ${lim3} polls`;
+        }
+      }
       let cdiff = 'no block-count comparison';
       if (ra.pcs && rb.pcs) {
         const lim2 = Math.min(ra.pn, rb.pn);
@@ -359,7 +397,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
