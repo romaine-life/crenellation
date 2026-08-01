@@ -292,7 +292,15 @@ function compare(p: Pattern): { note: string; agreed: number } {
           const g = ra.cyc[i] - rb.cyc[i];
           if (g !== gap) {
             if (cAt < 0) cAt = i;
-            where.push(`0x${(ra.pcs[i] >>> 0).toString(16)}@${i}${g - gap > 0 ? '+' : ''}${g - gap}`);
+            // What each side charged for the step INTO this poll, which is
+            // the only thing that can make the gap move. Guessing at the
+            // mechanism from the sign alone was wrong three times; this is the
+            // number that settles it.
+            const da = i > 0 ? ra.cyc[i] - ra.cyc[i - 1] : 0;
+            const db = i > 0 ? rb.cyc[i] - rb.cyc[i - 1] : 0;
+            where.push(`0x${(ra.pcs[i] >>> 0).toString(16)}@${i}`
+              + ` charged ${da}/${db} from 0x${(ra.pcs[Math.max(0, i - 1)] >>> 0).toString(16)}`
+              + `/0x${(rb.pcs[Math.max(0, i - 1)] >>> 0).toString(16)}`);
             gap = g;
           }
         }
