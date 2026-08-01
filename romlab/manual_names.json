@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0xe516": [
+    "start both cues if each has enough",
+    "asks 0x184 about cue 0x13 and gives up unless it is at least 0x7D0, then about cue 0x12 unless it is at least 0xC8; only when both hold does it call 0xE546 and 0xE554 to start them, returning 1, and 0 otherwise. The same two ceilings 0xE562 and 0xE588 clamp to, which settles what that per-cue value is: a resource that is checked before it is spent. Read at 0xE516-0xE546."
+  ],
+  "0xf000": [
+    "is this already in the event queue",
+    "reads the word at 0x3E1CF4 as a count and gives up when it is negative, then walks entries from 0x3E1CF6 twelve bytes apart comparing the long at offset 4 of each against the long the caller points at - returning 1 on a match and 0 when the count runs out. So the event queue at 0x3E1CF4 is a count followed by twelve-byte entries whose offset 4 is the key. Read at 0xF000-0xF030."
+  ],
   "0xaec2": [
     "how many steps this kind takes",
     "maps a word to a count: 0x11 gives 2, 0x24 gives 3, anything else gives 5 - then adds one when byte 0x1D of the record pointed at by 0x3E1964 has reached 3 or more. Two special kinds, a default, and a late-game increment. Read at 0xAEC2-0xAEF2."
