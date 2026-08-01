@@ -6,6 +6,6 @@ one player: coin, join at the middle station, then fire: diverge at write 26216 
   stack:      Machine <- store8 <- graphicsDecompressor <- call <- callDecompiled <- callRom <- decompressOneEightPixelColumnFrom1 <- call <- callDecompiled
   rom stack recompiled: 0x11f1e <- 0xeb0 <- 0x3708 <- 0x10000 <- 0x7df8 <- 0x10000 <- 0x92d4 <- 0x10000 <- 0x10000 <- 0x135d6 <- 0x1003e <- 0x137b0 <- 0x91fc
   rom stack decompiled: 0x11f1e <- 0xeb0 <- 0x3708 <- 0x10000 <- 0x7df8 <- 0x10000 <- 0x92d4 <- 0x10000 <- 0x10000 <- 0x135d6 <- 0x1003e <- 0x137b0 <- 0x91fc
-  clock gap over 26216 writes: -8126..26; interrupts taken at the last common write: 467 vs 467; poll points reached: 5399928 vs 5399928; a6 at the divergence: 0x3e3286 vs 0x3e3286 (same frame, so the contents differ)
+  clock gap over 26216 writes: -8126..26; interrupts taken at the last common write: 467 vs 467; poll points reached: 5399928 vs 5399928; d2 (the colour base) 0x200090 vs 0x200080; a6 at the divergence: 0x3e3286 vs 0x3e3286 (same frame, so the contents differ)
   gap passes 1000 at write 16384 (-7520, at 0x20c004)
   gap stack: Machine <- store8 <- graphicsDecompressor <- call <- callDecompiled <- callRom <- decompressOneEightPixelColumnFrom1 <- call <- callDecompiled
