@@ -39,6 +39,7 @@ type Entry = (addr: number, m: Machine) => void;
 // Once a rule has been changed on purpose, "identical to the original" is the
 // wrong question - the decompiled source is no longer trying to be the ROM. The
 // matching decompilation projects handle this with a build flag; same idea.
+const POKE = process.env.POKE === '1';
 const MODIFIED = process.env.MODIFIED === '1';
 // How much of the stack below a7 counts as dead. The two dispatchers push
 // exception frames at different instants, so bytes under the stack pointer
@@ -369,6 +370,16 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   try {
     sys.run(() => {
       frames += 1;
+      // POKE=1 forces the one word the two runs disagree on to a fixed value in
+      // BOTH runs, from the frame callback - which fires just before the
+      // handler that reads it. 0x3E3274 is -$12(a6) as extractsOwnerBitsCellByte
+      // sees it: stack scratch below an inherited frame pointer, in the region
+      // where the two dispatchers push exception frames that differ by design.
+      // If the runs then agree, that residue is the whole cause; if they still
+      // differ, there is a second one. This is a harness poke, never a change
+      // to the port - it makes both runs equally wrong, on purpose, to see what
+      // depends on the difference.
+      if (POKE) for (let i = 0; i < 4; i += 1) sys.m.setByte(0x3e3274 + i, 0);
       p.at(frames, sys);
       // With position sampling the frame boundary only advances the pattern's
       // input schedule; take() is driven from atPcExtra instead. Letting both
