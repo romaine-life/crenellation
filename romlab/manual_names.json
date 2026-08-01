@@ -76,8 +76,8 @@
     "takes an index and a colour word and stores the colour as two bytes at 0x3C0000 + index*4 and + index*4 + 2 - high byte first, then low. That is the layout system.ts describes from the other side: palette RAM is byte-wide on a sixteen-bit bus, so one colour occupies the high bytes of two consecutive words four bytes apart, and reading it as a single word at stride two takes the right red with the wrong green and blue. This is the ROM writing exactly that. Read at 0x1829C-0x182D4."
   ],
   "0x182d4": [
-    "write a colour into the second palette bank",
-    "identical to 0x1829C but based at 0x3C0400 rather than 0x3C0000, so the palette has two banks a kilobyte apart and each is written the same byte-wide way. Read at 0x182D4-0x1830C."
+    "write a colour into the palette's upper half",
+    "identical to 0x1829C but based at 0x3C0400. That is not a second bank - entries are four bytes, so 0x400 is entry 256, and system.ts reads 1024 entries spanning 0x3C0000-0x3C1000. It is the same palette, indexed from 256 up. Finding it exposed a gap in compose.test.ts, which was snapshotting only 0x3C0000-0x3C0800 and therefore comparing half the palette. Read at 0x182D4-0x1830C."
   ],
   "0x15914": [
     "find the nth colon-separated field of a string",

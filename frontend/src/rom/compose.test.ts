@@ -113,7 +113,10 @@ function snapshot(sys: System): Uint8Array {
   // recompiler charges cycles per instruction, the decompiled code per block.
   // That is a difference in when the snapshot was taken, not in what the game
   // did - and what the game did is entirely in memory.
-  const out = new Uint8Array(0x20000 + 0x20000 + 0x800);
+  // The palette is 1024 entries of four bytes - 0x3C0000 to 0x3C1000 - not
+  // 0x800. This compared half of it until 2026-07-31: the ROM writes the
+  // upper entries through 0x182D4 and nothing here ever looked at them.
+  const out = new Uint8Array(0x20000 + 0x20000 + 0x1000);
   let o = 0;
   for (let a = 0x3e0000; a < 0x400000; a += 1) out[o++] = m.byte(a);
   // Below the stack pointer is not state. The 68000 leaves what a popped frame
@@ -133,7 +136,7 @@ function snapshot(sys: System): Uint8Array {
   // The palette. Leaving it out meant a run that drew the right playfield in
   // the wrong colours - or in none at all - compared equal for nine hundred
   // frames, which is exactly what happened.
-  for (let a = 0x3c0000; a < 0x3c0800; a += 1) out[o++] = m.byte(a);
+  for (let a = 0x3c0000; a < 0x3c1000; a += 1) out[o++] = m.byte(a);
   return out;
 }
 
@@ -239,12 +242,12 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   // the mirror costs one array store per write, which is hundreds. Built
   // unmasked - `snapshot` zeroes the dead stack, and baking that in at frame
   // zero would lose the true bytes there for every later frame, once a7 moved.
-  const mirror = new Uint8Array(0x40800);
+  const mirror = new Uint8Array(0x41000);
   {
     let o = 0;
     for (let a = 0x3e0000; a < 0x400000; a += 1) mirror[o++] = sys.m.byte(a);
     for (let a = 0x200000; a < 0x220000; a += 1) mirror[o++] = sys.m.byte(a);
-    for (let a = 0x3c0000; a < 0x3c0800; a += 1) mirror[o++] = sys.m.byte(a);
+    for (let a = 0x3c0000; a < 0x3c1000; a += 1) mirror[o++] = sys.m.byte(a);
   }
   const mMem = sys.m as unknown as { setByte(a: number, v: number): void };
   const setByte0 = mMem.setByte.bind(mMem);
@@ -252,7 +255,7 @@ function play(p: Pattern, entry: Entry, upto = 0): {
     setByte0(a, v);
     if (a >= 0x3e0000 && a < 0x400000) mirror[a - 0x3e0000] = v & 0xff;
     else if (a >= 0x200000 && a < 0x220000) mirror[0x20000 + a - 0x200000] = v & 0xff;
-    else if (a >= 0x3c0000 && a < 0x3c0800) mirror[0x40000 + a - 0x3c0000] = v & 0xff;
+    else if (a >= 0x3c0000 && a < 0x3c1000) mirror[0x40000 + a - 0x3c0000] = v & 0xff;
   };
   // The dead-stack mask, applied to the mirror and put back - the same 0x100
   // bytes below a7 that `snapshot` zeroes, for the same reason.
