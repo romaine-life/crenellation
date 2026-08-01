@@ -307,17 +307,24 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // branch the machine never takes - which is the divergence, not a
       // separate fault. The stack is captured before that happens.
       let who = '';
+      // One re-run per dispatcher, not three. The decompiled side's JavaScript
+      // stack and its ROM stack come from the SAME run, so capturing them
+      // separately paid for an extra full game per diverging pattern - which
+      // is measurable: it is the load that made the suite time out under
+      // parallel execution (see _flaky in baseline.json).
       let rs = '';
-      for (const [tag, via] of [['recompiled', viaRecompiled],
-                                ['decompiled', viaDecompiled]] as const) {
-        try {
-          const r = record(p, via, i).romStack;
-          rs += `
-  rom stack ${tag}: ${r.map((v) => '0x' + v.toString(16)).join(' <- ')}`;
-        } catch (e) { rs += `
-  rom stack ${tag}: (${(e as Error).message})`; }
-      }
-      try { who = record(p, viaDecompiled, i).stack; } catch (e) { who = `(${(e as Error).message})`; }
+      try {
+        const ra = record(p, viaRecompiled, i);
+        rs += `
+  rom stack recompiled: ${ra.romStack.map((v) => '0x' + v.toString(16)).join(' <- ')}`;
+      } catch (e) { rs += `
+  rom stack recompiled: (${(e as Error).message})`; }
+      try {
+        const rb = record(p, viaDecompiled, i);
+        who = rb.stack;
+        rs += `
+  rom stack decompiled: ${rb.romStack.map((v) => '0x' + v.toString(16)).join(' <- ')}`;
+      } catch (e) { who = `(${(e as Error).message})`; }
       who += rs;
       // A window either side, not three writes. The first differing write is
       // often several writes downstream of the cause, and the run up to it is
