@@ -362,6 +362,18 @@ describe('writes to work RAM', () => {
       results.map((r) => r.note).join('\n\n') + '\n');
     const worst = Math.min(...results.map((r) => r.agreed));
     const bad = results.filter((r) => !r.note.includes('identical'));
-    if (bad.length) expect(worst).toBeGreaterThanOrEqual(floor);
+    // The floor describes the DEFAULT window - all of work RAM. A run windowed
+    // with W_LO/W_HI legitimately parts far sooner, because it is watching a
+    // few hundred bytes rather than 128k, so asserting the floor against it
+    // reports red for doing exactly what it was asked to do. Every diagnostic
+    // run in the 0x3e3280 investigation was piped to /dev/null and so nobody
+    // saw those reds; the next person would have read one as a regression.
+    const windowed = process.env.W_LO !== undefined || process.env.W_HI !== undefined;
+    if (windowed) {
+      console.log(`windowed run (${LO.toString(16)}..${HI.toString(16)}): `
+        + 'floor not asserted, it describes the whole of work RAM');
+    } else if (bad.length) {
+      expect(worst).toBeGreaterThanOrEqual(floor);
+    }
   }, 3600000);
 });
