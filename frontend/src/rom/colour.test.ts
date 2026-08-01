@@ -70,6 +70,21 @@ describe('colour base', () => {
         const kk = `${step}  d2.b=0x${b.toString(16)}`;
         seen.set(kk, (seen.get(kk) ?? 0) + 1);
       }
+      // The colour at the first point it exists. d2 is a column counter all the
+      // way down this chain; the decompressor's prologue sets it from arg8, a
+      // stack argument of the wrapper at 0x11F08 - offset 36, per the entry
+      // table. So read the stack there, and walk it for the caller: the word at
+      // (a7) is only this wrapper's own return.
+      if (pc === 0x11f08) {
+        const a8 = sys.m.load((sys.m.a7 + 36) >>> 0, 32) >>> 0;
+        const chain: string[] = [];
+        for (let i = 0; i < 200 && chain.length < 3; i += 2) {
+          const w = sys.m.load((sys.m.a7 + i) >>> 0, 32) >>> 0;
+          if (w >= 0x400 && w < 0x20000 && (w & 1) === 0) chain.push('0x' + w.toString(16));
+        }
+        const kk = `ARG8=0x${(a8 & 0xffff).toString(16)} via ${chain.join(' <- ')}`;
+        seen.set(kk, (seen.get(kk) ?? 0) + 1);
+      }
       if (pc === 0x11f18 || pc === 0x11f2a) {
         const v = sys.m.d2 & 0xff;
         if (v === 0x80 || v === 0x90 || v === 0xa0 || v === 0xb0) {
