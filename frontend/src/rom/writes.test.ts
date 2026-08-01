@@ -427,6 +427,62 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // busy-wait until the frame handler arrives, so a faithful port should
       // be interrupted in the same places. Histogram the pc recorded at each
       // interruptFrame - it is the block the run was about to execute.
+      // Boot only: everything before the first interrupt. The whole-run tally
+      // can hide a difference that later cancels, and the 2,904-cycle gap at
+      // interrupt one is entirely a boot phenomenon.
+      let bdiff = 'no boot comparison';
+      if (ra.irqRegs && rb.irqRegs && ra.pcs && rb.pcs && ra.cyc && rb.cyc) {
+        // The window between the first and second interrupts. Everything up
+        // to interrupt 0 matches exactly - same polls, same block counts, same
+        // costs, no excluded deltas - and the clocks are 2,904 apart by
+        // interrupt 1, so the whole difference is born in here.
+        const startA = ra.irqRegs.length >= 10 ? ra.irqRegs[9] : 0;
+        const startB = rb.irqRegs.length >= 10 ? rb.irqRegs[9] : 0;
+        const endA = ra.irqRegs.length >= 21 ? ra.irqRegs[20] : ra.pn;
+        const endB = rb.irqRegs.length >= 21 ? rb.irqRegs[20] : rb.pn;
+        const tally = (r: typeof ra, start: number, end: number) => {
+          const c = new Map<number, number>(); const s = new Map<number, number>();
+          for (let i = Math.max(1, start); i < Math.min(end, r.pn); i += 1) {
+            const pc = r.pcs![i - 1], dc = (r.cyc![i] - r.cyc![i - 1]) | 0;
+            c.set(pc, (c.get(pc) ?? 0) + 1);
+            if (dc >= 0 && dc <= 4096) s.set(pc, (s.get(pc) ?? 0) + dc);
+          }
+          return { c, s };
+        };
+        const A = tally(ra, startA, endA), B = tally(rb, startB, endB);
+        const cntDiff: Array<[number, number, number]> = [];
+        const costDiff: Array<[number, number, number]> = [];
+        for (const [pc, n] of A.c) {
+          const m2 = B.c.get(pc) ?? 0;
+          if (n !== m2) cntDiff.push([pc, n, m2]);
+          else {
+            const x = A.s.get(pc) ?? 0, y = B.s.get(pc) ?? 0;
+            if (x !== y) costDiff.push([pc, x, y]);
+          }
+        }
+        for (const [pc, n] of B.c) if (!A.c.has(pc)) cntDiff.push([pc, 0, n]);
+        cntDiff.sort((x, y) => Math.abs(y[1] - y[2]) - Math.abs(x[1] - x[2]));
+        costDiff.sort((x, y) => Math.abs(y[1] - y[2]) - Math.abs(x[1] - x[2]));
+        // Where the cycles actually are. The tallies above exclude any delta
+        // over 4,096 - calls and interrupt entries - so if counts and costs
+        // both match while the clocks do not, the difference is in what was
+        // excluded. Measure that directly rather than inferring it.
+        const big = (r: typeof ra, start: number, end: number) => {
+          let n = 0, sum = 0, mx = 0;
+          for (let i = Math.max(1, start); i < Math.min(end, r.pn); i += 1) {
+            const dc = (r.cyc![i] - r.cyc![i - 1]) | 0;
+            if (dc < 0 || dc > 4096) { n += 1; sum += dc; if (Math.abs(dc) > Math.abs(mx)) mx = dc; }
+          }
+          return { n, sum, mx };
+        };
+        const GA = big(ra, startA, endA), GB = big(rb, startB, endB);
+        bdiff = `IRQ0->IRQ1 window ${startA}..${endA} / ${startB}..${endB}; excluded deltas: ${GA.n}/${GB.n} count, ${GA.sum}/${GB.sum} sum`
+          + ` (diff ${GA.sum - GB.sum}), largest ${GA.mx}/${GB.mx} -- `
+          + `BOOT (polls ${endA}/${endB}): ${cntDiff.length} blocks differ in COUNT`
+          + (cntDiff.length ? ` [${cntDiff.slice(0, 4).map(([pc, n, m2]) => `0x${pc.toString(16)} ${n}/${m2}`).join(' ')}]` : '')
+          + `; ${costDiff.length} differ in COST at equal count`
+          + (costDiff.length ? ` [${costDiff.slice(0, 4).map(([pc, x, y]) => `0x${pc.toString(16)} ${x}/${y}`).join(' ')}]` : '');
+      }
       let ldiff = 'no landing-site comparison';
       if (ra.irqRegs && rb.irqRegs) {
         const land = (r: typeof ra) => {
@@ -609,7 +665,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${ldiff}; ${hdiff}; ${mdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${bdiff}; ${ldiff}; ${hdiff}; ${mdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
