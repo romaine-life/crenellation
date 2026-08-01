@@ -31,6 +31,20 @@
 // says why the obvious version of it is wrong, because the obvious version
 // looks like it is working right up until you read the values.
 //
+// SECOND ATTEMPT, and it narrows the problem without solving it. Sampling at
+// routine entries instead - ENTRY below, every address in DECOMPILED - cuts
+// 2,074,054 samples to 28,691 and is sound in principle: the caller syncs
+// every live register immediately before callRom, and a callee takes its
+// arguments as JS parameters rather than reading the Machine, so at the
+// callee's first address the Machine still holds what the caller synced.
+// Measured 2026-07-31 it still reports poll 1, at 0x135ba, still with the
+// decompiled side reading zeros. That is not the premise failing again - it is
+// that poll 1 is in early boot, before any callRom has happened at all, so
+// there has never been a sync to read. The instrument needs to start
+// comparing only once the decompiled side has synced at least once, and
+// picking that point by hand is guesswork; the honest version detects it.
+// Left here at exactly the state it was measured in.
+//
 // Diagnostic, not a ratchet: it is skipped unless REGDIFF is set, because it
 // runs the game four times.
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -39,7 +53,7 @@ import { dirname, join } from 'node:path';
 import { describe, it, expect } from 'vitest';
 import { System } from './system';
 import { call as viaRecompiled } from './dispatch';
-import { call as viaDecompiled, bind, POLL_AT } from './decompiled';
+import { call as viaDecompiled, bind, POLL_AT, DECOMPILED } from './decompiled';
 import { PATTERNS } from './patterns';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -49,6 +63,9 @@ const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 const NAME = process.env.REGDIFF_PATTERN ?? 'attract';
 const FRAMES = Number(process.env.REGDIFF_FRAMES ?? 500);
 const CAP = Number(process.env.REGDIFF_CAP ?? 4_000_000);
+
+/** Every routine's first address. */
+const ENTRY: Set<number> = new Set(DECOMPILED.map((e) => e.at));
 
 const REGS = ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7',
   'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7'] as const;
@@ -66,8 +83,14 @@ function scan(entry: (addr: number, m: System['m']) => void,
   let regs: number[] = [];
   const m = sys.m as unknown as M;
   sys.m.atPcExtra = (at: number): void => {
-    // Both dispatchers reach these and only these, in the same order.
-    if (!(POLL_AT as Set<number>).has(at)) return;
+    // Routine entries, not poll points. The decompiled side syncs every live
+    // register into the Machine immediately before a callRom, and a callee
+    // reads its arguments from JS parameters rather than from the Machine, so
+    // at the callee's own first address the Machine still holds exactly what
+    // the caller synced. That is the one place both dispatchers are known to
+    // agree about what a register means. ENTRY is that set; POLL_AT is not,
+    // which is what the header records.
+    if (!ENTRY.has(at)) return;
     if (n === dumpAt) { pc = at; regs = REGS.map((r) => m[r] >>> 0); }
     if (dumpAt < 0) {
       // Cheap mix. A collision costs a wrong answer, not a wrong test - the
