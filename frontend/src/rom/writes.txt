@@ -1,4 +1,4 @@
-attract, two demo loops: identical: 396 writes, but the cycle clocks part at write 0 (2762216 vs 2762242, at 0x3e0a00)
-  clock gap over 396 writes: -2830..26; interrupts taken at the last common write: 115 vs 115; poll points reached: 2228512 vs 2228575; a6 at the divergence: 0x0 vs 0x0 (same frame, so the contents differ)
-  gap passes 1000 at write 128 (-2724, at 0x3e0a00)
-  gap stack: Machine <- store8 <- copy1344BytesReturnCount <- call <- callDecompiled <- callRom <- fn_0d490 <- call <- callDecompiled
+attract, two demo loops: identical: 230 writes, but the cycle clocks part at write 0 (2849768 vs 2849794, at 0x3e1c00)
+  clock gap over 230 writes: -2878..1880; interrupts taken at the last common write: 116 vs 116; poll points reached: 2236196 vs 2236400; a6 at the divergence: 0x0 vs 0x0 (same frame, so the contents differ)
+  gap passes 1000 at write 129 (-2720, at 0x3e1cf2)
+  gap stack: Machine <- store8 <- drainEventQueueWrapper <- call <- callDecompiled <- callRom <- fn_091b2 <- call <- System
