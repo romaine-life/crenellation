@@ -65,7 +65,7 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
-                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null; io: number[] } {
+                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null; io: number[]; hpoll: Int32Array; hidx: number } {
   const sys = new System(rom, board);
   // Every input the machine observes, in order. The registers part at an input
   // read (0x196BE reads 0x640003), and input is the one thing here that is not
@@ -103,7 +103,9 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const frs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const d2s: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const regs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
-  const early: Int32Array | null = PC_SEQ ? new Int32Array(800) : null;
+  const early: Int32Array | null = PC_SEQ ? new Int32Array(12000 * 8) : null;
+  const hpoll = new Int32Array(12000);
+  let hidx = 0;
   const fcyc: Int32Array | null = PC_SEQ ? new Int32Array(4096) : null;
   let pn = 0;
   sys.m.atPcExtra = (pc: number): void => {
@@ -143,7 +145,14 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
           // The first hundred polls in full. The fingerprint says WHICH poll
           // parts; this says which register, and the answer is only useful
           // near the start - by poll 3 the run has executed three blocks.
-          if (early && pn < 100) for (let k = 0; k < 8; k += 1) early[pn * 8 + k] = r[k] | 0;
+          // Keyed by poll index so the two runs line up, but only for the
+          // in-handler samples, which are a small fraction - a full d0-d7
+          // record for every poll would be 45MB.
+          if (early && hidx < 12000) {
+            hpoll[hidx] = pn;
+            for (let k = 0; k < 8; k += 1) early[hidx * 8 + k] = r[k] | 0;
+            hidx += 1;
+          }
         } }
       // Alignment-free: the cycle count at which each frame crossing happened.
       // Indexed by frame number, so it needs no assumption that poll index i
@@ -319,7 +328,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early, io };
+  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early, io, hpoll, hidx };
 }
 
 /** One pattern's two write streams, compared. */
@@ -392,7 +401,19 @@ function compare(p: Pattern): { note: string; agreed: number } {
           if (ra.regs[i] !== rb.regs[i]) {
             gdiff = `REGISTER FILE first differs at poll ${i}, at 0x${ra.pcs[i].toString(16)}`
               + ` (previous block 0x${ra.pcs[Math.max(0, i - 1)].toString(16)})`;
-            if (i < 100 && ra.early && rb.early) {
+            if (ra.early && rb.early) {
+              let sa = -1;
+              for (let q = 0; q < ra.hidx && q < rb.hidx; q += 1) if (ra.hpoll[q] === i) { sa = q; break; }
+              if (sa >= 0) {
+                const which: string[] = [];
+                for (let k = 0; k < 8; k += 1) {
+                  const x = ra.early[sa * 8 + k], y = rb.early[sa * 8 + k];
+                  if (x !== y) which.push(`d${k}=0x${(x >>> 0).toString(16)}/0x${(y >>> 0).toString(16)}`);
+                }
+                gdiff += ` -> ${which.join(' ')}`;
+              }
+            }
+            if (false) {
               const which: string[] = [];
               for (let k = 0; k < 8; k += 1) {
                 const x = ra.early[i * 8 + k], y = rb.early[i * 8 + k];

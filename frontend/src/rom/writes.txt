@@ -1,64 +1,9 @@
-attract, two demo loops: diverge at write 576838 of 600000/600000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
-  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 63573920 vs 63571076 at the last common write, 63574264 vs 63571372 at this one)
-  common:     0x3e3280=986/16 0x3e327e=3e/16 0x3e327c=1052/16 0x3e327a=0/16 0x3e3278=80/16 0x3e3276=0/16 0x3e3274=1/16 0x3e3272=0/16
-  recompiled: 0x3e3280=504e/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d18/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  decompiled: 0x3e3280=4fb3/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d10/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  stack:      Machine <- Machine <- push <- extractsOwnerBitsCellByte <- call <- callDecompiled <- callRom <- counterStep <- call
-  rom stack recompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  rom stack decompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  clock gap over 576838 writes: -2926..190; interrupts taken at the last common write: 115 vs 115; poll points reached: 2225902 vs 2225902; d2 (the colour base) 0x1 vs 0x1; a6 at the divergence: 0x3e32c2 vs 0x3e32c2 (same frame, so the contents differ)
-  gap passes 1000 at write 12626 (-2876, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
-
-one player: coin, join at the middle station, then fire: diverge at write 576838 of 600000/600000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
-  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 63573920 vs 63571076 at the last common write, 63574264 vs 63571372 at this one)
-  common:     0x3e3280=986/16 0x3e327e=3e/16 0x3e327c=1052/16 0x3e327a=0/16 0x3e3278=80/16 0x3e3276=0/16 0x3e3274=1/16 0x3e3272=0/16
-  recompiled: 0x3e3280=504e/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d18/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  decompiled: 0x3e3280=4fb3/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d10/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  stack:      Machine <- Machine <- push <- extractsOwnerBitsCellByte <- call <- callDecompiled <- callRom <- counterStep <- call
-  rom stack recompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  rom stack decompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  clock gap over 576838 writes: -2926..190; interrupts taken at the last common write: 115 vs 115; poll points reached: 2225902 vs 2225902; d2 (the colour base) 0x1 vs 0x1; a6 at the divergence: 0x3e32c2 vs 0x3e32c2 (same frame, so the contents differ)
-  gap passes 1000 at write 12626 (-2876, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
-
-two players: both coin slots, left and right stations: diverge at write 576838 of 600000/600000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
-  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 63573920 vs 63571076 at the last common write, 63574264 vs 63571372 at this one)
-  common:     0x3e3280=986/16 0x3e327e=3e/16 0x3e327c=1052/16 0x3e327a=0/16 0x3e3278=80/16 0x3e3276=0/16 0x3e3274=1/16 0x3e3272=0/16
-  recompiled: 0x3e3280=504e/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d18/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  decompiled: 0x3e3280=4fb3/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d10/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  stack:      Machine <- Machine <- push <- extractsOwnerBitsCellByte <- call <- callDecompiled <- callRom <- counterStep <- call
-  rom stack recompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  rom stack decompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  clock gap over 576838 writes: -2926..190; interrupts taken at the last common write: 115 vs 115; poll points reached: 2225902 vs 2225902; d2 (the colour base) 0x1 vs 0x1; a6 at the divergence: 0x3e32c2 vs 0x3e32c2 (same frame, so the contents differ)
-  gap passes 1000 at write 12626 (-2876, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
-
-three stations at once, second buttons too: diverge at write 576838 of 600000/600000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
-  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 63573920 vs 63571076 at the last common write, 63574264 vs 63571372 at this one)
-  common:     0x3e3280=986/16 0x3e327e=3e/16 0x3e327c=1052/16 0x3e327a=0/16 0x3e3278=80/16 0x3e3276=0/16 0x3e3274=1/16 0x3e3272=0/16
-  recompiled: 0x3e3280=504e/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d18/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  decompiled: 0x3e3280=4fb3/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d10/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  stack:      Machine <- Machine <- push <- extractsOwnerBitsCellByte <- call <- callDecompiled <- callRom <- counterStep <- call
-  rom stack recompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  rom stack decompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  clock gap over 576838 writes: -2926..190; interrupts taken at the last common write: 115 vs 115; poll points reached: 2225902 vs 2225902; d2 (the colour base) 0x1 vs 0x1; a6 at the divergence: 0x3e32c2 vs 0x3e32c2 (same frame, so the contents differ)
-  gap passes 1000 at write 12626 (-2876, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
-
-service switch held, then released: identical: 600000 writes, but the cycle clocks part at write 0 (139054 vs 139080, at 0x3e0000)
-  clock gap over 600000 writes: -6524..190; interrupts taken at the last common write: 834 vs 834; poll points reached: 10171746 vs 10171746; d2 (the colour base) 0x0 vs 0x0; a6 at the divergence: 0x0 vs 0x0 (same frame, so the contents differ)
-  gap passes 1000 at write 12626 (-2876, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
-
-no input at all, long run: diverge at write 576838 of 600000/600000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
-  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 63573920 vs 63571076 at the last common write, 63574264 vs 63571372 at this one)
-  common:     0x3e3280=986/16 0x3e327e=3e/16 0x3e327c=1052/16 0x3e327a=0/16 0x3e3278=80/16 0x3e3276=0/16 0x3e3274=1/16 0x3e3272=0/16
-  recompiled: 0x3e3280=504e/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d18/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  decompiled: 0x3e3280=4fb3/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d10/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
-  stack:      Machine <- Machine <- push <- extractsOwnerBitsCellByte <- call <- callDecompiled <- callRom <- counterStep <- call
-  rom stack recompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  rom stack decompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  clock gap over 576838 writes: -2926..190; interrupts taken at the last common write: 115 vs 115; poll points reached: 2225902 vs 2225902; d2 (the colour base) 0x1 vs 0x1; a6 at the divergence: 0x3e32c2 vs 0x3e32c2 (same frame, so the contents differ)
-  gap passes 1000 at write 12626 (-2876, at 0x3e32b6)
-  gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
+attract, two demo loops: diverge at write 12629 of 600000/600000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
+  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 32930414 vs 32930430 at the last common write, 32986354 vs 32983450 at this one)
+  common:     0x3e32c4=1/16 0x3e32c2=0/16 0x3e32c0=0/16 0x3e32be=0/16 0x3e32cd=0/8 0x3e3542=3e32cd/32 0x3e3546=0/16 0x3e353e=3e34cc/32
+  recompiled: 0x3e32bc=4516/16 0x3e32ba=1/16 0x3e32b8=2004/16 0x3e32b6=3d8e/16 0x3e32b4=3e/16 0x3e32b2=32cd/16 0x3e32b0=3e/16 0x3e32ae=2/16 0x3e32ac=0/16 0x3e32aa=400/16
+  decompiled: 0x3e32bc=4510/16 0x3e32ba=1/16 0x3e32b8=2004/16 0x3e32b6=3d8e/16 0x3e32b4=3e/16 0x3e32b2=32cd/16 0x3e32b0=3e/16 0x3e32ae=2/16 0x3e32ac=0/16 0x3e32aa=400/16
+  stack:      Machine <- Machine <- Machine <- takeIrq <- soundChannelDispatch <- call <- callDecompiled <- callRom <- soundSequencePlayer
+  rom stack recompiled: 0x10000 <- 0x1003e <- 0x10000 <- 0x137b0 <- 0x145ac <- 0x10000 <- 0x135d6 <- 0x91b6
+  rom stack decompiled: 0x10000 <- 0x1003e <- 0x10000 <- 0x137b0 <- 0x145ac <- 0x10000 <- 0x135d6 <- 0x91b6
+  clock gap over 12629 writes: 0..190; interrupts taken at the last common write: 1 vs 1; poll points reached: 1203457 vs 1203590; d2 (the colour base) 0x3e34cc vs 0x3e34cc; a6 at the divergence: 0x3e32ce vs 0x3e32ce (same frame, so the contents differ)
