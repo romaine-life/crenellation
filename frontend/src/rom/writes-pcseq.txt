@@ -1,0 +1,1 @@
+attract, two demo loops: polls 2241248 vs 2241000; part at poll 1206000 of 2241000: 0x14510 vs 0x133b2 (previous 0x14510)

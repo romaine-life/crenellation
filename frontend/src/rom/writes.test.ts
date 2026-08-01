@@ -54,6 +54,7 @@ const FRAME_BYTES = process.env.FRAME_BYTES === '1';
 const PC_SEQ = process.env.PC_SEQ === '1';
 const PC_CAP = Number(process.env.PC_CAP ?? 3_000_000);
 const seq: string[] = [];
+console.log(`PC_SEQ=${JSON.stringify(process.env.PC_SEQ)} -> ${PC_SEQ}, cap ${PC_CAP}`);
 
 type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
   irq: Int32Array; pol: Int32Array; a6: Int32Array; n: number };
@@ -397,6 +398,9 @@ describe('writes to work RAM', () => {
     const results = chosen.map(compare);
     writeFileSync(join(here, 'writes.txt'),
       results.map((r) => r.note).join('\n\n') + '\n');
+    if (seq.length) {
+      writeFileSync(join(here, 'writes-pcseq.txt'), seq.join(String.fromCharCode(10)) + String.fromCharCode(10));
+    }
     const worst = Math.min(...results.map((r) => r.agreed));
     const bad = results.filter((r) => !r.note.includes('identical'));
     // The floor describes the DEFAULT window - all of work RAM. A run windowed
