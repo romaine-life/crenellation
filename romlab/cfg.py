@@ -112,7 +112,22 @@ def build(lo, hi):
         if b in CONDITIONAL or b in DBCC or b in ("bra", "bral", "bsr", "jmp", "jsr"):
             if t is not None and lo <= t < hi:
                 leaders.add(t)
-        if b in TERMINAL or b in CONDITIONAL or b in DBCC:
+        # bsr and jsr end a block too, and leaving them out was the last
+        # divergence between the two dispatchers. They appear above, so a call's
+        # target is a leader - but without them here the instruction *after* a
+        # call is interior, and the block runs straight through the transfer.
+        # decomp.py charges a block's whole cost at its head while gen_ts.py
+        # charges per instruction, so across the call one side has paid for
+        # instructions that have not run: measured at 0x1362e, tick(116) against
+        # 30 actually executed, an 86-cycle gap held for the duration of the
+        # call and settled on return. Eight blocks in a 2.4-million-poll run,
+        # every one of them a block containing a call. That offset moved the
+        # sound driver's busy-wait at 0x14510 across a frame boundary, so it
+        # left one iteration apart, and the station banner came out green.
+        # This is the same fault the comment above describes for inner entries -
+        # a block head in one dispatcher and interior in the other - and it
+        # wants the same answer: say the boundary is there.
+        if b in TERMINAL or b in CONDITIONAL or b in DBCC or b in ("bsr", "jsr"):
             nxt = i.address + i.size
             if lo <= nxt < hi:
                 leaders.add(nxt)

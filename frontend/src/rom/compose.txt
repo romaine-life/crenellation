@@ -1,1 +1,1 @@
-attract, two demo loops: diverges at frame 351 (1200 vs 1200 frames run)
+attract, two demo loops: diverges at frame 390 (1200 vs 1200 frames run)

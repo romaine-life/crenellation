@@ -1,11 +1,11 @@
-attract, two demo loops: diverge at write 23967 of 25623/25623; cycles first differ at write 0 (32922558 vs 32922700, 3e32be)
-  cycle stack: Machine <- Machine <- push <- fn_1b4be <- call <- callDecompiled <- callRom <- fn_19f3e <- call (cycles 63734032 vs 63731360 at the last common write, 63734376 vs 63731604 at this one)
+attract, two demo loops: diverge at write 24287 of 25943/25943; cycles first differ at write 0 (32922558 vs 32922598, 3e32be)
+  cycle stack: Machine <- Machine <- push <- fn_1b4be <- call <- callDecompiled <- callRom <- fn_19f3e <- call (cycles 63599814 vs 63596970 at the last common write, 63600158 vs 63597266 at this one)
   common:     0x3e3280=986/16 0x3e327e=3e/16 0x3e327c=1052/16 0x3e327a=0/16 0x3e3278=80/16 0x3e3276=0/16 0x3e3274=1/16 0x3e3272=0/16
   recompiled: 0x3e3280=504e/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d18/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
   decompiled: 0x3e3280=4fb3/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d10/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
   stack:      Machine <- Machine <- push <- extractsOwnerBitsCellByte <- call <- callDecompiled <- callRom <- counterStep <- call
   rom stack recompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
   rom stack decompiled: 0x10000 <- 0xdda <- 0x135d6 <- 0x132b6 <- 0x11efe <- 0x137b0 <- 0xdfe <- 0xee7e <- 0x9202
-  clock gap over 23967 writes: -2862..488; interrupts taken at the last common write: 115 vs 115; poll points reached: 2225794 vs 2225794; a6 at the divergence: 0x3e32c2 vs 0x3e32c2 (same frame, so the contents differ)
-  gap passes 1000 at write 36 (-2420, at 0x3e32b6)
+  clock gap over 24287 writes: -2926..66; interrupts taken at the last common write: 115 vs 115; poll points reached: 2225890 vs 2225890; a6 at the divergence: 0x3e32c2 vs 0x3e32c2 (same frame, so the contents differ)
+  gap passes 1000 at write 36 (-2876, at 0x3e32b6)
   gap stack: Machine <- Machine <- push <- soundIrqAcknowledge <- call <- takeIrq <- soundChannelDispatch <- call <- callDecompiled
