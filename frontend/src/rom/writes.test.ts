@@ -61,7 +61,7 @@ const seq: string[] = [];
 console.log(`PC_SEQ=${JSON.stringify(process.env.PC_SEQ)} -> ${PC_SEQ}, cap ${PC_CAP}`);
 
 type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
-  irq: Int32Array; pol: Int32Array; a6: Int32Array; d2: Int32Array; wpc: Int32Array; n: number };
+  irq: Int32Array; pol: Int32Array; a6: Int32Array; d2: Int32Array; wpc: Int32Array; rg: Int32Array; n: number };
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
@@ -187,7 +187,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   };
   const run: Run = { addr: new Int32Array(CAP), val: new Int32Array(CAP),
     cyc: new Int32Array(CAP), irq: new Int32Array(CAP),
-    pol: new Int32Array(CAP), a6: new Int32Array(CAP), d2: new Int32Array(CAP), wpc: new Int32Array(CAP), n: 0 };
+    pol: new Int32Array(CAP), a6: new Int32Array(CAP), d2: new Int32Array(CAP), wpc: new Int32Array(CAP), rg: new Int32Array(CAP * 6), n: 0 };
   let stack = '';
   let romStack: number[] = [];
   const FULL = new Error('recorded enough');
@@ -262,6 +262,17 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // and runs for a return address as readily as for data, so reading a
     // routine name off it can attribute a write to the wrong thing entirely.
     run.wpc[run.n] = sys.m.pc | 0;
+    // The registers a movem would spill, at the moment of the write. Sampling
+    // these separately and de-duplicating hid the answer: a register that
+    // differs on a later pass sits behind dozens of identical earlier sets.
+    // This harness already knows WHICH write diverges, so record them here and
+    // read them off there - no cap, no guessing which pass matters.
+    run.rg[run.n * 6 + 0] = sys.m.d1 | 0;
+    run.rg[run.n * 6 + 1] = sys.m.d2 | 0;
+    run.rg[run.n * 6 + 2] = sys.m.d3 | 0;
+    run.rg[run.n * 6 + 3] = sys.m.d4 | 0;
+    run.rg[run.n * 6 + 4] = sys.m.a0 | 0;
+    run.rg[run.n * 6 + 5] = sys.m.a1 | 0;
     // d2 too. graphicsDecompressor stores (d3.w >>> 4) + d2.w, so d2 IS the
     // colour base the caller chose - if the banner's palette bank differs,
     // it differs here, one level above the pixel.
@@ -722,7 +733,11 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // Same frame pointer at the divergent write, or a different one? The
       // value the runs disagree on is read from `-$12(a6)`, so this splits
       // the two possible stories without any further guessing.
-      + `; WROTE AT pc 0x${(a.wpc[i] >>> 0).toString(16)} vs 0x${(b.wpc[i] >>> 0).toString(16)}`      + `; d2 (the colour base) 0x${(a.d2[i] >>> 0).toString(16)} vs 0x${(b.d2[i] >>> 0).toString(16)}`
+      + `; WROTE AT pc 0x${(a.wpc[i] >>> 0).toString(16)} vs 0x${(b.wpc[i] >>> 0).toString(16)}`
+      + `; REGS ${['d1', 'd2', 'd3', 'd4', 'a0', 'a1'].map((nm, q) => {
+        const x = a.rg[i * 6 + q] >>> 0, y = b.rg[i * 6 + q] >>> 0;
+        return x === y ? '' : `${nm}=0x${x.toString(16)}/0x${y.toString(16)}`;
+      }).filter(Boolean).join(' ') || 'all six identical'}`      + `; d2 (the colour base) 0x${(a.d2[i] >>> 0).toString(16)} vs 0x${(b.d2[i] >>> 0).toString(16)}`
       + `; a6 at the divergence: 0x${(a.a6[i] >>> 0).toString(16)}`
       + ` vs 0x${(b.a6[i] >>> 0).toString(16)}`
       + ` (${a.a6[i] === b.a6[i] ? 'same frame, so the contents differ'
