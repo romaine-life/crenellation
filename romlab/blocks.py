@@ -1221,8 +1221,20 @@ def lift_once(lo, hi, names, seed=()):
         # assembly time with this function's register spill, once the full set
         # of register locals is known - a block cannot know it, because the
         # lifter discovers registers as it goes.
-        lifted[n] = [f"if (tick({cost}, 0x{head:05x})) {{ "
-                     f"{irq_flags + ' ' if irq_flags else ''}__IRQSPILL__takeIrq(); }}"] \
+        # `const _t = tick(...)` rather than testing it inline, so SPILL_ALL can
+        # reach the same spill without a second copy of it: the registers are
+        # written whenever either the interrupt is being taken or the debug flag
+        # is on, and takeIrq is still called only on the first. Costs one local
+        # per block and keeps the spill text emitted exactly once - the
+        # alternative, an `if (SPILL_ALL) { spill }` alongside the existing one,
+        # doubles the largest thing in the generated file.
+        # `? 1 : 0` because the hoisting pass rewrites `const x = ...` into a
+        # `let x = 0;` at the top of the function and assigns to it below, so a
+        # boolean lands in a variable TypeScript has already inferred as number.
+        lifted[n] = [f"const _t{n} = tick({cost}, 0x{head:05x}) ? 1 : 0;"
+                     f" if (_t{n} || SPILL_ALL) {{ "
+                     f"{irq_flags + ' ' if irq_flags else ''}__IRQSPILL__"
+                     f"if (_t{n}) takeIrq(); }}"] \
             + list(lifter.stmts)
         end_flags[n] = lifter.flags
     for copy, orig in clone_of.items():

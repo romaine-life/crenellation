@@ -1250,6 +1250,26 @@ const setFlagsAdd = (a: number, b: number, bits: number): void => {
 // never arrives at all. `move sr` then saves a word with X clear where the
 // chip has it set, which is where all six input patterns' write streams parted
 // company.
+/**
+ * Spill this side's registers to the machine at EVERY block head, not only
+ * where an interrupt is taken.
+ *
+ * The decompiled dispatcher keeps registers in JavaScript locals and writes
+ * them into the machine only inside `if (tick(...)) { setReg(...) }` - that is,
+ * only on the path that services an interrupt. Anything reading `m.dN` from
+ * outside therefore sees a value last written at some earlier interrupt, and
+ * four separate attempts in one session to compare the two dispatchers'
+ * registers were wrecked by exactly that: a stale mirror read as a live
+ * register, three times reported as a finding before being withdrawn.
+ *
+ * With this on, the mirror is current at every block head and a comparison
+ * against the recompiler - whose registers live in the machine always - means
+ * what it looks like it means. Off by default: it costs a spill per block.
+ */
+const SPILL_ALL = typeof process !== 'undefined'
+  && (process as { env?: Record<string, string | undefined> }).env?.SPILL_ALL === '1';
+void SPILL_ALL;
+
 const setXAdd = (a: number, b: number, bits: number): void => {
   const mask = widthMask(bits);
   M.x = (((a & mask) >>> 0) + ((b & mask) >>> 0)) > mask;
