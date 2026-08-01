@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0xc206": [
+    "find the entry matching this word",
+    "walks the thirty-two two-byte entries at 0x3E1C44 comparing each against the caller's word, returning the entry's address or null when none matches. The lookup half of the same table 0xC1EE allocates from - that one finds a slot whose first byte is negative, this one finds a slot by value. Read at 0xC206-0xC240."
+  ],
+  "0x66d4": [
+    "the tail of the full-screen cell scan",
+    "the closing half of a nested loop: the inner counter runs to 0x1E stepping a playfield cursor by 0x1000 each time, the outer to 0x2A stepping 8 and unwinding 0x1E000. With the 8 by 8 cell grid 0x18CDE establishes - 0x1000 is eight screen rows at the 0x200 stride, 8 is eight pixels - that is 30 by 42 cells, or 240 by 336 pixels: the whole visible screen. So the board is scanned as 42 columns of 30 cells. Read at 0x66D4-0x670E."
+  ],
   "0x1829c": [
     "write a colour into the first palette bank",
     "takes an index and a colour word and stores the colour as two bytes at 0x3C0000 + index*4 and + index*4 + 2 - high byte first, then low. That is the layout system.ts describes from the other side: palette RAM is byte-wide on a sixteen-bit bus, so one colour occupies the high bytes of two consecutive words four bytes apart, and reading it as a single word at stride two takes the right red with the wrong green and blue. This is the ROM writing exactly that. Read at 0x1829C-0x182D4."
