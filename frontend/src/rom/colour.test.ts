@@ -39,6 +39,8 @@ describe('colour base', () => {
     let prev = 0;
     let dumped = false;
     const regsAt = new Set<string>();
+    let lastA0 = -1;
+    const a0seq: number[] = [];
     sys.m.atPcExtra = (pc: number): void => {
       // At the decompressor's entry ONLY. Watching d2 wherever it happens to
       // hold a bank byte was a mistake: screenDissolve counts down through
@@ -74,6 +76,15 @@ describe('colour base', () => {
       // the machine here, so this is a real comparison rather than a stale
       // mirror. Recorded once per distinct set, so a constant difference shows
       // as two rows rather than thousands.
+      // Every change to a0, in order, with the address that made it. a0 is the
+      // register measured eight low at 0x11EFE, and control flow is identical
+      // between the runs, so these sequences line up and the first entry that
+      // differs names the instruction. Recording changes rather than sampling
+      // avoids the cap-and-dedupe mistake that hid this once already.
+      if ((sys.m.a0 | 0) !== lastA0) {
+        lastA0 = sys.m.a0 | 0;
+        if (a0seq.length < 400000) a0seq.push(pc, lastA0);
+      }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
         regsAt.add(`d1=0x${(m2.d1 >>> 0).toString(16)} d2=0x${(m2.d2 >>> 0).toString(16)}`
@@ -132,6 +143,8 @@ describe('colour base', () => {
       sys.run(() => { n += 1; pat.at(n, sys); if (n >= 600) throw STOP; }, entry);
     } catch (e) { if (e !== STOP) { /* the run ends how it ends */ } }
     for (const r of regsAt) seen.set('REGS ' + r, 0);
+    writeFileSync(join(here, `a0seq-${who}.txt`),
+      a0seq.join(',').slice(0, 4000000));
     const rows = [...seen.entries()].sort((a, b) => b[1] - a[1]);
     writeFileSync(join(here, `colour-${who}.txt`),
       rows.map(([k, c]) => `${k}  x${c}`).join('\n'));
