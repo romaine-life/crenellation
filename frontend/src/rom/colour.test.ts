@@ -114,6 +114,10 @@ describe('colour base', () => {
         // between two visits to 0x11F2A and the paths are identical through it,
         // so whichever head first shows a different a0 contains the addressing
         // mode that advances it wrongly.
+        // pc AND a0 on one timeline, so the block-path divergence and the
+        // pointer divergence can be ordered against each other instead of
+        // compared as two separate runs - which is how the causal direction
+        // between the branch and the pointer came to be asserted unproven.
         a0seq.push(pc, sys.m.a0 | 0);
       }
       if (pc === 0x11efe && regsAt.size < 40) {
