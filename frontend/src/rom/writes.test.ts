@@ -127,8 +127,14 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   let pn = 0;
   let lastA0 = -1;
   let lastA0pc = 0;
+  let prevPc = 0;
   sys.m.atPcExtra = (pc: number): void => {
-    if ((sys.m.a0 | 0) !== lastA0) { lastA0 = sys.m.a0 | 0; lastA0pc = pc; }
+    // prevPc, not pc: a change is noticed by comparing against the previous
+    // sample, so the callback that SEES the new value runs one instruction
+    // after the one that made it. Recording pc here named a moveq that clears
+    // d0 as the setter of a0.
+    if ((sys.m.a0 | 0) !== lastA0) { lastA0 = sys.m.a0 | 0; lastA0pc = prevPc; }
+    prevPc = pc;
     inWait = pc >= WAIT_LO && pc < WAIT_HI;
     // PC_SEQ=1: record the sequence of poll addresses. Both dispatchers are
     // forced to poll at exactly POLL_AT, so this sequence is directly
