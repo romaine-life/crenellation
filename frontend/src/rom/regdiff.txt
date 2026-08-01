@@ -1,1 +1,2 @@
-attract: 53 vs 53 entries over 248 frames, comparing from 0 (synced at 0/0); registers agree at every one of 0 comparable entries
+attract: 28691 vs 28752 entries over 500 frames, comparing from 0 (synced at 0/0); first differ at entry 2035 of 28691 (1872 comparable), pc 0x9080 (0x9080 on the other side)
+  differing: d0=0xaaaa0000/0xffff0000 d1=0xffffffff/0x0 d2=0x0/0x55555555 d3=0x55555555/0xaaaaaaaa
