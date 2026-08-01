@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0x1978e": [
+    "signed long division",
+    "the signed front end to the division 0x197D8 does: it takes the absolute value of each operand, carries the eventual sign in a0 by exclusive-or, and when the divisor is 0x10000 or more runs a sixteen-step shift-and-subtract long division by hand (add.l then addx.l to shift a 64-bit numerator, compare, conditionally subtract). Below that it falls through to 0x197D8's divu pair. Negates the quotient at the end when the signs differed. Read at 0x1978E-0x197D8."
+  ],
+  "0xb2e8": [
+    "release the slot and drop the count",
+    "does nothing when the record's field 0x4 is already null. Otherwise it calls 0xB5B8 with the record's word at 0xC and two fives, stamps 0xFF into byte 1 of whatever field 0x4 points at, decrements byte 0x16 of the record at 0x3E1C84, then clears field 0x4, sets byte 0xD to 0xFF and clears byte 0. Field 0x4 going to zero is exactly the free marker 0xB2B0 and 0xB2CC search for, so this is the release matching those allocators, and 0x3E1C84's byte 0x16 is the live count. Read at 0xB2E8-0xB330."
+  ],
   "0x3e3e": [
     "claim a slot at 0x3E0DF6 and fill it",
     "walks the eight-byte slots at 0x3E0DF6 until it finds one whose first long is zero - the free marker - and fills it: the caller's long at offset 0, a byte pair at 4 and 5, a word at 6. Then it calls 0x3E84 with the slot and registers it through 0xEE90 with 0x11B3C. This is the allocator for the sixteen-slot table 0x3E26 wipes; note the search is unbounded, so a full table walks off the end. Read at 0x3E3E-0x3E84."
