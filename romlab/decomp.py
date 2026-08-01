@@ -698,17 +698,24 @@ class Lifter:
             cur = self.read(dst, bits)
             self.write(dst, Expr(f"({cur.text} {sign} {self.read(ops[0], bits).text})"), bits)
             return
-        if b in ("and", "andi"):
+        if b in ("and", "andi", "or", "ori", "eor", "eori"):
+            # The logic group sets N and Z from the result and clears C and V.
+            # This set nothing at all, so a branch after `or.b #$10,d0` read
+            # whatever flag an earlier instruction had left - the same fault
+            # already found and fixed for the shifts and for bclr/bset/bchg,
+            # and again it is a rule m68kts.py has (it calls m.logicFlags after
+            # every bitwise op) that only the lift dropped. Found by diffing
+            # the two emitters, which is the third time that has been the way
+            # in: when the lift and the oracle disagree, compare the emitters
+            # before theorising about the game.
+            sign = {"and": "&", "andi": "&", "or": "|", "ori": "|",
+                    "eor": "^", "eori": "^"}[b]
             dst = ops[-1]
-            self.write(dst, Expr(f"({self.read(dst, bits).text} & {self.read(ops[0], bits).text})"), bits)
-            return
-        if b in ("or", "ori"):
-            dst = ops[-1]
-            self.write(dst, Expr(f"({self.read(dst, bits).text} | {self.read(ops[0], bits).text})"), bits)
-            return
-        if b in ("eor", "eori"):
-            dst = ops[-1]
-            self.write(dst, Expr(f"({self.read(dst, bits).text} ^ {self.read(ops[0], bits).text})"), bits)
+            res = self.temp(Expr(
+                f"({self.read(dst, bits).text} {sign} {self.read(ops[0], bits).text})"))
+            self.write(dst, res, bits)
+            self.flags = ("cmp", res.text, "0", bits)
+            self.flags_certain = True
             return
         if b == "ext":
             # Sign-extend in place: byte to word, or word to long.
