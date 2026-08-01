@@ -53,6 +53,23 @@ describe('colour base', () => {
       // while the lift reports block heads and covers the same code at 0x11F2A.
       // Sampling only the oracle's address gives the lift nothing at all -
       // which looks like absence and is only a different reporting grain.
+      // Every step of the chain the localisation named, so the step where the
+      // value goes wrong is READ OFF rather than inferred. Hand-tracing this
+      // path produced a story that did not hold - the one call site pushes
+      // literals identical in both runs - so the source is not the way in.
+      const STEP: Record<number, string> = {
+        0x036a2: 'a fn_036a2 entry',
+        0x000e82: 'b renderer entry',
+        0x000eb0: 'c renderer, at the call',
+        0x011eda: 'd tileset trampoline',
+        0x011f08: 'e decompressor entry',
+      };
+      const step = STEP[pc];
+      if (step) {
+        const b = sys.m.d2 & 0xff;
+        const kk = `${step}  d2.b=0x${b.toString(16)}`;
+        seen.set(kk, (seen.get(kk) ?? 0) + 1);
+      }
       if (pc === 0x11f18 || pc === 0x11f2a) {
         const v = sys.m.d2 & 0xff;
         if (v === 0x80 || v === 0x90 || v === 0xa0 || v === 0xb0) {
