@@ -84,7 +84,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     const m2 = sys.m;
     if (irqRegs.length < 200000) {
       irqRegs.push(m2.d0 | 0, m2.d1 | 0, m2.d2 | 0, m2.d3 | 0,
-                   m2.d4 | 0, m2.d5 | 0, m2.d6 | 0, m2.d7 | 0, m2.pc | 0, pn | 0, m2.cycles | 0);
+                   m2.d4 | 0, m2.d5 | 0, m2.d6 | 0, m2.d7 | 0, m2.pc | 0, pn | 0, m2.cycles | 0, sys.crossedAt | 0);
     }
     return baseFrame(level);
   };
@@ -438,8 +438,8 @@ function compare(p: Pattern): { note: string; agreed: number } {
         // interrupt 1, so the whole difference is born in here.
         const startA = ra.irqRegs.length >= 10 ? ra.irqRegs[9] : 0;
         const startB = rb.irqRegs.length >= 10 ? rb.irqRegs[9] : 0;
-        const endA = ra.irqRegs.length >= 21 ? ra.irqRegs[20] : ra.pn;
-        const endB = rb.irqRegs.length >= 21 ? rb.irqRegs[20] : rb.pn;
+        const endA = ra.irqRegs.length >= 24 ? ra.irqRegs[21] : ra.pn;
+        const endB = rb.irqRegs.length >= 24 ? rb.irqRegs[21] : rb.pn;
         const tally = (r: typeof ra, start: number, end: number) => {
           const c = new Map<number, number>(); const s = new Map<number, number>();
           for (let i = Math.max(1, start); i < Math.min(end, r.pn); i += 1) {
@@ -487,7 +487,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
       if (ra.irqRegs && rb.irqRegs) {
         const land = (r: typeof ra) => {
           const h = new Map<number, number>();
-          for (let q = 0; q + 10 < r.irqRegs.length; q += 11) {
+          for (let q = 0; q + 11 < r.irqRegs.length; q += 12) {
             const pc = r.irqRegs[q + 8] >>> 0;
             h.set(pc, (h.get(pc) ?? 0) + 1);
           }
@@ -542,32 +542,40 @@ function compare(p: Pattern): { note: string; agreed: number } {
             + bad.slice(0, 5).map(([pc, s, s2, h]) =>
               `0x${pc.toString(16)} ${s}/${s2} over ${h} visits (${(s - s2) / h}/visit)`).join('  ');
       }
+      let zdiff = 'no latency comparison';
+      if (ra.irqRegs && rb.irqRegs) {
+        const lat = (r: typeof ra, k: number) =>
+          r.irqRegs.length > k * 12 + 11
+            ? `${r.irqRegs[k * 12 + 10] - r.irqRegs[k * 12 + 11]}` : '?';
+        zdiff = 'request->service latency (serviced - crossedAt): '
+          + [0, 1, 2, 3].map((k) => `irq${k} ${lat(ra, k)}/${lat(rb, k)}`).join('  ');
+      }
       let ydiff = 'no interrupt-cycle comparison';
       if (ra.irqRegs && rb.irqRegs) {
         const n3 = Math.min(ra.irqRegs.length, rb.irqRegs.length);
         let y = 0;
-        for (; y < n3; y += 11) {
+        for (; y < n3; y += 12) {
           if (ra.irqRegs[y + 10] !== rb.irqRegs[y + 10]) {
             const prev = y >= 11
               ? `; previous interrupt cycles ${ra.irqRegs[y - 1]}/${rb.irqRegs[y - 1]} `
                 + `(gap ${ra.irqRegs[y - 1] - rb.irqRegs[y - 1]})` : '';
-            ydiff = `CYCLES first differ at interrupt ${y / 11}, pc 0x${(ra.irqRegs[y + 8] >>> 0).toString(16)}`
+            ydiff = `CYCLES first differ at interrupt ${y / 12}, pc 0x${(ra.irqRegs[y + 8] >>> 0).toString(16)}`
               + `/0x${(rb.irqRegs[y + 8] >>> 0).toString(16)}: ${ra.irqRegs[y + 10]}/${rb.irqRegs[y + 10]}`
               + ` (gap ${ra.irqRegs[y + 10] - rb.irqRegs[y + 10]})${prev}`;
             break;
           }
         }
-        if (y >= n3) ydiff = `interrupt cycles identical at all ${n3 / 11}`;
+        if (y >= n3) ydiff = `interrupt cycles identical at all ${n3 / 12}`;
       }
       let qdiff = 'no interrupt-register comparison';
       if (ra.irqRegs && rb.irqRegs) {
         const n2 = Math.min(ra.irqRegs.length, rb.irqRegs.length);
         let q = 0;
-        for (; q < n2; q += 11) {
+        for (; q < n2; q += 12) {
           let bad = -1;
           for (let k = 0; k < 8; k += 1) if (ra.irqRegs[q + k] !== rb.irqRegs[q + k]) { bad = k; break; }
           if (bad >= 0) {
-            qdiff = `IRQ REGISTERS first differ at interrupt ${q / 11}, pc 0x${(ra.irqRegs[q + 8] >>> 0).toString(16)}`
+            qdiff = `IRQ REGISTERS first differ at interrupt ${q / 12}, pc 0x${(ra.irqRegs[q + 8] >>> 0).toString(16)}`
               + `/0x${(rb.irqRegs[q + 8] >>> 0).toString(16)}, POLL ${ra.irqRegs[q + 9]}/${rb.irqRegs[q + 9]}`
               + `${ra.irqRegs[q + 9] === rb.irqRegs[q + 9] ? ' (aligned)' : ' (MISALIGNED)'}`
               + `, CYCLES ${ra.irqRegs[q + 10]}/${rb.irqRegs[q + 10]}`
@@ -576,7 +584,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
             break;
           }
         }
-        if (q >= n2) qdiff = `registers identical at all ${n2 / 11} interrupts`;
+        if (q >= n2) qdiff = `registers identical at all ${n2 / 12} interrupts`;
       }
       let iodiff = 'no input comparison';
       if (ra.io && rb.io) {
@@ -665,7 +673,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${bdiff}; ${ldiff}; ${hdiff}; ${mdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${zdiff}; ${bdiff}; ${ldiff}; ${hdiff}; ${mdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
