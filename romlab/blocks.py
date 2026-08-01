@@ -310,6 +310,19 @@ class BlockLifter(Lifter):
             wide = 32 if ops[1].strip() in DATA else 8
             n = self.read(ops[0], 32)
             v = self.read(ops[1], wide)
+            # Pin the operand when it comes from memory. The flag state is
+            # emitted as an expression, and `btst` on a memory operand ends up
+            # in BOTH the branch condition and the setFlagsBit that records the
+            # flags - so an unpinned load is performed twice for one
+            # instruction. The chip reads a location once. That is merely
+            # wasteful on RAM, but 0x640000-0x640003 are the input PORTS, and
+            # System.inputAt's own comment records that bit 3 of the first byte
+            # changes between two reads in the same frame on the board: read
+            # twice, and the branch and the flags disagree about what the
+            # hardware said. Eleven sites did this.
+            tok = ops[1].strip()
+            if "(" in tok or tok.startswith("$"):
+                v = self.pin(v)
             self.flags = ("bit", v.text, n.text, wide)
             return
         if b.startswith("db") and b != "divs":
