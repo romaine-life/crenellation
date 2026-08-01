@@ -1,4 +1,4 @@
-attract, two demo loops: diverge at write 23967 of 37323/37323; cycles first differ at write 0 (32922558 vs 32922700, 3e32be)
+attract, two demo loops: diverge at write 23967 of 25623/25623; cycles first differ at write 0 (32922558 vs 32922700, 3e32be)
   cycle stack: Machine <- Machine <- push <- fn_1b4be <- call <- callDecompiled <- callRom <- fn_19f3e <- call (cycles 63734032 vs 63731360 at the last common write, 63734376 vs 63731604 at this one)
   common:     0x3e3280=986/16 0x3e327e=3e/16 0x3e327c=1052/16 0x3e327a=0/16 0x3e3278=80/16 0x3e3276=0/16 0x3e3274=1/16 0x3e3272=0/16
   recompiled: 0x3e3280=504e/16 0x3e327e=0/16 0x3e327c=105c/16 0x3e327a=0/16 0x3e3278=63a/16 0x3e3276=2/16 0x3e3274=1d18/16 0x3e3272=2/16 0x3e3270=0/16 0x3e326e=0/16
