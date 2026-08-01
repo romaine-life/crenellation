@@ -38,6 +38,7 @@ describe('colour base', () => {
     let n = 0;
     let prev = 0;
     let dumped = false;
+    const regsAt = new Set<string>();
     sys.m.atPcExtra = (pc: number): void => {
       // At the decompressor's entry ONLY. Watching d2 wherever it happens to
       // hold a bank byte was a mistake: screenDissolve counts down through
@@ -66,6 +67,19 @@ describe('colour base', () => {
         0x011eda: 'd tileset trampoline',
         0x011f08: 'e decompressor entry',
       };
+      // Every register at the movem that spills the differing word. writes.test
+      // named 0x11EFE by program counter as the instruction that writes
+      // 0x3E3274, and it is a movem.l d1-d4/a0-a1,-(a7) - so one of those six
+      // already differs on entry. With SPILL_ALL the lift's registers are in
+      // the machine here, so this is a real comparison rather than a stale
+      // mirror. Recorded once per distinct set, so a constant difference shows
+      // as two rows rather than thousands.
+      if (pc === 0x11efe && regsAt.size < 40) {
+        const m2 = sys.m;
+        regsAt.add(`d1=0x${(m2.d1 >>> 0).toString(16)} d2=0x${(m2.d2 >>> 0).toString(16)}`
+          + ` d3=0x${(m2.d3 >>> 0).toString(16)} d4=0x${(m2.d4 >>> 0).toString(16)}`
+          + ` a0=0x${(m2.a0 >>> 0).toString(16)} a1=0x${(m2.a1 >>> 0).toString(16)}`);
+      }
       const step = STEP[pc];
       if (step) {
         const b = sys.m.d2 & 0xff;
@@ -117,6 +131,7 @@ describe('colour base', () => {
     try {
       sys.run(() => { n += 1; pat.at(n, sys); if (n >= 600) throw STOP; }, entry);
     } catch (e) { if (e !== STOP) { /* the run ends how it ends */ } }
+    for (const r of regsAt) seen.set('REGS ' + r, 0);
     const rows = [...seen.entries()].sort((a, b) => b[1] - a[1]);
     writeFileSync(join(here, `colour-${who}.txt`),
       rows.map(([k, c]) => `${k}  x${c}`).join('\n'));
