@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { describe, it, expect } from 'vitest';
+import { PATTERNS, type Pattern } from './patterns';
 import { System } from './system';
 import { call as viaRecompiled } from './dispatch';
 import { call as viaDecompiled, bind } from './decompiled';
@@ -21,8 +22,8 @@ const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 const MODIFIED = process.env.MODIFIED === '1';
 const FRAMES = Number(process.env.DRAW_FRAMES ?? (MODIFIED ? 900 : 600));
 
-function lit(entry: (a: number, m: System['m']) => void, label: string):
-    { note: string; screen: Uint32Array } {
+function lit(entry: (a: number, m: System['m']) => void, label: string,
+             pat?: Pattern): { note: string; screen: Uint32Array } {
   const sys = new System(rom, board);
   bind(sys.m);
   const marks: string[] = [];
@@ -31,6 +32,11 @@ function lit(entry: (a: number, m: System['m']) => void, label: string):
   try {
     sys.run(() => {
       n += 1;
+      // Drive the pattern's inputs. Without this every run is attract, which
+      // is why this test saw only one sixth of the game: the station-select
+      // banner is not drawn at all until a coin goes in, so a fault in it
+      // could not show here however many frames were run.
+      if (pat) pat.at(n, sys);
       if (n % 150 === 0 || n === 1) {
         let px = 0;
         for (let i = 0; i < 0x20000; i += 1) if (sys.m.byte(0x200000 + i)) px += 1;
@@ -50,6 +56,22 @@ function lit(entry: (a: number, m: System['m']) => void, label: string):
 }
 
 describe('drawing', () => {
+  // Every pattern, not just attract. Recorded per pattern in baseline.json:
+  // the two runs are known to differ on the gameplay ones, and the point of
+  // listing the counts is that a NEW difference shows up as a changed number
+  // rather than hiding inside a pass.
+  it('happens on every pattern', () => {
+    const seen: string[] = [];
+    for (const p of PATTERNS) {
+      const x = lit(viaRecompiled, `rec-${p.name.slice(0, 12)}`, p);
+      const y = lit(viaDecompiled, `dec-${p.name.slice(0, 12)}`, p);
+      let d = 0;
+      for (let i = 0; i < x.screen.length; i += 1) if (x.screen[i] !== y.screen[i]) d += 1;
+      seen.push(`${p.name}: ${d}`);
+    }
+    writeFileSync(join(here, 'draws-patterns.txt'), seen.join('\n'));
+  }, 600000);
+
   it('happens', () => {
     const a = lit(viaRecompiled, 'recompiled');
     const b = lit(viaDecompiled, 'decompiled');
