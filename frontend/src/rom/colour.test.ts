@@ -97,7 +97,7 @@ describe('colour base', () => {
           for (let i = 0; i <= 40; i += 4) {
             slots.push(`+${i}=0x${(sys.m.load((sys.m.a7 + i) >>> 0, 32) >>> 0).toString(16)}`);
           }
-          seen.set(`FRAME ${slots.join(' ')}`, 1);
+          seen.set(`FRAME a7=0x${(sys.m.a7>>>0).toString(16)} arg8slot=0x${((sys.m.a7+36)>>>0).toString(16)} ${slots.join(' ')}`, 1);
         }
       }
       prev = pc;
