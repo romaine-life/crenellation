@@ -100,7 +100,11 @@ describe('colour base', () => {
       // 0x11F2A-0x12060 has been compared instruction by instruction and is
       // faithful, so the extra iteration is inherited - and a watch bounded to
       // that routine could never have seen where from.
-      if (pc >= 0x00e00 && pc <= 0x12060 && a0seq.length < 400000) {
+      // The whole overlay. The stopping rule: widen until the first differing
+      // transition STOPS MOVING. It has moved every time the range widened -
+      // decompressor, then callers - which is the signature of a fault being
+      // inherited rather than found.
+      if (pc >= 0x00400 && pc < 0x20000 && a0seq.length < 400000) {
         // A checksum of all sixteen, so one pass covers every register without
         // a file of millions of numbers. Where the checksums first differ names
         // the address and the visit; which register it was is then one targeted
