@@ -623,7 +623,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
             if (false) {
               const which: string[] = [];
               for (let k = 0; k < 8; k += 1) {
-                const x = ra.early[i * 8 + k], y = rb.early[i * 8 + k];
+                const x = ra.early![i * 8 + k], y = rb.early![i * 8 + k];
                 if (x !== y) which.push(`d${k}=0x${(x >>> 0).toString(16)}/0x${(y >>> 0).toString(16)}`);
               }
               gdiff += ` -> ${which.join(' ')}`;

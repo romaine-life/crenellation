@@ -165,7 +165,8 @@ function digestOf(s: Uint8Array): number {
  * otherwise the whole pattern runs and only digests come back.
  */
 function play(p: Pattern, entry: Entry, upto = 0): {
-  digests: number[]; frames: number; shot: Uint8Array | null; sp: number; ended: string;
+  digests: number[]; pf: number[]; frames: number; shot: Uint8Array | null;
+  sp: number; ended: string;
 } {
   const sys = new System(rom, board);
   bind(sys.m);
