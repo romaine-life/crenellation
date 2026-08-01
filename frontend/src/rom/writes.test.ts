@@ -41,7 +41,11 @@ const HI = Number(process.env.W_HI ?? 0x400000);
 // streams had said everything they had to say. A suite that takes an afternoon
 // is a suite nobody runs, which is the same failure as one that can never be
 // green.
-const CAP = Number(process.env.WRITE_CAP ?? 300_000);
+// 600,000, because the runs are now measured to agree on 576,837 consecutive
+// writes and a cap below that reports a floor while sounding like identity.
+// Not higher: WRITE_CAP=3,000,000 kills the worker - five Int32Arrays that
+// size - and 600,000 costs about 12MB and runs in thirteen seconds.
+const CAP = Number(process.env.WRITE_CAP ?? 600_000);
 
 // The interrupt-terminated rotate loop, from facts.json. Diagnostic only:
 // WAIT_SKIP is off unless asked for, so the default run still measures every
