@@ -413,6 +413,37 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // Cycles alone, indexed by interrupt number. Registers can agree while
       // the clocks have already drifted, and the drift is what matters: it is
       // charged cost for identical work.
+      // Cost per block ADDRESS, summed over the whole run, in each run
+      // separately - then diffed. Alignment-free: a sum over a run does not
+      // care that the poll sequences drift. The delta between consecutive
+      // polls inside ONE run is exactly what that block was charged, so this
+      // needs no new recording. A block that appears with different totals and
+      // the same visit count is priced differently, which is the fault.
+      let mdiff = 'no per-block cost comparison';
+      if (ra.cyc && rb.cyc && ra.pcs && rb.pcs) {
+        const cost = (r: typeof ra) => {
+          const sum = new Map<number, number>(); const hits = new Map<number, number>();
+          for (let i = 1; i < r.pn; i += 1) {
+            const pc = r.pcs![i - 1], dc = (r.cyc![i] - r.cyc![i - 1]) | 0;
+            if (dc < 0 || dc > 4096) continue;
+            sum.set(pc, (sum.get(pc) ?? 0) + dc);
+            hits.set(pc, (hits.get(pc) ?? 0) + 1);
+          }
+          return { sum, hits };
+        };
+        const A = cost(ra), B = cost(rb);
+        const bad: Array<[number, number, number, number, number]> = [];
+        for (const [pc, s] of A.sum) {
+          const s2 = B.sum.get(pc) ?? 0;
+          const h = A.hits.get(pc) ?? 0, h2 = B.hits.get(pc) ?? 0;
+          if (s !== s2 && h === h2 && h > 0) bad.push([pc, s, s2, h, h2]);
+        }
+        bad.sort((x, y) => Math.abs(y[1] - y[2]) - Math.abs(x[1] - x[2]));
+        mdiff = bad.length === 0 ? 'every block costs the same in both runs'
+          : `${bad.length} blocks MISPRICED (same visit count, different total): `
+            + bad.slice(0, 5).map(([pc, s, s2, h]) =>
+              `0x${pc.toString(16)} ${s}/${s2} over ${h} visits (${(s - s2) / h}/visit)`).join('  ');
+      }
       let ydiff = 'no interrupt-cycle comparison';
       if (ra.irqRegs && rb.irqRegs) {
         const n3 = Math.min(ra.irqRegs.length, rb.irqRegs.length);
@@ -536,7 +567,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${mdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
