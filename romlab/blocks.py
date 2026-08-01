@@ -15,6 +15,7 @@ turned into `while`, and come next.
 """
 
 import json
+import os
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -27,6 +28,11 @@ from decomp import (ADDR, DATA, Bail, Expr, Lifter, SIZE_BITS, decode, ident, nu
                     split_ops)
 
 HERE = Path(__file__).parent
+
+# Emit a second register spill AHEAD of each tick, for register comparison.
+# See the note at the emission site; off by default because it duplicates the
+# largest text in the generated file.
+SPILL_BEFORE = os.environ.get("SPILL_BEFORE") == "1"
 
 COND = {"bhi", "bls", "bcc", "bcs", "bne", "beq", "bvc", "bvs",
         "bpl", "bmi", "bge", "blt", "bgt", "ble"}
@@ -1231,7 +1237,19 @@ def lift_once(lo, hi, names, seed=()):
         # `? 1 : 0` because the hoisting pass rewrites `const x = ...` into a
         # `let x = 0;` at the top of the function and assigns to it below, so a
         # boolean lands in a variable TypeScript has already inferred as number.
-        lifted[n] = [f"const _t{n} = tick({cost}, 0x{head:05x}) ? 1 : 0;"
+        # SPILL_BEFORE=1 at GENERATION time adds a second spill ahead of the
+        # tick. It exists because a watch hung on atPcExtra runs INSIDE tick,
+        # while this spill runs after it returns - so every lifted register such
+        # a watch reads is the value some earlier block left, and no fixed
+        # correction recovers it, because each block spills only the registers
+        # its own lifter discovered and so a different number of blocks back for
+        # each register. That made register comparison between the dispatchers
+        # unsound and cost most of a session before it was noticed. The copy is
+        # off by default because it duplicates the largest text in the file;
+        # turn it on to compare registers, and regenerate without it to ship.
+        pre = (f" if (SPILL_ALL) {{ {irq_flags + ' ' if irq_flags else ''}"
+               f"__IRQSPILL__}}" if SPILL_BEFORE else "")
+        lifted[n] = [f"{pre}const _t{n} = tick({cost}, 0x{head:05x}) ? 1 : 0;"
                      f" if (_t{n} || SPILL_ALL) {{ "
                      f"{irq_flags + ' ' if irq_flags else ''}__IRQSPILL__"
                      f"if (_t{n}) takeIrq(); }}"] \
