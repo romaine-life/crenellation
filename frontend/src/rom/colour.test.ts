@@ -100,11 +100,13 @@ describe('colour base', () => {
         // a file of millions of numbers. Where the checksums first differ names
         // the address and the visit; which register it was is then one targeted
         // re-read away, and the code around that address usually says.
-        const M2 = sys.m;
-        if (pc === 0x11f9e) {
-          a0seq.push(M2.d0 | 0, M2.d1 | 0, M2.d2 | 0, M2.d3 | 0, M2.d4 | 0,
-                     M2.a0 | 0, M2.a1 | 0, M2.a2 | 0);
-        }
+        // The PATH, not the registers. The lifted side reports only block
+        // heads; the oracle reports every instruction, so filtering its stream
+        // down to the addresses the lift reports makes the two sequences the
+        // same kind of thing - the order of blocks executed. The first place
+        // they differ is the mis-lifted branch itself rather than a shadow of
+        // it several registers downstream.
+        a0seq.push(pc);
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
