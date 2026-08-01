@@ -63,8 +63,11 @@ describe('drawing', () => {
   it('happens on every pattern', () => {
     const seen: string[] = [];
     for (const p of PATTERNS) {
-      const x = lit(viaRecompiled, `rec-${p.name.slice(0, 12)}`, p);
-      const y = lit(viaDecompiled, `dec-${p.name.slice(0, 12)}`, p);
+      // Sanitised: pattern names contain ':' and ',', and a colon is not legal in
+      // a Windows filename - the PNGs came out extensionless and unopenable.
+      const tag = p.name.replace(/[^a-z0-9]+/gi, '-').slice(0, 16);
+      const x = lit(viaRecompiled, `rec-${tag}`, p);
+      const y = lit(viaDecompiled, `dec-${tag}`, p);
       let d = 0;
       for (let i = 0; i < x.screen.length; i += 1) if (x.screen[i] !== y.screen[i]) d += 1;
       seen.push(`${p.name}: ${d}`);
