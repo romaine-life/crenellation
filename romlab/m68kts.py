@@ -324,6 +324,28 @@ def cycles(ins):
     if b in BRANCH_CC or b in DB_CC:
         # a taken branch costs more than one that falls through; assume taken,
         # which is what a loop does
+        #
+        # This constant is the root of the last known divergence between the two
+        # dispatchers, traced 2026-08-01 - see _pcseq in frontend/src/rom/
+        # baseline.json for the measurement. Real costs are Bcc 10 taken and 8
+        # not, DBcc 10 branching, 12 falling through and 14 when the count
+        # expires, so one number cannot be right for both paths. Both emitters
+        # call this, so the constant alone makes them equally wrong against the
+        # chip rather than wrong against each other; what separates them is this
+        # error meeting the fact that decompiled code pays a whole block at its
+        # head while the recompiled pays per instruction. Eight blocks out of
+        # 2.4 million polls end up mispriced, the clocks drift 86 cycles, the
+        # sound driver's busy-wait at 0x14510 leaves one iteration apart, and
+        # the station banner is drawn in the wrong colour a quarter of a million
+        # writes later.
+        #
+        # Fixing it needs the outcome, which this signature does not have: the
+        # caller knows whether it is emitting the taken or the fall-through
+        # path, so the cost belongs there, or this needs a `taken` argument.
+        # Worth doing on its own merits - the port is otherwise faithful to the
+        # chip - but do not do it casually: every tick(n, addr) in decompiled.ts
+        # and every cost in dispatch.ts moves, so the full regeneration chain in
+        # CLAUDE.md has to run and every harness floor is re-measured.
         return 10
     for tok in split_ops(ins.op_str or ""):
         n += _EA_COST.get(_ea_kind(tok), 0)
