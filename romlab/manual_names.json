@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0x404a": [
+    "draw at the pixel coordinate, origin offset by four",
+    "turns a pair of words into a playfield address as 0x200004 plus (y - 4) shifted left nine - the 0x200 row stride - plus (x - 4), then blits through 0x11EF2 with a size of 0x80 and a source read from 0x34604. The -4 on both axes is the same offset that makes the playfield base 0x200004 rather than 0x200000: there is a four-pixel border the coordinates exclude. Read at 0x404A-0x408E."
+  ],
+  "0xbb38": [
+    "find the record whose key at offset twelve matches",
+    "walks the sixteen fourteen-byte records at 0x3E1AE6 - the table 0xB2B0 allocates from, where a zero long at offset 4 means free - comparing the caller's word against each record's word at offset 0xC, and returns the record or null. So offset 0xC is that table's lookup key. Read at 0xBB38-0xBB7C."
+  ],
   "0x910e": [
     "alternate between two values on a four-step counter",
     "does nothing unless the word at 0x3E1948 is set - the same gate 0x90E6 checks. Then it picks the first byte argument when bit 0 of the counter at 0x3E1946 is set and the second when it is clear, passes the choice to 0x90BE, and advances that counter modulo 4. Two phases driven by a four-step cycle, so the other bit selects something this routine does not use. Read at 0x910E-0x9150."
