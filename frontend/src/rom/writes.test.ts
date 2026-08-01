@@ -65,13 +65,29 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
-                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null; io: number[]; hpoll: Int32Array; hidx: number } {
+                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null; io: number[]; hpoll: Int32Array; hidx: number; irqRegs: number[] } {
   const sys = new System(rom, board);
   // Every input the machine observes, in order. The registers part at an input
   // read (0x196BE reads 0x640003), and input is the one thing here that is not
   // pure computation - so if the two runs ever SEE different bytes, no lifting
   // rule can make them agree and the origin is the harness. Ports and trackball
   // both, since the patterns step the trackball counters on a schedule.
+  // Registers at the ONLY sound point. Both dispatchers call interruptFrame
+  // once they have committed their state to the machine - the decompiled from
+  // takeIrq, after its setReg spill; the recompiled because its registers are
+  // always in the machine. Sampling anywhere else reads the decompiled side's
+  // mirror one step early, which is what made three earlier register results
+  // artefacts.
+  const irqRegs: number[] = [];
+  const baseFrame = sys.m.interruptFrame.bind(sys.m);
+  sys.m.interruptFrame = (level: number): number => {
+    const m2 = sys.m;
+    if (irqRegs.length < 200000) {
+      irqRegs.push(m2.d0 | 0, m2.d1 | 0, m2.d2 | 0, m2.d3 | 0,
+                   m2.d4 | 0, m2.d5 | 0, m2.d6 | 0, m2.d7 | 0, m2.pc | 0);
+    }
+    return baseFrame(level);
+  };
   const io: number[] = [];
   const baseIn = sys.m.inputAt, baseTr = sys.m.trackAt;
   sys.m.inputAt = (a: number): number => {
@@ -328,7 +344,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early, io, hpoll, hidx };
+  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early, io, hpoll, hidx, irqRegs };
 }
 
 /** One pattern's two write streams, compared. */
@@ -379,6 +395,22 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // point the sequences part, and report the addresses whose tallies
       // differ most: a busy-wait that exits a beat early shows up here as one
       // address off by one while everything around it matches.
+      let qdiff = 'no interrupt-register comparison';
+      if (ra.irqRegs && rb.irqRegs) {
+        const n2 = Math.min(ra.irqRegs.length, rb.irqRegs.length);
+        let q = 0;
+        for (; q < n2; q += 9) {
+          let bad = -1;
+          for (let k = 0; k < 8; k += 1) if (ra.irqRegs[q + k] !== rb.irqRegs[q + k]) { bad = k; break; }
+          if (bad >= 0) {
+            qdiff = `IRQ REGISTERS first differ at interrupt ${q / 9}, pc 0x${(ra.irqRegs[q + 8] >>> 0).toString(16)}`
+              + `/0x${(rb.irqRegs[q + 8] >>> 0).toString(16)}: d${bad}=`
+              + `0x${(ra.irqRegs[q + bad] >>> 0).toString(16)} vs 0x${(rb.irqRegs[q + bad] >>> 0).toString(16)}`;
+            break;
+          }
+        }
+        if (q >= n2) qdiff = `registers identical at all ${n2 / 9} interrupts`;
+      }
       let iodiff = 'no input comparison';
       if (ra.io && rb.io) {
         const n = Math.min(ra.io.length, rb.io.length);
@@ -466,7 +498,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
