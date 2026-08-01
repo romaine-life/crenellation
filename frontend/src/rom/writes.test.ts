@@ -127,11 +127,18 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
       // and even is a return address pushed by bsr/jsr; data pointers and
       // counters mostly fall outside it. Some of what this prints is
       // coincidence - check a hit against facts.json before believing it.
-      romStack = [sys.m.a7 >>> 0];
-      for (let i = 0; i < 96; i += 2) {
+      romStack = [];
+      for (let i = 0; i < 256 && romStack.length < 14; i += 2) {
         const a = (sys.m.a7 + i) >>> 0;
-        romStack.push(((sys.m.byte(a) << 24) | (sys.m.byte(a + 1) << 16)
-          | (sys.m.byte(a + 2) << 8) | sys.m.byte(a + 3)) >>> 0);
+        const v = ((sys.m.byte(a) << 24) | (sys.m.byte(a + 1) << 16)
+          | (sys.m.byte(a + 2) << 8) | sys.m.byte(a + 3)) >>> 0;
+        // Filtered back to plausible return addresses. The raw form was needed
+        // once, to read pushed arguments off the stack while chasing a colour
+        // bank; for walking a call chain the filter is what makes it legible.
+        // A longword in the overlay's code range and even is a return address
+        // pushed by bsr/jsr. Check any hit against facts.json before believing
+        // it - some of these are data that happens to look like code.
+        if (v >= 0x400 && v < 0x20000 && (v & 1) === 0) romStack.push(v);
       }
     }
     // The cycle clock at each write. If the two runs disagree here, the
