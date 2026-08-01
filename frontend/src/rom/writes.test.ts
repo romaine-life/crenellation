@@ -282,13 +282,25 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // cycle accounting rather than anything the game did - which is the
       // difference between an unfixable seam and a cost model to correct.
       let cAt = -1;
+      const where: string[] = [];
       if (ra.cyc && rb.cyc) {
-        for (let i = 0; i < lim; i += 1) if (ra.cyc[i] !== rb.cyc[i]) { cAt = i; break; }
+        // Every block where the gap CHANGES, not merely where it is non-zero:
+        // once the clocks part they stay parted, so the interesting events are
+        // the steps. Each one is a block the two sides priced differently.
+        let gap = 0;
+        for (let i = 0; i < lim && where.length < 8; i += 1) {
+          const g = ra.cyc[i] - rb.cyc[i];
+          if (g !== gap) {
+            if (cAt < 0) cAt = i;
+            where.push(`0x${(ra.pcs[i] >>> 0).toString(16)}@${i}${g - gap > 0 ? '+' : ''}${g - gap}`);
+            gap = g;
+          }
+        }
       }
       seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
-            + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); `)
+            + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
         + (at < 0 ? `poll ADDRESSES identical over all ${lim} compared`
           : `part at poll ${at} of ${lim}: 0x${(ra.pcs[at] >>> 0).toString(16)}`
             + ` vs 0x${(rb.pcs[at] >>> 0).toString(16)}`
