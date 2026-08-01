@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0x1b11c": [
+    "strobe the control register through its shadow",
+    "offsets the caller's pointer by 0x1E0000 to reach a hardware register, sets 0x3E3D6C to 7, clears the four words 0x3E3D72 through 0x3E3D78, then writes the shadow word at 0x3E3D8E twice: once with bit 4 masked off, then with bits 4 and 0x400 set. A RAM shadow is how you read-modify-write a register that cannot be read, and writing it twice with one bit differing is a strobe rather than two settings. Read at 0x1B11C-0x1B166."
+  ],
+  "0x848e": [
+    "clear each active player's pair at 0x30",
+    "walks the three structs at 0x3E1968, stride 0x7E, and for each whose field 0 has bits 14/15 set clears bytes 0x30 and 0x31, registers the struct through 0xEE90 with 0x11B36, and calls 0x8326 with it. Read at 0x848E-0x84DA."
+  ],
   "0x1978e": [
     "signed long division",
     "the signed front end to the division 0x197D8 does: it takes the absolute value of each operand, carries the eventual sign in a0 by exclusive-or, and when the divisor is 0x10000 or more runs a sixteen-step shift-and-subtract long division by hand (add.l then addx.l to shift a 64-bit numerator, compare, conditionally subtract). Below that it falls through to 0x197D8's divu pair. Negates the quotient at the end when the signs differed. Read at 0x1978E-0x197D8."
