@@ -106,7 +106,11 @@ describe('colour base', () => {
         // same kind of thing - the order of blocks executed. The first place
         // they differ is the mis-lifted branch itself rather than a shadow of
         // it several registers downstream.
-        a0seq.push(pc);
+        // a0 at 0x11F2A, per visit, plus the byte it points at. If a0 agrees
+        // where the paths part then the runs load the same byte and the lift's
+        // branch condition is wrong; if a0 differs, the branch is fine and the
+        // pointer got there wrong.
+        if (pc === 0x11f2a) a0seq.push(sys.m.a0 | 0, sys.m.byte(sys.m.a0 >>> 0) | 0);
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
