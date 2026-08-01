@@ -96,6 +96,8 @@ const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 const NAME = process.env.REGDIFF_PATTERN ?? 'attract';
 const FRAMES = Number(process.env.REGDIFF_FRAMES ?? 500);
 const CAP = Number(process.env.REGDIFF_CAP ?? 4_000_000);
+/** Entry samples kept with full register state. ~28,700 at 500 frames. */
+const SAMPLES = Number(process.env.REGDIFF_SAMPLES ?? 80_000);
 
 /** Every routine's first address. */
 const ENTRY: Set<number> = new Set(DECOMPILED.map((e) => e.at));
@@ -107,12 +109,14 @@ type M = Record<string, number>;
 
 /** Hash every poll's register state; or, past `dumpAt`, capture them whole. */
 function scan(entry: (addr: number, m: System['m']) => void,
-              dumpAt: number): { h: Int32Array; n: number; pc: number; regs: number[]; sync: number; fresh: Uint8Array } {
+              dumpAt: number): { h: Int32Array; n: number; pc: number; regs: number[]; sync: number; fresh: Uint8Array; vals: Int32Array; mask: Int32Array } {
   const sys = new System(rom, board);
   bind(sys.m);
   sys.m.pollAt = POLL_AT as Set<number>;
   const h = new Int32Array(dumpAt < 0 ? CAP : 1);
   const fresh = new Uint8Array(dumpAt < 0 ? CAP : 1);
+  const vals = new Int32Array(SAMPLES * 16);
+  const mask = new Int32Array(SAMPLES);
   let n = 0, pc = 0, sync = -1;
   let regs: number[] = [];
   const m = sys.m as unknown as M;
@@ -122,13 +126,14 @@ function scan(entry: (addr: number, m: System['m']) => void,
   // here. This is what the third attempt lacked: not "has this side ever
   // synced" but "did it sync for THIS call", which is the only question that
   // makes a sample comparable.
-  let ver = 0;
+  let ver = 0, wrote = 0;
   for (const r of REGS) {
     let v = m[r] | 0;
+    const bit = 1 << REGS.indexOf(r);
     Object.defineProperty(m, r, {
       configurable: true,
       get: () => v,
-      set: (x: number) => { v = x | 0; ver += 1; },
+      set: (x: number) => { v = x | 0; ver += 1; wrote |= bit; },
     });
   }
   let lastVer = -1;
@@ -149,6 +154,17 @@ function scan(entry: (addr: number, m: System['m']) => void,
     // Synced for this call, not merely at some point in the past.
     if (ver !== lastVer) { if (sync < 0) sync = n; fresh[n] = 1; }
     lastVer = ver;
+    // The whole register file, plus which of them this side actually synced
+    // since the last sample. setReg writes only the registers a caller passes,
+    // so the Machine holds a PARTIAL set - comparing all sixteen can never
+    // work, and comparing the synced ones is the most that is comparable in
+    // principle. The recompiled side always has all sixteen valid, so the
+    // decompiled side's mask is the one that governs.
+    if (n < SAMPLES) {
+      for (let k = 0; k < 16; k += 1) vals[n * 16 + k] = m[REGS[k]] | 0;
+      mask[n] = wrote;
+    }
+    wrote = 0;
     if (n === dumpAt) { pc = at; regs = REGS.map((r) => m[r] >>> 0); }
     if (dumpAt < 0) {
       // Cheap mix. A collision costs a wrong answer, not a wrong test - the
@@ -165,8 +181,16 @@ function scan(entry: (addr: number, m: System['m']) => void,
       pat.at(s, s.frames);
       if (s.frames >= FRAMES) throw new Error('done');
     }, entry);
-  } catch { /* the frame limit, thrown from inside the machine */ }
-  return { h, n, pc, regs, sync, fresh };
+  } catch (e) {
+    // The frame limit is thrown from inside the machine, so this catch is
+    // load-bearing - and that is exactly why it hid attempt five's failure.
+    // Anything that is not the frame limit is a real error and must be seen:
+    // a swallowed one looks like a short run that still reports a confident
+    // verdict, which is how "registers agree" got printed for a run that had
+    // barely started.
+    if ((e as Error).message !== 'done') throw e;
+  }
+  return { h, n, pc, regs, sync, fresh, vals, mask };
 }
 
 describe('registers', () => {
@@ -178,20 +202,30 @@ describe('registers', () => {
     // Only where the decompiled side populated the Machine for that call.
     // Both runs walk the same entries in the same order, so index i is the
     // same call on both sides.
-    const from = Math.max(a.sync, b.sync, 0);
     let cmp = 0;
-    for (let i = from; i < lim; i += 1) {
-      if (!b.fresh[i]) continue;
+    let bad = 0;
+    for (let i = 0; i < Math.min(lim, SAMPLES); i += 1) {
+      const mk = b.mask[i];
+      if (!mk) continue;
       cmp += 1;
-      if (a.h[i] !== b.h[i]) { at = i; break; }
+      for (let k = 0; k < 16; k += 1) {
+        if (!(mk & (1 << k))) continue;
+        if (a.vals[i * 16 + k] !== b.vals[i * 16 + k]) { at = i; bad = k; break; }
+      }
+      if (at >= 0) break;
     }
     compared = cmp;
+    void bad;
     let out = `${NAME}: ${a.n} vs ${b.n} entries over ${FRAMES} frames, comparing from ${Math.max(a.sync, b.sync, 0)} (synced at ${a.sync}/${b.sync}); `;
     if (at < 0) {
       out += `registers agree at every one of ${compared} comparable entries`;
     } else {
-      const ra = scan(viaRecompiled, at), rb = scan(viaDecompiled, at);
-      const which = REGS.filter((_, i) => ra.regs[i] !== rb.regs[i]);
+      const rb = scan(viaDecompiled, at);
+      const mk = b.mask[at];
+      const which = REGS.filter((_, k) => (mk & (1 << k))
+        && a.vals[at * 16 + k] !== b.vals[at * 16 + k]);
+      const ra = { pc: rb.pc, regs: REGS.map((_, k) => a.vals[at * 16 + k] >>> 0) };
+      rb.regs = REGS.map((_, k) => b.vals[at * 16 + k] >>> 0);
       out += `first differ at entry ${at} of ${lim} (${compared} comparable), pc 0x${ra.pc.toString(16)}`
         + ` (0x${rb.pc.toString(16)} on the other side)\n  differing: `
         + (which.length ? which.map((r, i) => `${r}=0x${ra.regs[REGS.indexOf(r)].toString(16)}`
