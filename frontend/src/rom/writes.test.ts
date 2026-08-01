@@ -50,12 +50,17 @@ const WAIT_LO = 0x00430;
 const WAIT_HI = 0x00512;
 const WAIT_SKIP = process.env.WAIT_SKIP === '1';
 const FRAME_BYTES = process.env.FRAME_BYTES === '1';
+// Diagnostic: compare the poll-address sequences of the two dispatchers.
+const PC_SEQ = process.env.PC_SEQ === '1';
+const PC_CAP = Number(process.env.PC_CAP ?? 3_000_000);
+const seq: string[] = [];
 
 type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
   irq: Int32Array; pol: Int32Array; a6: Int32Array; n: number };
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
-                stopAt = -1): { run: Run; stack: string; romStack: number[] } {
+                stopAt = -1): { run: Run; stack: string; romStack: number[];
+                                pcs: Int32Array | null; pn: number } {
   const sys = new System(rom, board);
   // Shift the first interrupt. This is the discriminator for "is a value that
   // differs between the two runs a real quantity the game computed, or residue
@@ -74,8 +79,25 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   // Whether control is inside the wait loop, tracked at the same points the
   // interrupt poll uses, which is the finest granularity either dispatcher has.
   let inWait = false;
+  const pcs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
+  let pn = 0;
   sys.m.atPcExtra = (pc: number): void => {
     inWait = pc >= WAIT_LO && pc < WAIT_HI;
+    // PC_SEQ=1: record the sequence of poll addresses. Both dispatchers are
+    // forced to poll at exactly POLL_AT, so this sequence is directly
+    // comparable between them - unlike registers, which the decompiled side
+    // syncs only partially, and unlike the JavaScript stack, which a
+    // trampoline flattens. If the two sequences match, the runs take the same
+    // path through the same blocks and whatever differs is a value computed
+    // inside one; if they part, the index names the block. Built here rather
+    // than in a new harness deliberately: this run loop is the one measured to
+    // reach 2,225,794 polls and 115 interrupts, and a fresh harness that
+    // silently drives the machine differently is exactly how regdiff.test.ts
+    // produced confident nonsense.
+    if (pcs && (sys.m.pollAt === null || sys.m.pollAt.has(pc))) {
+      if (pn < pcs.length) pcs[pn] = pc | 0;
+      pn += 1;
+    }
   };
   const m = sys.m as unknown as {
     setByte(a: number, v: number): void; store(a: number, v: number, b: number): void;
@@ -237,13 +259,28 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack };
+  return { run, stack, romStack, pcs, pn };
 }
 
 /** One pattern's two write streams, compared. */
 function compare(p: Pattern): { note: string; agreed: number } {
-    const a = record(p, viaRecompiled).run;
-    const b = record(p, viaDecompiled).run;
+    const ra = record(p, viaRecompiled);
+    const rb = record(p, viaDecompiled);
+    const a = ra.run;
+    const b = rb.run;
+    if (PC_SEQ && ra.pcs && rb.pcs) {
+      // The gate: this harness is only believable if it reproduces the poll
+      // count writes.test already reports. A run that drives the machine
+      // differently will differ here first, and loudly.
+      const lim = Math.min(ra.pn, rb.pn, PC_CAP);
+      let at = -1;
+      for (let i = 0; i < lim; i += 1) if (ra.pcs[i] !== rb.pcs[i]) { at = i; break; }
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; `
+        + (at < 0 ? `poll ADDRESSES identical over all ${lim} compared`
+          : `part at poll ${at} of ${lim}: 0x${(ra.pcs[at] >>> 0).toString(16)}`
+            + ` vs 0x${(rb.pcs[at] >>> 0).toString(16)}`
+            + ` (previous 0x${(ra.pcs[Math.max(0, at - 1)] >>> 0).toString(16)})`));
+    }
     let i = 0;
     while (i < a.n && i < b.n && a.addr[i] === b.addr[i] && a.val[i] === b.val[i]) i += 1;
     // Where the two clocks first part, which is upstream of where the writes
