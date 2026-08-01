@@ -65,8 +65,21 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
-                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null } {
+                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null; io: number[] } {
   const sys = new System(rom, board);
+  // Every input the machine observes, in order. The registers part at an input
+  // read (0x196BE reads 0x640003), and input is the one thing here that is not
+  // pure computation - so if the two runs ever SEE different bytes, no lifting
+  // rule can make them agree and the origin is the harness. Ports and trackball
+  // both, since the patterns step the trackball counters on a schedule.
+  const io: number[] = [];
+  const baseIn = sys.m.inputAt, baseTr = sys.m.trackAt;
+  sys.m.inputAt = (a: number): number => {
+    const v = baseIn ? baseIn(a) : 0xff; if (io.length < 400000) io.push(a, v); return v;
+  };
+  sys.m.trackAt = (a: number): number => {
+    const v = baseTr ? baseTr(a) : 0; if (io.length < 400000) io.push(a, v); return v;
+  };
   // Shift the first interrupt. This is the discriminator for "is a value that
   // differs between the two runs a real quantity the game computed, or residue
   // of where the interrupt landed?" - move the phase and re-read the SAME
@@ -306,7 +319,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early };
+  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early, io };
 }
 
 /** One pattern's two write streams, compared. */
@@ -357,6 +370,21 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // point the sequences part, and report the addresses whose tallies
       // differ most: a busy-wait that exits a beat early shows up here as one
       // address off by one while everything around it matches.
+      let iodiff = 'no input comparison';
+      if (ra.io && rb.io) {
+        const n = Math.min(ra.io.length, rb.io.length);
+        let k = 0;
+        for (; k < n; k += 2) {
+          if (ra.io[k] !== rb.io[k] || ra.io[k + 1] !== rb.io[k + 1]) {
+            iodiff = `INPUT first differs at read ${k / 2}: `
+              + `0x${ra.io[k].toString(16)}=0x${ra.io[k + 1].toString(16)} vs `
+              + `0x${rb.io[k].toString(16)}=0x${rb.io[k + 1].toString(16)}`;
+            break;
+          }
+        }
+        if (k >= n) iodiff = `inputs identical over ${n / 2} reads`
+          + (ra.io.length === rb.io.length ? '' : ` BUT COUNTS DIFFER ${ra.io.length / 2}/${rb.io.length / 2}`);
+      }
       let gdiff = 'no register-file comparison';
       if (ra.regs && rb.regs && ra.pcs) {
         const lim4 = Math.min(ra.pn, rb.pn);
@@ -417,7 +445,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
