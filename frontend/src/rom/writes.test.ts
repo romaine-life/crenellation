@@ -61,7 +61,7 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
-                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null } {
+                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null } {
   const sys = new System(rom, board);
   // Shift the first interrupt. This is the discriminator for "is a value that
   // differs between the two runs a real quantity the game computed, or residue
@@ -83,6 +83,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const pcs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const cyc: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const srs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
+  const frs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   let pn = 0;
   sys.m.atPcExtra = (pc: number): void => {
     inWait = pc >= WAIT_LO && pc < WAIT_HI;
@@ -99,7 +100,8 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // produced confident nonsense.
     if (pcs && (sys.m.pollAt === null || sys.m.pollAt.has(pc))) {
       if (pn < pcs.length) { pcs[pn] = pc | 0; if (cyc) cyc[pn] = sys.m.cycles | 0;
-        if (srs) srs[pn] = ((sys.m.getSR ? sys.m.getSR() : sys.m.sr) | 0); }
+        if (srs) srs[pn] = ((sys.m.getSR ? sys.m.getSR() : sys.m.sr) | 0);
+        if (frs) frs[pn] = sys.frames | 0; }
       pn += 1;
     }
   };
@@ -263,7 +265,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack, pcs, pn, cyc, srs };
+  return { run, stack, romStack, pcs, pn, cyc, srs, frs };
 }
 
 /** One pattern's two write streams, compared. */
@@ -312,7 +314,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
         + (at >= 0 && ra.srs && rb.srs
-          ? `sr at the part: 0x${(ra.srs[at] >>> 0).toString(16)}/0x${(rb.srs[at] >>> 0).toString(16)}`
+          ? `frames at the part: ${ra.frs![at]}/${rb.frs![at]}, one before: `+ `${ra.frs![Math.max(0, at - 1)]}/${rb.frs![Math.max(0, at - 1)]}; `+ `sr at the part: 0x${(ra.srs[at] >>> 0).toString(16)}/0x${(rb.srs[at] >>> 0).toString(16)}`
             + `, one before: 0x${(ra.srs[Math.max(0, at - 1)] >>> 0).toString(16)}`
             + `/0x${(rb.srs[Math.max(0, at - 1)] >>> 0).toString(16)}; ` : '')
         + (at < 0 ? `poll ADDRESSES identical over all ${lim} compared`
