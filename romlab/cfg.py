@@ -127,7 +127,19 @@ def build(lo, hi):
         # This is the same fault the comment above describes for inner entries -
         # a block head in one dispatcher and interior in the other - and it
         # wants the same answer: say the boundary is there.
-        if b in TERMINAL or b in CONDITIONAL or b in DBCC or b in ("bsr", "jsr"):
+        # Writing the status register ends a block for the same reason. The
+        # mask lives there, so lowering it makes a pending interrupt takeable
+        # at once: the chip takes it at the next instruction, and lifted code
+        # that has already charged the rest of the block reaches that moment
+        # somewhere else. Measured after the bsr/jsr fix above, the two blocks
+        # still parting were 0x620, which is `move #$2000,sr`, and 0x133e6,
+        # which is an rte restoring sr from the stack - both mask changes and
+        # nothing else in common. rte is already TERMINAL; a move to sr is not,
+        # and that is the gap.
+        writes_sr = (b in ("move", "andi", "ori", "eori")
+                     and (i.op_str or "").rstrip().endswith("sr"))
+        if (b in TERMINAL or b in CONDITIONAL or b in DBCC
+                or b in ("bsr", "jsr") or writes_sr):
             nxt = i.address + i.size
             if lo <= nxt < hi:
                 leaders.add(nxt)
