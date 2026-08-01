@@ -75,10 +75,10 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const io: number[] = [];
   const baseIn = sys.m.inputAt, baseTr = sys.m.trackAt;
   sys.m.inputAt = (a: number): number => {
-    const v = baseIn ? baseIn(a) : 0xff; if (io.length < 400000) io.push(a, v); return v;
+    const v = baseIn ? baseIn(a) : 0xff; if (io.length < 400000) io.push(a, v, sys.m.pc | 0); return v;
   };
   sys.m.trackAt = (a: number): number => {
-    const v = baseTr ? baseTr(a) : 0; if (io.length < 400000) io.push(a, v); return v;
+    const v = baseTr ? baseTr(a) : 0; if (io.length < 400000) io.push(a, v, sys.m.pc | 0); return v;
   };
   // Shift the first interrupt. This is the discriminator for "is a value that
   // differs between the two runs a real quantity the game computed, or residue
@@ -374,16 +374,16 @@ function compare(p: Pattern): { note: string; agreed: number } {
       if (ra.io && rb.io) {
         const n = Math.min(ra.io.length, rb.io.length);
         let k = 0;
-        for (; k < n; k += 2) {
+        for (; k < n; k += 3) {
           if (ra.io[k] !== rb.io[k] || ra.io[k + 1] !== rb.io[k + 1]) {
-            iodiff = `INPUT first differs at read ${k / 2}: `
-              + `0x${ra.io[k].toString(16)}=0x${ra.io[k + 1].toString(16)} vs `
-              + `0x${rb.io[k].toString(16)}=0x${rb.io[k + 1].toString(16)}`;
+            iodiff = `INPUT first differs at read ${k / 3}: `
+              + `0x${ra.io[k].toString(16)}=0x${ra.io[k + 1].toString(16)} @pc 0x${(ra.io[k + 2] >>> 0).toString(16)}`
+              + ` vs 0x${rb.io[k].toString(16)}=0x${rb.io[k + 1].toString(16)} @pc 0x${(rb.io[k + 2] >>> 0).toString(16)}`;
             break;
           }
         }
-        if (k >= n) iodiff = `inputs identical over ${n / 2} reads`
-          + (ra.io.length === rb.io.length ? '' : ` BUT COUNTS DIFFER ${ra.io.length / 2}/${rb.io.length / 2}`);
+        if (k >= n) iodiff = `inputs identical over ${n / 3} reads`
+          + (ra.io.length === rb.io.length ? '' : ` BUT COUNTS DIFFER ${ra.io.length / 3}/${rb.io.length / 3}`);
       }
       let gdiff = 'no register-file comparison';
       if (ra.regs && rb.regs && ra.pcs) {
