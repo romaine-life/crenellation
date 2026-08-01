@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0x1e6dc": [
+    "decompress the tile with this id",
+    "the indexed form of 0x11EFE: it looks the caller's tile id up in the word table at 0x2161A to get an offset, adds that to the tile set at 0xD2608, seeds d4 with 7 for the eight-pixel column, calls the decompressor, and returns the destination advanced by 8. So 0x2161A maps a tile id to its position in the compressed set, and 0x11EFE is the same thing when the caller already has the offset. Read at 0x1E6DC-0x1E720."
+  ],
+  "0x1942a": [
+    "replace the high nibble of eight rows",
+    "builds a long from the caller's byte repeated four times, then walks 0x400 longs from 0x200004 plus the second byte shifted left twelve - 4096 bytes, eight rows at the 0x200 stride - keeping each long's low nibbles (mask 0x0F0F0F0F) and replacing the high ones. A recolour that preserves whatever the low nibble encodes. Read at 0x1942A-0x1946E."
+  ],
   "0x404a": [
     "draw at the pixel coordinate, origin offset by four",
     "turns a pair of words into a playfield address as 0x200004 plus (y - 4) shifted left nine - the 0x200 row stride - plus (x - 4), then blits through 0x11EF2 with a size of 0x80 and a source read from 0x34604. The -4 on both axes is the same offset that makes the playfield base 0x200004 rather than 0x200000: there is a four-pixel border the coordinates exclude. Read at 0x404A-0x408E."
