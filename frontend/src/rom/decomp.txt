@@ -1,4 +1,4 @@
-1182 decompiled routines, 3634 comparisons against the machine
+1182 decompiled routines, 3629 comparisons against the machine
 61 routines had trials voided - the harness stubbed a call they made: 0xe82 0xefc 0xfb4 0x1064 0x106c 0x1074 0x107c 0x10c8
 4 disagree:
 0xb032 trial 0: memory differs at 0x3e0a69 - machine 5, decompiled 27

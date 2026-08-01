@@ -1,4 +1,4 @@
-chip reached 6232 distinct addresses; port reached 1201
+chip reached 6232 distinct addresses; port reached 1523
 first address the chip reached and the port never did: 0x13012 (chip's 0th)
 chip's path around it: 0x13012 0x13014 0x13010 0x13018
 routines: chip entered 215, port entered 208
