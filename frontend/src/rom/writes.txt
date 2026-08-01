@@ -1,9 +1,9 @@
-attract, two demo loops: diverge at write 12629 of 600000/600000; cycles first differ at write 0 (139054 vs 139080, 3e0000)
-  cycle stack: Machine <- store16 <- ramTestAllPatterns <- call <- System <- record <- compare <- Array <- D (cycles 32930414 vs 32930430 at the last common write, 32986354 vs 32983450 at this one)
-  common:     0x3e32c4=1/16 0x3e32c2=0/16 0x3e32c0=0/16 0x3e32be=0/16 0x3e32cd=0/8 0x3e3542=3e32cd/32 0x3e3546=0/16 0x3e353e=3e34cc/32
-  recompiled: 0x3e32bc=4516/16 0x3e32ba=1/16 0x3e32b8=2004/16 0x3e32b6=3d8e/16 0x3e32b4=3e/16 0x3e32b2=32cd/16 0x3e32b0=3e/16 0x3e32ae=2/16 0x3e32ac=0/16 0x3e32aa=400/16
-  decompiled: 0x3e32bc=4510/16 0x3e32ba=1/16 0x3e32b8=2004/16 0x3e32b6=3d8e/16 0x3e32b4=3e/16 0x3e32b2=32cd/16 0x3e32b0=3e/16 0x3e32ae=2/16 0x3e32ac=0/16 0x3e32aa=400/16
+attract, two demo loops: diverge at write 9 of 4143/4135; cycles first differ at write 0 (32922558 vs 32922598, 3e32be)
+  cycle stack: Machine <- Machine <- push <- fn_1b4be <- call <- callDecompiled <- callRom <- fn_19f3e <- call (cycles 32930250 vs 32930308 at the last common write, 32986354 vs 32983450 at this one)
+  common:     0x3e32bc=0/16 0x3e32be=1/16 0x3e32bc=0/16 0x3e32be=35d6/16 0x3e32bc=1/16 0x3e32be=9996/16 0x3e32bc=1/16 0x3e32be=0/16
+  recompiled: 0x3e32bc=4516/16 0x3e32bc=3536/16 0x3e32be=0/16 0x3e32bc=4516/16 0x3e32bc=3536/16 0x3e32be=0/16 0x3e32bc=4516/16 0x3e32bc=3536/16 0x3e32be=0/16 0x3e32bc=4516/16
+  decompiled: 0x3e32bc=4510/16 0x3e32bc=3536/16 0x3e32be=0/16 0x3e32bc=4510/16 0x3e32bc=3536/16 0x3e32be=0/16 0x3e32bc=4510/16 0x3e32bc=3536/16 0x3e32be=0/16 0x3e32bc=4510/16
   stack:      Machine <- Machine <- Machine <- Machine <- takeIrq <- soundChannelDispatch <- call <- callDecompiled <- callRom
   rom stack recompiled: 0x10000 <- 0x1003e <- 0x10000 <- 0x137b0 <- 0x145ac <- 0x10000 <- 0x135d6 <- 0x91b6
   rom stack decompiled: 0x10000 <- 0x1003e <- 0x10000 <- 0x137b0 <- 0x145ac <- 0x10000 <- 0x135d6 <- 0x91b6
-  clock gap over 12629 writes: 0..190; interrupts taken at the last common write: 1 vs 1; poll points reached: 1203457 vs 1203590; d2 (the colour base) 0x3e34cc vs 0x3e34cc; a6 at the divergence: 0x3e32ce vs 0x3e32ce (same frame, so the contents differ)
+  clock gap over 9 writes: 0..58; interrupts taken at the last common write: 1 vs 1; poll points reached: 1203455 vs 1203588; d2 (the colour base) 0x3e34cc vs 0x3e34cc; a6 at the divergence: 0x3e32ce vs 0x3e32ce (same frame, so the contents differ)
