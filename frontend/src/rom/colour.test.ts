@@ -36,6 +36,7 @@ describe('colour base', () => {
     const seen = new Map<string, number>();
     const STOP = new Error('enough');
     let n = 0;
+    let prev = 0;
     sys.m.atPcExtra = (pc: number): void => {
       // At the decompressor's entry ONLY. Watching d2 wherever it happens to
       // hold a bank byte was a mistake: screenDissolve counts down through
@@ -77,14 +78,16 @@ describe('colour base', () => {
       // (a7) is only this wrapper's own return.
       if (pc === 0x11f08) {
         const a8 = sys.m.load((sys.m.a7 + 36) >>> 0, 32) >>> 0;
-        const chain: string[] = [];
-        for (let i = 0; i < 200 && chain.length < 3; i += 2) {
-          const w = sys.m.load((sys.m.a7 + i) >>> 0, 32) >>> 0;
-          if (w >= 0x400 && w < 0x20000 && (w & 1) === 0) chain.push('0x' + w.toString(16));
-        }
-        const kk = `ARG8=0x${(a8 & 0xffff).toString(16)} via ${chain.join(' <- ')}`;
+        // The caller, from the machine rather than from the stack. Walking the
+        // stack for "ROM-looking" words accepts any even value in 0x400-0x20000,
+        // so a coordinate or a packed field passes the filter and prints as a
+        // return address - which is how 0x39AA came to be called a caller when
+        // no call to it exists. The previous program counter is exact: it is
+        // the instruction that transferred here.
+        const kk = `ARG8=0x${(a8 & 0xffff).toString(16)} from 0x${prev.toString(16)}`;
         seen.set(kk, (seen.get(kk) ?? 0) + 1);
       }
+      prev = pc;
       if (pc === 0x11f18 || pc === 0x11f2a) {
         const v = sys.m.d2 & 0xff;
         if (v === 0x80 || v === 0x90 || v === 0xa0 || v === 0xb0) {
