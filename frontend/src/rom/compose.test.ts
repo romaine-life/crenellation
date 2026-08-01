@@ -333,6 +333,11 @@ function play(p: Pattern, entry: Entry, upto = 0): {
         }
       }
       digests.push(h); pf.push(pfDigest()); lastTook = frames;
+      // Keep the last snapshot of a normal run too, not only of a replay:
+      // MODIFIED renders the visible screen out of it, and until this was
+      // added `shot` was null outside replay mode so that comparison
+      // silently saw two blank screens and reported no difference.
+      if (digests.length >= limit) shot = snapshot(sys);
       if (digests.length >= limit) throw STOP;
     }
   };
@@ -494,9 +499,36 @@ describe('the decompiled routines compose', () => {
       // pixels with it, 0 without. Making this one a proof needs the
       // transient playfield divergence understood first; it is not simply a
       // matter of digesting a smaller region.
-      const at = firstDiff(a.pf, b.pf);
+      // Compare the *visible screen* rendered from each run's final snapshot,
+      // not the raw playfield buffer. That is what makes this a proof rather
+      // than an echo: the buffer parts at ~391 for reasons unrelated to the
+      // edit - measured, with the edit reverted - while the visible 336x240
+      // through the palette is identical without the change and differs by
+      // exactly the wall glyphs with it. draws.test establishes that for
+      // attract; doing it here extends the same proof to every pattern -
+      // except it does not, and finding that out is the point. Measured
+      // 2026-07-31 with the edit REVERTED: attract and the idle run correctly
+      // report nothing, but `one player` and `two players` still show a
+      // visible difference. So the two runs' screens diverge on gameplay
+      // patterns for reasons unrelated to wallCellSet, and draws.test never
+      // saw it because draws.test only runs attract. This comparison is
+      // therefore a clean proof on attract and idle, and contaminated on the
+      // two gameplay patterns; chase that divergence before trusting it
+      // everywhere.
+      const px = (s: Uint8Array, i: number): number => {
+        const c = s[0x20000 + i];
+        return (s[0x40000 + c * 4] << 8) | s[0x40000 + c * 4 + 2];
+      };
+      let at = 0;
+      if (a.shot && b.shot) {
+        for (let y = 0; y < 240 && !at; y += 1) {
+          for (let x = 0; x < 336; x += 1) {
+            if (px(a.shot, y * 512 + x) !== px(b.shot, y * 512 + x)) { at = 1; break; }
+          }
+        }
+      }
       if (at > 0) seen += 1;
-      lines.push(`${p.name}: ${at > 0 ? `change visible from frame ${at}`
+      lines.push(`${p.name}: ${at > 0 ? 'change visible on screen'
         : `no wall laid, so nothing to see (${a.digests.length} frames)`}`);
     }
     writeFileSync(join(here, 'compose-modified.txt'), lines.join('\n') + '\n');
