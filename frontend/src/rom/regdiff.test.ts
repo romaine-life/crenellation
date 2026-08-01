@@ -111,7 +111,8 @@ type M = Record<string, number>;
 
 /** Hash every poll's register state; or, past `dumpAt`, capture them whole. */
 function scan(entry: (addr: number, m: System['m']) => void,
-              dumpAt: number): { h: Int32Array; n: number; pc: number; regs: number[]; sync: number; fresh: Uint8Array; vals: Int32Array; mask: Int32Array } {
+              dumpAt: number): { h: Int32Array; n: number; pc: number; regs: number[]; sync: number; fresh: Uint8Array; vals: Int32Array; mask: Int32Array;
+                  frames: number; irq: number; steps: number } {
   const sys = new System(rom, board);
   bind(sys.m);
   sys.m.pollAt = POLL_AT as Set<number>;
@@ -204,7 +205,8 @@ function scan(entry: (addr: number, m: System['m']) => void,
     // barely started.
     if ((e as Error).message !== 'done') throw e;
   }
-  return { h, n, pc, regs, sync, fresh, vals, mask };
+  return { h, n, pc, regs, sync, fresh, vals, mask,
+    frames: sys.frames, irq: sys.m.irqTaken | 0, steps: sys.m.steps | 0 };
 }
 
 describe('registers', () => {
@@ -230,7 +232,8 @@ describe('registers', () => {
     }
     compared = cmp;
     void bad;
-    let out = `${NAME}: ${a.n} vs ${b.n} entries over ${FRAMES} frames, comparing from ${Math.max(a.sync, b.sync, 0)} (synced at ${a.sync}/${b.sync}); `;
+    let out = `${NAME}: frames ${a.frames}/${b.frames}, irqTaken ${a.irq}/${b.irq}, steps ${a.steps}/${b.steps}
+  ${a.n} vs ${b.n} samples over ${FRAMES} frames, comparing from ${Math.max(a.sync, b.sync, 0)} (synced at ${a.sync}/${b.sync}); `;
     if (at < 0) {
       out += `registers agree at every one of ${compared} comparable entries`;
     } else {
