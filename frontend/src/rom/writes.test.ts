@@ -65,7 +65,7 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
-                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null } {
+                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null } {
   const sys = new System(rom, board);
   // Shift the first interrupt. This is the discriminator for "is a value that
   // differs between the two runs a real quantity the game computed, or residue
@@ -90,6 +90,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   const frs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const d2s: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   const regs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
+  const early: Int32Array | null = PC_SEQ ? new Int32Array(800) : null;
   const fcyc: Int32Array | null = PC_SEQ ? new Int32Array(4096) : null;
   let pn = 0;
   sys.m.atPcExtra = (pc: number): void => {
@@ -119,6 +120,10 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
             h = Math.imul(h, 0x01000193) >>> 0;
           }
           regs[pn] = h | 0;
+          // The first hundred polls in full. The fingerprint says WHICH poll
+          // parts; this says which register, and the answer is only useful
+          // near the start - by poll 3 the run has executed three blocks.
+          if (early && pn < 100) for (let k = 0; k < 8; k += 1) early[pn * 8 + k] = r[k] | 0;
         } }
       // Alignment-free: the cycle count at which each frame crossing happened.
       // Indexed by frame number, so it needs no assumption that poll index i
@@ -294,7 +299,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs };
+  return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early };
 }
 
 /** One pattern's two write streams, compared. */
@@ -352,6 +357,14 @@ function compare(p: Pattern): { note: string; agreed: number } {
           if (ra.regs[i] !== rb.regs[i]) {
             gdiff = `REGISTER FILE first differs at poll ${i}, at 0x${ra.pcs[i].toString(16)}`
               + ` (previous block 0x${ra.pcs[Math.max(0, i - 1)].toString(16)})`;
+            if (i < 100 && ra.early && rb.early) {
+              const which: string[] = [];
+              for (let k = 0; k < 8; k += 1) {
+                const x = ra.early[i * 8 + k], y = rb.early[i * 8 + k];
+                if (x !== y) which.push(`d${k}=0x${(x >>> 0).toString(16)}/0x${(y >>> 0).toString(16)}`);
+              }
+              gdiff += ` -> ${which.join(' ')}`;
+            }
             break;
           }
           if (i === lim4 - 1) gdiff = `register file identical over all ${lim4} polls`;
