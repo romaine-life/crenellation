@@ -84,7 +84,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     const m2 = sys.m;
     if (irqRegs.length < 200000) {
       irqRegs.push(m2.d0 | 0, m2.d1 | 0, m2.d2 | 0, m2.d3 | 0,
-                   m2.d4 | 0, m2.d5 | 0, m2.d6 | 0, m2.d7 | 0, m2.pc | 0);
+                   m2.d4 | 0, m2.d5 | 0, m2.d6 | 0, m2.d7 | 0, m2.pc | 0, pn | 0);
     }
     return baseFrame(level);
   };
@@ -414,17 +414,18 @@ function compare(p: Pattern): { note: string; agreed: number } {
       if (ra.irqRegs && rb.irqRegs) {
         const n2 = Math.min(ra.irqRegs.length, rb.irqRegs.length);
         let q = 0;
-        for (; q < n2; q += 9) {
+        for (; q < n2; q += 10) {
           let bad = -1;
           for (let k = 0; k < 8; k += 1) if (ra.irqRegs[q + k] !== rb.irqRegs[q + k]) { bad = k; break; }
           if (bad >= 0) {
-            qdiff = `IRQ REGISTERS first differ at interrupt ${q / 9}, pc 0x${(ra.irqRegs[q + 8] >>> 0).toString(16)}`
-              + `/0x${(rb.irqRegs[q + 8] >>> 0).toString(16)}: d${bad}=`
+            qdiff = `IRQ REGISTERS first differ at interrupt ${q / 10}, pc 0x${(ra.irqRegs[q + 8] >>> 0).toString(16)}`
+              + `/0x${(rb.irqRegs[q + 8] >>> 0).toString(16)}, POLL ${ra.irqRegs[q + 9]}/${rb.irqRegs[q + 9]}`
+              + `${ra.irqRegs[q + 9] === rb.irqRegs[q + 9] ? ' (aligned)' : ' (MISALIGNED)'}: d${bad}=`
               + `0x${(ra.irqRegs[q + bad] >>> 0).toString(16)} vs 0x${(rb.irqRegs[q + bad] >>> 0).toString(16)}`;
             break;
           }
         }
-        if (q >= n2) qdiff = `registers identical at all ${n2 / 9} interrupts`;
+        if (q >= n2) qdiff = `registers identical at all ${n2 / 10} interrupts`;
       }
       let iodiff = 'no input comparison';
       if (ra.io && rb.io) {
