@@ -19,6 +19,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { png } from './png';
 import { describe, it, expect } from 'vitest';
 
 import { System } from './system';
@@ -519,16 +520,42 @@ describe('the decompiled routines compose', () => {
         const c = s[0x20000 + i];
         return (s[0x40000 + c * 4] << 8) | s[0x40000 + c * 4 + 2];
       };
-      let at = 0;
+      let at = 0, x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
       if (a.shot && b.shot) {
-        for (let y = 0; y < 240 && !at; y += 1) {
+        for (let y = 0; y < 240; y += 1) {
           for (let x = 0; x < 336; x += 1) {
-            if (px(a.shot, y * 512 + x) !== px(b.shot, y * 512 + x)) { at = 1; break; }
+            if (px(a.shot, y * 512 + x) !== px(b.shot, y * 512 + x)) {
+              at += 1;
+              if (x < x0) x0 = x;
+              if (x > x1) x1 = x;
+              if (y < y0) y0 = y;
+              if (y > y1) y1 = y;
+            }
           }
         }
       }
+      if (at > 0) {
+        // Look at it. A count and a box say something differs; only the pixels
+        // say what. rgba() is System.palette's expansion, inlined because the
+        // snapshot is bytes rather than a live machine.
+        const rgba = (w: number): number => {
+          const i = (w >> 15) & 1;
+          const e = (v: number) => ((((v << 1) | i) << 2) | (((v << 1) | i) >> 4)) & 0xff;
+          return (0xff << 24) | (e(w & 0x1f) << 16) | (e((w >> 5) & 0x1f) << 8) | e((w >> 10) & 0x1f);
+        };
+        const w = x1 - x0 + 1, h = y1 - y0 + 1;
+        for (const [tag, s] of [['a', a.shot!], ['b', b.shot!]] as const) {
+          const buf = new Uint32Array(w * h);
+          for (let y = 0; y < h; y += 1)
+            for (let x = 0; x < w; x += 1)
+              buf[y * w + x] = rgba(px(s, (y + y0) * 512 + x + x0));
+          writeFileSync(join(__dirname, `modified-${p.name.split(',')[0].replace(/\W+/g, '-')}-${tag}.png`),
+            png(w, h, buf));
+        }
+      }
       if (at > 0) seen += 1;
-      lines.push(`${p.name}: ${at > 0 ? 'change visible on screen'
+      lines.push(`${p.name}: ${at > 0
+        ? `${at} pixels differ, box x ${x0}..${x1} y ${y0}..${y1}`
         : `no wall laid, so nothing to see (${a.digests.length} frames)`}`);
     }
     writeFileSync(join(here, 'compose-modified.txt'), lines.join('\n') + '\n');

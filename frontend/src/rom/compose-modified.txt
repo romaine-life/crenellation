@@ -1,6 +1,1 @@
-attract, two demo loops: no wall laid, so nothing to see (900 frames)
-one player: coin, join at the middle station, then fire: change visible on screen
-two players: both coin slots, left and right stations: change visible on screen
-three stations at once, second buttons too: no wall laid, so nothing to see (900 frames)
-service switch held, then released: no wall laid, so nothing to see (275 frames)
-no input at all, long run: no wall laid, so nothing to see (900 frames)
+one player: coin, join at the middle station, then fire: 4608 pixels differ, box x 12..331 y 96..111
