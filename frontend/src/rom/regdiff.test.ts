@@ -43,7 +43,22 @@
 // there has never been a sync to read. The instrument needs to start
 // comparing only once the decompiled side has synced at least once, and
 // picking that point by hand is guesswork; the honest version detects it.
-// Left here at exactly the state it was measured in.
+// THIRD ATTEMPT, which falsifies the fix the second one proposed. Detecting
+// the first sync rather than guessing it - the latch below - reports both
+// sides synced at sample 0, and sample 1 still reads zeros on the decompiled
+// side. So "has synced" is not a latch at all: the Machine's registers are
+// valid only at the particular call that synced them, and go stale again
+// immediately, because ENTRY also contains entries reached by jumpRom and by
+// direct dispatch where no setReg ran. There is no warm-up point that fixes
+// this, detected or guessed, and that whole line of attack is closed.
+//
+// What would work needs a change inside the runtime rather than in this file:
+// have setReg bump a counter, and compare only at samples where that counter
+// moved during the current call. Then the sampled set is exactly the set the
+// decompiled side actually populated, and the recompiled side can be sampled
+// at the same addresses. That is the fourth attempt, and it is a change to
+// generated code's runtime, so it belongs with handedits.py rather than here.
+// Left at exactly the state it was measured in.
 //
 // Diagnostic, not a ratchet: it is skipped unless REGDIFF is set, because it
 // runs the game four times.
@@ -74,12 +89,12 @@ type M = Record<string, number>;
 
 /** Hash every poll's register state; or, past `dumpAt`, capture them whole. */
 function scan(entry: (addr: number, m: System['m']) => void,
-              dumpAt: number): { h: Int32Array; n: number; pc: number; regs: number[] } {
+              dumpAt: number): { h: Int32Array; n: number; pc: number; regs: number[]; sync: number } {
   const sys = new System(rom, board);
   bind(sys.m);
   sys.m.pollAt = POLL_AT as Set<number>;
   const h = new Int32Array(dumpAt < 0 ? CAP : 1);
-  let n = 0, pc = 0;
+  let n = 0, pc = 0, sync = -1;
   let regs: number[] = [];
   const m = sys.m as unknown as M;
   sys.m.atPcExtra = (at: number): void => {
@@ -91,6 +106,12 @@ function scan(entry: (addr: number, m: System['m']) => void,
     // agree about what a register means. ENTRY is that set; POLL_AT is not,
     // which is what the header records.
     if (!ENTRY.has(at)) return;
+    // When did this side first have registers at all? The Machine's copy
+    // starts at zero and is only ever written by a sync, so the first sample
+    // with anything non-zero in it is the first sample worth comparing. That
+    // is detected, not a hand-picked warm-up: a constant here would produce a
+    // confident answer with nothing behind it.
+    if (sync < 0 && REGS.some((r) => m[r] !== 0)) sync = n;
     if (n === dumpAt) { pc = at; regs = REGS.map((r) => m[r] >>> 0); }
     if (dumpAt < 0) {
       // Cheap mix. A collision costs a wrong answer, not a wrong test - the
@@ -108,7 +129,7 @@ function scan(entry: (addr: number, m: System['m']) => void,
       if (s.frames >= FRAMES) throw new Error('done');
     }, entry);
   } catch { /* the frame limit, thrown from inside the machine */ }
-  return { h, n, pc, regs };
+  return { h, n, pc, regs, sync };
 }
 
 describe('registers', () => {
@@ -117,8 +138,9 @@ describe('registers', () => {
     const b = scan(viaDecompiled, -1);
     const lim = Math.min(a.n, b.n, CAP);
     let at = -1;
-    for (let i = 0; i < lim; i += 1) if (a.h[i] !== b.h[i]) { at = i; break; }
-    let out = `${NAME}: ${a.n} vs ${b.n} polls over ${FRAMES} frames; `;
+    const from = Math.max(a.sync, b.sync, 0);
+    for (let i = from; i < lim; i += 1) if (a.h[i] !== b.h[i]) { at = i; break; }
+    let out = `${NAME}: ${a.n} vs ${b.n} entries over ${FRAMES} frames, comparing from ${Math.max(a.sync, b.sync, 0)} (synced at ${a.sync}/${b.sync}); `;
     if (at < 0) {
       out += `registers agree at every one of ${lim} compared`;
     } else {

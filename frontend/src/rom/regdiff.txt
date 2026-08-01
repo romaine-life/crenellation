@@ -1,2 +1,2 @@
-attract: 28691 vs 28752 polls over 500 frames; first differ at poll 1 of 28691, pc 0x135ba (0x135ba on the other side)
+attract: 28691 vs 28752 entries over 500 frames, comparing from 0 (synced at 0/0); first differ at poll 1 of 28691, pc 0x135ba (0x135ba on the other side)
   differing: d0=0xfbbe/0x0 d1=0xffff/0x0 d3=0x1/0x0 a0=0x3c07fc/0x0 a1=0x3c07fc/0x0
