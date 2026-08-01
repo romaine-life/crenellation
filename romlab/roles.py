@@ -83,6 +83,16 @@ def rename(body, sig_regs, stack_names, decl, tail):
     taken = set()
     out = {}
     for r in sig_regs:
+        # A register that is later pointed at an unrelated constant address is
+        # not one thing for the length of the routine, and a role name claims it
+        # is. fn_07dce takes d4 as `player_` and fifty lines later does
+        # `player = (0x3e1968) >>> 0` and uses it as a pointer, so the name is
+        # right on entry and misleading by the end - which is worse for someone
+        # editing than d4 would have been, and this file's own standard says so.
+        # 331 of 2,852 named parameters had this shape when it was measured.
+        # Better to say nothing than to say something that stops being true.
+        if re.search(r"\b" + re.escape(r) + r" = \(0x[0-9a-f]{4,6}\) >>> 0;", body):
+            continue
         want = struct_role(body, r) or role(r, body, r.startswith("a"))
         if not want:
             continue
