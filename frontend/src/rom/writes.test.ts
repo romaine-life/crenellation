@@ -61,7 +61,7 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[];
-                                pcs: Int32Array | null; pn: number } {
+                                pcs: Int32Array | null; pn: number; cyc: Int32Array | null } {
   const sys = new System(rom, board);
   // Shift the first interrupt. This is the discriminator for "is a value that
   // differs between the two runs a real quantity the game computed, or residue
@@ -81,6 +81,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   // interrupt poll uses, which is the finest granularity either dispatcher has.
   let inWait = false;
   const pcs: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
+  const cyc: Int32Array | null = PC_SEQ ? new Int32Array(PC_CAP) : null;
   let pn = 0;
   sys.m.atPcExtra = (pc: number): void => {
     inWait = pc >= WAIT_LO && pc < WAIT_HI;
@@ -96,7 +97,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // silently drives the machine differently is exactly how regdiff.test.ts
     // produced confident nonsense.
     if (pcs && (sys.m.pollAt === null || sys.m.pollAt.has(pc))) {
-      if (pn < pcs.length) pcs[pn] = pc | 0;
+      if (pn < pcs.length) { pcs[pn] = pc | 0; if (cyc) cyc[pn] = sys.m.cycles | 0; }
       pn += 1;
     }
   };
@@ -260,7 +261,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack, romStack, pcs, pn };
+  return { run, stack, romStack, pcs, pn, cyc };
 }
 
 /** One pattern's two write streams, compared. */
@@ -276,7 +277,18 @@ function compare(p: Pattern): { note: string; agreed: number } {
       const lim = Math.min(ra.pn, rb.pn, PC_CAP);
       let at = -1;
       for (let i = 0; i < lim; i += 1) if (ra.pcs[i] !== rb.pcs[i]) { at = i; break; }
+      // The cost-model test. If the two clocks part far earlier than the
+      // control flow does, and drift steadily, then what separates the runs is
+      // cycle accounting rather than anything the game did - which is the
+      // difference between an unfixable seam and a cost model to correct.
+      let cAt = -1;
+      if (ra.cyc && rb.cyc) {
+        for (let i = 0; i < lim; i += 1) if (ra.cyc[i] !== rb.cyc[i]) { cAt = i; break; }
+      }
       seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; `
+        + (cAt < 0 ? 'clocks identical throughout; '
+          : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
+            + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); `)
         + (at < 0 ? `poll ADDRESSES identical over all ${lim} compared`
           : `part at poll ${at} of ${lim}: 0x${(ra.pcs[at] >>> 0).toString(16)}`
             + ` vs 0x${(rb.pcs[at] >>> 0).toString(16)}`
