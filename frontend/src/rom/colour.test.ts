@@ -96,7 +96,11 @@ describe('colour base', () => {
       // per address instead is immune: an address either side reaches is
       // reached with whatever value it has, and addresses only one side reports
       // simply have no counterpart to disagree with.
-      if (pc >= 0x11f2a && pc <= 0x12060 && a0seq.length < 400000) {
+      // Widened past the decompressor to its callers. Everything inside
+      // 0x11F2A-0x12060 has been compared instruction by instruction and is
+      // faithful, so the extra iteration is inherited - and a watch bounded to
+      // that routine could never have seen where from.
+      if (pc >= 0x00e00 && pc <= 0x12060 && a0seq.length < 400000) {
         // A checksum of all sixteen, so one pass covers every register without
         // a file of millions of numbers. Where the checksums first differ names
         // the address and the visit; which register it was is then one targeted
