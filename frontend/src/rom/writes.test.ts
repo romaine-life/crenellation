@@ -410,6 +410,26 @@ function compare(p: Pattern): { note: string; agreed: number } {
           if (i === lim5 - 1) pdiff = `pending and mask identical over ${lim5} polls`;
         }
       }
+      // Cycles alone, indexed by interrupt number. Registers can agree while
+      // the clocks have already drifted, and the drift is what matters: it is
+      // charged cost for identical work.
+      let ydiff = 'no interrupt-cycle comparison';
+      if (ra.irqRegs && rb.irqRegs) {
+        const n3 = Math.min(ra.irqRegs.length, rb.irqRegs.length);
+        let y = 0;
+        for (; y < n3; y += 11) {
+          if (ra.irqRegs[y + 10] !== rb.irqRegs[y + 10]) {
+            const prev = y >= 11
+              ? `; previous interrupt cycles ${ra.irqRegs[y - 1]}/${rb.irqRegs[y - 1]} `
+                + `(gap ${ra.irqRegs[y - 1] - rb.irqRegs[y - 1]})` : '';
+            ydiff = `CYCLES first differ at interrupt ${y / 11}, pc 0x${(ra.irqRegs[y + 8] >>> 0).toString(16)}`
+              + `/0x${(rb.irqRegs[y + 8] >>> 0).toString(16)}: ${ra.irqRegs[y + 10]}/${rb.irqRegs[y + 10]}`
+              + ` (gap ${ra.irqRegs[y + 10] - rb.irqRegs[y + 10]})${prev}`;
+            break;
+          }
+        }
+        if (y >= n3) ydiff = `interrupt cycles identical at all ${n3 / 11}`;
+      }
       let qdiff = 'no interrupt-register comparison';
       if (ra.irqRegs && rb.irqRegs) {
         const n2 = Math.min(ra.irqRegs.length, rb.irqRegs.length);
@@ -516,7 +536,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
