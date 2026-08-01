@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0xea7a": [
+    "which of the seven candidates is this record's pair",
+    "follows the record's field 0x4A - the candidate list 0x18FA draws starting positions from - and compares each of up to seven two-byte entries against the record's own pair at 0x48/0x49, returning the index it matched at (or 7 if none did). 0xEA68 calls this and stores the answer at 0x3E1956, so the carry-over flag is that index rather than a boolean. Read at 0xEA7A-0xEABA."
+  ],
+  "0xefba": [
+    "is this pair already in the event queue",
+    "the two-key form of 0xF000: same queue - count at 0x3E1CF4, twelve-byte entries from 0x3E1CF6 - but an entry only matches when both the long at offset 4 and the long at offset 8 equal the caller's two. So queue entries are keyed on a pair, and 0xF000 is the single-key lookup over the same structure. Read at 0xEFBA-0xEFFA."
+  ],
   "0x130b0": [
     "run one memory test with interrupts masked",
     "raises the interrupt mask to level 7 (sr = 0x2700), reads a descriptor - count, then two pointers, then a selector word - and jumps to ramTestAllPatterns at 0x1378E or to 0x1397A depending on that word, returning through a `lea $X(pc),a4` continuation rather than a call. It drops the mask back to 0x2000 before returning. This is the self-test driver, and the masking is why the service-switch pattern behaves unlike the others: for its duration no frame interrupt arrives at all. Read at 0x130B0-0x130EE."
