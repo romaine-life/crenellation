@@ -81,9 +81,15 @@ describe('colour base', () => {
       // between the runs, so these sequences line up and the first entry that
       // differs names the instruction. Recording changes rather than sampling
       // avoids the cap-and-dedupe mistake that hid this once already.
-      if ((sys.m.a0 | 0) !== lastA0) {
-        lastA0 = sys.m.a0 | 0;
-        if (a0seq.length < 400000) a0seq.push(pc, lastA0);
+      // a0 - the compressed-source pointer - at every block head inside the
+      // decompressor. It is measured two bytes ahead in the oracle at the
+      // divergence, so whichever block first sees a different a0 is upstream of
+      // the wrong colour: the run that consumed a different number of source
+      // bytes went down a different branch there. Recorded in sequence, not
+      // deduped, and only inside the routine, so the list stays short enough to
+      // compare position by position.
+      if (pc >= 0x11f2a && pc <= 0x12060 && a0seq.length < 400000) {
+        a0seq.push(pc, sys.m.a0 | 0);
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
