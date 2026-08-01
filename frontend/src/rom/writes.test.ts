@@ -325,6 +325,30 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
+      // Which BLOCK ran a different number of times. Clocks are equal at
+      // every poll and frame crossings are identical, so the question is not
+      // when the interrupt arrives but which loop spun once more - and that is
+      // a count, not a timestamp. Tally every address in both runs up to the
+      // point the sequences part, and report the addresses whose tallies
+      // differ most: a busy-wait that exits a beat early shows up here as one
+      // address off by one while everything around it matches.
+      let cdiff = 'no block-count comparison';
+      if (ra.pcs && rb.pcs) {
+        const lim2 = Math.min(ra.pn, rb.pn);
+        const ca = new Map<number, number>(); const cb = new Map<number, number>();
+        for (let i = 0; i < lim2; i += 1) {
+          ca.set(ra.pcs[i], (ca.get(ra.pcs[i]) ?? 0) + 1);
+          cb.set(rb.pcs[i], (cb.get(rb.pcs[i]) ?? 0) + 1);
+        }
+        const off: Array<[number, number, number]> = [];
+        for (const [pc, n] of ca) { const m2 = cb.get(pc) ?? 0; if (n !== m2) off.push([pc, n, m2]); }
+        for (const [pc, n] of cb) if (!ca.has(pc)) off.push([pc, 0, n]);
+        off.sort((x, y) => Math.abs(y[1] - y[2]) - Math.abs(x[1] - x[2]));
+        cdiff = off.length === 0 ? 'every block ran the same number of times'
+          : `${off.length} blocks differ in count; worst: `
+            + off.slice(0, 6).map(([pc, n, m2]) =>
+              `0x${pc.toString(16)} ${n}/${m2}`).join(' ');
+      }
       let fdiff = 'frame crossings identical';
       if (ra.fcyc && rb.fcyc) {
         for (let f = 1; f < 300; f += 1) {
@@ -335,7 +359,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
