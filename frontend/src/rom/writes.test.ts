@@ -55,7 +55,7 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
   irq: Int32Array; pol: Int32Array; a6: Int32Array; n: number };
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
-                stopAt = -1): { run: Run; stack: string } {
+                stopAt = -1): { run: Run; stack: string; romStack: number[] } {
   const sys = new System(rom, board);
   bind(sys.m);
   // Both runs poll for interrupts at the same addresses - the decompiled
@@ -77,6 +77,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     cyc: new Int32Array(CAP), irq: new Int32Array(CAP),
     pol: new Int32Array(CAP), a6: new Int32Array(CAP), n: 0 };
   let stack = '';
+  let romStack: number[] = [];
   const FULL = new Error('recorded enough');
   const note = (a: number, v: number, bits: number): void => {
     if (a < LO || a >= HI) return;
@@ -109,6 +110,22 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
       // every time the bug is in an argument.
       stack = (new Error().stack ?? '').split('\n').slice(2, 30)
         .map((l) => (l.match(/at (\w+)/) ?? [])[1]).filter(Boolean).join(' <- ');
+      // ...except the JavaScript stack cannot reach the caller at all, which
+      // is why the comment above kept being disappointed. Both dispatchers are
+      // trampolines: a routine calls another by returning to the loop with a
+      // new program counter, so ROM call depth is not JS call depth, and
+      // `call <- callDecompiled <- callRom` repeated is the whole of what JS
+      // knows. The chain is on the machine's own stack, in the same form in
+      // both runs, so read it there. A longword in the overlay's code range
+      // and even is a return address pushed by bsr/jsr; data pointers and
+      // counters mostly fall outside it. Some of what this prints is
+      // coincidence - check a hit against facts.json before believing it.
+      romStack = [sys.m.a7 >>> 0];
+      for (let i = 0; i < 96; i += 2) {
+        const a = (sys.m.a7 + i) >>> 0;
+        romStack.push(((sys.m.byte(a) << 24) | (sys.m.byte(a + 1) << 16)
+          | (sys.m.byte(a + 2) << 8) | sys.m.byte(a + 3)) >>> 0);
+      }
     }
     // The cycle clock at each write. If the two runs disagree here, the
     // pacing is wrong and fixable; if they agree, what differs is only
@@ -206,7 +223,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // ran its length.
     if (e !== STOP && e !== FULL) run.n = run.n;
   }
-  return { run, stack };
+  return { run, stack, romStack };
 }
 
 /** One pattern's two write streams, compared. */
@@ -276,7 +293,18 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // branch the machine never takes - which is the divergence, not a
       // separate fault. The stack is captured before that happens.
       let who = '';
+      let rs = '';
+      for (const [tag, via] of [['recompiled', viaRecompiled],
+                                ['decompiled', viaDecompiled]] as const) {
+        try {
+          const r = record(p, via, i).romStack;
+          rs += `
+  rom stack ${tag}: ${r.map((v) => '0x' + v.toString(16)).join(' <- ')}`;
+        } catch (e) { rs += `
+  rom stack ${tag}: (${(e as Error).message})`; }
+      }
       try { who = record(p, viaDecompiled, i).stack; } catch (e) { who = `(${(e as Error).message})`; }
+      who += rs;
       // A window either side, not three writes. The first differing write is
       // often several writes downstream of the cause, and the run up to it is
       // what says which.
