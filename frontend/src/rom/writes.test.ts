@@ -423,6 +423,27 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // A block charged a constant should show a single value; anything else
       // says the charge depends on something, and comparing the two runs'
       // histograms says on what.
+      // Where each run is when the interrupt lands. The chip spins in a
+      // busy-wait until the frame handler arrives, so a faithful port should
+      // be interrupted in the same places. Histogram the pc recorded at each
+      // interruptFrame - it is the block the run was about to execute.
+      let ldiff = 'no landing-site comparison';
+      if (ra.irqRegs && rb.irqRegs) {
+        const land = (r: typeof ra) => {
+          const h = new Map<number, number>();
+          for (let q = 0; q + 10 < r.irqRegs.length; q += 11) {
+            const pc = r.irqRegs[q + 8] >>> 0;
+            h.set(pc, (h.get(pc) ?? 0) + 1);
+          }
+          return [...h.entries()].sort((x, y) => y[1] - x[1]);
+        };
+        const LA = land(ra), LB = land(rb);
+        ldiff = `interrupts land -- recompiled: `
+          + LA.slice(0, 5).map(([pc, n]) => `0x${pc.toString(16)}x${n}`).join(' ')
+          + ` (${LA.length} sites) | decompiled: `
+          + LB.slice(0, 5).map(([pc, n]) => `0x${pc.toString(16)}x${n}`).join(' ')
+          + ` (${LB.length} sites)`;
+      }
       let hdiff = 'no histogram';
       if (ra.cyc && rb.cyc && ra.pcs && rb.pcs) {
         const hist = (r: typeof ra) => {
@@ -588,7 +609,7 @@ function compare(p: Pattern): { note: string; agreed: number } {
           }
         }
       }
-      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${hdiff}; ${mdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
+      seq.push(`${p.name}: polls ${ra.pn} vs ${rb.pn}; ${fdiff}; ${pdiff}; ${ldiff}; ${hdiff}; ${mdiff}; ${ydiff}; ${qdiff}; ${iodiff}; ${gdiff}; ${rdiff}; ${cdiff}; `
         + (cAt < 0 ? 'clocks identical throughout; '
           : `clocks part at poll ${cAt} (${ra.cyc![cAt]} vs ${rb.cyc![cAt]}, `
             + `at 0x${(ra.pcs[cAt] >>> 0).toString(16)}); mispriced blocks: ${where.join(' ')}; `)
