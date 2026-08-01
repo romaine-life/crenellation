@@ -58,6 +58,24 @@
 // decompiled side actually populated, and the recompiled side can be sampled
 // at the same addresses. That is the fourth attempt, and it is a change to
 // generated code's runtime, so it belongs with handedits.py rather than here.
+// FOURTH ATTEMPT, built and measured, and it does not work either - but it
+// fails in a way I could not explain, which is worth more than a tidy stop.
+// The accessor properties below make every write to a register observable
+// from the test without changing generated code, and setReg really does write
+// M[r] (decompiled.ts:29), so every sync should be visible. Only 2 of 28,691
+// entries come back marked fresh. Those two facts do not fit together and the
+// reason is NOT established - do not build on this until it is. The obvious
+// suspects, none checked: bind() rebinding M between the two scans; the
+// accessors being defined on sys.m while M points somewhere else by the time
+// the run starts; or ENTRY addresses being reached overwhelmingly by paths
+// that genuinely do not sync, which would make the sparsity real and the
+// instrument simply inapplicable rather than broken.
+//
+// Four attempts is enough to say the shape of the problem out loud: comparing
+// registers between these two dispatchers is not a small instrument, because
+// they do not agree on where a register lives or when it is valid, and every
+// version of the comparison founders on that rather than on a detail. The
+// value of this file is now the four recorded failures, not the code.
 // Left at exactly the state it was measured in.
 //
 // Diagnostic, not a ratchet: it is skipped unless REGDIFF is set, because it
@@ -89,14 +107,31 @@ type M = Record<string, number>;
 
 /** Hash every poll's register state; or, past `dumpAt`, capture them whole. */
 function scan(entry: (addr: number, m: System['m']) => void,
-              dumpAt: number): { h: Int32Array; n: number; pc: number; regs: number[]; sync: number } {
+              dumpAt: number): { h: Int32Array; n: number; pc: number; regs: number[]; sync: number; fresh: Uint8Array } {
   const sys = new System(rom, board);
   bind(sys.m);
   sys.m.pollAt = POLL_AT as Set<number>;
   const h = new Int32Array(dumpAt < 0 ? CAP : 1);
+  const fresh = new Uint8Array(dumpAt < 0 ? CAP : 1);
   let n = 0, pc = 0, sync = -1;
   let regs: number[] = [];
   const m = sys.m as unknown as M;
+  // Count register writes without touching generated code. The Machine's
+  // registers are plain fields, so an accessor property defined on the
+  // instance shadows each one and every setReg becomes observable from out
+  // here. This is what the third attempt lacked: not "has this side ever
+  // synced" but "did it sync for THIS call", which is the only question that
+  // makes a sample comparable.
+  let ver = 0;
+  for (const r of REGS) {
+    let v = m[r] | 0;
+    Object.defineProperty(m, r, {
+      configurable: true,
+      get: () => v,
+      set: (x: number) => { v = x | 0; ver += 1; },
+    });
+  }
+  let lastVer = -1;
   sys.m.atPcExtra = (at: number): void => {
     // Routine entries, not poll points. The decompiled side syncs every live
     // register into the Machine immediately before a callRom, and a callee
@@ -111,7 +146,9 @@ function scan(entry: (addr: number, m: System['m']) => void,
     // with anything non-zero in it is the first sample worth comparing. That
     // is detected, not a hand-picked warm-up: a constant here would produce a
     // confident answer with nothing behind it.
-    if (sync < 0 && REGS.some((r) => m[r] !== 0)) sync = n;
+    // Synced for this call, not merely at some point in the past.
+    if (ver !== lastVer) { if (sync < 0) sync = n; fresh[n] = 1; }
+    lastVer = ver;
     if (n === dumpAt) { pc = at; regs = REGS.map((r) => m[r] >>> 0); }
     if (dumpAt < 0) {
       // Cheap mix. A collision costs a wrong answer, not a wrong test - the
@@ -129,7 +166,7 @@ function scan(entry: (addr: number, m: System['m']) => void,
       if (s.frames >= FRAMES) throw new Error('done');
     }, entry);
   } catch { /* the frame limit, thrown from inside the machine */ }
-  return { h, n, pc, regs, sync };
+  return { h, n, pc, regs, sync, fresh };
 }
 
 describe('registers', () => {
@@ -137,16 +174,25 @@ describe('registers', () => {
     const a = scan(viaRecompiled, -1);
     const b = scan(viaDecompiled, -1);
     const lim = Math.min(a.n, b.n, CAP);
-    let at = -1;
+    let at = -1, compared = 0;
+    // Only where the decompiled side populated the Machine for that call.
+    // Both runs walk the same entries in the same order, so index i is the
+    // same call on both sides.
     const from = Math.max(a.sync, b.sync, 0);
-    for (let i = from; i < lim; i += 1) if (a.h[i] !== b.h[i]) { at = i; break; }
+    let cmp = 0;
+    for (let i = from; i < lim; i += 1) {
+      if (!b.fresh[i]) continue;
+      cmp += 1;
+      if (a.h[i] !== b.h[i]) { at = i; break; }
+    }
+    compared = cmp;
     let out = `${NAME}: ${a.n} vs ${b.n} entries over ${FRAMES} frames, comparing from ${Math.max(a.sync, b.sync, 0)} (synced at ${a.sync}/${b.sync}); `;
     if (at < 0) {
-      out += `registers agree at every one of ${lim} compared`;
+      out += `registers agree at every one of ${compared} comparable entries`;
     } else {
       const ra = scan(viaRecompiled, at), rb = scan(viaDecompiled, at);
       const which = REGS.filter((_, i) => ra.regs[i] !== rb.regs[i]);
-      out += `first differ at poll ${at} of ${lim}, pc 0x${ra.pc.toString(16)}`
+      out += `first differ at entry ${at} of ${lim} (${compared} comparable), pc 0x${ra.pc.toString(16)}`
         + ` (0x${rb.pc.toString(16)} on the other side)\n  differing: `
         + (which.length ? which.map((r, i) => `${r}=0x${ra.regs[REGS.indexOf(r)].toString(16)}`
             + `/0x${rb.regs[REGS.indexOf(r)].toString(16)}`).join(' ')
