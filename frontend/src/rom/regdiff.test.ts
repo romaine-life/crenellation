@@ -192,9 +192,16 @@ function scan(entry: (addr: number, m: System['m']) => void,
   };
   const pat = PATTERNS.find((p) => p.name.startsWith(NAME)) ?? PATTERNS[0];
   try {
-    sys.run((s) => {
-      pat.at(s, s.frames);
-      if (s.frames >= FRAMES) throw new Error('done');
+    // (frame, sys), not (sys, frame). Getting this backwards is what made
+    // this harness take zero interrupts and run its two dispatchers 3.25x
+    // apart in steps: the pattern driver never applied an input, so the game
+    // never left boot, and every result the file produced was meaningless.
+    // writes.test calls it `p.at(n, sys)`; match that exactly.
+    let n = 0;
+    sys.run(() => {
+      n += 1;
+      pat.at(n, sys);
+      if (n > FRAMES) throw new Error('done');
     }, entry);
   } catch (e) {
     // The frame limit is thrown from inside the machine, so this catch is

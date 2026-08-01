@@ -1,2 +1,2 @@
-attract: frames 248/248, irqTaken 0/0, steps 3495953/1074898
+attract: frames 249/249, irqTaken 0/0, steps 3509718/1079493
   1 vs 1 samples over 248 frames, comparing from 0 (synced at 0/0); registers agree at every one of 1 comparable entries
