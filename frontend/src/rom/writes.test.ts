@@ -57,6 +57,13 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
                 stopAt = -1): { run: Run; stack: string; romStack: number[] } {
   const sys = new System(rom, board);
+  // Shift the first interrupt. This is the discriminator for "is a value that
+  // differs between the two runs a real quantity the game computed, or residue
+  // of where the interrupt landed?" - move the phase and re-read the SAME
+  // dispatcher's value. A quantity the game computed does not care what the
+  // board's phase was; residue does. The board's own phase is not special, so
+  // any answer that changes with it was never the game's answer.
+  sys.irqPhase = Number(process.env.IRQ_PHASE ?? 0);
   bind(sys.m);
   // Both runs poll for interrupts at the same addresses - the decompiled
   // side's block heads, which is the only granularity it has. Without this
