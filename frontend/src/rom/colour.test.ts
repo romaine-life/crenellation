@@ -40,6 +40,7 @@ describe('colour base', () => {
     let dumped = false;
     const regsAt = new Set<string>();
     let lastA0 = -1;
+    let lastHead = 0;
     const a0seq: number[] = [];
     sys.m.atPcExtra = (pc: number): void => {
       // At the decompressor's entry ONLY. Watching d2 wherever it happens to
@@ -118,7 +119,13 @@ describe('colour base', () => {
         // pointer divergence can be ordered against each other instead of
         // compared as two separate runs - which is how the causal direction
         // between the branch and the pointer came to be asserted unproven.
-        a0seq.push(pc, sys.m.a0 | 0);
+        // The TRANSITION, not the position. Two streams of different lengths
+        // can be compared element-wise to find where they part, but not to say
+        // which successor each side chose - that needs the predecessor too.
+        // With both, the first differing (from -> to) pair IS the mis-lifted
+        // branch, named rather than inferred.
+        a0seq.push(lastHead, pc);
+        lastHead = pc;
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
