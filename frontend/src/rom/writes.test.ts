@@ -196,7 +196,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   };
   const run: Run = { addr: new Int32Array(CAP), val: new Int32Array(CAP),
     cyc: new Int32Array(CAP), irq: new Int32Array(CAP),
-    pol: new Int32Array(CAP), a6: new Int32Array(CAP), d2: new Int32Array(CAP), wpc: new Int32Array(CAP), rg: new Int32Array(CAP * 6), a0pc: new Int32Array(CAP), n: 0 };
+    pol: new Int32Array(CAP), a6: new Int32Array(CAP), d2: new Int32Array(CAP), wpc: new Int32Array(CAP), rg: new Int32Array(CAP * 16), a0pc: new Int32Array(CAP), n: 0 };
   let stack = '';
   let romStack: number[] = [];
   const FULL = new Error('recorded enough');
@@ -276,12 +276,14 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // differs on a later pass sits behind dozens of identical earlier sets.
     // This harness already knows WHICH write diverges, so record them here and
     // read them off there - no cap, no guessing which pass matters.
-    run.rg[run.n * 6 + 0] = sys.m.d1 | 0;
-    run.rg[run.n * 6 + 1] = sys.m.d2 | 0;
-    run.rg[run.n * 6 + 2] = sys.m.d3 | 0;
-    run.rg[run.n * 6 + 3] = sys.m.d4 | 0;
-    run.rg[run.n * 6 + 4] = sys.m.a0 | 0;
-    run.rg[run.n * 6 + 5] = sys.m.a1 | 0;
+    // All sixteen, not six. The six matched a movem's spill list from when that
+    // movem looked like the culprit; with the deliberate edit reverted the
+    // divergence is elsewhere and the six all agree, so the value must come
+    // from one of the ten that were not being recorded.
+    const M = sys.m;
+    const all = [M.d0, M.d1, M.d2, M.d3, M.d4, M.d5, M.d6, M.d7,
+                 M.a0, M.a1, M.a2, M.a3, M.a4, M.a5, M.a6, M.a7];
+    for (let q = 0; q < 16; q += 1) run.rg[run.n * 16 + q] = all[q] | 0;
     // And the address of the last instruction to have changed a0. a0 is the
     // register that differs at the divergence, so this names what set it -
     // anchored to the moment the harness already finds, rather than recorded
@@ -748,10 +750,11 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // value the runs disagree on is read from `-$12(a6)`, so this splits
       // the two possible stories without any further guessing.
       + `; WROTE AT pc 0x${(a.wpc[i] >>> 0).toString(16)} vs 0x${(b.wpc[i] >>> 0).toString(16)}`
-      + `; a0 last set at pc 0x${(a.a0pc[i] >>> 0).toString(16)} vs 0x${(b.a0pc[i] >>> 0).toString(16)}`      + `; REGS ${['d1', 'd2', 'd3', 'd4', 'a0', 'a1'].map((nm, q) => {
-        const x = a.rg[i * 6 + q] >>> 0, y = b.rg[i * 6 + q] >>> 0;
+      + `; a0 last set at pc 0x${(a.a0pc[i] >>> 0).toString(16)} vs 0x${(b.a0pc[i] >>> 0).toString(16)}`      + `; REGS ${['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7',
+        'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7'].map((nm, q) => {
+        const x = a.rg[i * 16 + q] >>> 0, y = b.rg[i * 16 + q] >>> 0;
         return x === y ? '' : `${nm}=0x${x.toString(16)}/0x${y.toString(16)}`;
-      }).filter(Boolean).join(' ') || 'all six identical'}`      + `; d2 (the colour base) 0x${(a.d2[i] >>> 0).toString(16)} vs 0x${(b.d2[i] >>> 0).toString(16)}`
+      }).filter(Boolean).join(' ') || 'all sixteen identical'}`      + `; d2 (the colour base) 0x${(a.d2[i] >>> 0).toString(16)} vs 0x${(b.d2[i] >>> 0).toString(16)}`
       + `; a6 at the divergence: 0x${(a.a6[i] >>> 0).toString(16)}`
       + ` vs 0x${(b.a6[i] >>> 0).toString(16)}`
       + ` (${a.a6[i] === b.a6[i] ? 'same frame, so the contents differ'
