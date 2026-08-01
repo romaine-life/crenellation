@@ -71,6 +71,14 @@
     "clear an eight-kilobyte band of the playfield",
     "takes a byte, shifts it left twelve (swap then lsr.l #4, which is how the 68000 gets a sixteen-bit shift cheaply), adds that to 0x200004 and clears 0x800 longs from there - eight kilobytes, sixteen playfield rows at the 0x200 stride. Read at 0x1940A-0x1942A."
   ],
+  "0xc504": [
+    "take the first item from the list, or zero when empty",
+    "reads the long at 0x3E20A8 and returns zero when it points at 0x3E20A8 itself - so the list is circular and empty is the head pointing at itself, not null. Otherwise it raises the mode flag at 0x3E2498 around a call to 0xC4E8 with that item and returns it. Together with 0xC4CA, which links a node in with next at offset 4 and previous at offset 0, this makes 0x3E20A8 a circular doubly-linked list head. Read at 0xC504-0xC538."
+  ],
+  "0xccb2": [
+    "tick the record's countdown and fire when it expires",
+    "calls 0x90E6 with 100, then - if byte 0x21 of the record is not already zero - decrements it and, only on the step that reaches zero, calls 0xCD0C with the long at 0x21562 and the record. Byte 0x21 is the field 0x15BE arms with 5 when it resets a record, so this is that timer running down and the expiry action. Read at 0xCCB2-0xCCE6."
+  ],
   "0x1a19a": [
     "push a byte into the ring, dropping it when full",
     "the write pointer lives at 0x3E3D66. It stores the byte, advances the pointer, wraps back to 0x3E3D5E once the pointer passes 0x3E3D61, and then - if the new pointer has caught the read pointer at 0x3E3D62 - puts the old pointer back, which discards the byte just written rather than overrunning. So the ring is the four bytes 0x3E3D5E-0x3E3D61 and a full ring drops rather than blocks. Read at 0x1A19A-0x1A1CA."
