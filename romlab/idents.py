@@ -127,13 +127,32 @@ def main():
         m = _re.fullmatch(r"trampoline to (0x[0-9a-f]+)", d)
         if m:
             hop[a] = int(m.group(1), 16)
-    for a, target in hop.items():
-        want = unique.get(target) or (idents.get(target) if
-                                      len(groups.get(idents.get(target, ""), [])) == 1 else None)
-        if want and f"{want}Stub" not in set(unique.values()):
-            unique[a] = f"{want}Stub"
-    print(f"  jump stubs named after where they go: "
-          f"{sum(1 for a in hop if a in unique)} of {len(hop)}")
+    def name_stubs():
+        """Name jump stubs after where they go. Returns how many were named.
+
+        Run inside the wrapper fixed point rather than once before it: a stub
+        whose target is itself a wrapper cannot be named until that wrapper is,
+        and the loop below skips `hop` addresses, so a single pass left every
+        such stub as an address for ever. Same argument as the wrappers - each
+        name added is a target for the next round.
+        """
+        taken = set(unique.values())
+        got = 0
+        for a, target in hop.items():
+            if a in unique:
+                continue
+            want = unique.get(target) or (idents.get(target) if
+                                          len(groups.get(idents.get(target, ""), [])) == 1 else None)
+            if not want or want.startswith("fn_"):
+                continue
+            name = f"{want}Stub"
+            if name in taken:
+                continue
+            unique[a], got = name, got + 1
+            taken.add(name)
+        return got
+
+    stubbed = name_stubs()
 
     # Callees name their callers. A routine with no stated purpose that calls
     # exactly one named routine and nothing else is a wrapper around it: it
@@ -173,12 +192,19 @@ def main():
                 continue
             unique[a], found = name, found + 1
             taken.add(name)
+        # Stubs again, now that this round's wrappers have names: a stub whose
+        # target was just named becomes nameable, and a wrapper around a stub
+        # named here becomes nameable next round. The two rules feed each other,
+        # so both belong inside the fixed point.
+        more = name_stubs()
+        stubbed += more
         wrapped += found
         rounds += 1
-        if not found:
+        if not found and not more:
             break
     print(f"  wrappers named after the one routine they call: {wrapped}"
           f" (converged in {rounds} rounds)")
+    print(f"  jump stubs named after where they go: {stubbed} of {len(hop)}")
 
     # The mirror of the wrapper rule: a routine with no stated purpose whose
     # only caller is named, and which is that caller's only callee, is one

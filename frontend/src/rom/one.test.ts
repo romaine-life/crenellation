@@ -133,5 +133,13 @@ describe('one routine, one stopping point', () => {
       break;
     }
     writeFileSync(join(here, 'one.txt'), out.join('\n'));
-  }, 120000);
+    // 120,000 was not enough and made the whole suite intermittently red. This
+    // test runs in 53 seconds on its own and takes more than twice that when
+    // the suite's other workers are competing for the machine, so it crossed
+    // the old budget only on the slower runs - which is exactly the pattern
+    // baseline.json's _flaky note recorded before the test could be named:
+    // three of five full runs green, the failing ones always the slow ones.
+    // Measured 2026-08-01: alone 53s; inside the suite it timed out at 120s
+    // twice running. The work is unchanged - only the budget was wrong.
+  }, 420000);
 });
