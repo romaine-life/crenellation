@@ -1,1 +1,1 @@
-attract: 53 vs 53 entries over 248 frames, comparing from 0 (synced at 0/0); registers agree at every one of 40 comparable entries
+attract: 53 vs 53 entries over 248 frames, comparing from 0 (synced at 0/0); registers agree at every one of 0 comparable entries

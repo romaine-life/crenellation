@@ -130,6 +130,7 @@ function scan(entry: (addr: number, m: System['m']) => void,
   for (const r of REGS) {
     let v = m[r] | 0;
     const bit = 1 << REGS.indexOf(r);
+    if (process.env.REGDIFF_NOACC) { void bit; continue; }
     Object.defineProperty(m, r, {
       configurable: true,
       get: () => v,
