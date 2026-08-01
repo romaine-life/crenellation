@@ -111,7 +111,14 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
         if (srs) srs[pn] = ((sys.m.getSR ? sys.m.getSR() : sys.m.sr) | 0);
         if (frs) frs[pn] = sys.frames | 0;
         if (d2s) d2s[pn] = sys.m.d2 | 0;
-        if (regs) {
+        // Only inside a handler. The decompiled dispatcher keeps its registers
+        // in JavaScript locals and writes sys.m.dN only when it spills - before
+        // takeIrq, and at setReg points. Sampling anywhere else compares the
+        // recompiler's live register against a stale mirror and reports a
+        // difference at the first block that touches any register, which is
+        // what the withdrawn poll-3 result was. Inside a handler both have
+        // spilled, so the files are genuinely comparable.
+        if (regs && sys.m.irqDepth > 0) {
           const m2 = sys.m;
           const r = [m2.d0, m2.d1, m2.d2, m2.d3, m2.d4, m2.d5, m2.d6, m2.d7];
           let h = 0x811c9dc5;
