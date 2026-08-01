@@ -110,7 +110,11 @@ describe('colour base', () => {
         // where the paths part then the runs load the same byte and the lift's
         // branch condition is wrong; if a0 differs, the branch is fine and the
         // pointer got there wrong.
-        if (pc === 0x11f2a) a0seq.push(sys.m.a0 | 0, sys.m.byte(sys.m.a0 >>> 0) | 0);
+        // a0 at EVERY block head, keyed by address and visit. The window is
+        // between two visits to 0x11F2A and the paths are identical through it,
+        // so whichever head first shows a different a0 contains the addressing
+        // mode that advances it wrongly.
+        a0seq.push(pc, sys.m.a0 | 0);
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
