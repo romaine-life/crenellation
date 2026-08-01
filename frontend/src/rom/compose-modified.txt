@@ -1,1 +1,1 @@
-one player: coin, join at the middle station, then fire: 255 pixels differ, box x 52..262 y 16..31
+one player: coin, join at the middle station, then fire: 4608 pixels differ, box x 12..331 y 96..111
