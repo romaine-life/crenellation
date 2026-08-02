@@ -11,9 +11,15 @@
 // measures the first half - the second lives in names.curated.json and
 // manual_names.json, where a name is a data change with its reason beside it.
 //
-// The function half of the bar is MET, as of 2026-08-02: 1,187 of 1,187 carry
-// a name that says what they do, and this asserts exactly that rather than
-// ratcheting it. The parameter half is not, and stays a ratchet.
+// THE FUNCTION HALF IS NOT MET, and saying it was is the mistake this file now
+// exists to make impossible. `expect(byAddress).toEqual([])` is met - no
+// routine is called `fn_0ccb2` - and that was reported as "1,187 of 1,187
+// carry a name that says what they do", which is not what it measures.
+// `idents.py` breaks a collision by APPENDING, so `mainGameStateMachineFrom3`
+// is unique, passes, and tells the reader only which routine it is a second
+// entry into. Three numbers are reported here now instead of one, and the
+// third is the bar: 168 routines are OPAQUE - nothing they or their host or
+// their target points at says what they are for.
 //
 // The ratchet is on what is LEFT rather than on what is done, and the reason
 // is that the count of done ones stopped meaning what it said. 1,860 of the
@@ -87,19 +93,48 @@ describe('names', () => {
       .map((k) => parseInt(k, 16)));
     const addrs = [...src.matchAll(/\{ at: (0x[0-9a-f]+), fn: \w+ as /g)]
       .map((m) => parseInt(m[1], 16));
-    const unstated = addrs.filter((a) => !stated.has(a)).length;
+    const unstatedAddrs = addrs.filter((a) => !stated.has(a));
+    const unstated = unstatedAddrs.length;
+
+    // ...and the sharper number, which is the one worth reading against. Of
+    // the routines with nothing written about them, most can still be
+    // understood in ONE HOP: an inner entry whose host routine has a stated
+    // purpose, or a wrapper whose single target has one. Recording "it jumps
+    // to X" for those would only restate the rule that named them, and would
+    // move the count without telling a reader anything - which is the same
+    // trap as counting `argN` as named. What is genuinely opaque is a routine
+    // whose host or target has no purpose either. 168 of the 455.
+    const facts = JSON.parse(readFileSync(
+      join(romlab, 'out', 'facts.json'), 'utf8')) as
+      { funcs: [number, number][]; calls?: Record<string, number[]> };
+    const calls = new Map(Object.entries(facts.calls ?? {})
+      .map(([k, v]) => [parseInt(k, 16), v]));
+    const hostOf = (a: number) =>
+      facts.funcs.find(([lo, hi]) => lo < a && a < hi)?.[0];
+    const nameAt = new Map([...src.matchAll(
+      /\{ at: (0x[0-9a-f]+), fn: (\w+) as /g)]
+      .map((m) => [parseInt(m[1], 16), m[2]] as [number, string]));
+    const opaque = unstatedAddrs.filter((a) => {
+      if (/From\d+$/.test(nameAt.get(a) ?? '')) {
+        const h = hostOf(a);
+        return h === undefined || !stated.has(h);
+      }
+      const to = calls.get(a) ?? [];
+      return to.length !== 1 || !stated.has(to[0]);
+    }).length;
 
     const report = [
       `functions: ${fns.length}, semantic ${fns.length - byAddress.length}`
       + `, still an address ${byAddress.length}`,
       `named only by a suffix on another routine's name: ${suffixOnly}`,
       `no stated purpose - the name was derived by rule: ${unstated}`
-      + ` of ${addrs.length}`,
+      + ` of ${addrs.length}, of which ${opaque} are opaque`
+      + ` (nothing their host or target points at has a purpose either)`,
       `parameters: ${params}, named ${named}`
       + ` (${slots} more are a stack slot with a number on it)`,
       // The point of the file, stated where it will be read: what is left.
       `remaining to the bar: ${byAddress.length} routines still an address,`
-      + ` ${unstated} without a stated purpose, ${params - named} parameters`,
+      + ` ${opaque} opaque routines, ${params - named} parameters`,
     ].join('\n');
     writeFileSync(join(here, 'names.txt'), report + '\n');
 
@@ -160,5 +195,6 @@ describe('names', () => {
     // are floors rather than assertions.
     expect(unstated).toBeLessThanOrEqual(base.unstatedPurpose ?? 0);
     expect(suffixOnly).toBeLessThanOrEqual(base.suffixOnlyNames ?? 0);
+    expect(opaque).toBeLessThanOrEqual(base.opaquePurpose ?? 0);
   });
 });
