@@ -501,6 +501,12 @@ class Lifter:
             self.step(i)
         return self
 
+    def sync_flags(self):
+        """Write pending condition codes to the machine. The single-block
+        lifter tracks none, so this is where it ends; BlockLifter overrides it.
+        """
+        return
+
     def step(self, ins):
         mn = ins.mnemonic
         b = mn.split(".")[0]
@@ -515,6 +521,17 @@ class Lifter:
         self.nxt = nxt
 
         if b == "rts":
+            # A caller may branch on flags this routine's last instruction set.
+            # The lifted world keeps its flags as JavaScript values that die
+            # with the function, so they have to be written to the machine here
+            # or the caller reads whatever ran before the call. Found 2026-08-01
+            # at 0x0F932, where `ext.l d0` is the last instruction before the
+            # rts: every routine in the drawing path read as faithful because
+            # each was compared internally, and the difference lived at the
+            # BOUNDARY, which comparing a body instruction by instruction
+            # cannot see. The single-block lifter has no flags to sync and
+            # overrides this with nothing; the branching one does the work.
+            self.sync_flags()
             return
         if b == "nop":
             return
