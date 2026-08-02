@@ -40,9 +40,17 @@ function lit(entry: (a: number, m: System['m']) => void, label: string,
   // usual count. An earlier attempt at this hooked useCallee, which does not
   // govern the top-level dispatch, and failed that check by reporting the
   // lifted count for an all-oracle run.
+  // ONLY=addr routes exactly ONE entry to the oracle, which separates a routine
+  // from the continuation entries inside its own address range - `call` is
+  // invoked with the entry address, so a single-address pick is enough. That
+  // distinction is the one all of the source reading could not make: fn_1399C
+  // and fn_139AE are different entries into the same code, and a fault in the
+  // register-borne re-entry looks exactly like a fault in the routine.
   const split = process.env.BISECT === undefined ? -1 : Number(process.env.BISECT);
-  useOracle(split < 0 || !label.startsWith('dec') ? null
-    : { pick: (a: number) => a >= split, run: viaRecompiled });
+  const only = process.env.ONLY === undefined ? -1 : Number(process.env.ONLY);
+  useOracle(!label.startsWith('dec') || (split < 0 && only < 0) ? null
+    : only >= 0 ? { pick: (a: number) => a === only, run: viaRecompiled }
+      : { pick: (a: number) => a >= split, run: viaRecompiled });
   bind(sys.m);
   const marks: string[] = [];
   const STOP = new Error('enough');
