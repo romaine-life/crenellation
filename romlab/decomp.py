@@ -827,6 +827,17 @@ class Lifter:
             # Machine.halt - and the lifted world only set the flag, so the two
             # clocks parted every time the game waited.
             at = getattr(self, "nxt", 0)
+            # `stop #$2700` LOADS THE STATUS REGISTER as well as halting, and
+            # this only halted. The immediate raises the interrupt mask - 0x2700
+            # is supervisor with the mask at seven - so the chip takes nothing
+            # below level seven while it waits, and the lift, having left the
+            # mask alone, could take an interrupt the machine has blocked. Found
+            # 2026-08-01 in sequenceAdvanceInner at 0x19948, where the oracle
+            # emits `m.setSR(0x2700); m.halt(0x1994c);` and the lift emitted only
+            # the halt. The recompiler has always written it; this is another
+            # rule m68kts.py had and only the lift dropped, which is now the
+            # eighth of that shape.
+            self.stmts.append(f"setSr({self.read(ops[0], 16).text}, 0x{at:05x});")
             self.stmts.append(f"halt(0x{at:05x});")
             self.stmts.append("return;")
             return

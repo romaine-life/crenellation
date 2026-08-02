@@ -1,4 +1,4 @@
-chip sequence: 6000000 addresses; port: 10002742
+chip sequence: 6000000 addresses; port: 10002574
 no alignment, so the masks cannot be compared
 port runs the request path: 0x1578:true 0x157c:false 0x14dc:true 0x14e2:false 0x14f0:false 0x1500:true
 port runs the mask-setters: 0xf77e:true 0xf902:true 0xfb4e:true 0x650:false 0x64a:true 0x656:true 0x620:true
