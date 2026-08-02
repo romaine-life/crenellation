@@ -1103,6 +1103,7 @@ def lift_once(lo, hi, names, seed=()):
         for b_ in outs:
             preds[b_].add(a)
     end_flags = {}
+    end_pushed = {}
     for n, (s, e) in enumerate(zip(starts, ends)):
         if n not in seen_r:
             lifted[n] = []
@@ -1119,6 +1120,24 @@ def lift_once(lo, hi, names, seed=()):
             lifter.flags_certain = all(p in end_flags for p in ps) and len(known) == 1
             if len(known) == 1:
                 lifter.flags = next(iter(known))
+            # And the stack depth, which reaches a block from its predecessors
+            # for exactly the same reason the flags do. `pushed` was a running
+            # total carried in ADDRESS order, so a block reached by a branch
+            # inherited the depth of whatever happened to sit before it in
+            # memory. fn_1946E is where that showed: 0x194D4 is reached only by
+            # the two branches at 0x1947A and 0x19480, which jump PAST the
+            # `movem.l d2-d5,-(a7)` at 0x19482, so nothing is pushed on that
+            # path - but the previous block in memory had pushed sixteen bytes
+            # and the depth carried over. Every a7-relative argument in that
+            # block then named the wrong slot: `movea.w $16(a7),a1` read arg0
+            # where the machine reads the low word of arg4. A wrong a1 makes a
+            # wrong `adda.w d1,a0`, so the pointer saved at 0x194F2 came out
+            # 0x3E3840 against the machine's 0x3E3227, the formatter copied
+            # from there, and 474 bytes on it reached 0x3E3400 - the display
+            # list's counters - which is the overrun behind the crash.
+            knownp = {end_pushed[p] for p in ps if p in end_pushed}
+            if len(knownp) == 1:
+                lifter.pushed = next(iter(knownp))
             # Predecessors that disagree leave whatever the block before this
             # one in memory left. That is not sound in general, but it is what
             # the graph cannot answer, and the oracle is the thing deciding
@@ -1332,6 +1351,7 @@ def lift_once(lo, hi, names, seed=()):
                      f"if (_t{n}) takeIrq(); }}"] \
             + list(lifter.stmts) + tail_flags
         end_flags[n] = lifter.flags
+        end_pushed[n] = lifter.pushed
     for copy, orig in clone_of.items():
         lifted[copy] = list(lifted[orig])
         if orig in conds:
