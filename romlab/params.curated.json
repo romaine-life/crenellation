@@ -3884,5 +3884,33 @@
       "name": "state",
       "why": "the word at 0x3e1948, refused above 0x17 and then doubled to index the PC-relative table - so there are 24 game states and anything higher leaves at once."
     }
+  },
+  "0x16958": {
+    "d2": {
+      "name": "column",
+      "why": "the word at 0xa(a6), passed unchanged to every call in the loop - so the whole run is drawn in one column."
+    },
+    "d5": {
+      "name": "row",
+      "why": "starts as the word at 0xe(a6) and is the value that moves down the loop; d4 keeps the original so the start is still available."
+    },
+    "d4": {
+      "name": "firstRow",
+      "why": "the word at 0xe(a6) kept unchanged while d5 walks - the top of the run."
+    },
+    "d3": {
+      "name": "count",
+      "why": "the word at 0x12(a6), how many rows the run covers."
+    },
+    "d6": {
+      "name": "limit",
+      "why": "0xb4 - 180 - loaded as a constant and compared against, so it is a fixed bound of the routine rather than anything the caller chose."
+    }
+  },
+  "0xb738": {
+    "d5": {
+      "name": "wallByte",
+      "why": "the player's byte from 0x1000a indexed by its byte at 2, or zero when the player is the current one - the value the search matches cells against."
+    }
   }
 }
