@@ -108,14 +108,33 @@ Measured 2026-08-02 in `frontend/src/rom/names.txt`:
 |---|---|
 | Functions with a name that says what they do | **1,187 of 1,187** |
 | Still named for their address | **0** |
-| Parameters that say what they are | 3,137 of 6,279 |
+| Parameters that say what they are | 1,954 of 4,419 |
 
 `names.test.ts` **enforces** the first — `expect(byAddress).toEqual([])`, not a
 ratchet, because at the bar a `<=` would quietly accept a regeneration that
 lost a name, and losing one is exactly what a regeneration does when a curated
 name stops applying. It also asserts the second half of the bar: every object
-entry in `names.curated.json` carries a `why`. Parameters stay a ratchet
-against `baseline.json`, and may only rise.
+entry in `names.curated.json` carries a `why`. Parameters are a ratchet against
+`baseline.json` — **on the remainder**, `unnamedParams`, which may only fall.
+
+Two things about that table changed on 2026-08-02 and both moved the number
+down, so read it as a smaller honest count rather than a regression:
+
+- **A register the routine never reads is not a parameter of it.** The lifter
+  makes every register live across a routine into one, because the whole live
+  set has to survive an interrupt: `pieceWalker` took fourteen and read six.
+  1,860 of them now move into the body as `let d1 = getReg('d1');` — the exact
+  expression the dispatcher would have used to build the argument, with nothing
+  running in between, so the rewrite is equivalent by construction and compose,
+  writes and draws all still report identity. 1,009 of those had names, and
+  every one described a value the routine never reads.
+- **`argN` counts as unnamed.** It says a value arrived in the fourth stack
+  slot, which the reader can already see. Counting it as a name made
+  `stackargnames.py` invisible — it moved 95 slots to real words and the old
+  count did not change by one.
+
+Under the same honest definition the count was 2,501 of 6,279 before the day
+and is 1,954 of 4,419 after it: 3,778 parameters said nothing, 2,465 do.
 
 - **`names.curated.json` is where a name goes**, as `{"name": ..., "why": ...}`.
   `idents.py` refuses an object with no `why`: a wrong name is worse than an
@@ -138,8 +157,24 @@ against `baseline.json`, and may only rise.
   call spills its arguments into the machine immediately before `callRom`, and
   the callee's table says which parameter comes from which register. It is a
   rename and nothing else — compose, writes and draws all still report identity
-  after it. The reverse direction was built, measured at 3,247 renames and zero
-  movement, and dropped; the note is in the file.
+  after it.
+- **`callernames.py`** is the reverse direction, which was built once, measured
+  at 3,247 renames and *zero* movement, and withdrawn. The measurement that
+  withdrew it also said how to retry: restrict it to parameters that have no
+  name, and judge it by the count in `names.txt` rather than by the number of
+  renames. Restricted that way it moves 197. **`stackargnames.py`** is the same
+  rule for the other 721 — stack arguments, which neither existing pass reaches
+  because a pushed value is never spilled to a register. `a7` pre-decrements, so
+  the last value pushed is `off: 4`. Both demand **unanimity**: a parameter fed
+  `count` by one caller and `colour` by another is neither, and picking the
+  commoner would be a guess dressed as a measurement.
+- **The diagnostics are the point, not the passes.** `whyunnamed.py` bins every
+  unnamed parameter by what the routine does with it, `whyrole.py` replays
+  `roles.py`'s decision and says which test came out empty, `whypassed.py` says
+  why the call graph declined, `whyunread.py` asks whether it is an input at
+  all, and `readparam.py` prints the lines so a reader can see. Every rule
+  above came out of one of those counts; `dropunread.py` exists because
+  `whyunread.py` said 1,860 of the things being counted were not parameters.
 - **Dispatch loops are down from 228 to 11**, and `decompiled.ts` is *smaller*
   than before — 8.3 MB against 14 MB — because most of what those loops cost
   was duplication. Three faults: `cfg.reducible()` collapsed the graph keeping
@@ -159,14 +194,16 @@ against `baseline.json`, and may only rise.
 When only names or the lifter changed:
 
 `cd romlab && python3 idents.py && python3 blocks.py && rm -f out/unproven.json
-&& python3 decomp.py && python3 handedits.py && python3 paramnames.py`
+&& python3 decomp.py && python3 handedits.py && python3 dropunread.py &&
+python3 paramnames.py && python3 callernames.py && python3 stackargnames.py`
 
 When the *map* changed — funcs, entries, extents — the chain starts earlier
 and regenerates both translations:
 
 `python3 describe.py && python3 gen_ts.py && python3 cfg.py && python3
 idents.py && python3 blocks.py && rm -f out/unproven.json && python3 decomp.py
-&& python3 handedits.py && python3 paramnames.py`
+&& python3 handedits.py && python3 dropunread.py && python3 paramnames.py &&
+python3 callernames.py && python3 stackargnames.py`
 
 Order matters and these steps are easy to get wrong:
 
@@ -176,13 +213,18 @@ Order matters and these steps are easy to get wrong:
 - **`rm out/unproven.json` before `decomp.py`, not after.** It is read at
   generation time; clearing it afterwards silently emits the previous run's
   held-back set and every count is wrong.
-- **`handedits.py` then `paramnames.py` last.** Regeneration overwrites
+- **`handedits.py` then the four naming passes last.** Regeneration overwrites
   `decompiled.ts`, so every deliberate edit lives in `handedits.py` too and is
   re-applied. An edit that no longer applies is an *error* — the lifter now
   produces different text and the change has to be re-expressed, or taught to
-  the lifter. `paramnames.py` runs after it, because it renames locals and
-  would otherwise move the text a hand edit matches on; it is idempotent, so a
-  second run reports zero rather than renaming again.
+  the lifter. The naming passes run after it, because they rename locals and
+  would otherwise move the text a hand edit matches on; all four are
+  idempotent, so a second run reports zero rather than renaming again.
+- **`dropunread.py` before the three that name.** It removes parameters, and a
+  naming pass that ran first would spend its evidence on things about to stop
+  being parameters — which is exactly what happened the first time round: 1,009
+  of the 1,860 it drops had names, and `callernames.py` reported 384 before it
+  and 197 after, the difference being names it should never have given.
 - **`rm -rf romlab/__pycache__`** after editing a module another script imports.
   Stale bytecode has survived edits here more than once.
 

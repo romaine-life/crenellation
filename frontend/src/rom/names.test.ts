@@ -13,8 +13,24 @@
 //
 // The function half of the bar is MET, as of 2026-08-02: 1,187 of 1,187 carry
 // a name that says what they do, and this asserts exactly that rather than
-// ratcheting it. The parameter half is not - 3,069 of 6,279 - and stays a
-// ratchet that may only rise.
+// ratcheting it. The parameter half is not, and stays a ratchet.
+//
+// The ratchet is on what is LEFT rather than on what is done, and the reason
+// is that the count of done ones stopped meaning what it said. 1,860 of the
+// things being counted as parameters were not parameters: the lifter makes
+// every register live across a routine into one, so `pieceWalker` took
+// fourteen and read five, and the other nine were bookkeeping that had to
+// survive an interrupt. romlab/dropunread.py moves those into the body as
+// `getReg`, which is exactly the expression the dispatcher would have used to
+// build the argument, so nothing about the run changes - compose, writes and
+// draws all still report identity. But 1,009 of them HAD names, mostly from
+// the caller direction, and every one of those names described a value the
+// routine never reads. Counting them was counting wrong names.
+//
+// `argN` is counted as unnamed here for the same reason a register is: it
+// says a value arrived in the fourth stack slot, which the reader can already
+// see. That is a deliberate tightening of the definition and it moved the
+// number the wrong way by 477 on the day it was made.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -31,19 +47,23 @@ describe('names', () => {
     const byAddress = fns.filter((n) => /^fn_[0-9a-f]+$/.test(n));
 
     // A parameter still called `d0_` or `a2_` is the register it arrived in,
-    // which is the same non-answer as `fn_` is for a routine.
-    let params = 0, named = 0;
+    // and one called `arg3` is the stack slot it arrived in. Both are the same
+    // non-answer as `fn_` is for a routine.
+    let params = 0, named = 0, slots = 0;
     for (const m of src.matchAll(/export function \w+\(([^)]*)\)/g)) {
       for (const p of m[1].split(',').map((s) => s.trim()).filter(Boolean)) {
         params += 1;
-        if (!/^[ad]\d+_?\d*$/.test(p.split(':')[0].trim())) named += 1;
+        const n = p.split(':')[0].trim();
+        if (/^arg\d+$/.test(n)) slots += 1;
+        else if (!/^[ad]\d+_?\d*$/.test(n)) named += 1;
       }
     }
 
     const report = [
       `functions: ${fns.length}, semantic ${fns.length - byAddress.length}`
       + `, still an address ${byAddress.length}`,
-      `parameters: ${params}, named ${named}`,
+      `parameters: ${params}, named ${named}`
+      + ` (${slots} more are a stack slot with a number on it)`,
       // The point of the file, stated where it will be read: what is left.
       `remaining to the bar: ${byAddress.length} routines and`
       + ` ${params - named} parameters`,
@@ -74,8 +94,17 @@ describe('names', () => {
       .map(([k]) => k);
     expect(unevidenced).toEqual([]);
 
-    // Parameters are still a ratchet: 3,069 of 6,279, and the bar is all of
-    // them.
-    expect(named).toBeGreaterThanOrEqual(base.namedParams ?? 0);
+    // Parameters are still a ratchet, and it is on the remainder: 2,401 of
+    // 4,415 do not say what they are, and the bar is none of them. Ratcheting
+    // the remainder rather than the total is what lets a pass that REMOVES a
+    // parameter count as progress, which is the right answer when the thing
+    // removed was never a parameter - and the guard against removing real ones
+    // is not this number, it is compose, writes and draws, which cannot pass
+    // if a value stopped reaching the routine that reads it.
+    // The total is deliberately NOT ratcheted alongside it. It would catch a
+    // pass that inflated the denominator, but nothing here reads a ratio, and
+    // a map that grows by a routine is a legitimate reason for the total to
+    // rise - a floor that goes red for a good reason is a floor nobody reads.
+    expect(params - named).toBeLessThanOrEqual(base.unnamedParams ?? 0);
   });
 });
