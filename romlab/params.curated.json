@@ -2719,6 +2719,18 @@
     "d5": {
       "name": "ownerBits",
       "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    },
+    "a5": {
+      "name": "writeAt",
+      "why": "a copy of the running address taken before it is incremented, so the byte goes to the cell the walk was on rather than the next one. Every handler in this block does the same three-instruction dance."
+    },
+    "a2": {
+      "name": "record",
+      "why": "its byte at 0x14 is bumped by 1 or 2 depending on the path - a counter that decides whether the notify at 0x90e6 fires again."
+    },
+    "a3": {
+      "name": "eventRef",
+      "why": "dereferenced for the longword pushed to 0x90e6, the gate that only passes when the word at 0x3e1948 is set - so it is a pointer to an event descriptor, not the descriptor itself."
     }
   },
   "0x64b4": {
@@ -2747,6 +2759,18 @@
     "d5": {
       "name": "ownerBits",
       "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    },
+    "a5": {
+      "name": "writeAt",
+      "why": "a copy of the running address taken before it is incremented, so the byte goes to the cell the walk was on rather than the next one. Every handler in this block does the same three-instruction dance."
+    },
+    "a2": {
+      "name": "record",
+      "why": "its byte at 0x14 is bumped by 1 or 2 depending on the path - a counter that decides whether the notify at 0x90e6 fires again."
+    },
+    "a3": {
+      "name": "eventRef",
+      "why": "dereferenced for the longword pushed to 0x90e6, the gate that only passes when the word at 0x3e1948 is set - so it is a pointer to an event descriptor, not the descriptor itself."
     }
   },
   "0x64ce": {
@@ -2761,6 +2785,10 @@
     "d5": {
       "name": "ownerBits",
       "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    },
+    "a2": {
+      "name": "record",
+      "why": "its byte at 0x14 is bumped by 1 or 2 depending on the path - a counter that decides whether the notify at 0x90e6 fires again."
     }
   },
   "0x64ee": {
@@ -2789,6 +2817,10 @@
     "d5": {
       "name": "ownerBits",
       "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    },
+    "a2": {
+      "name": "record",
+      "why": "its byte at 0x14 is bumped by 1 or 2 depending on the path - a counter that decides whether the notify at 0x90e6 fires again."
     }
   },
   "0x653e": {
@@ -2817,6 +2849,18 @@
     "d5": {
       "name": "ownerBits",
       "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    },
+    "a5": {
+      "name": "writeAt",
+      "why": "a copy of the running address taken before it is incremented, so the byte goes to the cell the walk was on rather than the next one. Every handler in this block does the same three-instruction dance."
+    },
+    "a2": {
+      "name": "record",
+      "why": "its byte at 0x14 is bumped by 1 or 2 depending on the path - a counter that decides whether the notify at 0x90e6 fires again."
+    },
+    "a3": {
+      "name": "eventRef",
+      "why": "dereferenced for the longword pushed to 0x90e6, the gate that only passes when the word at 0x3e1948 is set - so it is a pointer to an event descriptor, not the descriptor itself."
     }
   },
   "0x657c": {
@@ -2841,6 +2885,10 @@
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a5": {
+      "name": "ownerTable",
+      "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
     }
   },
   "0x3a7e": {
@@ -2861,6 +2909,10 @@
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a5": {
+      "name": "ownerTable",
+      "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
     }
   },
   "0x3b06": {
@@ -2911,6 +2963,10 @@
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a5": {
+      "name": "ownerTable",
+      "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
     }
   },
   "0x3b4c": {
@@ -2921,6 +2977,10 @@
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a5": {
+      "name": "ownerTable",
+      "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
     }
   },
   "0x3b54": {
@@ -2931,6 +2991,10 @@
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a5": {
+      "name": "ownerTable",
+      "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
     }
   },
   "0x1ae3c": {
