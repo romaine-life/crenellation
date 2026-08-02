@@ -2589,28 +2589,44 @@
   },
   "0x71dc": {
     "a2": {
-      "name": "player",
-      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+      "name": "unit",
+      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
     },
     "a4": {
       "name": "callTarget",
       "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x7236": {
     "a2": {
-      "name": "player",
-      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+      "name": "unit",
+      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
     },
     "a4": {
       "name": "callTarget",
       "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x726e": {
     "a2": {
-      "name": "player",
-      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+      "name": "unit",
+      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
     },
     "a4": {
       "name": "callTarget",
@@ -2627,6 +2643,14 @@
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x72ec": {
@@ -2637,6 +2661,14 @@
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x7318": {
@@ -2647,6 +2679,14 @@
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x735c": {
@@ -2657,18 +2697,34 @@
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x737e": {
     "a2": {
-      "name": "player",
-      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+      "name": "unit",
+      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x73c0": {
     "a2": {
-      "name": "player",
-      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+      "name": "unit",
+      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
     },
     "a4": {
       "name": "callTarget",
@@ -2681,12 +2737,20 @@
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x73c4": {
     "a2": {
-      "name": "player",
-      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+      "name": "unit",
+      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
     },
     "a4": {
       "name": "callTarget",
@@ -2699,6 +2763,14 @@
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x6460": {
@@ -3623,6 +3695,14 @@
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
+    },
+    "d4": {
+      "name": "callArg",
+      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+    },
+    "d3": {
+      "name": "shape",
+      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
     }
   },
   "0x1397a": {

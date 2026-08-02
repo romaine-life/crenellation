@@ -54640,11 +54640,11 @@ export function dispatchCursorCode11Or30From1(d1_: number): void {
   setReg('d1', d1);
 }
 
-export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: number, dst2_: number, kind_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveral(unit_: number, callTarget_: number, dst2_: number, kind_: number, shape_: number, callArg_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
-  let player = player_;
+  let unit = unit_;
   let dst = getReg('a3');
   let callTarget = callTarget_;
   let a5 = getReg('a5');
@@ -54652,8 +54652,8 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   let d0 = getReg('d0');
   let index = getReg('d1');
   let kind = kind_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let d6 = d6_;
   let t0 = 0;
@@ -54695,9 +54695,9 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   let t36 = 0;
   let t37 = 0;
   let t38 = 0;
-  const _t0 = tick(130, 0x071dc) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(130, 0x071dc) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
   index = (0) >>> 0;
-  t0 = load8(player + 0x2);
+  t0 = load8(unit + 0x2);
   index = ((index & 0xffffff00) | (t0 & 255));
   t1 = index;
   t2 = index;
@@ -54718,7 +54718,7 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   setXSub(t6, t7, 32);
   setFlagsCmp(t8, 0, 32);
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', callTarget);
   setReg('a5', a5);
@@ -54726,14 +54726,14 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   setReg('d0', d0);
   setReg('d1', index);
   setReg('d2', kind);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(callTarget, 0x071fe);
   if (halted()) return;
   a0 = getReg('a0');
-  player = getReg('a2');
+  unit = getReg('a2');
   dst = getReg('a3');
   callTarget = getReg('a4');
   a5 = getReg('a5');
@@ -54741,11 +54741,11 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   d0 = getReg('d0');
   index = getReg('d1');
   kind = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(68, 0x071fe) ? 1 : 0; if (_t1 || SPILL_ALL) { setXSub(t6, t7, 32); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(68, 0x071fe) ? 1 : 0; if (_t1 || SPILL_ALL) { setXSub(t6, t7, 32); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
   t9 = load32(dst2 + -0xa);
   t10 = t9;
   push(t10, 4);
@@ -54755,7 +54755,7 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   setXSub(t6, t7, 32);
   setFlagsCmp(t12, 0, 32);
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', callTarget);
   setReg('a5', a5);
@@ -54763,14 +54763,14 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   setReg('d0', d0);
   setReg('d1', index);
   setReg('d2', kind);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(0x073dc, 0x0720a);
   if (halted()) return;
   a0 = getReg('a0');
-  player = getReg('a2');
+  unit = getReg('a2');
   dst = getReg('a3');
   callTarget = getReg('a4');
   a5 = getReg('a5');
@@ -54778,18 +54778,18 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   d0 = getReg('d0');
   index = getReg('d1');
   kind = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t2 = tick(48, 0x0720a) ? 1 : 0; if (_t2 || SPILL_ALL) { setXSub(t6, t7, 32); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(48, 0x0720a) ? 1 : 0; if (_t2 || SPILL_ALL) { setXSub(t6, t7, 32); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
   t13 = load32(dst2 + -0xe);
   t14 = t13;
   push(t14, 4);
   setXSub(t6, t7, 32);
   setFlagsCmp(t14, 0, 32);
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', callTarget);
   setReg('a5', a5);
@@ -54797,14 +54797,14 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   setReg('d0', d0);
   setReg('d1', index);
   setReg('d2', kind);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(0x06ef8, 0x07212);
   if (halted()) return;
   a0 = getReg('a0');
-  player = getReg('a2');
+  unit = getReg('a2');
   dst = getReg('a3');
   callTarget = getReg('a4');
   a5 = getReg('a5');
@@ -54812,11 +54812,11 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   d0 = getReg('d0');
   index = getReg('d1');
   kind = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t3 = tick(104, 0x07212) ? 1 : 0; if (_t3 || SPILL_ALL) { setXSub(t6, t7, 32); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(104, 0x07212) ? 1 : 0; if (_t3 || SPILL_ALL) { setXSub(t6, t7, 32); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
   t15 = (d0 & 65535);
   store16(dst, t15);
   t16 = load8(dst2 + -0x18);
@@ -54843,13 +54843,13 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   t29 = (d0 & 65535);
   store16(dst + 0x6, t29);
   drop(16);
-  const _t32 = tick(38, 0x07372) ? 1 : 0; if (_t32 || SPILL_ALL) { setXShift((((t26) >>> 13) & 1), 1); setFlagsCmp(t29, 0, 16); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t32) takeIrq(); }
+  const _t32 = tick(38, 0x07372) ? 1 : 0; if (_t32 || SPILL_ALL) { setXShift((((t26) >>> 13) & 1), 1); setFlagsCmp(t29, 0, 16); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t32) takeIrq(); }
   d0 = (5) >>> 0;
   t30 = (d0 & 255);
   store8(dst + 0xb, t30);
   t31 = (d0 & 255);
   store8(dst + 0xa, t31);
-  const _t41 = tick(22, 0x073c4) ? 1 : 0; if (_t41 || SPILL_ALL) { setXShift((((t26) >>> 13) & 1), 1); setFlagsCmp(t31, 0, 8); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t41) takeIrq(); }
+  const _t41 = tick(22, 0x073c4) ? 1 : 0; if (_t41 || SPILL_ALL) { setXShift((((t26) >>> 13) & 1), 1); setFlagsCmp(t31, 0, 8); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t41) takeIrq(); }
   t32 = load16(dst2 + -0x10);
   t33 = t32;
   t34 = 0x1;
@@ -54860,7 +54860,7 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
     setXSub(t33, t34, 16);
     setFlagsSub(t33, t34, 16);
     setReg('a0', a0);
-    setReg('a2', player);
+    setReg('a2', unit);
     setReg('a3', dst);
     setReg('a4', callTarget);
     setReg('a5', a5);
@@ -54868,24 +54868,24 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
     setReg('d0', d0);
     setReg('d1', index);
     setReg('d2', kind);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t42 = tick(108, 0x073cc) ? 1 : 0; if (_t42 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsSub(t33, t34, 16); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t42) takeIrq(); }
+  const _t42 = tick(108, 0x073cc) ? 1 : 0; if (_t42 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsSub(t33, t34, 16); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t42) takeIrq(); }
   t37 = load16(dst2 + -0x16);
   d0 = ((d0 & 0xffff0000) | (t37 & 65535));
   t38 = ((((d0 & 65535)) << 16) >> 16);
   d0 = (t38) >>> 0;
   kind = load32((dst2 + -0x3c) + 0);
-  d3 = load32((dst2 + -0x3c) + 4);
-  d4 = load32((dst2 + -0x3c) + 8);
+  shape = load32((dst2 + -0x3c) + 4);
+  callArg = load32((dst2 + -0x3c) + 8);
   d5 = load32((dst2 + -0x3c) + 12);
   d6 = load32((dst2 + -0x3c) + 16);
-  player = load32((dst2 + -0x3c) + 20);
+  unit = load32((dst2 + -0x3c) + 20);
   dst = load32((dst2 + -0x3c) + 24);
   callTarget = load32((dst2 + -0x3c) + 28);
   a5 = load32((dst2 + -0x3c) + 32);
@@ -54894,7 +54894,7 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   setXSub(t33, t34, 16);
   setFlagsCmp(d0, 0, 32);
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', callTarget);
   setReg('a5', a5);
@@ -54902,13 +54902,13 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   setReg('d0', d0);
   setReg('d1', index);
   setReg('d2', kind);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); return;
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', callTarget);
   setReg('a5', a5);
@@ -54916,17 +54916,17 @@ export function placeCursorSpritePlayerSeveral(player_: number, callTarget_: num
   setReg('d0', d0);
   setReg('d1', index);
   setReg('d2', kind);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
 }
 
-export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_: number, dst3_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveralFrom1(unit_: number, callTarget_: number, dst3_: number, d2_: number, shape_: number, callArg_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
-  let player = player_;
+  let unit = unit_;
   let dst = getReg('a3');
   let callTarget = callTarget_;
   let dst2 = getReg('a5');
@@ -54934,8 +54934,8 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   let d0 = getReg('d0');
   let d1 = getReg('d1');
   let d2 = d2_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let d6 = d6_;
   let t0 = 0;
@@ -54965,9 +54965,9 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   let t24 = 0;
   let t25 = 0;
   let t26 = 0;
-  const _t0 = tick(130, 0x07236) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(130, 0x07236) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
   d1 = (0) >>> 0;
-  t0 = load8(player + 0x2);
+  t0 = load8(unit + 0x2);
   d1 = ((d1 & 0xffffff00) | (t0 & 255));
   t1 = d1;
   t2 = d1;
@@ -54988,7 +54988,7 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   setXSub(t6, t7, 32);
   setFlagsCmp(t8, 0, 32);
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', callTarget);
   setReg('a5', dst2);
@@ -54996,14 +54996,14 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(callTarget, 0x07258);
   if (halted()) return;
   a0 = getReg('a0');
-  player = getReg('a2');
+  unit = getReg('a2');
   dst = getReg('a3');
   callTarget = getReg('a4');
   dst2 = getReg('a5');
@@ -55011,11 +55011,11 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   d0 = getReg('d0');
   d1 = getReg('d1');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(38, 0x07258) ? 1 : 0; if (_t1 || SPILL_ALL) { setXSub(t6, t7, 32); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(38, 0x07258) ? 1 : 0; if (_t1 || SPILL_ALL) { setXSub(t6, t7, 32); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
   t9 = load32(dst3 + -0xa);
   dst2 = (t9) >>> 0;
   t10 = load8(dst2 + 0x17);
@@ -55026,13 +55026,13 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   store8(dst2 + 0x17, t14);
   t15 = d5;
   push(t15, 4);
-  const _t2 = tick(34, 0x07262) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t15, 0, 32); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(34, 0x07262) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t15, 0, 32); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
   t16 = load32(dst3 + -0x6);
   dst2 = (t16) >>> 0;
   setXAdd(t11, t12, 8);
   setFlagsCmp(t15, 0, 32);
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', callTarget);
   setReg('a5', dst2);
@@ -55040,14 +55040,14 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(dst2, 0x07268);
   if (halted()) return;
   a0 = getReg('a0');
-  player = getReg('a2');
+  unit = getReg('a2');
   dst = getReg('a3');
   callTarget = getReg('a4');
   dst2 = getReg('a5');
@@ -55055,22 +55055,22 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   d0 = getReg('d0');
   d1 = getReg('d1');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t3 = tick(18, 0x07268) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t11, t12, 8); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(18, 0x07268) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t11, t12, 8); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
   t17 = (d0 & 65535);
   store16(dst, t17);
-  const _t27 = tick(6, 0x07370) ? 1 : 0; if (_t27 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t17, 0, 16); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t27) takeIrq(); }
+  const _t27 = tick(6, 0x07370) ? 1 : 0; if (_t27 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t17, 0, 16); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t27) takeIrq(); }
   drop(8);
-  const _t28 = tick(38, 0x07372) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t17, 0, 16); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t28) takeIrq(); }
+  const _t28 = tick(38, 0x07372) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t17, 0, 16); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t28) takeIrq(); }
   d0 = (5) >>> 0;
   t18 = (d0 & 255);
   store8(dst + 0xb, t18);
   t19 = (d0 & 255);
   store8(dst + 0xa, t19);
-  const _t37 = tick(22, 0x073c4) ? 1 : 0; if (_t37 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t19, 0, 8); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t37) takeIrq(); }
+  const _t37 = tick(22, 0x073c4) ? 1 : 0; if (_t37 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t19, 0, 8); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t37) takeIrq(); }
   t20 = load16(dst3 + -0x10);
   t21 = t20;
   t22 = 0x1;
@@ -55081,7 +55081,7 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
     setXSub(t21, t22, 16);
     setFlagsSub(t21, t22, 16);
     setReg('a0', a0);
-    setReg('a2', player);
+    setReg('a2', unit);
     setReg('a3', dst);
     setReg('a4', callTarget);
     setReg('a5', dst2);
@@ -55089,24 +55089,24 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
     setReg('d0', d0);
     setReg('d1', d1);
     setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t38 = tick(108, 0x073cc) ? 1 : 0; if (_t38 || SPILL_ALL) { setXSub(t21, t22, 16); setFlagsSub(t21, t22, 16); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t38) takeIrq(); }
+  const _t38 = tick(108, 0x073cc) ? 1 : 0; if (_t38 || SPILL_ALL) { setXSub(t21, t22, 16); setFlagsSub(t21, t22, 16); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t38) takeIrq(); }
   t25 = load16(dst3 + -0x16);
   d0 = ((d0 & 0xffff0000) | (t25 & 65535));
   t26 = ((((d0 & 65535)) << 16) >> 16);
   d0 = (t26) >>> 0;
   d2 = load32((dst3 + -0x3c) + 0);
-  d3 = load32((dst3 + -0x3c) + 4);
-  d4 = load32((dst3 + -0x3c) + 8);
+  shape = load32((dst3 + -0x3c) + 4);
+  callArg = load32((dst3 + -0x3c) + 8);
   d5 = load32((dst3 + -0x3c) + 12);
   d6 = load32((dst3 + -0x3c) + 16);
-  player = load32((dst3 + -0x3c) + 20);
+  unit = load32((dst3 + -0x3c) + 20);
   dst = load32((dst3 + -0x3c) + 24);
   callTarget = load32((dst3 + -0x3c) + 28);
   dst2 = load32((dst3 + -0x3c) + 32);
@@ -55115,7 +55115,7 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   setXSub(t21, t22, 16);
   setFlagsCmp(d0, 0, 32);
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', callTarget);
   setReg('a5', dst2);
@@ -55123,13 +55123,13 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); return;
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', callTarget);
   setReg('a5', dst2);
@@ -55137,13 +55137,13 @@ export function placeCursorSpritePlayerSeveralFrom1(player_: number, callTarget_
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
 }
 
-export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: number, d2_: number, shape_: number, callArg_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -55153,8 +55153,8 @@ export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: numbe
   let dst2 = dst2_;
   let coord = coord_;
   let d2 = d2_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let d6 = d6_;
   let t0 = 0;
@@ -55168,7 +55168,7 @@ export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: numbe
   let t8 = 0;
   let t9 = 0;
   let t10 = 0;
-  const _t0 = tick(34, 0x07262) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(34, 0x07262) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load32(dst2 + -0x6);
   a5 = (t0) >>> 0;
   setReg('a2', a2);
@@ -55178,8 +55178,8 @@ export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: numbe
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(a5, 0x07268);
@@ -55191,22 +55191,22 @@ export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: numbe
   dst2 = getReg('a6');
   coord = getReg('d0');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(18, 0x07268) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(18, 0x07268) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
   t1 = (coord & 65535);
   store16(dst, t1);
-  const _t25 = tick(6, 0x07370) ? 1 : 0; if (_t25 || SPILL_ALL) { setFlagsCmp(t1, 0, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t25) takeIrq(); }
+  const _t25 = tick(6, 0x07370) ? 1 : 0; if (_t25 || SPILL_ALL) { setFlagsCmp(t1, 0, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t25) takeIrq(); }
   drop(8);
-  const _t26 = tick(38, 0x07372) ? 1 : 0; if (_t26 || SPILL_ALL) { setFlagsCmp(t1, 0, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t26) takeIrq(); }
+  const _t26 = tick(38, 0x07372) ? 1 : 0; if (_t26 || SPILL_ALL) { setFlagsCmp(t1, 0, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t26) takeIrq(); }
   coord = (5) >>> 0;
   t2 = (coord & 255);
   store8(dst + 0xb, t2);
   t3 = (coord & 255);
   store8(dst + 0xa, t3);
-  const _t35 = tick(22, 0x073c4) ? 1 : 0; if (_t35 || SPILL_ALL) { setFlagsCmp(t3, 0, 8); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t35) takeIrq(); }
+  const _t35 = tick(22, 0x073c4) ? 1 : 0; if (_t35 || SPILL_ALL) { setFlagsCmp(t3, 0, 8); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t35) takeIrq(); }
   t4 = load16(dst2 + -0x10);
   t5 = t4;
   t6 = 0x1;
@@ -55223,21 +55223,21 @@ export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: numbe
     setReg('a6', dst2);
     setReg('d0', coord);
     setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t36 = tick(108, 0x073cc) ? 1 : 0; if (_t36 || SPILL_ALL) { setXSub(t5, t6, 16); setFlagsSub(t5, t6, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t36) takeIrq(); }
+  const _t36 = tick(108, 0x073cc) ? 1 : 0; if (_t36 || SPILL_ALL) { setXSub(t5, t6, 16); setFlagsSub(t5, t6, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t36) takeIrq(); }
   t9 = load16(dst2 + -0x16);
   coord = ((coord & 0xffff0000) | (t9 & 65535));
   t10 = ((((coord & 65535)) << 16) >> 16);
   coord = (t10) >>> 0;
   d2 = load32((dst2 + -0x3c) + 0);
-  d3 = load32((dst2 + -0x3c) + 4);
-  d4 = load32((dst2 + -0x3c) + 8);
+  shape = load32((dst2 + -0x3c) + 4);
+  callArg = load32((dst2 + -0x3c) + 8);
   d5 = load32((dst2 + -0x3c) + 12);
   d6 = load32((dst2 + -0x3c) + 16);
   a2 = load32((dst2 + -0x3c) + 20);
@@ -55255,11 +55255,11 @@ export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: numbe
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); return;
   setReg('a2', a2);
   setReg('a3', dst);
   setReg('a4', a4);
@@ -55267,17 +55267,17 @@ export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: numbe
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
 }
 
-export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: number, displayEntry_: number, callTarget_: number, a5_: number, dst2_: number, coord_: number, count2_: number, limit_: number, index_: number, count22_: number, count_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveralFrom3(player_: number, unit_: number, displayEntry_: number, callTarget_: number, a5_: number, dst2_: number, coord_: number, count2_: number, limit_: number, shape_: number, callArg_: number, count_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
-  let player2 = player2_;
   let player = player_;
+  let unit = unit_;
   let displayEntry = displayEntry_;
   let callTarget = callTarget_;
   let a5 = a5_;
@@ -55285,8 +55285,8 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
   let coord = coord_;
   let count2 = count2_;
   let limit = limit_;
-  let index = index_;
-  let count22 = count22_;
+  let shape = shape_;
+  let callArg = callArg_;
   let count = count_;
   let d6 = d6_;
   let t0 = 0;
@@ -55331,16 +55331,16 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
   let t39 = 0;
   let t40 = 0;
   let t41 = 0;
-  const _t0 = tick(26, 0x0726e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(26, 0x0726e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load8(0x3e1956);
   setFlagsCmp(t0, 0, 8);
   if (((t0) & 255) === ((0) & 255)) {
-    const _t8 = tick(32, 0x072e2) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t8) takeIrq(); }
+    const _t8 = tick(32, 0x072e2) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t8) takeIrq(); }
     t31 = limit;
     push(t31, 4);
     setFlagsCmp(t31, 0, 32);
-    setReg('a0', player2);
-    setReg('a2', player);
+    setReg('a0', player);
+    setReg('a2', unit);
     setReg('a3', displayEntry);
     setReg('a4', callTarget);
     setReg('a5', a5);
@@ -55348,14 +55348,14 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
     setReg('d0', coord);
     setReg('d1', count2);
     setReg('d2', limit);
-    setReg('d3', index);
-    setReg('d4', count22);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', count);
     setReg('d6', d6);
     callRom(callTarget, 0x072e6);
     if (halted()) return;
-    player2 = getReg('a0');
-    player = getReg('a2');
+    player = getReg('a0');
+    unit = getReg('a2');
     displayEntry = getReg('a3');
     callTarget = getReg('a4');
     a5 = getReg('a5');
@@ -55363,16 +55363,16 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
     coord = getReg('d0');
     count2 = getReg('d1');
     limit = getReg('d2');
-    index = getReg('d3');
-    count22 = getReg('d4');
+    shape = getReg('d3');
+    callArg = getReg('d4');
     count = getReg('d5');
     d6 = getReg('d6');
-    const _t9 = tick(22, 0x072e6) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t9) takeIrq(); }
+    const _t9 = tick(22, 0x072e6) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t9) takeIrq(); }
     t32 = d6;
     push(t32, 4);
     setFlagsCmp(t32, 0, 32);
-    setReg('a0', player2);
-    setReg('a2', player);
+    setReg('a0', player);
+    setReg('a2', unit);
     setReg('a3', displayEntry);
     setReg('a4', callTarget);
     setReg('a5', a5);
@@ -55380,14 +55380,14 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
     setReg('d0', coord);
     setReg('d1', count2);
     setReg('d2', limit);
-    setReg('d3', index);
-    setReg('d4', count22);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', count);
     setReg('d6', d6);
-    setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); jumpRom(0x07262);
-  setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6);   return;
-    setReg('a0', player2);
-    setReg('a2', player);
+    setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); jumpRom(0x07262);
+  setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6);   return;
+    setReg('a0', player);
+    setReg('a2', unit);
     setReg('a3', displayEntry);
     setReg('a4', callTarget);
     setReg('a5', a5);
@@ -55395,13 +55395,13 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
     setReg('d0', coord);
     setReg('d1', count2);
     setReg('d2', limit);
-    setReg('d3', index);
-    setReg('d4', count22);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', count);
     setReg('d6', d6);
-  setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6);   return;
+  setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6);   return;
   } else {
-    const _t1 = tick(84, 0x07276) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0, 8); setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t1) takeIrq(); }
+    const _t1 = tick(84, 0x07276) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0, 8); setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t1) takeIrq(); }
     coord = (0) >>> 0;
     t1 = load16(displayEntry + 0x6);
     coord = ((coord & 0xffff0000) | (t1 & 65535));
@@ -55413,8 +55413,8 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
     t4 = coord;
     push(t4, 4);
     setFlagsCmp(t4, 0, 32);
-    setReg('a0', player2);
-    setReg('a2', player);
+    setReg('a0', player);
+    setReg('a2', unit);
     setReg('a3', displayEntry);
     setReg('a4', callTarget);
     setReg('a5', a5);
@@ -55422,14 +55422,14 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
     setReg('d0', coord);
     setReg('d1', count2);
     setReg('d2', limit);
-    setReg('d3', index);
-    setReg('d4', count22);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', count);
     setReg('d6', d6);
     callRom(0x0b958, 0x0728c);
     if (halted()) return;
-    player2 = getReg('a0');
-    player = getReg('a2');
+    player = getReg('a0');
+    unit = getReg('a2');
     displayEntry = getReg('a3');
     callTarget = getReg('a4');
     a5 = getReg('a5');
@@ -55437,22 +55437,22 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
     coord = getReg('d0');
     count2 = getReg('d1');
     limit = getReg('d2');
-    index = getReg('d3');
-    count22 = getReg('d4');
+    shape = getReg('d3');
+    callArg = getReg('d4');
     count = getReg('d5');
     d6 = getReg('d6');
-    const _t2 = tick(28, 0x0728c) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t2) takeIrq(); }
+    const _t2 = tick(28, 0x0728c) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t2) takeIrq(); }
     t5 = (coord & 65535);
     store16(dst2 + -0x14, t5);
     drop(8);
     setFlagsCmp(t5, 0, 16);
     if (((t5) & 65535) === ((0) & 65535)) {
-      const _t8 = tick(32, 0x072e2) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t8) takeIrq(); }
+      const _t8 = tick(32, 0x072e2) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t8) takeIrq(); }
       t31 = limit;
       push(t31, 4);
       setFlagsCmp(t31, 0, 32);
-      setReg('a0', player2);
-      setReg('a2', player);
+      setReg('a0', player);
+      setReg('a2', unit);
       setReg('a3', displayEntry);
       setReg('a4', callTarget);
       setReg('a5', a5);
@@ -55460,14 +55460,14 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       setReg('d0', coord);
       setReg('d1', count2);
       setReg('d2', limit);
-      setReg('d3', index);
-      setReg('d4', count22);
+      setReg('d3', shape);
+      setReg('d4', callArg);
       setReg('d5', count);
       setReg('d6', d6);
       callRom(callTarget, 0x072e6);
       if (halted()) return;
-      player2 = getReg('a0');
-      player = getReg('a2');
+      player = getReg('a0');
+      unit = getReg('a2');
       displayEntry = getReg('a3');
       callTarget = getReg('a4');
       a5 = getReg('a5');
@@ -55475,16 +55475,16 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       coord = getReg('d0');
       count2 = getReg('d1');
       limit = getReg('d2');
-      index = getReg('d3');
-      count22 = getReg('d4');
+      shape = getReg('d3');
+      callArg = getReg('d4');
       count = getReg('d5');
       d6 = getReg('d6');
-      const _t9 = tick(22, 0x072e6) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t9) takeIrq(); }
+      const _t9 = tick(22, 0x072e6) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t9) takeIrq(); }
       t32 = d6;
       push(t32, 4);
       setFlagsCmp(t32, 0, 32);
-      setReg('a0', player2);
-      setReg('a2', player);
+      setReg('a0', player);
+      setReg('a2', unit);
       setReg('a3', displayEntry);
       setReg('a4', callTarget);
       setReg('a5', a5);
@@ -55492,14 +55492,14 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       setReg('d0', coord);
       setReg('d1', count2);
       setReg('d2', limit);
-      setReg('d3', index);
-      setReg('d4', count22);
+      setReg('d3', shape);
+      setReg('d4', callArg);
       setReg('d5', count);
       setReg('d6', d6);
-      setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); jumpRom(0x07262);
-  setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6);     return;
-      setReg('a0', player2);
-      setReg('a2', player);
+      setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); jumpRom(0x07262);
+  setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6);     return;
+      setReg('a0', player);
+      setReg('a2', unit);
       setReg('a3', displayEntry);
       setReg('a4', callTarget);
       setReg('a5', a5);
@@ -55507,17 +55507,17 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       setReg('d0', coord);
       setReg('d1', count2);
       setReg('d2', limit);
-      setReg('d3', index);
-      setReg('d4', count22);
+      setReg('d3', shape);
+      setReg('d4', callArg);
       setReg('d5', count);
       setReg('d6', d6);
-  setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6);     return;
+  setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6);     return;
     } else {
-      const _t3 = tick(46, 0x07294) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t5, 0, 16); setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t3) takeIrq(); }
+      const _t3 = tick(46, 0x07294) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t5, 0, 16); setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t3) takeIrq(); }
       push(0x128b0, 4);
       setFlagsCmp(t5, 0, 16);
-      setReg('a0', player2);
-      setReg('a2', player);
+      setReg('a0', player);
+      setReg('a2', unit);
       setReg('a3', displayEntry);
       setReg('a4', callTarget);
       setReg('a5', a5);
@@ -55525,14 +55525,14 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       setReg('d0', coord);
       setReg('d1', count2);
       setReg('d2', limit);
-      setReg('d3', index);
-      setReg('d4', count22);
+      setReg('d3', shape);
+      setReg('d4', callArg);
       setReg('d5', count);
       setReg('d6', d6);
       callRom(callTarget, 0x0729c);
       if (halted()) return;
-      player2 = getReg('a0');
-      player = getReg('a2');
+      player = getReg('a0');
+      unit = getReg('a2');
       displayEntry = getReg('a3');
       callTarget = getReg('a4');
       a5 = getReg('a5');
@@ -55540,18 +55540,18 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       coord = getReg('d0');
       count2 = getReg('d1');
       limit = getReg('d2');
-      index = getReg('d3');
-      count22 = getReg('d4');
+      shape = getReg('d3');
+      callArg = getReg('d4');
       count = getReg('d5');
       d6 = getReg('d6');
-      const _t4 = tick(46, 0x0729c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t4) takeIrq(); }
-      t6 = count22;
+      const _t4 = tick(46, 0x0729c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t4) takeIrq(); }
+      t6 = callArg;
       push(t6, 4);
       t7 = load32(dst2 + -0x6);
       a5 = (t7) >>> 0;
       setFlagsCmp(t6, 0, 32);
-      setReg('a0', player2);
-      setReg('a2', player);
+      setReg('a0', player);
+      setReg('a2', unit);
       setReg('a3', displayEntry);
       setReg('a4', callTarget);
       setReg('a5', a5);
@@ -55559,14 +55559,14 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       setReg('d0', coord);
       setReg('d1', count2);
       setReg('d2', limit);
-      setReg('d3', index);
-      setReg('d4', count22);
+      setReg('d3', shape);
+      setReg('d4', callArg);
       setReg('d5', count);
       setReg('d6', d6);
       callRom(a5, 0x072a4);
       if (halted()) return;
-      player2 = getReg('a0');
-      player = getReg('a2');
+      player = getReg('a0');
+      unit = getReg('a2');
       displayEntry = getReg('a3');
       callTarget = getReg('a4');
       a5 = getReg('a5');
@@ -55574,15 +55574,15 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       coord = getReg('d0');
       count2 = getReg('d1');
       limit = getReg('d2');
-      index = getReg('d3');
-      count22 = getReg('d4');
+      shape = getReg('d3');
+      callArg = getReg('d4');
       count = getReg('d5');
       d6 = getReg('d6');
-      const _t5 = tick(124, 0x072a4) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t5) takeIrq(); }
+      const _t5 = tick(124, 0x072a4) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t5) takeIrq(); }
       t8 = (coord & 65535);
       store16(displayEntry, t8);
       count2 = (0) >>> 0;
-      t9 = load8(player + 0x2);
+      t9 = load8(unit + 0x2);
       count2 = ((count2 & 0xffffff00) | (t9 & 255));
       t10 = count2;
       t11 = count2;
@@ -55595,44 +55595,44 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       t15 = count2;
       t16 = coord;
       count2 = ((count2 - coord)) >>> 0;
-      player2 = (0x3e1968) >>> 0;
-      player2 = ((player2 + count2)) >>> 0;
-      t17 = player2;
+      player = (0x3e1968) >>> 0;
+      player = ((player + count2)) >>> 0;
+      t17 = player;
       store32(dst2 + -0xa, t17);
       t18 = load16(dst2 + -0x14);
       drop(8);
       if (((t18) & 65535) !== ((0x1) & 65535)) {
-        const _t7 = tick(36, 0x072d6) ? 1 : 0; if (_t7 || SPILL_ALL) { setXSub(t15, t16, 32); setFlagsCmp(t18, 0x1, 16); setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t7) takeIrq(); }
+        const _t7 = tick(36, 0x072d6) ? 1 : 0; if (_t7 || SPILL_ALL) { setXSub(t15, t16, 32); setFlagsCmp(t18, 0x1, 16); setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t7) takeIrq(); }
         t25 = load32(dst2 + -0xa);
-        player2 = (t25) >>> 0;
-        t26 = load8(player2 + 0x17);
+        player = (t25) >>> 0;
+        t26 = load8(player + 0x17);
         t27 = t26;
         t28 = 0x2;
-        t29 = load8(player2 + 0x17);
+        t29 = load8(player + 0x17);
         t30 = (t29 + 0x2);
-        store8(player2 + 0x17, t30);
+        store8(player + 0x17, t30);
         setXAdd(t27, t28, 8);
         setFlagsAdd(t27, t28, 8);
       } else {
-        const _t6 = tick(36, 0x072ca) ? 1 : 0; if (_t6 || SPILL_ALL) { setXSub(t15, t16, 32); setFlagsCmp(t18, 0x1, 16); setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t6) takeIrq(); }
+        const _t6 = tick(36, 0x072ca) ? 1 : 0; if (_t6 || SPILL_ALL) { setXSub(t15, t16, 32); setFlagsCmp(t18, 0x1, 16); setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t6) takeIrq(); }
         t19 = load32(dst2 + -0xa);
-        player2 = (t19) >>> 0;
-        t20 = load8(player2 + 0x17);
+        player = (t19) >>> 0;
+        t20 = load8(player + 0x17);
         t21 = t20;
         t22 = 0x1;
-        t23 = load8(player2 + 0x17);
+        t23 = load8(player + 0x17);
         t24 = (t23 + 0x1);
-        store8(player2 + 0x17, t24);
+        store8(player + 0x17, t24);
         setXAdd(t21, t22, 8);
         setFlagsAdd(t21, t22, 8);
       }
-      const _t24 = tick(38, 0x07372) ? 1 : 0; if (_t24 || SPILL_ALL) { setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t24) takeIrq(); }
+      const _t24 = tick(38, 0x07372) ? 1 : 0; if (_t24 || SPILL_ALL) { setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t24) takeIrq(); }
       coord = (5) >>> 0;
       t33 = (coord & 255);
       store8(displayEntry + 0xb, t33);
       t34 = (coord & 255);
       store8(displayEntry + 0xa, t34);
-      const _t33 = tick(22, 0x073c4) ? 1 : 0; if (_t33 || SPILL_ALL) { setFlagsCmp(t34, 0, 8); setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t33) takeIrq(); }
+      const _t33 = tick(22, 0x073c4) ? 1 : 0; if (_t33 || SPILL_ALL) { setFlagsCmp(t34, 0, 8); setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t33) takeIrq(); }
       t35 = load16(dst2 + -0x10);
       t36 = t35;
       t37 = 0x1;
@@ -55642,8 +55642,8 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       if ((((t36) << 16) >> 16) >= (((t37) << 16) >> 16)) {
         setXSub(t36, t37, 16);
         setFlagsSub(t36, t37, 16);
-        setReg('a0', player2);
-        setReg('a2', player);
+        setReg('a0', player);
+        setReg('a2', unit);
         setReg('a3', displayEntry);
         setReg('a4', callTarget);
         setReg('a5', a5);
@@ -55651,24 +55651,24 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
         setReg('d0', coord);
         setReg('d1', count2);
         setReg('d2', limit);
-        setReg('d3', index);
-        setReg('d4', count22);
+        setReg('d3', shape);
+        setReg('d4', callArg);
         setReg('d5', count);
         setReg('d6', d6);
-        setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6);       return;
+        setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6);       return;
       }
-      const _t34 = tick(108, 0x073cc) ? 1 : 0; if (_t34 || SPILL_ALL) { setXSub(t36, t37, 16); setFlagsSub(t36, t37, 16); setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6); if (_t34) takeIrq(); }
+      const _t34 = tick(108, 0x073cc) ? 1 : 0; if (_t34 || SPILL_ALL) { setXSub(t36, t37, 16); setFlagsSub(t36, t37, 16); setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6); if (_t34) takeIrq(); }
       t40 = load16(dst2 + -0x16);
       coord = ((coord & 0xffff0000) | (t40 & 65535));
       t41 = ((((coord & 65535)) << 16) >> 16);
       coord = (t41) >>> 0;
       limit = load32((dst2 + -0x3c) + 0);
-      index = load32((dst2 + -0x3c) + 4);
-      count22 = load32((dst2 + -0x3c) + 8);
+      shape = load32((dst2 + -0x3c) + 4);
+      callArg = load32((dst2 + -0x3c) + 8);
       count = load32((dst2 + -0x3c) + 12);
       d6 = load32((dst2 + -0x3c) + 16);
-      player = load32((dst2 + -0x3c) + 20);
+      unit = load32((dst2 + -0x3c) + 20);
       displayEntry = load32((dst2 + -0x3c) + 24);
       callTarget = load32((dst2 + -0x3c) + 28);
       a5 = load32((dst2 + -0x3c) + 32);
@@ -55676,8 +55676,8 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       dst2 = popLong();
       setXSub(t36, t37, 16);
       setFlagsCmp(coord, 0, 32);
-      setReg('a0', player2);
-      setReg('a2', player);
+      setReg('a0', player);
+      setReg('a2', unit);
       setReg('a3', displayEntry);
       setReg('a4', callTarget);
       setReg('a5', a5);
@@ -55685,15 +55685,15 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
       setReg('d0', coord);
       setReg('d1', count2);
       setReg('d2', limit);
-      setReg('d3', index);
-      setReg('d4', count22);
+      setReg('d3', shape);
+      setReg('d4', callArg);
       setReg('d5', count);
       setReg('d6', d6);
-  setReg('a0', player2); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', index); setReg('d4', count22); setReg('d5', count); setReg('d6', d6);     return;
+  setReg('a0', player); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', count2); setReg('d2', limit); setReg('d3', shape); setReg('d4', callArg); setReg('d5', count); setReg('d6', d6);     return;
     }
   }
-  setReg('a0', player2);
-  setReg('a2', player);
+  setReg('a0', player);
+  setReg('a2', unit);
   setReg('a3', displayEntry);
   setReg('a4', callTarget);
   setReg('a5', a5);
@@ -55701,13 +55701,13 @@ export function placeCursorSpritePlayerSeveralFrom3(player2_: number, player_: n
   setReg('d0', coord);
   setReg('d1', count2);
   setReg('d2', limit);
-  setReg('d3', index);
-  setReg('d4', count22);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', count);
   setReg('d6', d6);
 }
 
-export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_: number, d1_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_: number, d1_: number, d2_: number, shape_: number, callArg_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -55719,8 +55719,8 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
   let coord = coord_;
   let d1 = d1_;
   let d2 = d2_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let d6 = d6_;
   let t0 = 0;
@@ -55746,7 +55746,7 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
   let t20 = 0;
   let t21 = 0;
   let t22 = 0;
-  const _t0 = tick(46, 0x072ec) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(46, 0x072ec) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
   push(0x128a8, 4);
   setReg('a0', a0);
   setReg('a2', ptr);
@@ -55757,8 +55757,8 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
   setReg('d0', coord);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(callTarget, 0x072f4);
@@ -55772,12 +55772,12 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
   coord = getReg('d0');
   d1 = getReg('d1');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(46, 0x072f4) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
-  t0 = d4;
+  const _t1 = tick(46, 0x072f4) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  t0 = callArg;
   push(t0, 4);
   t1 = load32(dst2 + -0x6);
   a5 = (t1) >>> 0;
@@ -55791,8 +55791,8 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
   setReg('d0', coord);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(a5, 0x072fc);
@@ -55806,11 +55806,11 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
   coord = getReg('d0');
   d1 = getReg('d1');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t2 = tick(92, 0x072fc) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(92, 0x072fc) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
   t2 = (coord & 65535);
   store16(dst, t2);
   d1 = (0) >>> 0;
@@ -55832,15 +55832,15 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
   t12 = 0x1;
   t13 = (load8((a0 + (d1 | 0) + 0x17)) + 0x1);
   store8((a0 + (d1 | 0) + 0x17), t13);
-  const _t13 = tick(6, 0x07370) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsAdd(t11, t12, 8); setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
+  const _t13 = tick(6, 0x07370) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsAdd(t11, t12, 8); setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
   drop(8);
-  const _t14 = tick(38, 0x07372) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsAdd(t11, t12, 8); setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t14) takeIrq(); }
+  const _t14 = tick(38, 0x07372) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsAdd(t11, t12, 8); setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t14) takeIrq(); }
   coord = (5) >>> 0;
   t14 = (coord & 255);
   store8(dst + 0xb, t14);
   t15 = (coord & 255);
   store8(dst + 0xa, t15);
-  const _t23 = tick(22, 0x073c4) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t15, 0, 8); setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t23) takeIrq(); }
+  const _t23 = tick(22, 0x073c4) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t11, t12, 8); setFlagsCmp(t15, 0, 8); setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t23) takeIrq(); }
   t16 = load16(dst2 + -0x10);
   t17 = t16;
   t18 = 0x1;
@@ -55859,21 +55859,21 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
     setReg('d0', coord);
     setReg('d1', d1);
     setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t24 = tick(108, 0x073cc) ? 1 : 0; if (_t24 || SPILL_ALL) { setXSub(t17, t18, 16); setFlagsSub(t17, t18, 16); setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t24) takeIrq(); }
+  const _t24 = tick(108, 0x073cc) ? 1 : 0; if (_t24 || SPILL_ALL) { setXSub(t17, t18, 16); setFlagsSub(t17, t18, 16); setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t24) takeIrq(); }
   t21 = load16(dst2 + -0x16);
   coord = ((coord & 0xffff0000) | (t21 & 65535));
   t22 = ((((coord & 65535)) << 16) >> 16);
   coord = (t22) >>> 0;
   d2 = load32((dst2 + -0x3c) + 0);
-  d3 = load32((dst2 + -0x3c) + 4);
-  d4 = load32((dst2 + -0x3c) + 8);
+  shape = load32((dst2 + -0x3c) + 4);
+  callArg = load32((dst2 + -0x3c) + 8);
   d5 = load32((dst2 + -0x3c) + 12);
   d6 = load32((dst2 + -0x3c) + 16);
   ptr = load32((dst2 + -0x3c) + 20);
@@ -55893,11 +55893,11 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
   setReg('d0', coord);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', a0); setReg('a2', ptr); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d1', d1); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); return;
   setReg('a0', a0);
   setReg('a2', ptr);
   setReg('a3', dst);
@@ -55907,13 +55907,13 @@ export function placeCursorSpritePlayerSeveralFrom4(callTarget_: number, coord_:
   setReg('d0', coord);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
 }
 
-export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: number, coord_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: number, coord_: number, d2_: number, shape_: number, callArg_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -55923,8 +55923,8 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   let dst2 = dst2_;
   let coord = coord_;
   let d2 = d2_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let d6 = d6_;
   let t0 = 0;
@@ -55960,7 +55960,7 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   let t30 = 0;
   let t31 = 0;
   let t32 = 0;
-  const _t0 = tick(32, 0x07318) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(32, 0x07318) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = d2;
   push(t0, 4);
   setFlagsCmp(t0, 0, 32);
@@ -55971,8 +55971,8 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(callTarget, 0x0731c);
@@ -55984,12 +55984,12 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   dst2 = getReg('a6');
   coord = getReg('d0');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(46, 0x0731c) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
-  t1 = d3;
+  const _t1 = tick(46, 0x0731c) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  t1 = shape;
   push(t1, 4);
   t2 = load32(dst2 + -0x6);
   a5 = (t2) >>> 0;
@@ -56001,8 +56001,8 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(a5, 0x07324);
@@ -56014,11 +56014,11 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   dst2 = getReg('a6');
   coord = getReg('d0');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t2 = tick(52, 0x07324) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(52, 0x07324) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
   t3 = (coord & 65535);
   store16(dst, t3);
   t4 = load8(dst + 0x2);
@@ -56030,7 +56030,7 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   drop(8);
   setFlagsCmp(t8, 0, 8);
   if (((t8) & 255) === ((0) & 255)) {
-    const _t4 = tick(84, 0x0733c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+    const _t4 = tick(84, 0x0733c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
     coord = (0) >>> 0;
     t10 = load16(dst + 0x6);
     coord = ((coord & 0xffff0000) | (t10 & 65535));
@@ -56049,8 +56049,8 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
     setReg('a6', dst2);
     setReg('d0', coord);
     setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
     callRom(0x0404a, 0x07350);
@@ -56062,19 +56062,19 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
     dst2 = getReg('a6');
     coord = getReg('d0');
     d2 = getReg('d2');
-    d3 = getReg('d3');
-    d4 = getReg('d4');
+    shape = getReg('d3');
+    callArg = getReg('d4');
     d5 = getReg('d5');
     d6 = getReg('d6');
-    const _t5 = tick(6, 0x07350) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+    const _t5 = tick(6, 0x07350) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
     drop(8);
   } else {
-    const _t3 = tick(26, 0x07334) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t8, 0, 8); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+    const _t3 = tick(26, 0x07334) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t8, 0, 8); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
     t9 = load8(dst2 + -0x1);
     setFlagsCmp(t9, 0x30, 8);
     if (((t9) & 255) !== ((0x30) & 255)) {
     } else {
-      const _t4 = tick(84, 0x0733c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+      const _t4 = tick(84, 0x0733c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
       coord = (0) >>> 0;
       t10 = load16(dst + 0x6);
       coord = ((coord & 0xffff0000) | (t10 & 65535));
@@ -56093,8 +56093,8 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
       setReg('a6', dst2);
       setReg('d0', coord);
       setReg('d2', d2);
-      setReg('d3', d3);
-      setReg('d4', d4);
+      setReg('d3', shape);
+      setReg('d4', callArg);
       setReg('d5', d5);
       setReg('d6', d6);
       callRom(0x0404a, 0x07350);
@@ -56106,15 +56106,15 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
       dst2 = getReg('a6');
       coord = getReg('d0');
       d2 = getReg('d2');
-      d3 = getReg('d3');
-      d4 = getReg('d4');
+      shape = getReg('d3');
+      callArg = getReg('d4');
       d5 = getReg('d5');
       d6 = getReg('d6');
-      const _t5 = tick(6, 0x07350) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+      const _t5 = tick(6, 0x07350) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
       drop(8);
     }
   }
-  const _t6 = tick(34, 0x07352) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+  const _t6 = tick(34, 0x07352) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
   t14 = load16(dst + 0x6);
   t15 = t14;
   t16 = 0x6;
@@ -56127,13 +56127,13 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   t22 = load16(dst + 0x8);
   t23 = (t22 - 0x2);
   store16(dst + 0x8, t23);
-  const _t10 = tick(38, 0x07372) ? 1 : 0; if (_t10 || SPILL_ALL) { setXSub(t20, t21, 16); setFlagsSub(t20, t21, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+  const _t10 = tick(38, 0x07372) ? 1 : 0; if (_t10 || SPILL_ALL) { setXSub(t20, t21, 16); setFlagsSub(t20, t21, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
   coord = (5) >>> 0;
   t24 = (coord & 255);
   store8(dst + 0xb, t24);
   t25 = (coord & 255);
   store8(dst + 0xa, t25);
-  const _t19 = tick(22, 0x073c4) ? 1 : 0; if (_t19 || SPILL_ALL) { setXSub(t20, t21, 16); setFlagsCmp(t25, 0, 8); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t19) takeIrq(); }
+  const _t19 = tick(22, 0x073c4) ? 1 : 0; if (_t19 || SPILL_ALL) { setXSub(t20, t21, 16); setFlagsCmp(t25, 0, 8); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t19) takeIrq(); }
   t26 = load16(dst2 + -0x10);
   t27 = t26;
   t28 = 0x1;
@@ -56150,21 +56150,21 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
     setReg('a6', dst2);
     setReg('d0', coord);
     setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t20 = tick(108, 0x073cc) ? 1 : 0; if (_t20 || SPILL_ALL) { setXSub(t27, t28, 16); setFlagsSub(t27, t28, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t20) takeIrq(); }
+  const _t20 = tick(108, 0x073cc) ? 1 : 0; if (_t20 || SPILL_ALL) { setXSub(t27, t28, 16); setFlagsSub(t27, t28, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t20) takeIrq(); }
   t31 = load16(dst2 + -0x16);
   coord = ((coord & 0xffff0000) | (t31 & 65535));
   t32 = ((((coord & 65535)) << 16) >> 16);
   coord = (t32) >>> 0;
   d2 = load32((dst2 + -0x3c) + 0);
-  d3 = load32((dst2 + -0x3c) + 4);
-  d4 = load32((dst2 + -0x3c) + 8);
+  shape = load32((dst2 + -0x3c) + 4);
+  callArg = load32((dst2 + -0x3c) + 8);
   d5 = load32((dst2 + -0x3c) + 12);
   d6 = load32((dst2 + -0x3c) + 16);
   a2 = load32((dst2 + -0x3c) + 20);
@@ -56182,11 +56182,11 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); return;
   setReg('a2', a2);
   setReg('a3', dst);
   setReg('a4', callTarget);
@@ -56194,13 +56194,13 @@ export function placeCursorSpritePlayerSeveralFrom5(callTarget_: number, dst2_: 
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
 }
 
-export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: number, coord_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: number, coord_: number, d2_: number, shape_: number, callArg_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -56210,8 +56210,8 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
   let dst2 = dst2_;
   let coord = coord_;
   let d2 = d2_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let d6 = d6_;
   let t0 = 0;
@@ -56231,7 +56231,7 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
   let t14 = 0;
   let t15 = 0;
   let t16 = 0;
-  const _t0 = tick(32, 0x0735c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(32, 0x0735c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = d2;
   push(t0, 4);
   setFlagsCmp(t0, 0, 32);
@@ -56242,8 +56242,8 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(callTarget, 0x07360);
@@ -56255,12 +56255,12 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
   dst2 = getReg('a6');
   coord = getReg('d0');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(46, 0x07360) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
-  t1 = d3;
+  const _t1 = tick(46, 0x07360) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  t1 = shape;
   push(t1, 4);
   t2 = load32(dst2 + -0x6);
   a5 = (t2) >>> 0;
@@ -56272,8 +56272,8 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(a5, 0x07368);
@@ -56285,11 +56285,11 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
   dst2 = getReg('a6');
   coord = getReg('d0');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t2 = tick(68, 0x07368) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(68, 0x07368) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
   t3 = (coord & 65535);
   store16(dst, t3);
   t4 = load8(dst + 0x2);
@@ -56303,7 +56303,7 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
   store8(dst + 0xb, t8);
   t9 = (coord & 255);
   store8(dst + 0xa, t9);
-  const _t11 = tick(22, 0x073c4) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp(t9, 0, 8); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+  const _t11 = tick(22, 0x073c4) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp(t9, 0, 8); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
   t10 = load16(dst2 + -0x10);
   t11 = t10;
   t12 = 0x1;
@@ -56320,21 +56320,21 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
     setReg('a6', dst2);
     setReg('d0', coord);
     setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t12 = tick(108, 0x073cc) ? 1 : 0; if (_t12 || SPILL_ALL) { setXSub(t11, t12, 16); setFlagsSub(t11, t12, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
+  const _t12 = tick(108, 0x073cc) ? 1 : 0; if (_t12 || SPILL_ALL) { setXSub(t11, t12, 16); setFlagsSub(t11, t12, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
   t15 = load16(dst2 + -0x16);
   coord = ((coord & 0xffff0000) | (t15 & 65535));
   t16 = ((((coord & 65535)) << 16) >> 16);
   coord = (t16) >>> 0;
   d2 = load32((dst2 + -0x3c) + 0);
-  d3 = load32((dst2 + -0x3c) + 4);
-  d4 = load32((dst2 + -0x3c) + 8);
+  shape = load32((dst2 + -0x3c) + 4);
+  callArg = load32((dst2 + -0x3c) + 8);
   d5 = load32((dst2 + -0x3c) + 12);
   d6 = load32((dst2 + -0x3c) + 16);
   a2 = load32((dst2 + -0x3c) + 20);
@@ -56352,11 +56352,11 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', a2); setReg('a3', dst); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst2); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); return;
   setReg('a2', a2);
   setReg('a3', dst);
   setReg('a4', callTarget);
@@ -56364,17 +56364,17 @@ export function placeCursorSpritePlayerSeveralFrom6(callTarget_: number, dst2_: 
   setReg('a6', dst2);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
 }
 
-export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: number, kind_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveralFrom7(unit_: number, dst2_: number, kind_: number, d2_: number, shape_: number, callArg_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
-  let player = player_;
+  let unit = unit_;
   let dst = getReg('a3');
   let a4 = getReg('a4');
   let a5 = getReg('a5');
@@ -56382,8 +56382,8 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
   let d0 = getReg('d0');
   let kind = kind_;
   let d2 = d2_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let d6 = d6_;
   let t0 = 0;
@@ -56408,8 +56408,8 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
   let t19 = 0;
   let t20 = 0;
   let t21 = 0;
-  const _t0 = tick(40, 0x0737e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
-  t0 = load16(player + 0x10);
+  const _t0 = tick(40, 0x0737e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  t0 = load16(unit + 0x10);
   kind = ((kind & 0xffff0000) | (t0 & 65535));
   d0 = (10) >>> 0;
   t1 = ((d0) & 63);
@@ -56418,11 +56418,11 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
   setFlagsCmp((kind & 65535), 0x2, 16);
   if ((((kind & 65535)) & 65535) <= ((0x2) & 65535)) {
   } else {
-    const _t1 = tick(4, 0x0738c) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x2, 16); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+    const _t1 = tick(4, 0x0738c) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x2, 16); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
     kind = (2) >>> 0;
     setFlagsCmp((kind & 65535), 0, 16);
   }
-  const _t2 = tick(90, 0x0738e) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(90, 0x0738e) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
   d0 = (0) >>> 0;
   d0 = ((d0 & 0xffff0000) | ((kind & 65535) & 65535));
   t3 = d0;
@@ -56435,7 +56435,7 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
   setXAdd(t3, t4, 32);
   setFlagsAdd(t3, t4, 32);
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', a4);
   setReg('a5', a5);
@@ -56443,14 +56443,14 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
   setReg('d0', d0);
   setReg('d1', kind);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
   callRom(a5, 0x073a4);
   if (halted()) return;
   a0 = getReg('a0');
-  player = getReg('a2');
+  unit = getReg('a2');
   dst = getReg('a3');
   a4 = getReg('a4');
   a5 = getReg('a5');
@@ -56458,31 +56458,31 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
   d0 = getReg('d0');
   kind = getReg('d1');
   d2 = getReg('d2');
-  d3 = getReg('d3');
-  d4 = getReg('d4');
+  shape = getReg('d3');
+  callArg = getReg('d4');
   d5 = getReg('d5');
   d6 = getReg('d6');
-  const _t3 = tick(36, 0x073a4) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t3, t4, 32); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(36, 0x073a4) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t3, t4, 32); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
   kind = ((kind & 0xffff0000) | ((d0 & 65535) & 65535));
-  t6 = load8(player + 0x3);
+  t6 = load8(unit + 0x3);
   drop(4);
   setXAdd(t3, t4, 32);
   setFlagsCmp(t6, 0x25, 8);
   if (((t6) & 255) !== ((0x25) & 255)) {
   } else {
-    const _t4 = tick(8, 0x073b0) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t3, t4, 32); setFlagsCmp(t6, 0x25, 8); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+    const _t4 = tick(8, 0x073b0) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t3, t4, 32); setFlagsCmp(t6, 0x25, 8); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
     t7 = (kind & 65535);
     t8 = 0xa;
     kind = ((kind & 0xffff0000) | (((kind & 65535) + 0xa) & 65535));
     setXAdd(t7, t8, 16);
     setFlagsAdd(t7, t8, 16);
   }
-  const _t5 = tick(18, 0x073b4) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+  const _t5 = tick(18, 0x073b4) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
   t9 = load16(dst);
   setFlagsCmp((kind & 65535), t9, 16);
   if ((((kind & 65535)) & 65535) === ((t9) & 65535)) {
   } else {
-    const _t6 = tick(24, 0x073b8) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp((kind & 65535), t9, 16); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+    const _t6 = tick(24, 0x073b8) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp((kind & 65535), t9, 16); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
     t10 = (kind & 65535);
     store16(dst, t10);
     t11 = load8(dst + 0x2);
@@ -56492,9 +56492,9 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
     t14 = load8(dst + 0x2);
     setFlagsCmp(t14, 0, 8);
   }
-  const _t7 = tick(14, 0x073c0) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
-  player = ((player + 0x1a)) >>> 0;
-  const _t8 = tick(22, 0x073c4) ? 1 : 0; if (_t8 || SPILL_ALL) { setFlagsCmp(t14, 0, 8); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+  const _t7 = tick(14, 0x073c0) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
+  unit = ((unit + 0x1a)) >>> 0;
+  const _t8 = tick(22, 0x073c4) ? 1 : 0; if (_t8 || SPILL_ALL) { setFlagsCmp(t14, 0, 8); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
   t15 = load16(dst2 + -0x10);
   t16 = t15;
   t17 = 0x1;
@@ -56505,7 +56505,7 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
     setXSub(t16, t17, 16);
     setFlagsSub(t16, t17, 16);
     setReg('a0', a0);
-    setReg('a2', player);
+    setReg('a2', unit);
     setReg('a3', dst);
     setReg('a4', a4);
     setReg('a5', a5);
@@ -56513,24 +56513,24 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
     setReg('d0', d0);
     setReg('d1', kind);
     setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t9 = tick(108, 0x073cc) ? 1 : 0; if (_t9 || SPILL_ALL) { setXSub(t16, t17, 16); setFlagsSub(t16, t17, 16); setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+  const _t9 = tick(108, 0x073cc) ? 1 : 0; if (_t9 || SPILL_ALL) { setXSub(t16, t17, 16); setFlagsSub(t16, t17, 16); setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
   t20 = load16(dst2 + -0x16);
   d0 = ((d0 & 0xffff0000) | (t20 & 65535));
   t21 = ((((d0 & 65535)) << 16) >> 16);
   d0 = (t21) >>> 0;
   d2 = load32((dst2 + -0x3c) + 0);
-  d3 = load32((dst2 + -0x3c) + 4);
-  d4 = load32((dst2 + -0x3c) + 8);
+  shape = load32((dst2 + -0x3c) + 4);
+  callArg = load32((dst2 + -0x3c) + 8);
   d5 = load32((dst2 + -0x3c) + 12);
   d6 = load32((dst2 + -0x3c) + 16);
-  player = load32((dst2 + -0x3c) + 20);
+  unit = load32((dst2 + -0x3c) + 20);
   dst = load32((dst2 + -0x3c) + 24);
   a4 = load32((dst2 + -0x3c) + 28);
   a5 = load32((dst2 + -0x3c) + 32);
@@ -56539,7 +56539,7 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
   setXSub(t16, t17, 16);
   setFlagsCmp(d0, 0, 32);
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', a4);
   setReg('a5', a5);
@@ -56547,13 +56547,13 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
   setReg('d0', d0);
   setReg('d1', kind);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a0', a0); setReg('a2', player); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', a0); setReg('a2', unit); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', d0); setReg('d1', kind); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); return;
   setReg('a0', a0);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', dst);
   setReg('a4', a4);
   setReg('a5', a5);
@@ -56561,24 +56561,24 @@ export function placeCursorSpritePlayerSeveralFrom7(player_: number, dst2_: numb
   setReg('d0', d0);
   setReg('d1', kind);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
 }
 
-export function placeCursorSpritePlayerSeveralFrom8(player_: number, displayEntry_: number, callTarget_: number, a5_: number, dst_: number, coord_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveralFrom8(unit_: number, displayEntry_: number, callTarget_: number, a5_: number, dst_: number, coord_: number, d2_: number, shape_: number, callArg_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
-  let player = player_;
+  let unit = unit_;
   let displayEntry = displayEntry_;
   let callTarget = callTarget_;
   let a5 = a5_;
   let dst = dst_;
   let coord = coord_;
   let d2 = d2_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let d6 = d6_;
   let t0 = 0;
@@ -56588,9 +56588,9 @@ export function placeCursorSpritePlayerSeveralFrom8(player_: number, displayEntr
   let t4 = 0;
   let t5 = 0;
   let t6 = 0;
-  const _t0 = tick(14, 0x073c0) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
-  player = ((player + 0x1a)) >>> 0;
-  const _t1 = tick(22, 0x073c4) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t0 = tick(14, 0x073c0) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  unit = ((unit + 0x1a)) >>> 0;
+  const _t1 = tick(22, 0x073c4) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
   t0 = load16(dst + -0x10);
   t1 = t0;
   t2 = 0x1;
@@ -56600,31 +56600,31 @@ export function placeCursorSpritePlayerSeveralFrom8(player_: number, displayEntr
   if ((((t1) << 16) >> 16) >= (((t2) << 16) >> 16)) {
     setXSub(t1, t2, 16);
     setFlagsSub(t1, t2, 16);
-    setReg('a2', player);
+    setReg('a2', unit);
     setReg('a3', displayEntry);
     setReg('a4', callTarget);
     setReg('a5', a5);
     setReg('a6', dst);
     setReg('d0', coord);
     setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t2 = tick(108, 0x073cc) ? 1 : 0; if (_t2 || SPILL_ALL) { setXSub(t1, t2, 16); setFlagsSub(t1, t2, 16); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(108, 0x073cc) ? 1 : 0; if (_t2 || SPILL_ALL) { setXSub(t1, t2, 16); setFlagsSub(t1, t2, 16); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
   t5 = load16(dst + -0x16);
   coord = ((coord & 0xffff0000) | (t5 & 65535));
   t6 = ((((coord & 65535)) << 16) >> 16);
   coord = (t6) >>> 0;
   d2 = load32((dst + -0x3c) + 0);
-  d3 = load32((dst + -0x3c) + 4);
-  d4 = load32((dst + -0x3c) + 8);
+  shape = load32((dst + -0x3c) + 4);
+  callArg = load32((dst + -0x3c) + 8);
   d5 = load32((dst + -0x3c) + 12);
   d6 = load32((dst + -0x3c) + 16);
-  player = load32((dst + -0x3c) + 20);
+  unit = load32((dst + -0x3c) + 20);
   displayEntry = load32((dst + -0x3c) + 24);
   callTarget = load32((dst + -0x3c) + 28);
   a5 = load32((dst + -0x3c) + 32);
@@ -56632,43 +56632,43 @@ export function placeCursorSpritePlayerSeveralFrom8(player_: number, displayEntr
   dst = popLong();
   setXSub(t1, t2, 16);
   setFlagsCmp(coord, 0, 32);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', displayEntry);
   setReg('a4', callTarget);
   setReg('a5', a5);
   setReg('a6', dst);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
-  setReg('a2', player);
+  setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', unit);
   setReg('a3', displayEntry);
   setReg('a4', callTarget);
   setReg('a5', a5);
   setReg('a6', dst);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
 }
 
-export function placeCursorSpritePlayerSeveralFrom9(player_: number, displayEntry_: number, callTarget_: number, a5_: number, dst_: number, coord_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placeCursorSpritePlayerSeveralFrom9(unit_: number, displayEntry_: number, callTarget_: number, a5_: number, dst_: number, coord_: number, d2_: number, shape_: number, callArg_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
-  let player = player_;
+  let unit = unit_;
   let displayEntry = displayEntry_;
   let callTarget = callTarget_;
   let a5 = a5_;
   let dst = dst_;
   let coord = coord_;
   let d2 = d2_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let d6 = d6_;
   let t0 = 0;
@@ -56678,7 +56678,7 @@ export function placeCursorSpritePlayerSeveralFrom9(player_: number, displayEntr
   let t4 = 0;
   let t5 = 0;
   let t6 = 0;
-  const _t0 = tick(22, 0x073c4) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(22, 0x073c4) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load16(dst + -0x10);
   t1 = t0;
   t2 = 0x1;
@@ -56688,31 +56688,31 @@ export function placeCursorSpritePlayerSeveralFrom9(player_: number, displayEntr
   if ((((t1) << 16) >> 16) >= (((t2) << 16) >> 16)) {
     setXSub(t1, t2, 16);
     setFlagsSub(t1, t2, 16);
-    setReg('a2', player);
+    setReg('a2', unit);
     setReg('a3', displayEntry);
     setReg('a4', callTarget);
     setReg('a5', a5);
     setReg('a6', dst);
     setReg('d0', coord);
     setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d3', shape);
+    setReg('d4', callArg);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
-  setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0704e);
+  setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t1 = tick(108, 0x073cc) ? 1 : 0; if (_t1 || SPILL_ALL) { setXSub(t1, t2, 16); setFlagsSub(t1, t2, 16); setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(108, 0x073cc) ? 1 : 0; if (_t1 || SPILL_ALL) { setXSub(t1, t2, 16); setFlagsSub(t1, t2, 16); setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
   t5 = load16(dst + -0x16);
   coord = ((coord & 0xffff0000) | (t5 & 65535));
   t6 = ((((coord & 65535)) << 16) >> 16);
   coord = (t6) >>> 0;
   d2 = load32((dst + -0x3c) + 0);
-  d3 = load32((dst + -0x3c) + 4);
-  d4 = load32((dst + -0x3c) + 8);
+  shape = load32((dst + -0x3c) + 4);
+  callArg = load32((dst + -0x3c) + 8);
   d5 = load32((dst + -0x3c) + 12);
   d6 = load32((dst + -0x3c) + 16);
-  player = load32((dst + -0x3c) + 20);
+  unit = load32((dst + -0x3c) + 20);
   displayEntry = load32((dst + -0x3c) + 24);
   callTarget = load32((dst + -0x3c) + 28);
   a5 = load32((dst + -0x3c) + 32);
@@ -56720,32 +56720,32 @@ export function placeCursorSpritePlayerSeveralFrom9(player_: number, displayEntr
   dst = popLong();
   setXSub(t1, t2, 16);
   setFlagsCmp(coord, 0, 32);
-  setReg('a2', player);
+  setReg('a2', unit);
   setReg('a3', displayEntry);
   setReg('a4', callTarget);
   setReg('a5', a5);
   setReg('a6', dst);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a2', player); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
-  setReg('a2', player);
+  setReg('a2', unit); setReg('a3', displayEntry); setReg('a4', callTarget); setReg('a5', a5); setReg('a6', dst); setReg('d0', coord); setReg('d2', d2); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', unit);
   setReg('a3', displayEntry);
   setReg('a4', callTarget);
   setReg('a5', a5);
   setReg('a6', dst);
   setReg('d0', coord);
   setReg('d2', d2);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
   setReg('d6', d6);
 }
 
-export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: number, d3_: number, d4_: number, d5_: number, arg0: number, arg1: number): void {
+export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: number, shape_: number, callArg_: number, d5_: number, arg0: number, arg1: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -56755,8 +56755,8 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: 
   let d0 = getReg('d0');
   let index = index_;
   let kind = kind_;
-  let d3 = d3_;
-  let d4 = d4_;
+  let shape = shape_;
+  let callArg = callArg_;
   let d5 = d5_;
   let save_d2_0 = 0;
   let save_d3_1 = 0;
@@ -56786,16 +56786,16 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: 
   let t25 = 0;
   let t26 = 0;
   let t27 = 0;
-  const _t0 = tick(186, 0x073dc) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t0) takeIrq(); }
+  const _t0 = tick(186, 0x073dc) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); if (_t0) takeIrq(); }
   push(ptr2, 4);
   push(ptr, 4);
   push(d5, 4);
-  push(d4, 4);
-  push(d3, 4);
+  push(callArg, 4);
+  push(shape, 4);
   push(kind, 4);
   save_d2_0 = kind;
-  save_d3_1 = d3;
-  save_d4_2 = d4;
+  save_d3_1 = shape;
+  save_d4_2 = callArg;
   save_d5_3 = d5;
   save_a2_4 = ptr;
   save_a3_5 = ptr2;
@@ -56807,26 +56807,26 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: 
   a0 = (0x1000a) >>> 0;
   index = ((index & 0xffffff00) | (load8((a0 + (d0 | 0))) & 255));
   t7 = load8(ptr);
-  d3 = ((d3 & 0xffffff00) | (t7 & 255));
+  shape = ((shape & 0xffffff00) | (t7 & 255));
   d0 = (0) >>> 0;
   d0 = ((d0 & 0xffffff00) | ((index & 255) & 255));
   index = (0) >>> 0;
-  index = ((index & 0xffffff00) | ((d3 & 255) & 255));
+  index = ((index & 0xffffff00) | ((shape & 255) & 255));
   t8 = (index & 0xc0);
   index = (t8) >>> 0;
   setFlagsCmp(d0, index, 32);
   if (d0 === index) {
   } else {
-    const _t1 = tick(34, 0x0740c) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(d0, index, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t1) takeIrq(); }
+    const _t1 = tick(34, 0x0740c) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(d0, index, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); if (_t1) takeIrq(); }
     index = (3) >>> 0;
     kind = (1) >>> 0;
     d5 = ((d5 & 0xffff0000) | (0 & 65535));
-    d4 = ((d4 & 0xffff0000) | (0 & 65535));
+    callArg = ((callArg & 0xffff0000) | (0 & 65535));
     a0 = (0xfcca) >>> 0;
-    setFlagsCmp((d4 & 65535), 0, 16);
+    setFlagsCmp((callArg & 65535), 0, 16);
     l2: for (;;) {
       if (++_guard > 4000000) throw new Error('loop 2 did not end');
-      const _t2 = tick(60, 0x0741a) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t2) takeIrq(); }
+      const _t2 = tick(60, 0x0741a) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); if (_t2) takeIrq(); }
       t9 = load16(a0);
       d0 = ((d0 & 0xffff0000) | (t9 & 65535));
       t10 = ((((d0 & 65535)) << 16) >> 16);
@@ -56836,29 +56836,29 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: 
       d0 = ((d0 + ptr)) >>> 0;
       ptr2 = (d0) >>> 0;
       t13 = load8(ptr2);
-      d3 = ((d3 & 0xffffff00) | (t13 & 255));
+      shape = ((shape & 0xffffff00) | (t13 & 255));
       d0 = (0) >>> 0;
-      d0 = ((d0 & 0xffffff00) | ((d3 & 255) & 255));
+      d0 = ((d0 & 0xffffff00) | ((shape & 255) & 255));
       t14 = ((d0 & 65535) & 0xc0);
       d0 = ((d0 & 0xffff0000) | (t14 & 65535));
       setXAdd(t11, t12, 32);
       setFlagsCmp((d0 & 65535), 0, 16);
       if ((((d0 & 65535)) & 65535) !== ((0) & 65535)) {
       } else {
-        const _t3 = tick(4, 0x0742e) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t11, t12, 32); setFlagsCmp((d0 & 65535), 0, 16); setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t3) takeIrq(); }
+        const _t3 = tick(4, 0x0742e) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t11, t12, 32); setFlagsCmp((d0 & 65535), 0, 16); setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); if (_t3) takeIrq(); }
         t15 = (d5 & 65535);
         t16 = 0x1;
         d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + 0x1) & 65535));
         setXAdd(t15, t16, 16);
         setFlagsAdd(t15, t16, 16);
       }
-      const _t4 = tick(34, 0x07430) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t4) takeIrq(); }
-      t17 = (d4 & 65535);
+      const _t4 = tick(34, 0x07430) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); if (_t4) takeIrq(); }
+      t17 = (callArg & 65535);
       t18 = 0x1;
-      d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
+      callArg = ((callArg & 0xffff0000) | (((callArg & 65535) + 0x1) & 65535));
       a0 = ((a0 + 0x2)) >>> 0;
       d0 = (0) >>> 0;
-      d0 = ((d0 & 0xffff0000) | ((d4 & 65535) & 65535));
+      d0 = ((d0 & 0xffff0000) | ((callArg & 65535) & 65535));
       setXAdd(t17, t18, 16);
       setFlagsCmp(d0, index, 32);
       if (d0 <= index) {
@@ -56866,7 +56866,7 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: 
       }
       break;
     }
-    const _t5 = tick(14, 0x0743c) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t17, t18, 16); setFlagsCmp(d0, index, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t5) takeIrq(); }
+    const _t5 = tick(14, 0x0743c) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t17, t18, 16); setFlagsCmp(d0, index, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); if (_t5) takeIrq(); }
     t19 = (d5 & 65535);
     t20 = 0x1;
     d5 = ((d5 & 0xffff0000) | (((d5 & 65535) - 0x1) & 65535));
@@ -56874,14 +56874,14 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: 
     setFlagsSub(t19, t20, 16);
     if (((t19) & 65535) !== ((t20) & 65535)) {
     } else {
-      const _t6 = tick(4, 0x07440) ? 1 : 0; if (_t6 || SPILL_ALL) { setXSub(t19, t20, 16); setFlagsSub(t19, t20, 16); setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t6) takeIrq(); }
+      const _t6 = tick(4, 0x07440) ? 1 : 0; if (_t6 || SPILL_ALL) { setXSub(t19, t20, 16); setFlagsSub(t19, t20, 16); setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); if (_t6) takeIrq(); }
       t21 = (kind & 255);
       t22 = 0x1;
       kind = ((kind & 0xffffff00) | (((kind & 255) + 0x1) & 255));
       setXAdd(t21, t22, 8);
       setFlagsAdd(t21, t22, 8);
     }
-    const _t7 = tick(16, 0x07442) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t7) takeIrq(); }
+    const _t7 = tick(16, 0x07442) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); if (_t7) takeIrq(); }
     d0 = ((d0 & 0xffffff00) | ((kind & 255) & 255));
     t23 = load8(dst + 0x18);
     t24 = t23;
@@ -56892,10 +56892,10 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: 
     setXAdd(t24, t25, 8);
     setFlagsAdd(t24, t25, 8);
   }
-  const _t8 = tick(66, 0x07448) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t8) takeIrq(); }
+  const _t8 = tick(66, 0x07448) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); if (_t8) takeIrq(); }
   kind = load32(stackPointer());
-  d3 = load32(stackPointer() + 4);
-  d4 = load32(stackPointer() + 8);
+  shape = load32(stackPointer() + 4);
+  callArg = load32(stackPointer() + 8);
   d5 = load32(stackPointer() + 12);
   ptr = load32(stackPointer() + 16);
   ptr2 = load32(stackPointer() + 20);
@@ -56907,10 +56907,10 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: 
   setReg('d0', d0);
   setReg('d1', index);
   setReg('d2', kind);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
-  setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); return;
+  setReg('a0', a0); setReg('a1', dst); setReg('a2', ptr); setReg('a3', ptr2); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); setReg('d3', shape); setReg('d4', callArg); setReg('d5', d5); return;
   setReg('a0', a0);
   setReg('a1', dst);
   setReg('a2', ptr);
@@ -56918,8 +56918,8 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, kind_: 
   setReg('d0', d0);
   setReg('d1', index);
   setReg('d2', kind);
-  setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d3', shape);
+  setReg('d4', callArg);
   setReg('d5', d5);
 }
 
