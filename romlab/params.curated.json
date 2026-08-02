@@ -4178,5 +4178,23 @@
       "name": "rowsLeft",
       "why": "seven on entry - the eight rows of a column, counted with dbra."
     }
+  },
+  "0x69e2": {
+    "d6": {
+      "name": "ownerByte",
+      "why": "the player's byte from 0x1000a indexed by its byte at 2 - the same lookup the flood fill and the enclosure test do, and the value every wall form here is built from."
+    },
+    "d4": {
+      "name": "wallEight",
+      "why": "ownerByte or'd with 8. The enclosure test builds or'd with 1 and with 3; this one wants a third form, so the low bits of that byte are a set of wall shapes rather than a number."
+    },
+    "d3": {
+      "name": "coordByte",
+      "why": "one byte of the marked coordinate pair at 0x46 of the player, sign-extended into a word before it is used - so the pair is signed and a negative means off the board."
+    },
+    "d1": {
+      "name": "wasNonZero",
+      "why": "`tst.w` then `sne.b` then `neg.b` - the standard way this compiler makes 0 or -1 out of a test, so it is a boolean and not the value it was made from."
+    }
   }
 }
