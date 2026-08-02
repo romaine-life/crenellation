@@ -1084,5 +1084,37 @@
       "name": "coord",
       "why": "the longword at 0x10(a6), read as two BYTES into a local pair; the walk decrements the second of them, so the pair is row then column and the run goes upward."
     }
+  },
+  "0x125da": {
+    "a0": {
+      "name": "listHead",
+      "why": "`lea $3e20a0,a0` and then `cmpa.l a0,a1` - the list is circular and empty exactly when the head points at itself, so a0 exists to be compared against rather than to be walked."
+    },
+    "a2": {
+      "name": "target",
+      "why": "the longword at 8 of the record being ticked, taken before the jump through the PC-relative table - so every case gets it already loaded and none of them fetches it again."
+    }
+  },
+  "0x1357c": {
+    "a5": {
+      "name": "tableCursor",
+      "why": "`lea $1325e(pc),a5` and then read forwards with (a5)+ in 14-byte steps, with `lea -$e(a5),a5` to step back over one - the cursor through the table of regions to test."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the second longword of a table entry, and the low end of the region handed to the RAM test."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the third longword of the entry; the passes compare against it with cmpa.l to know when a sweep is done."
+    },
+    "a4": {
+      "name": "returnTo",
+      "why": "the self test has no usable stack, so a4 holds where to go when a step finishes and every step leaves by `jmp (a4)` rather than by rts. `lea $135d6(pc),a4` before a branch is the call."
+    },
+    "d3": {
+      "name": "powerOn",
+      "why": "1 when the board just came up and 0 when the operator asked from the menu - 0x130ee is the entry that clears it - and 0x1378e reads it to decide whether to run the long RAM passes."
+    }
   }
 }
