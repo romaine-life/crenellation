@@ -257,6 +257,14 @@
     "stack28": {
       "name": "innerPeriod",
       "why": "its low byte, written to BOTH 0x14 and 0x15 - a second period and its remainder, the same reload pair shape as 0xd and 0xe."
+    },
+    "a0": {
+      "name": "entryAddr",
+      "why": "`lea $3c0000,a0` then `adda.w` the computed offset - the palette entry this effect works on, written into 0x8 of the record and not used for anything else here."
+    },
+    "a2": {
+      "name": "record",
+      "why": "what 0xc504 handed back, and null when the pool is empty - `cmpa.w #$0` then a branch straight to the exit is the only failure path. Every field this routine sets is set through it."
     }
   },
   "0xc724": {
@@ -287,6 +295,14 @@
     "stack28": {
       "name": "innerPeriod",
       "why": "its low byte, written to BOTH 0x14 and 0x15 - a second period and its remainder, the same reload pair shape as 0xd and 0xe."
+    },
+    "a0": {
+      "name": "entryAddr",
+      "why": "`lea $3c0000,a0` then `adda.w` the computed offset - the palette entry this effect works on, written into 0x8 of the record and not used for anything else here."
+    },
+    "a2": {
+      "name": "record",
+      "why": "what 0xc504 handed back, and null when the pool is empty - `cmpa.w #$0` then a branch straight to the exit is the only failure path. Every field this routine sets is set through it."
     }
   },
   "0xc8de": {
@@ -309,6 +325,14 @@
     "stack20": {
       "name": "delay",
       "why": "its low byte PLUS ONE goes into 0xe, so the first tick comes one later than the number says."
+    },
+    "a0": {
+      "name": "entryAddr",
+      "why": "`lea $3c0000,a0` then `adda.w` the computed offset - the palette entry this effect works on, written into 0x8 of the record and not used for anything else here."
+    },
+    "a1": {
+      "name": "record",
+      "why": "what 0xc504 handed back, and null when the pool is empty - `cmpa.w #$0` then a branch straight to the exit is the only failure path. Every field this routine sets is set through it."
     }
   },
   "0xc95e": {
@@ -327,6 +351,14 @@
     "stack16": {
       "name": "delay",
       "why": "its low byte PLUS ONE goes into 0xe. It sits where kind two keeps its value, because kind three stores no value."
+    },
+    "a0": {
+      "name": "entryAddr",
+      "why": "`lea $3c0000,a0` then `adda.w` the computed offset - the palette entry this effect works on, written into 0x8 of the record and not used for anything else here."
+    },
+    "a1": {
+      "name": "record",
+      "why": "what 0xc504 handed back, and null when the pool is empty - `cmpa.w #$0` then a branch straight to the exit is the only failure path. Every field this routine sets is set through it."
     }
   },
   "0xc5ca": {
@@ -361,6 +393,14 @@
     "stack32": {
       "name": "blue",
       "why": "masked to five bits and left at 0, the B field. The four are kept as SEPARATE words at 0x10, 0x12, 0x14 and 0x16 rather than combined, which is what lets the effect ramp each channel on its own."
+    },
+    "a0": {
+      "name": "entryAddr",
+      "why": "`lea $3c0000,a0` then `adda.w` the computed offset - the palette entry this effect works on, written into 0x8 of the record and not used for anything else here."
+    },
+    "a2": {
+      "name": "record",
+      "why": "what 0xc504 handed back, and null when the pool is empty - `cmpa.w #$0` then a branch straight to the exit is the only failure path. Every field this routine sets is set through it."
     }
   },
   "0x357a": {
@@ -387,6 +427,22 @@
     "stack24": {
       "name": "extra",
       "why": "only its low word, at 0x1e(a6), kept in a local and pushed unchanged as the third argument of every call. This routine never looks at it."
+    },
+    "a3": {
+      "name": "perCellPtr",
+      "why": "reloaded from 8(a6) inside the inner loop for every cell rather than once - `movea.l $8(a6),a3` then `jsr (a3)` - so the caller could in principle change it mid-walk."
+    },
+    "d3": {
+      "name": "lastColumn",
+      "why": "the width less one, held for the whole walk and copied into the inner counter at the start of each row."
+    },
+    "d5": {
+      "name": "rowsLeft",
+      "why": "the height less one, counted down once per row; `tst.w` then `bge` is the loop test, so a height of zero still draws one row."
+    },
+    "d6": {
+      "name": "columnsLeft",
+      "why": "the inner counter, refilled from lastColumn at the head of every row."
     }
   },
   "0x18b26": {
@@ -587,6 +643,14 @@
     "stack20": {
       "name": "delay",
       "why": "its low byte PLUS ONE goes into 0xe, so the first tick comes one later than the number says."
+    },
+    "a0": {
+      "name": "entryAddr",
+      "why": "`lea $3c0000,a0` then `adda.w` the computed offset - the palette entry this effect works on, written into 0x8 of the record and not used for anything else here."
+    },
+    "a1": {
+      "name": "record",
+      "why": "what 0xc504 handed back, and null when the pool is empty - `cmpa.w #$0` then a branch straight to the exit is the only failure path. Every field this routine sets is set through it."
     }
   },
   "0x1908a": {
@@ -627,6 +691,14 @@
     "stack12": {
       "name": "paletteBase",
       "why": "only its low word, at 0x26(a7), handed to the decoder at 0x11f2a in d2, where every pixel it emits is added to it."
+    },
+    "d1": {
+      "name": "runLength",
+      "why": "cleared to 0 before the decoder is entered, which is the state the run-length decoder at 0x11f2a expects to start from - it is not carried in from the caller."
+    },
+    "d2": {
+      "name": "paletteBase",
+      "why": "the same value the third stack argument holds, moved into the register the decoder at 0x11f2a reads it from. The two are one argument in two places."
     }
   },
   "0x19c00": {
@@ -655,6 +727,14 @@
     "stack12": {
       "name": "value",
       "why": "the longword at 0x18(a7), written to 0x10 of the record. Kind six stores no original alongside it, where kinds four and five write the same value to 0x16 as well."
+    },
+    "a0": {
+      "name": "entryAddr",
+      "why": "`lea $3c0000,a0` then `adda.w` the computed offset - the palette entry this effect works on, written into 0x8 of the record and not used for anything else here."
+    },
+    "a1": {
+      "name": "record",
+      "why": "what 0xc504 handed back, and null when the pool is empty - `cmpa.w #$0` then a branch straight to the exit is the only failure path. Every field this routine sets is set through it."
     }
   },
   "0xc832": {
@@ -677,6 +757,14 @@
     "stack20": {
       "name": "repeats",
       "why": "its low byte, written to 0xf, and read a second time on the negative path as part of working out where the run starts. Changing it moves the start as well as the length, which is true of no other kind."
+    },
+    "a0": {
+      "name": "entryAddr",
+      "why": "`lea $3c0000,a0` then `adda.w` the computed offset - the palette entry this effect works on, written into 0x8 of the record and not used for anything else here."
+    },
+    "a2": {
+      "name": "record",
+      "why": "what 0xc504 handed back, and null when the pool is empty - `cmpa.w #$0` then a branch straight to the exit is the only failure path. Every field this routine sets is set through it."
     }
   },
   "0x5e02": {
@@ -817,6 +905,22 @@
     "stack16": {
       "name": "height",
       "why": "the longword at 0x34(a7), the source row count."
+    },
+    "a3": {
+      "name": "rowStart",
+      "why": "`movea.l a1,a3` before each source row and `movea.l a3,a1` to rewind to it - so it is where the current destination row began, kept so the row can be written again for a vertical repeat."
+    },
+    "a2": {
+      "name": "rowSource",
+      "why": "set from a3 when a row is duplicated: the copy reads through a2 and writes through a1, both inside the destination, which is how a row is repeated without touching the source again."
+    },
+    "d2": {
+      "name": "acrossLeft",
+      "why": "the horizontal accumulator. It starts at 0x40 and the step is subtracted from it for each source byte, so a byte is emitted again while it stays positive - 64 to the step is the ratio."
+    },
+    "d6": {
+      "name": "written",
+      "why": "counts the bytes actually written across the row, which is what the vertical repeat needs to know to copy the right length back."
     }
   },
   "0x18b5c": {
