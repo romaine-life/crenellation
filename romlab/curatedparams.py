@@ -29,6 +29,13 @@ silently dropped. That is a gap in parameter recovery rather than a mistake in
 the reading, and it will bite again on anything that treats an argument as a
 buffer.
 
+A REGISTER THE ROUTINE LOADS A CONSTANT INTO IS NOT NAMEABLE HERE EITHER, and
+that is roles.py's rule rather than a new one: `lea $460000,a2` inside 0x1b1d2
+means a2 holds the sound chip for most of the routine and something else on
+entry, so calling the PARAMETER `chip` is right by the end and wrong at the
+start - the exact defect that took namedParams from 2852 to 2314 when it was
+found. The register is still worth a name in the body; the parameter is not.
+
 `why` is not optional, for the reason `idents.py` refuses a curated routine
 name without one: a wrong name costs more than `d3` does, and the only defence
 is being able to read afterwards why it was chosen. An entry whose routine or

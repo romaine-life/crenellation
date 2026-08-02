@@ -123,6 +123,26 @@
     "stack4": {
       "name": "counter",
       "why": "the longword at 0x14(a7), refused above 0x16 and doubled to index the descriptor table at 0x1d616. One of 23."
+    },
+    "d5": {
+      "name": "descriptor",
+      "why": "the word from 0x1d616 indexed by the counter number, packing three things: bits 5..11 the counter's offset in NIBBLES into 0x3e34cc, bits 12..13 its length in nibbles less one, and bits 0..4 a display slot with zero meaning none."
+    },
+    "d2": {
+      "name": "nibbleOffset",
+      "why": "the descriptor shifted right five and masked to 0x7f - where this counter starts, counted in NIBBLES, so it is halved before it indexes bytes."
+    },
+    "d3": {
+      "name": "nibblesLeft",
+      "why": "the descriptor's bits 12..13 plus one, so a counter is one to four nibbles wide."
+    },
+    "d4": {
+      "name": "value",
+      "why": "the answer being assembled a nibble at a time, shifted left four or eight as each piece arrives."
+    },
+    "a0": {
+      "name": "packedArray",
+      "why": "0x3e34cc, the packed nibble store every counter lives in - the write side at 0x1485c holds the same address."
     }
   },
   "0x1485c": {
@@ -133,6 +153,10 @@
     "stack8": {
       "name": "value",
       "why": "the longword at 0xc(a6), taken a byte at a time - andi.l #$ff - as the nibbles are written into the packed array at 0x3e34cc."
+    },
+    "a0": {
+      "name": "descriptorTable",
+      "why": "0x1d616, indexed by the counter number doubled - the same table 0x14772 reads, which is what proves the two are the same store."
     }
   },
   "0x14a36": {
@@ -143,6 +167,14 @@
     "stack8": {
       "name": "amount",
       "why": "the longword at 0x18(a7), added to what the read returned; the sum is what gets written back and answered."
+    },
+    "d4": {
+      "name": "newValue",
+      "why": "the old value plus the amount, and the answer; the carry test is an eor of it against the old compared with 0x100, so crossing a byte boundary is what triggers the display roll."
+    },
+    "d1": {
+      "name": "oldValue",
+      "why": "what the read returned, kept only to eor against the new one for that test."
     }
   },
   "0x143b0": {
@@ -157,6 +189,10 @@
     "stack12": {
       "name": "value",
       "why": "the longword at 0x20(a7), stored whole in the ring entry, and compared - after index*10 is taken off it - against the key at +4 of each suppression band."
+    },
+    "d0": {
+      "name": "slotIndex",
+      "why": "the ring's write cursor plus one masked to 3 - four entries - and what the read cursor is compared against to find the queue full."
     }
   },
   "0x17fcc": {
@@ -621,6 +657,10 @@
     "stack8": {
       "name": "kind",
       "why": "only its low word, at 0xe(a6), taken before the walk starts and carried unchanged through it."
+    },
+    "d4": {
+      "name": "cellNibble",
+      "why": "the stream byte masked to its low four bits; 6 or less indexes the seven-way jump table and anything higher takes the default."
     }
   },
   "0xc9d2": {
@@ -825,6 +865,18 @@
     "stack4": {
       "name": "slotMask",
       "why": "only its low byte, at 0x1b(a7), and it is consumed two bits per slot: a pair equal to 1 is a coin on that slot, and anything else on that pair is ignored. `lsr.b #$2` walks to the next."
+    },
+    "d2": {
+      "name": "slotBits",
+      "why": "the coin mask consumed two bits at a time; lsr.b #$2 walks to the next slot."
+    },
+    "d3": {
+      "name": "coinValue",
+      "why": "the three-bit setting out of the options word plus one, so 1 to 8, added to BOTH credit accumulators."
+    },
+    "d4": {
+      "name": "counterIndex",
+      "why": "which bookkeeping counter this slot bumps - 0 or 1 - passed straight to 0x14a36."
     }
   },
   "0xd9a2": {
@@ -1275,6 +1327,16 @@
     "d2": {
       "name": "wantDirection",
       "why": "the direction 0x11cf8 answered for the current target, compared against the cannon's own byte at 0x4 - the difference masked to 7 less 4 is what picks the shorter way round."
+    }
+  },
+  "0x1a8c0": {
+    "a2": {
+      "name": "voice",
+      "why": "the voice being interpreted: 0x4 is the sequence's program counter, 0x16 a four-bit level, 0x12 a mode that locks it at 0xfe, and 0x1a a sixteen-bit value built from two operand bytes."
+    },
+    "d4": {
+      "name": "operand",
+      "why": "the byte the dispatcher already fetched before jumping here, so no handler reads it again."
     }
   }
 }
