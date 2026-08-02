@@ -119061,7 +119061,7 @@ export function decompressGraphicsAtDADDC(a0: number, a1: number, d1: number, d2
   return;
 }
 
-export function decompressOneEightPixelColumn(count_: number, d2_: number, arg0: number, arg1: number, arg2: number): void {
+export function decompressOneEightPixelColumn(count_: number, d2_: number, offset: number, at: number, paletteBase: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -119097,11 +119097,11 @@ export function decompressOneEightPixelColumn(count_: number, d2_: number, arg0:
   src = (0xd2608) >>> 0;
   const _t1 = tick(94, 0x11f08) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', src); setReg('a1', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', count2); if (_t1) takeIrq(); }
   kind = (0) >>> 0;
-  t6 = (arg0 & 0xffff);
+  t6 = (offset & 0xffff);
   kind = ((kind & 0xffff0000) | (t6 & 65535));
   src = ((src + kind)) >>> 0;
-  dst = (arg1) >>> 0;
-  t7 = (arg2 & 0xffff);
+  dst = (at) >>> 0;
+  t7 = (paletteBase & 0xffff);
   d2 = ((d2 & 0xffff0000) | (t7 & 65535));
   count2 = (7) >>> 0;
   d3 = (0) >>> 0;
@@ -119123,7 +119123,7 @@ export function decompressOneEightPixelColumn(count_: number, d2_: number, arg0:
   d3 = getReg('d3');
   count2 = getReg('d4');
   const _t2 = tick(86, 0x11f1e) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', src); setReg('a1', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', count2); if (_t2) takeIrq(); }
-  kind = (arg1) >>> 0;
+  kind = (at) >>> 0;
   t8 = kind;
   t9 = 0x8;
   kind = ((kind + 0x8)) >>> 0;
@@ -169021,7 +169021,7 @@ export function formatOneConversionIntoLocal(attrHigh: number, attrLow: number, 
   setReg('d0', count);
 }
 
-export function formatOneConversionIntoLocalFrom1(arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number): void {
+export function formatOneConversionIntoLocalFrom1(attrHigh: number, attrLow: number, value: number, width: number, padZeroes: number, dest: number): void {
   let _guard = 0;
   void _guard;
   let a6 = getReg('a6');
@@ -169038,12 +169038,12 @@ export function formatOneConversionIntoLocalFrom1(arg0: number, arg1: number, ar
   push(a6, 4);
   a6 = stackPointer();
   drop(-16);
-  t0 = arg4;
+  t0 = padZeroes;
   push(t0, 4);
-  t1 = arg3;
+  t1 = width;
   push(t1, 4);
   push((a6 + -0x10), 4);
-  t2 = arg2;
+  t2 = value;
   push(t2, 4);
   setFlagsCmp(t2, 0, 32);
   setReg('a6', a6);
@@ -169054,13 +169054,13 @@ export function formatOneConversionIntoLocalFrom1(arg0: number, arg1: number, ar
   t3 = 0;
   push(t3, 2);
   push((a6 + -0x10), 4);
-  t4 = (arg1 & 0xffff);
+  t4 = (attrLow & 0xffff);
   t5 = t4;
   push(t5, 2);
-  t6 = (arg0 & 0xff);
+  t6 = (attrHigh & 0xff);
   t7 = t6;
   store8(stackPointer() + 0, t7);
-  t8 = arg5;
+  t8 = dest;
   push(t8, 4);
   push((stackPointer() + 0x4), 4);
   setFlagsCmp(t8, 0, 32);
@@ -173912,7 +173912,7 @@ export function copyBytesSafelyWhenThey(count_: number, index: number, dst2: num
   setReg('d1', count);
 }
 
-export function fillBytesLongCount(arg0: number, arg1: number, arg2: number): void {
+export function fillBytesLongCount(dest: number, value: number, countLessOne: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -173923,10 +173923,10 @@ export function fillBytesLongCount(arg0: number, arg1: number, arg2: number): vo
   let t1 = 0;
   let t2 = 0;
   const _t0 = tick(58, 0x19c00) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('d0', count); setReg('d1', d1); if (_t0) takeIrq(); }
-  dst = (arg0) >>> 0;
+  dst = (dest) >>> 0;
   a0 = (dst) >>> 0;
-  d1 = (arg1) >>> 0;
-  count = (arg2) >>> 0;
+  d1 = (value) >>> 0;
+  count = (countLessOne) >>> 0;
   setFlagsCmp(count, 0, 32);
   l2: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 2 did not end');

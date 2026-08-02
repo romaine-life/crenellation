@@ -588,5 +588,59 @@
       "name": "delay",
       "why": "its low byte PLUS ONE goes into 0xe, so the first tick comes one later than the number says."
     }
+  },
+  "0x1908a": {
+    "stack4": {
+      "name": "attrHigh",
+      "why": "only its low byte is read, at 0xb(a6), and it is written OVER the high byte of the word already pushed from the next argument - so the two together make one attribute word for the draw at 0x18a5e, and neither is a value on its own."
+    },
+    "stack8": {
+      "name": "attrLow",
+      "why": "only its low word, at 0xe(a6), pushed whole and then half-overwritten by attrHigh. What survives is its low byte."
+    },
+    "stack12": {
+      "name": "value",
+      "why": "the longword at 0x10(a6), pushed first to the formatter at 0x19614 - which reads it at 8(a7) - so it is the number being printed."
+    },
+    "stack16": {
+      "name": "width",
+      "why": "the longword at 0x14(a6); the formatter reads its low word at 0x12(a7) as the field width, and null-terminates the buffer at exactly that many characters before writing anything."
+    },
+    "stack20": {
+      "name": "padZeroes",
+      "why": "the longword at 0x18(a6); the formatter reads its low word at 0x16(a7) and a ZERO there is what sets bit 31 of its own flag word, which is what makes it keep emitting digits past a zero quotient. So zero means pad and non-zero means trim."
+    },
+    "stack24": {
+      "name": "dest",
+      "why": "the longword at 0x1c(a6), passed to the draw at 0x18a5e and never touched here. The formatted text goes to a 16-byte buffer on this routine's own frame, which is the reason the two calls have to be in one routine."
+    }
+  },
+  "0x11efe": {
+    "stack4": {
+      "name": "offset",
+      "why": "only its low word, at 0x1e(a7), added to 0xd2608 - so it is an offset into the compressed graphics rather than a pointer, which is what lets the caller keep a flat list of words."
+    },
+    "stack8": {
+      "name": "at",
+      "why": "the destination, and also the answer: this routine returns it plus eight, one cell's width, which is how 0x357a threads one cell to the next."
+    },
+    "stack12": {
+      "name": "paletteBase",
+      "why": "only its low word, at 0x26(a7), handed to the decoder at 0x11f2a in d2, where every pixel it emits is added to it."
+    }
+  },
+  "0x19c00": {
+    "stack4": {
+      "name": "dest",
+      "why": "the longword at 4(a7), written forwards with (a1)+ and answered unchanged - the routine gives back where it started, not where it stopped."
+    },
+    "stack8": {
+      "name": "value",
+      "why": "the longword at 8(a7), of which only the low byte is ever written."
+    },
+    "stack12": {
+      "name": "countLessOne",
+      "why": "the longword at 0xc(a7) used as a dbra counter, so the length is one MORE than it says; the `subi.l #$10000,d0; bcc` around the loop is what lets it exceed 65535."
+    }
   }
 }

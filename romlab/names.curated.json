@@ -1780,5 +1780,15 @@
     "name": "schedule a palette effect of kind seven",
     "ident": "schedulePaletteEffectSeven",
     "why": "instruction for instruction the same routine as 0xc8de - allocate through 0xc504, palette address 0x3c0000 + bank * 64 + page * 0x400, value at 0x10, period at 0xd, delay PLUS ONE at 0xe, 0xf set to 1, and the link into 0x3e20a0 with 0x3e2498 held across it - differing only in the kind byte, which is 7 here and 2 there. The derived name `helperFramebufferBandClearInner` describes neither the framebuffer nor a band: it touches nothing but palette RAM and the timer list."
+  },
+  "0x11efe": {
+    "name": "decompress one eight-pixel column and answer the next address",
+    "ident": "decompressOneColumnAdvancing",
+    "why": "sets d4 to 7 - the eight rows the decoder at 0x11f2a counts down - clears d3, points a0 at 0xd2608 plus the caller's word offset, and falls into that decoder. The answer is the destination PLUS EIGHT, which is exactly the contract the higher-order walk at 0x357a needs from a per-cell routine: take the address, draw, hand back where the next cell starts. 0xd2608 is where the compressed graphics live."
+  },
+  "0x19c00": {
+    "name": "fill bytes, with a full 32-bit count",
+    "ident": "fillBytesLongCount",
+    "why": "writes the byte at 8(a7) count-plus-one times - dbra counts to -1, so the argument is one less than the length - and gets past 65535 with `subi.l #$10000,d0; bcc`, which runs the dbra again for each whole 64K. It answers the address it started at, not the address it finished at."
   }
 }
