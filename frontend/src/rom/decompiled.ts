@@ -135966,7 +135966,7 @@ export function takeCountTicksAccumulatorIf(index_: number, limit_: number, arg0
   setReg('d2', d2);
 }
 
-export function takeCountTicksAccumulatorIfFrom1(index_: number, limit_: number, d2_: number, arg0: number): void {
+export function takeCountTicksAccumulatorIfFrom1(index_: number, limit_: number, d2_: number, count: number): void {
   let _guard = 0;
   void _guard;
   let index = index_;
@@ -135980,7 +135980,7 @@ export function takeCountTicksAccumulatorIfFrom1(index_: number, limit_: number,
   const _t0 = tick(52, 0x1418a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('d0', index); setReg('d1', limit); setReg('d2', d2); if (_t0) takeIrq(); }
   t0 = d2;
   push(t0, 4);
-  d2 = (arg0) >>> 0;
+  d2 = (count) >>> 0;
   t1 = load8(0x3e344a);
   if (((t1) & 255) !== ((0) & 255)) {
     const _t2 = tick(30, 0x1419c) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(t1, 0, 8); setReg('d0', index); setReg('d1', limit); setReg('d2', d2); if (_t2) takeIrq(); }
