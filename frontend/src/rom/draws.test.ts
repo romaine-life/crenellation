@@ -6,7 +6,7 @@ import { describe, it, expect } from 'vitest';
 import { PATTERNS, type Pattern } from './patterns';
 import { System } from './system';
 import { call as viaRecompiled } from './dispatch';
-import { call as viaDecompiled, bind } from './decompiled';
+import { call as viaDecompiled, bind, useOracle } from './decompiled';
 import { png } from './png';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -33,6 +33,16 @@ function lit(entry: (a: number, m: System['m']) => void, label: string,
   // identical counts prove nothing, and an earlier attempt at this test failed
   // exactly there - its probe never fired and the clean numbers meant nothing.
   sys.irqPhase = Number(process.env.IRQ_PHASE ?? 0);
+  // BISECT=N runs every routine at or above address N on the recompiled oracle
+  // and everything below it on the lift. The sanity check is the whole point:
+  // BISECT=0 puts everything on the oracle and MUST report zero differing
+  // pixels, and BISECT=0x20000 puts everything on the lift and must report the
+  // usual count. An earlier attempt at this hooked useCallee, which does not
+  // govern the top-level dispatch, and failed that check by reporting the
+  // lifted count for an all-oracle run.
+  const split = process.env.BISECT === undefined ? -1 : Number(process.env.BISECT);
+  useOracle(split < 0 || !label.startsWith('dec') ? null
+    : { pick: (a: number) => a >= split, run: viaRecompiled });
   bind(sys.m);
   const marks: string[] = [];
   const STOP = new Error('enough');

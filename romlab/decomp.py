@@ -1453,6 +1453,13 @@ DISPATCHER = """const BY_ADDR: Map<number, number> = new Map(DECOMPILED.map((d, 
 /** Send calls made from inside decompiled routines somewhere else. */
 export function useCallee(f: (addr: number, m: Machine) => void): void { callee = f; }
 
+/** A bisection: which routines run on the oracle instead of the lift. */
+let viaOracle: { pick: (a: number) => boolean; run: (a: number, m: Machine) => void } | null = null;
+export function useOracle(
+  o: { pick: (a: number) => boolean; run: (a: number, m: Machine) => void } | null): void {
+  viaOracle = o;
+}
+
 /** The default: run the decompiled routine, then pop the return address its
  *  implicit `rts` did not. */
 const callDecompiled = (addr: number, m: Machine): void => {
@@ -1496,6 +1503,15 @@ export function call(addr: number, m: Machine): void {
           : m.load((m.a7 + p.off) >>> 0, 32));
       }
       m.jump = 0;
+      // Run this routine on the oracle instead, if a bisection asked for it.
+      // The two dispatchers are interchangeable per routine - decomp.test
+      // depends on exactly that - so a mixed run is legitimate, and bisecting
+      // which half runs lifted finds a faulty routine in about ten runs
+      // without following data upstream. That matters because a fault can
+      // recede through level after level of faithful routines fed wrong
+      // inputs, which is where this was stuck for a session. The oracle is
+      // passed in rather than imported: this file cannot depend on dispatch.
+      if (viaOracle && viaOracle.pick(at)) { viaOracle.run(at, m); return; }
       try {
         if (m.onCall) {
           const before = m.a7 >>> 0;
