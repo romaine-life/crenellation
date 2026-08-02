@@ -59276,7 +59276,7 @@ export function findNextCellPathUnit(dst_: number, src_: number, count_: number,
   setReg('d6', d6);
 }
 
-export function cellSWallRunUnbroken(a0_: number, ptr_: number, d0_: number, d1_: number, d2_: number, kind_: number, arg0: number, arg1: number, arg2: number): void {
+export function cellSWallRunUnbroken(a0_: number, ptr_: number, d0_: number, d1_: number, d2_: number, kind_: number, cell: number, wanted: number, check: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -59316,10 +59316,10 @@ export function cellSWallRunUnbroken(a0_: number, ptr_: number, d0_: number, d1_
   save_d3_1 = d3;
   save_d4_2 = kind;
   save_a2_3 = ptr2;
-  ptr2 = (arg0) >>> 0;
-  t4 = (arg1 & 0xff);
+  ptr2 = (cell) >>> 0;
+  t4 = (wanted & 0xff);
   d0 = ((d0 & 0xffffff00) | (t4 & 255));
-  t5 = (arg2 & 0xffff);
+  t5 = (check & 0xffff);
   d1 = ((d1 & 0xffff0000) | (t5 & 65535));
   d3 = (0) >>> 0;
   t6 = load8(ptr2);
@@ -143328,7 +143328,7 @@ export function drawTitleSVersionLine(d1_: number, kind_: number): void {
   setReg('d2', kind);
 }
 
-export function centreTwoStringsFortyTwo(index_: number, arg0: number, arg1: number, arg2: number): void {
+export function centreTwoStringsFortyTwo(index_: number, row: number, first: number, second: number): void {
   let _guard = 0;
   void _guard;
   let index = index_;
@@ -143358,10 +143358,10 @@ export function centreTwoStringsFortyTwo(index_: number, arg0: number, arg1: num
   push(limit, 4);
   save_d2_0 = limit;
   save_d3_1 = d3;
-  t2 = (arg0 & 0xff);
+  t2 = (row & 0xff);
   index = ((index & 0xffffff00) | (t2 & 255));
-  d1 = (arg1) >>> 0;
-  d3 = (arg2) >>> 0;
+  d1 = (first) >>> 0;
+  d3 = (second) >>> 0;
   push(0x2040, 4);
   t3 = d1;
   push(t3, 4);

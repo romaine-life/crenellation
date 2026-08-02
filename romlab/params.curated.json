@@ -938,5 +938,33 @@
       "name": "flag",
       "why": "only tested against zero, at 0x1a(a6), and the answer kept as 0 or -1 in a byte - so it is a boolean and its magnitude is never used."
     }
+  },
+  "0x1545c": {
+    "stack4": {
+      "name": "row",
+      "why": "only its low byte, at 0xf(a7), sign-extended twice and passed through as the line to draw on."
+    },
+    "stack8": {
+      "name": "first",
+      "why": "the longword at 0x10(a7): measured by 0x1868c and its length taken off 0x2a - 42, the screen's width in cells - before the remainder is halved into a left margin."
+    },
+    "stack12": {
+      "name": "second",
+      "why": "the longword at 0x14(a7), measured the same way and subtracted from the same running total, so the two are centred TOGETHER rather than one after the other."
+    }
+  },
+  "0x7954": {
+    "stack4": {
+      "name": "cell",
+      "why": "the longword at 0x14(a7), dereferenced immediately and then walked with the per-direction deltas at 0xfcca."
+    },
+    "stack8": {
+      "name": "wanted",
+      "why": "only its low byte, at 0x1b(a7), compared against the first cell - and or-ed with 1 before the walk, so the value looked for along the run is not quite the value that started it."
+    },
+    "stack12": {
+      "name": "check",
+      "why": "only its low word, at 0x1e(a7), and only against zero: a zero here skips the walk entirely, so it is the switch that decides whether the run is followed at all."
+    }
   }
 }
