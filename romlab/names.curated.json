@@ -1830,5 +1830,25 @@
     "name": "kick the watchdog, then stamp a fixed block and clear two words",
     "ident": "kickWatchdogAndStampBlock",
     "why": "calls the watchdog kick at 0x618 and then writes a fixed pattern nobody computes: the words 9, 0xd, 0xa, 0xe into 0x3e3f00 onwards, then 0x5b95, 0x1016 and 0xb087 into 0x3e3f08, 0x3e3f0a and 0x3e3f0c. All seven are constants in the instruction stream, so this is a signature or a seed rather than anything derived. It then clears the words at 0x3e0802 and 0x3e0800 and reads each back, which is the shape of a write-then-verify on hardware rather than of a variable being reset."
+  },
+  "0x5608": {
+    "name": "count a byte down and remove the event when it reaches zero",
+    "ident": "countDownThenRemoveEvent",
+    "why": "an inner entry that arrives with a3 pointing at the counter byte and a1 at the event argument - it takes neither from the stack. `subq.b #$1,(a3); bne` skips everything when the byte is still positive, and on the tick it reaches zero it removes 0x11bc6 through 0xeeee. So the byte is a repeat count and the event unhooks itself when it runs out."
+  },
+  "0x16d3e": {
+    "name": "reset with argument one, then the shared tail at 0x16fe0",
+    "ident": "resetWithOneThenTail",
+    "why": "pushes 1, calls 0x160ba, drops the argument and branches to 0x16fe0. Its middle - 0x16d48, the `addq.l #$4,a7` - is where 0x16d4e lands, so the argument drop and the branch are SHARED between the two: 0x16d4e's own path leaves a longword on the stack for this tail to remove."
+  },
+  "0x16d4e": {
+    "name": "audio and video reset, then 0x1684c with 0x1e59c",
+    "ident": "resetThen1684C",
+    "why": "calls 0x181a4, pushes 0x1e59c and calls 0x1684c, then branches into the MIDDLE of 0x16d3e at 0x16d48, which drops that argument and goes on to the shared exit at 0x16fe0. Three routines - this, 0x16d3e and 0x16d60 - all end at 0x16fe0, and they differ only in which reset they call on the way."
+  },
+  "0x16d60": {
+    "name": "audio and video reset, then 0x168f8",
+    "ident": "resetThen168F8",
+    "why": "calls 0x181a4 then 0x168f8 and branches straight to 0x16fe0, taking no argument and leaving nothing on the stack - which is why it goes to the shared exit directly where 0x16d4e has to go through the drop at 0x16d48 first. The variant of the three that differs is 0x16d3e, which calls 0x160ba instead of 0x181a4."
   }
 }
