@@ -55,8 +55,18 @@ function lit(entry: (a: number, m: System['m']) => void, label: string,
   // everything that address calls, which is how a subtree was reported as a
   // routine. Sanity check: an address no routine starts at must give 0 px.
   const iso = process.env.ISOLATE === undefined ? -1 : Number(process.env.ISOLATE);
+  // ISOLATE=addr is a THRESHOLD: routines at or above it run lifted, and the
+  // split applies recursively - a lifted routine's callees are routed by the
+  // same rule, so useCallee must stay at its default. Forcing callees to the
+  // oracle is right for isolating ONE routine and wrong here: it made the
+  // all-lifted endpoint report 66,616 pixels where the plain decompiled run
+  // reports 31,872, and an endpoint that disagrees with the baseline means the
+  // bisection is measuring something else. ONLY=addr keeps the single-routine
+  // form, with callees handed back.
   if (iso >= 0 && label.startsWith('dec')) {
     useLift({ pick: (a: number) => a >= iso, run: viaDecompiled });
+  } else if (only >= 0 && label.startsWith('dec')) {
+    useLift({ pick: (a: number) => a === only, run: viaDecompiled });
     useCallee(viaRecompiled);
   } else { useLift(null); }
   useOracle(!label.startsWith('dec') || (split < 0 && only < 0) ? null
