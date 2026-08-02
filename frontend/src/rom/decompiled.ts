@@ -2179,7 +2179,7 @@ export function vblankGateTick(): void {
   return;
 }
 
-export function helperInitialisePlayerStructs(index2_: number, index_: number, limit_: number, index3: number, arg1: number): void {
+export function helperInitialisePlayerStructs(index2_: number, index_: number, limit_: number, port: number, wanted: number): void {
   let _guard = 0;
   void _guard;
   let a1 = getReg('a1');
@@ -2218,7 +2218,7 @@ export function helperInitialisePlayerStructs(index2_: number, index_: number, l
   t0 = limit;
   push(t0, 4);
   a1 = (0x3e0836) >>> 0;
-  t1 = (index3 & 0xffff);
+  t1 = (port & 0xffff);
   index = ((index & 0xffff0000) | (t1 & 65535));
   if ((((index & 65535)) & 65535) !== ((0) & 65535)) {
     const _t2 = tick(18, 0x005ca) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a1', a1); setReg('d0', index2); setReg('d1', index); setReg('d2', limit); if (_t2) takeIrq(); }
@@ -2272,7 +2272,7 @@ export function helperInitialisePlayerStructs(index2_: number, index_: number, l
   index2 = ((index2 & 0xffffff00) | (t17 & 255));
   t18 = ((index2 & 255) ^ (limit & 255));
   index2 = ((index2 & 0xffffff00) | (t18 & 255));
-  t19 = (arg1 & 0xff);
+  t19 = (wanted & 0xff);
   index = ((index & 0xffffff00) | (t19 & 255));
   t20 = ((index2 & 255) & (index & 255));
   index2 = ((index2 & 0xffffff00) | (t20 & 255));
@@ -15300,7 +15300,7 @@ export function advanceNextActivePlayerWrap(ptr_: number, index_: number, d3_: n
   setReg('d6', d6);
 }
 
-export function raisePlayerCounterCappedFour(kind_: number, arg0: number): void {
+export function raisePlayerCounterCappedFour(kind_: number, player: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -15321,7 +15321,7 @@ export function raisePlayerCounterCappedFour(kind_: number, arg0: number): void 
   let t12 = 0;
   let t13 = 0;
   const _t0 = tick(100, 0x01f3a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('d0', d0); setReg('d1', kind); if (_t0) takeIrq(); }
-  t0 = (arg0 & 0xffff);
+  t0 = (player & 0xffff);
   kind = ((kind & 0xffff0000) | (t0 & 65535));
   d0 = (0) >>> 0;
   d0 = ((d0 & 0xffff0000) | ((kind & 65535) & 65535));
@@ -39819,7 +39819,7 @@ export function drawScorePanelSBox(index_: number, limit_: number, d4_: number, 
   setReg('d6', d6);
 }
 
-export function rectGrab(index_: number, limit_: number, d2_: number, index2: number, index3: number, arg2: number, arg3: number): void {
+export function rectGrab(index_: number, limit_: number, d2_: number, x: number, y: number, width: number, height: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -39856,11 +39856,11 @@ export function rectGrab(index_: number, limit_: number, d2_: number, index2: nu
   push(d2, 4);
   save_d2_0 = d2;
   save_d3_1 = d3;
-  t2 = (index2 & 0xffff);
+  t2 = (x & 0xffff);
   limit = ((limit & 0xffff0000) | (t2 & 65535));
-  t3 = (index3 & 0xffff);
+  t3 = (y & 0xffff);
   index = ((index & 0xffff0000) | (t3 & 65535));
-  t4 = (arg2 & 0xffff);
+  t4 = (width & 0xffff);
   d2 = ((d2 & 0xffff0000) | (t4 & 65535));
   d3 = (0x200) >>> 0;
   t5 = ((((index & 65535)) << 16) >> 16);
@@ -39887,7 +39887,7 @@ export function rectGrab(index_: number, limit_: number, d2_: number, index2: nu
   l5: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 5 did not end');
     const _t5 = tick(22, 0x058da) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('d0', index); setReg('d1', limit); setReg('d2', d2); setReg('d3', d3); if (_t5) takeIrq(); }
-    t22 = (arg3 & 0xffff);
+    t22 = (height & 0xffff);
     if (((((limit & 65535)) << 16) >> 16) < (((t22) << 16) >> 16)) {
       const _t1 = tick(14, 0x058c4) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('d0', index); setReg('d1', limit); setReg('d2', d2); setReg('d3', d3); if (_t1) takeIrq(); }
       index = ((index & 0xffff0000) | (0 & 65535));
@@ -113259,7 +113259,7 @@ export function eventRemove(a0_: number, src_: number, d1_: number, d2_: number,
   setReg('d2', d2);
 }
 
-export function eventQueueAccess(a0_: number, count_: number, d2_: number, arg0: number): void {
+export function eventQueueAccess(a0_: number, count_: number, d2_: number, event: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -113293,7 +113293,7 @@ export function eventQueueAccess(a0_: number, count_: number, d2_: number, arg0:
   save_d1_0 = d1;
   save_d2_1 = d2;
   save_a1_2 = src;
-  src = (arg0) >>> 0;
+  src = (event) >>> 0;
   t3 = load32(src);
   d1 = (t3) >>> 0;
   setFlagsCmp(d1, 0, 32);
@@ -117922,29 +117922,29 @@ export function optionBitTest(index_: number, d1_: number): void {
   setReg('d1', d1);
 }
 
-export function cellAddress(arg0: number): void {
+export function cellAddress(coord: number): void {
   if (tick(62, 0x11bd8)) { takeIrq(); }
-  const t0 = ((arg0 >>> 24) & 0xff);
+  const t0 = ((coord >>> 24) & 0xff);
   const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
   const t2 = ((0x5) & 63);
   const t3 = (t2 >= 16 ? 0 : (((t1 & 0xffff)) << t2));
   const t4 = ((t1 & 0xffff0000) | (t3 & 0xffff));
-  const t5 = ((t4 & 0xff) + ((arg0 >>> 16) & 0xff));
+  const t5 = ((t4 & 0xff) + ((coord >>> 16) & 0xff));
   const t6 = ((t4 & 0xffffff00) | (t5 & 0xff));
   const t7 = (t6 + 0x3e0864);
   setReg('d0', t7);
 }
 
-export function screenAddress(arg0: number): void {
+export function screenAddress(coord: number): void {
   if (tick(78, 0x11bec)) { takeIrq(); }
-  const t0 = ((arg0 >>> 16) & 0xff);
+  const t0 = ((coord >>> 16) & 0xff);
   const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
   const t2 = ((0x8) & 63);
   const t3 = (t2 >= 16 ? 0 : (((t1 & 0xffff)) << t2));
   const t4 = ((t1 & 0xffff0000) | (t3 & 0xffff));
   const t5 = ((0x1) & 63);
   const t6 = (t5 >= 32 ? 0 : ((t4) << t5));
-  const t7 = ((t6 & 0xff) + ((arg0 >>> 24) & 0xff));
+  const t7 = ((t6 & 0xff) + ((coord >>> 24) & 0xff));
   const t8 = ((t6 & 0xffffff00) | (t7 & 0xff));
   const t9 = ((0x3) & 63);
   const t10 = (t9 >= 32 ? 0 : ((t8) << t9));
@@ -118240,7 +118240,7 @@ export function helperPaletteUpdate(dst2: number, dst22: number, dst222: number)
   setReg('d0', dst22);
 }
 
-export function aimingDirection(limit4_: number, limit5_: number, arg0: number, arg1: number): void {
+export function aimingDirection(limit4_: number, limit5_: number, dx: number, dy: number): void {
   let _guard = 0;
   void _guard;
   let d0 = getReg('d0');
@@ -118293,9 +118293,9 @@ export function aimingDirection(limit4_: number, limit5_: number, arg0: number, 
   save_d3_1 = limit3;
   save_d4_2 = limit4;
   save_d5_3 = limit5;
-  t4 = (arg0 & 0xffff);
+  t4 = (dx & 0xffff);
   limit4 = ((limit4 & 0xffff0000) | (t4 & 65535));
-  t5 = (arg1 & 0xffff);
+  t5 = (dy & 0xffff);
   limit5 = ((limit5 & 0xffff0000) | (t5 & 65535));
   limit2 = (0) >>> 0;
   limit3 = (0) >>> 0;
@@ -118421,7 +118421,7 @@ export function aimingDirection(limit4_: number, limit5_: number, arg0: number, 
   setReg('d5', limit5);
 }
 
-export function distance(ptr_: number, limit2_: number, arg0: number, index: number): void {
+export function distance(ptr_: number, limit2_: number, dx: number, dy: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -118442,7 +118442,7 @@ export function distance(ptr_: number, limit2_: number, arg0: number, index: num
   let t12 = 0;
   const _t0 = tick(28, 0x11d5c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('d0', limit); setReg('d1', limit2); if (_t0) takeIrq(); }
   limit = (0) >>> 0;
-  t0 = (index & 0xffff);
+  t0 = (dy & 0xffff);
   limit = ((limit & 0xffff0000) | (t0 & 65535));
   setFlagsCmp((limit & 65535), 0, 16);
   if (((((((((limit & 65535)) & 65535) - ((0) & 65535)) & 65535)) << 16) >> 16) >= 0) {
@@ -118452,7 +118452,7 @@ export function distance(ptr_: number, limit2_: number, arg0: number, index: num
     setFlagsCmp((limit & 65535), 0, 16);
   }
   const _t2 = tick(22, 0x11d66) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((limit & 65535), 0, 16); setReg('a0', ptr); setReg('d0', limit); setReg('d1', limit2); if (_t2) takeIrq(); }
-  t1 = (arg0 & 0xffff);
+  t1 = (dx & 0xffff);
   limit2 = ((limit2 & 0xffff0000) | (t1 & 65535));
   if (((((((((limit2 & 65535)) & 65535) - ((0) & 65535)) & 65535)) << 16) >> 16) < 0) {
     const _t6 = tick(4, 0x11d74) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp((limit2 & 65535), 0, 16); setReg('a0', ptr); setReg('d0', limit); setReg('d1', limit2); if (_t6) takeIrq(); }
@@ -118997,7 +118997,7 @@ export function screenDissolve(dst_: number, index_: number, count2_: number, co
   setReg('d2', count);
 }
 
-export function rng(d0: number, arg0: number): void {
+export function rng(d0: number, range: number): void {
   if (tick(244, 0x11e58)) { setReg('d0', d0); takeIrq(); }
   const t0 = 0x3e0842;
   const t1 = load16(t0);
@@ -119006,8 +119006,8 @@ export function rng(d0: number, arg0: number): void {
   const t4 = ((t3 & 0xffff) + 0x5d35);
   const t5 = ((t3 & 0xffff0000) | (t4 & 0xffff));
   store16(t0, (t5 & 0xffff));
-  const t6 = Math.imul(((((t5 & 0xffff)) << 16) >> 16), ((((arg0 & 0xffff)) << 16) >> 16));
-  const t7 = ((((arg0) >>> 16) & 0xffff) | (((arg0) & 0xffff) << 16));
+  const t6 = Math.imul(((((t5 & 0xffff)) << 16) >> 16), ((((range & 0xffff)) << 16) >> 16));
+  const t7 = ((((range) >>> 16) & 0xffff) | (((range) & 0xffff) << 16));
   const t8 = ((t7 & 0xffff0000) | (0 & 0xffff));
   const t9 = ((0x1) & 63);
   const t10 = (t9 >= 32 ? (((t8) < 0) ? -1 : 0) : ((t8) >> t9));
@@ -119630,7 +119630,7 @@ export function graphicsDecompressor(src_: number, dst_: number, kind_: number, 
   setReg('d4', count2);
 }
 
-export function blockRecolour(kind_: number, count3_: number, arg0: number, count4: number): void {
+export function blockRecolour(kind_: number, count3_: number, pixels: number, paletteBase: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a1');
@@ -119657,9 +119657,9 @@ export function blockRecolour(kind_: number, count3_: number, arg0: number, coun
   save_d2_1 = count3;
   save_d3_2 = count2;
   save_a1_3 = dst;
-  t4 = (count4 & 0xffff);
+  t4 = (paletteBase & 0xffff);
   count3 = ((count3 & 0xffff0000) | (t4 & 65535));
-  dst = (arg0) >>> 0;
+  dst = (pixels) >>> 0;
   count = (7) >>> 0;
   count2 = (7) >>> 0;
   setFlagsCmp((count2 & 65535), 0, 16);
@@ -120437,7 +120437,7 @@ export function decodeRunLengthStreamThree(src_: number, dst_: number, kind_: nu
   setReg('d5', d5);
 }
 
-export function rectPaletteRemap(kind2_: number, index_: number, count22: number, arg1: number, kind22: number, arg3: number): void {
+export function rectPaletteRemap(kind2_: number, index_: number, pixels: number, table: number, width: number, height: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -120473,13 +120473,13 @@ export function rectPaletteRemap(kind2_: number, index_: number, count22: number
   save_d2_1 = index;
   save_d3_2 = count2;
   save_a1_3 = dst;
-  ptr = (arg1) >>> 0;
-  dst = (count22) >>> 0;
-  count = (kind22) >>> 0;
+  ptr = (table) >>> 0;
+  dst = (pixels) >>> 0;
+  count = (width) >>> 0;
   t4 = (count & 65535);
   t5 = 0x1;
   count = ((count & 0xffff0000) | (((count & 65535) - 0x1) & 65535));
-  count2 = (arg3) >>> 0;
+  count2 = (height) >>> 0;
   t6 = (count2 & 65535);
   t7 = 0x1;
   count2 = ((count2 & 0xffff0000) | (((count2 & 65535) - 0x1) & 65535));
@@ -120511,9 +120511,9 @@ export function rectPaletteRemap(kind2_: number, index_: number, count22: number
       continue l1;
     }
     const _t2 = tick(60, 0x121ac) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsCmp(t15, 0, 8); setReg('a0', ptr); setReg('a1', dst); setReg('d0', kind2); setReg('d1', count); setReg('d2', index); setReg('d3', count2); if (_t2) takeIrq(); }
-    dst = ((dst - kind22)) >>> 0;
+    dst = ((dst - width)) >>> 0;
     dst = ((dst + 0x200)) >>> 0;
-    count = (kind22) >>> 0;
+    count = (width) >>> 0;
     t16 = (count & 65535);
     t17 = 0x1;
     count = ((count & 0xffff0000) | (((count & 65535) - 0x1) & 65535));
@@ -136818,7 +136818,7 @@ export function trapHaltWrapper(dst2_: number, dst22_: number, index_: number, d
   setReg('d4', d4);
 }
 
-export function soundChannelStateUpdate(dst_: number, index_: number, d1_: number, index2_: number, arg0: number, arg1: number, arg2: number): void {
+export function soundChannelStateUpdate(dst_: number, index_: number, d1_: number, index2_: number, owner: number, index3: number, value: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -136888,9 +136888,9 @@ export function soundChannelStateUpdate(dst_: number, index_: number, d1_: numbe
   save_d4_2 = d4;
   save_a2_3 = ptr;
   save_a3_4 = a3;
-  ptr = (arg0) >>> 0;
-  d2 = (arg1) >>> 0;
-  d4 = (arg2) >>> 0;
+  ptr = (owner) >>> 0;
+  d2 = (index3) >>> 0;
+  d4 = (value) >>> 0;
   a3 = (0x3e3528) >>> 0;
   setFlagsCmp(ptr, 0x3e3536, 32);
   if (ptr === 0x3e3536) {
@@ -138428,7 +138428,7 @@ export function soundSequencePlayer(count_: number, limit_: number, index2_: num
   setReg('d4', kind);
 }
 
-export function lookUpSoundRequestUnpack(ptr2_: number, d2_: number, index2_: number, d4_: number, d5_: number, arg0: number): void {
+export function lookUpSoundRequestUnpack(ptr2_: number, d2_: number, index2_: number, d4_: number, d5_: number, counter: number): void {
   let _guard = 0;
   void _guard;
   let ptr2 = ptr2_;
@@ -138499,7 +138499,7 @@ export function lookUpSoundRequestUnpack(ptr2_: number, d2_: number, index2_: nu
   save_d3_1 = index2;
   save_d4_2 = d4;
   save_d5_3 = d5;
-  limit = (arg0) >>> 0;
+  limit = (counter) >>> 0;
   a1 = (0x3e34cc) >>> 0;
   index = (22) >>> 0;
   if (index >= limit) {
@@ -138777,7 +138777,7 @@ export function lookUpSoundRequestUnpack(ptr2_: number, d2_: number, index2_: nu
   setReg('d5', d5);
 }
 
-export function startSoundCue(ptr2_: number, index3_: number, index4_: number, d5_: number, d6_: number, arg0: number, arg1: number): void {
+export function startSoundCue(ptr2_: number, index3_: number, index4_: number, d5_: number, d6_: number, counter: number, value: number): void {
   let _guard = 0;
   void _guard;
   let ptr2 = ptr2_;
@@ -138923,8 +138923,8 @@ export function startSoundCue(ptr2_: number, index3_: number, index4_: number, d
   save_a2_5 = a2;
   save_a3_6 = a3;
   save_a4_7 = a4;
-  index2 = (arg0) >>> 0;
-  d3 = (arg1) >>> 0;
+  index2 = (counter) >>> 0;
+  d3 = (value) >>> 0;
   a2 = (0x3e34cc) >>> 0;
   a4 = (0x3e3536) >>> 0;
   a3 = (0x143b0) >>> 0;
@@ -139740,7 +139740,7 @@ export function startSoundCue(ptr2_: number, index3_: number, index4_: number, d
   setReg('d6', d6);
 }
 
-export function soundChannelKey(ptr2_: number, index_: number, limit2_: number, limit_: number, arg0: number, arg1: number): void {
+export function soundChannelKey(ptr2_: number, index_: number, limit2_: number, limit_: number, counter: number, amount: number): void {
   let _guard = 0;
   void _guard;
   let ptr2 = ptr2_;
@@ -139811,8 +139811,8 @@ export function soundChannelKey(ptr2_: number, index_: number, limit2_: number, 
   save_d3_1 = index2;
   save_d4_2 = limit;
   save_a2_3 = ptr;
-  index3 = (arg0) >>> 0;
-  index2 = (arg1) >>> 0;
+  index3 = (counter) >>> 0;
+  index2 = (amount) >>> 0;
   ptr = (0x3e34ed) >>> 0;
   t4 = index3;
   push(t4, 4);
@@ -140134,7 +140134,7 @@ export function soundChannelKey(ptr2_: number, index_: number, limit2_: number, 
   setReg('d4', limit);
 }
 
-export function helperSoundEnvelopeStep(d0_: number, d1_: number, limit2_: number, limit_: number, kind_: number, index: number, arg1: number, arg2: number): void {
+export function helperSoundEnvelopeStep(d0_: number, d1_: number, limit2_: number, limit_: number, kind_: number, slot: number, channel: number, remainingOut: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -140172,11 +140172,11 @@ export function helperSoundEnvelopeStep(d0_: number, d1_: number, limit2_: numbe
   save_d2_0 = limit2;
   save_d3_1 = limit;
   save_d4_2 = kind;
-  t3 = (index & 0xffff);
+  t3 = (slot & 0xffff);
   limit2 = ((limit2 & 0xffff0000) | (t3 & 65535));
-  t4 = (arg1 & 0xffff);
+  t4 = (channel & 0xffff);
   limit = ((limit & 0xffff0000) | (t4 & 65535));
-  dst = (arg2) >>> 0;
+  dst = (remainingOut) >>> 0;
   setFlagsCmp((limit & 65535), 0x3, 16);
   if ((((limit & 65535)) & 65535) < ((0x3) & 65535)) {
     const _t2 = tick(34, 0x14b46) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((limit & 65535), 0x3, 16); setReg('a0', dst); setReg('d0', d0); setReg('d1', d1); setReg('d2', limit2); setReg('d3', limit); setReg('d4', kind); if (_t2) takeIrq(); }

@@ -938,8 +938,9 @@
     "why": "adds the fractional byte at 0x3E3446 to the whole byte at 0x3E3448 and returns 0 if the total is below the requested count; otherwise decrements both until the count is met and returns 1. 0x1418A is the same question asked without taking anything, and 0x141C4 clears the fraction at 0x3E3446 and 0x3E3447."
   },
   "0x14772": {
-    "name": "look up a sound request and unpack its packed fields",
-    "why": "rejects a request id above 0x16, indexes the word table at 0x1D616 by it, and unpacks that word: bits 5 to 11 as a seven-bit value, bits 12 and 13 plus one added to it, and the result used to index the channel bytes at 0x3E34CC."
+    "name": "read one packed bookkeeping counter",
+    "ident": "readBookkeepingCounter",
+    "why": "refuses an index above 0x16, so there are 23 counters, and takes the word at 0x1d616 + index*2 as a descriptor. The descriptor packs three things: (d5 >> 5) & 0x7f is the counter's offset in NIBBLES into the packed array at 0x3e34cc, ((d5 >> 12) & 3) + 1 is its length in nibbles, and the low five bits are a display slot the writer uses. It then assembles the value nibble by nibble from 0x3e34cc, with a separate path for an odd starting nibble. Nothing here touches a sound chip; the derived name `lookUpSoundRequestUnpack` is wrong."
   },
   "0x14dd2": {
     "name": "step all eight sound envelopes",
@@ -1631,5 +1632,20 @@
   "0x156ac": {
     "name": "roll a play-time accumulator into the bookkeeping counters",
     "why": "the longword table at 0x3e3632 indexed by kind * 4 is an accumulator that this routine drains and clears. On the way it adds the same amount into two more tables - 0x3e3652 indexed by the low bit of the second argument, and 0x3e3642 indexed by kind - and each of those, once past 0xe10, is divided by 0xe10, has the remainder written back, and passes the quotient to 0x14a36 under a category of 7, 8, 9 or higher by kind. The drained total is then divided by 0x1c20 for kind 3 and 0x708 otherwise, floored by 0 or 3, clamped to 0x13, and reported to 0x15064 under a code 0 to 4 chosen from the kind and the second argument. 0xe10, 0x708 and 0x1c20 are 3600, 1800 and 7200; the routine never says what the unit is, so neither does this."
+  },
+  "0x1485c": {
+    "name": "write one packed bookkeeping counter and refresh its display",
+    "ident": "writeBookkeepingCounter",
+    "why": "the write side of 0x14772 and provably the same store: the same 0x16 index limit, the same descriptor table at 0x1d616, and the same packed nibble array at 0x3e34cc. It also uses the descriptor's low five bits - `andi.l #$1f`, zero meaning none - to index the table at 0x3e34f4 and redraw through 0x143b0 into 0x3e3536, which is what makes the operator page update when a counter moves. The derived name `startSoundCue` is wrong."
+  },
+  "0x14a36": {
+    "name": "add to a bookkeeping counter, and roll the coin display when it carries",
+    "ident": "addToBookkeepingCounter",
+    "why": "reads the counter through 0x14772, adds the longword argument, and writes it back through 0x1485c, answering the new value; a read of -1 - the out-of-range answer - makes it return without writing. Counter 3 is special: when old xor new reaches 0x100 the count has crossed a byte boundary, and it then steps the byte at 0x3e34ed by 2, wrapping to 0x1a once it passes 0x21 above 0xff, and redraws two entries of the table at 0x3e34cc and three of 0x3e34f4 through 0x143b0. The derived name `soundChannelKey` is wrong."
+  },
+  "0x143b0": {
+    "name": "queue an index and value for the consumer, or just mark it",
+    "ident": "queueIndexValuePair",
+    "why": "a four-entry ring at 0x3e3508, eight bytes each - the longword argument at 0x20(a7) and the index word at 0x1c(a7) - with the write cursor at 0x3e3528 and the read cursor at 0x3e352a. Full is write+1 == read, and it SPINS there, clearing the watchdog at 0x72fffe and re-reading 0x12(a2) until something else moves the read cursor, so this routine blocks. Before enqueuing it consults the table at 0x1d64a, eight bytes an entry and terminated by a zero long at +4: a base word (0xff meaning take the base from 0x3e34ed), a count, and a key. An index inside a band whose key matches value - index*10 is NOT enqueued; instead bit (index & 7) of 0x3e352c + (index >> 3) is set, which is a bitmap of things already accounted for. It is called by the bookkeeping counter writer at 0x1485c with 0x3e3536, the counter and its new value. What drains the ring is not visible from here, and the entry this replaces called it a sound channel update on the strength of the address alone."
   }
 }

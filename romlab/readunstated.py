@@ -11,6 +11,11 @@ several callers that runs 200 bytes is worth more than a six-byte trampoline.
 The default order is callers first, then size.
 
     python3 readunstated.py [from] [count] [--max BYTES] [--kind fromn|other]
+                            [--opaque]
+
+`--opaque` restricts it to the 160 that are the actual bar: the ones whose
+host or target has no stated purpose either, so no reading anywhere else
+covers them.
 """
 import json
 import pathlib
@@ -65,10 +70,26 @@ def main():
     count = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2].isdigit() else 8
     cap = int(sys.argv[sys.argv.index("--max") + 1]) if "--max" in sys.argv else 10**9
     kind = sys.argv[sys.argv.index("--kind") + 1] if "--kind" in sys.argv else None
+    only_opaque = "--opaque" in sys.argv
+
+    def opaque(a, name):
+        """Nothing this routine points at has a purpose either.
+
+        The number worth reading against. A wrapper whose one target is
+        already stated, or an inner entry whose host is, can be understood in
+        one hop - writing it down would restate the rule that named it.
+        """
+        if re.search(r"From\d+$", name):
+            h = host(a)[0]
+            return h is None or h not in STATED
+        to = CALLS.get(a) or []
+        return len(to) != 1 or to[0] not in STATED
 
     want = []
     for a, name in TABLE.items():
         if a in STATED:
+            continue
+        if only_opaque and not opaque(a, name):
             continue
         is_from = bool(re.search(r"From\d+$", name))
         if kind == "fromn" and not is_from:
@@ -84,7 +105,8 @@ def main():
     want.sort(key=lambda r: (-r[0], -r[1], r[2]))
 
     print(f"{len(want)} routines with a rule-derived name and no stated"
-          f" purpose; showing {start}..{start + count}")
+          f" purpose{' (opaque only)' if only_opaque else ''};"
+          f" showing {start}..{start + count}")
     for ncall, size, a, name in want[start:start + count]:
         hi = HEADS.get(a)
         hlo, hhi = (None, None) if hi else host(a)

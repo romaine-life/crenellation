@@ -3,6 +3,8 @@
 Each of them runs to its own fixed point internally, and that is not the same
 thing. They feed each other:
 
+  - `curatedparams.py` applies a name somebody read out of the disassembly,
+    which is a seed the other four have no way of producing.
   - `moreroles.py` names a parameter from what its own routine does with it,
     which makes it a named callee parameter for `paramnames.py`.
   - `paramnames.py` names a local from the callee it is handed to, which makes
@@ -10,7 +12,7 @@ thing. They feed each other:
   - `callernames.py` and `stackargnames.py` name a parameter from what the
     callers call it, which makes it a named callee parameter again.
 
-Run once each, in that order, the four gave 2,126 unnamed. Run to a joint
+Run once each, in that order, the naming passes gave 2,126 unnamed. Run to a joint
 fixed point they give 2,085, and the second round alone found 26 more that the
 first round's own output had made findable. This is the same lesson
 `idents.py` records for its wrapper and jump-stub rules: folding a rule INTO
@@ -32,8 +34,8 @@ import sys
 import pathlib
 
 HERE = pathlib.Path(__file__).parent
-PASSES = ["moreroles.py", "paramnames.py", "callernames.py",
-          "stackargnames.py"]
+PASSES = ["curatedparams.py", "moreroles.py", "paramnames.py",
+          "callernames.py", "stackargnames.py"]
 NUM = re.compile(r"\d+")
 
 

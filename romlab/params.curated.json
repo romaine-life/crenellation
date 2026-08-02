@@ -1,0 +1,162 @@
+{
+  "0x005b4": {
+    "stack4": {
+      "name": "port",
+      "why": "0 selects 0x640002, 1 selects 0x640000 and anything else 0x640001, and the same value indexes the per-port active-low mask in the PC-relative table at 0x5b0 and the debounce state at 0x3e0836."
+    },
+    "stack8": {
+      "name": "wanted",
+      "why": "only its low byte is read, at 0xf(a7), and it is and'ed with the changed bits: it selects which bits of the port this caller wants reported and latched, so two callers can watch different bits of the same port."
+    }
+  },
+  "0x0ef58": {
+    "stack4": {
+      "name": "event",
+      "why": "the longword at 0x10(a7) after the movem, dereferenced immediately for its first long - the routine pointer that every entry of the list at 0x3e1cf6 is matched against. It is the same descriptor 0xee90 and 0xeeee take."
+    }
+  },
+  "0x14b2c": {
+    "stack4": {
+      "name": "slot",
+      "why": "read as the word at 0x12(a7), multiplied by 5 and added to the base: the index of a five-byte entry within one channel. 10 - it going negative is what makes the routine answer 0, so the range is 0 to 10."
+    },
+    "stack8": {
+      "name": "channel",
+      "why": "read as the word at 0x16(a7), refused at 3 or more, and multiplied by 50 - ten entries of five bytes - so it selects one of three channels in the table at 0x3e3554."
+    },
+    "stack12": {
+      "name": "remainingOut",
+      "why": "a pointer, and the only reason this routine takes one: when it is not null the routine writes (10 - slot) * 5 through it, which is how much of the channel's queue is left after this entry. Null is allowed and skips the write."
+    }
+  },
+  "0x11bd8": {
+    "stack4": {
+      "name": "coord",
+      "why": "only its first two bytes are read: the byte at 4(a7) is shifted left five and the byte at 5(a7) added, so it is a packed pair with the row first, and 0x5e38 builds exactly that pair by splitting a cell address with asr.l #5 and andi.b #$1f."
+    }
+  },
+  "0x11bec": {
+    "stack4": {
+      "name": "coord",
+      "why": "the same two packed bytes as 0x11bd8 takes, read in the OTHER order: here the byte at 5(a7) carries the 512-byte row stride and the byte at 4(a7) is added before the whole thing is shifted left three. Worth knowing before passing one routine's pair to the other."
+    }
+  },
+  "0x11cf8": {
+    "stack4": {
+      "name": "dx",
+      "why": "the word at 0x16(a7). Its sign is folded in by negating the octant and adding 4, which is the horizontal half-turn, and 0x6c20 pushes the difference derived from 0x4e(a2) here."
+    },
+    "stack8": {
+      "name": "dy",
+      "why": "the word at 0x1a(a7). Its sign negates the octant and adds 8 before the mask to 7, which is the vertical reflection, and 0x6c20 pushes the difference derived from 0x50(a2) - the word after 0x4e - here."
+    }
+  },
+  "0x11d5c": {
+    "stack4": {
+      "name": "dx",
+      "why": "the word at 6(a7). The routine swaps the two so the larger is the divisor, so which of the two is horizontal makes no difference to the answer - only their magnitudes are used."
+    },
+    "stack8": {
+      "name": "dy",
+      "why": "the word at 0xa(a7), and the one whose absolute value is taken first. Interchangeable with dx by the swap at 0x11d7a."
+    }
+  },
+  "0x11e58": {
+    "stack4": {
+      "name": "range",
+      "why": "the new 16-bit state is multiplied by this longword and the high half of the product taken, which scales the result into 0..range-1 rather than masking it."
+    }
+  },
+  "0x01f3a": {
+    "stack4": {
+      "name": "player",
+      "why": "the word at 6(a7), multiplied by 126 - x2, then x128, minus x2 - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+    }
+  },
+  "0x11ff8": {
+    "stack4": {
+      "name": "pixels",
+      "why": "the longword at 0x14(a7), walked as an eight by eight block with adda 0x1f8 between rows - the destination whose low nibbles are rewritten."
+    },
+    "stack8": {
+      "name": "paletteBase",
+      "why": "the word at 0x1a(a7), added to each pixel's low nibble, so it is which bank of sixteen the block ends up in."
+    }
+  },
+  "0x1217e": {
+    "stack4": {
+      "name": "pixels",
+      "why": "the longword at 0x14(a7): the rectangle rewritten in place, with the width taken back off the pointer and 0x200 added between rows."
+    },
+    "stack8": {
+      "name": "table",
+      "why": "the longword at 0x18(a7), indexed by each pixel's HIGH nibble - sixteen entries, one per source bank - and the entry is added to the low nibble."
+    },
+    "stack12": {
+      "name": "width",
+      "why": "the longword at 0x1c(a7), used as the inner dbra count and subtracted from the pointer at the end of every row."
+    },
+    "stack16": {
+      "name": "height",
+      "why": "the longword at 0x20(a7), the outer dbra count."
+    }
+  },
+  "0x05892": {
+    "stack4": {
+      "name": "x",
+      "why": "the word at 0xe(a7), added to the address after the row term, so it is the byte offset within the row."
+    },
+    "stack8": {
+      "name": "y",
+      "why": "the word at 0x12(a7), shifted left nine - 0x200 to a row - which makes it the row number."
+    },
+    "stack12": {
+      "name": "width",
+      "why": "the word at 0x16(a7), the inner count and the amount the source pointer is rewound by before the row stride is added."
+    },
+    "stack16": {
+      "name": "height",
+      "why": "the word at 0x1a(a7), compared against the outer counter."
+    }
+  },
+  "0x14772": {
+    "stack4": {
+      "name": "counter",
+      "why": "the longword at 0x14(a7), refused above 0x16 and doubled to index the descriptor table at 0x1d616. One of 23."
+    }
+  },
+  "0x1485c": {
+    "stack4": {
+      "name": "counter",
+      "why": "the longword at 8(a6), refused above 0x16 and doubled to index the same descriptor table at 0x1d616 that 0x14772 reads."
+    },
+    "stack8": {
+      "name": "value",
+      "why": "the longword at 0xc(a6), taken a byte at a time - andi.l #$ff - as the nibbles are written into the packed array at 0x3e34cc."
+    }
+  },
+  "0x14a36": {
+    "stack4": {
+      "name": "counter",
+      "why": "the longword at 0x14(a7), passed straight to the read at 0x14772 and the write at 0x1485c, and compared against 3, which is the counter with the display roll."
+    },
+    "stack8": {
+      "name": "amount",
+      "why": "the longword at 0x18(a7), added to what the read returned; the sum is what gets written back and answered."
+    }
+  },
+  "0x143b0": {
+    "stack4": {
+      "name": "owner",
+      "why": "the longword at 0x18(a7). Compared against 0x3e3536 and, when it differs, 0x19c2e is called with 0x1d5f8 first; the word at 0x12 of it is what the full-queue spin re-reads while it waits."
+    },
+    "stack8": {
+      "name": "index",
+      "why": "the longword at 0x1c(a7): the value stored in the ring entry's word at +4, the thing the suppression bands at 0x1d64a are measured against, and the bit position in the bitmap at 0x3e352c."
+    },
+    "stack12": {
+      "name": "value",
+      "why": "the longword at 0x20(a7), stored whole in the ring entry, and compared - after index*10 is taken off it - against the key at +4 of each suppression band."
+    }
+  }
+}
