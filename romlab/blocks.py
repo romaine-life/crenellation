@@ -1052,6 +1052,11 @@ def lift_once(lo, hi, names, seed=()):
     index = {a: k for k, a in enumerate(starts)}
     lifter = BlockLifter(lo, hi, names)
     lifter.used_regs.update(seed)
+    # Once for the whole routine, before any block is lifted. Blocks are lifted
+    # in their own order and a slot written in one is read in another, so
+    # filling this as the writes go by is only right when the read happens to
+    # come second - see Lifter.seed_dirty for the tile row that it did not.
+    lifter.seed_dirty(decode(lo, hi))
     lifted, conds = {}, {}
     # Flags reach a block from its predecessors in the graph, not from whatever
     # happens to sit before it in memory. Address order is right for the common

@@ -1,2 +1,2 @@
-77024 pixels differ, box x 4..335 y 0..231 (332 wide, 232 tall)
-first at (4,0) ff717171 vs ff000000
+380 pixels differ, box x 36..262 y 16..78 (227 wide, 63 tall)
+first at (76,16) ff8282cb vs ff008200

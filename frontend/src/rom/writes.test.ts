@@ -54,6 +54,9 @@ const WAIT_LO = 0x00430;
 const WAIT_HI = 0x00512;
 const WAIT_SKIP = process.env.WAIT_SKIP === '1';
 const FRAME_BYTES = process.env.FRAME_BYTES === '1';
+/** Record nothing until this many interrupts have been taken. See the note at
+ *  the recording hook: the shared clock, so both runs start at one moment. */
+const FROM_IRQ = Number(process.env.W_FROM_IRQ ?? 0);
 // Diagnostic: compare the poll-address sequences of the two dispatchers.
 const PC_SEQ = process.env.PC_SEQ === '1';
 const PC_CAP = Number(process.env.PC_CAP ?? 3_000_000);
@@ -220,6 +223,16 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // about the game differs here. WAIT_SKIP=1 excludes it, which answers
     // whether the spin loop is the *only* thing left or merely the first.
     if (WAIT_SKIP && inWait) return;
+    // W_FROM_IRQ windows in TIME the way W_LO/W_HI window in space, and it
+    // exists because a narrow address window silently becomes a short run. The
+    // stack region 0x3E3000-0x3E3400 fills 600,000 slots in 119 interrupts
+    // while the playfield divergence is at 437, so "identical, 600,000 writes"
+    // was a truncation, not a result - the fourth time a cap has been read as
+    // agreement here. Keyed to irqTaken and nothing else: it is the one clock
+    // both dispatchers agree on (cycles are charged differently and write
+    // indices count different streams), so the same value names the same
+    // moment in both runs, which is exactly what a start offset has to promise.
+    if (FROM_IRQ && (sys.m.irqTaken | 0) < FROM_IRQ) return;
     // Full: stop the run rather than carry on executing the game with a hook
     // on every store, recording nothing. Thrown from inside the machine, which
     // unwinds the dispatcher the same way the frame limit does.

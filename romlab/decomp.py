@@ -74,6 +74,12 @@ def decode(lo, hi):
     return out
 
 
+# Instructions whose last operand they only read. Everything else is treated as
+# writing it, which is the safe direction: see seed_dirty.
+READ_ONLY_DEST = {"tst", "cmp", "cmpi", "cmpa", "cmpm", "btst", "pea", "jmp",
+                  "jsr"}
+
+
 def split_ops(op_str):
     """Split on commas that are not inside brackets."""
     out, depth, cur = [], 0, ""
@@ -497,9 +503,56 @@ class Lifter:
         self.falls_through = last not in ("rts", "rte", "rtr", "jmp", "bra", "bral")
         from m68kts import cycles as insn_cycles
         self.cost = sum(insn_cycles(i) for i in ins)
+        self.seed_dirty(ins)
         for i in ins:
             self.step(i)
         return self
+
+    def seed_dirty(self, ins):
+        """Mark every argument slot this routine writes, before lifting any.
+
+        `dirty` decides whether a read of an argument slot comes from the bound
+        parameter or from the real stack, and it used to be filled as each
+        write was lifted - which is only right if every read of a slot follows
+        the write to it in emission order. In a loop it does not. fn_036a2
+        walks a tile row with
+
+            movea.l $18(a6),a0      read the pointer
+            addq.l  #$1,$18(a6)     advance it
+
+        and the read is lifted first, so it bound `arg4` while `dirty` was
+        still empty and never learned about the store four bytes later. The
+        pointer then advanced in memory and never in the code: every tile
+        fetched its colour byte from the same address, `lsl.l #4` scaled that
+        stale byte into a palette bank, and the board drew one bank low - the
+        divergence at frame ~276 and 31,872 pixels by frame 600. Seeding the
+        set from the whole routine first makes the answer independent of the
+        order blocks happen to be emitted in.
+
+        Only the frame-pointer form. The a7 form is bound to `pushed`, which is
+        a running total the pre-pass cannot know, and it is filled as before.
+        Marking a slot that is only read is harmless - the read falls back to
+        the stack, which is where the machine looks anyway - so the operand
+        test errs towards marking.
+        """
+        frame = None
+        for i in ins:
+            if i.mnemonic.split(".")[0] == "link":
+                frame = split_ops(i.op_str or "")[0].strip()
+                break
+        if frame is None:
+            return
+        for i in ins:
+            if i.mnemonic.split(".")[0] in READ_ONLY_DEST:
+                continue
+            ops = split_ops(i.op_str or "")
+            if not ops:
+                continue
+            m = re.fullmatch(r"(-?\$?[0-9a-fA-F]+)?\((a\d)\)", ops[-1].strip())
+            if m and m.group(2) == frame:
+                off = num(m.group(1)) if m.group(1) else 0
+                if off >= 8:
+                    self.dirty.add((off - 4) & ~3)
 
     def sync_flags(self):
         """Write pending condition codes to the machine. The single-block
