@@ -1990,5 +1990,15 @@
     "name": "the opcode handlers of the sequencer interpreter",
     "ident": "sequencerOpcodeHandlers",
     "why": "774 bytes that are not one routine but about thirty short ones side by side, which is why the map records twenty-eight inner entries into it. Each is one opcode's handler and every one of them ends `bra.w $1b048`, the shared tail. The state is a2: the byte at 4(a2) is a PROGRAM COUNTER into the sequence and handlers advance it with `addq.l #$1,$4(a2)` as they consume operands, d4 arrives holding the operand byte the dispatcher already fetched, and 0x1a(a2) is assembled from two bytes as a sixteen-bit value. 0x16(a2) is a level clamped to four bits - one handler SETS it and the next ADDS to it, with bit 7 meaning underflow and clearing it and anything above 0xf pinned to 0xf - and both refuse when 0x12(a2) is 0xfe, which is a mode that locks it. The tail at 0x1b048 either fetches the next opcode at 0x1a810 or, when a handler set the stop byte at -5(a6), follows `movea.l (a2),a2` to the next voice and starts again at 0x1a618, returning when that pointer is null. So the voices are a linked list and each carries its own program counter."
+  },
+  "0x1822c": {
+    "name": "draw a block of text lines at consecutive rows",
+    "ident": "drawTextLinesConsecutive",
+    "why": "the same four-argument shape over and over - attribute 0x2000, a string, a row and a kind - alternating between 0x17fcc, which substitutes the stored default attributes when 0xff is passed, and 0x13e6a. The row is the word argument for the first line and that plus one for the next, so the block runs down the screen from wherever the caller says. 0x2000 is the same attribute for every line."
+  },
+  "0xebc4": {
+    "name": "redraw the whole board and the player's panel",
+    "ident": "redrawBoardAndPanel",
+    "why": "sets two bytes at 0x3e1cec to 1 and clears the four after them, then calls the rectangle walk at 0x362a with width 0x2a and height 0x1e - 42 by 30, the board's full size, confirmed here for the third time after 0x8b4's bounds and 0x6648's edge tests - starting at 0x200004 with an extra of 0xb0. The cell list comes from the longword table at 0x215ce indexed by the byte at 0x3e0dd4, so that byte chooses which board is drawn. It then draws the player's own pieces through 0xecb0 from the pointer at 0x4a(a2)."
   }
 }

@@ -111965,7 +111965,7 @@ export function restoreD2D4A2A5(): void {
   setReg('d4', t2);
 }
 
-export function drawImageColumnColumnWrapper(ptr2_: number, dst: number): void {
+export function drawImageColumnColumnWrapper(ptr2_: number, player: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -111996,7 +111996,7 @@ export function drawImageColumnColumnWrapper(ptr2_: number, dst: number): void {
   push(ptr, 4);
   save_a2_0 = ptr;
   save_a3_1 = ptr2;
-  ptr = (dst) >>> 0;
+  ptr = (player) >>> 0;
   a0 = (0x3e1cec) >>> 0;
   t2 = 0x1;
   store8(a0, t2);
@@ -164164,7 +164164,7 @@ export function clearWholePaletteEntryZero(d0_: number, d1_: number, kind_: numb
   setReg('d3', d3);
 }
 
-export function soundCallMarshallerWrapper(index_: number, kind_: number, arg0: number): void {
+export function soundCallMarshallerWrapper(index_: number, kind_: number, row: number): void {
   let _guard = 0;
   void _guard;
   let index = index_;
@@ -164188,7 +164188,7 @@ export function soundCallMarshallerWrapper(index_: number, kind_: number, arg0: 
   const _t0 = tick(150, 0x1822c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('d0', index); setReg('d2', kind); if (_t0) takeIrq(); }
   t0 = kind;
   push(t0, 4);
-  t1 = (arg0 & 0xffff);
+  t1 = (row & 0xffff);
   kind = ((kind & 0xffff0000) | (t1 & 65535));
   push(0x2000, 4);
   push(0x1df40, 4);
