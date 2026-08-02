@@ -1974,7 +1974,7 @@
   "0x43a": {
     "name": "check that movem round-trips d0 to d3, rotating the pattern",
     "ident": "checkMovemRoundTrip",
-    "why": "loads d0 to d3 with 0xaaaaaaaa, 0xff and 0, pushes all four with `movem.l d0-d3`, and compares each against the copy on the stack - any mismatch calls 0x3e8 with 0x3ab, which is the failure report. On a pass it ROTATES the four values, d0 taking d1's and so on round, and goes again, so every value visits every register. The loop runs until the word at 0x3e0802 counts down, and that word is also clamped to 4 afterwards. It is a self test of the instruction the whole lifted world depends on for saving registers across an interrupt."
+    "why": "an inner entry of 0x430 that starts the test at a different seed - d0 already holds 0xaaaaaaaa here where the head at 0x430 sets it to 0x55555555 - and otherwise loads d1 to d3 with 0xaaaaaaaa, 0xff and 0, pushes all four with `movem.l d0-d3`, and compares each against the copy on the stack - any mismatch calls 0x3e8 with 0x3ab, which is the failure report. On a pass it ROTATES the four values, d0 taking d1's and so on round, and goes again, so every value visits every register. The loop runs until the word at 0x3e0802 counts down, and that word is also clamped to 4 afterwards. It is a self test of the instruction the whole lifted world depends on for saving registers across an interrupt."
   },
   "0xd9a2": {
     "name": "step the player's rotation cursor unless its event is still pending",
@@ -2040,5 +2040,10 @@
     "name": "count the sequence step down and advance when it runs out",
     "ident": "countStepDownAndAdvance",
     "why": "`subq.w #$1,d3` then storing d3 into 0x12(a2) and taking `bpl` on the flags that STORE left - no separate test - so 0x12 is a countdown and everything below happens only on the tick it goes negative. Then it clears the sequence pointer at 0(a2), copies 4(a3) into 7(a2), and asks 0x1425c whether to carry on. The new index at 4(a2) is the old one multiplied by (5(a3) + 5) and then doubled, so the stride comes out of the descriptor a3 points at rather than being fixed."
+  },
+  "0x430": {
+    "name": "check movem round-trips d0 to d3, then sample the six input ports",
+    "ident": "checkMovemThenSampleInputs",
+    "why": "seeds d0 to d3 with 0x55555555, 0xaaaaaaaa, 0xff and 0 and runs the same push-compare-rotate loop as its inner entry 0x43a, which differs only in starting d0 at 0xaaaaaaaa instead - so the two heads run the test with different patterns. Afterwards, and only when the word at 0x3e1948 is non-zero, it reads SIX ports at 0x6c0007, 0x6c0005, 0x6c0003, 0x6c0001, 0x6c0002 and 0x6c0000 - note the order, high to low and then the two even ones - into 0x3e0806, 0x3e080e, 0x3e0816, 0x3e081e, 0x3e0826 and 0x3e082e, eight bytes apart. So 0x6c0000 is the input block and each port gets an eight-byte record in work RAM."
   }
 }
