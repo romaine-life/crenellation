@@ -4258,5 +4258,41 @@
       "name": "flagBits",
       "why": "the word at 0x3e0de0 masked to one bit at a time - 0x8000 for a pending request and 0x4000 for the enable - rather than a value."
     }
+  },
+  "0x11ef2": {
+    "a0": {
+      "name": "bank",
+      "why": "the compressed-graphics base this head chose; the shared body adds the caller's word offset to it."
+    },
+    "a1": {
+      "name": "dst",
+      "why": "the destination the decoder writes through, wrapped by 0x1f8 every eight bytes."
+    },
+    "d1": {
+      "name": "runLength",
+      "why": "the decoder's run counter, cleared before entry."
+    },
+    "d2": {
+      "name": "paletteBase",
+      "why": "added to every pixel the decoder emits."
+    }
+  },
+  "0x3da0": {
+    "d3": {
+      "name": "matches",
+      "why": "incremented by ONE per matching neighbour, where 0x3de8 adds 4 and 8 - so this answers how many rather than which."
+    },
+    "d1": {
+      "name": "wanted",
+      "why": "the first acceptable byte, at 0x13(a7); a neighbour matching this OR the other counts."
+    },
+    "d0": {
+      "name": "alsoWanted",
+      "why": "the second acceptable byte, at 0x17(a7)."
+    },
+    "d2": {
+      "name": "neighbourByte",
+      "why": "the byte read from whichever neighbour is being tested, compared against both wanted values in turn."
+    }
   }
 }

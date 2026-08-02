@@ -806,9 +806,9 @@
     "why": "twelve bytes: save the decoder's registers, `lea 0xf1d8a,a0`, and branch to the common body at 0x11f08. 0x11eda, 0x11ee6 and 0x11efe are three heads that differ in NOTHING but that address - 0xe5930, 0xf1d8a and 0xd2608 - so the three per-cell routines the rectangle marshallers at 0x35ee, 0x3666 and 0x362a choose between are three banks of compressed graphics and one decoder. The body adds the caller's word offset to the base, which is why the cell lists can be flat lists of 16-bit offsets."
   },
   "0x11ef2": {
-    "name": "decompress the graphics at 0xdaddc",
-    "why": "`movem.l d1-d4/a0-a1,-(a7); lea $daddc.l,a0; bra.b $11f08` - the same shared body as 0x11ee6, pointed at a different fixed source.",
-    "ident": "decompressGraphicsAtDADDC"
+    "name": "decompress one column from the bank at 0xdaddc",
+    "ident": "decompressColumnFromDADDC",
+    "why": "the FOURTH head onto the common decoder body at 0x11f08, after 0x11eda, 0x11ee6 and 0x11efe. Twelve bytes, one `lea`, one branch. So the compressed graphics live in at least four banks - 0xdaddc, 0xd2608, 0xe5930 and 0xf1d8a - and choosing between them is the whole content of choosing between these routines."
   },
   "0x11f2a": {
     "name": "graphics decompressor",
@@ -2108,5 +2108,10 @@
     "name": "look one byte out of the six-by-twenty table at 0x3e3454",
     "ident": "lookUpSixByTwenty",
     "why": "refuses a first argument of 6 or more and a second of 0x14 or more, answering 0xff - so the table is six rows of twenty and 0xff means out of range rather than a value. The first is multiplied by 0x14 and the second indexes within that row, which is what makes it row-major."
+  },
+  "0x3da0": {
+    "name": "count how many of the three neighbours carry either value",
+    "ident": "countNeighboursEitherValue",
+    "why": "0x3de8's shape with a different answer: where that one adds 4 and 8 to make a two-bit mask, this adds ONE per match, so it answers a COUNT and not a set. Same three neighbours - the cell less one, that plus 0x20, and back again - and the same pair of acceptable values, either of which counts."
   }
 }
