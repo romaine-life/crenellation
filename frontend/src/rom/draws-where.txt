@@ -1,2 +1,2 @@
-380 pixels differ, box x 36..262 y 16..78 (227 wide, 63 tall)
+100 pixels differ, box x 76..163 y 16..23 (88 wide, 8 tall)
 first at (76,16) ff8282cb vs ff008200
