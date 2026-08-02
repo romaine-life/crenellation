@@ -1308,11 +1308,24 @@ def lift_once(lo, hi, names, seed=()):
         # knows on the way out, the machine is current at the head of the
         # uncertain block whichever path reached it. Emitted after the body, so
         # it is the state at the block's end.
-        _stash = lifter.stmts
-        lifter.stmts = []
-        lifter.sync_flags()
-        tail_flags = list(lifter.stmts)
-        lifter.stmts = _stash
+        #
+        # Only where a successor cannot name its own flags, which is exactly a
+        # block reached from more than one place. Emitting this everywhere was
+        # correct and cost 55% of the suite's running time - 789 seconds to
+        # 1,220 - because nearly every block gained a setFlags call, and a
+        # slower suite is not free here: the run that first showed the cost also
+        # failed a timing-sensitive test that passes alone, which is the flaky
+        # pattern baseline.json already records. A successor with one
+        # predecessor inherits that predecessor's flags with certainty and syncs
+        # them itself when it needs to.
+        needs_tail = any(len(preds.get(s2, ())) > 1 for s2 in edges.get(n, ()))
+        tail_flags = []
+        if needs_tail:
+            _stash = lifter.stmts
+            lifter.stmts = []
+            lifter.sync_flags()
+            tail_flags = list(lifter.stmts)
+            lifter.stmts = _stash
         lifted[n] = [f"{pre}const _t{n} = tick({cost}, 0x{head:05x}) ? 1 : 0;"
                      f" if (_t{n} || SPILL_ALL) {{ "
                      f"{irq_flags + ' ' if irq_flags else ''}__IRQSPILL__"
