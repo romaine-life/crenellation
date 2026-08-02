@@ -848,8 +848,9 @@
     "ident": "emitTwoDecodedBytesWithStride"
   },
   "0x1262a": {
-    "name": "the palette RAM operations, one entry each",
-    "why": "every entry addresses the palette with `movep.w`, which is what makes this routine palette-specific: the RAM is byte-wide on a sixteen-bit bus, so a colour is two bytes four apart. The first entry adds four separate deltas to the intensity bit and the three five-bit channels, masking each back into place with 0x8000, 0x7C00, 0x3E0 and 0x1F; the others rotate a run of entries forwards or backwards by the count at +0xF. All of them leave through 0x12880."
+    "name": "the palette effect tick handlers",
+    "ident": "paletteEffectTickHandlers",
+    "why": "the other half of the eight schedulers at 0xc5ca and its neighbours: 612 bytes of per-kind handlers reached from the ticker at 0x125da's jump table, with the record in a1 and its palette entry address in a2. The first one settles what the four component words are for. It reads the entry with `movep.w`, adds 0x10(a1) and masks to 0x8000, adds 0x12(a1) and masks to 0x7c00, adds 0x14(a1) and masks to 0x3e0, adds 0x16(a1) and masks to 0x1f, ors the four together and writes back with `movep.w`. That is IRGB 1-5-5-5 stepped one channel at a time, which is why the scheduler at 0xc5ca keeps the components as four separate words rather than one packed colour - and it is the same layout system.ts reassembles when it renders. `movep` is the instruction that moves alternate bytes, which is what the palette RAM needs because it is byte-wide on a 16-bit bus and every odd byte reads back zero. It is also the instruction this port once stubbed as a no-op: every routine still verified clean and the game drew every frame perfectly in black for hours. This is the routine that was doing the drawing."
   },
   "0x1288e": {
     "name": "return immediately",

@@ -1338,5 +1338,19 @@
       "name": "operand",
       "why": "the byte the dispatcher already fetched before jumping here, so no handler reads it again."
     }
+  },
+  "0x1262a": {
+    "a3": {
+      "name": "writeBack",
+      "why": "set from a2 before the entry is advanced, so the handler can read forwards through several entries and write the result back to where it started."
+    },
+    "d2": {
+      "name": "channel",
+      "why": "one colour component at a time: the current value plus the record's step for that channel, masked to 0x8000, 0x7c00, 0x3e0 or 0x1f before being or-ed into the answer."
+    },
+    "d3": {
+      "name": "count",
+      "why": "the record's 0xf less two, floored at zero - the number of extra entries this tick walks beyond the first."
+    }
   }
 }
