@@ -906,5 +906,37 @@
       "name": "alsoWanted",
       "why": "only its low byte, at 0x17(a7), the second acceptable value. Passing the same byte twice makes the test a single comparison."
     }
+  },
+  "0x24c8": {
+    "stack4": {
+      "name": "cell",
+      "why": "the longword at 0x10(a7), dereferenced for the byte whose 0xc0 owner bits are compared, and offset by plus and minus 0x20 for the two neighbours."
+    },
+    "stack8": {
+      "name": "kind",
+      "why": "only its low word, at 0x16(a7), taken before the comparisons and carried through them."
+    },
+    "stack12": {
+      "name": "arg",
+      "why": "the longword at 0x18(a7), taken into d2 at the top and not touched by the owner comparison itself."
+    }
+  },
+  "0xe4e": {
+    "stack4": {
+      "name": "x",
+      "why": "only its low word, at 0xa(a6), and stored as a BYTE into the low half of a local before that local is pushed as a word - so it is one half of a packed coordinate pair, the shape 0x11bd8 and 0x11bec take."
+    },
+    "stack8": {
+      "name": "y",
+      "why": "only its low word, at 0xe(a6), refused when negative and stored as the other byte of the same packed pair."
+    },
+    "stack12": {
+      "name": "count",
+      "why": "only its low word, at 0x12(a6), the length of the run of cells rendered."
+    },
+    "stack20": {
+      "name": "flag",
+      "why": "only tested against zero, at 0x1a(a6), and the answer kept as 0 or -1 in a byte - so it is a boolean and its magnitude is never used."
+    }
   }
 }

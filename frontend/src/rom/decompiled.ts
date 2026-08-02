@@ -6321,7 +6321,7 @@ export function counterStep(limit_: number, limit2_: number, arg0: number): void
   setReg('d2', limit2);
 }
 
-export function boardCellRunRenderer(a2_: number, dst3_: number, a4_: number, ptr_: number, limit_: number, limit2_: number, limit22_: number, count_: number, d5_: number, d6_: number, arg0: number, arg1: number, arg2: number, limit222: number): void {
+export function boardCellRunRenderer(a2_: number, dst3_: number, a4_: number, ptr_: number, limit_: number, limit2_: number, limit22_: number, count_: number, d5_: number, d6_: number, x: number, y: number, count2: number, flag: number): void {
   let _guard = 0;
   void _guard;
   let a2 = a2_;
@@ -6372,11 +6372,11 @@ export function boardCellRunRenderer(a2_: number, dst3_: number, a4_: number, pt
   save_a3_6 = dst3;
   save_a4_7 = a4;
   save_a5_8 = ptr;
-  t9 = (arg0 & 0xffff);
+  t9 = (x & 0xffff);
   count = ((count & 0xffff0000) | (t9 & 65535));
-  t10 = (arg1 & 0xffff);
+  t10 = (y & 0xffff);
   limit = ((limit & 0xffff0000) | (t10 & 65535));
-  t11 = (arg2 & 0xffff);
+  t11 = (count2 & 0xffff);
   d6 = ((d6 & 0xffff0000) | (t11 & 65535));
   t12 = 0x11efe;
   store32(dst + -0x8, t12);
@@ -6400,7 +6400,7 @@ export function boardCellRunRenderer(a2_: number, dst3_: number, a4_: number, pt
   t13 = (limit & 255);
   store8(dst + -0x13, t13);
   limit2 = (0) >>> 0;
-  t14 = (limit222 & 0xffff);
+  t14 = (flag & 0xffff);
   limit2 = ((limit2 & 0xffffff00) | (((((t14) & 65535) === ((0) & 65535)) ? 0xff : 0) & 255));
   limit2 = ((limit2 & 0xffffff00) | ((0 - ((limit2 & 255))) & 255));
   setFlagsCmp((limit2 & 255), 0, 8);
@@ -17555,7 +17555,7 @@ export function cellSpriteDraw(d0_: number, count_: number, limit4_: number, ind
   setReg('d6', d6);
 }
 
-export function decompressOneEightPixelColumnWrapper(d3_: number, count2_: number, arg0: number, arg1: number, arg2: number): void {
+export function decompressOneEightPixelColumnWrapper(d3_: number, count2_: number, cell: number, kind2: number, arg: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -17592,10 +17592,10 @@ export function decompressOneEightPixelColumnWrapper(d3_: number, count2_: numbe
   save_d2_0 = d2;
   save_d3_1 = d3;
   save_d4_2 = count2;
-  src = (arg0) >>> 0;
-  t3 = (arg1 & 0xffff);
+  src = (cell) >>> 0;
+  t3 = (kind2 & 0xffff);
   d3 = ((d3 & 0xffff0000) | (t3 & 65535));
-  d2 = (arg2) >>> 0;
+  d2 = (arg) >>> 0;
   t4 = load8(src);
   count2 = ((count2 & 0xffffff00) | (t4 & 255));
   t5 = ((count2 & 255) & 0xc0);
