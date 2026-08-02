@@ -97293,7 +97293,7 @@ export function schedulePaletteEffectKindThree(a0_: number, dst_: number, d0_: n
   setReg('d4', d4);
 }
 
-export function helperFramebufferBandClearInner(a0_: number, dst_: number, d0_: number, count_: number, index_: number, d3_: number, d4_: number, arg0: number, arg1: number, arg2: number, arg3: number, index2: number): void {
+export function helperFramebufferBandClearInner(a0_: number, dst_: number, d0_: number, count_: number, index_: number, d3_: number, d4_: number, page: number, bank: number, period: number, value: number, delay: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -97336,11 +97336,11 @@ export function helperFramebufferBandClearInner(a0_: number, dst_: number, d0_: 
   save_d2_0 = index;
   save_d3_1 = d3;
   save_d4_2 = d4;
-  t3 = (arg0 & 0xff);
+  t3 = (page & 0xff);
   index = ((index & 0xffffff00) | (t3 & 255));
-  t4 = (arg1 & 0xff);
+  t4 = (bank & 0xff);
   d4 = ((d4 & 0xffffff00) | (t4 & 255));
-  t5 = (arg2 & 0xff);
+  t5 = (period & 0xff);
   d3 = ((d3 & 0xffffff00) | (t5 & 255));
   setFlagsCmp((d3 & 255), 0, 8);
   setReg('a0', a0);
@@ -97393,11 +97393,11 @@ export function helperFramebufferBandClearInner(a0_: number, dst_: number, d0_: 
     store32(dst + 0x8, t13);
     t14 = 0x7;
     store8(dst + 0xc, t14);
-    t15 = arg3;
+    t15 = value;
     store32(dst + 0x10, t15);
     t16 = (d3 & 255);
     store8(dst + 0xd, t16);
-    t17 = (index2 & 0xff);
+    t17 = (delay & 0xff);
     d0 = ((d0 & 0xffffff00) | (t17 & 255));
     t18 = (d0 & 255);
     t19 = 0x1;

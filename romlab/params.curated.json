@@ -566,5 +566,27 @@
       "name": "kind",
       "why": "only its low word, at 0xe(a6), taken before the walk starts and carried unchanged through it."
     }
+  },
+  "0xc9d2": {
+    "stack4": {
+      "name": "page",
+      "why": "only tested against zero; non-zero contributes 0x200 before the doubling, so 0x400 bytes - one page of 256 four-byte palette entries."
+    },
+    "stack8": {
+      "name": "bank",
+      "why": "its low byte, shifted left five and doubled: 64 bytes to a bank, which is sixteen four-byte entries."
+    },
+    "stack12": {
+      "name": "period",
+      "why": "its low byte, written to 0xd - the reload the ticker at 0x125da copies into 0xe when the countdown reaches zero."
+    },
+    "stack16": {
+      "name": "value",
+      "why": "the longword at 0x1c(a7), written to 0x10 of the record. Kind three has no equivalent."
+    },
+    "stack20": {
+      "name": "delay",
+      "why": "its low byte PLUS ONE goes into 0xe, so the first tick comes one later than the number says."
+    }
   }
 }

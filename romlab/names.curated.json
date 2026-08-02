@@ -1775,5 +1775,10 @@
     "name": "lay the board out from a nibble-per-cell stream",
     "ident": "layBoardFromNibbleStream",
     "why": "walks the board at 0x3e0864 against the screen at 0x200004, taking a byte from the caller's stream and masking it to its low four bits for each cell. A nibble of 6 or less indexes a PC-relative jump table at 0x66ba, seven ways; anything higher takes the default. The bounds it tests are 0x29 and 0x1d - 41 and 29, one less than the 42 by 30 the piece walker at 0x8b4 bounds against - so the first and last row and column are handled as edges and take the default rather than reading a nibble."
+  },
+  "0xc9d2": {
+    "name": "schedule a palette effect of kind seven",
+    "ident": "schedulePaletteEffectSeven",
+    "why": "instruction for instruction the same routine as 0xc8de - allocate through 0xc504, palette address 0x3c0000 + bank * 64 + page * 0x400, value at 0x10, period at 0xd, delay PLUS ONE at 0xe, 0xf set to 1, and the link into 0x3e20a0 with 0x3e2498 held across it - differing only in the kind byte, which is 7 here and 2 there. The derived name `helperFramebufferBandClearInner` describes neither the framebuffer nor a band: it touches nothing but palette RAM and the timer list."
   }
 }
