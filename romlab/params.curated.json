@@ -2660,5 +2660,157 @@
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
     }
+  },
+  "0x1ae3c": {
+    "a2": {
+      "name": "voice",
+      "why": "the same voice record the handlers at 0x1a8c0 take - every one of these ends `bra.w $1b048` too, so this is a second block of opcode handlers for the same interpreter. 0x4 is the program counter, 0x16 the four-bit level, 0x19 a transpose added to the note, 0x5f a byte one handler sets outright."
+    },
+    "d4": {
+      "name": "operand",
+      "why": "the byte the dispatcher fetched before jumping here."
+    },
+    "d3": {
+      "name": "note",
+      "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    }
+  },
+  "0x1ae44": {
+    "a2": {
+      "name": "voice",
+      "why": "the same voice record the handlers at 0x1a8c0 take - every one of these ends `bra.w $1b048` too, so this is a second block of opcode handlers for the same interpreter. 0x4 is the program counter, 0x16 the four-bit level, 0x19 a transpose added to the note, 0x5f a byte one handler sets outright."
+    },
+    "d4": {
+      "name": "operand",
+      "why": "the byte the dispatcher fetched before jumping here."
+    },
+    "d3": {
+      "name": "note",
+      "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    }
+  },
+  "0x1b048": {
+    "a2": {
+      "name": "voice",
+      "why": "the same voice record the handlers at 0x1a8c0 take - every one of these ends `bra.w $1b048` too, so this is a second block of opcode handlers for the same interpreter. 0x4 is the program counter, 0x16 the four-bit level, 0x19 a transpose added to the note, 0x5f a byte one handler sets outright."
+    },
+    "d4": {
+      "name": "operand",
+      "why": "the byte the dispatcher fetched before jumping here."
+    },
+    "d3": {
+      "name": "note",
+      "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    }
+  },
+  "0x1b050": {
+    "a2": {
+      "name": "voice",
+      "why": "the same voice record the handlers at 0x1a8c0 take - every one of these ends `bra.w $1b048` too, so this is a second block of opcode handlers for the same interpreter. 0x4 is the program counter, 0x16 the four-bit level, 0x19 a transpose added to the note, 0x5f a byte one handler sets outright."
+    },
+    "d4": {
+      "name": "operand",
+      "why": "the byte the dispatcher fetched before jumping here."
+    },
+    "d3": {
+      "name": "note",
+      "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    }
+  },
+  "0x1b054": {
+    "d4": {
+      "name": "operand",
+      "why": "the byte the dispatcher fetched before jumping here."
+    },
+    "d3": {
+      "name": "note",
+      "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    }
+  },
+  "0x1b062": {
+    "a2": {
+      "name": "voice",
+      "why": "the same voice record the handlers at 0x1a8c0 take - every one of these ends `bra.w $1b048` too, so this is a second block of opcode handlers for the same interpreter. 0x4 is the program counter, 0x16 the four-bit level, 0x19 a transpose added to the note, 0x5f a byte one handler sets outright."
+    }
+  },
+  "0xcc3a": {
+    "a3": {
+      "name": "record",
+      "why": "its byte at 0x19 carries flag bits tested one at a time with btst, and its byte at 0x14 a small state compared against 2."
+    },
+    "a2": {
+      "name": "markAt",
+      "why": "written with a single byte - 0x46 on one path - and nothing else; it is where the routine leaves its mark rather than anything it reads."
+    }
+  },
+  "0xcc52": {
+    "a3": {
+      "name": "record",
+      "why": "its byte at 0x19 carries flag bits tested one at a time with btst, and its byte at 0x14 a small state compared against 2."
+    },
+    "a2": {
+      "name": "markAt",
+      "why": "written with a single byte - 0x46 on one path - and nothing else; it is where the routine leaves its mark rather than anything it reads."
+    },
+    "a4": {
+      "name": "table",
+      "why": "the longword at 0x2155e, loaded once before the loop and indexed inside it."
+    }
+  },
+  "0xcc68": {
+    "a3": {
+      "name": "record",
+      "why": "its byte at 0x19 carries flag bits tested one at a time with btst, and its byte at 0x14 a small state compared against 2."
+    },
+    "a2": {
+      "name": "markAt",
+      "why": "written with a single byte - 0x46 on one path - and nothing else; it is where the routine leaves its mark rather than anything it reads."
+    },
+    "a4": {
+      "name": "table",
+      "why": "the longword at 0x2155e, loaded once before the loop and indexed inside it."
+    }
+  },
+  "0xcc76": {
+    "a3": {
+      "name": "record",
+      "why": "its byte at 0x19 carries flag bits tested one at a time with btst, and its byte at 0x14 a small state compared against 2."
+    },
+    "a2": {
+      "name": "markAt",
+      "why": "written with a single byte - 0x46 on one path - and nothing else; it is where the routine leaves its mark rather than anything it reads."
+    },
+    "a4": {
+      "name": "table",
+      "why": "the longword at 0x2155e, loaded once before the loop and indexed inside it."
+    }
+  },
+  "0xcc88": {
+    "a3": {
+      "name": "record",
+      "why": "its byte at 0x19 carries flag bits tested one at a time with btst, and its byte at 0x14 a small state compared against 2."
+    },
+    "a2": {
+      "name": "markAt",
+      "why": "written with a single byte - 0x46 on one path - and nothing else; it is where the routine leaves its mark rather than anything it reads."
+    },
+    "a4": {
+      "name": "table",
+      "why": "the longword at 0x2155e, loaded once before the loop and indexed inside it."
+    }
+  },
+  "0xcc96": {
+    "a3": {
+      "name": "record",
+      "why": "its byte at 0x19 carries flag bits tested one at a time with btst, and its byte at 0x14 a small state compared against 2."
+    },
+    "a2": {
+      "name": "markAt",
+      "why": "written with a single byte - 0x46 on one path - and nothing else; it is where the routine leaves its mark rather than anything it reads."
+    },
+    "a4": {
+      "name": "table",
+      "why": "the longword at 0x2155e, loaded once before the loop and indexed inside it."
+    }
   }
 }
