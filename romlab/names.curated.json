@@ -2045,5 +2045,15 @@
     "name": "check movem round-trips d0 to d3, then sample the six input ports",
     "ident": "checkMovemThenSampleInputs",
     "why": "seeds d0 to d3 with 0x55555555, 0xaaaaaaaa, 0xff and 0 and runs the same push-compare-rotate loop as its inner entry 0x43a, which differs only in starting d0 at 0xaaaaaaaa instead - so the two heads run the test with different patterns. Afterwards, and only when the word at 0x3e1948 is non-zero, it reads SIX ports at 0x6c0007, 0x6c0005, 0x6c0003, 0x6c0001, 0x6c0002 and 0x6c0000 - note the order, high to low and then the two even ones - into 0x3e0806, 0x3e080e, 0x3e0816, 0x3e081e, 0x3e0826 and 0x3e082e, eight bytes apart. So 0x6c0000 is the input block and each port gets an eight-byte record in work RAM."
+  },
+  "0x1b1d2": {
+    "name": "start a sample, unless one of higher priority is playing",
+    "ident": "startSampleIfPriority",
+    "why": "the argument is multiplied by TEN - doubled, then that times five - to index the table at 0x1b674, so the descriptors are ten bytes each. The byte at 2 of the chosen one is compared against 0x3e36e8 and `bcs` leaves without doing anything when it is lower, which makes 2 a priority and 0x3e36e8 what is currently playing. It then works through 0x460000 - the ADPCM chip, one of the two sound devices this port sees and ignores - with a byte from 0x1ea90 indexed by the descriptor's byte at 6."
+  },
+  "0xa80c": {
+    "name": "clear the entity, marker and unit tables",
+    "ident": "clearEntityMarkerUnitTables",
+    "why": "three sized wipes, and the sizes are the useful part: sixteen records of 14 bytes from 0x3e1ae6 - dbra from 0xf with `lea $e(a0),a0` - then 32 BYTES at stride two from 0x3e1c44 all set to 0xff, and then seven records from 0x3e1bc6, which is the unit array 0xaf72 walks with the same count and the same 0x12 stride. So the three table geometries agree with what the routines that use them do, read from the other end. It calls 0xeac8 first, which does nothing unless the mode byte is 1."
   }
 }

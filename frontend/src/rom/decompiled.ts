@@ -184383,7 +184383,7 @@ export function countFourSampleVoicesDown(dst_: number, ptr_: number, index3_: n
   setReg('d3', index2);
 }
 
-export function samplePlayback(a0_: number, a2_: number, a3_: number, d1_: number, index2_: number, limit_: number, arg0: number): void {
+export function samplePlayback(a0_: number, a2_: number, a3_: number, d1_: number, index2_: number, limit_: number, sample: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -184448,7 +184448,7 @@ export function samplePlayback(a0_: number, a2_: number, a3_: number, d1_: numbe
   save_d4_2 = limit;
   save_a2_3 = a2;
   save_a3_4 = a3;
-  t5 = (arg0 & 0xff);
+  t5 = (sample & 0xff);
   d1 = ((d1 & 0xffffff00) | (t5 & 255));
   d2 = (0) >>> 0;
   d2 = ((d2 & 0xffffff00) | ((d1 & 255) & 255));

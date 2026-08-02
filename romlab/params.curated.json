@@ -788,5 +788,11 @@
       "name": "packed",
       "why": "the longword at 0x14(a7), and it is both read and WRITTEN - the routine puts the reduced value with its two phase bits rotated to the top back into the caller's own slot, so the argument is updated in place."
     }
+  },
+  "0x1b1d2": {
+    "stack4": {
+      "name": "sample",
+      "why": "only its low byte, at 0x1b(a7), multiplied by ten to index the ten-byte descriptors at 0x1b674."
+    }
   }
 }
