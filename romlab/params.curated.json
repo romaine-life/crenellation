@@ -3962,5 +3962,61 @@
       "name": "drawNumber",
       "why": "0x18b76, the one 0x13e6a and 0x18b26 both end by calling - the formatter-and-draw."
     }
+  },
+  "0x1e8d6": {
+    "a3": {
+      "name": "savedRegs",
+      "why": "a7 taken straight after `movem.l d0-d7/a0-a7,-(a7)` - so it points at the whole register file as it was when the crash happened, which is what this screen exists to print."
+    },
+    "a5": {
+      "name": "screenAt",
+      "why": "the running position in the screen at 0x203030, stepped by 0x1000 a cell row."
+    },
+    "d7": {
+      "name": "eight",
+      "why": "a dbra counter reloaded with 7 for each group - eight of something at a time, three groups of them."
+    },
+    "d5": {
+      "name": "digit",
+      "why": "the value being printed, shifted a nibble at a time - the crash print is hexadecimal, which is why nothing here formats decimal."
+    }
+  },
+  "0x66d4": {
+    "a1": {
+      "name": "cellAt",
+      "why": "the board pointer, advanced one byte per row with (a1)+ and then by two at the end of a column - so the walk is COLUMN-major, 30 rows down and then one column right."
+    },
+    "d5": {
+      "name": "screenAt",
+      "why": "the screen address, advanced 0x1000 a row - one cell row - and then wound back by 0x1e000 less 8 at the end of a column, which is exactly 30 rows back and one cell across."
+    },
+    "d4": {
+      "name": "cellValue",
+      "why": "the byte written into every cell of the column as it goes."
+    }
+  },
+  "0x66e0": {
+    "a1": {
+      "name": "cellAt",
+      "why": "the board pointer, advanced one byte per row with (a1)+ and then by two at the end of a column - so the walk is COLUMN-major, 30 rows down and then one column right."
+    },
+    "d5": {
+      "name": "screenAt",
+      "why": "the screen address, advanced 0x1000 a row - one cell row - and then wound back by 0x1e000 less 8 at the end of a column, which is exactly 30 rows back and one cell across."
+    },
+    "d4": {
+      "name": "cellValue",
+      "why": "the byte written into every cell of the column as it goes."
+    }
+  },
+  "0x66fa": {
+    "d5": {
+      "name": "screenAt",
+      "why": "the screen address, advanced 0x1000 a row - one cell row - and then wound back by 0x1e000 less 8 at the end of a column, which is exactly 30 rows back and one cell across."
+    },
+    "d4": {
+      "name": "cellValue",
+      "why": "the byte written into every cell of the column as it goes."
+    }
   }
 }
