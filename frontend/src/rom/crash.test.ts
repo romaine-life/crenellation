@@ -35,7 +35,12 @@ const RING = 24;
 
 type Entry = (a: number, m: System['m']) => void;
 
+const WATCH: number[] = (process.env.WATCH ?? '').split(',')
+  .map((s) => s.trim()).filter(Boolean).map((s) => parseInt(s, 16));
+
 function run(entry: Entry, p: Pattern): string {
+  const watch = new Map<number, number>(WATCH.map((a) => [a, 0]));
+  const first: string[] = [];
   const sys = new System(rom, board);
   bind(sys.m);
   // The same poll points as compose and writes. Without this the two runs take
@@ -52,6 +57,27 @@ function run(entry: Entry, p: Pattern): string {
   // wall of 0x1E8D6 and nothing about what preceded it.
   let caught = '';
   sys.m.atPcExtra = (pc: number): void => {
+    // WATCH=19552,1946e counts entries to named blocks in BOTH runs. A block
+    // the oracle never enters at all is the strongest signal there is - it is
+    // how 0x1E8D6 was found - and a count is comparable where a first
+    // difference is not, because the spin loop at 0x430 parts by design and
+    // swallows any "first divergence" comparison before anything else.
+    const w = watch.get(pc);
+    if (w !== undefined) {
+      watch.set(pc, w + 1);
+      // Registers at the FIRST visit. Run this with SPILL_ALL=1 or the lifted
+      // side reports a stale mirror: it keeps registers in JavaScript locals
+      // and writes the machine's only when it spills. Even then the value is
+      // the previous block head's, because tick calls atPc before the spill
+      // runs - which is fine for anything set an instruction or two earlier,
+      // and is why this prints the block it was sampled after.
+      if (w === 0) {
+        const r = sys.m as unknown as Record<string, number>;
+        first.push(`${pc.toString(16)}@f? a0=0x${(r.a0 >>> 0).toString(16)}`
+          + ` a1=0x${(r.a1 >>> 0).toString(16)} d0=0x${(r.d0 >>> 0).toString(16)}`
+          + ` d1=0x${(r.d1 >>> 0).toString(16)}`);
+      }
+    }
     if (!caught && sys.m.addressErrors > 0) {
       const seen: string[] = [];
       for (let i = Math.max(0, rn - RING); i < rn; i += 1) {
@@ -91,7 +117,12 @@ function run(entry: Entry, p: Pattern): string {
   } catch (e) {
     if (e !== STOP) hit = hit || `threw at frame ${n}: ${(e as Error).message.slice(0, 80)}`;
   }
-  return hit || `no address error in ${n} frames`;
+  const counts = WATCH.length
+    ? ` | visits: ${WATCH.map((a) => `${a.toString(16)}=${watch.get(a)}`).join(' ')}`
+      + `
+      first: ${first.join(' ; ')}`
+    : '';
+  return (hit || `no address error in ${n} frames`) + counts;
 }
 
 describe('the lifted game vectors where the chip does not', () => {
