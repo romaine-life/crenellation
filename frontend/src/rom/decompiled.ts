@@ -18640,7 +18640,7 @@ export function dispatchCellTypeBetweenThrough(index_: number): void {
   setReg('d1', limit);
 }
 
-export function boardRegionRedraw(count_: number, index_: number, count2_: number, index2_: number, count22_: number, d5_: number, d6_: number, limit: number): void {
+export function boardRegionRedraw(count_: number, index_: number, count2_: number, index2_: number, count22_: number, ownerIndex_: number, d6_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -18650,12 +18650,12 @@ export function boardRegionRedraw(count_: number, index_: number, count2_: numbe
   let count2 = count2_;
   let index2 = index2_;
   let count22 = count22_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
-  const _t0 = tick(46, 0x027c2) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(46, 0x027c2) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = ((limit >>> 16) & 0xffff);
   t1 = t0;
   push(t1, 2);
@@ -18667,7 +18667,7 @@ export function boardRegionRedraw(count_: number, index_: number, count2_: numbe
   setReg('d2', count2);
   setReg('d3', index2);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x03ba4, 0x027ca);
   if (halted()) return;
@@ -18678,28 +18678,28 @@ export function boardRegionRedraw(count_: number, index_: number, count2_: numbe
   count2 = getReg('d2');
   index2 = getReg('d3');
   count22 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(26, 0x027ca) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(26, 0x027ca) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
   ptr = (count) >>> 0;
   drop(2);
   setFlagsCmp((index2 & 65535), 0, 16);
   if ((((index2 & 65535)) & 65535) === ((0) & 65535)) {
   } else {
-    const _t2 = tick(16, 0x027d4) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((index2 & 65535), 0, 16); setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+    const _t2 = tick(16, 0x027d4) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((index2 & 65535), 0, 16); setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t2) takeIrq(); }
     ptr = ((ptr + 0x2)) >>> 0;
     setFlagsCmp((index2 & 65535), 0, 16);
   }
-  const _t43 = tick(18, 0x02978) ? 1 : 0; if (_t43 || SPILL_ALL) { setFlagsCmp((index2 & 65535), 0, 16); setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t43) takeIrq(); }
+  const _t43 = tick(18, 0x02978) ? 1 : 0; if (_t43 || SPILL_ALL) { setFlagsCmp((index2 & 65535), 0, 16); setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t43) takeIrq(); }
   t2 = load16(ptr);
   index = ((index & 0xffff0000) | (t2 & 65535));
-  const _t45 = tick(66, 0x0297e) ? 1 : 0; if (_t45 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t45) takeIrq(); }
+  const _t45 = tick(66, 0x0297e) ? 1 : 0; if (_t45 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t45) takeIrq(); }
   count = (0) >>> 0;
   count = ((count & 0xffff0000) | ((index & 65535) & 65535));
   count2 = load32(stackPointer());
   index2 = load32(stackPointer() + 4);
   count22 = load32(stackPointer() + 8);
-  d5 = load32(stackPointer() + 12);
+  ownerIndex = load32(stackPointer() + 12);
   d6 = load32(stackPointer() + 16);
   ptr2 = load32(stackPointer() + 20);
   drop(24);
@@ -18711,9 +18711,9 @@ export function boardRegionRedraw(count_: number, index_: number, count2_: numbe
   setReg('d2', count2);
   setReg('d3', index2);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', ptr); setReg('a2', ptr2); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a0', ptr);
   setReg('a2', ptr2);
   setReg('d0', count);
@@ -18721,7 +18721,7 @@ export function boardRegionRedraw(count_: number, index_: number, count2_: numbe
   setReg('d2', count2);
   setReg('d3', index2);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
@@ -20261,7 +20261,7 @@ export function cellDraw(dst_: number, count_: number, d1_: number, d3_: number,
   setReg('d3', d3);
 }
 
-export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit3_: number, index_: number, d4_: number, d5_: number, limit: number): void {
+export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit3_: number, index_: number, d4_: number, ownerIndex_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -20273,7 +20273,7 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   let limit3 = limit3_;
   let index = index_;
   let d4 = d4_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let save_d2_0 = 0;
   let save_d3_1 = 0;
   let save_d4_2 = 0;
@@ -20318,17 +20318,17 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   let t41 = 0;
   let t42 = 0;
   let t43 = 0;
-  const _t0 = tick(106, 0x02aae) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t0) takeIrq(); }
+  const _t0 = tick(106, 0x02aae) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t0) takeIrq(); }
   push(dst, 4);
   push(ptr, 4);
-  push(d5, 4);
+  push(ownerIndex, 4);
   push(d4, 4);
   push(index, 4);
   push(limit3, 4);
   save_d2_0 = limit3;
   save_d3_1 = index;
   save_d4_2 = d4;
-  save_d5_3 = d5;
+  save_d5_3 = ownerIndex;
   save_a2_4 = ptr;
   save_a3_5 = dst;
   t6 = ((limit >>> 16) & 0xffff);
@@ -20344,7 +20344,7 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   setReg('d2', limit3);
   setReg('d3', index);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   callRom(0x11bd8, 0x02abc);
   if (halted()) return;
   a0 = getReg('a0');
@@ -20356,8 +20356,8 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   limit3 = getReg('d2');
   index = getReg('d3');
   d4 = getReg('d4');
-  d5 = getReg('d5');
-  const _t1 = tick(172, 0x02abc) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t1) takeIrq(); }
+  ownerIndex = getReg('d5');
+  const _t1 = tick(172, 0x02abc) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t1) takeIrq(); }
   ptr = (count) >>> 0;
   d4 = (0) >>> 0;
   t8 = load8(ptr);
@@ -20387,8 +20387,8 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   count = (0) >>> 0;
   count = ((count & 0xffff0000) | ((index & 65535) & 65535));
   a0 = (0xfe02) >>> 0;
-  d5 = (0) >>> 0;
-  d5 = ((d5 & 0xffffff00) | (load8((a0 + (count | 0))) & 255));
+  ownerIndex = (0) >>> 0;
+  ownerIndex = ((ownerIndex & 0xffffff00) | (load8((a0 + (count | 0))) & 255));
   limit3 = (0) >>> 0;
   limit3 = ((limit3 & 0xffff0000) | ((d4 & 65535) & 65535));
   d1 = (63) >>> 0;
@@ -20397,9 +20397,9 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   count = (4) >>> 0;
   drop(2);
   if (count !== limit3) {
-    const _t4 = tick(14, 0x02b0e) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp(count, limit3, 32); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t4) takeIrq(); }
+    const _t4 = tick(14, 0x02b0e) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp(count, limit3, 32); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t4) takeIrq(); }
     if ((((index & 65535)) & 65535) !== ((0) & 65535)) {
-      const _t6 = tick(62, 0x02b30) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t6) takeIrq(); }
+      const _t6 = tick(62, 0x02b30) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t6) takeIrq(); }
       count = (0) >>> 0;
       count = ((count & 0xffff0000) | ((index & 65535) & 65535));
       t28 = count;
@@ -20415,13 +20415,13 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
       setXAdd(t31, t32, 32);
       setFlagsAdd(t31, t32, 32);
     } else {
-      const _t5 = tick(82, 0x02b12) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t5) takeIrq(); }
+      const _t5 = tick(82, 0x02b12) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t5) takeIrq(); }
       count = (load32(0x20682)) >>> 0;
       t21 = count;
       t22 = 0x8;
       count = ((count + 0x8)) >>> 0;
       a1 = (count) >>> 0;
-      d5 = ((d5 & 0xffff0000) | (0xe0 & 65535));
+      ownerIndex = ((ownerIndex & 0xffff0000) | (0xe0 & 65535));
       count = (ptr) >>> 0;
       t23 = count;
       t24 = 0x1;
@@ -20436,7 +20436,7 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
       setXAdd(t26, t27, 16);
       setFlagsAdd(t26, t27, 16);
     }
-    const _t7 = tick(70, 0x02b44) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t7) takeIrq(); }
+    const _t7 = tick(70, 0x02b44) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t7) takeIrq(); }
     d1 = (0) >>> 0;
     d1 = ((d1 & 0xffff0000) | ((index & 65535) & 65535));
     a0 = (0x3e186c) >>> 0;
@@ -20454,22 +20454,22 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
     setXShift((((t36) >>> 30) & 1), 1);
     setFlagsShift(count, (((t36) >>> 30) & 1), ((((t36) >>> 29) & 7) === 0 || ((((t36) >>> 29) & 7) === 7) ? 0 : 1), 32);
   } else {
-    const _t2 = tick(32, 0x02afc) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp(count, limit3, 32); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t2) takeIrq(); }
+    const _t2 = tick(32, 0x02afc) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp(count, limit3, 32); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t2) takeIrq(); }
     a1 = (0x20652) >>> 0;
     setXAdd(t17, t18, 8);
     setFlagsCmp((index & 65535), 0, 16);
     if ((((index & 65535)) & 65535) !== ((0) & 65535)) {
     } else {
-      const _t3 = tick(20, 0x02b06) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t3) takeIrq(); }
+      const _t3 = tick(20, 0x02b06) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t17, t18, 8); setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t3) takeIrq(); }
       a1 = ((a1 + 0x4)) >>> 0;
-      d5 = ((d5 & 0xffff0000) | (0xe0 & 65535));
+      ownerIndex = ((ownerIndex & 0xffff0000) | (0xe0 & 65535));
       setXAdd(t17, t18, 8);
-      setFlagsCmp((d5 & 65535), 0, 16);
+      setFlagsCmp((ownerIndex & 65535), 0, 16);
     }
   }
-  const _t8 = tick(82, 0x02b5a) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t8) takeIrq(); }
+  const _t8 = tick(82, 0x02b5a) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t8) takeIrq(); }
   count = (0) >>> 0;
-  count = ((count & 0xffff0000) | ((d5 & 65535) & 65535));
+  count = ((count & 0xffff0000) | ((ownerIndex & 65535) & 65535));
   t39 = count;
   push(t39, 4);
   t40 = ((limit >>> 16) & 0xffff);
@@ -20488,7 +20488,7 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   setReg('d2', limit3);
   setReg('d3', index);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   callRom(0x02f18, 0x02b6a);
   if (halted()) return;
   a0 = getReg('a0');
@@ -20500,13 +20500,13 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   limit3 = getReg('d2');
   index = getReg('d3');
   d4 = getReg('d4');
-  d5 = getReg('d5');
-  const _t9 = tick(80, 0x02b6a) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); if (_t9) takeIrq(); }
+  ownerIndex = getReg('d5');
+  const _t9 = tick(80, 0x02b6a) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); if (_t9) takeIrq(); }
   drop(10);
   limit3 = load32(stackPointer());
   index = load32(stackPointer() + 4);
   d4 = load32(stackPointer() + 8);
-  d5 = load32(stackPointer() + 12);
+  ownerIndex = load32(stackPointer() + 12);
   ptr = load32(stackPointer() + 16);
   dst = load32(stackPointer() + 20);
   drop(24);
@@ -20519,8 +20519,8 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   setReg('d2', limit3);
   setReg('d3', index);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); return;
+  setReg('d5', ownerIndex);
+  setReg('a0', a0); setReg('a1', a1); setReg('a2', ptr); setReg('a3', dst); setReg('d0', count); setReg('d1', d1); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', ownerIndex); return;
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', ptr);
@@ -20530,7 +20530,7 @@ export function cellOverlayWalk(dst_: number, count_: number, d1_: number, limit
   setReg('d2', limit3);
   setReg('d3', index);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
 }
 
 export function framebufferPairDraw(limit: number): void {
@@ -26314,7 +26314,7 @@ export function eventIdDispatch(index_: number): void {
   setReg('d0', index);
 }
 
-export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: number, ptr2_: number, dst3_: number, count_: number, wantArg_: number, index_: number, count2_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: number, ptr2_: number, dst3_: number, count_: number, wantArg_: number, tableBase_: number, count2_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -26325,9 +26325,9 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
   let dst3 = dst3_;
   let count = count_;
   let wantArg = wantArg_;
-  let index = index_;
+  let tableBase = tableBase_;
   let count2 = count2_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -26370,16 +26370,16 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
   let t38 = 0;
   let t39 = 0;
   let t40 = 0;
-  const _t0 = tick(20, 0x03a4a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
-  t0 = (d5 & 255);
+  const _t0 = tick(20, 0x03a4a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
+  t0 = (ownerIndex & 255);
   t1 = ((0x6) & 63);
-  t2 = (t1 >= 8 ? 0 : (((d5 & 255)) >>> t1));
-  d5 = ((d5 & 0xffffff00) | (t2 & 255));
+  t2 = (t1 >= 8 ? 0 : (((ownerIndex & 255)) >>> t1));
+  ownerIndex = ((ownerIndex & 0xffffff00) | (t2 & 255));
   setXShift((((t0) >>> 5) & 1), 1);
-  setFlagsCmp((d5 & 255), 0, 8);
-  if ((((d5 & 255)) & 255) === ((0) & 255)) {
+  setFlagsCmp((ownerIndex & 255), 0, 8);
+  if ((((ownerIndex & 255)) & 255) === ((0) & 255)) {
   } else {
-    const _t1 = tick(138, 0x03a52) ? 1 : 0; if (_t1 || SPILL_ALL) { setXShift((((t0) >>> 5) & 1), 1); setFlagsCmp((d5 & 255), 0, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+    const _t1 = tick(138, 0x03a52) ? 1 : 0; if (_t1 || SPILL_ALL) { setXShift((((t0) >>> 5) & 1), 1); setFlagsCmp((ownerIndex & 255), 0, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
     count = (0) >>> 0;
     t3 = load16(dst3 + -0xc);
     count = ((count & 0xffff0000) | (t3 & 65535));
@@ -26389,12 +26389,12 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
     t6 = t5;
     push(t6, 4);
     count = (0) >>> 0;
-    count = ((count & 0xffffff00) | ((d5 & 255) & 255));
+    count = ((count & 0xffffff00) | ((ownerIndex & 255) & 255));
     t7 = count;
     t8 = ((0x2) & 63);
     t9 = (t8 >= 32 ? 0 : ((count) << t8));
     count = (t9) >>> 0;
-    ptr2 = (index) >>> 0;
+    ptr2 = (tableBase) >>> 0;
     ptr = (load32((ptr2 + (count | 0)))) >>> 0;
     count = (0) >>> 0;
     t10 = load16(ptr);
@@ -26411,9 +26411,9 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', count2);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x11ef2, 0x03a76);
     if (halted()) return;
@@ -26425,15 +26425,15 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
     dst3 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    index = getReg('d3');
+    tableBase = getReg('d3');
     count2 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t2 = tick(24, 0x03a76) ? 1 : 0; if (_t2 || SPILL_ALL) { setXShift((((t7) >>> 30) & 1), 1); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+    const _t2 = tick(24, 0x03a76) ? 1 : 0; if (_t2 || SPILL_ALL) { setXShift((((t7) >>> 30) & 1), 1); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t2) takeIrq(); }
     drop(12);
     setXShift((((t7) >>> 30) & 1), 1);
   }
-  const _t22 = tick(56, 0x03b3c) ? 1 : 0; if (_t22 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t22) takeIrq(); }
+  const _t22 = tick(56, 0x03b3c) ? 1 : 0; if (_t22 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t22) takeIrq(); }
   t12 = load32(dst3 + -0x8);
   t13 = t12;
   t14 = 0x8;
@@ -26457,7 +26457,7 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
   t27 = load8(dst);
   t28 = (t27 + 0x1);
   store8(dst, t28);
-  const _t23 = tick(22, 0x03b4c) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t23) takeIrq(); }
+  const _t23 = tick(22, 0x03b4c) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t23) takeIrq(); }
   t29 = load8(dst);
   if ((((t29) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
     setXAdd(t25, t26, 8);
@@ -26470,27 +26470,27 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', count2);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
-    setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); jumpRom(0x039c2);
-  setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); jumpRom(0x039c2);
+  setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6);   return;
   }
-  const _t24 = tick(26, 0x03b54) ? 1 : 0; if (_t24 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp(t29, 0x2a, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t24) takeIrq(); }
+  const _t24 = tick(26, 0x03b54) ? 1 : 0; if (_t24 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp(t29, 0x2a, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t24) takeIrq(); }
   t30 = load16(dst3 + -0xa);
   if (((t30) & 65535) !== ((0xc) & 65535)) {
-    const _t26 = tick(26, 0x03b62) ? 1 : 0; if (_t26 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp(t30, 0xc, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t26) takeIrq(); }
+    const _t26 = tick(26, 0x03b62) ? 1 : 0; if (_t26 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp(t30, 0xc, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t26) takeIrq(); }
     t31 = load16(dst3 + -0xa);
     setXAdd(t25, t26, 8);
     setFlagsCmp(t31, 0x16, 16);
     if (((t31) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t27 = tick(26, 0x03b6a) ? 1 : 0; if (_t27 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp(t31, 0x16, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t27) takeIrq(); }
+      const _t27 = tick(26, 0x03b6a) ? 1 : 0; if (_t27 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp(t31, 0x16, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t27) takeIrq(); }
       push(0x35, 4);
       setXAdd(t25, t26, 8);
       setFlagsCmp(t31, 0x16, 16);
-      const _t28 = tick(28, 0x03b6e) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t28) takeIrq(); }
+      const _t28 = tick(28, 0x03b6e) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t28) takeIrq(); }
       setXAdd(t25, t26, 8);
       setReg('a0', ptr);
       setReg('a2', dst);
@@ -26500,9 +26500,9 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
       setReg('a6', dst3);
       setReg('d0', count);
       setReg('d2', wantArg);
-      setReg('d3', index);
+      setReg('d3', tableBase);
       setReg('d4', count2);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -26514,20 +26514,20 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
       dst3 = getReg('a6');
       count = getReg('d0');
       wantArg = getReg('d2');
-      index = getReg('d3');
+      tableBase = getReg('d3');
       count2 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t29 = tick(6, 0x03b74) ? 1 : 0; if (_t29 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t29) takeIrq(); }
+      const _t29 = tick(6, 0x03b74) ? 1 : 0; if (_t29 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t29) takeIrq(); }
       drop(4);
       setXAdd(t25, t26, 8);
     }
   } else {
-    const _t25 = tick(36, 0x03b5c) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp(t30, 0xc, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t25) takeIrq(); }
+    const _t25 = tick(36, 0x03b5c) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp(t30, 0xc, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t25) takeIrq(); }
     push(0x34, 4);
     setXAdd(t25, t26, 8);
     setFlagsCmp(t30, 0xc, 16);
-    const _t28 = tick(28, 0x03b6e) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t28) takeIrq(); }
+    const _t28 = tick(28, 0x03b6e) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t28) takeIrq(); }
     setXAdd(t25, t26, 8);
     setReg('a0', ptr);
     setReg('a2', dst);
@@ -26537,9 +26537,9 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', count2);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -26551,15 +26551,15 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
     dst3 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    index = getReg('d3');
+    tableBase = getReg('d3');
     count2 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t29 = tick(6, 0x03b74) ? 1 : 0; if (_t29 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t29) takeIrq(); }
+    const _t29 = tick(6, 0x03b74) ? 1 : 0; if (_t29 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t29) takeIrq(); }
     drop(4);
     setXAdd(t25, t26, 8);
   }
-  const _t30 = tick(42, 0x03b76) ? 1 : 0; if (_t30 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t30) takeIrq(); }
+  const _t30 = tick(42, 0x03b76) ? 1 : 0; if (_t30 || SPILL_ALL) { setXAdd(t25, t26, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t30) takeIrq(); }
   t32 = load16(dst3 + -0xa);
   t33 = t32;
   t34 = 0x1;
@@ -26572,7 +26572,7 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
   setFlagsCmp((count & 65535), 0x20, 16);
   if ((((count & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t31 = tick(66, 0x03b84) ? 1 : 0; if (_t31 || SPILL_ALL) { setXAdd(t33, t34, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t31) takeIrq(); }
+    const _t31 = tick(66, 0x03b84) ? 1 : 0; if (_t31 || SPILL_ALL) { setXAdd(t33, t34, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t31) takeIrq(); }
     t38 = dst2;
     push(t38, 4);
     push(0x11b12, 4);
@@ -26586,9 +26586,9 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', count2);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -26600,22 +26600,22 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
     dst3 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    index = getReg('d3');
+    tableBase = getReg('d3');
     count2 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t32 = tick(6, 0x03b92) ? 1 : 0; if (_t32 || SPILL_ALL) { setXAdd(t33, t34, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t32) takeIrq(); }
+    const _t32 = tick(6, 0x03b92) ? 1 : 0; if (_t32 || SPILL_ALL) { setXAdd(t33, t34, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t32) takeIrq(); }
     drop(8);
     setXAdd(t33, t34, 16);
   }
-  const _t33 = tick(110, 0x03b94) ? 1 : 0; if (_t33 || SPILL_ALL) { setXAdd(t33, t34, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); if (_t33) takeIrq(); }
+  const _t33 = tick(110, 0x03b94) ? 1 : 0; if (_t33 || SPILL_ALL) { setXAdd(t33, t34, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); if (_t33) takeIrq(); }
   t39 = load16(dst3 + -0xa);
   t40 = t39;
   store16(dst2 + 0xc, t40);
   wantArg = load32((dst3 + -0x34) + 0);
-  index = load32((dst3 + -0x34) + 4);
+  tableBase = load32((dst3 + -0x34) + 4);
   count2 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  ownerIndex = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   dst = load32((dst3 + -0x34) + 20);
   dst2 = load32((dst3 + -0x34) + 24);
@@ -26633,11 +26633,11 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', count2);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', index); setReg('d4', count2); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr2); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', count2); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a0', ptr);
   setReg('a2', dst);
   setReg('a3', dst2);
@@ -26646,13 +26646,13 @@ export function cellOwnerBranch(ptr_: number, dst_: number, dst2_: number, a4_: 
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', count2);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: number, count2_: number, index2_: number, count22_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: number, count2_: number, tableBase_: number, count22_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -26663,9 +26663,9 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   let count = count_;
   let index = index_;
   let count2 = count2_;
-  let index2 = index2_;
+  let tableBase = tableBase_;
   let count22 = count22_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -26713,7 +26713,7 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   let t43 = 0;
   let t44 = 0;
   let t45 = 0;
-  const _t0 = tick(42, 0x03a7e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(42, 0x03a7e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load16(dst);
   t1 = t0;
   push(t1, 2);
@@ -26726,9 +26726,9 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   setReg('d0', count);
   setReg('d1', index);
   setReg('d2', count2);
-  setReg('d3', index2);
+  setReg('d3', tableBase);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x03cee, 0x03a84);
   if (halted()) return;
@@ -26740,11 +26740,11 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   count = getReg('d0');
   index = getReg('d1');
   count2 = getReg('d2');
-  index2 = getReg('d3');
+  tableBase = getReg('d3');
   count22 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(42, 0x03a84) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(42, 0x03a84) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
   t2 = load16(dst);
   t3 = t2;
   push(t3, 2);
@@ -26757,9 +26757,9 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   setReg('d0', count);
   setReg('d1', index);
   setReg('d2', count2);
-  setReg('d3', index2);
+  setReg('d3', tableBase);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x03ba4, 0x03a8a);
   if (halted()) return;
@@ -26771,12 +26771,12 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   count = getReg('d0');
   index = getReg('d1');
   count2 = getReg('d2');
-  index2 = getReg('d3');
+  tableBase = getReg('d3');
   count22 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t2 = tick(110, 0x03a8a) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
-  d5 = (count) >>> 0;
+  const _t2 = tick(110, 0x03a8a) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t2) takeIrq(); }
+  ownerIndex = (count) >>> 0;
   count = (0) >>> 0;
   t4 = load16(dst3 + -0xc);
   count = ((count & 0xffff0000) | (t4 & 65535));
@@ -26784,10 +26784,10 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   push(t5, 4);
   t6 = count22;
   push(t6, 4);
-  ptr = (d5) >>> 0;
-  t7 = d5;
+  ptr = (ownerIndex) >>> 0;
+  t7 = ownerIndex;
   t8 = 0x2;
-  d5 = ((d5 + 0x2)) >>> 0;
+  ownerIndex = ((ownerIndex + 0x2)) >>> 0;
   index = (0) >>> 0;
   t9 = load16(ptr);
   index = ((index & 0xffff0000) | (t9 & 65535));
@@ -26803,9 +26803,9 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   setReg('d0', count);
   setReg('d1', index);
   setReg('d2', count2);
-  setReg('d3', index2);
+  setReg('d3', tableBase);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x11ef2, 0x03aa6);
   if (halted()) return;
@@ -26817,11 +26817,11 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   count = getReg('d0');
   index = getReg('d1');
   count2 = getReg('d2');
-  index2 = getReg('d3');
+  tableBase = getReg('d3');
   count22 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t3 = tick(106, 0x03aa6) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t7, t8, 32); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(106, 0x03aa6) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t7, t8, 32); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t3) takeIrq(); }
   count = (0) >>> 0;
   t11 = load16(dst3 + -0xc);
   count = ((count & 0xffff0000) | (t11 & 65535));
@@ -26831,7 +26831,7 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   t14 = t13;
   push(t14, 4);
   count = (0) >>> 0;
-  ptr = (d5) >>> 0;
+  ptr = (ownerIndex) >>> 0;
   t15 = load16(ptr);
   count = ((count & 0xffff0000) | (t15 & 65535));
   t16 = count;
@@ -26846,9 +26846,9 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   setReg('d0', count);
   setReg('d1', index);
   setReg('d2', count2);
-  setReg('d3', index2);
+  setReg('d3', tableBase);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x11ef2, 0x03ac0);
   if (halted()) return;
@@ -26860,13 +26860,13 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   count = getReg('d0');
   index = getReg('d1');
   count2 = getReg('d2');
-  index2 = getReg('d3');
+  tableBase = getReg('d3');
   count22 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t4 = tick(24, 0x03ac0) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t7, t8, 32); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+  const _t4 = tick(24, 0x03ac0) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t7, t8, 32); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t4) takeIrq(); }
   drop(28);
-  const _t19 = tick(56, 0x03b3c) ? 1 : 0; if (_t19 || SPILL_ALL) { setXAdd(t7, t8, 32); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t19) takeIrq(); }
+  const _t19 = tick(56, 0x03b3c) ? 1 : 0; if (_t19 || SPILL_ALL) { setXAdd(t7, t8, 32); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t19) takeIrq(); }
   t17 = load32(dst3 + -0x8);
   t18 = t17;
   t19 = 0x8;
@@ -26890,7 +26890,7 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   t32 = load8(dst);
   t33 = (t32 + 0x1);
   store8(dst, t33);
-  const _t20 = tick(22, 0x03b4c) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t20) takeIrq(); }
+  const _t20 = tick(22, 0x03b4c) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t20) takeIrq(); }
   t34 = load8(dst);
   if ((((t34) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
     setXAdd(t30, t31, 8);
@@ -26903,27 +26903,27 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
     setReg('d0', count);
     setReg('d1', index);
     setReg('d2', count2);
-    setReg('d3', index2);
+    setReg('d3', tableBase);
     setReg('d4', count22);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
-    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); jumpRom(0x039c2);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); jumpRom(0x039c2);
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6);   return;
   }
-  const _t21 = tick(26, 0x03b54) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsCmp(t34, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t21) takeIrq(); }
+  const _t21 = tick(26, 0x03b54) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsCmp(t34, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t21) takeIrq(); }
   t35 = load16(dst3 + -0xa);
   if (((t35) & 65535) !== ((0xc) & 65535)) {
-    const _t23 = tick(26, 0x03b62) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsCmp(t35, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t23) takeIrq(); }
+    const _t23 = tick(26, 0x03b62) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsCmp(t35, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t23) takeIrq(); }
     t36 = load16(dst3 + -0xa);
     setXAdd(t30, t31, 8);
     setFlagsCmp(t36, 0x16, 16);
     if (((t36) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t24 = tick(26, 0x03b6a) ? 1 : 0; if (_t24 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsCmp(t36, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t24) takeIrq(); }
+      const _t24 = tick(26, 0x03b6a) ? 1 : 0; if (_t24 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsCmp(t36, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t24) takeIrq(); }
       push(0x35, 4);
       setXAdd(t30, t31, 8);
       setFlagsCmp(t36, 0x16, 16);
-      const _t25 = tick(28, 0x03b6e) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t25) takeIrq(); }
+      const _t25 = tick(28, 0x03b6e) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t25) takeIrq(); }
       setXAdd(t30, t31, 8);
       setReg('a2', dst);
       setReg('a3', dst2);
@@ -26933,9 +26933,9 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
       setReg('d0', count);
       setReg('d1', index);
       setReg('d2', count2);
-      setReg('d3', index2);
+      setReg('d3', tableBase);
       setReg('d4', count22);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -26947,20 +26947,20 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
       count = getReg('d0');
       index = getReg('d1');
       count2 = getReg('d2');
-      index2 = getReg('d3');
+      tableBase = getReg('d3');
       count22 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t26 = tick(6, 0x03b74) ? 1 : 0; if (_t26 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t26) takeIrq(); }
+      const _t26 = tick(6, 0x03b74) ? 1 : 0; if (_t26 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t26) takeIrq(); }
       drop(4);
       setXAdd(t30, t31, 8);
     }
   } else {
-    const _t22 = tick(36, 0x03b5c) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsCmp(t35, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t22) takeIrq(); }
+    const _t22 = tick(36, 0x03b5c) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t30, t31, 8); setFlagsCmp(t35, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t22) takeIrq(); }
     push(0x34, 4);
     setXAdd(t30, t31, 8);
     setFlagsCmp(t35, 0xc, 16);
-    const _t25 = tick(28, 0x03b6e) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t25) takeIrq(); }
+    const _t25 = tick(28, 0x03b6e) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t25) takeIrq(); }
     setXAdd(t30, t31, 8);
     setReg('a2', dst);
     setReg('a3', dst2);
@@ -26970,9 +26970,9 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
     setReg('d0', count);
     setReg('d1', index);
     setReg('d2', count2);
-    setReg('d3', index2);
+    setReg('d3', tableBase);
     setReg('d4', count22);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -26984,15 +26984,15 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
     count = getReg('d0');
     index = getReg('d1');
     count2 = getReg('d2');
-    index2 = getReg('d3');
+    tableBase = getReg('d3');
     count22 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t26 = tick(6, 0x03b74) ? 1 : 0; if (_t26 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t26) takeIrq(); }
+    const _t26 = tick(6, 0x03b74) ? 1 : 0; if (_t26 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t26) takeIrq(); }
     drop(4);
     setXAdd(t30, t31, 8);
   }
-  const _t27 = tick(42, 0x03b76) ? 1 : 0; if (_t27 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t27) takeIrq(); }
+  const _t27 = tick(42, 0x03b76) ? 1 : 0; if (_t27 || SPILL_ALL) { setXAdd(t30, t31, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t27) takeIrq(); }
   t37 = load16(dst3 + -0xa);
   t38 = t37;
   t39 = 0x1;
@@ -27005,7 +27005,7 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   setFlagsCmp((count & 65535), 0x20, 16);
   if ((((count & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t28 = tick(66, 0x03b84) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t38, t39, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t28) takeIrq(); }
+    const _t28 = tick(66, 0x03b84) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t38, t39, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t28) takeIrq(); }
     t43 = dst2;
     push(t43, 4);
     push(0x11b12, 4);
@@ -27019,9 +27019,9 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
     setReg('d0', count);
     setReg('d1', index);
     setReg('d2', count2);
-    setReg('d3', index2);
+    setReg('d3', tableBase);
     setReg('d4', count22);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -27033,22 +27033,22 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
     count = getReg('d0');
     index = getReg('d1');
     count2 = getReg('d2');
-    index2 = getReg('d3');
+    tableBase = getReg('d3');
     count22 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t29 = tick(6, 0x03b92) ? 1 : 0; if (_t29 || SPILL_ALL) { setXAdd(t38, t39, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t29) takeIrq(); }
+    const _t29 = tick(6, 0x03b92) ? 1 : 0; if (_t29 || SPILL_ALL) { setXAdd(t38, t39, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t29) takeIrq(); }
     drop(8);
     setXAdd(t38, t39, 16);
   }
-  const _t30 = tick(110, 0x03b94) ? 1 : 0; if (_t30 || SPILL_ALL) { setXAdd(t38, t39, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t30) takeIrq(); }
+  const _t30 = tick(110, 0x03b94) ? 1 : 0; if (_t30 || SPILL_ALL) { setXAdd(t38, t39, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); if (_t30) takeIrq(); }
   t44 = load16(dst3 + -0xa);
   t45 = t44;
   store16(dst2 + 0xc, t45);
   count2 = load32((dst3 + -0x34) + 0);
-  index2 = load32((dst3 + -0x34) + 4);
+  tableBase = load32((dst3 + -0x34) + 4);
   count22 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  ownerIndex = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   dst = load32((dst3 + -0x34) + 20);
   dst2 = load32((dst3 + -0x34) + 24);
@@ -27066,11 +27066,11 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   setReg('d0', count);
   setReg('d1', index);
   setReg('d2', count2);
-  setReg('d3', index2);
+  setReg('d3', tableBase);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', tableBase); setReg('d4', count22); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a2', dst);
   setReg('a3', dst2);
   setReg('a4', a4);
@@ -27079,13 +27079,13 @@ export function cellOwnerBranchFrom1(dst_: number, count_: number, index_: numbe
   setReg('d0', count);
   setReg('d1', index);
   setReg('d2', count2);
-  setReg('d3', index2);
+  setReg('d3', tableBase);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, a5_: number, dst3_: number, limit3_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, a5_: number, dst3_: number, limit3_: number, tableBase_: number, d4_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -27097,9 +27097,9 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
   let kind = getReg('d0');
   let d1 = getReg('d1');
   let limit3 = limit3_;
-  let d3 = d3_;
+  let tableBase = tableBase_;
   let d4 = d4_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -27140,23 +27140,23 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
   let t36 = 0;
   let t37 = 0;
   let t38 = 0;
-  const _t0 = tick(58, 0x03ac6) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(58, 0x03ac6) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load8(ptr);
-  d5 = ((d5 & 0xffffff00) | (t0 & 255));
+  ownerIndex = ((ownerIndex & 0xffffff00) | (t0 & 255));
   kind = (0) >>> 0;
   kind = ((kind & 0xffffff00) | ((d6 & 255) & 255));
   a0 = (kind) >>> 0;
   kind = (0) >>> 0;
-  kind = ((kind & 0xffffff00) | ((d5 & 255) & 255));
+  kind = ((kind & 0xffffff00) | ((ownerIndex & 255) & 255));
   d1 = (63) >>> 0;
   t1 = (kind & d1);
   kind = (t1) >>> 0;
   setFlagsCmp(a0, kind, 32);
   if (a0 !== kind) {
   } else {
-    const _t1 = tick(72, 0x03ada) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(a0, kind, 32); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+    const _t1 = tick(72, 0x03ada) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(a0, kind, 32); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
     kind = (0) >>> 0;
-    kind = ((kind & 0xffffff00) | ((d5 & 255) & 255));
+    kind = ((kind & 0xffffff00) | ((ownerIndex & 255) & 255));
     t2 = (kind & 0xc0);
     kind = (t2) >>> 0;
     t3 = kind;
@@ -27174,9 +27174,9 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
     setReg('d0', kind);
     setReg('d1', d1);
     setReg('d2', limit3);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x031ba, 0x03aec);
     if (halted()) return;
@@ -27189,25 +27189,25 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
     kind = getReg('d0');
     d1 = getReg('d1');
     limit3 = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t2 = tick(32, 0x03aec) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+    const _t2 = tick(32, 0x03aec) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t2) takeIrq(); }
     kind = (0) >>> 0;
-    kind = ((kind & 0xffffff00) | ((d5 & 255) & 255));
+    kind = ((kind & 0xffffff00) | ((ownerIndex & 255) & 255));
     t6 = ((kind & 65535) & 0xc0);
     kind = ((kind & 0xffff0000) | (t6 & 65535));
     drop(6);
     setFlagsCmp((kind & 65535), 0, 16);
     if ((((kind & 65535)) & 65535) === ((0) & 65535)) {
     } else {
-      const _t3 = tick(62, 0x03af8) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+      const _t3 = tick(62, 0x03af8) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t3) takeIrq(); }
       t7 = load16(dst);
       t8 = t7;
       push(t8, 2);
       kind = (0) >>> 0;
-      kind = ((kind & 0xffffff00) | ((d5 & 255) & 255));
+      kind = ((kind & 0xffffff00) | ((ownerIndex & 255) & 255));
       t9 = kind;
       push(t9, 4);
       setFlagsCmp(t9, 0, 32);
@@ -27220,9 +27220,9 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
       setReg('d0', kind);
       setReg('d1', d1);
       setReg('d2', limit3);
-      setReg('d3', d3);
+      setReg('d3', tableBase);
       setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x03f22, 0x03b04);
       if (halted()) return;
@@ -27235,16 +27235,16 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
       kind = getReg('d0');
       d1 = getReg('d1');
       limit3 = getReg('d2');
-      d3 = getReg('d3');
+      tableBase = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t4 = tick(10, 0x03b04) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
-      const _t9 = tick(16, 0x03b28) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+      const _t4 = tick(10, 0x03b04) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t4) takeIrq(); }
+      const _t9 = tick(16, 0x03b28) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t9) takeIrq(); }
       drop(6);
     }
   }
-  const _t14 = tick(56, 0x03b3c) ? 1 : 0; if (_t14 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t14) takeIrq(); }
+  const _t14 = tick(56, 0x03b3c) ? 1 : 0; if (_t14 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t14) takeIrq(); }
   t10 = load32(dst3 + -0x8);
   t11 = t10;
   t12 = 0x8;
@@ -27268,7 +27268,7 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
   t25 = load8(dst);
   t26 = (t25 + 0x1);
   store8(dst, t26);
-  const _t15 = tick(22, 0x03b4c) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t15) takeIrq(); }
+  const _t15 = tick(22, 0x03b4c) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t15) takeIrq(); }
   t27 = load8(dst);
   if ((((t27) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
     setXAdd(t23, t24, 8);
@@ -27282,27 +27282,27 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
     setReg('d0', kind);
     setReg('d1', d1);
     setReg('d2', limit3);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
-    setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x039c2);
-  setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); jumpRom(0x039c2);
+  setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6);   return;
   }
-  const _t16 = tick(26, 0x03b54) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsCmp(t27, 0x2a, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t16) takeIrq(); }
+  const _t16 = tick(26, 0x03b54) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsCmp(t27, 0x2a, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t16) takeIrq(); }
   t28 = load16(dst3 + -0xa);
   if (((t28) & 65535) !== ((0xc) & 65535)) {
-    const _t18 = tick(26, 0x03b62) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsCmp(t28, 0xc, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t18) takeIrq(); }
+    const _t18 = tick(26, 0x03b62) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsCmp(t28, 0xc, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t18) takeIrq(); }
     t29 = load16(dst3 + -0xa);
     setXAdd(t23, t24, 8);
     setFlagsCmp(t29, 0x16, 16);
     if (((t29) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t19 = tick(26, 0x03b6a) ? 1 : 0; if (_t19 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsCmp(t29, 0x16, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t19) takeIrq(); }
+      const _t19 = tick(26, 0x03b6a) ? 1 : 0; if (_t19 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsCmp(t29, 0x16, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t19) takeIrq(); }
       push(0x35, 4);
       setXAdd(t23, t24, 8);
       setFlagsCmp(t29, 0x16, 16);
-      const _t20 = tick(28, 0x03b6e) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t20) takeIrq(); }
+      const _t20 = tick(28, 0x03b6e) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t20) takeIrq(); }
       setXAdd(t23, t24, 8);
       setReg('a0', a0);
       setReg('a2', dst);
@@ -27313,9 +27313,9 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
       setReg('d0', kind);
       setReg('d1', d1);
       setReg('d2', limit3);
-      setReg('d3', d3);
+      setReg('d3', tableBase);
       setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -27328,20 +27328,20 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
       kind = getReg('d0');
       d1 = getReg('d1');
       limit3 = getReg('d2');
-      d3 = getReg('d3');
+      tableBase = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t21 = tick(6, 0x03b74) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t21) takeIrq(); }
+      const _t21 = tick(6, 0x03b74) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t21) takeIrq(); }
       drop(4);
       setXAdd(t23, t24, 8);
     }
   } else {
-    const _t17 = tick(36, 0x03b5c) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsCmp(t28, 0xc, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t17) takeIrq(); }
+    const _t17 = tick(36, 0x03b5c) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t23, t24, 8); setFlagsCmp(t28, 0xc, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t17) takeIrq(); }
     push(0x34, 4);
     setXAdd(t23, t24, 8);
     setFlagsCmp(t28, 0xc, 16);
-    const _t20 = tick(28, 0x03b6e) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t20) takeIrq(); }
+    const _t20 = tick(28, 0x03b6e) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t20) takeIrq(); }
     setXAdd(t23, t24, 8);
     setReg('a0', a0);
     setReg('a2', dst);
@@ -27352,9 +27352,9 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
     setReg('d0', kind);
     setReg('d1', d1);
     setReg('d2', limit3);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -27367,15 +27367,15 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
     kind = getReg('d0');
     d1 = getReg('d1');
     limit3 = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t21 = tick(6, 0x03b74) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t21) takeIrq(); }
+    const _t21 = tick(6, 0x03b74) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t21) takeIrq(); }
     drop(4);
     setXAdd(t23, t24, 8);
   }
-  const _t22 = tick(42, 0x03b76) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t22) takeIrq(); }
+  const _t22 = tick(42, 0x03b76) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t23, t24, 8); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t22) takeIrq(); }
   t30 = load16(dst3 + -0xa);
   t31 = t30;
   t32 = 0x1;
@@ -27388,7 +27388,7 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
   setFlagsCmp((kind & 65535), 0x20, 16);
   if ((((kind & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t23 = tick(66, 0x03b84) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t31, t32, 16); setFlagsCmp((kind & 65535), 0x20, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t23) takeIrq(); }
+    const _t23 = tick(66, 0x03b84) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t31, t32, 16); setFlagsCmp((kind & 65535), 0x20, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t23) takeIrq(); }
     t36 = dst2;
     push(t36, 4);
     push(0x11b12, 4);
@@ -27403,9 +27403,9 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
     setReg('d0', kind);
     setReg('d1', d1);
     setReg('d2', limit3);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -27418,22 +27418,22 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
     kind = getReg('d0');
     d1 = getReg('d1');
     limit3 = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t24 = tick(6, 0x03b92) ? 1 : 0; if (_t24 || SPILL_ALL) { setXAdd(t31, t32, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t24) takeIrq(); }
+    const _t24 = tick(6, 0x03b92) ? 1 : 0; if (_t24 || SPILL_ALL) { setXAdd(t31, t32, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t24) takeIrq(); }
     drop(8);
     setXAdd(t31, t32, 16);
   }
-  const _t25 = tick(110, 0x03b94) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t31, t32, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t25) takeIrq(); }
+  const _t25 = tick(110, 0x03b94) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t31, t32, 16); setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t25) takeIrq(); }
   t37 = load16(dst3 + -0xa);
   t38 = t37;
   store16(dst2 + 0xc, t38);
   limit3 = load32((dst3 + -0x34) + 0);
-  d3 = load32((dst3 + -0x34) + 4);
+  tableBase = load32((dst3 + -0x34) + 4);
   d4 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  ownerIndex = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   dst = load32((dst3 + -0x34) + 20);
   dst2 = load32((dst3 + -0x34) + 24);
@@ -27452,11 +27452,11 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
   setReg('d0', kind);
   setReg('d1', d1);
   setReg('d2', limit3);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', a0); setReg('a2', dst); setReg('a3', dst2); setReg('a4', ptr); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d1', d1); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a0', a0);
   setReg('a2', dst);
   setReg('a3', dst2);
@@ -27466,13 +27466,13 @@ export function cellOwnerBranchFrom2(dst_: number, dst2_: number, ptr_: number, 
   setReg('d0', kind);
   setReg('d1', d1);
   setReg('d2', limit3);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number, limit3_: number, index_: number, d4_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number, limit3_: number, tableBase_: number, d4_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -27482,9 +27482,9 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
   let dst3 = dst3_;
   let count = count_;
   let limit3 = limit3_;
-  let index = index_;
+  let tableBase = tableBase_;
   let d4 = d4_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -27517,7 +27517,7 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
   let t28 = 0;
   let t29 = 0;
   let t30 = 0;
-  const _t0 = tick(42, 0x03b06) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(42, 0x03b06) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load16(dst);
   t1 = t0;
   push(t1, 2);
@@ -27529,9 +27529,9 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', limit3);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x02aae, 0x03b0c);
   if (halted()) return;
@@ -27542,14 +27542,14 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
   dst3 = getReg('a6');
   count = getReg('d0');
   limit3 = getReg('d2');
-  index = getReg('d3');
+  tableBase = getReg('d3');
   d4 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(10, 0x03b0c) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
-  const _t8 = tick(6, 0x03b3a) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+  const _t1 = tick(10, 0x03b0c) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t8 = tick(6, 0x03b3a) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t8) takeIrq(); }
   drop(2);
-  const _t9 = tick(56, 0x03b3c) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+  const _t9 = tick(56, 0x03b3c) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t9) takeIrq(); }
   t2 = load32(dst3 + -0x8);
   t3 = t2;
   t4 = 0x8;
@@ -27573,7 +27573,7 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
   t17 = load8(dst);
   t18 = (t17 + 0x1);
   store8(dst, t18);
-  const _t10 = tick(22, 0x03b4c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+  const _t10 = tick(22, 0x03b4c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t10) takeIrq(); }
   t19 = load8(dst);
   if ((((t19) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
     setXAdd(t15, t16, 8);
@@ -27585,27 +27585,27 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', limit3);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
-    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x039c2);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); jumpRom(0x039c2);
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6);   return;
   }
-  const _t11 = tick(26, 0x03b54) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t19, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+  const _t11 = tick(26, 0x03b54) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t19, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t11) takeIrq(); }
   t20 = load16(dst3 + -0xa);
   if (((t20) & 65535) !== ((0xc) & 65535)) {
-    const _t13 = tick(26, 0x03b62) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
+    const _t13 = tick(26, 0x03b62) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t13) takeIrq(); }
     t21 = load16(dst3 + -0xa);
     setXAdd(t15, t16, 8);
     setFlagsCmp(t21, 0x16, 16);
     if (((t21) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t14 = tick(26, 0x03b6a) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t21, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t14) takeIrq(); }
+      const _t14 = tick(26, 0x03b6a) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t21, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t14) takeIrq(); }
       push(0x35, 4);
       setXAdd(t15, t16, 8);
       setFlagsCmp(t21, 0x16, 16);
-      const _t15 = tick(28, 0x03b6e) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t15) takeIrq(); }
+      const _t15 = tick(28, 0x03b6e) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t15) takeIrq(); }
       setXAdd(t15, t16, 8);
       setReg('a2', dst);
       setReg('a3', dst2);
@@ -27614,9 +27614,9 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
       setReg('a6', dst3);
       setReg('d0', count);
       setReg('d2', limit3);
-      setReg('d3', index);
+      setReg('d3', tableBase);
       setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -27627,20 +27627,20 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
       dst3 = getReg('a6');
       count = getReg('d0');
       limit3 = getReg('d2');
-      index = getReg('d3');
+      tableBase = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t16 = tick(6, 0x03b74) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t16) takeIrq(); }
+      const _t16 = tick(6, 0x03b74) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t16) takeIrq(); }
       drop(4);
       setXAdd(t15, t16, 8);
     }
   } else {
-    const _t12 = tick(36, 0x03b5c) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
+    const _t12 = tick(36, 0x03b5c) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t12) takeIrq(); }
     push(0x34, 4);
     setXAdd(t15, t16, 8);
     setFlagsCmp(t20, 0xc, 16);
-    const _t15 = tick(28, 0x03b6e) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t15) takeIrq(); }
+    const _t15 = tick(28, 0x03b6e) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t15) takeIrq(); }
     setXAdd(t15, t16, 8);
     setReg('a2', dst);
     setReg('a3', dst2);
@@ -27649,9 +27649,9 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', limit3);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -27662,15 +27662,15 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
     dst3 = getReg('a6');
     count = getReg('d0');
     limit3 = getReg('d2');
-    index = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t16 = tick(6, 0x03b74) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t16) takeIrq(); }
+    const _t16 = tick(6, 0x03b74) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t16) takeIrq(); }
     drop(4);
     setXAdd(t15, t16, 8);
   }
-  const _t17 = tick(42, 0x03b76) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t17) takeIrq(); }
+  const _t17 = tick(42, 0x03b76) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t17) takeIrq(); }
   t22 = load16(dst3 + -0xa);
   t23 = t22;
   t24 = 0x1;
@@ -27683,7 +27683,7 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
   setFlagsCmp((count & 65535), 0x20, 16);
   if ((((count & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t18 = tick(66, 0x03b84) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t23, t24, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t18) takeIrq(); }
+    const _t18 = tick(66, 0x03b84) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t23, t24, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t18) takeIrq(); }
     t28 = dst2;
     push(t28, 4);
     push(0x11b12, 4);
@@ -27696,9 +27696,9 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', limit3);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -27709,22 +27709,22 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
     dst3 = getReg('a6');
     count = getReg('d0');
     limit3 = getReg('d2');
-    index = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t19 = tick(6, 0x03b92) ? 1 : 0; if (_t19 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t19) takeIrq(); }
+    const _t19 = tick(6, 0x03b92) ? 1 : 0; if (_t19 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t19) takeIrq(); }
     drop(8);
     setXAdd(t23, t24, 16);
   }
-  const _t20 = tick(110, 0x03b94) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t20) takeIrq(); }
+  const _t20 = tick(110, 0x03b94) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t20) takeIrq(); }
   t29 = load16(dst3 + -0xa);
   t30 = t29;
   store16(dst2 + 0xc, t30);
   limit3 = load32((dst3 + -0x34) + 0);
-  index = load32((dst3 + -0x34) + 4);
+  tableBase = load32((dst3 + -0x34) + 4);
   d4 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  ownerIndex = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   dst = load32((dst3 + -0x34) + 20);
   dst2 = load32((dst3 + -0x34) + 24);
@@ -27741,11 +27741,11 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', limit3);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a2', dst);
   setReg('a3', dst2);
   setReg('a4', a4);
@@ -27753,13 +27753,13 @@ export function cellOwnerBranchFrom3(dst_: number, dst3_: number, count_: number
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', limit3);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number, limit3_: number, index_: number, d4_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number, limit3_: number, tableBase_: number, d4_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -27770,9 +27770,9 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   let dst3 = dst3_;
   let kind = kind_;
   let limit3 = limit3_;
-  let index = index_;
+  let tableBase = tableBase_;
   let d4 = d4_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -27809,7 +27809,7 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   let t32 = 0;
   let t33 = 0;
   let t34 = 0;
-  const _t0 = tick(42, 0x03b0e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(42, 0x03b0e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load16(dst);
   t1 = t0;
   push(t1, 2);
@@ -27822,9 +27822,9 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d2', limit3);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x0bb38, 0x03b16);
   if (halted()) return;
@@ -27836,11 +27836,11 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   dst3 = getReg('a6');
   kind = getReg('d0');
   limit3 = getReg('d2');
-  index = getReg('d3');
+  tableBase = getReg('d3');
   d4 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(82, 0x03b16) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(82, 0x03b16) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
   ptr = (kind) >>> 0;
   kind = (0) >>> 0;
   t2 = load8(ptr + 0x1);
@@ -27860,9 +27860,9 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d2', limit3);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x02d78, 0x03b28);
   if (halted()) return;
@@ -27874,13 +27874,13 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   dst3 = getReg('a6');
   kind = getReg('d0');
   limit3 = getReg('d2');
-  index = getReg('d3');
+  tableBase = getReg('d3');
   d4 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t2 = tick(16, 0x03b28) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(16, 0x03b28) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t2) takeIrq(); }
   drop(6);
-  const _t7 = tick(56, 0x03b3c) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
+  const _t7 = tick(56, 0x03b3c) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t7) takeIrq(); }
   t6 = load32(dst3 + -0x8);
   t7 = t6;
   t8 = 0x8;
@@ -27904,7 +27904,7 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   t21 = load8(dst);
   t22 = (t21 + 0x1);
   store8(dst, t22);
-  const _t8 = tick(22, 0x03b4c) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+  const _t8 = tick(22, 0x03b4c) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t8) takeIrq(); }
   t23 = load8(dst);
   if ((((t23) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
     setXAdd(t19, t20, 8);
@@ -27917,27 +27917,27 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
     setReg('a6', dst3);
     setReg('d0', kind);
     setReg('d2', limit3);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
-    setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x039c2);
-  setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); jumpRom(0x039c2);
+  setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6);   return;
   }
-  const _t9 = tick(26, 0x03b54) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsCmp(t23, 0x2a, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+  const _t9 = tick(26, 0x03b54) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsCmp(t23, 0x2a, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t9) takeIrq(); }
   t24 = load16(dst3 + -0xa);
   if (((t24) & 65535) !== ((0xc) & 65535)) {
-    const _t11 = tick(26, 0x03b62) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsCmp(t24, 0xc, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+    const _t11 = tick(26, 0x03b62) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsCmp(t24, 0xc, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t11) takeIrq(); }
     t25 = load16(dst3 + -0xa);
     setXAdd(t19, t20, 8);
     setFlagsCmp(t25, 0x16, 16);
     if (((t25) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t12 = tick(26, 0x03b6a) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsCmp(t25, 0x16, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
+      const _t12 = tick(26, 0x03b6a) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsCmp(t25, 0x16, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t12) takeIrq(); }
       push(0x35, 4);
       setXAdd(t19, t20, 8);
       setFlagsCmp(t25, 0x16, 16);
-      const _t13 = tick(28, 0x03b6e) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
+      const _t13 = tick(28, 0x03b6e) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t13) takeIrq(); }
       setXAdd(t19, t20, 8);
       setReg('a0', ptr);
       setReg('a2', dst);
@@ -27947,9 +27947,9 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
       setReg('a6', dst3);
       setReg('d0', kind);
       setReg('d2', limit3);
-      setReg('d3', index);
+      setReg('d3', tableBase);
       setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -27961,20 +27961,20 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
       dst3 = getReg('a6');
       kind = getReg('d0');
       limit3 = getReg('d2');
-      index = getReg('d3');
+      tableBase = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t14 = tick(6, 0x03b74) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t14) takeIrq(); }
+      const _t14 = tick(6, 0x03b74) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t14) takeIrq(); }
       drop(4);
       setXAdd(t19, t20, 8);
     }
   } else {
-    const _t10 = tick(36, 0x03b5c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsCmp(t24, 0xc, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+    const _t10 = tick(36, 0x03b5c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t19, t20, 8); setFlagsCmp(t24, 0xc, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t10) takeIrq(); }
     push(0x34, 4);
     setXAdd(t19, t20, 8);
     setFlagsCmp(t24, 0xc, 16);
-    const _t13 = tick(28, 0x03b6e) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
+    const _t13 = tick(28, 0x03b6e) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t13) takeIrq(); }
     setXAdd(t19, t20, 8);
     setReg('a0', ptr);
     setReg('a2', dst);
@@ -27984,9 +27984,9 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
     setReg('a6', dst3);
     setReg('d0', kind);
     setReg('d2', limit3);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -27998,15 +27998,15 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
     dst3 = getReg('a6');
     kind = getReg('d0');
     limit3 = getReg('d2');
-    index = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t14 = tick(6, 0x03b74) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t14) takeIrq(); }
+    const _t14 = tick(6, 0x03b74) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t14) takeIrq(); }
     drop(4);
     setXAdd(t19, t20, 8);
   }
-  const _t15 = tick(42, 0x03b76) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t15) takeIrq(); }
+  const _t15 = tick(42, 0x03b76) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t19, t20, 8); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t15) takeIrq(); }
   t26 = load16(dst3 + -0xa);
   t27 = t26;
   t28 = 0x1;
@@ -28019,7 +28019,7 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   setFlagsCmp((kind & 65535), 0x20, 16);
   if ((((kind & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t16 = tick(66, 0x03b84) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t27, t28, 16); setFlagsCmp((kind & 65535), 0x20, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t16) takeIrq(); }
+    const _t16 = tick(66, 0x03b84) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t27, t28, 16); setFlagsCmp((kind & 65535), 0x20, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t16) takeIrq(); }
     t32 = dst2;
     push(t32, 4);
     push(0x11b12, 4);
@@ -28033,9 +28033,9 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
     setReg('a6', dst3);
     setReg('d0', kind);
     setReg('d2', limit3);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -28047,22 +28047,22 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
     dst3 = getReg('a6');
     kind = getReg('d0');
     limit3 = getReg('d2');
-    index = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t17 = tick(6, 0x03b92) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t27, t28, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t17) takeIrq(); }
+    const _t17 = tick(6, 0x03b92) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t27, t28, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t17) takeIrq(); }
     drop(8);
     setXAdd(t27, t28, 16);
   }
-  const _t18 = tick(110, 0x03b94) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t27, t28, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t18) takeIrq(); }
+  const _t18 = tick(110, 0x03b94) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t27, t28, 16); setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t18) takeIrq(); }
   t33 = load16(dst3 + -0xa);
   t34 = t33;
   store16(dst2 + 0xc, t34);
   limit3 = load32((dst3 + -0x34) + 0);
-  index = load32((dst3 + -0x34) + 4);
+  tableBase = load32((dst3 + -0x34) + 4);
   d4 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  ownerIndex = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   dst = load32((dst3 + -0x34) + 20);
   dst2 = load32((dst3 + -0x34) + 24);
@@ -28080,11 +28080,11 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d2', limit3);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', ptr); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', kind); setReg('d2', limit3); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a0', ptr);
   setReg('a2', dst);
   setReg('a3', dst2);
@@ -28093,13 +28093,13 @@ export function cellOwnerBranchFrom4(dst_: number, dst3_: number, kind_: number,
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d2', limit3);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number, wantArg_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number, wantArg_: number, tableBase_: number, d4_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -28109,9 +28109,9 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
   let dst3 = dst3_;
   let count = count_;
   let wantArg = wantArg_;
-  let d3 = d3_;
+  let tableBase = tableBase_;
   let d4 = d4_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -28144,7 +28144,7 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
   let t28 = 0;
   let t29 = 0;
   let t30 = 0;
-  const _t0 = tick(42, 0x03b2c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(42, 0x03b2c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load16(dst);
   t1 = t0;
   push(t1, 2);
@@ -28156,9 +28156,9 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x02eb8, 0x03b32);
   if (halted()) return;
@@ -28169,14 +28169,14 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
   dst3 = getReg('a6');
   count = getReg('d0');
   wantArg = getReg('d2');
-  d3 = getReg('d3');
+  tableBase = getReg('d3');
   d4 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(10, 0x03b32) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
-  const _t3 = tick(6, 0x03b3a) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t1 = tick(10, 0x03b32) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t3 = tick(6, 0x03b3a) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t3) takeIrq(); }
   drop(2);
-  const _t4 = tick(56, 0x03b3c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+  const _t4 = tick(56, 0x03b3c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t4) takeIrq(); }
   t2 = load32(dst3 + -0x8);
   t3 = t2;
   t4 = 0x8;
@@ -28200,7 +28200,7 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
   t17 = load8(dst);
   t18 = (t17 + 0x1);
   store8(dst, t18);
-  const _t5 = tick(22, 0x03b4c) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+  const _t5 = tick(22, 0x03b4c) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t5) takeIrq(); }
   t19 = load8(dst);
   if ((((t19) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
     setXAdd(t15, t16, 8);
@@ -28212,27 +28212,27 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
-    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x039c2);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); jumpRom(0x039c2);
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6);   return;
   }
-  const _t6 = tick(26, 0x03b54) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t19, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+  const _t6 = tick(26, 0x03b54) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t19, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t6) takeIrq(); }
   t20 = load16(dst3 + -0xa);
   if (((t20) & 65535) !== ((0xc) & 65535)) {
-    const _t8 = tick(26, 0x03b62) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+    const _t8 = tick(26, 0x03b62) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t8) takeIrq(); }
     t21 = load16(dst3 + -0xa);
     setXAdd(t15, t16, 8);
     setFlagsCmp(t21, 0x16, 16);
     if (((t21) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t9 = tick(26, 0x03b6a) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t21, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+      const _t9 = tick(26, 0x03b6a) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t21, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t9) takeIrq(); }
       push(0x35, 4);
       setXAdd(t15, t16, 8);
       setFlagsCmp(t21, 0x16, 16);
-      const _t10 = tick(28, 0x03b6e) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+      const _t10 = tick(28, 0x03b6e) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t10) takeIrq(); }
       setXAdd(t15, t16, 8);
       setReg('a2', dst);
       setReg('a3', dst2);
@@ -28241,9 +28241,9 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
       setReg('a6', dst3);
       setReg('d0', count);
       setReg('d2', wantArg);
-      setReg('d3', d3);
+      setReg('d3', tableBase);
       setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -28254,20 +28254,20 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
       dst3 = getReg('a6');
       count = getReg('d0');
       wantArg = getReg('d2');
-      d3 = getReg('d3');
+      tableBase = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t11 = tick(6, 0x03b74) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+      const _t11 = tick(6, 0x03b74) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t11) takeIrq(); }
       drop(4);
       setXAdd(t15, t16, 8);
     }
   } else {
-    const _t7 = tick(36, 0x03b5c) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
+    const _t7 = tick(36, 0x03b5c) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t7) takeIrq(); }
     push(0x34, 4);
     setXAdd(t15, t16, 8);
     setFlagsCmp(t20, 0xc, 16);
-    const _t10 = tick(28, 0x03b6e) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+    const _t10 = tick(28, 0x03b6e) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t10) takeIrq(); }
     setXAdd(t15, t16, 8);
     setReg('a2', dst);
     setReg('a3', dst2);
@@ -28276,9 +28276,9 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -28289,15 +28289,15 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
     dst3 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t11 = tick(6, 0x03b74) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+    const _t11 = tick(6, 0x03b74) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t11) takeIrq(); }
     drop(4);
     setXAdd(t15, t16, 8);
   }
-  const _t12 = tick(42, 0x03b76) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
+  const _t12 = tick(42, 0x03b76) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t12) takeIrq(); }
   t22 = load16(dst3 + -0xa);
   t23 = t22;
   t24 = 0x1;
@@ -28310,7 +28310,7 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
   setFlagsCmp((count & 65535), 0x20, 16);
   if ((((count & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t13 = tick(66, 0x03b84) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t23, t24, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
+    const _t13 = tick(66, 0x03b84) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t23, t24, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t13) takeIrq(); }
     t28 = dst2;
     push(t28, 4);
     push(0x11b12, 4);
@@ -28323,9 +28323,9 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -28336,22 +28336,22 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
     dst3 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t14 = tick(6, 0x03b92) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t14) takeIrq(); }
+    const _t14 = tick(6, 0x03b92) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t14) takeIrq(); }
     drop(8);
     setXAdd(t23, t24, 16);
   }
-  const _t15 = tick(110, 0x03b94) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t15) takeIrq(); }
+  const _t15 = tick(110, 0x03b94) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t15) takeIrq(); }
   t29 = load16(dst3 + -0xa);
   t30 = t29;
   store16(dst2 + 0xc, t30);
   wantArg = load32((dst3 + -0x34) + 0);
-  d3 = load32((dst3 + -0x34) + 4);
+  tableBase = load32((dst3 + -0x34) + 4);
   d4 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  ownerIndex = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   dst = load32((dst3 + -0x34) + 20);
   dst2 = load32((dst3 + -0x34) + 24);
@@ -28368,11 +28368,11 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a2', dst);
   setReg('a3', dst2);
   setReg('a4', a4);
@@ -28380,13 +28380,13 @@ export function cellOwnerBranchFrom5(dst_: number, dst3_: number, count_: number
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number, kind22_: number, index_: number, d4_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number, kind22_: number, tableBase_: number, d4_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -28396,9 +28396,9 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
   let dst3 = dst3_;
   let count = count_;
   let kind22 = kind22_;
-  let index = index_;
+  let tableBase = tableBase_;
   let d4 = d4_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -28431,7 +28431,7 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
   let t28 = 0;
   let t29 = 0;
   let t30 = 0;
-  const _t0 = tick(42, 0x03b34) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(42, 0x03b34) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load16(dst);
   t1 = t0;
   push(t1, 2);
@@ -28443,9 +28443,9 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', kind22);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
   callRom(0x034b2, 0x03b3a);
   if (halted()) return;
@@ -28456,13 +28456,13 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
   dst3 = getReg('a6');
   count = getReg('d0');
   kind22 = getReg('d2');
-  index = getReg('d3');
+  tableBase = getReg('d3');
   d4 = getReg('d4');
-  d5 = getReg('d5');
+  ownerIndex = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(6, 0x03b3a) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(6, 0x03b3a) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
   drop(2);
-  const _t2 = tick(56, 0x03b3c) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(56, 0x03b3c) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t2) takeIrq(); }
   t2 = load32(dst3 + -0x8);
   t3 = t2;
   t4 = 0x8;
@@ -28486,7 +28486,7 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
   t17 = load8(dst);
   t18 = (t17 + 0x1);
   store8(dst, t18);
-  const _t3 = tick(22, 0x03b4c) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(22, 0x03b4c) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t3) takeIrq(); }
   t19 = load8(dst);
   if ((((t19) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
     setXAdd(t15, t16, 8);
@@ -28498,27 +28498,27 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', kind22);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
-    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x039c2);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); jumpRom(0x039c2);
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6);   return;
   }
-  const _t4 = tick(26, 0x03b54) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t19, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+  const _t4 = tick(26, 0x03b54) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t19, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t4) takeIrq(); }
   t20 = load16(dst3 + -0xa);
   if (((t20) & 65535) !== ((0xc) & 65535)) {
-    const _t6 = tick(26, 0x03b62) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+    const _t6 = tick(26, 0x03b62) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t6) takeIrq(); }
     t21 = load16(dst3 + -0xa);
     setXAdd(t15, t16, 8);
     setFlagsCmp(t21, 0x16, 16);
     if (((t21) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t7 = tick(26, 0x03b6a) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t21, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
+      const _t7 = tick(26, 0x03b6a) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t21, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t7) takeIrq(); }
       push(0x35, 4);
       setXAdd(t15, t16, 8);
       setFlagsCmp(t21, 0x16, 16);
-      const _t8 = tick(28, 0x03b6e) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+      const _t8 = tick(28, 0x03b6e) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t8) takeIrq(); }
       setXAdd(t15, t16, 8);
       setReg('a2', dst);
       setReg('a3', dst2);
@@ -28527,9 +28527,9 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
       setReg('a6', dst3);
       setReg('d0', count);
       setReg('d2', kind22);
-      setReg('d3', index);
+      setReg('d3', tableBase);
       setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -28540,20 +28540,20 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
       dst3 = getReg('a6');
       count = getReg('d0');
       kind22 = getReg('d2');
-      index = getReg('d3');
+      tableBase = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t9 = tick(6, 0x03b74) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+      const _t9 = tick(6, 0x03b74) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t9) takeIrq(); }
       drop(4);
       setXAdd(t15, t16, 8);
     }
   } else {
-    const _t5 = tick(36, 0x03b5c) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+    const _t5 = tick(36, 0x03b5c) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t15, t16, 8); setFlagsCmp(t20, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t5) takeIrq(); }
     push(0x34, 4);
     setXAdd(t15, t16, 8);
     setFlagsCmp(t20, 0xc, 16);
-    const _t8 = tick(28, 0x03b6e) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+    const _t8 = tick(28, 0x03b6e) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t8) takeIrq(); }
     setXAdd(t15, t16, 8);
     setReg('a2', dst);
     setReg('a3', dst2);
@@ -28562,9 +28562,9 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', kind22);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -28575,15 +28575,15 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
     dst3 = getReg('a6');
     count = getReg('d0');
     kind22 = getReg('d2');
-    index = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t9 = tick(6, 0x03b74) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+    const _t9 = tick(6, 0x03b74) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t9) takeIrq(); }
     drop(4);
     setXAdd(t15, t16, 8);
   }
-  const _t10 = tick(42, 0x03b76) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+  const _t10 = tick(42, 0x03b76) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t15, t16, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t10) takeIrq(); }
   t22 = load16(dst3 + -0xa);
   t23 = t22;
   t24 = 0x1;
@@ -28596,7 +28596,7 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
   setFlagsCmp((count & 65535), 0x20, 16);
   if ((((count & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t11 = tick(66, 0x03b84) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t23, t24, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+    const _t11 = tick(66, 0x03b84) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t23, t24, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t11) takeIrq(); }
     t28 = dst2;
     push(t28, 4);
     push(0x11b12, 4);
@@ -28609,9 +28609,9 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', kind22);
-    setReg('d3', index);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -28622,22 +28622,22 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
     dst3 = getReg('a6');
     count = getReg('d0');
     kind22 = getReg('d2');
-    index = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t12 = tick(6, 0x03b92) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
+    const _t12 = tick(6, 0x03b92) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t12) takeIrq(); }
     drop(8);
     setXAdd(t23, t24, 16);
   }
-  const _t13 = tick(110, 0x03b94) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
+  const _t13 = tick(110, 0x03b94) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t23, t24, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t13) takeIrq(); }
   t29 = load16(dst3 + -0xa);
   t30 = t29;
   store16(dst2 + 0xc, t30);
   kind22 = load32((dst3 + -0x34) + 0);
-  index = load32((dst3 + -0x34) + 4);
+  tableBase = load32((dst3 + -0x34) + 4);
   d4 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  ownerIndex = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   dst = load32((dst3 + -0x34) + 20);
   dst2 = load32((dst3 + -0x34) + 24);
@@ -28654,11 +28654,11 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', kind22);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', index); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', kind22); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a2', dst);
   setReg('a3', dst2);
   setReg('a4', a4);
@@ -28666,13 +28666,13 @@ export function cellOwnerBranchFrom6(dst_: number, dst3_: number, count_: number
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', kind22);
-  setReg('d3', index);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a5_: number, dst3_: number, wantArg_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a5_: number, dst3_: number, wantArg_: number, tableBase_: number, d4_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -28682,9 +28682,9 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
   let dst3 = dst3_;
   let count = getReg('d0');
   let wantArg = wantArg_;
-  let d3 = d3_;
+  let tableBase = tableBase_;
   let d4 = d4_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -28715,7 +28715,7 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
   let t26 = 0;
   let t27 = 0;
   let t28 = 0;
-  const _t0 = tick(56, 0x03b3c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(56, 0x03b3c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load32(dst3 + -0x8);
   t1 = t0;
   t2 = 0x8;
@@ -28739,7 +28739,7 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
   t15 = load8(dst);
   t16 = (t15 + 0x1);
   store8(dst, t16);
-  const _t1 = tick(22, 0x03b4c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(22, 0x03b4c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
   t17 = load8(dst);
   if ((((t17) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
     setXAdd(t13, t14, 8);
@@ -28751,27 +28751,27 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
-    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x039c2);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); jumpRom(0x039c2);
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6);   return;
   }
-  const _t2 = tick(26, 0x03b54) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsCmp(t17, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(26, 0x03b54) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsCmp(t17, 0x2a, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t2) takeIrq(); }
   t18 = load16(dst3 + -0xa);
   if (((t18) & 65535) !== ((0xc) & 65535)) {
-    const _t4 = tick(26, 0x03b62) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsCmp(t18, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+    const _t4 = tick(26, 0x03b62) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsCmp(t18, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t4) takeIrq(); }
     t19 = load16(dst3 + -0xa);
     setXAdd(t13, t14, 8);
     setFlagsCmp(t19, 0x16, 16);
     if (((t19) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t5 = tick(26, 0x03b6a) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsCmp(t19, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+      const _t5 = tick(26, 0x03b6a) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsCmp(t19, 0x16, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t5) takeIrq(); }
       push(0x35, 4);
       setXAdd(t13, t14, 8);
       setFlagsCmp(t19, 0x16, 16);
-      const _t6 = tick(28, 0x03b6e) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+      const _t6 = tick(28, 0x03b6e) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t6) takeIrq(); }
       setXAdd(t13, t14, 8);
       setReg('a2', dst);
       setReg('a3', dst2);
@@ -28780,9 +28780,9 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
       setReg('a6', dst3);
       setReg('d0', count);
       setReg('d2', wantArg);
-      setReg('d3', d3);
+      setReg('d3', tableBase);
       setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -28793,20 +28793,20 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
       dst3 = getReg('a6');
       count = getReg('d0');
       wantArg = getReg('d2');
-      d3 = getReg('d3');
+      tableBase = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t7 = tick(6, 0x03b74) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
+      const _t7 = tick(6, 0x03b74) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t7) takeIrq(); }
       drop(4);
       setXAdd(t13, t14, 8);
     }
   } else {
-    const _t3 = tick(36, 0x03b5c) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsCmp(t18, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+    const _t3 = tick(36, 0x03b5c) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t13, t14, 8); setFlagsCmp(t18, 0xc, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t3) takeIrq(); }
     push(0x34, 4);
     setXAdd(t13, t14, 8);
     setFlagsCmp(t18, 0xc, 16);
-    const _t6 = tick(28, 0x03b6e) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+    const _t6 = tick(28, 0x03b6e) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t6) takeIrq(); }
     setXAdd(t13, t14, 8);
     setReg('a2', dst);
     setReg('a3', dst2);
@@ -28815,9 +28815,9 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -28828,15 +28828,15 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
     dst3 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t7 = tick(6, 0x03b74) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
+    const _t7 = tick(6, 0x03b74) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t7) takeIrq(); }
     drop(4);
     setXAdd(t13, t14, 8);
   }
-  const _t8 = tick(42, 0x03b76) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+  const _t8 = tick(42, 0x03b76) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t13, t14, 8); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t8) takeIrq(); }
   t20 = load16(dst3 + -0xa);
   t21 = t20;
   t22 = 0x1;
@@ -28849,7 +28849,7 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
   setFlagsCmp((count & 65535), 0x20, 16);
   if ((((count & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t9 = tick(66, 0x03b84) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t21, t22, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+    const _t9 = tick(66, 0x03b84) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t21, t22, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t9) takeIrq(); }
     t26 = dst2;
     push(t26, 4);
     push(0x11b12, 4);
@@ -28862,9 +28862,9 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
     setReg('a6', dst3);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -28875,22 +28875,22 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
     dst3 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t10 = tick(6, 0x03b92) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t21, t22, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+    const _t10 = tick(6, 0x03b92) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t21, t22, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t10) takeIrq(); }
     drop(8);
     setXAdd(t21, t22, 16);
   }
-  const _t11 = tick(110, 0x03b94) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t21, t22, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+  const _t11 = tick(110, 0x03b94) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t21, t22, 16); setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t11) takeIrq(); }
   t27 = load16(dst3 + -0xa);
   t28 = t27;
   store16(dst2 + 0xc, t28);
   wantArg = load32((dst3 + -0x34) + 0);
-  d3 = load32((dst3 + -0x34) + 4);
+  tableBase = load32((dst3 + -0x34) + 4);
   d4 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  ownerIndex = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   dst = load32((dst3 + -0x34) + 20);
   dst2 = load32((dst3 + -0x34) + 24);
@@ -28907,11 +28907,11 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', dst); setReg('a3', dst2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a2', dst);
   setReg('a3', dst2);
   setReg('a4', a4);
@@ -28919,13 +28919,13 @@ export function cellOwnerBranchFrom7(dst_: number, dst2_: number, a4_: number, a
   setReg('a6', dst3);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5_: number, dst2_: number, count_: number, wantArg_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5_: number, dst2_: number, count_: number, wantArg_: number, tableBase_: number, d4_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -28935,9 +28935,9 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
   let dst2 = dst2_;
   let count = count_;
   let wantArg = wantArg_;
-  let d3 = d3_;
+  let tableBase = tableBase_;
   let d4 = d4_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -28951,7 +28951,7 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
   let t9 = 0;
   let t10 = 0;
   let t11 = 0;
-  const _t0 = tick(22, 0x03b4c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(22, 0x03b4c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load8(ptr);
   if ((((t0) << 24) >> 24) < (((0x2a) << 24) >> 24)) {
     setFlagsCmp(t0, 0x2a, 8);
@@ -28962,25 +28962,25 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
     setReg('a6', dst2);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
-    setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x039c2);
-  setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); jumpRom(0x039c2);
+  setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6);   return;
   }
-  const _t1 = tick(26, 0x03b54) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0x2a, 8); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(26, 0x03b54) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0x2a, 8); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
   t1 = load16(dst2 + -0xa);
   if (((t1) & 65535) !== ((0xc) & 65535)) {
-    const _t3 = tick(26, 0x03b62) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t1, 0xc, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+    const _t3 = tick(26, 0x03b62) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t1, 0xc, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t3) takeIrq(); }
     t2 = load16(dst2 + -0xa);
     setFlagsCmp(t2, 0x16, 16);
     if (((t2) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t4 = tick(26, 0x03b6a) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp(t2, 0x16, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+      const _t4 = tick(26, 0x03b6a) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp(t2, 0x16, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t4) takeIrq(); }
       push(0x35, 4);
       setFlagsCmp(t2, 0x16, 16);
-      const _t5 = tick(28, 0x03b6e) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+      const _t5 = tick(28, 0x03b6e) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t5) takeIrq(); }
       setReg('a2', ptr);
       setReg('a3', dst);
       setReg('a4', a4);
@@ -28988,9 +28988,9 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
       setReg('a6', dst2);
       setReg('d0', count);
       setReg('d2', wantArg);
-      setReg('d3', d3);
+      setReg('d3', tableBase);
       setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -29001,18 +29001,18 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
       dst2 = getReg('a6');
       count = getReg('d0');
       wantArg = getReg('d2');
-      d3 = getReg('d3');
+      tableBase = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t6 = tick(6, 0x03b74) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+      const _t6 = tick(6, 0x03b74) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t6) takeIrq(); }
       drop(4);
     }
   } else {
-    const _t2 = tick(36, 0x03b5c) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(t1, 0xc, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+    const _t2 = tick(36, 0x03b5c) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(t1, 0xc, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t2) takeIrq(); }
     push(0x34, 4);
     setFlagsCmp(t1, 0xc, 16);
-    const _t5 = tick(28, 0x03b6e) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+    const _t5 = tick(28, 0x03b6e) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t5) takeIrq(); }
     setReg('a2', ptr);
     setReg('a3', dst);
     setReg('a4', a4);
@@ -29020,9 +29020,9 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
     setReg('a6', dst2);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -29033,14 +29033,14 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
     dst2 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t6 = tick(6, 0x03b74) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+    const _t6 = tick(6, 0x03b74) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t6) takeIrq(); }
     drop(4);
   }
-  const _t7 = tick(42, 0x03b76) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
+  const _t7 = tick(42, 0x03b76) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t7) takeIrq(); }
   t3 = load16(dst2 + -0xa);
   t4 = t3;
   t5 = 0x1;
@@ -29053,7 +29053,7 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
   setFlagsCmp((count & 65535), 0x20, 16);
   if ((((count & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t8 = tick(66, 0x03b84) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t4, t5, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+    const _t8 = tick(66, 0x03b84) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t4, t5, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t8) takeIrq(); }
     t9 = dst;
     push(t9, 4);
     push(0x11b12, 4);
@@ -29066,9 +29066,9 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
     setReg('a6', dst2);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -29079,22 +29079,22 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
     dst2 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t9 = tick(6, 0x03b92) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t4, t5, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+    const _t9 = tick(6, 0x03b92) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t4, t5, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t9) takeIrq(); }
     drop(8);
     setXAdd(t4, t5, 16);
   }
-  const _t10 = tick(110, 0x03b94) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t4, t5, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+  const _t10 = tick(110, 0x03b94) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t4, t5, 16); setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t10) takeIrq(); }
   t10 = load16(dst2 + -0xa);
   t11 = t10;
   store16(dst + 0xc, t11);
   wantArg = load32((dst2 + -0x34) + 0);
-  d3 = load32((dst2 + -0x34) + 4);
+  tableBase = load32((dst2 + -0x34) + 4);
   d4 = load32((dst2 + -0x34) + 8);
-  d5 = load32((dst2 + -0x34) + 12);
+  ownerIndex = load32((dst2 + -0x34) + 12);
   d6 = load32((dst2 + -0x34) + 16);
   ptr = load32((dst2 + -0x34) + 20);
   dst = load32((dst2 + -0x34) + 24);
@@ -29111,11 +29111,11 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
   setReg('a6', dst2);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', ptr); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a2', ptr);
   setReg('a3', dst);
   setReg('a4', a4);
@@ -29123,13 +29123,13 @@ export function cellOwnerBranchFrom8(ptr_: number, dst_: number, a4_: number, a5
   setReg('a6', dst2);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_: number, dst2_: number, count_: number, wantArg_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_: number, dst2_: number, count_: number, wantArg_: number, tableBase_: number, d4_: number, ownerIndex_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = a2_;
@@ -29139,9 +29139,9 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
   let dst2 = dst2_;
   let count = count_;
   let wantArg = wantArg_;
-  let d3 = d3_;
+  let tableBase = tableBase_;
   let d4 = d4_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -29154,18 +29154,18 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
   let t8 = 0;
   let t9 = 0;
   let t10 = 0;
-  const _t0 = tick(26, 0x03b54) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(26, 0x03b54) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load16(dst2 + -0xa);
   if (((t0) & 65535) !== ((0xc) & 65535)) {
-    const _t2 = tick(26, 0x03b62) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(t0, 0xc, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+    const _t2 = tick(26, 0x03b62) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(t0, 0xc, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t2) takeIrq(); }
     t1 = load16(dst2 + -0xa);
     setFlagsCmp(t1, 0x16, 16);
     if (((t1) & 65535) !== ((0x16) & 65535)) {
     } else {
-      const _t3 = tick(26, 0x03b6a) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t1, 0x16, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+      const _t3 = tick(26, 0x03b6a) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t1, 0x16, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t3) takeIrq(); }
       push(0x35, 4);
       setFlagsCmp(t1, 0x16, 16);
-      const _t4 = tick(28, 0x03b6e) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+      const _t4 = tick(28, 0x03b6e) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t4) takeIrq(); }
       setReg('a2', a2);
       setReg('a3', dst);
       setReg('a4', a4);
@@ -29173,9 +29173,9 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
       setReg('a6', dst2);
       setReg('d0', count);
       setReg('d2', wantArg);
-      setReg('d3', d3);
+      setReg('d3', tableBase);
       setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d5', ownerIndex);
       setReg('d6', d6);
       callRom(0x090e6, 0x03b74);
       if (halted()) return;
@@ -29186,18 +29186,18 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
       dst2 = getReg('a6');
       count = getReg('d0');
       wantArg = getReg('d2');
-      d3 = getReg('d3');
+      tableBase = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
+      ownerIndex = getReg('d5');
       d6 = getReg('d6');
-      const _t5 = tick(6, 0x03b74) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+      const _t5 = tick(6, 0x03b74) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t5) takeIrq(); }
       drop(4);
     }
   } else {
-    const _t1 = tick(36, 0x03b5c) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0xc, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+    const _t1 = tick(36, 0x03b5c) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0xc, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t1) takeIrq(); }
     push(0x34, 4);
     setFlagsCmp(t0, 0xc, 16);
-    const _t4 = tick(28, 0x03b6e) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+    const _t4 = tick(28, 0x03b6e) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t4) takeIrq(); }
     setReg('a2', a2);
     setReg('a3', dst);
     setReg('a4', a4);
@@ -29205,9 +29205,9 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
     setReg('a6', dst2);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x090e6, 0x03b74);
     if (halted()) return;
@@ -29218,14 +29218,14 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
     dst2 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t5 = tick(6, 0x03b74) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+    const _t5 = tick(6, 0x03b74) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t5) takeIrq(); }
     drop(4);
   }
-  const _t6 = tick(42, 0x03b76) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+  const _t6 = tick(42, 0x03b76) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t6) takeIrq(); }
   t2 = load16(dst2 + -0xa);
   t3 = t2;
   t4 = 0x1;
@@ -29238,7 +29238,7 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
   setFlagsCmp((count & 65535), 0x20, 16);
   if ((((count & 65535)) & 65535) !== ((0x20) & 65535)) {
   } else {
-    const _t7 = tick(66, 0x03b84) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t3, t4, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
+    const _t7 = tick(66, 0x03b84) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t3, t4, 16); setFlagsCmp((count & 65535), 0x20, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t7) takeIrq(); }
     t8 = dst;
     push(t8, 4);
     push(0x11b12, 4);
@@ -29251,9 +29251,9 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
     setReg('a6', dst2);
     setReg('d0', count);
     setReg('d2', wantArg);
-    setReg('d3', d3);
+    setReg('d3', tableBase);
     setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d5', ownerIndex);
     setReg('d6', d6);
     callRom(0x0eeee, 0x03b92);
     if (halted()) return;
@@ -29264,22 +29264,22 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
     dst2 = getReg('a6');
     count = getReg('d0');
     wantArg = getReg('d2');
-    d3 = getReg('d3');
+    tableBase = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
+    ownerIndex = getReg('d5');
     d6 = getReg('d6');
-    const _t8 = tick(6, 0x03b92) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t3, t4, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+    const _t8 = tick(6, 0x03b92) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t3, t4, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t8) takeIrq(); }
     drop(8);
     setXAdd(t3, t4, 16);
   }
-  const _t9 = tick(110, 0x03b94) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t3, t4, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+  const _t9 = tick(110, 0x03b94) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t3, t4, 16); setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); if (_t9) takeIrq(); }
   t9 = load16(dst2 + -0xa);
   t10 = t9;
   store16(dst + 0xc, t10);
   wantArg = load32((dst2 + -0x34) + 0);
-  d3 = load32((dst2 + -0x34) + 4);
+  tableBase = load32((dst2 + -0x34) + 4);
   d4 = load32((dst2 + -0x34) + 8);
-  d5 = load32((dst2 + -0x34) + 12);
+  ownerIndex = load32((dst2 + -0x34) + 12);
   d6 = load32((dst2 + -0x34) + 16);
   a2 = load32((dst2 + -0x34) + 20);
   dst = load32((dst2 + -0x34) + 24);
@@ -29296,11 +29296,11 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
   setReg('a6', dst2);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', a2); setReg('a3', dst); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', count); setReg('d2', wantArg); setReg('d3', tableBase); setReg('d4', d4); setReg('d5', ownerIndex); setReg('d6', d6); return;
   setReg('a2', a2);
   setReg('a3', dst);
   setReg('a4', a4);
@@ -29308,13 +29308,13 @@ export function cellOwnerBranchFrom9(a2_: number, dst_: number, a4_: number, a5_
   setReg('a6', dst2);
   setReg('d0', count);
   setReg('d2', wantArg);
-  setReg('d3', d3);
+  setReg('d3', tableBase);
   setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   setReg('d6', d6);
 }
 
-export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, index_: number, count2_: number, index2_: number, count22_: number, d5_: number, limit: number): void {
+export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, index_: number, count2_: number, index2_: number, count22_: number, ownerIndex_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -29325,7 +29325,7 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   let count2 = count2_;
   let index2 = index2_;
   let count22 = count22_;
-  let d5 = d5_;
+  let ownerIndex = ownerIndex_;
   let save_d2_0 = 0;
   let save_d3_1 = 0;
   let save_d4_2 = 0;
@@ -29353,17 +29353,17 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   let t24 = 0;
   let t25 = 0;
   let t26 = 0;
-  const _t0 = tick(106, 0x03ba4) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); if (_t0) takeIrq(); }
+  const _t0 = tick(106, 0x03ba4) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); if (_t0) takeIrq(); }
   push(ptr3, 4);
   push(ptr2, 4);
-  push(d5, 4);
+  push(ownerIndex, 4);
   push(count22, 4);
   push(index2, 4);
   push(count2, 4);
   save_d2_0 = count2;
   save_d3_1 = index2;
   save_d4_2 = count22;
-  save_d5_3 = d5;
+  save_d5_3 = ownerIndex;
   save_a2_4 = ptr2;
   save_a3_5 = ptr3;
   t6 = ((limit >>> 16) & 0xffff);
@@ -29378,7 +29378,7 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   setReg('d2', count2);
   setReg('d3', index2);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   callRom(0x11bd8, 0x03bb2);
   if (halted()) return;
   ptr = getReg('a0');
@@ -29389,8 +29389,8 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   count2 = getReg('d2');
   index2 = getReg('d3');
   count22 = getReg('d4');
-  d5 = getReg('d5');
-  const _t1 = tick(92, 0x03bb2) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); if (_t1) takeIrq(); }
+  ownerIndex = getReg('d5');
+  const _t1 = tick(92, 0x03bb2) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); if (_t1) takeIrq(); }
   ptr3 = (count) >>> 0;
   t8 = load8(ptr3);
   count2 = ((count2 & 0xffffff00) | (t8 & 255));
@@ -29400,7 +29400,7 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   count22 = ((count22 & 0xffffff00) | ((index2 & 255) & 255));
   t10 = ((count22 & 255) | 0x3);
   count22 = ((count22 & 0xffffff00) | (t10 & 255));
-  d5 = ((d5 & 0xffff0000) | (0 & 65535));
+  ownerIndex = ((ownerIndex & 0xffff0000) | (0 & 65535));
   count = (ptr3) >>> 0;
   index = (32) >>> 0;
   t11 = count;
@@ -29414,14 +29414,14 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   setFlagsCmp((count & 255), (count2 & 255), 8);
   if ((((count & 255)) & 255) !== (((count2 & 255)) & 255)) {
   } else {
-    const _t2 = tick(4, 0x03bd4) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t11, t12, 32); setFlagsCmp((count & 255), (count2 & 255), 8); setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); if (_t2) takeIrq(); }
-    t14 = (d5 & 65535);
+    const _t2 = tick(4, 0x03bd4) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t11, t12, 32); setFlagsCmp((count & 255), (count2 & 255), 8); setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); if (_t2) takeIrq(); }
+    t14 = (ownerIndex & 65535);
     t15 = 0x1;
-    d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + 0x1) & 65535));
+    ownerIndex = ((ownerIndex & 0xffff0000) | (((ownerIndex & 65535) + 0x1) & 65535));
     setXAdd(t14, t15, 16);
     setFlagsAdd(t14, t15, 16);
   }
-  const _t3 = tick(44, 0x03bd6) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); if (_t3) takeIrq(); }
+  const _t3 = tick(44, 0x03bd6) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); if (_t3) takeIrq(); }
   count = (ptr3) >>> 0;
   index = (32) >>> 0;
   t16 = count;
@@ -29434,14 +29434,14 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   setFlagsCmp((count & 255), (count2 & 255), 8);
   if ((((count & 255)) & 255) !== (((count2 & 255)) & 255)) {
   } else {
-    const _t4 = tick(4, 0x03be4) ? 1 : 0; if (_t4 || SPILL_ALL) { setXSub(t16, t17, 32); setFlagsCmp((count & 255), (count2 & 255), 8); setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); if (_t4) takeIrq(); }
-    t19 = (d5 & 65535);
+    const _t4 = tick(4, 0x03be4) ? 1 : 0; if (_t4 || SPILL_ALL) { setXSub(t16, t17, 32); setFlagsCmp((count & 255), (count2 & 255), 8); setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); if (_t4) takeIrq(); }
+    t19 = (ownerIndex & 65535);
     t20 = 0x2;
-    d5 = ((d5 & 0xffff0000) | (((d5 & 65535) + 0x2) & 65535));
+    ownerIndex = ((ownerIndex & 0xffff0000) | (((ownerIndex & 65535) + 0x2) & 65535));
     setXAdd(t19, t20, 16);
     setFlagsAdd(t19, t20, 16);
   }
-  const _t5 = tick(36, 0x03be6) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); if (_t5) takeIrq(); }
+  const _t5 = tick(36, 0x03be6) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); if (_t5) takeIrq(); }
   count = (ptr3) >>> 0;
   t21 = count;
   t22 = 0x1;
@@ -29452,7 +29452,7 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   setFlagsCmp((count2 & 255), t23, 8);
   if ((((count2 & 255)) & 255) === ((t23) & 255)) {
   } else {
-    const _t6 = tick(18, 0x03bf0) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t21, t22, 32); setFlagsCmp((count2 & 255), t23, 8); setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); if (_t6) takeIrq(); }
+    const _t6 = tick(18, 0x03bf0) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t21, t22, 32); setFlagsCmp((count2 & 255), t23, 8); setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); if (_t6) takeIrq(); }
     t24 = load8(ptr2);
     if ((((count22 & 255)) & 255) !== ((t24) & 255)) {
       setXAdd(t21, t22, 32);
@@ -29465,14 +29465,14 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
       setReg('d2', count2);
       setReg('d3', index2);
       setReg('d4', count22);
-      setReg('d5', d5);
-      setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); jumpRom(0x03c44);
-  setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5);     return;
+      setReg('d5', ownerIndex);
+      setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); jumpRom(0x03c44);
+  setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex);     return;
     }
     setXAdd(t21, t22, 32);
     setFlagsCmp((count22 & 255), t24, 8);
   }
-  const _t7 = tick(40, 0x03bf4) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t21, t22, 32); setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); if (_t7) takeIrq(); }
+  const _t7 = tick(40, 0x03bf4) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t21, t22, 32); setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); if (_t7) takeIrq(); }
   count = (0) >>> 0;
   count = ((count & 0xffffff00) | ((count22 & 255) & 255));
   t25 = count;
@@ -29491,9 +29491,9 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   setReg('d2', count2);
   setReg('d3', index2);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
   jumpRom(0x03c00);
-  setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); return;
+  setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); return;
   setReg('a0', ptr);
   setReg('a2', ptr2);
   setReg('a3', ptr3);
@@ -29502,8 +29502,8 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   setReg('d2', count2);
   setReg('d3', index2);
   setReg('d4', count22);
-  setReg('d5', d5);
-  setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', d5); return;
+  setReg('d5', ownerIndex);
+  setReg('a0', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', count); setReg('d1', index); setReg('d2', count2); setReg('d3', index2); setReg('d4', count22); setReg('d5', ownerIndex); return;
   setReg('a0', ptr);
   setReg('a2', ptr2);
   setReg('a3', ptr3);
@@ -29512,7 +29512,7 @@ export function boardCellAddressLookupWrapper(ptr3_: number, count_: number, ind
   setReg('d2', count2);
   setReg('d3', index2);
   setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d5', ownerIndex);
 }
 
 export function scoreCellBothNeighbourWeightings(ptr_: number, a3_: number, d0_: number, index_: number, d2_: number, d4_: number, index2_: number): void {
@@ -45949,7 +45949,7 @@ export function passByteOnlyWhenGateWrapper(dst2_: number, ptr_: number, dst3_: 
   setReg('d5', d5);
 }
 
-export function placementCommit(dst2_: number, kind_: number, count2_: number, count_: number, limit2_: number, d4_: number, d5_: number, d6_: number): void {
+export function placementCommit(dst2_: number, kind_: number, count2_: number, cellValue_: number, limit2_: number, cellAddr_: number, ownerBits_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -45961,10 +45961,10 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   let dst2 = dst2_;
   let kind = kind_;
   let count2 = count2_;
-  let count = count_;
+  let cellValue = cellValue_;
   let limit2 = limit2_;
-  let d4 = d4_;
-  let d5 = d5_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -45994,7 +45994,7 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   let t25 = 0;
   let t26 = 0;
   let t27 = 0;
-  const _t0 = tick(72, 0x06460) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', limit2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(72, 0x06460) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', limit2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t0) takeIrq(); }
   push(0x1, 4);
   t0 = load16(dst2 + 0x8);
   t1 = t0;
@@ -46009,10 +46009,10 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', count2);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', limit2);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x02b88, 0x0646c);
   if (halted()) return;
@@ -46025,14 +46025,14 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   dst2 = getReg('a6');
   kind = getReg('d0');
   count2 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   limit2 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(16, 0x0646c) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', limit2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(16, 0x0646c) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', limit2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t1) takeIrq(); }
   drop(6);
-  const _t18 = tick(82, 0x0655e) ? 1 : 0; if (_t18 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', limit2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t18) takeIrq(); }
+  const _t18 = tick(82, 0x0655e) ? 1 : 0; if (_t18 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', limit2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t18) takeIrq(); }
   t2 = load32(dst2 + -0x8);
   t3 = t2;
   t4 = 0x1000;
@@ -46053,7 +46053,7 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   count2 = ((count2 & 0xffff0000) | (((count2 & 65535) - t15) & 65535));
   t16 = (count2 & 65535);
   store16(dst2 + -0x4, t16);
-  dst = (d4) >>> 0;
+  dst = (cellAddr) >>> 0;
   t17 = load8(dst);
   if ((((d6 & 255)) & 255) !== ((t17) & 255)) {
     setXSub(t12, t14, 16);
@@ -46067,15 +46067,15 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
     setReg('a6', dst2);
     setReg('d0', kind);
     setReg('d1', count2);
-    setReg('d2', count);
+    setReg('d2', cellValue);
     setReg('d3', limit2);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', limit2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0634a);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', limit2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', limit2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); jumpRom(0x0634a);
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', limit2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
   }
-  const _t19 = tick(76, 0x0657c) ? 1 : 0; if (_t19 || SPILL_ALL) { setXSub(t12, t14, 16); setFlagsCmp((d6 & 255), t17, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', limit2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t19) takeIrq(); }
+  const _t19 = tick(76, 0x0657c) ? 1 : 0; if (_t19 || SPILL_ALL) { setXSub(t12, t14, 16); setFlagsCmp((d6 & 255), t17, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', limit2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t19) takeIrq(); }
   count2 = (0) >>> 0;
   t18 = load16(dst2 + -0xa);
   count2 = ((count2 & 0xffff0000) | (t18 & 65535));
@@ -46095,10 +46095,10 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', count2);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', limit2);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x1204c, 0x0658e);
   if (halted()) return;
@@ -46111,12 +46111,12 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   dst2 = getReg('a6');
   kind = getReg('d0');
   count2 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   limit2 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t20 = tick(162, 0x0658e) ? 1 : 0; if (_t20 || SPILL_ALL) { setXSub(t12, t14, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', limit2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t20) takeIrq(); }
+  const _t20 = tick(162, 0x0658e) ? 1 : 0; if (_t20 || SPILL_ALL) { setXSub(t12, t14, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', limit2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t20) takeIrq(); }
   t22 = load32(dst2 + -0xe);
   dst = (t22) >>> 0;
   src = ((dst2 + 0x8)) >>> 0;
@@ -46133,10 +46133,10 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   drop(8);
   t27 = load32(dst2 + -0xe);
   kind = (t27) >>> 0;
-  count = load32((dst2 + -0x34) + 0);
+  cellValue = load32((dst2 + -0x34) + 0);
   limit2 = load32((dst2 + -0x34) + 4);
-  d4 = load32((dst2 + -0x34) + 8);
-  d5 = load32((dst2 + -0x34) + 12);
+  cellAddr = load32((dst2 + -0x34) + 8);
+  ownerBits = load32((dst2 + -0x34) + 12);
   d6 = load32((dst2 + -0x34) + 16);
   a2 = load32((dst2 + -0x34) + 20);
   src2 = load32((dst2 + -0x34) + 24);
@@ -46155,12 +46155,12 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', count2);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', limit2);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', limit2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', src2); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', limit2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); return;
   setReg('a0', dst);
   setReg('a1', src);
   setReg('a2', a2);
@@ -46170,14 +46170,14 @@ export function placementCommit(dst2_: number, kind_: number, count2_: number, c
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', count2);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', limit2);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
 }
 
-export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, a4_: number, a5_: number, dst3_: number, count_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, a4_: number, a5_: number, dst3_: number, cellValue_: number, d3_: number, cellAddr_: number, ownerBits_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -46189,10 +46189,10 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
   let dst3 = dst3_;
   let d0 = getReg('d0');
   let d1 = getReg('d1');
-  let count = count_;
+  let cellValue = cellValue_;
   let d3 = d3_;
-  let d4 = d4_;
-  let d5 = d5_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -46241,8 +46241,8 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
   let t44 = 0;
   let t45 = 0;
   let t46 = 0;
-  const _t0 = tick(122, 0x06472) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
-  d1 = (d4) >>> 0;
+  const _t0 = tick(122, 0x06472) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t0) takeIrq(); }
+  d1 = (cellAddr) >>> 0;
   d0 = (32) >>> 0;
   t0 = d1;
   t1 = d0;
@@ -46254,15 +46254,15 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
   t4 = load8(dst);
   t5 = t4;
   store8(dst3 + -0x1, t5);
-  dst = (d4) >>> 0;
-  t6 = d4;
+  dst = (cellAddr) >>> 0;
+  t6 = cellAddr;
   t7 = 0x1;
-  d4 = ((d4 + 0x1)) >>> 0;
-  t8 = ((count & 255) & 0x3f);
-  count = ((count & 0xffffff00) | (t8 & 255));
-  t9 = ((count & 255) | (d5 & 255));
-  count = ((count & 0xffffff00) | (t9 & 255));
-  t10 = (count & 255);
+  cellAddr = ((cellAddr + 0x1)) >>> 0;
+  t8 = ((cellValue & 255) & 0x3f);
+  cellValue = ((cellValue & 0xffffff00) | (t8 & 255));
+  t9 = ((cellValue & 255) | (ownerBits & 255));
+  cellValue = ((cellValue & 0xffffff00) | (t9 & 255));
+  t10 = (cellValue & 255);
   store8(dst, t10);
   d1 = (0) >>> 0;
   t11 = load8(dst3 + -0x1);
@@ -46272,7 +46272,7 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
   d1 = (t12) >>> 0;
   d0 = (26) >>> 0;
   if (d0 !== d1) {
-    const _t16 = tick(82, 0x0655e) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp(d0, d1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t16) takeIrq(); }
+    const _t16 = tick(82, 0x0655e) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp(d0, d1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t16) takeIrq(); }
     t21 = load32(dst3 + -0x8);
     t22 = t21;
     t23 = 0x1000;
@@ -46293,7 +46293,7 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
     d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - t34) & 65535));
     t35 = (d1 & 65535);
     store16(dst3 + -0x4, t35);
-    dst = (d4) >>> 0;
+    dst = (cellAddr) >>> 0;
     t36 = load8(dst);
     if ((((d6 & 255)) & 255) !== ((t36) & 255)) {
       setXSub(t31, t33, 16);
@@ -46307,15 +46307,15 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
       setReg('a6', dst3);
       setReg('d0', d0);
       setReg('d1', d1);
-      setReg('d2', count);
+      setReg('d2', cellValue);
       setReg('d3', d3);
-      setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d4', cellAddr);
+      setReg('d5', ownerBits);
       setReg('d6', d6);
-      setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0634a);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);     return;
+      setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); jumpRom(0x0634a);
+  setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);     return;
     }
-    const _t17 = tick(76, 0x0657c) ? 1 : 0; if (_t17 || SPILL_ALL) { setXSub(t31, t33, 16); setFlagsCmp((d6 & 255), t36, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t17) takeIrq(); }
+    const _t17 = tick(76, 0x0657c) ? 1 : 0; if (_t17 || SPILL_ALL) { setXSub(t31, t33, 16); setFlagsCmp((d6 & 255), t36, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t17) takeIrq(); }
     d1 = (0) >>> 0;
     t37 = load16(dst3 + -0xa);
     d1 = ((d1 & 0xffff0000) | (t37 & 65535));
@@ -46335,10 +46335,10 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
     setReg('a6', dst3);
     setReg('d0', d0);
     setReg('d1', d1);
-    setReg('d2', count);
+    setReg('d2', cellValue);
     setReg('d3', d3);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
     callRom(0x1204c, 0x0658e);
     if (halted()) return;
@@ -46351,12 +46351,12 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
     dst3 = getReg('a6');
     d0 = getReg('d0');
     d1 = getReg('d1');
-    count = getReg('d2');
+    cellValue = getReg('d2');
     d3 = getReg('d3');
-    d4 = getReg('d4');
-    d5 = getReg('d5');
+    cellAddr = getReg('d4');
+    ownerBits = getReg('d5');
     d6 = getReg('d6');
-    const _t18 = tick(162, 0x0658e) ? 1 : 0; if (_t18 || SPILL_ALL) { setXSub(t31, t33, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t18) takeIrq(); }
+    const _t18 = tick(162, 0x0658e) ? 1 : 0; if (_t18 || SPILL_ALL) { setXSub(t31, t33, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t18) takeIrq(); }
     t41 = load32(dst3 + -0xe);
     dst = (t41) >>> 0;
     src = ((dst3 + 0x8)) >>> 0;
@@ -46373,10 +46373,10 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
     drop(8);
     t46 = load32(dst3 + -0xe);
     d0 = (t46) >>> 0;
-    count = load32((dst3 + -0x34) + 0);
+    cellValue = load32((dst3 + -0x34) + 0);
     d3 = load32((dst3 + -0x34) + 4);
-    d4 = load32((dst3 + -0x34) + 8);
-    d5 = load32((dst3 + -0x34) + 12);
+    cellAddr = load32((dst3 + -0x34) + 8);
+    ownerBits = load32((dst3 + -0x34) + 12);
     d6 = load32((dst3 + -0x34) + 16);
     dst2 = load32((dst3 + -0x34) + 20);
     ptr = load32((dst3 + -0x34) + 24);
@@ -46395,20 +46395,20 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
     setReg('a6', dst3);
     setReg('d0', d0);
     setReg('d1', d1);
-    setReg('d2', count);
+    setReg('d2', cellValue);
     setReg('d3', d3);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+  setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
   } else {
-    const _t1 = tick(22, 0x0649e) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp(d0, d1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+    const _t1 = tick(22, 0x0649e) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp(d0, d1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t1) takeIrq(); }
     t13 = load8(dst2 + 0x14);
     setXAdd(t6, t7, 32);
     setFlagsCmp(t13, 0, 8);
     if (((t13) & 255) !== ((0) & 255)) {
     } else {
-      const _t2 = tick(44, 0x064a4) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp(t13, 0, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+      const _t2 = tick(44, 0x064a4) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp(t13, 0, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t2) takeIrq(); }
       t14 = load32(ptr);
       t15 = t14;
       push(t15, 4);
@@ -46423,10 +46423,10 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
       setReg('a6', dst3);
       setReg('d0', d0);
       setReg('d1', d1);
-      setReg('d2', count);
+      setReg('d2', cellValue);
       setReg('d3', d3);
-      setReg('d4', d4);
-      setReg('d5', d5);
+      setReg('d4', cellAddr);
+      setReg('d5', ownerBits);
       setReg('d6', d6);
       callRom(0x090e6, 0x064ac);
       if (halted()) return;
@@ -46439,16 +46439,16 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
       dst3 = getReg('a6');
       d0 = getReg('d0');
       d1 = getReg('d1');
-      count = getReg('d2');
+      cellValue = getReg('d2');
       d3 = getReg('d3');
-      d4 = getReg('d4');
-      d5 = getReg('d5');
+      cellAddr = getReg('d4');
+      ownerBits = getReg('d5');
       d6 = getReg('d6');
-      const _t3 = tick(6, 0x064ac) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+      const _t3 = tick(6, 0x064ac) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t3) takeIrq(); }
       drop(4);
       setXAdd(t6, t7, 32);
     }
-    const _t4 = tick(22, 0x064ae) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+    const _t4 = tick(22, 0x064ae) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t4) takeIrq(); }
     t16 = load8(dst2 + 0x14);
     t17 = t16;
     t18 = 0x2;
@@ -46466,13 +46466,13 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
     setReg('a6', dst3);
     setReg('d0', d0);
     setReg('d1', d1);
-    setReg('d2', count);
+    setReg('d2', cellValue);
     setReg('d3', d3);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-    setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x06460);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); jumpRom(0x06460);
+  setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
     setReg('a0', dst);
     setReg('a1', src);
     setReg('a2', dst2);
@@ -46482,12 +46482,12 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
     setReg('a6', dst3);
     setReg('d0', d0);
     setReg('d1', d1);
-    setReg('d2', count);
+    setReg('d2', cellValue);
     setReg('d3', d3);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+  setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('a3', ptr); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst3); setReg('d0', d0); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
   }
   setReg('a0', dst);
   setReg('a1', src);
@@ -46498,14 +46498,14 @@ export function placementCommitFrom1(src_: number, dst2_: number, ptr_: number, 
   setReg('a6', dst3);
   setReg('d0', d0);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
 }
 
-export function placementCommitFrom2(dst3_: number, kind_: number, count2_: number, count_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placementCommitFrom2(dst3_: number, kind_: number, count2_: number, cellValue_: number, d3_: number, cellAddr_: number, ownerBits_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -46517,10 +46517,10 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   let dst3 = dst3_;
   let kind = kind_;
   let count2 = count2_;
-  let count = count_;
+  let cellValue = cellValue_;
   let d3 = d3_;
-  let d4 = d4_;
-  let d5 = d5_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -46555,16 +46555,16 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   let t30 = 0;
   let t31 = 0;
   let t32 = 0;
-  const _t0 = tick(78, 0x064b4) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
-  dst2 = (d4) >>> 0;
-  t0 = d4;
+  const _t0 = tick(78, 0x064b4) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t0) takeIrq(); }
+  dst2 = (cellAddr) >>> 0;
+  t0 = cellAddr;
   t1 = 0x1;
-  d4 = ((d4 + 0x1)) >>> 0;
-  t2 = ((count & 255) & 0x3f);
-  count = ((count & 0xffffff00) | (t2 & 255));
-  t3 = ((count & 255) | (d5 & 255));
-  count = ((count & 0xffffff00) | (t3 & 255));
-  t4 = (count & 255);
+  cellAddr = ((cellAddr + 0x1)) >>> 0;
+  t2 = ((cellValue & 255) & 0x3f);
+  cellValue = ((cellValue & 0xffffff00) | (t2 & 255));
+  t3 = ((cellValue & 255) | (ownerBits & 255));
+  cellValue = ((cellValue & 0xffffff00) | (t3 & 255));
+  t4 = (cellValue & 255);
   store8(dst2, t4);
   t5 = load16(dst3 + 0x8);
   t6 = t5;
@@ -46580,10 +46580,10 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d1', count2);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x02b74, 0x064c8);
   if (halted()) return;
@@ -46596,14 +46596,14 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   dst3 = getReg('a6');
   kind = getReg('d0');
   count2 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(16, 0x064c8) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(16, 0x064c8) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t1) takeIrq(); }
   drop(2);
-  const _t11 = tick(82, 0x0655e) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+  const _t11 = tick(82, 0x0655e) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t11) takeIrq(); }
   t7 = load32(dst3 + -0x8);
   t8 = t7;
   t9 = 0x1000;
@@ -46624,7 +46624,7 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   count2 = ((count2 & 0xffff0000) | (((count2 & 65535) - t20) & 65535));
   t21 = (count2 & 65535);
   store16(dst3 + -0x4, t21);
-  dst = (d4) >>> 0;
+  dst = (cellAddr) >>> 0;
   t22 = load8(dst);
   if ((((d6 & 255)) & 255) !== ((t22) & 255)) {
     setXSub(t17, t19, 16);
@@ -46638,15 +46638,15 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
     setReg('a6', dst3);
     setReg('d0', kind);
     setReg('d1', count2);
-    setReg('d2', count);
+    setReg('d2', cellValue);
     setReg('d3', d3);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0634a);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); jumpRom(0x0634a);
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
   }
-  const _t12 = tick(76, 0x0657c) ? 1 : 0; if (_t12 || SPILL_ALL) { setXSub(t17, t19, 16); setFlagsCmp((d6 & 255), t22, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
+  const _t12 = tick(76, 0x0657c) ? 1 : 0; if (_t12 || SPILL_ALL) { setXSub(t17, t19, 16); setFlagsCmp((d6 & 255), t22, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t12) takeIrq(); }
   count2 = (0) >>> 0;
   t23 = load16(dst3 + -0xa);
   count2 = ((count2 & 0xffff0000) | (t23 & 65535));
@@ -46666,10 +46666,10 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d1', count2);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x1204c, 0x0658e);
   if (halted()) return;
@@ -46682,12 +46682,12 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   dst3 = getReg('a6');
   kind = getReg('d0');
   count2 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t13 = tick(162, 0x0658e) ? 1 : 0; if (_t13 || SPILL_ALL) { setXSub(t17, t19, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
+  const _t13 = tick(162, 0x0658e) ? 1 : 0; if (_t13 || SPILL_ALL) { setXSub(t17, t19, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t13) takeIrq(); }
   t27 = load32(dst3 + -0xe);
   dst = (t27) >>> 0;
   src = ((dst3 + 0x8)) >>> 0;
@@ -46704,10 +46704,10 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   drop(8);
   t32 = load32(dst3 + -0xe);
   kind = (t32) >>> 0;
-  count = load32((dst3 + -0x34) + 0);
+  cellValue = load32((dst3 + -0x34) + 0);
   d3 = load32((dst3 + -0x34) + 4);
-  d4 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  cellAddr = load32((dst3 + -0x34) + 8);
+  ownerBits = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   a2 = load32((dst3 + -0x34) + 20);
   a3 = load32((dst3 + -0x34) + 24);
@@ -46726,12 +46726,12 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d1', count2);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count2); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); return;
   setReg('a0', dst);
   setReg('a1', src);
   setReg('a2', a2);
@@ -46741,14 +46741,14 @@ export function placementCommitFrom2(dst3_: number, kind_: number, count2_: numb
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d1', count2);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
 }
 
-export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_: number, a5_: number, dst2_: number, kind_: number, count_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_: number, a5_: number, dst2_: number, kind_: number, cellValue_: number, d3_: number, cellAddr_: number, ownerBits_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -46760,10 +46760,10 @@ export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_
   let dst2 = dst2_;
   let kind = kind_;
   let d1 = getReg('d1');
-  let count = count_;
+  let cellValue = cellValue_;
   let d3 = d3_;
-  let d4 = d4_;
-  let d5 = d5_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -46791,9 +46791,9 @@ export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_
   let t23 = 0;
   let t24 = 0;
   let t25 = 0;
-  const _t0 = tick(16, 0x064c8) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(16, 0x064c8) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t0) takeIrq(); }
   drop(2);
-  const _t10 = tick(82, 0x0655e) ? 1 : 0; if (_t10 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+  const _t10 = tick(82, 0x0655e) ? 1 : 0; if (_t10 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t10) takeIrq(); }
   t0 = load32(dst2 + -0x8);
   t1 = t0;
   t2 = 0x1000;
@@ -46814,7 +46814,7 @@ export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_
   d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - t13) & 65535));
   t14 = (d1 & 65535);
   store16(dst2 + -0x4, t14);
-  dst = (d4) >>> 0;
+  dst = (cellAddr) >>> 0;
   t15 = load8(dst);
   if ((((d6 & 255)) & 255) !== ((t15) & 255)) {
     setXSub(t10, t12, 16);
@@ -46828,15 +46828,15 @@ export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_
     setReg('a6', dst2);
     setReg('d0', kind);
     setReg('d1', d1);
-    setReg('d2', count);
+    setReg('d2', cellValue);
     setReg('d3', d3);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0634a);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); jumpRom(0x0634a);
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
   }
-  const _t11 = tick(76, 0x0657c) ? 1 : 0; if (_t11 || SPILL_ALL) { setXSub(t10, t12, 16); setFlagsCmp((d6 & 255), t15, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+  const _t11 = tick(76, 0x0657c) ? 1 : 0; if (_t11 || SPILL_ALL) { setXSub(t10, t12, 16); setFlagsCmp((d6 & 255), t15, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t11) takeIrq(); }
   d1 = (0) >>> 0;
   t16 = load16(dst2 + -0xa);
   d1 = ((d1 & 0xffff0000) | (t16 & 65535));
@@ -46856,10 +46856,10 @@ export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x1204c, 0x0658e);
   if (halted()) return;
@@ -46872,12 +46872,12 @@ export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_
   dst2 = getReg('a6');
   kind = getReg('d0');
   d1 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t12 = tick(162, 0x0658e) ? 1 : 0; if (_t12 || SPILL_ALL) { setXSub(t10, t12, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
+  const _t12 = tick(162, 0x0658e) ? 1 : 0; if (_t12 || SPILL_ALL) { setXSub(t10, t12, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t12) takeIrq(); }
   t20 = load32(dst2 + -0xe);
   dst = (t20) >>> 0;
   src = ((dst2 + 0x8)) >>> 0;
@@ -46894,10 +46894,10 @@ export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_
   drop(8);
   t25 = load32(dst2 + -0xe);
   kind = (t25) >>> 0;
-  count = load32((dst2 + -0x34) + 0);
+  cellValue = load32((dst2 + -0x34) + 0);
   d3 = load32((dst2 + -0x34) + 4);
-  d4 = load32((dst2 + -0x34) + 8);
-  d5 = load32((dst2 + -0x34) + 12);
+  cellAddr = load32((dst2 + -0x34) + 8);
+  ownerBits = load32((dst2 + -0x34) + 12);
   d6 = load32((dst2 + -0x34) + 16);
   a2 = load32((dst2 + -0x34) + 20);
   a3 = load32((dst2 + -0x34) + 24);
@@ -46916,12 +46916,12 @@ export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); return;
   setReg('a0', dst);
   setReg('a1', src);
   setReg('a2', a2);
@@ -46931,14 +46931,14 @@ export function placementCommitFrom3(src_: number, a2_: number, a3_: number, a4_
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
 }
 
-export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number, count22_: number, count_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number, count22_: number, cellValue_: number, d3_: number, cellAddr_: number, ownerBits_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -46950,10 +46950,10 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   let dst3 = dst3_;
   let count2 = count2_;
   let count22 = count22_;
-  let count = count_;
+  let cellValue = cellValue_;
   let d3 = d3_;
-  let d4 = d4_;
-  let d5 = d5_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -46991,7 +46991,7 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   let t33 = 0;
   let t34 = 0;
   let t35 = 0;
-  const _t0 = tick(58, 0x064ce) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(58, 0x064ce) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load16(dst3 + 0x8);
   t1 = t0;
   push(t1, 2);
@@ -47007,10 +47007,10 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   setReg('a6', dst3);
   setReg('d0', count2);
   setReg('d1', count22);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x06bc0, 0x064d8);
   if (halted()) return;
@@ -47023,21 +47023,21 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   dst3 = getReg('a6');
   count2 = getReg('d0');
   count22 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(78, 0x064d8) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
-  dst2 = (d4) >>> 0;
-  t3 = d4;
+  const _t1 = tick(78, 0x064d8) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t1) takeIrq(); }
+  dst2 = (cellAddr) >>> 0;
+  t3 = cellAddr;
   t4 = 0x1;
-  d4 = ((d4 + 0x1)) >>> 0;
-  t5 = ((count & 255) & 0x3f);
-  count = ((count & 0xffffff00) | (t5 & 255));
-  t6 = ((count & 255) | (d5 & 255));
-  count = ((count & 0xffffff00) | (t6 & 255));
-  t7 = (count & 255);
+  cellAddr = ((cellAddr + 0x1)) >>> 0;
+  t5 = ((cellValue & 255) & 0x3f);
+  cellValue = ((cellValue & 0xffffff00) | (t5 & 255));
+  t6 = ((cellValue & 255) | (ownerBits & 255));
+  cellValue = ((cellValue & 0xffffff00) | (t6 & 255));
+  t7 = (cellValue & 255);
   store8(dst2, t7);
   t8 = load16(dst3 + 0x8);
   t9 = t8;
@@ -47053,10 +47053,10 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   setReg('a6', dst3);
   setReg('d0', count2);
   setReg('d1', count22);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x02a5c, 0x064ec);
   if (halted()) return;
@@ -47069,15 +47069,15 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   dst3 = getReg('a6');
   count2 = getReg('d0');
   count22 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t2 = tick(10, 0x064ec) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t3, t4, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
-  const _t8 = tick(6, 0x0655c) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t3, t4, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+  const _t2 = tick(10, 0x064ec) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t3, t4, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t8 = tick(6, 0x0655c) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t3, t4, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t8) takeIrq(); }
   drop(8);
-  const _t9 = tick(82, 0x0655e) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t3, t4, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+  const _t9 = tick(82, 0x0655e) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t3, t4, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t9) takeIrq(); }
   t10 = load32(dst3 + -0x8);
   t11 = t10;
   t12 = 0x1000;
@@ -47098,7 +47098,7 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   count22 = ((count22 & 0xffff0000) | (((count22 & 65535) - t23) & 65535));
   t24 = (count22 & 65535);
   store16(dst3 + -0x4, t24);
-  dst = (d4) >>> 0;
+  dst = (cellAddr) >>> 0;
   t25 = load8(dst);
   if ((((d6 & 255)) & 255) !== ((t25) & 255)) {
     setXSub(t20, t22, 16);
@@ -47112,15 +47112,15 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
     setReg('a6', dst3);
     setReg('d0', count2);
     setReg('d1', count22);
-    setReg('d2', count);
+    setReg('d2', cellValue);
     setReg('d3', d3);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0634a);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); jumpRom(0x0634a);
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
   }
-  const _t10 = tick(76, 0x0657c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXSub(t20, t22, 16); setFlagsCmp((d6 & 255), t25, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+  const _t10 = tick(76, 0x0657c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXSub(t20, t22, 16); setFlagsCmp((d6 & 255), t25, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t10) takeIrq(); }
   count22 = (0) >>> 0;
   t26 = load16(dst3 + -0xa);
   count22 = ((count22 & 0xffff0000) | (t26 & 65535));
@@ -47140,10 +47140,10 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   setReg('a6', dst3);
   setReg('d0', count2);
   setReg('d1', count22);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x1204c, 0x0658e);
   if (halted()) return;
@@ -47156,12 +47156,12 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   dst3 = getReg('a6');
   count2 = getReg('d0');
   count22 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t11 = tick(162, 0x0658e) ? 1 : 0; if (_t11 || SPILL_ALL) { setXSub(t20, t22, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+  const _t11 = tick(162, 0x0658e) ? 1 : 0; if (_t11 || SPILL_ALL) { setXSub(t20, t22, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t11) takeIrq(); }
   t30 = load32(dst3 + -0xe);
   dst = (t30) >>> 0;
   src = ((dst3 + 0x8)) >>> 0;
@@ -47178,10 +47178,10 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   drop(8);
   t35 = load32(dst3 + -0xe);
   count2 = (t35) >>> 0;
-  count = load32((dst3 + -0x34) + 0);
+  cellValue = load32((dst3 + -0x34) + 0);
   d3 = load32((dst3 + -0x34) + 4);
-  d4 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  cellAddr = load32((dst3 + -0x34) + 8);
+  ownerBits = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   a2 = load32((dst3 + -0x34) + 20);
   dst32 = load32((dst3 + -0x34) + 24);
@@ -47200,12 +47200,12 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   setReg('a6', dst3);
   setReg('d0', count2);
   setReg('d1', count22);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', dst32); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', count2); setReg('d1', count22); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); return;
   setReg('a0', dst);
   setReg('a1', src);
   setReg('a2', a2);
@@ -47215,21 +47215,21 @@ export function placementCommitFrom4(a2_: number, dst3_: number, count2_: number
   setReg('a6', dst3);
   setReg('d0', count2);
   setReg('d1', count22);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
 }
 
-export function placementCommitFrom5(ptr_: number, paletteBase2_: number, count2_: number, d5_: number): void {
+export function placementCommitFrom5(ptr_: number, cellValue_: number, cellAddr_: number, ownerBits_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a5');
   let ptr = ptr_;
-  let paletteBase2 = paletteBase2_;
-  let count2 = count2_;
-  let d5 = d5_;
+  let cellValue = cellValue_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -47237,16 +47237,16 @@ export function placementCommitFrom5(ptr_: number, paletteBase2_: number, count2
   let t4 = 0;
   let t5 = 0;
   let t6 = 0;
-  const _t0 = tick(78, 0x064ee) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a5', dst); setReg('a6', ptr); setReg('d2', paletteBase2); setReg('d4', count2); setReg('d5', d5); if (_t0) takeIrq(); }
-  dst = (count2) >>> 0;
-  t0 = count2;
+  const _t0 = tick(78, 0x064ee) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a5', dst); setReg('a6', ptr); setReg('d2', cellValue); setReg('d4', cellAddr); setReg('d5', ownerBits); if (_t0) takeIrq(); }
+  dst = (cellAddr) >>> 0;
+  t0 = cellAddr;
   t1 = 0x1;
-  count2 = ((count2 + 0x1)) >>> 0;
-  t2 = ((paletteBase2 & 255) & 0x3f);
-  paletteBase2 = ((paletteBase2 & 0xffffff00) | (t2 & 255));
-  t3 = ((paletteBase2 & 255) | (d5 & 255));
-  paletteBase2 = ((paletteBase2 & 0xffffff00) | (t3 & 255));
-  t4 = (paletteBase2 & 255);
+  cellAddr = ((cellAddr + 0x1)) >>> 0;
+  t2 = ((cellValue & 255) & 0x3f);
+  cellValue = ((cellValue & 0xffffff00) | (t2 & 255));
+  t3 = ((cellValue & 255) | (ownerBits & 255));
+  cellValue = ((cellValue & 0xffffff00) | (t3 & 255));
+  t4 = (cellValue & 255);
   store8(dst, t4);
   t5 = load16(ptr + 0x8);
   t6 = t5;
@@ -47255,39 +47255,39 @@ export function placementCommitFrom5(ptr_: number, paletteBase2_: number, count2
   setFlagsCmp(t6, 0, 16);
   setReg('a5', dst);
   setReg('a6', ptr);
-  setReg('d2', paletteBase2);
-  setReg('d4', count2);
-  setReg('d5', d5);
+  setReg('d2', cellValue);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   callRom(0x033f4, 0x06502);
   if (halted()) return;
   dst = getReg('a5');
   ptr = getReg('a6');
-  paletteBase2 = getReg('d2');
-  count2 = getReg('d4');
-  d5 = getReg('d5');
-  const _t1 = tick(10, 0x06502) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a5', dst); setReg('a6', ptr); setReg('d2', paletteBase2); setReg('d4', count2); setReg('d5', d5); if (_t1) takeIrq(); }
+  cellValue = getReg('d2');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
+  const _t1 = tick(10, 0x06502) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a5', dst); setReg('a6', ptr); setReg('d2', cellValue); setReg('d4', cellAddr); setReg('d5', ownerBits); if (_t1) takeIrq(); }
   setXAdd(t0, t1, 32);
   setReg('a5', dst);
   setReg('a6', ptr);
-  setReg('d2', paletteBase2);
-  setReg('d4', count2);
-  setReg('d5', d5);
-  setReg('a5', dst); setReg('a6', ptr); setReg('d2', paletteBase2); setReg('d4', count2); setReg('d5', d5); jumpRom(0x064c8);
-  setReg('a5', dst); setReg('a6', ptr); setReg('d2', paletteBase2); setReg('d4', count2); setReg('d5', d5); return;
+  setReg('d2', cellValue);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
+  setReg('a5', dst); setReg('a6', ptr); setReg('d2', cellValue); setReg('d4', cellAddr); setReg('d5', ownerBits); jumpRom(0x064c8);
+  setReg('a5', dst); setReg('a6', ptr); setReg('d2', cellValue); setReg('d4', cellAddr); setReg('d5', ownerBits); return;
   setReg('a5', dst);
   setReg('a6', ptr);
-  setReg('d2', paletteBase2);
-  setReg('d4', count2);
-  setReg('d5', d5);
-  setReg('a5', dst); setReg('a6', ptr); setReg('d2', paletteBase2); setReg('d4', count2); setReg('d5', d5); return;
+  setReg('d2', cellValue);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
+  setReg('a5', dst); setReg('a6', ptr); setReg('d2', cellValue); setReg('d4', cellAddr); setReg('d5', ownerBits); return;
   setReg('a5', dst);
   setReg('a6', ptr);
-  setReg('d2', paletteBase2);
-  setReg('d4', count2);
-  setReg('d5', d5);
+  setReg('d2', cellValue);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
 }
 
-export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, count2_: number, d3_: number, count22_: number, d5_: number, d6_: number): void {
+export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, cellValue_: number, d3_: number, cellAddr_: number, ownerBits_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -47299,10 +47299,10 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   let dst4 = dst4_;
   let kind = getReg('d0');
   let count = getReg('d1');
-  let count2 = count2_;
+  let cellValue = cellValue_;
   let d3 = d3_;
-  let count22 = count22_;
-  let d5 = d5_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -47343,7 +47343,7 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   let t36 = 0;
   let t37 = 0;
   let t38 = 0;
-  const _t0 = tick(200, 0x06504) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', count2); setReg('d3', d3); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(200, 0x06504) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t0) takeIrq(); }
   dst = ((dst4 + 0x8)) >>> 0;
   dst2 = ((a2 + 0x3c)) >>> 0;
   t0 = load8(dst);
@@ -47356,11 +47356,11 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   t3 = t2;
   store8(dst2, t3);
   dst2 = (dst2 + 1);
-  dst3 = (count22) >>> 0;
-  t4 = (d5 & 255);
+  dst3 = (cellAddr) >>> 0;
+  t4 = (ownerBits & 255);
   store8(dst3, t4);
   dst3 = (dst3 + 1);
-  count22 = (dst3) >>> 0;
+  cellAddr = (dst3) >>> 0;
   count = (0) >>> 0;
   t5 = load16(dst4 + -0xa);
   count = ((count & 0xffff0000) | (t5 & 65535));
@@ -47390,10 +47390,10 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   setReg('a6', dst4);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', count2);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x11efe, 0x06538);
   if (halted()) return;
@@ -47406,14 +47406,14 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   dst4 = getReg('a6');
   kind = getReg('d0');
   count = getReg('d1');
-  count2 = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  count22 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(24, 0x06538) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t10, t11, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', count2); setReg('d3', d3); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(24, 0x06538) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t10, t11, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t1) takeIrq(); }
   drop(12);
-  const _t4 = tick(82, 0x0655e) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t10, t11, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', count2); setReg('d3', d3); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+  const _t4 = tick(82, 0x0655e) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t10, t11, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t4) takeIrq(); }
   t13 = load32(dst4 + -0x8);
   t14 = t13;
   t15 = 0x1000;
@@ -47434,7 +47434,7 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   count = ((count & 0xffff0000) | (((count & 65535) - t26) & 65535));
   t27 = (count & 65535);
   store16(dst4 + -0x4, t27);
-  dst = (count22) >>> 0;
+  dst = (cellAddr) >>> 0;
   t28 = load8(dst);
   if ((((d6 & 255)) & 255) !== ((t28) & 255)) {
     setXSub(t23, t25, 16);
@@ -47448,15 +47448,15 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
     setReg('a6', dst4);
     setReg('d0', kind);
     setReg('d1', count);
-    setReg('d2', count2);
+    setReg('d2', cellValue);
     setReg('d3', d3);
-    setReg('d4', count22);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-    setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', count2); setReg('d3', d3); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0634a);
-  setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', count2); setReg('d3', d3); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); jumpRom(0x0634a);
+  setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
   }
-  const _t5 = tick(76, 0x0657c) ? 1 : 0; if (_t5 || SPILL_ALL) { setXSub(t23, t25, 16); setFlagsCmp((d6 & 255), t28, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', count2); setReg('d3', d3); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+  const _t5 = tick(76, 0x0657c) ? 1 : 0; if (_t5 || SPILL_ALL) { setXSub(t23, t25, 16); setFlagsCmp((d6 & 255), t28, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t5) takeIrq(); }
   count = (0) >>> 0;
   t29 = load16(dst4 + -0xa);
   count = ((count & 0xffff0000) | (t29 & 65535));
@@ -47476,10 +47476,10 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   setReg('a6', dst4);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', count2);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x1204c, 0x0658e);
   if (halted()) return;
@@ -47492,12 +47492,12 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   dst4 = getReg('a6');
   kind = getReg('d0');
   count = getReg('d1');
-  count2 = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  count22 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t6 = tick(162, 0x0658e) ? 1 : 0; if (_t6 || SPILL_ALL) { setXSub(t23, t25, 16); setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', count2); setReg('d3', d3); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+  const _t6 = tick(162, 0x0658e) ? 1 : 0; if (_t6 || SPILL_ALL) { setXSub(t23, t25, 16); setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t6) takeIrq(); }
   t33 = load32(dst4 + -0xe);
   dst = (t33) >>> 0;
   dst2 = ((dst4 + 0x8)) >>> 0;
@@ -47514,10 +47514,10 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   drop(8);
   t38 = load32(dst4 + -0xe);
   kind = (t38) >>> 0;
-  count2 = load32((dst4 + -0x34) + 0);
+  cellValue = load32((dst4 + -0x34) + 0);
   d3 = load32((dst4 + -0x34) + 4);
-  count22 = load32((dst4 + -0x34) + 8);
-  d5 = load32((dst4 + -0x34) + 12);
+  cellAddr = load32((dst4 + -0x34) + 8);
+  ownerBits = load32((dst4 + -0x34) + 12);
   d6 = load32((dst4 + -0x34) + 16);
   a2 = load32((dst4 + -0x34) + 20);
   a3 = load32((dst4 + -0x34) + 24);
@@ -47536,12 +47536,12 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   setReg('a6', dst4);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', count2);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', count2); setReg('d3', d3); setReg('d4', count22); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', dst); setReg('a1', dst2); setReg('a2', a2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', dst3); setReg('a6', dst4); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); return;
   setReg('a0', dst);
   setReg('a1', dst2);
   setReg('a2', a2);
@@ -47551,14 +47551,14 @@ export function placementCommitFrom6(a2_: number, ptr_: number, dst4_: number, c
   setReg('a6', dst4);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', count2);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', count22);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
 }
 
-export function placementCommitFrom7(dst3_: number, kind_: number, count3_: number, count2_: number, d4_: number, d5_: number, d6_: number): void {
+export function placementCommitFrom7(dst3_: number, kind_: number, cellValue_: number, count2_: number, cellAddr_: number, ownerBits_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -47570,10 +47570,10 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   let dst3 = dst3_;
   let kind = kind_;
   let count = getReg('d1');
-  let count3 = count3_;
+  let cellValue = cellValue_;
   let count2 = count2_;
-  let d4 = d4_;
-  let d5 = d5_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -47610,16 +47610,16 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   let t32 = 0;
   let t33 = 0;
   let t34 = 0;
-  const _t0 = tick(108, 0x0653e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', count3); setReg('d3', count2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
-  dst2 = (d4) >>> 0;
-  t0 = d4;
+  const _t0 = tick(108, 0x0653e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', count2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t0) takeIrq(); }
+  dst2 = (cellAddr) >>> 0;
+  t0 = cellAddr;
   t1 = 0x1;
-  d4 = ((d4 + 0x1)) >>> 0;
-  t2 = ((count3 & 255) & 0x3f);
-  count3 = ((count3 & 0xffffff00) | (t2 & 255));
-  t3 = ((count3 & 255) | (d5 & 255));
-  count3 = ((count3 & 0xffffff00) | (t3 & 255));
-  t4 = (count3 & 255);
+  cellAddr = ((cellAddr + 0x1)) >>> 0;
+  t2 = ((cellValue & 255) & 0x3f);
+  cellValue = ((cellValue & 0xffffff00) | (t2 & 255));
+  t3 = ((cellValue & 255) | (ownerBits & 255));
+  cellValue = ((cellValue & 0xffffff00) | (t3 & 255));
+  t4 = (cellValue & 255);
   store8(dst2, t4);
   count = (0) >>> 0;
   t5 = load16(dst3 + -0xa);
@@ -47640,10 +47640,10 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', count3);
+  setReg('d2', cellValue);
   setReg('d3', count2);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x11ff8, 0x0655c);
   if (halted()) return;
@@ -47656,14 +47656,14 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   dst3 = getReg('a6');
   kind = getReg('d0');
   count = getReg('d1');
-  count3 = getReg('d2');
+  cellValue = getReg('d2');
   count2 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(6, 0x0655c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', count3); setReg('d3', count2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(6, 0x0655c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', count2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t1) takeIrq(); }
   drop(8);
-  const _t2 = tick(82, 0x0655e) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', count3); setReg('d3', count2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(82, 0x0655e) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t0, t1, 32); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', count2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t2) takeIrq(); }
   t9 = load32(dst3 + -0x8);
   t10 = t9;
   t11 = 0x1000;
@@ -47684,7 +47684,7 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   count = ((count & 0xffff0000) | (((count & 65535) - t22) & 65535));
   t23 = (count & 65535);
   store16(dst3 + -0x4, t23);
-  dst = (d4) >>> 0;
+  dst = (cellAddr) >>> 0;
   t24 = load8(dst);
   if ((((d6 & 255)) & 255) !== ((t24) & 255)) {
     setXSub(t19, t21, 16);
@@ -47698,15 +47698,15 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
     setReg('a6', dst3);
     setReg('d0', kind);
     setReg('d1', count);
-    setReg('d2', count3);
+    setReg('d2', cellValue);
     setReg('d3', count2);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', count3); setReg('d3', count2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0634a);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', count3); setReg('d3', count2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', count2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); jumpRom(0x0634a);
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', count2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
   }
-  const _t3 = tick(76, 0x0657c) ? 1 : 0; if (_t3 || SPILL_ALL) { setXSub(t19, t21, 16); setFlagsCmp((d6 & 255), t24, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', count3); setReg('d3', count2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(76, 0x0657c) ? 1 : 0; if (_t3 || SPILL_ALL) { setXSub(t19, t21, 16); setFlagsCmp((d6 & 255), t24, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', count2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t3) takeIrq(); }
   count = (0) >>> 0;
   t25 = load16(dst3 + -0xa);
   count = ((count & 0xffff0000) | (t25 & 65535));
@@ -47726,10 +47726,10 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', count3);
+  setReg('d2', cellValue);
   setReg('d3', count2);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x1204c, 0x0658e);
   if (halted()) return;
@@ -47742,12 +47742,12 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   dst3 = getReg('a6');
   kind = getReg('d0');
   count = getReg('d1');
-  count3 = getReg('d2');
+  cellValue = getReg('d2');
   count2 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t4 = tick(162, 0x0658e) ? 1 : 0; if (_t4 || SPILL_ALL) { setXSub(t19, t21, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', count3); setReg('d3', count2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+  const _t4 = tick(162, 0x0658e) ? 1 : 0; if (_t4 || SPILL_ALL) { setXSub(t19, t21, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', count2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t4) takeIrq(); }
   t29 = load32(dst3 + -0xe);
   dst = (t29) >>> 0;
   src = ((dst3 + 0x8)) >>> 0;
@@ -47764,10 +47764,10 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   drop(8);
   t34 = load32(dst3 + -0xe);
   kind = (t34) >>> 0;
-  count3 = load32((dst3 + -0x34) + 0);
+  cellValue = load32((dst3 + -0x34) + 0);
   count2 = load32((dst3 + -0x34) + 4);
-  d4 = load32((dst3 + -0x34) + 8);
-  d5 = load32((dst3 + -0x34) + 12);
+  cellAddr = load32((dst3 + -0x34) + 8);
+  ownerBits = load32((dst3 + -0x34) + 12);
   d6 = load32((dst3 + -0x34) + 16);
   a2 = load32((dst3 + -0x34) + 20);
   a3 = load32((dst3 + -0x34) + 24);
@@ -47786,12 +47786,12 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', count3);
+  setReg('d2', cellValue);
   setReg('d3', count2);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', count3); setReg('d3', count2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', dst2); setReg('a6', dst3); setReg('d0', kind); setReg('d1', count); setReg('d2', cellValue); setReg('d3', count2); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); return;
   setReg('a0', dst);
   setReg('a1', src);
   setReg('a2', a2);
@@ -47801,14 +47801,14 @@ export function placementCommitFrom7(dst3_: number, kind_: number, count3_: numb
   setReg('a6', dst3);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', count3);
+  setReg('d2', cellValue);
   setReg('d3', count2);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
 }
 
-export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_: number, a5_: number, dst2_: number, kind_: number, count_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_: number, a5_: number, dst2_: number, kind_: number, cellValue_: number, d3_: number, cellAddr_: number, ownerBits_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -47820,10 +47820,10 @@ export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_
   let dst2 = dst2_;
   let kind = kind_;
   let d1 = getReg('d1');
-  let count = count_;
+  let cellValue = cellValue_;
   let d3 = d3_;
-  let d4 = d4_;
-  let d5 = d5_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -47851,7 +47851,7 @@ export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_
   let t23 = 0;
   let t24 = 0;
   let t25 = 0;
-  const _t0 = tick(82, 0x0655e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(82, 0x0655e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t0) takeIrq(); }
   t0 = load32(dst2 + -0x8);
   t1 = t0;
   t2 = 0x1000;
@@ -47872,7 +47872,7 @@ export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_
   d1 = ((d1 & 0xffff0000) | (((d1 & 65535) - t13) & 65535));
   t14 = (d1 & 65535);
   store16(dst2 + -0x4, t14);
-  dst = (d4) >>> 0;
+  dst = (cellAddr) >>> 0;
   t15 = load8(dst);
   if ((((d6 & 255)) & 255) !== ((t15) & 255)) {
     setXSub(t10, t12, 16);
@@ -47886,15 +47886,15 @@ export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_
     setReg('a6', dst2);
     setReg('d0', kind);
     setReg('d1', d1);
-    setReg('d2', count);
+    setReg('d2', cellValue);
     setReg('d3', d3);
-    setReg('d4', d4);
-    setReg('d5', d5);
+    setReg('d4', cellAddr);
+    setReg('d5', ownerBits);
     setReg('d6', d6);
-    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0634a);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); jumpRom(0x0634a);
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6);   return;
   }
-  const _t1 = tick(76, 0x0657c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXSub(t10, t12, 16); setFlagsCmp((d6 & 255), t15, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(76, 0x0657c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXSub(t10, t12, 16); setFlagsCmp((d6 & 255), t15, 8); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t1) takeIrq(); }
   d1 = (0) >>> 0;
   t16 = load16(dst2 + -0xa);
   d1 = ((d1 & 0xffff0000) | (t16 & 65535));
@@ -47914,10 +47914,10 @@ export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x1204c, 0x0658e);
   if (halted()) return;
@@ -47930,12 +47930,12 @@ export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_
   dst2 = getReg('a6');
   kind = getReg('d0');
   d1 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t2 = tick(162, 0x0658e) ? 1 : 0; if (_t2 || SPILL_ALL) { setXSub(t10, t12, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(162, 0x0658e) ? 1 : 0; if (_t2 || SPILL_ALL) { setXSub(t10, t12, 16); setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t2) takeIrq(); }
   t20 = load32(dst2 + -0xe);
   dst = (t20) >>> 0;
   src = ((dst2 + 0x8)) >>> 0;
@@ -47952,10 +47952,10 @@ export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_
   drop(8);
   t25 = load32(dst2 + -0xe);
   kind = (t25) >>> 0;
-  count = load32((dst2 + -0x34) + 0);
+  cellValue = load32((dst2 + -0x34) + 0);
   d3 = load32((dst2 + -0x34) + 4);
-  d4 = load32((dst2 + -0x34) + 8);
-  d5 = load32((dst2 + -0x34) + 12);
+  cellAddr = load32((dst2 + -0x34) + 8);
+  ownerBits = load32((dst2 + -0x34) + 12);
   d6 = load32((dst2 + -0x34) + 16);
   a2 = load32((dst2 + -0x34) + 20);
   a3 = load32((dst2 + -0x34) + 24);
@@ -47974,12 +47974,12 @@ export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst2); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); return;
   setReg('a0', dst);
   setReg('a1', src);
   setReg('a2', a2);
@@ -47989,14 +47989,14 @@ export function placementCommitFrom8(src_: number, a2_: number, a3_: number, a4_
   setReg('a6', dst2);
   setReg('d0', kind);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
 }
 
-export function placementCommitFrom9(ptr_: number, kind_: number, count_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function placementCommitFrom9(ptr_: number, kind_: number, cellValue_: number, d3_: number, cellAddr_: number, ownerBits_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -48008,10 +48008,10 @@ export function placementCommitFrom9(ptr_: number, kind_: number, count_: number
   let ptr = ptr_;
   let kind = kind_;
   let d1 = getReg('d1');
-  let count = count_;
+  let cellValue = cellValue_;
   let d3 = d3_;
-  let d4 = d4_;
-  let d5 = d5_;
+  let cellAddr = cellAddr_;
+  let ownerBits = ownerBits_;
   let d6 = d6_;
   let t0 = 0;
   let t1 = 0;
@@ -48023,7 +48023,7 @@ export function placementCommitFrom9(ptr_: number, kind_: number, count_: number
   let t7 = 0;
   let t8 = 0;
   let t9 = 0;
-  const _t0 = tick(76, 0x0657c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(76, 0x0657c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t0) takeIrq(); }
   d1 = (0) >>> 0;
   t0 = load16(ptr + -0xa);
   d1 = ((d1 & 0xffff0000) | (t0 & 65535));
@@ -48042,10 +48042,10 @@ export function placementCommitFrom9(ptr_: number, kind_: number, count_: number
   setReg('a6', ptr);
   setReg('d0', kind);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
   callRom(0x1204c, 0x0658e);
   if (halted()) return;
@@ -48058,12 +48058,12 @@ export function placementCommitFrom9(ptr_: number, kind_: number, count_: number
   ptr = getReg('a6');
   kind = getReg('d0');
   d1 = getReg('d1');
-  count = getReg('d2');
+  cellValue = getReg('d2');
   d3 = getReg('d3');
-  d4 = getReg('d4');
-  d5 = getReg('d5');
+  cellAddr = getReg('d4');
+  ownerBits = getReg('d5');
   d6 = getReg('d6');
-  const _t1 = tick(162, 0x0658e) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(162, 0x0658e) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); if (_t1) takeIrq(); }
   t4 = load32(ptr + -0xe);
   dst = (t4) >>> 0;
   src = ((ptr + 0x8)) >>> 0;
@@ -48080,10 +48080,10 @@ export function placementCommitFrom9(ptr_: number, kind_: number, count_: number
   drop(8);
   t9 = load32(ptr + -0xe);
   kind = (t9) >>> 0;
-  count = load32((ptr + -0x34) + 0);
+  cellValue = load32((ptr + -0x34) + 0);
   d3 = load32((ptr + -0x34) + 4);
-  d4 = load32((ptr + -0x34) + 8);
-  d5 = load32((ptr + -0x34) + 12);
+  cellAddr = load32((ptr + -0x34) + 8);
+  ownerBits = load32((ptr + -0x34) + 12);
   d6 = load32((ptr + -0x34) + 16);
   a2 = load32((ptr + -0x34) + 20);
   a3 = load32((ptr + -0x34) + 24);
@@ -48101,12 +48101,12 @@ export function placementCommitFrom9(ptr_: number, kind_: number, count_: number
   setReg('a6', ptr);
   setReg('d0', kind);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
-  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', kind); setReg('d1', d1); setReg('d2', count); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a0', dst); setReg('a1', src); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', kind); setReg('d1', d1); setReg('d2', cellValue); setReg('d3', d3); setReg('d4', cellAddr); setReg('d5', ownerBits); setReg('d6', d6); return;
   setReg('a0', dst);
   setReg('a1', src);
   setReg('a2', a2);
@@ -48116,10 +48116,10 @@ export function placementCommitFrom9(ptr_: number, kind_: number, count_: number
   setReg('a6', ptr);
   setReg('d0', kind);
   setReg('d1', d1);
-  setReg('d2', count);
+  setReg('d2', cellValue);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', cellAddr);
+  setReg('d5', ownerBits);
   setReg('d6', d6);
 }
 

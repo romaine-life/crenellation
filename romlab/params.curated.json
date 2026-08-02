@@ -2420,5 +2420,245 @@
       "name": "answerAt",
       "why": "written through with `move.w d0,(a3)` - where the caller wants the word result put, rather than a value returned."
     }
+  },
+  "0x6460": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x6472": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x64b4": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x64c8": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x64ce": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x64ee": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x6504": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x653e": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x655e": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x657c": {
+    "d4": {
+      "name": "cellAddr",
+      "why": "the cell being written, advanced by the routine itself with `addq.l #$1,d4` - so it is a running address and not a fixed one."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f before the owner bits are or-ed in, so only its low six bits - the kind - survive into the board."
+    },
+    "d5": {
+      "name": "ownerBits",
+      "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    }
+  },
+  "0x3a4a": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
+  },
+  "0x3a7e": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
+  },
+  "0x3ac6": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
+  },
+  "0x3b06": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
+  },
+  "0x3b0e": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
+  },
+  "0x3b2c": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
+  },
+  "0x3b34": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
+  },
+  "0x3b3c": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
+  },
+  "0x3b4c": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
+  },
+  "0x3b54": {
+    "d5": {
+      "name": "ownerIndex",
+      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+    },
+    "d3": {
+      "name": "tableBase",
+      "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    }
   }
 }
