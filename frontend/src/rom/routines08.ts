@@ -4,7 +4,7 @@
 import { PendingInterrupt, type Machine } from './machine';
 import { call } from './dispatch';
 
-/** routine */
+/** small leaf utility */
 export function fn_133a6(m: Machine, at = 0x133a6): void {
   let pc = at;
   for (;;) {
@@ -30,7 +30,7 @@ export function fn_133a6(m: Machine, at = 0x133a6): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** sound IRQ acknowledge */
 export function fn_133b2(m: Machine, at = 0x133b2): void {
   let pc = at;
   for (;;) {
@@ -925,7 +925,7 @@ export function fn_1397a(m: Machine, at = 0x1397a): void {
   }
 }
 
-/** routine */
+/** register-save leaf routine */
 export function fn_13b8c(m: Machine, at = 0x13b8c): void {
   let pc = at;
   for (;;) {
@@ -974,7 +974,7 @@ export function fn_13b8c(m: Machine, at = 0x13b8c): void {
   }
 }
 
-/** routine */
+/** register-save leaf routine */
 export function fn_13c36(m: Machine, at = 0x13c36): void {
   let pc = at;
   for (;;) {
@@ -1073,7 +1073,7 @@ export function fn_13cda(m: Machine, at = 0x13cda): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_13d1a(m: Machine, at = 0x13d1a): void {
   let pc = at;
   for (;;) {
@@ -2452,7 +2452,7 @@ export function fn_14772(m: Machine, at = 0x14772): void {
   }
 }
 
-/** register-save leaf routine */
+/** start a sound cue */
 export function fn_1485c(m: Machine, at = 0x1485c): void {
   let pc = at;
   for (;;) {
@@ -3209,7 +3209,7 @@ export function fn_14e5c(m: Machine, at = 0x14e5c): void {
   }
 }
 
-/** helper for sound parameter scaler */
+/** read the six by twenty table, or 0xFF */
 export function fn_14eca(m: Machine, at = 0x14eca): void {
   let pc = at;
   for (;;) {
@@ -3857,7 +3857,7 @@ export function fn_1540a(m: Machine, at = 0x1540a): void {
   }
 }
 
-/** routine */
+/** centre two strings in the forty-two column field */
 export function fn_1545c(m: Machine, at = 0x1545c): void {
   let pc = at;
   for (;;) {
@@ -3940,7 +3940,7 @@ export function fn_154a8(m: Machine, at = 0x154a8): void {
   }
 }
 
-/** routine */
+/** call through with the signed pair at 0x3E3D7A */
 export function fn_154de(m: Machine, at = 0x154de): void {
   let pc = at;
   for (;;) {
@@ -4513,7 +4513,7 @@ export function fn_1586a(m: Machine, at = 0x1586a): void {
   }
 }
 
-/** routine */
+/** find the nth colon-separated field of a string */
 export function fn_15914(m: Machine, at = 0x15914): void {
   let pc = at;
   for (;;) {
@@ -4554,7 +4554,7 @@ export function fn_15914(m: Machine, at = 0x15914): void {
   }
 }
 
-/** routine */
+/** arithmetic helper */
 export function fn_1594c(m: Machine, at = 0x1594c): void {
   let pc = at;
   for (;;) {
@@ -5015,7 +5015,7 @@ export function fn_15dfc(m: Machine, at = 0x15dfc): void {
   }
 }
 
-/** routine */
+/** arithmetic helper */
 export function fn_15e50(m: Machine, at = 0x15e50): void {
   let pc = at;
   for (;;) {
@@ -5282,7 +5282,7 @@ export function fn_160ba(m: Machine, at = 0x160ba): void {
   }
 }
 
-/** routine */
+/** or three consecutive bytes together */
 export function fn_160dc(m: Machine, at = 0x160dc): void {
   let pc = at;
   for (;;) {
@@ -5316,7 +5316,7 @@ export function fn_160dc(m: Machine, at = 0x160dc): void {
   }
 }
 
-/** routine */
+/** skip to the nth record in the packed list */
 export function fn_160f8(m: Machine, at = 0x160f8): void {
   let pc = at;
   for (;;) {
@@ -5606,7 +5606,7 @@ export function fn_162d6(m: Machine, at = 0x162d6): void {
   }
 }
 
-/** routine */
+/** arithmetic helper */
 export function fn_16358(m: Machine, at = 0x16358): void {
   let pc = at;
   for (;;) {

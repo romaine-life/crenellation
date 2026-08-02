@@ -545,7 +545,7 @@ export function fn_1a58a(m: Machine, at = 0x1a58a): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x1a5c8 */
 export function fn_1a5c8(m: Machine, at = 0x1a5c8): void {
   let pc = at;
   for (;;) {
@@ -570,7 +570,7 @@ export function fn_1a5c8(m: Machine, at = 0x1a5c8): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x1a5d4 */
 export function fn_1a5d4(m: Machine, at = 0x1a5d4): void {
   let pc = at;
   for (;;) {
@@ -593,7 +593,7 @@ export function fn_1a5d4(m: Machine, at = 0x1a5d4): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x1a5da */
 export function fn_1a5da(m: Machine, at = 0x1a5da): void {
   let pc = at;
   for (;;) {
@@ -616,7 +616,7 @@ export function fn_1a5da(m: Machine, at = 0x1a5da): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x1a5e0 */
 export function fn_1a5e0(m: Machine, at = 0x1a5e0): void {
   let pc = at;
   for (;;) {
@@ -639,7 +639,7 @@ export function fn_1a5e0(m: Machine, at = 0x1a5e0): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1a5e6(m: Machine, at = 0x1a5e6): void {
   let pc = at;
   for (;;) {
@@ -661,7 +661,7 @@ export function fn_1a5e6(m: Machine, at = 0x1a5e6): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1a5ea(m: Machine, at = 0x1a5ea): void {
   let pc = at;
   for (;;) {
@@ -780,7 +780,7 @@ export function fn_1a5f0(m: Machine, at = 0x1a5f0): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1a704(m: Machine, at = 0x1a704): void {
   let pc = at;
   for (;;) {
@@ -806,7 +806,7 @@ export function fn_1a704(m: Machine, at = 0x1a704): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1a71a(m: Machine, at = 0x1a71a): void {
   let pc = at;
   for (;;) {
@@ -838,7 +838,7 @@ export function fn_1a71a(m: Machine, at = 0x1a71a): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1a740(m: Machine, at = 0x1a740): void {
   let pc = at;
   for (;;) {
@@ -930,7 +930,7 @@ export function fn_1a740(m: Machine, at = 0x1a740): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1a808(m: Machine, at = 0x1a808): void {
   let pc = at;
   for (;;) {
@@ -953,7 +953,7 @@ export function fn_1a808(m: Machine, at = 0x1a808): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1a810(m: Machine, at = 0x1a810): void {
   let pc = at;
   for (;;) {
@@ -1259,7 +1259,7 @@ export function fn_1a8c0(m: Machine, at = 0x1a8c0): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1abc6(m: Machine, at = 0x1abc6): void {
   let pc = at;
   for (;;) {
@@ -1295,7 +1295,7 @@ export function fn_1abc6(m: Machine, at = 0x1abc6): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1abf6(m: Machine, at = 0x1abf6): void {
   let pc = at;
   for (;;) {
@@ -1320,7 +1320,7 @@ export function fn_1abf6(m: Machine, at = 0x1abf6): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1ac02(m: Machine, at = 0x1ac02): void {
   let pc = at;
   for (;;) {
@@ -2176,7 +2176,7 @@ export function fn_1b06e(m: Machine, at = 0x1b06e): void {
   }
 }
 
-/** sound driver helper */
+/** strobe the control register through its shadow */
 export function fn_1b11c(m: Machine, at = 0x1b11c): void {
   let pc = at;
   for (;;) {
@@ -2818,7 +2818,7 @@ export function fn_1e6b2(m: Machine, at = 0x1e6b2): void {
   }
 }
 
-/** register-save leaf routine */
+/** decompress the tile with this id */
 export function fn_1e6dc(m: Machine, at = 0x1e6dc): void {
   let pc = at;
   for (;;) {
@@ -3016,7 +3016,7 @@ export function fn_1e7e4(m: Machine, at = 0x1e7e4): void {
   }
 }
 
-/** routine */
+/** register-save leaf routine */
 export function fn_1e834(m: Machine, at = 0x1e834): void {
   let pc = at;
   for (;;) {
@@ -3101,7 +3101,7 @@ export function fn_1e862(m: Machine, at = 0x1e862): void {
   }
 }
 
-/** routine */
+/** process two units and step to the next four-kilobyte block */
 export function fn_1e8be(m: Machine, at = 0x1e8be): void {
   let pc = at;
   for (;;) {
@@ -3126,7 +3126,7 @@ export function fn_1e8be(m: Machine, at = 0x1e8be): void {
   }
 }
 
-/** routine */
+/** process four units and step to the next four-kilobyte block */
 export function fn_1e8c8(m: Machine, at = 0x1e8c8): void {
   let pc = at;
   for (;;) {
@@ -3151,7 +3151,7 @@ export function fn_1e8c8(m: Machine, at = 0x1e8c8): void {
   }
 }
 
-/** palette update */
+/** small leaf utility */
 export function fn_1e8d2(m: Machine, at = 0x1e8d2): void {
   let pc = at;
   for (;;) {
@@ -3173,7 +3173,7 @@ export function fn_1e8d2(m: Machine, at = 0x1e8d2): void {
   }
 }
 
-/** routine */
+/** palette update */
 export function fn_1e8d6(m: Machine, at = 0x1e8d6): void {
   let pc = at;
   for (;;) {
@@ -3256,7 +3256,7 @@ export function fn_1e8d6(m: Machine, at = 0x1e8d6): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_1e9b4(m: Machine, at = 0x1e9b4): void {
   let pc = at;
   for (;;) {
@@ -3281,7 +3281,7 @@ export function fn_1e9b4(m: Machine, at = 0x1e9b4): void {
   }
 }
 
-/** routine */
+/** helper for difficulty clamp */
 export function fn_140010(m: Machine, at = 0x140010): void {
   let pc = at;
   for (;;) {
@@ -3304,7 +3304,7 @@ export function fn_140010(m: Machine, at = 0x140010): void {
   }
 }
 
-/** routine */
+/** helper for player state access */
 export function fn_1400e4(m: Machine, at = 0x1400e4): void {
   let pc = at;
   for (;;) {

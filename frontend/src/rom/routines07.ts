@@ -52,7 +52,7 @@ export function fn_0f4ca(m: Machine, at = 0x0f4ca): void {
   }
 }
 
-/** small leaf utility */
+/** fill a sixteen-byte slot with a word */
 export function fn_0f52c(m: Machine, at = 0x0f52c): void {
   let pc = at;
   for (;;) {
@@ -690,7 +690,7 @@ export function fn_0f936(m: Machine, at = 0x0f936): void {
   }
 }
 
-/** small leaf utility */
+/** return the argument as a pointer */
 export function fn_0fb74(m: Machine, at = 0x0fb74): void {
   let pc = at;
   for (;;) {
@@ -817,7 +817,7 @@ export function fn_0fbe4(m: Machine, at = 0x0fbe4): void {
   }
 }
 
-/** helper used by player state access */
+/** test a word in the protection window */
 export function fn_0fc06(m: Machine, at = 0x0fc06): void {
   let pc = at;
   for (;;) {
@@ -862,7 +862,7 @@ export function fn_0fc0e(m: Machine, at = 0x0fc0e): void {
   }
 }
 
-/** helper for player state access */
+/** read two protection locations */
 export function fn_0fc10(m: Machine, at = 0x0fc10): void {
   let pc = at;
   for (;;) {
@@ -886,7 +886,7 @@ export function fn_0fc10(m: Machine, at = 0x0fc10): void {
   }
 }
 
-/** helper for handler reached through a function-pointer table */
+/** small leaf utility */
 export function fn_0fc1e(m: Machine, at = 0x0fc1e): void {
   let pc = at;
   for (;;) {
@@ -958,7 +958,7 @@ export function fn_0fc3a(m: Machine, at = 0x0fc3a): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_0fc44(m: Machine, at = 0x0fc44): void {
   let pc = at;
   for (;;) {
@@ -980,7 +980,7 @@ export function fn_0fc44(m: Machine, at = 0x0fc44): void {
   }
 }
 
-/** routine */
+/** step the two-bit counter toward its target */
 export function fn_0fc46(m: Machine, at = 0x0fc46): void {
   let pc = at;
   for (;;) {
@@ -1063,7 +1063,7 @@ export function fn_0fc88(m: Machine, at = 0x0fc88): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_0fc9a(m: Machine, at = 0x0fc9a): void {
   let pc = at;
   for (;;) {
@@ -1582,7 +1582,7 @@ export function fn_11eda(m: Machine, at = 0x11eda): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_11ee6(m: Machine, at = 0x11ee6): void {
   let pc = at;
   for (;;) {
@@ -1630,7 +1630,7 @@ export function fn_11ef2(m: Machine, at = 0x11ef2): void {
   }
 }
 
-/** register-save leaf routine */
+/** decompress one eight-pixel column from the tile set */
 export function fn_11efe(m: Machine, at = 0x11efe): void {
   let pc = at;
   for (;;) {
@@ -1825,7 +1825,7 @@ export function fn_12026(m: Machine, at = 0x12026): void {
   }
 }
 
-/** register-save leaf routine */
+/** shift an eight by two block's colour */
 export function fn_1204c(m: Machine, at = 0x1204c): void {
   let pc = at;
   for (;;) {
@@ -1854,7 +1854,7 @@ export function fn_1204c(m: Machine, at = 0x1204c): void {
   }
 }
 
-/** small leaf utility */
+/** shift eight pixels' colour by a delta */
 export function fn_12066(m: Machine, at = 0x12066): void {
   let pc = at;
   for (;;) {
@@ -1882,7 +1882,7 @@ export function fn_12066(m: Machine, at = 0x12066): void {
   }
 }
 
-/** register-save leaf routine */
+/** blit an image whose first word is its width */
 export function fn_12078(m: Machine, at = 0x12078): void {
   let pc = at;
   for (;;) {
@@ -2173,7 +2173,7 @@ export function fn_12222(m: Machine, at = 0x12222): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_1228a(m: Machine, at = 0x1228a): void {
   let pc = at;
   for (;;) {
@@ -2195,7 +2195,7 @@ export function fn_1228a(m: Machine, at = 0x1228a): void {
   }
 }
 
-/** routine */
+/** decoder state: emit the high nibble, then the low */
 export function fn_1228c(m: Machine, at = 0x1228c): void {
   let pc = at;
   for (;;) {
@@ -2223,7 +2223,7 @@ export function fn_1228c(m: Machine, at = 0x1228c): void {
   }
 }
 
-/** routine */
+/** decoder state: emit the low nibble, then the high */
 export function fn_1229e(m: Machine, at = 0x1229e): void {
   let pc = at;
   for (;;) {
@@ -2249,7 +2249,7 @@ export function fn_1229e(m: Machine, at = 0x1229e): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_122ae(m: Machine, at = 0x122ae): void {
   let pc = at;
   for (;;) {
@@ -2272,7 +2272,7 @@ export function fn_122ae(m: Machine, at = 0x122ae): void {
   }
 }
 
-/** routine */
+/** decoder state: emit d0, then d3 */
 export function fn_122b2(m: Machine, at = 0x122b2): void {
   let pc = at;
   for (;;) {
@@ -2296,7 +2296,7 @@ export function fn_122b2(m: Machine, at = 0x122b2): void {
   }
 }
 
-/** routine */
+/** decoder state: emit d3, then d0 */
 export function fn_122bc(m: Machine, at = 0x122bc): void {
   let pc = at;
   for (;;) {
@@ -2420,7 +2420,7 @@ export function fn_1231a(m: Machine, at = 0x1231a): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_1232c(m: Machine, at = 0x1232c): void {
   let pc = at;
   for (;;) {
@@ -2442,7 +2442,7 @@ export function fn_1232c(m: Machine, at = 0x1232c): void {
   }
 }
 
-/** routine */
+/** second decoder state: emit the high nibble, then the low */
 export function fn_1232e(m: Machine, at = 0x1232e): void {
   let pc = at;
   for (;;) {
@@ -2470,7 +2470,7 @@ export function fn_1232e(m: Machine, at = 0x1232e): void {
   }
 }
 
-/** routine */
+/** second decoder state: emit the low nibble, then the high */
 export function fn_12340(m: Machine, at = 0x12340): void {
   let pc = at;
   for (;;) {
@@ -2498,7 +2498,7 @@ export function fn_12340(m: Machine, at = 0x12340): void {
   }
 }
 
-/** register-save leaf routine */
+/** decoder state: emit d4 */
 export function fn_12354(m: Machine, at = 0x12354): void {
   let pc = at;
   for (;;) {
@@ -2522,7 +2522,7 @@ export function fn_12354(m: Machine, at = 0x12354): void {
   }
 }
 
-/** routine */
+/** decoder state: emit d7 */
 export function fn_1235e(m: Machine, at = 0x1235e): void {
   let pc = at;
   for (;;) {
@@ -3127,7 +3127,7 @@ export function fn_1262a(m: Machine, at = 0x1262a): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_1288e(m: Machine, at = 0x1288e): void {
   let pc = at;
   for (;;) {
@@ -3252,7 +3252,7 @@ export function fn_13000(m: Machine, at = 0x13000): void {
   }
 }
 
-/** helper for helper inside the jump-table case at 0x16d3e */
+/** run one memory test with interrupts masked */
 export function fn_130b0(m: Machine, at = 0x130b0): void {
   let pc = at;
   for (;;) {
@@ -3356,7 +3356,7 @@ export function fn_130f8(m: Machine, at = 0x130f8): void {
   }
 }
 
-/** routine */
+/** palette update */
 export function fn_13134(m: Machine, at = 0x13134): void {
   let pc = at;
   for (;;) {

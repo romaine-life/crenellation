@@ -5,8 +5,8 @@ import { dirname, join } from 'node:path';
 import { describe, it, expect } from 'vitest';
 import { PATTERNS, type Pattern } from './patterns';
 import { System } from './system';
-import { call as viaRecompiled } from './dispatch';
-import { call as viaDecompiled, bind, useOracle } from './decompiled';
+import { call as viaRecompiled, useLift } from './dispatch';
+import { call as viaDecompiled, bind, useOracle, useCallee } from './decompiled';
 import { png } from './png';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -48,6 +48,17 @@ function lit(entry: (a: number, m: System['m']) => void, label: string,
   // register-borne re-entry looks exactly like a fault in the routine.
   const split = process.env.BISECT === undefined ? -1 : Number(process.env.BISECT);
   const only = process.env.ONLY === undefined ? -1 : Number(process.env.ONLY);
+  // ISOLATE=addr runs the WHOLE game on the oracle and routes exactly one
+  // routine to the lift, with that routine's own callees handed straight back.
+  // Both hooks are needed - useLift in the recompilation, useCallee in the lift
+  // - because without them whichever dispatcher receives an address keeps
+  // everything that address calls, which is how a subtree was reported as a
+  // routine. Sanity check: an address no routine starts at must give 0 px.
+  const iso = process.env.ISOLATE === undefined ? -1 : Number(process.env.ISOLATE);
+  if (iso >= 0 && label.startsWith('dec')) {
+    useLift({ pick: (a: number) => a >= iso, run: viaDecompiled });
+    useCallee(viaRecompiled);
+  } else { useLift(null); }
   useOracle(!label.startsWith('dec') || (split < 0 && only < 0) ? null
     : only >= 0 ? { pick: (a: number) => a === only, run: viaRecompiled }
       : { pick: (a: number) => a >= split, run: viaRecompiled });
@@ -97,7 +108,7 @@ describe('drawing', () => {
       // a Windows filename - the PNGs came out extensionless and unopenable.
       const tag = p.name.replace(/[^a-z0-9]+/gi, '-').slice(0, 16);
       const x = lit(viaRecompiled, `rec-${tag}`, p);
-      const y = lit(viaDecompiled, `dec-${tag}`, p);
+      const y = lit(process.env.ISOLATE === undefined ? viaDecompiled : viaRecompiled, `dec-${tag}`, p);
       let d = 0;
       for (let i = 0; i < x.screen.length; i += 1) if (x.screen[i] !== y.screen[i]) d += 1;
       seen.push(`${p.name}: ${d}`);

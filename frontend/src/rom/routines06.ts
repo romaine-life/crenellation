@@ -790,7 +790,7 @@ export function fn_0d490(m: Machine, at = 0x0d490): void {
   }
 }
 
-/** player state access */
+/** reset everything and take all three players out of play */
 export function fn_0d696(m: Machine, at = 0x0d696): void {
   let pc = at;
   for (;;) {
@@ -887,7 +887,7 @@ export function fn_0d6e6(m: Machine, at = 0x0d6e6): void {
   }
 }
 
-/** routine */
+/** player state access */
 export function fn_0d74e(m: Machine, at = 0x0d74e): void {
   let pc = at;
   for (;;) {
@@ -1228,7 +1228,7 @@ export function fn_0d916(m: Machine, at = 0x0d916): void {
   }
 }
 
-/** routine */
+/** copy 1344 bytes and return the count */
 export function fn_0dabc(m: Machine, at = 0x0dabc): void {
   let pc = at;
   for (;;) {
@@ -2458,7 +2458,7 @@ export function fn_0e3b0(m: Machine, at = 0x0e3b0): void {
   }
 }
 
-/** computed-jump entry at 0x0e516 */
+/** start both cues if each has enough */
 export function fn_0e516(m: Machine, at = 0x0e516): void {
   let pc = at;
   for (;;) {
@@ -2495,7 +2495,7 @@ export function fn_0e516(m: Machine, at = 0x0e516): void {
   }
 }
 
-/** helper inside the jump-table case at 0x0e516 */
+/** start sound cue nineteen */
 export function fn_0e546(m: Machine, at = 0x0e546): void {
   let pc = at;
   for (;;) {
@@ -2521,7 +2521,7 @@ export function fn_0e546(m: Machine, at = 0x0e546): void {
   }
 }
 
-/** helper inside the jump-table case at 0x0e516 */
+/** start sound cue eighteen */
 export function fn_0e554(m: Machine, at = 0x0e554): void {
   let pc = at;
   for (;;) {
@@ -2547,7 +2547,7 @@ export function fn_0e554(m: Machine, at = 0x0e554): void {
   }
 }
 
-/** routine */
+/** clamp cue nineteen to two thousand */
 export function fn_0e562(m: Machine, at = 0x0e562): void {
   let pc = at;
   for (;;) {
@@ -2579,7 +2579,7 @@ export function fn_0e562(m: Machine, at = 0x0e562): void {
   }
 }
 
-/** routine */
+/** clamp cue eighteen to two hundred */
 export function fn_0e588(m: Machine, at = 0x0e588): void {
   let pc = at;
   for (;;) {
@@ -2789,7 +2789,7 @@ export function fn_0e5ae(m: Machine, at = 0x0e5ae): void {
   }
 }
 
-/** routine */
+/** look up the value paired with a byte */
 export function fn_0e776(m: Machine, at = 0x0e776): void {
   let pc = at;
   for (;;) {
@@ -2820,7 +2820,7 @@ export function fn_0e776(m: Machine, at = 0x0e776): void {
   }
 }
 
-/** routine */
+/** look up the byte paired with a value */
 export function fn_0e790(m: Machine, at = 0x0e790): void {
   let pc = at;
   for (;;) {
@@ -3119,7 +3119,7 @@ export function fn_0ea46(m: Machine, at = 0x0ea46): void {
   }
 }
 
-/** helper for main game state machine */
+/** work out and store the carry-over flag */
 export function fn_0ea68(m: Machine, at = 0x0ea68): void {
   let pc = at;
   for (;;) {
@@ -3146,7 +3146,7 @@ export function fn_0ea68(m: Machine, at = 0x0ea68): void {
   }
 }
 
-/** computed-jump entry at 0x0ea7a */
+/** which of the seven candidates is this record's pair */
 export function fn_0ea7a(m: Machine, at = 0x0ea7a): void {
   let pc = at;
   for (;;) {
@@ -3349,7 +3349,7 @@ export function fn_0ebba(m: Machine, at = 0x0ebba): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_0ebbe(m: Machine, at = 0x0ebbe): void {
   let pc = at;
   for (;;) {
@@ -3372,7 +3372,7 @@ export function fn_0ebbe(m: Machine, at = 0x0ebbe): void {
   }
 }
 
-/** routine */
+/** framebuffer draw */
 export function fn_0ebc4(m: Machine, at = 0x0ebc4): void {
   let pc = at;
   for (;;) {
@@ -3677,7 +3677,7 @@ export function fn_0edea(m: Machine, at = 0x0edea): void {
   }
 }
 
-/** helper for handler reached through a function-pointer table */
+/** translate one byte through the board table */
 export function fn_0ee22(m: Machine, at = 0x0ee22): void {
   let pc = at;
   for (;;) {
@@ -3917,7 +3917,7 @@ export function fn_0ef58(m: Machine, at = 0x0ef58): void {
   }
 }
 
-/** event queue access */
+/** is this pair already in the event queue */
 export function fn_0efba(m: Machine, at = 0x0efba): void {
   let pc = at;
   for (;;) {
@@ -3980,7 +3980,7 @@ export function fn_0effa(m: Machine, at = 0x0effa): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** is this already in the event queue */
 export function fn_0f000(m: Machine, at = 0x0f000): void {
   let pc = at;
   for (;;) {
@@ -4015,7 +4015,7 @@ export function fn_0f000(m: Machine, at = 0x0f000): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** display list build */
 export function fn_0f13e(m: Machine, at = 0x0f13e): void {
   let pc = at;
   for (;;) {
@@ -4219,7 +4219,7 @@ export function fn_0f2cc(m: Machine, at = 0x0f2cc): void {
   }
 }
 
-/** helper for entity allocator */
+/** pointer from an offset into the record table */
 export function fn_0f2ee(m: Machine, at = 0x0f2ee): void {
   let pc = at;
   for (;;) {
@@ -4243,7 +4243,7 @@ export function fn_0f2ee(m: Machine, at = 0x0f2ee): void {
   }
 }
 
-/** small leaf utility */
+/** offset from the record table base */
 export function fn_0f2fa(m: Machine, at = 0x0f2fa): void {
   let pc = at;
   for (;;) {

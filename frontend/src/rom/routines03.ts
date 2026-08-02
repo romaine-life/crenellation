@@ -63,7 +63,7 @@ export function fn_05000(m: Machine, at = 0x05000): void {
   }
 }
 
-/** helper for framebuffer draw */
+/** run the sequence on 0xFDC2, with a different routine at index five */
 export function fn_05020(m: Machine, at = 0x05020): void {
   let pc = at;
   for (;;) {
@@ -217,7 +217,7 @@ export function fn_050c6(m: Machine, at = 0x050c6): void {
   }
 }
 
-/** player state access */
+/** clear the index in every player's object */
 export function fn_0512a(m: Machine, at = 0x0512a): void {
   let pc = at;
   for (;;) {
@@ -664,7 +664,7 @@ export function fn_053f8(m: Machine, at = 0x053f8): void {
   }
 }
 
-/** helper for battle phase controller */
+/** read field six of the current record, or zero */
 export function fn_0545a(m: Machine, at = 0x0545a): void {
   let pc = at;
   for (;;) {
@@ -832,7 +832,7 @@ export function fn_0551c(m: Machine, at = 0x0551c): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x05558 */
 export function fn_05558(m: Machine, at = 0x05558): void {
   let pc = at;
   for (;;) {
@@ -861,7 +861,7 @@ export function fn_05558(m: Machine, at = 0x05558): void {
   }
 }
 
-/** routine */
+/** helper inside the jump-table case at 0x05558 */
 export function fn_05572(m: Machine, at = 0x05572): void {
   let pc = at;
   for (;;) {
@@ -884,7 +884,7 @@ export function fn_05572(m: Machine, at = 0x05572): void {
   }
 }
 
-/** routine */
+/** helper inside the jump-table case at 0x05558 */
 export function fn_05578(m: Machine, at = 0x05578): void {
   let pc = at;
   for (;;) {
@@ -907,7 +907,7 @@ export function fn_05578(m: Machine, at = 0x05578): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x0557e */
 export function fn_0557e(m: Machine, at = 0x0557e): void {
   let pc = at;
   for (;;) {
@@ -947,7 +947,7 @@ export function fn_0557e(m: Machine, at = 0x0557e): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x055c4 */
 export function fn_055c4(m: Machine, at = 0x055c4): void {
   let pc = at;
   for (;;) {
@@ -986,7 +986,7 @@ export function fn_055c4(m: Machine, at = 0x055c4): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x05608 */
 export function fn_05608(m: Machine, at = 0x05608): void {
   let pc = at;
   for (;;) {
@@ -1013,7 +1013,7 @@ export function fn_05608(m: Machine, at = 0x05608): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_0561c(m: Machine, at = 0x0561c): void {
   let pc = at;
   for (;;) {
@@ -1410,7 +1410,7 @@ export function fn_05908(m: Machine, at = 0x05908): void {
   }
 }
 
-/** picks a piece rotation group */
+/** seed a record from the rotation table */
 export function fn_0592a(m: Machine, at = 0x0592a): void {
   let pc = at;
   for (;;) {
@@ -1686,7 +1686,7 @@ export function fn_05afc(m: Machine, at = 0x05afc): void {
   }
 }
 
-/** helper for player state access */
+/** helper for advance every active player to the next round */
 export function fn_05b16(m: Machine, at = 0x05b16): void {
   let pc = at;
   for (;;) {
@@ -2050,7 +2050,7 @@ export function fn_05d8c(m: Machine, at = 0x05d8c): void {
   }
 }
 
-/** helper for accessor for the state block at 0x3E1946 */
+/** small leaf utility */
 export function fn_05dea(m: Machine, at = 0x05dea): void {
   let pc = at;
   for (;;) {
@@ -2072,7 +2072,7 @@ export function fn_05dea(m: Machine, at = 0x05dea): void {
   }
 }
 
-/** small leaf utility */
+/** return the third stack argument */
 export function fn_05dec(m: Machine, at = 0x05dec): void {
   let pc = at;
   for (;;) {
@@ -2188,7 +2188,7 @@ export function fn_05e08(m: Machine, at = 0x05e08): void {
   }
 }
 
-/** helper used by player state access */
+/** give the player its 128-byte block */
 export function fn_05e0a(m: Machine, at = 0x05e0a): void {
   let pc = at;
   for (;;) {
@@ -3283,7 +3283,7 @@ export function fn_066d2(m: Machine, at = 0x066d2): void {
   }
 }
 
-/** jump-table case at 0x066d4 */
+/** the tail of the full-screen cell scan */
 export function fn_066d4(m: Machine, at = 0x066d4): void {
   let pc = at;
   for (;;) {

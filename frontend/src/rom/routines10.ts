@@ -146,7 +146,7 @@ export function fn_18940(m: Machine, at = 0x18940): void {
   }
 }
 
-/** routine */
+/** framebuffer draw */
 export function fn_189a0(m: Machine, at = 0x189a0): void {
   let pc = at;
   for (;;) {
@@ -202,7 +202,7 @@ export function fn_189a0(m: Machine, at = 0x189a0): void {
   }
 }
 
-/** routine */
+/** framebuffer draw */
 export function fn_18a06(m: Machine, at = 0x18a06): void {
   let pc = at;
   for (;;) {
@@ -705,7 +705,7 @@ export function fn_18cce(m: Machine, at = 0x18cce): void {
   }
 }
 
-/** framebuffer draw */
+/** address the eight by eight cell on the playfield */
 export function fn_18cde(m: Machine, at = 0x18cde): void {
   let pc = at;
   for (;;) {
@@ -1401,7 +1401,7 @@ export function fn_190da(m: Machine, at = 0x190da): void {
   }
 }
 
-/** framebuffer draw */
+/** record whether the vector holds a stub, then clear a band */
 export function fn_19366(m: Machine, at = 0x19366): void {
   let pc = at;
   for (;;) {
@@ -1486,7 +1486,7 @@ export function fn_1939c(m: Machine, at = 0x1939c): void {
   }
 }
 
-/** sound driver helper */
+/** set a record's first two bytes and clear its seventh */
 export function fn_193f2(m: Machine, at = 0x193f2): void {
   let pc = at;
   for (;;) {
@@ -1535,7 +1535,7 @@ export function fn_19404(m: Machine, at = 0x19404): void {
   }
 }
 
-/** framebuffer draw */
+/** clear an eight-kilobyte band of the playfield */
 export function fn_1940a(m: Machine, at = 0x1940a): void {
   let pc = at;
   for (;;) {
@@ -1567,7 +1567,7 @@ export function fn_1940a(m: Machine, at = 0x1940a): void {
   }
 }
 
-/** framebuffer draw */
+/** replace the high nibble of eight rows */
 export function fn_1942a(m: Machine, at = 0x1942a): void {
   let pc = at;
   for (;;) {
@@ -1748,7 +1748,7 @@ export function fn_19552(m: Machine, at = 0x19552): void {
   }
 }
 
-/** routine */
+/** helper inside the jump-table case at 0x19552 */
 export function fn_19572(m: Machine, at = 0x19572): void {
   let pc = at;
   for (;;) {
@@ -1773,7 +1773,7 @@ export function fn_19572(m: Machine, at = 0x19572): void {
   }
 }
 
-/** routine */
+/** helper inside the jump-table case at 0x19552 */
 export function fn_1957a(m: Machine, at = 0x1957a): void {
   let pc = at;
   for (;;) {
@@ -2097,7 +2097,7 @@ export function fn_19786(m: Machine, at = 0x19786): void {
   }
 }
 
-/** sound driver helper */
+/** signed long division */
 export function fn_1978e(m: Machine, at = 0x1978e): void {
   let pc = at;
   for (;;) {
@@ -2151,7 +2151,7 @@ export function fn_1978e(m: Machine, at = 0x1978e): void {
   }
 }
 
-/** computed-jump entry at 0x197d8 */
+/** divide a long by a word */
 export function fn_197d8(m: Machine, at = 0x197d8): void {
   let pc = at;
   for (;;) {
@@ -2186,7 +2186,7 @@ export function fn_197d8(m: Machine, at = 0x197d8): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_197f4(m: Machine, at = 0x197f4): void {
   let pc = at;
   for (;;) {
@@ -2350,7 +2350,7 @@ export function fn_198c0(m: Machine, at = 0x198c0): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_1994c(m: Machine, at = 0x1994c): void {
   let pc = at;
   for (;;) {
@@ -2372,7 +2372,7 @@ export function fn_1994c(m: Machine, at = 0x1994c): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_19950(m: Machine, at = 0x19950): void {
   let pc = at;
   for (;;) {
@@ -2394,7 +2394,7 @@ export function fn_19950(m: Machine, at = 0x19950): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_19954(m: Machine, at = 0x19954): void {
   let pc = at;
   for (;;) {
@@ -2420,7 +2420,7 @@ export function fn_19954(m: Machine, at = 0x19954): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_19966(m: Machine, at = 0x19966): void {
   let pc = at;
   for (;;) {
@@ -2518,7 +2518,7 @@ export function fn_1997a(m: Machine, at = 0x1997a): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_19a1e(m: Machine, at = 0x19a1e): void {
   let pc = at;
   for (;;) {
@@ -2648,7 +2648,7 @@ export function fn_19a24(m: Machine, at = 0x19a24): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_19b06(m: Machine, at = 0x19b06): void {
   let pc = at;
   for (;;) {
@@ -2756,7 +2756,7 @@ export function fn_19bb8(m: Machine, at = 0x19bb8): void {
   }
 }
 
-/** routine */
+/** copy bytes with a long count */
 export function fn_19bc2(m: Machine, at = 0x19bc2): void {
   let pc = at;
   for (;;) {
@@ -2784,7 +2784,7 @@ export function fn_19bc2(m: Machine, at = 0x19bc2): void {
   }
 }
 
-/** sound driver helper */
+/** copy bytes safely when they overlap */
 export function fn_19bd8(m: Machine, at = 0x19bd8): void {
   let pc = at;
   for (;;) {
@@ -2819,7 +2819,7 @@ export function fn_19bd8(m: Machine, at = 0x19bd8): void {
   }
 }
 
-/** sound driver helper */
+/** fill bytes with a long count */
 export function fn_19c00(m: Machine, at = 0x19c00): void {
   let pc = at;
   for (;;) {
@@ -2851,7 +2851,7 @@ export function fn_19c00(m: Machine, at = 0x19c00): void {
   }
 }
 
-/** sound driver helper */
+/** set the status register and return the old one */
 export function fn_19c22(m: Machine, at = 0x19c22): void {
   let pc = at;
   for (;;) {
@@ -2900,7 +2900,7 @@ export function fn_19c2e(m: Machine, at = 0x19c2e): void {
   }
 }
 
-/** routine */
+/** sound driver helper */
 export function fn_19c34(m: Machine, at = 0x19c34): void {
   let pc = at;
   for (;;) {
@@ -3036,7 +3036,7 @@ export function fn_19ccc(m: Machine, at = 0x19ccc): void {
   }
 }
 
-/** sound driver helper */
+/** set a record's bytes at zero and two */
 export function fn_19cd0(m: Machine, at = 0x19cd0): void {
   let pc = at;
   for (;;) {
@@ -3228,7 +3228,7 @@ export function fn_1a05a(m: Machine, at = 0x1a05a): void {
   }
 }
 
-/** sound driver helper */
+/** push a byte into the second ring */
 export function fn_1a0cc(m: Machine, at = 0x1a0cc): void {
   let pc = at;
   for (;;) {
@@ -3266,7 +3266,7 @@ export function fn_1a0cc(m: Machine, at = 0x1a0cc): void {
   }
 }
 
-/** sound driver helper */
+/** dispatch the channel by its type byte */
 export function fn_1a100(m: Machine, at = 0x1a100): void {
   let pc = at;
   for (;;) {
@@ -3312,7 +3312,7 @@ export function fn_1a100(m: Machine, at = 0x1a100): void {
   }
 }
 
-/** sound driver helper */
+/** drain one byte from the ring and service three channels */
 export function fn_1a14e(m: Machine, at = 0x1a14e): void {
   let pc = at;
   for (;;) {
@@ -3360,7 +3360,7 @@ export function fn_1a14e(m: Machine, at = 0x1a14e): void {
   }
 }
 
-/** routine */
+/** push a byte into the ring, dropping it when full */
 export function fn_1a19a(m: Machine, at = 0x1a19a): void {
   let pc = at;
   for (;;) {

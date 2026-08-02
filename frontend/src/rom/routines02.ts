@@ -978,7 +978,7 @@ export function fn_035ee(m: Machine, at = 0x035ee): void {
   }
 }
 
-/** helper for framebuffer draw */
+/** draw an image column by column */
 export function fn_0362a(m: Machine, at = 0x0362a): void {
   let pc = at;
   for (;;) {
@@ -1212,7 +1212,7 @@ export function fn_03728(m: Machine, at = 0x03728): void {
   }
 }
 
-/** framebuffer draw */
+/** blit one fixed graphic to the playfield */
 export function fn_037d2(m: Machine, at = 0x037d2): void {
   let pc = at;
   for (;;) {
@@ -1722,7 +1722,7 @@ export function fn_03c00(m: Machine, at = 0x03c00): void {
   }
 }
 
-/** routine */
+/** selects an entity template */
 export function fn_03c44(m: Machine, at = 0x03c44): void {
   let pc = at;
   for (;;) {
@@ -1795,7 +1795,7 @@ export function fn_03c44(m: Machine, at = 0x03c44): void {
   }
 }
 
-/** routine */
+/** look up an entry in the table the top two bits select */
 export function fn_03ccc(m: Machine, at = 0x03ccc): void {
   let pc = at;
   for (;;) {
@@ -1911,7 +1911,7 @@ export function fn_03cee(m: Machine, at = 0x03cee): void {
   }
 }
 
-/** helper for handler reached through a function-pointer table */
+/** score three neighbours with weights one, one and two */
 export function fn_03da0(m: Machine, at = 0x03da0): void {
   let pc = at;
   for (;;) {
@@ -1961,7 +1961,7 @@ export function fn_03da0(m: Machine, at = 0x03da0): void {
   }
 }
 
-/** helper for handler reached through a function-pointer table */
+/** score the neighbours one stride either side */
 export function fn_03de8(m: Machine, at = 0x03de8): void {
   let pc = at;
   for (;;) {
@@ -2006,7 +2006,7 @@ export function fn_03de8(m: Machine, at = 0x03de8): void {
   }
 }
 
-/** small leaf utility */
+/** clear the sixteen-slot table and its flag */
 export function fn_03e26(m: Machine, at = 0x03e26): void {
   let pc = at;
   for (;;) {
@@ -2034,7 +2034,7 @@ export function fn_03e26(m: Machine, at = 0x03e26): void {
   }
 }
 
-/** helper for resolves a player's owner code */
+/** claim a slot at 0x3E0DF6 and fill it */
 export function fn_03e3e(m: Machine, at = 0x03e3e): void {
   let pc = at;
   for (;;) {
@@ -2077,7 +2077,7 @@ export function fn_03e3e(m: Machine, at = 0x03e3e): void {
   }
 }
 
-/** helper for resolves a player's owner code */
+/** helper for claim a slot at 0x3E0DF6 and fill it */
 export function fn_03e84(m: Machine, at = 0x03e84): void {
   let pc = at;
   for (;;) {
@@ -2154,7 +2154,7 @@ export function fn_03e84(m: Machine, at = 0x03e84): void {
   }
 }
 
-/** helper for main game state machine */
+/** raise the flag at 0x3E0E78 */
 export function fn_03f10(m: Machine, at = 0x03f10): void {
   let pc = at;
   for (;;) {
@@ -2177,7 +2177,7 @@ export function fn_03f10(m: Machine, at = 0x03f10): void {
   }
 }
 
-/** helper for main game state machine */
+/** lower the flag at 0x3E0E78 */
 export function fn_03f1a(m: Machine, at = 0x03f1a): void {
   let pc = at;
   for (;;) {
@@ -2343,7 +2343,7 @@ export function fn_03f94(m: Machine, at = 0x03f94): void {
   }
 }
 
-/** framebuffer draw */
+/** draw at the pixel coordinate, origin offset by four */
 export function fn_0404a(m: Machine, at = 0x0404a): void {
   let pc = at;
   for (;;) {
@@ -3240,7 +3240,7 @@ export function fn_046b0(m: Machine, at = 0x046b0): void {
   }
 }
 
-/** helper for main game state machine */
+/** set one fixed palette entry */
 export function fn_046c2(m: Machine, at = 0x046c2): void {
   let pc = at;
   for (;;) {
@@ -3310,7 +3310,7 @@ export function fn_046e0(m: Machine, at = 0x046e0): void {
   }
 }
 
-/** helper for framebuffer band clear */
+/** run the four-step sequence on the record at 0x1F420 */
 export function fn_0472a(m: Machine, at = 0x0472a): void {
   let pc = at;
   for (;;) {
@@ -3460,7 +3460,7 @@ export function fn_047c6(m: Machine, at = 0x047c6): void {
   }
 }
 
-/** player state access */
+/** gather the stations nobody is playing */
 export function fn_0482e(m: Machine, at = 0x0482e): void {
   let pc = at;
   for (;;) {
@@ -3709,7 +3709,7 @@ export function fn_048ae(m: Machine, at = 0x048ae): void {
   }
 }
 
-/** player state access */
+/** set each active player's palette */
 export function fn_04a6a(m: Machine, at = 0x04a6a): void {
   let pc = at;
   for (;;) {
@@ -4087,7 +4087,7 @@ export function fn_04d6c(m: Machine, at = 0x04d6c): void {
   }
 }
 
-/** helper for main game state machine */
+/** post the record five past the index */
 export function fn_04d90(m: Machine, at = 0x04d90): void {
   let pc = at;
   for (;;) {
@@ -4130,7 +4130,7 @@ export function fn_04d90(m: Machine, at = 0x04d90): void {
   }
 }
 
-/** player state access */
+/** give every player in play its own colour byte */
 export function fn_04dd2(m: Machine, at = 0x04dd2): void {
   let pc = at;
   for (;;) {
@@ -4323,7 +4323,7 @@ export function fn_04e82(m: Machine, at = 0x04e82): void {
   }
 }
 
-/** helper for player state access */
+/** copy sixteen words */
 export function fn_04f8c(m: Machine, at = 0x04f8c): void {
   let pc = at;
   for (;;) {

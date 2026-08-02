@@ -50,7 +50,7 @@ export function fn_0062e(m: Machine, at = 0x0062e): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_00632(m: Machine, at = 0x00632): void {
   let pc = at;
   for (;;) {
@@ -98,7 +98,7 @@ export function fn_00642(m: Machine, at = 0x00642): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_00646(m: Machine, at = 0x00646): void {
   let pc = at;
   for (;;) {
@@ -168,7 +168,7 @@ export function fn_00656(m: Machine, at = 0x00656): void {
   }
 }
 
-/** helper for player state access */
+/** wipe the board region and start the level */
 export function fn_00660(m: Machine, at = 0x00660): void {
   let pc = at;
   for (;;) {
@@ -1251,7 +1251,7 @@ export function fn_00fb4(m: Machine, at = 0x00fb4): void {
   }
 }
 
-/** routine */
+/** resolves a player's owner code */
 export function fn_010de(m: Machine, at = 0x010de): void {
   let pc = at;
   for (;;) {
@@ -1384,7 +1384,7 @@ export function fn_011c6(m: Machine, at = 0x011c6): void {
   }
 }
 
-/** routine */
+/** the row step of the cell walk */
 export function fn_011ea(m: Machine, at = 0x011ea): void {
   let pc = at;
   for (;;) {
@@ -1708,7 +1708,7 @@ export function fn_013b2(m: Machine, at = 0x013b2): void {
   }
 }
 
-/** resolves a player's owner code */
+/** does this board cell belong to the player */
 export function fn_0149a(m: Machine, at = 0x0149a): void {
   let pc = at;
   for (;;) {
@@ -1750,7 +1750,7 @@ export function fn_0149a(m: Machine, at = 0x0149a): void {
   }
 }
 
-/** steps a board direction */
+/** run the handler for every flag bit set */
 export function fn_014dc(m: Machine, at = 0x014dc): void {
   let pc = at;
   for (;;) {
@@ -1838,7 +1838,7 @@ export function fn_01512(m: Machine, at = 0x01512): void {
   }
 }
 
-/** helper for sprite entity update */
+/** set bits in the second flag word */
 export function fn_0156c(m: Machine, at = 0x0156c): void {
   let pc = at;
   for (;;) {
@@ -1862,7 +1862,7 @@ export function fn_0156c(m: Machine, at = 0x0156c): void {
   }
 }
 
-/** helper used by handler reached through a function-pointer table */
+/** set bits in the flag word */
 export function fn_01578(m: Machine, at = 0x01578): void {
   let pc = at;
   for (;;) {
@@ -1886,7 +1886,7 @@ export function fn_01578(m: Machine, at = 0x01578): void {
   }
 }
 
-/** small leaf utility */
+/** clear bits in the second flag word */
 export function fn_01584(m: Machine, at = 0x01584): void {
   let pc = at;
   for (;;) {
@@ -1911,7 +1911,7 @@ export function fn_01584(m: Machine, at = 0x01584): void {
   }
 }
 
-/** helper for handler reached through a function-pointer table */
+/** clear bits in the flag word */
 export function fn_01592(m: Machine, at = 0x01592): void {
   let pc = at;
   for (;;) {
@@ -1936,7 +1936,7 @@ export function fn_01592(m: Machine, at = 0x01592): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** clear the two high flag bits and set the next */
 export function fn_015a0(m: Machine, at = 0x015a0): void {
   let pc = at;
   for (;;) {
@@ -1986,7 +1986,7 @@ export function fn_015b4(m: Machine, at = 0x015b4): void {
   }
 }
 
-/** helper for player state access */
+/** reset a record and arm it with five */
 export function fn_015be(m: Machine, at = 0x015be): void {
   let pc = at;
   for (;;) {
@@ -2244,7 +2244,7 @@ export function fn_015fe(m: Machine, at = 0x015fe): void {
   }
 }
 
-/** player state access */
+/** reset the players for a new game */
 export function fn_01836(m: Machine, at = 0x01836): void {
   let pc = at;
   for (;;) {
@@ -2349,7 +2349,7 @@ export function fn_018a6(m: Machine, at = 0x018a6): void {
   }
 }
 
-/** player state access */
+/** choose each player's starting position */
 export function fn_018fa(m: Machine, at = 0x018fa): void {
   let pc = at;
   for (;;) {
@@ -2471,7 +2471,7 @@ export function fn_01980(m: Machine, at = 0x01980): void {
   }
 }
 
-/** small leaf utility */
+/** reset the player pair to forty */
 export function fn_019d8(m: Machine, at = 0x019d8): void {
   let pc = at;
   for (;;) {
@@ -2498,7 +2498,7 @@ export function fn_019d8(m: Machine, at = 0x019d8): void {
   }
 }
 
-/** player state access */
+/** advance every active player to the next round */
 export function fn_019ee(m: Machine, at = 0x019ee): void {
   let pc = at;
   for (;;) {
@@ -2559,7 +2559,7 @@ export function fn_019ee(m: Machine, at = 0x019ee): void {
   }
 }
 
-/** player state access */
+/** average over active players */
 export function fn_01a70(m: Machine, at = 0x01a70): void {
   let pc = at;
   for (;;) {
@@ -2672,7 +2672,7 @@ export function fn_01aea(m: Machine, at = 0x01aea): void {
   }
 }
 
-/** helper used by player state access */
+/** clear all eight registered handlers */
 export function fn_01b46(m: Machine, at = 0x01b46): void {
   let pc = at;
   for (;;) {
@@ -2786,7 +2786,7 @@ export function fn_01b96(m: Machine, at = 0x01b96): void {
   }
 }
 
-/** player state access */
+/** run the player flag handler for every active player */
 export function fn_01c34(m: Machine, at = 0x01c34): void {
   let pc = at;
   for (;;) {
@@ -3141,7 +3141,7 @@ export function fn_01f3a(m: Machine, at = 0x01f3a): void {
   }
 }
 
-/** helper used by player state access */
+/** count down the record's delay */
 export function fn_01f60(m: Machine, at = 0x01f60): void {
   let pc = at;
   for (;;) {
@@ -3167,7 +3167,7 @@ export function fn_01f60(m: Machine, at = 0x01f60): void {
   }
 }
 
-/** helper for main game state machine */
+/** step the record's state down from four */
 export function fn_01f70(m: Machine, at = 0x01f70): void {
   let pc = at;
   for (;;) {
@@ -3238,7 +3238,7 @@ export function fn_01f82(m: Machine, at = 0x01f82): void {
   }
 }
 
-/** helper for main game state machine */
+/** probe three slots and always answer two */
 export function fn_01fd6(m: Machine, at = 0x01fd6): void {
   let pc = at;
   for (;;) {
@@ -3538,7 +3538,7 @@ export function fn_0220c(m: Machine, at = 0x0220c): void {
   }
 }
 
-/** player state access */
+/** initialise the player structs */
 export function fn_02248(m: Machine, at = 0x02248): void {
   let pc = at;
   for (;;) {
@@ -3638,7 +3638,7 @@ export function fn_022ba(m: Machine, at = 0x022ba): void {
   }
 }
 
-/** palette update */
+/** clear the playfield and the first palette entry */
 export function fn_02300(m: Machine, at = 0x02300): void {
   let pc = at;
   for (;;) {

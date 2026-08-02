@@ -4,7 +4,7 @@
 import { PendingInterrupt, type Machine } from './machine';
 import { call } from './dispatch';
 
-/** player state access */
+/** routine */
 export function fn_09d80(m: Machine, at = 0x09d80): void {
   let pc = at;
   for (;;) {
@@ -36,7 +36,7 @@ export function fn_09d80(m: Machine, at = 0x09d80): void {
   }
 }
 
-/** routine */
+/** player state access */
 export function fn_09db2(m: Machine, at = 0x09db2): void {
   let pc = at;
   for (;;) {
@@ -107,7 +107,7 @@ export function fn_09db2(m: Machine, at = 0x09db2): void {
   }
 }
 
-/** routine */
+/** player state access */
 export function fn_09e80(m: Machine, at = 0x09e80): void {
   let pc = at;
   for (;;) {
@@ -762,7 +762,7 @@ export function fn_0a4a0(m: Machine, at = 0x0a4a0): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_0a74a(m: Machine, at = 0x0a74a): void {
   let pc = at;
   for (;;) {
@@ -1322,7 +1322,7 @@ export function fn_0ab58(m: Machine, at = 0x0ab58): void {
   }
 }
 
-/** routine */
+/** raise the entry's counter by the phase step, or clear it */
 export function fn_0ac1c(m: Machine, at = 0x0ac1c): void {
   let pc = at;
   for (;;) {
@@ -1605,7 +1605,7 @@ export function fn_0ad5a(m: Machine, at = 0x0ad5a): void {
   }
 }
 
-/** routine */
+/** how many steps this kind takes */
 export function fn_0aec2(m: Machine, at = 0x0aec2): void {
   let pc = at;
   for (;;) {
@@ -2036,7 +2036,7 @@ export function fn_0b032(m: Machine, at = 0x0b032): void {
   }
 }
 
-/** routine */
+/** find a free fourteen-byte slot past the player structs */
 export function fn_0b2b0(m: Machine, at = 0x0b2b0): void {
   let pc = at;
   for (;;) {
@@ -2066,7 +2066,7 @@ export function fn_0b2b0(m: Machine, at = 0x0b2b0): void {
   }
 }
 
-/** moving-unit access */
+/** find a free slot in the moving-unit table */
 export function fn_0b2cc(m: Machine, at = 0x0b2cc): void {
   let pc = at;
   for (;;) {
@@ -2096,7 +2096,7 @@ export function fn_0b2cc(m: Machine, at = 0x0b2cc): void {
   }
 }
 
-/** computed-jump entry at 0x0b2e8 */
+/** release the slot and drop the count */
 export function fn_0b2e8(m: Machine, at = 0x0b2e8): void {
   let pc = at;
   for (;;) {
@@ -3025,7 +3025,7 @@ export function fn_0b9c8(m: Machine, at = 0x0b9c8): void {
   }
 }
 
-/** register-save leaf routine */
+/** find the record whose key at offset twelve matches */
 export function fn_0bb38(m: Machine, at = 0x0bb38): void {
   let pc = at;
   for (;;) {
@@ -3066,7 +3066,7 @@ export function fn_0bb38(m: Machine, at = 0x0bb38): void {
   }
 }
 
-/** sprite entity update */
+/** resolves a player's owner code */
 export function fn_0bb7c(m: Machine, at = 0x0bb7c): void {
   let pc = at;
   for (;;) {
@@ -3112,7 +3112,7 @@ export function fn_0bb7c(m: Machine, at = 0x0bb7c): void {
   }
 }
 
-/** routine */
+/** sprite entity update */
 export function fn_0bbd2(m: Machine, at = 0x0bbd2): void {
   let pc = at;
   for (;;) {
@@ -3671,7 +3671,7 @@ export function fn_0c150(m: Machine, at = 0x0c150): void {
   }
 }
 
-/** small leaf utility */
+/** find a free two-byte slot marked by a high bit */
 export function fn_0c1ee(m: Machine, at = 0x0c1ee): void {
   let pc = at;
   for (;;) {
@@ -3701,7 +3701,7 @@ export function fn_0c1ee(m: Machine, at = 0x0c1ee): void {
   }
 }
 
-/** register-save leaf routine */
+/** find the entry matching this word */
 export function fn_0c206(m: Machine, at = 0x0c206): void {
   let pc = at;
   for (;;) {
@@ -3947,7 +3947,7 @@ export function fn_0c2dc(m: Machine, at = 0x0c2dc): void {
   }
 }
 
-/** converts claimed area to a score */
+/** deduct this item's cost */
 export function fn_0c3e8(m: Machine, at = 0x0c3e8): void {
   let pc = at;
   for (;;) {
@@ -3994,7 +3994,7 @@ export function fn_0c3e8(m: Machine, at = 0x0c3e8): void {
   }
 }
 
-/** helper for handler reached through a function-pointer table */
+/** register-save leaf routine */
 export function fn_0c436(m: Machine, at = 0x0c436): void {
   let pc = at;
   for (;;) {
@@ -4086,7 +4086,7 @@ export function fn_0c4ae(m: Machine, at = 0x0c4ae): void {
   }
 }
 
-/** computed-jump entry at 0x0c4ca */
+/** link a node into the list after another */
 export function fn_0c4ca(m: Machine, at = 0x0c4ca): void {
   let pc = at;
   for (;;) {
@@ -4147,7 +4147,7 @@ export function fn_0c4e8(m: Machine, at = 0x0c4e8): void {
   }
 }
 
-/** register-save leaf routine */
+/** take the first item from the list, or zero when empty */
 export function fn_0c504(m: Machine, at = 0x0c504): void {
   let pc = at;
   for (;;) {
@@ -4185,7 +4185,7 @@ export function fn_0c504(m: Machine, at = 0x0c504): void {
   }
 }
 
-/** register-save leaf routine */
+/** run it with the flag raised, then against the other buffer */
 export function fn_0c538(m: Machine, at = 0x0c538): void {
   let pc = at;
   for (;;) {
@@ -4770,7 +4770,7 @@ export function fn_0c9d2(m: Machine, at = 0x0c9d2): void {
   }
 }
 
-/** register-save leaf routine */
+/** walk the whole list with the flag raised */
 export function fn_0ca52(m: Machine, at = 0x0ca52): void {
   let pc = at;
   for (;;) {
@@ -5101,7 +5101,7 @@ export function fn_0cc3a(m: Machine, at = 0x0cc3a): void {
   }
 }
 
-/** helper for current piece draw */
+/** tick the record's countdown and fire when it expires */
 export function fn_0ccb2(m: Machine, at = 0x0ccb2): void {
   let pc = at;
   for (;;) {
@@ -5139,7 +5139,7 @@ export function fn_0ccb2(m: Machine, at = 0x0ccb2): void {
   }
 }
 
-/** helper for current piece draw */
+/** act on the record once, and only in the early phases */
 export function fn_0cce6(m: Machine, at = 0x0cce6): void {
   let pc = at;
   for (;;) {
@@ -5170,7 +5170,7 @@ export function fn_0cce6(m: Machine, at = 0x0cce6): void {
   }
 }
 
-/** routine */
+/** the countdown's expiry: mark the record and pause */
 export function fn_0cd0c(m: Machine, at = 0x0cd0c): void {
   let pc = at;
   for (;;) {
@@ -5258,7 +5258,7 @@ export function fn_0cd4a(m: Machine, at = 0x0cd4a): void {
   }
 }
 
-/** helper for handler reached through a function-pointer table */
+/** small leaf utility */
 export function fn_0cdae(m: Machine, at = 0x0cdae): void {
   let pc = at;
   for (;;) {

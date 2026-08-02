@@ -1434,7 +1434,7 @@ export function fn_00306(m: Machine, at = 0x00306): void {
   }
 }
 
-/** routine */
+/** small leaf utility */
 export function fn_003e8(m: Machine, at = 0x003e8): void {
   let pc = at;
   for (;;) {
@@ -1510,7 +1510,7 @@ export function fn_0042a(m: Machine, at = 0x0042a): void {
   }
 }
 
-/** helper for accessor for the state block at 0x3E1946 */
+/** routine */
 export function fn_00430(m: Machine, at = 0x00430): void {
   let pc = at;
   for (;;) {
@@ -1586,7 +1586,7 @@ export function fn_00430(m: Machine, at = 0x00430): void {
   }
 }
 
-/** small leaf utility */
+/** wait for the next frame */
 export function fn_00512(m: Machine, at = 0x00512): void {
   let pc = at;
   for (;;) {
@@ -1612,7 +1612,7 @@ export function fn_00512(m: Machine, at = 0x00512): void {
   }
 }
 
-/** small leaf utility */
+/** clear the frame semaphore */
 export function fn_0052a(m: Machine, at = 0x0052a): void {
   let pc = at;
   for (;;) {
@@ -1715,7 +1715,7 @@ export function fn_00580(m: Machine, at = 0x00580): void {
   }
 }
 
-/** helper for player state access */
+/** helper for initialise the player structs */
 export function fn_005b4(m: Machine, at = 0x005b4): void {
   let pc = at;
   for (;;) {
@@ -1771,7 +1771,7 @@ export function fn_005b4(m: Machine, at = 0x005b4): void {
   }
 }
 
-/** small leaf utility */
+/** kick the watchdog */
 export function fn_00618(m: Machine, at = 0x00618): void {
   let pc = at;
   for (;;) {

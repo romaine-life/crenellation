@@ -2746,7 +2746,20 @@ const FNS: Routine[] = [
  * instruction: the ROM jumps into the middle of routines, so this finds
  * the routine containing the address and enters it there.
  */
+/** Run one routine on the lift instead. The mirror of decompiled.ts's
+ *  useOracle: with both set, a bisection can isolate a SINGLE routine
+ *  rather than a whole subtree, because each side hands its callees
+ *  back to the other. Without it, routing an address to either
+ *  dispatcher takes everything that address calls with it, which is
+ *  how a subtree localisation came to be reported as a routine one. */
+let viaLift: { pick: (a: number) => boolean; run: (a: number, m: Machine) => void } | null = null;
+export function useLift(
+  o: { pick: (a: number) => boolean; run: (a: number, m: Machine) => void } | null): void {
+  viaLift = o;
+}
+
 export function call(addr: number, m: Machine): void {
+  if (viaLift && viaLift.pick(addr >>> 0)) { viaLift.run(addr >>> 0, m); return; }
   // a halted chip does not start another routine
   if (m.stopped) return;
   let at = addr >>> 0;

@@ -1091,7 +1091,7 @@ export function fn_073dc(m: Machine, at = 0x073dc): void {
   }
 }
 
-/** helper for player state access */
+/** find the player's shot at this cell */
 export function fn_0744e(m: Machine, at = 0x0744e): void {
   let pc = at;
   for (;;) {
@@ -1338,7 +1338,7 @@ export function fn_07578(m: Machine, at = 0x07578): void {
   }
 }
 
-/** routine */
+/** register-save leaf routine */
 export function fn_0767c(m: Machine, at = 0x0767c): void {
   let pc = at;
   for (;;) {
@@ -1469,7 +1469,7 @@ export function fn_076ee(m: Machine, at = 0x076ee): void {
   }
 }
 
-/** resolves a player's owner code */
+/** is this player's cell clear */
 export function fn_0778a(m: Machine, at = 0x0778a): void {
   let pc = at;
   for (;;) {
@@ -1608,7 +1608,7 @@ export function fn_07800(m: Machine, at = 0x07800): void {
   }
 }
 
-/** routine */
+/** restore d2 and a2 and unlink */
 export function fn_07866(m: Machine, at = 0x07866): void {
   let pc = at;
   for (;;) {
@@ -1736,7 +1736,7 @@ export function fn_07870(m: Machine, at = 0x07870): void {
   }
 }
 
-/** routine */
+/** steps a board direction */
 export function fn_07954(m: Machine, at = 0x07954): void {
   let pc = at;
   for (;;) {
@@ -2338,7 +2338,7 @@ export function fn_07cf0(m: Machine, at = 0x07cf0): void {
   }
 }
 
-/** helper for player state access */
+/** hand the table entry twelve past the index to 0x41BE */
 export function fn_07d50(m: Machine, at = 0x07d50): void {
   let pc = at;
   for (;;) {
@@ -2374,7 +2374,7 @@ export function fn_07d50(m: Machine, at = 0x07d50): void {
   }
 }
 
-/** player state access */
+/** post each active player's entry and set state two */
 export function fn_07d80(m: Machine, at = 0x07d80): void {
   let pc = at;
   for (;;) {
@@ -2493,7 +2493,7 @@ export function fn_07dce(m: Machine, at = 0x07dce): void {
   }
 }
 
-/** player state access */
+/** award a thousand to the current player */
 export function fn_07e7a(m: Machine, at = 0x07e7a): void {
   let pc = at;
   for (;;) {
@@ -3103,7 +3103,7 @@ export function fn_08326(m: Machine, at = 0x08326): void {
   }
 }
 
-/** player state access */
+/** clear each active player's pair at 0x30 */
 export function fn_0848e(m: Machine, at = 0x0848e): void {
   let pc = at;
   for (;;) {
@@ -3193,7 +3193,7 @@ export function fn_084da(m: Machine, at = 0x084da): void {
   }
 }
 
-/** helper for main game state machine */
+/** dissolve the screen and draw the banner */
 export function fn_08536(m: Machine, at = 0x08536): void {
   let pc = at;
   for (;;) {
@@ -3229,7 +3229,7 @@ export function fn_08536(m: Machine, at = 0x08536): void {
   }
 }
 
-/** framebuffer draw */
+/** blit a fixed image with its size to the playfield */
 export function fn_08576(m: Machine, at = 0x08576): void {
   let pc = at;
   for (;;) {
@@ -3615,7 +3615,7 @@ export function fn_0875e(m: Machine, at = 0x0875e): void {
   }
 }
 
-/** helper for main game state machine */
+/** hand the current player over and step on */
 export function fn_08878(m: Machine, at = 0x08878): void {
   let pc = at;
   for (;;) {
@@ -3652,7 +3652,7 @@ export function fn_08878(m: Machine, at = 0x08878): void {
   }
 }
 
-/** routine */
+/** register-save leaf routine */
 export function fn_088b0(m: Machine, at = 0x088b0): void {
   let pc = at;
   for (;;) {
@@ -3818,7 +3818,7 @@ export function fn_088b0(m: Machine, at = 0x088b0): void {
   }
 }
 
-/** routine */
+/** is the run of cells free */
 export function fn_08a24(m: Machine, at = 0x08a24): void {
   let pc = at;
   for (;;) {
@@ -3868,7 +3868,7 @@ export function fn_08a24(m: Machine, at = 0x08a24): void {
   }
 }
 
-/** computed-jump entry at 0x08a70 */
+/** take a record out of play */
 export function fn_08a70(m: Machine, at = 0x08a70): void {
   let pc = at;
   for (;;) {
@@ -4523,7 +4523,7 @@ export function fn_08fc8(m: Machine, at = 0x08fc8): void {
   }
 }
 
-/** helper for player state access */
+/** bring a player into play */
 export function fn_0900a(m: Machine, at = 0x0900a): void {
   let pc = at;
   for (;;) {
@@ -4556,7 +4556,7 @@ export function fn_0900a(m: Machine, at = 0x0900a): void {
   }
 }
 
-/** helper for main game state machine */
+/** commit the current player's pending piece */
 export function fn_09034(m: Machine, at = 0x09034): void {
   let pc = at;
   for (;;) {
@@ -4673,7 +4673,7 @@ export function fn_090be(m: Machine, at = 0x090be): void {
   }
 }
 
-/** small leaf utility */
+/** pass the byte on only when the gate is set */
 export function fn_090e6(m: Machine, at = 0x090e6): void {
   let pc = at;
   for (;;) {
@@ -4731,7 +4731,7 @@ export function fn_090fe(m: Machine, at = 0x090fe): void {
   }
 }
 
-/** register-save leaf routine */
+/** alternate between two values on a four-step counter */
 export function fn_0910e(m: Machine, at = 0x0910e): void {
   let pc = at;
   for (;;) {

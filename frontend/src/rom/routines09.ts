@@ -1625,7 +1625,7 @@ export function fn_17b04(m: Machine, at = 0x17b04): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x17bf6 */
 export function fn_17bf6(m: Machine, at = 0x17bf6): void {
   let pc = at;
   for (;;) {
@@ -1659,7 +1659,7 @@ export function fn_17bf6(m: Machine, at = 0x17bf6): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x17c2c */
 export function fn_17c2c(m: Machine, at = 0x17c2c): void {
   let pc = at;
   for (;;) {
@@ -1726,7 +1726,7 @@ export function fn_17c2c(m: Machine, at = 0x17c2c): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x17cb8 */
 export function fn_17cb8(m: Machine, at = 0x17cb8): void {
   let pc = at;
   for (;;) {
@@ -1785,7 +1785,7 @@ export function fn_17cb8(m: Machine, at = 0x17cb8): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x17d2c */
 export function fn_17d2c(m: Machine, at = 0x17d2c): void {
   let pc = at;
   for (;;) {
@@ -1822,7 +1822,7 @@ export function fn_17d2c(m: Machine, at = 0x17d2c): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x17d58 */
 export function fn_17d58(m: Machine, at = 0x17d58): void {
   let pc = at;
   for (;;) {
@@ -1850,7 +1850,7 @@ export function fn_17d58(m: Machine, at = 0x17d58): void {
   }
 }
 
-/** routine */
+/** jump-table case at 0x17d6e */
 export function fn_17d6e(m: Machine, at = 0x17d6e): void {
   let pc = at;
   for (;;) {
@@ -2012,7 +2012,7 @@ export function fn_17d9c(m: Machine, at = 0x17d9c): void {
   }
 }
 
-/** routine */
+/** restore seven registers and unlink */
 export function fn_17ed4(m: Machine, at = 0x17ed4): void {
   let pc = at;
   for (;;) {
@@ -2036,7 +2036,7 @@ export function fn_17ed4(m: Machine, at = 0x17ed4): void {
   }
 }
 
-/** helper for title screen renderer */
+/** wait until the long at 0x3E3532 changes */
 export function fn_17ede(m: Machine, at = 0x17ede): void {
   let pc = at;
   for (;;) {
@@ -2189,7 +2189,7 @@ export function fn_17f70(m: Machine, at = 0x17f70): void {
   }
 }
 
-/** helper for title screen renderer */
+/** routine */
 export function fn_17fcc(m: Machine, at = 0x17fcc): void {
   let pc = at;
   for (;;) {
@@ -2224,7 +2224,7 @@ export function fn_17fcc(m: Machine, at = 0x17fcc): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** the tail that stores the signed pair */
 export function fn_18000(m: Machine, at = 0x18000): void {
   let pc = at;
   for (;;) {
@@ -2475,7 +2475,7 @@ export function fn_181a4(m: Machine, at = 0x181a4): void {
   }
 }
 
-/** routine */
+/** register-save leaf routine */
 export function fn_181b6(m: Machine, at = 0x181b6): void {
   let pc = at;
   for (;;) {
@@ -2596,7 +2596,7 @@ export function fn_1822c(m: Machine, at = 0x1822c): void {
   }
 }
 
-/** computed-jump entry at 0x1829c */
+/** write a colour into the first palette bank */
 export function fn_1829c(m: Machine, at = 0x1829c): void {
   let pc = at;
   for (;;) {
@@ -2637,7 +2637,7 @@ export function fn_1829c(m: Machine, at = 0x1829c): void {
   }
 }
 
-/** routine */
+/** write a colour into the palette's upper half */
 export function fn_182d4(m: Machine, at = 0x182d4): void {
   let pc = at;
   for (;;) {
@@ -2863,7 +2863,7 @@ export function fn_1851c(m: Machine, at = 0x1851c): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - bad int */
 export function fn_18548(m: Machine, at = 0x18548): void {
   let pc = at;
   for (;;) {
@@ -2885,7 +2885,7 @@ export function fn_18548(m: Machine, at = 0x18548): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - bus err */
 export function fn_18556(m: Machine, at = 0x18556): void {
   let pc = at;
   for (;;) {
@@ -2907,7 +2907,7 @@ export function fn_18556(m: Machine, at = 0x18556): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - adress err */
 export function fn_18564(m: Machine, at = 0x18564): void {
   let pc = at;
   for (;;) {
@@ -2929,7 +2929,7 @@ export function fn_18564(m: Machine, at = 0x18564): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - illegal ins */
 export function fn_18576(m: Machine, at = 0x18576): void {
   let pc = at;
   for (;;) {
@@ -2951,7 +2951,7 @@ export function fn_18576(m: Machine, at = 0x18576): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - zero div */
 export function fn_18588(m: Machine, at = 0x18588): void {
   let pc = at;
   for (;;) {
@@ -2973,7 +2973,7 @@ export function fn_18588(m: Machine, at = 0x18588): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - check fail */
 export function fn_18598(m: Machine, at = 0x18598): void {
   let pc = at;
   for (;;) {
@@ -2995,7 +2995,7 @@ export function fn_18598(m: Machine, at = 0x18598): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - trapv */
 export function fn_185aa(m: Machine, at = 0x185aa): void {
   let pc = at;
   for (;;) {
@@ -3017,7 +3017,7 @@ export function fn_185aa(m: Machine, at = 0x185aa): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - priviledge viol */
 export function fn_185b6(m: Machine, at = 0x185b6): void {
   let pc = at;
   for (;;) {
@@ -3039,7 +3039,7 @@ export function fn_185b6(m: Machine, at = 0x185b6): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - trace vec */
 export function fn_185cc(m: Machine, at = 0x185cc): void {
   let pc = at;
   for (;;) {
@@ -3061,7 +3061,7 @@ export function fn_185cc(m: Machine, at = 0x185cc): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - 1010 except */
 export function fn_185dc(m: Machine, at = 0x185dc): void {
   let pc = at;
   for (;;) {
@@ -3083,7 +3083,7 @@ export function fn_185dc(m: Machine, at = 0x185dc): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - 1111 except */
 export function fn_185ee(m: Machine, at = 0x185ee): void {
   let pc = at;
   for (;;) {
@@ -3105,7 +3105,7 @@ export function fn_185ee(m: Machine, at = 0x185ee): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - reserved ins */
 export function fn_18600(m: Machine, at = 0x18600): void {
   let pc = at;
   for (;;) {
@@ -3127,7 +3127,7 @@ export function fn_18600(m: Machine, at = 0x18600): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - format err */
 export function fn_18614(m: Machine, at = 0x18614): void {
   let pc = at;
   for (;;) {
@@ -3149,7 +3149,7 @@ export function fn_18614(m: Machine, at = 0x18614): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - uninitialized vec */
 export function fn_18626(m: Machine, at = 0x18626): void {
   let pc = at;
   for (;;) {
@@ -3171,7 +3171,7 @@ export function fn_18626(m: Machine, at = 0x18626): void {
   }
 }
 
-/** handler reached through a function-pointer table */
+/** exception stub - spurious int */
 export function fn_1863e(m: Machine, at = 0x1863e): void {
   let pc = at;
   for (;;) {
@@ -3237,7 +3237,7 @@ export function fn_18658(m: Machine, at = 0x18658): void {
   }
 }
 
-/** helper for title screen renderer */
+/** save the machine state for a later jump */
 export function fn_1865e(m: Machine, at = 0x1865e): void {
   let pc = at;
   for (;;) {
@@ -3263,7 +3263,7 @@ export function fn_1865e(m: Machine, at = 0x1865e): void {
   }
 }
 
-/** helper for title screen renderer */
+/** restore a saved state and jump back */
 export function fn_1866c(m: Machine, at = 0x1866c): void {
   let pc = at;
   for (;;) {
@@ -3289,7 +3289,7 @@ export function fn_1866c(m: Machine, at = 0x1866c): void {
   }
 }
 
-/** small leaf utility */
+/** jump through the slot only if it holds a trampoline */
 export function fn_1867c(m: Machine, at = 0x1867c): void {
   let pc = at;
   for (;;) {
@@ -3316,7 +3316,7 @@ export function fn_1867c(m: Machine, at = 0x1867c): void {
   }
 }
 
-/** helper for title screen renderer */
+/** string length */
 export function fn_1868c(m: Machine, at = 0x1868c): void {
   let pc = at;
   for (;;) {
