@@ -4538,5 +4538,23 @@
       "name": "value",
       "why": "the byte at 7(a7), the only thing passed on - and only when the word at 0x3e1948 is non-zero, which is the gate this routine exists to be."
     }
+  },
+  "0x1869e": {
+    "stack4": {
+      "name": "pair",
+      "why": "ONE longword holding two 16-bit numerators - its high word is divided first and its low word second, both by the same divisor, and the two quotients come back packed the same way."
+    }
+  },
+  "0x160f8": {
+    "stack4": {
+      "name": "list",
+      "why": "the longword at 0x10(a7), walked with (a2)+ a byte at a time; when the walk runs out the routine answers NULL - `suba.l a2,a2` - rather than the end of the list."
+    }
+  },
+  "0x90be": {
+    "d2": {
+      "name": "saved",
+      "why": "pushed and popped around the body and never read - the routine preserves it for its caller and does nothing with it."
+    }
   }
 }
