@@ -2365,26 +2365,46 @@
       "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
     },
     "a3": {
-      "name": "answerAt",
-      "why": "written through with `move.w d0,(a3)` - where the caller wants the word result put, rather than a value returned."
+      "name": "displayEntry",
+      "why": "corrects an earlier note that called it an answer slot. Its word at 0 takes what the called routine returned, and its 0x8 and 0x6 take the coordinates shifted left three - eight pixels to a cell - which are the same two fields the entity allocator at 0x5b40 fills and the unit mover at 0xaf72 updates. So it is a display entry, not a result pointer."
+    },
+    "a0": {
+      "name": "player",
+      "why": "0x3e1968 plus the player's byte at 2 times 126, computed here and kept in a local so the routine can come back to it after the indirect calls."
+    },
+    "d0": {
+      "name": "coord",
+      "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     }
   },
   "0x72ec": {
     "a4": {
       "name": "callTarget",
       "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    },
+    "d0": {
+      "name": "coord",
+      "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     }
   },
   "0x7318": {
     "a4": {
       "name": "callTarget",
       "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    },
+    "d0": {
+      "name": "coord",
+      "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     }
   },
   "0x735c": {
     "a4": {
       "name": "callTarget",
       "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    },
+    "d0": {
+      "name": "coord",
+      "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     }
   },
   "0x737e": {
@@ -2403,8 +2423,12 @@
       "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
     },
     "a3": {
-      "name": "answerAt",
-      "why": "written through with `move.w d0,(a3)` - where the caller wants the word result put, rather than a value returned."
+      "name": "displayEntry",
+      "why": "corrects an earlier note that called it an answer slot. Its word at 0 takes what the called routine returned, and its 0x8 and 0x6 take the coordinates shifted left three - eight pixels to a cell - which are the same two fields the entity allocator at 0x5b40 fills and the unit mover at 0xaf72 updates. So it is a display entry, not a result pointer."
+    },
+    "d0": {
+      "name": "coord",
+      "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     }
   },
   "0x73c4": {
@@ -2417,8 +2441,12 @@
       "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
     },
     "a3": {
-      "name": "answerAt",
-      "why": "written through with `move.w d0,(a3)` - where the caller wants the word result put, rather than a value returned."
+      "name": "displayEntry",
+      "why": "corrects an earlier note that called it an answer slot. Its word at 0 takes what the called routine returned, and its 0x8 and 0x6 take the coordinates shifted left three - eight pixels to a cell - which are the same two fields the entity allocator at 0x5b40 fills and the unit mover at 0xaf72 updates. So it is a display entry, not a result pointer."
+    },
+    "d0": {
+      "name": "coord",
+      "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     }
   },
   "0x6460": {
@@ -3041,6 +3069,12 @@
     "a5": {
       "name": "motionObjects",
       "why": "0x3e02d8, the sixteen-byte-stride array the entity allocator at 0x5b40 hands entries out of."
+    }
+  },
+  "0x7262": {
+    "d0": {
+      "name": "coord",
+      "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     }
   }
 }
