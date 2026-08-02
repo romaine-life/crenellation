@@ -1753,5 +1753,15 @@
     "name": "walk a rectangle with the per-cell routine at 0x11ee6",
     "ident": "walkRectWith11EE6",
     "why": "sixty bytes, and every one of them is argument shuffling: it reorders its five arguments and pushes 0x11ee6 in front of them for the higher-order walk at 0x357a. 0x35ee and 0x3666 are the same instructions with a different per-cell routine, which is the entire difference between them. A trap in reading it: the two `move.w $1e(a7),d0` are NOT the same slot - a7 has dropped four bytes between them, so the first reads the argument at off 20 and the second the one at off 16."
+  },
+  "0x362a": {
+    "name": "walk a rectangle with the per-cell routine at 0x11efe",
+    "ident": "walkRectWith11EFE",
+    "why": "the third of an identical set - 0x35ee pushes 0x11eda, 0x3666 pushes 0x11ee6 and this one 0x11efe - in front of the higher-order walk at 0x357a. Sixty bytes each and the same instructions, so the per-cell routine is the whole content of the choice. 0x11efe has thirteen callers of its own and decompresses one eight-pixel column, which is what makes this the ordinary path for drawing a rectangle of them."
+  },
+  "0x36a2": {
+    "name": "walk a rectangle with a per-cell attribute byte alongside",
+    "ident": "walkRectWithAttrStream",
+    "why": "0x357a's shape with the per-cell routine fixed at 0x11eda and one thing added: a SECOND stream. Each cell takes a word from the list at 8(a6) and a BYTE from the pointer at 0x18(a6), and the attribute handed to 0x11eda is that byte shifted left four plus the base word from 0x1e(a6). The byte pointer is advanced with `addq.l #$1,$18(a6)` - in the caller's own stack slot, not in a register - so the caller sees it moved on return, and that is also why it is absent from the params table: the lifter cannot bind a slot the routine writes."
   }
 }

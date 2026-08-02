@@ -24762,7 +24762,7 @@ export function drawParameterMarshaller(d1_: number, cells: number, at: number, 
   setReg('d3', d3);
 }
 
-export function drawImageColumnColumn(d1_: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number): void {
+export function drawImageColumnColumn(d1_: number, cells: number, at: number, width: number, height: number, extra: number): void {
   let _guard = 0;
   void _guard;
   let d0 = getReg('d0');
@@ -24786,16 +24786,16 @@ export function drawImageColumnColumn(d1_: number, arg0: number, arg1: number, a
   push(d2, 4);
   save_d2_0 = d2;
   save_d3_1 = d3;
-  d3 = (arg0) >>> 0;
-  d2 = (arg1) >>> 0;
-  t2 = (arg2 & 0xffff);
+  d3 = (cells) >>> 0;
+  d2 = (at) >>> 0;
+  t2 = (width & 0xffff);
   d1 = ((d1 & 0xffff0000) | (t2 & 65535));
   d0 = (0) >>> 0;
-  t3 = (arg4 & 0xffff);
+  t3 = (extra & 0xffff);
   d0 = ((d0 & 0xffff0000) | (t3 & 65535));
   t4 = d0;
   push(t4, 4);
-  t5 = (arg3 & 0xffff);
+  t5 = (height & 0xffff);
   d0 = ((d0 & 0xffff0000) | (t5 & 65535));
   t6 = ((((d0 & 65535)) << 16) >> 16);
   d0 = (t6) >>> 0;
@@ -24912,7 +24912,7 @@ export function drawArgumentRepack(d1_: number, cells: number, at: number, width
   setReg('d3', d3);
 }
 
-export function helperFramebufferDraw(ptr_: number, count_: number, kind2_: number, d3_: number, limit_: number, d6_: number, arg0: number, arg1: number, arg2: number, arg3: number, arg5: number): void {
+export function helperFramebufferDraw(ptr_: number, count_: number, kind2_: number, d3_: number, limit_: number, d6_: number, cells: number, at: number, width: number, height: number, attrBase: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -24988,14 +24988,14 @@ export function helperFramebufferDraw(ptr_: number, count_: number, kind2_: numb
   save_d5_3 = limit;
   save_d6_4 = d6;
   save_a2_5 = src;
-  src = (arg0) >>> 0;
-  d2 = (arg1) >>> 0;
-  t6 = (arg2 & 0xffff);
+  src = (cells) >>> 0;
+  d2 = (at) >>> 0;
+  t6 = (width & 0xffff);
   d3 = ((d3 & 0xffff0000) | (t6 & 65535));
-  t7 = (arg5 & 0xffff);
+  t7 = (attrBase & 0xffff);
   t8 = t7;
   store16(dst + -0x2, t8);
-  t9 = (arg3 & 0xffff);
+  t9 = (height & 0xffff);
   limit = ((limit & 0xffff0000) | (t9 & 65535));
   t10 = ((((limit & 65535)) << 16) >> 16);
   limit = (t10) >>> 0;

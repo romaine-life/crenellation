@@ -476,5 +476,49 @@
       "name": "kind",
       "why": "its low byte, at 0x2b(a7) once five pushes have moved a7, shifted left two to index the longword table at 0xfd5e - the per-kind descriptor pointer that becomes the allocator's first argument."
     }
+  },
+  "0x362a": {
+    "stack4": {
+      "name": "cells",
+      "why": "passed straight through as the flat word list 0x357a reads a cell at a time."
+    },
+    "stack8": {
+      "name": "at",
+      "why": "passed through as the starting address 0x357a threads from one call to the next."
+    },
+    "stack12": {
+      "name": "width",
+      "why": "only its low word, at 0x16(a7), sign-extended and passed as the column count."
+    },
+    "stack16": {
+      "name": "height",
+      "why": "only its low word, and read by the SECOND `move.w $1e(a7),d0` - after a7 has already dropped four bytes for the previous push, so it is the slot at off 16 and not off 20."
+    },
+    "stack20": {
+      "name": "extra",
+      "why": "only its low word, read by the FIRST `move.w $1e(a7),d0` while a7 is still where it started. It is zero-extended and becomes the constant 0x357a hands to every per-cell call without looking at it."
+    }
+  },
+  "0x36a2": {
+    "stack4": {
+      "name": "cells",
+      "why": "read a word at a time with (a2)+ across the whole rectangle, the same flat list 0x357a takes."
+    },
+    "stack8": {
+      "name": "at",
+      "why": "the running address, replaced by each call's answer."
+    },
+    "stack12": {
+      "name": "width",
+      "why": "its low word at 0x12(a6), the inner count and the term in ((0x40 - width) << 3) + 0xe00 between rows."
+    },
+    "stack16": {
+      "name": "height",
+      "why": "its low word at 0x16(a6), the outer count."
+    },
+    "stack24": {
+      "name": "attrBase",
+      "why": "its low word at 0x1e(a6), added to every per-cell attribute after that cell's byte has been shifted left four. The byte stream itself is the argument at off 20, which is missing from the table because the routine advances it in place."
+    }
   }
 }
