@@ -1,3 +1,3 @@
-recompiled ran 390 frames, playfield bytes set: f1:0 f150:0 f300:0
-decompiled ran 390 frames, playfield bytes set: f1:0 f150:0 f300:0
+recompiled ran 600 frames, playfield bytes set: f1:0 f150:0 f300:0 f450:26880 f600:77952
+decompiled ran 600 frames, playfield bytes set: f1:0 f150:0 f300:0 f450:26880 f600:77952
 screens identical: 80640 pixels
