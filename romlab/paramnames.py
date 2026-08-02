@@ -54,7 +54,7 @@ CALL = re.compile(r"call(?:Rom|Decompiled)\((0x[0-9a-f]+)")
 # same propagation-without-rechecking defect whylimit.py counts for `limit`.
 # The rule for adding one: if the name would still be true were the value
 # passed on to a DIFFERENT routine, it may propagate; if not, it belongs here.
-NOT_PROPAGATED = re.compile(r"^(unused|live[AD]\d)\d*$")
+NOT_PROPAGATED = re.compile(r"^(unused|preserved|live[AD]\d)\d*$")
 
 
 def split_functions(text):

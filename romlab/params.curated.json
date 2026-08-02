@@ -225,6 +225,18 @@
     "stack16": {
       "name": "extra",
       "why": "only its high word is read, at 0x2a(a7), and it is copied down into 0x26(a7) unchanged. Nothing here interprets it; it is moved so the block the caller passes on has it in the right place."
+    },
+    "a0": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x1e6b2) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a1": {
+      "name": "preserved2",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x1e6b2) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "preserved3",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x1e6b2) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x12026": {
@@ -241,6 +253,10 @@
     "stack4": {
       "name": "entry",
       "why": "the longword at 0xc(a7), dereferenced for a WORD which is an offset from 0x1f7f0 - not a pointer to follow directly. The result is dereferenced the same way a second time."
+    },
+    "d2": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0f2cc) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x5cb0": {
@@ -721,6 +737,10 @@
     "d4": {
       "name": "cellNibble",
       "why": "the stream byte masked to its low four bits; 6 or less indexes the seven-way jump table and anything higher takes the default."
+    },
+    "d3": {
+      "name": "ownerMask",
+      "why": "the only write to it in the routine is the constant 0xc0 - the two bits every cell byte in this ROM keeps its owner in, the low six being the kind."
     }
   },
   "0xc9d2": {
@@ -1281,6 +1301,10 @@
     "stack12": {
       "name": "check",
       "why": "only its low word, at 0x1e(a7), and only against zero: a zero here skips the walk entirely, so it is the switch that decides whether the run is followed at all."
+    },
+    "d2": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x07954) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x767c": {
@@ -1313,6 +1337,10 @@
     "d2": {
       "name": "kind",
       "why": "the byte at 0xc of the record, doubled to index that table - so it is the case selector and there are as many cases as the table has words."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x125e4) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x1357c": {
@@ -2877,8 +2905,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x7236": {
@@ -2907,8 +2935,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x726e": {
@@ -2949,8 +2977,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x72ec": {
@@ -2979,8 +3007,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x7318": {
@@ -3009,8 +3037,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x735c": {
@@ -3039,8 +3067,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x737e": {
@@ -3065,8 +3093,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x73c0": {
@@ -3103,8 +3131,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x73c4": {
@@ -3141,8 +3169,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x6460": {
@@ -4371,6 +4399,10 @@
     "a2": {
       "name": "walkRecord",
       "why": "pushed to 0x6bc0 together with the routine's own word argument, and 0x3c(a2) takes a copy of that same word at 0x61fc. The record the walk is being run for."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0629c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x61e2": {
@@ -4407,6 +4439,10 @@
     "a2": {
       "name": "walkRecord",
       "why": "pushed to 0x6bc0 together with the routine's own word argument, and 0x3c(a2) takes a copy of that same word at 0x61fc. The record the walk is being run for."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0629c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x6232": {
@@ -4425,6 +4461,10 @@
     "d6": {
       "name": "endMark",
       "why": "the walk stops when the raw cell byte at the address it is stepping through equals it (0x626a) - the same terminator placementCommit carries, and this routine is that walk run backwards: it decrements the cell address at every case where placementCommit increments it."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0629c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x6252": {
@@ -4451,6 +4491,10 @@
     "a2": {
       "name": "walkRecord",
       "why": "pushed to 0x6bc0 together with the routine's own word argument, and 0x3c(a2) takes a copy of that same word at 0x61fc. The record the walk is being run for."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0629c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0xf630": {
@@ -4501,8 +4545,8 @@
       "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
     },
     "d2": {
-      "name": "plainCue",
-      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
+      "name": "plainCueSet",
+      "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
     }
   },
   "0x1397a": {
@@ -4655,6 +4699,10 @@
     "d0": {
       "name": "recordOwner",
       "why": "the byte at 3 of the record, compared against the player's filter byte - so records belonging to someone else are skipped before anything else is read."
+    },
+    "a5": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0b73c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0xf79e": {
@@ -4697,6 +4745,10 @@
     "a4": {
       "name": "drawNumber",
       "why": "0x18b76, the one 0x13e6a and 0x18b26 both end by calling - the formatter-and-draw."
+    },
+    "a5": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x15950) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x1e8d6": {
@@ -5031,6 +5083,10 @@
     "d2": {
       "name": "paletteBase",
       "why": "added to every pixel the decoder emits."
+    },
+    "d4": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x11ef2) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x3da0": {
@@ -5737,6 +5793,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x074fe is `move.b $19(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x074fa) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x7b14": {
@@ -5777,6 +5837,10 @@
     "a0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0f160 is `movea.l #$3e02b4, a0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0f13e) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0xf306": {
@@ -5789,6 +5853,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x12054 is `move.w $16(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x1204c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x121c4": {
@@ -6085,6 +6153,110 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18e02 is `move.w $e(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x31ba": {
+    "a0": {
+      "name": "ownerColours",
+      "why": "the only write to it in the routine is lea $fe02,a0, and 0xfe02 is the table drawPanelPlayerNothingNegative indexes by player and unitSpawnPlacement indexes by the cell's top two bits - owner to colour."
+    }
+  },
+  "0x704e": {
+    "a4": {
+      "name": "startCue",
+      "why": "the only write to it in the routine is move.l #$9150,a4, and 0x9150 takes a four-byte table of cue ids, picks one by the round-robin index at 0x3e1946 (mod 4) and pushes it into the ring at 0x3e1922 when the gate at 0x3e1948 is set."
+    }
+  },
+  "0x999a": {
+    "d6": {
+      "name": "eventRecord",
+      "why": "the only write to it in the routine is the constant 0x11b06, the record drawPanelPlayerNothingNegative pushes to eventPost at 0x426c."
+    }
+  },
+  "0x4e82": {
+    "a4": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x04e82) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0xa75e": {
+    "d2": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0a7da) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d6": {
+      "name": "preserved2",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0a7da) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0xa794": {
+    "d6": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0a7da) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0xcbae": {
+    "a4": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0cbb2) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0xcfda": {
+    "d2": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x0cfda) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x124be": {
+    "a2": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x124be) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x133b2": {
+    "a0": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x133b2) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a1": {
+      "name": "preserved2",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x133b2) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x13c36": {
+    "a1": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x13c36) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x188f8": {
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x18906) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x18902": {
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x18906) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x18d18": {
+    "a3": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x18d18) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x19c3c": {
+    "d2": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x19c3c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x1a1ca": {
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in this routine is inside a movem (the first at 0x1a1ca) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   }
 }

@@ -60,8 +60,11 @@ UNNAMED = re.compile(r"^[ad]\d+_?\d*$")
 # mnemonic prefix, and the trailing size/condition is part of the mnemonic.
 TRANSFER = ("b", "jmp", "jsr", "rts", "rte", "rtr", "rtd", "db", "trap")
 
-# Mnemonics that write their destination without reading it.
-WHOLE = ("moveq", "clr", "lea", "move", "movea")
+# Mnemonics that write their destination without reading it. `movep` is here
+# because it is a plain load - it just takes alternate bytes, which is how this
+# board's byte-wide palette RAM hangs off a 16-bit bus - and leaving it out
+# missed the one register the palette handlers actually work in.
+WHOLE = ("moveq", "clr", "lea", "move", "movea", "movep")
 
 
 def transfers(mn):
@@ -175,7 +178,7 @@ def main():
                 return lo, hi
         return a, a + 64
 
-    found, checked = {}, 0
+    found, kept, checked = {}, {}, 0
     for m in ENTRY.finditer(src):
         a, fn = int(m.group(1), 16), m.group(2)
         names = [p.strip().split(":")[0].strip()
@@ -200,12 +203,27 @@ def main():
                     if size == "l" or (size in ("w", "b") and narrow(
                             line, reg, size)):
                         dead[reg] = (i.address, i.mnemonic, i.op_str)
+        # ...and the other honest answer, which is NOT `unused`. A register
+        # whose every appearance in the whole routine is inside a `movem` is
+        # one the routine saves and restores and never touches: it PRESERVES
+        # it. The value is not dead - a spill before a call hands it straight
+        # to the callee, which is the case whyunread.py refused to call unused
+        # - but nothing here reads it, and saying so is the useful thing.
+        # Whole-extent rather than reachable-set, so it holds for every entry.
+        for reg in sorted(want - set(dead)):
+            uses = [i for i in line
+                    if re.search(r"\b" + reg + r"\b", i.op_str)]
+            if uses and all(i.mnemonic.startswith("movem") for i in uses):
+                kept.setdefault(a, {})[reg] = uses[0].address
         if dead:
             found[a] = dead
 
     total = sum(len(v) for v in found.values())
+    keptn = sum(len(v) for v in kept.values())
     print(f"{total} of {checked} unnamed register parameters are dead on "
           f"arrival, across {len(found)} entries")
+    print(f"{keptn} more appear only inside a movem - preserved, never "
+          f"touched - across {len(kept)} entries")
     for a in sorted(found)[:8]:
         for reg, (at, mn, ops) in sorted(found[a].items()):
             print(f"  0x{a:05x} {reg:3} killed by  {at:06x}  {mn} {ops}")
@@ -229,6 +247,20 @@ def main():
                        f" address order, with no branch in between, 0x{at:05x}"
                        f" is `{mn} {ops}` - the register is destroyed before"
                        f" anything could read it. Proved by deadregs.py.",
+            }
+        r, _ = F.apply(a, names, only=True)
+        reached += r
+    for a, regs in sorted(kept.items()):
+        names, n = {}, 0
+        for reg, at in sorted(regs.items()):
+            n += 1
+            names[reg] = {
+                "name": "preserved" + ("" if n == 1 else str(n)),
+                "why": f"every appearance of it in this routine is inside a"
+                       f" movem (the first at 0x{at:05x}) - the routine saves"
+                       f" and restores it and never touches it. Not dead: a"
+                       f" spill before a call still hands it on. Found by"
+                       f" deadregs.py.",
             }
         r, _ = F.apply(a, names, only=True)
         reached += r

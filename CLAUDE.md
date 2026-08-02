@@ -107,9 +107,10 @@ Measured 2026-08-02 in `frontend/src/rom/names.txt`:
 | | |
 |---|---|
 | Still named for their address | **0 of 1,187** |
-| Named only by a suffix on another routine's name | 544 |
-| No *stated* purpose — the name was derived by rule | 455 of 1,182 |
-| Parameters that say what they are | 2,334 of 4,419 |
+| Opaque — nothing it, its host or its target points at says what it is for | **0 of 1,187** |
+| Named only by a suffix on another routine's name | 500 |
+| No *stated* purpose — the name was derived by rule | 365 of 1,182 |
+| Parameters that say what they are | 3,563 of 4,419 |
 
 **"1,187 of 1,187 carry a name that says what they do" was an overclaim and is
 retracted.** `expect(byAddress).toEqual([])` says no routine is called
@@ -245,15 +246,16 @@ and is 2,334 of 4,419 after it: 3,778 parameters said nothing, 2,085 do.
 When only names or the lifter changed:
 
 `cd romlab && python3 idents.py && python3 blocks.py && rm -f out/unproven.json
-&& python3 decomp.py && python3 handedits.py && python3 dropunread.py &&
-python3 namepasses.py`
+&& python3 decomp.py && python3 handedits.py && python3 namepasses.py &&
+python3 dropunread.py && python3 namepasses.py`
 
 When the *map* changed — funcs, entries, extents — the chain starts earlier
 and regenerates both translations:
 
 `python3 describe.py && python3 gen_ts.py && python3 cfg.py && python3
 idents.py && python3 blocks.py && rm -f out/unproven.json && python3 decomp.py
-&& python3 handedits.py && python3 dropunread.py && python3 namepasses.py`
+&& python3 handedits.py && python3 namepasses.py && python3 dropunread.py
+&& python3 namepasses.py`
 
 Order matters and these steps are easy to get wrong:
 
@@ -263,7 +265,7 @@ Order matters and these steps are easy to get wrong:
 - **`rm out/unproven.json` before `decomp.py`, not after.** It is read at
   generation time; clearing it afterwards silently emits the previous run's
   held-back set and every count is wrong.
-- **`handedits.py`, then `dropunread.py`, then `namepasses.py` last.** Regeneration overwrites
+- **`handedits.py`, then the naming chain.** Regeneration overwrites
   `decompiled.ts`, so every deliberate edit lives in `handedits.py` too and is
   re-applied. An edit that no longer applies is an *error* — the lifter now
   produces different text and the change has to be re-expressed, or taught to
@@ -274,11 +276,19 @@ Order matters and these steps are easy to get wrong:
   not the same as each running to its own: they feed each other, and the second
   round alone finds names the first round's output made findable. Run once each
   they give 2,126 unnamed; run to the joint fixed point, 2,085.
-- **`dropunread.py` before the four that name.** It removes parameters, and a
-  naming pass that ran first would spend its evidence on things about to stop
-  being parameters — which is exactly what happened the first time round: 1,009
-  of the 1,860 it drops had names, and `callernames.py` reported 384 before it
-  and 197 after, the difference being names it should never have given.
+- **`namepasses.py` on BOTH sides of `dropunread.py`**, and the second run is
+  not a formality. Run it only after, as this file said for a day, and the
+  count is **1,048**; run it before as well and it is **856**. 236 role names
+  vanish and 40 different ones arrive: `rowsLeft`, `count`, `index`,
+  `screenAt` — names on registers the routine genuinely reads, so that is a
+  loss and not a correction. The passes cannot see those roles once the unread
+  registers have been rewritten into the body. Nothing is protected from
+  removal by naming it first, either: `dropunread` moved exactly 1,860 in both
+  orders. The reason it still has to run *before* the last naming round is the
+  original one — a pass that names things about to stop being parameters
+  spends its evidence on them, and the first time round 1,009 of the 1,860 it
+  drops had names, `callernames.py` reporting 384 before it and 197 after.
+  Both runs are wanted; only the order of the three is fixed.
 - **`rm -rf romlab/__pycache__`** after editing a module another script imports.
   Stale bytecode has survived edits here more than once.
 
