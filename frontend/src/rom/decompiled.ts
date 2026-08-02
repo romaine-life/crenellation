@@ -30301,7 +30301,7 @@ export function scoreThreeNeighboursWeightsOne(ptr_: number, d0_: number, index_
   setReg('d3', d3);
 }
 
-export function scoreNeighboursOneStrideEither(d0_: number, index_: number, d2_: number, d3_: number, arg0: number, arg1: number, arg2: number): void {
+export function scoreNeighboursOneStrideEither(d0_: number, index_: number, d2_: number, d3_: number, cell: number, wanted: number, alsoWanted: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -30325,10 +30325,10 @@ export function scoreNeighboursOneStrideEither(d0_: number, index_: number, d2_:
   push(d2, 4);
   save_d2_0 = d2;
   save_d3_1 = d3;
-  ptr2 = (arg0) >>> 0;
-  t2 = (arg1 & 0xff);
+  ptr2 = (cell) >>> 0;
+  t2 = (wanted & 0xff);
   index = ((index & 0xffffff00) | (t2 & 255));
-  t3 = (arg2 & 0xff);
+  t3 = (alsoWanted & 0xff);
   d0 = ((d0 & 0xffffff00) | (t3 & 255));
   d3 = ((d3 & 0xffff0000) | (0 & 65535));
   ptr2 = ((ptr2 + 0x1)) >>> 0;
@@ -168910,19 +168910,19 @@ export function drawGlyphRunDownColumn(d0: number, d1: number, dest: number, gly
   return;
 }
 
-export function drawGlyphRunAlongRow(d0: number, d1: number, arg0: number, arg1: number, arg2: number): void {
+export function drawGlyphRunAlongRow(d0: number, d1: number, dest: number, glyph: number, attrs: number): void {
   if (tick(90, 0x19032)) { setReg('d0', d0); setReg('d1', d1); takeIrq(); }
-  const t0 = (arg2 & 0xffff);
+  const t0 = (attrs & 0xffff);
   const t1 = ((d1 & 0xffff0000) | (t0 & 0xffff));
   const t2 = ((t1 & 0xffff) & 0x30f0);
   const t3 = ((t1 & 0xffff0000) | (t2 & 0xffff));
-  const t4 = (arg1 & 0xffff);
+  const t4 = (glyph & 0xffff);
   const t5 = ((d0 & 0xffff0000) | (t4 & 0xffff));
   const t6 = 0x192e6;
   const t7 = load8((t6 + ((t5 << 16) >> 16)));
   const t8 = ((t5 & 0xffffff00) | (t7 & 0xff));
   setReg('a0', 0x800002);
-  setReg('a1', arg0);
+  setReg('a1', dest);
   setReg('d0', t8);
   setReg('d1', t3);
   jumpRom(0x18f10);

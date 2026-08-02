@@ -878,5 +878,33 @@
       "name": "attrs",
       "why": "only its low word, at 0xe(a7), and only the bits in 0x30f0 survive the mask - the rest of the word is ignored entirely."
     }
+  },
+  "0x19032": {
+    "stack4": {
+      "name": "dest",
+      "why": "the longword at 4(a7), taken into a1 and handed on to 0x18f10 unchanged."
+    },
+    "stack8": {
+      "name": "glyph",
+      "why": "only its low word, at 0xa(a7), used to index the PC-relative BYTE table at 0x192e6 - so it is a glyph number and the table maps it to something one byte wide."
+    },
+    "stack12": {
+      "name": "attrs",
+      "why": "only its low word, at 0xe(a7), and only the bits in 0x30f0 survive the mask - the rest of the word is ignored entirely."
+    }
+  },
+  "0x3de8": {
+    "stack4": {
+      "name": "cell",
+      "why": "the longword at 0xc(a7), and the routine adds ONE to it before looking anywhere - so the neighbours it reads are offset from cell+1, not from the cell itself."
+    },
+    "stack8": {
+      "name": "wanted",
+      "why": "only its low byte, at 0x13(a7). A neighbour matching this OR the next argument counts; the two are alternatives, not a pair to match together."
+    },
+    "stack12": {
+      "name": "alsoWanted",
+      "why": "only its low byte, at 0x17(a7), the second acceptable value. Passing the same byte twice makes the test a single comparison."
+    }
   }
 }

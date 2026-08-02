@@ -1203,8 +1203,9 @@
     "why": "the same as 0x19032 but with a0 = 0xFFFE0080: a step of 0x80 bytes, which is one row of the 64-word-wide glyph grid, and a paired write two bytes back."
   },
   "0x19032": {
-    "name": "draw a glyph run along a row",
-    "why": "masks the colour word with 0x30F0, translates the character through the table at 0x192E6, and calls 0x18F10 with a0 = 0x00800002 - a step of two bytes to the next cell and a paired write 0x80 further on. 0x19010 is the same call with the strides the other way round."
+    "name": "draw a glyph run into the 0x800002 window",
+    "ident": "drawGlyphRun800002",
+    "why": "0x19010 instruction for instruction, with one difference: a0 is 0x800002 here and 0xfffe0080 there. Both mask the attribute word to 0x30f0, index the same PC-relative byte table at 0x192e6 by the glyph number, and branch to the same 0x18f10 - so the destination window is the entire choice between them."
   },
   "0x19054": {
     "name": "format a value through the scaled converter and draw it",
@@ -2085,5 +2086,10 @@
     "name": "write a cell's low six bits and notify when the one after it reads two",
     "ident": "writeCellAndNotifyOnTwo",
     "why": "an inner step that arrives with its registers already set - d4 is the cell address, d2 the value and d5 the bits to or in, and it advances d4 itself. It masks the value to 0x3f before or-ing d5, so the top two bits are the owner field the whole board code reserves and the bottom six are the cell's own kind. It then looks at the byte 0x21 further on - one row plus one, on the 32-byte board - and only when THAT byte's low six bits are exactly 2 does it call the gate at 0x90e6, once, guarded by the counter at 0x14(a2) so a run of them notifies a single time."
+  },
+  "0x3de8": {
+    "name": "answer which of the cells above and below carries either value",
+    "ident": "neighboursAboveBelowMatch",
+    "why": "adds 1 to the cell address, looks 0x20 further on - one row down, on the 32-byte board - and adds 4 to the answer if that byte equals EITHER of the two the caller passed; then steps back 0x20 from there and adds 8 on the same test. So the answer is a two-bit mask, bit 2 for one neighbour and bit 3 for the other, and each is set by a match against either value rather than both. It is the same shape as the wall adjacency rule that `RULES.wallsConnectUp` switches - one bit per vertical neighbour, added rather than or-ed - though it is a different routine."
   }
 }
