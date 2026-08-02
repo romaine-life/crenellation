@@ -119,8 +119,12 @@ describe('colour base', () => {
       // design, so a path comparison that includes handler entry and rte
       // return finds that difference and nothing else. writes.test excludes
       // exception-frame writes for exactly this reason.
-      if (n >= 385 && n <= 390 && sys.m.irqDepth === 0
-          && pc >= 0x00400 && pc < 0x20000) {
+      // fn_1399C's ENTRY STATE. Every one of its sixteen blocks matches the
+      // oracle, yet routing this single entry to the oracle removes the fault -
+      // so what differs is what the routine is GIVEN, not what it contains.
+      // Twelve register parameters arrive here; this records all of them at
+      // every visit, so the first visit that differs says which.
+      if (pc === 0x1399c && n <= 390) {
         // A checksum of all sixteen, so one pass covers every register without
         // a file of millions of numbers. Where the checksums first differ names
         // the address and the visit; which register it was is then one targeted
@@ -148,8 +152,9 @@ describe('colour base', () => {
         // which successor each side chose - that needs the predecessor too.
         // With both, the first differing (from -> to) pair IS the mis-lifted
         // branch, named rather than inferred.
-        a0seq.push(lastHead, pc);
-        lastHead = pc;
+        const M2 = sys.m;
+        a0seq.push(M2.a0 | 0, M2.a1 | 0, M2.a2 | 0, M2.a3 | 0, M2.a4 | 0, M2.a6 | 0,
+                   M2.d0 | 0, M2.d1 | 0, M2.d2 | 0, M2.d5 | 0, M2.d6 | 0, M2.d7 | 0);
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
