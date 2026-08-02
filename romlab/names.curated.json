@@ -1985,5 +1985,10 @@
     "name": "store d3 into 0x12 of the record and branch on its sign",
     "ident": "storeAndBranchOnSign",
     "why": "an inner entry of 0x1997a that arrives with d3 and a2 already set: it writes the word and takes `bpl` on the flags THAT WRITE left, not on a separate test. A reader looking for the comparison will not find one - `move.w` sets N and Z from the value moved, which is the whole reason this is two instructions rather than three."
+  },
+  "0x1a8c0": {
+    "name": "the opcode handlers of the sequencer interpreter",
+    "ident": "sequencerOpcodeHandlers",
+    "why": "774 bytes that are not one routine but about thirty short ones side by side, which is why the map records twenty-eight inner entries into it. Each is one opcode's handler and every one of them ends `bra.w $1b048`, the shared tail. The state is a2: the byte at 4(a2) is a PROGRAM COUNTER into the sequence and handlers advance it with `addq.l #$1,$4(a2)` as they consume operands, d4 arrives holding the operand byte the dispatcher already fetched, and 0x1a(a2) is assembled from two bytes as a sixteen-bit value. 0x16(a2) is a level clamped to four bits - one handler SETS it and the next ADDS to it, with bit 7 meaning underflow and clearing it and anything above 0xf pinned to 0xf - and both refuse when 0x12(a2) is 0xfe, which is a mode that locks it. The tail at 0x1b048 either fetches the next opcode at 0x1a810 or, when a handler set the stop byte at -5(a6), follows `movea.l (a2),a2` to the next voice and starts again at 0x1a618, returning when that pointer is null. So the voices are a linked list and each carries its own program counter."
   }
 }
