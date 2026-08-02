@@ -1187,6 +1187,14 @@
     "d3": {
       "name": "powerOn",
       "why": "1 when the board just came up and 0 when the operator asked from the menu - 0x130ee is the entry that clears it - and 0x1378e reads it to decide whether to run the long RAM passes."
+    },
+    "a0": {
+      "name": "message",
+      "why": "the failure record handed to 0x13134 - `movea.l -$e(a5),a0` picks it out of the table entry that just failed."
+    },
+    "d0": {
+      "name": "result",
+      "why": "what the test left: zero on a pass, and on a failure the eor of what was written against what came back."
     }
   },
   "0x1378e": {
@@ -3217,6 +3225,38 @@
     "d3": {
       "name": "failed",
       "why": "cleared before each entry and left non-zero by a failing test, which is what the code after the branch tests."
+    },
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe. These entries are the points 0x1378e returns to, so they arrive with the test's own registers still live - which is why a runner that never touches the watchdog has it in its signature."
+    },
+    "a6": {
+      "name": "nextStep",
+      "why": "the test chain's continuation register, live across the branch into 0x1378e and back."
+    },
+    "a0": {
+      "name": "at",
+      "why": "the address the test's last pass had reached."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value the test last wrote, or on a failure the eor of expected against actual."
+    },
+    "d5": {
+      "name": "background",
+      "why": "0 or 0xff, whichever background the pass that just ran used."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "how many passes the test got through - the one number of the chain's state a runner actually reads."
+    },
+    "d7": {
+      "name": "startBit",
+      "why": "0x8000 for the word chain, 0x80 for the byte one."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "the bit the last pass had reached, mid-walk when a failure cut it short."
     }
   },
   "0x130d2": {
@@ -3239,6 +3279,38 @@
     "d3": {
       "name": "failed",
       "why": "cleared before each entry and left non-zero by a failing test, which is what the code after the branch tests."
+    },
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe. These entries are the points 0x1378e returns to, so they arrive with the test's own registers still live - which is why a runner that never touches the watchdog has it in its signature."
+    },
+    "a6": {
+      "name": "nextStep",
+      "why": "the test chain's continuation register, live across the branch into 0x1378e and back."
+    },
+    "a0": {
+      "name": "at",
+      "why": "the address the test's last pass had reached."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value the test last wrote, or on a failure the eor of expected against actual."
+    },
+    "d5": {
+      "name": "background",
+      "why": "0 or 0xff, whichever background the pass that just ran used."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "how many passes the test got through - the one number of the chain's state a runner actually reads."
+    },
+    "d7": {
+      "name": "startBit",
+      "why": "0x8000 for the word chain, 0x80 for the byte one."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "the bit the last pass had reached, mid-walk when a failure cut it short."
     }
   },
   "0x130dc": {
@@ -3261,6 +3333,38 @@
     "d3": {
       "name": "failed",
       "why": "cleared before each entry and left non-zero by a failing test, which is what the code after the branch tests."
+    },
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe. These entries are the points 0x1378e returns to, so they arrive with the test's own registers still live - which is why a runner that never touches the watchdog has it in its signature."
+    },
+    "a6": {
+      "name": "nextStep",
+      "why": "the test chain's continuation register, live across the branch into 0x1378e and back."
+    },
+    "a0": {
+      "name": "at",
+      "why": "the address the test's last pass had reached."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value the test last wrote, or on a failure the eor of expected against actual."
+    },
+    "d5": {
+      "name": "background",
+      "why": "0 or 0xff, whichever background the pass that just ran used."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "how many passes the test got through - the one number of the chain's state a runner actually reads."
+    },
+    "d7": {
+      "name": "startBit",
+      "why": "0x8000 for the word chain, 0x80 for the byte one."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "the bit the last pass had reached, mid-walk when a failure cut it short."
     }
   },
   "0x27c2": {
@@ -3529,6 +3633,40 @@
     "a2": {
       "name": "regionEnd",
       "why": "the high end, compared with cmpa.l to end a sweep."
+    }
+  },
+  "0x135d6": {
+    "a0": {
+      "name": "message",
+      "why": "the failure record handed to 0x13134 - `movea.l -$e(a5),a0` picks it out of the table entry that just failed."
+    },
+    "d0": {
+      "name": "result",
+      "why": "what the test left: zero on a pass, and on a failure the eor of what was written against what came back."
+    },
+    "d4": {
+      "name": "failed",
+      "why": "a copy of the test's answer, kept because the switch reads at 0x640000 that follow it clobber d0."
+    }
+  },
+  "0x135e0": {
+    "a0": {
+      "name": "message",
+      "why": "the failure record handed to 0x13134 - `movea.l -$e(a5),a0` picks it out of the table entry that just failed."
+    },
+    "d0": {
+      "name": "result",
+      "why": "what the test left: zero on a pass, and on a failure the eor of what was written against what came back."
+    },
+    "d4": {
+      "name": "failed",
+      "why": "a copy of the test's answer, kept because the switch reads at 0x640000 that follow it clobber d0."
+    }
+  },
+  "0x135f0": {
+    "d0": {
+      "name": "result",
+      "why": "what the test left: zero on a pass, and on a failure the eor of what was written against what came back."
     }
   }
 }
