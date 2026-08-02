@@ -1190,5 +1190,91 @@
       "name": "stackSlot",
       "why": "the slot 0x663c reserved, written through only on the path that pushes the 0xff empty marker back before the fill stops."
     }
+  },
+  "0xeeee": {
+    "a0": {
+      "name": "entry",
+      "why": "walks the array at 0x3e1cf6 in 0xc-byte steps with `adda.l #$c,a0`; every field this routine reads or writes is at an offset from it."
+    },
+    "d1": {
+      "name": "wantRoutine",
+      "why": "the descriptor's first longword, matched against 0x4 of each entry."
+    },
+    "d2": {
+      "name": "wantArg",
+      "why": "the caller's argument, matched against 0x8 of each entry. Remove needs BOTH to agree where the test at 0xeffa needs only the routine."
+    },
+    "a1": {
+      "name": "shiftFrom",
+      "why": "set to the entry after the one being removed, and the array is compacted down over it three longwords at a time."
+    }
+  },
+  "0xeffa": {
+    "a1": {
+      "name": "descriptor",
+      "why": "dereferenced for its first longword only - the routine pointer - because this operation deliberately ignores the argument."
+    },
+    "d1": {
+      "name": "left",
+      "why": "the count from 0x3e1cf4, which is held as count-minus-one - `bmi` on it is the empty test, and it is used as a dbra counter from there."
+    },
+    "d2": {
+      "name": "unused",
+      "why": "saved by the movem and never read. It is in the signature because the lifter saw it live across the routine, not because the routine wants it."
+    }
+  },
+  "0xef58": {
+    "a0": {
+      "name": "entry",
+      "why": "walks the array at 0x3e1cf6 in 0xc-byte steps with `adda.l #$c,a0`; every field this routine reads or writes is at an offset from it."
+    },
+    "d0": {
+      "name": "left",
+      "why": "the count from 0x3e1cf4, which is held as count-minus-one - `bmi` on it is the empty test, and it is used as a dbra counter from there."
+    },
+    "d2": {
+      "name": "unused",
+      "why": "saved and restored and never read - the same artefact as 0xeffa's d2, in the routine right next to it."
+    }
+  },
+  "0xee44": {
+    "a2": {
+      "name": "entry",
+      "why": "walks the array at 0x3e1cf6 in 0xc-byte steps with `adda.l #$c,a0`; every field this routine reads or writes is at an offset from it."
+    },
+    "a3": {
+      "name": "handler",
+      "why": "the routine pointer out of the entry's 0x4, called with `jsr (a3)` once the countdown reaches zero."
+    },
+    "d0": {
+      "name": "left",
+      "why": "the count from 0x3e1cf4, which is held as count-minus-one - `bmi` on it is the empty test, and it is used as a dbra counter from there."
+    }
+  },
+  "0x865e": {
+    "d2": {
+      "name": "band",
+      "why": "counts up while the thresholds at 0x117ce are still below the territory count, so it ends as the index of the band reached - and it is passed to 0x441c as well as used to index the awards."
+    },
+    "d3": {
+      "name": "territory",
+      "why": "the word at 0x58 of the player, which is what the fill accumulated; only compared, never changed."
+    }
+  },
+  "0xaf72": {
+    "a0": {
+      "name": "display",
+      "why": "the unit's display entry from its 0x4; a null there is what makes a unit skipped entirely."
+    },
+    "d6": {
+      "name": "anyMoving",
+      "why": "set to 1 by any unit that did not retire this tick and returned as the answer - so it is 'is anything still in motion' and not a count."
+    }
+  },
+  "0x6c20": {
+    "d2": {
+      "name": "wantDirection",
+      "why": "the direction 0x11cf8 answered for the current target, compared against the cannon's own byte at 0x4 - the difference masked to 7 less 4 is what picks the shorter way round."
+    }
   }
 }
