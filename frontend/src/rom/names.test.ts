@@ -114,12 +114,31 @@ describe('names', () => {
     const nameAt = new Map([...src.matchAll(
       /\{ at: (0x[0-9a-f]+), fn: (\w+) as /g)]
       .map((m) => [parseInt(m[1], 16), m[2]] as [number, string]));
+    // The single thing a routine hands control to, taken from its own emitted
+    // body rather than from facts.json's `calls`. A six-byte stub JUMPS, and a
+    // jump is not a call, so `calls` is empty for every one of them - which
+    // marked `startSoundCueStub` opaque while the routine it jumps to had just
+    // been read and written down. Reading the body catches both forms.
+    const bodyOf = new Map<string, string>();
+    for (const m of src.matchAll(
+      /^export function (\w+)\([^)]*\): void \{([\s\S]*?)^\}$/gm)) {
+      bodyOf.set(m[1], m[2]);
+    }
+    const goesTo = (a: number) => {
+      const body = bodyOf.get(nameAt.get(a) ?? '') ?? '';
+      const to = new Set([...body.matchAll(
+        /(?:callRom|callDecompiled|jumpRom)\((0x[0-9a-f]+)/g)]
+        .map((m) => parseInt(m[1], 16)));
+      const viaFacts = calls.get(a) ?? [];
+      for (const c of viaFacts) to.add(c);
+      return [...to];
+    };
     const opaque = unstatedAddrs.filter((a) => {
       if (/From\d+$/.test(nameAt.get(a) ?? '')) {
         const h = hostOf(a);
         return h === undefined || !stated.has(h);
       }
-      const to = calls.get(a) ?? [];
+      const to = goesTo(a);
       return to.length !== 1 || !stated.has(to[0]);
     }).length;
 

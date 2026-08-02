@@ -82,8 +82,17 @@ def main():
         if re.search(r"From\d+$", name):
             h = host(a)[0]
             return h is None or h not in STATED
-        to = CALLS.get(a) or []
-        return len(to) != 1 or to[0] not in STATED
+        # A six-byte stub JUMPS, and facts.json's `calls` records calls, so it
+        # is empty for every one of them. Read the target out of the emitted
+        # body too, or a stub stays "opaque" after the routine it jumps to has
+        # been read and written down.
+        to = set(CALLS.get(a) or [])
+        m = re.search(r"^export function " + re.escape(name)
+                      + r"\([^)]*\): void \{(.*?)^\}$", SRC, re.S | re.M)
+        if m:
+            to |= {int(x, 16) for x in re.findall(
+                r"(?:callRom|callDecompiled|jumpRom)\((0x[0-9a-f]+)", m.group(1))}
+        return len(to) != 1 or next(iter(to)) not in STATED
 
     want = []
     for a, name in TABLE.items():
