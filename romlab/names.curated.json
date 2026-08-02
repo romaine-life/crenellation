@@ -1900,5 +1900,30 @@
     "name": "write a 24-bit value into a channel's queue",
     "ident": "writeQueueEntryValue",
     "why": "the inverse of 0x14b8a and it uses the same 0x14b2c, but with slot ZERO and a real pointer for the remaining count - so it always writes at the head and wants to know how much room is left. It refuses anything above 0xffffff, which confirms the entry's first field is 24 bits wide and not a longword."
+  },
+  "0x3726": {
+    "name": "do nothing",
+    "ident": "doNothing3726",
+    "why": "one instruction, `rts`. The third and fourth of these found by reading; there are thirteen routines in the image whose whole body is a return, and the note exists so a reader does not go looking for the rest of one."
+  },
+  "0x5e00": {
+    "name": "do nothing",
+    "ident": "doNothing5E00",
+    "why": "one instruction, `rts`. The third and fourth of these found by reading; there are thirteen routines in the image whose whole body is a return, and the note exists so a reader does not go looking for the rest of one."
+  },
+  "0xd030": {
+    "name": "enter the next phase: zero the countdown, set the state byte to two",
+    "ident": "enterPhaseStateTwo",
+    "why": "calls 0x1a8 with a zero argument and 0xd490 with one, clears the byte at 0x3e1870 - the phase countdown that 0x7a24 decrements and 0xcae2 tests - writes 2 through a2, and branches on to 0xd45c rather than returning. Five side effects and a tail branch, so it is a transition and not a query. a2 arrives from the caller, which is why the state byte it writes is not visible here."
+  },
+  "0x9188": {
+    "name": "the reset sequence: eleven calls in a fixed order",
+    "ident": "resetSequenceElevenCalls",
+    "why": "no branches, no arguments and no answer - eleven `jsr`s one after another: 0x5cce, the watchdog kick at 0x618, 0x160, the event-list reset at 0xee3a, 0xc568, 0x23c, 0xfbe4, the watchdog again, 0x620, 0x17e and 0x1fa. The watchdog appears twice inside the list, which says the calls between them take long enough to matter. The order is the whole content of the routine."
+  },
+  "0x1310c": {
+    "name": "clear from 0x200000 to 0x3e07fe, kicking the watchdog every 1024 words",
+    "ident": "clearAllRamKickingWatchdog",
+    "why": "one huge wipe - `clr.w (a0)+` from 0x200000 until a0 reaches 0x3e07fe, which is the playfield, everything above it and the low work RAM together. The dbeq counts 0x3ff at a time and the exit test is `cmpa.l a0,a1`, so on each thousand-word block that does NOT reach the end it writes 0x72fffe and starts another: the watchdog would trip long before a wipe that size finished otherwise. It leaves by `jmp $300`, not by returning."
   }
 }
