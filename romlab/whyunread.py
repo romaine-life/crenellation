@@ -1,8 +1,9 @@
 """Is the parameter an input at all?
 
-`whyrole.py` says 2,171 of the unnamed parameters are read for something no
-rule matches, and `readparam.py` shows what that reading looks like. It is
-mostly not reading:
+`whyrole.py` bins the unnamed parameters by which of `roles.py`'s tests came
+out empty, and its largest bin is "read, but no rule matches what it is read
+for". `readparam.py` shows what that reading looks like, and mostly it is not
+reading:
 
     let d1 = d1_;
     d1 = (0xaaaaaaaa) >>> 0;      // overwritten before anything looks at it
@@ -25,9 +26,17 @@ with it is, which is the only question that decides whether it is an input:
   narrowed      the first statement keeps some bits and replaces others -
                 `d0 = ((d0 & 0xffffff00) | ...)`. The incoming value survives
                 only in the bits nothing replaced.
-  saved         the first thing is `push`, and nothing else ever reads it. The
-                routine preserves it for its caller and does not use it.
-  input         something reads it before anything overwrites it.
+  saved-then-overwritten
+                the first thing is `push` - the value put back for the caller -
+                and then it is overwritten. Preserved, never used.
+  input         something reads it before anything overwrites it, INCLUDING an
+                overwrite that only happens on some path: an assignment deeper
+                than the routine's own brace level does not settle the
+                question, so it counts as an input and the parameter stays.
+
+`narrowed` is not "carries nothing": the bits the routine does not replace are
+still what the caller passed. It is reported separately for that reason, and
+`dropunread.py` leaves it alone.
 
     python3 whyunread.py [--sample N]
 """
@@ -53,54 +62,13 @@ def split_functions(text):
     return out
 
 
-TRANSFER = re.compile(r"call(?:Rom|Decompiled)\(|jumpRom\(|setSr\(")
-
-
-def first_use(body, name):
-    """What the routine does with `name` before anything overwrites it."""
-    n = re.escape(name)
-    use = re.compile(r"(?<![\w'])" + n + r"(?![\w'])")
-    assign = re.compile(r"^\s*" + n + r" = (.*);$")
-    lines = body.split("\n")
-    saved = False
-    for i, line in enumerate(lines):
-        # The declaration and the interrupt spill are bookkeeping, not use.
-        if re.match(r"^\s*let " + n + r" = " + n + r"_;$", line):
-            continue
-        if "SPILL_ALL" in line or "takeIrq" in line:
-            continue
-        # A bare `setReg('a0', a0)` is either an argument being handed to the
-        # call that follows it - a real read of the value - or the register
-        # being written back on the way out, which restores what arrived and
-        # carries nothing. The difference is whether a transfer follows, and
-        # getting it wrong is the difference between `kickWatchdogWrapper`
-        # taking a0 and passing it straight to 0x618, which it does, and
-        # appearing to ignore it, which is what the first version of this
-        # measurement reported.
-        if re.fullmatch(r"\s*setReg\('\w+', " + n + r"\);(?: return;)?", line):
-            if any(TRANSFER.search(lines[j])
-                   for j in range(i + 1, min(i + 8, len(lines)))):
-                return "input"
-            continue
-        if not use.search(line):
-            continue
-        if TRANSFER.search(line):
-            return "input"
-        a = assign.match(line)
-        if a:
-            rhs = a.group(1)
-            if not use.search(rhs):
-                return "saved-then-overwritten" if saved else "overwritten"
-            if re.match(r"^\(\(" + n + r" & 0x[0-9a-f]+\) \|", rhs):
-                return "narrowed"
-            return "input"
-        if re.fullmatch(r"\s*push\(" + n + r", \d+\);", line):
-            saved = True
-            continue
-        if re.fullmatch(r"\s*save_\w+ = " + n + r";", line):
-            continue
-        return "input"
-    return "saved-and-never-read" if saved else "never-mentioned"
+# The classifier lives in `dropunread.py`, which is the pass that acts on it.
+# It was copied here once and the two drifted the moment a guard was added to
+# one of them: this file went on reporting 197 parameters as carrying nothing
+# that the rewrite had already decided were inputs. A measurement that
+# justifies a rewrite has to be the rewrite's own decision, not a second
+# opinion that looks like it.
+from dropunread import first_use
 
 
 def main():
@@ -127,10 +95,13 @@ def main():
         print(f"{count:6}  {kind}")
         for e in examples[kind]:
             print(f"          {e}")
-    dead = sum(c for k, c in bins.items() if k != "input")
+    dead = sum(c for k, c in bins.items()
+               if k not in ("input", "narrowed"))
     print()
     print(f"{dead} of {total} carry nothing into the routine:"
           f" the lifter made a parameter of a register the routine never reads")
+    print(f"{bins['narrowed']} more carry only the bits the routine does not"
+          f" replace, and stay")
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 The lifter makes every register live across a routine into a parameter of that
 routine, because the whole live set has to survive an interrupt. That is right
 for the machine and wrong for the signature: `pieceWalker` takes fourteen
-registers and reads five of them, and a reader cannot tell which five without
+registers and reads six of them, and a reader cannot tell which six without
 reading the body - which is the thing a signature exists to save them from.
 
 `whyunread.py` counts them by what the routine does with the value it arrives
@@ -40,6 +40,19 @@ What is NOT dropped, deliberately:
   - any parameter not in the plain `let x = x_;` form, because the rewrite is
     only obviously equivalent when the declaration is exactly that.
 
+CONSIDERED AND NOT DONE, so it is not re-derived. A spill before a call counts
+as a read here, and for 649 of the parameters that survive, being spilled is
+ALL the routine does with them. Some of those spills are not arguments: the
+lifter writes the whole live set back before every call so the callee sees
+consistent machine state, and if no callee reads that register the entry value
+is dead and the parameter is not interface either. Deciding which is which is
+an inter-procedural liveness question - the callee may not declare the register
+and still read it with `getReg`, having been through this pass itself, and it
+may pass it on to something that reads it - and getting it wrong costs a
+signature that has lost a real input. The rewrite would still RUN correctly,
+because `getReg` is what the dispatcher would have read; only the signature
+would be wrong, and a signature that lies is what this pass exists to stop.
+
 Run after `handedits.py` and before `paramnames.py`, which reads the table.
 Idempotent: a routine with nothing left to drop reports nothing.
 
@@ -73,10 +86,11 @@ def split_functions(text):
 def first_use(body, name):
     """What the routine does with `name` before anything overwrites it.
 
-    The same classifier as `whyunread.py`. Kept in both because that one is a
-    measurement anybody can re-run against the emitted source and this one is
-    a rewrite, and a rewrite that quietly disagreed with the measurement that
-    justified it would be the worst of both.
+    `whyunread.py` imports this rather than carrying its own copy. It had one
+    for an afternoon and the two drifted the moment a guard was added to this
+    one: the measurement went on reporting 197 parameters as carrying nothing
+    that the rewrite had already decided were inputs. A measurement that
+    justifies a rewrite has to BE the rewrite's decision.
     """
     n = re.escape(name)
     use = re.compile(r"(?<![\w'])" + n + r"(?![\w'])")
@@ -98,10 +112,23 @@ def first_use(body, name):
             continue
         if "SPILL_ALL" in line or "takeIrq" in line:
             continue
-        if re.fullmatch(r"\s*setReg\('\w+', " + n + r"\);(?: return;)?", line):
-            # An argument handed to the transfer that follows is a read; the
-            # same line with nothing after it is the register going back on
-            # the way out, which restores what arrived and carries nothing.
+        # A line that is nothing but `setReg` calls - one of them, or the whole
+        # live set on a single line, with or without a `return;` - is the
+        # registers going back to the machine. If a transfer follows, they are
+        # that transfer's arguments and this is a read; if nothing follows,
+        # they restore what arrived and carry nothing.
+        #
+        # The lifter emits the whole live set on one line before a tail
+        # return - `setReg('a0', dst); setReg('a1', dst2); ... return;` - and
+        # matching only the single-setReg form left that shape falling through
+        # every other test to come out `input`. It reaches no parameter that
+        # some other line does not also reach: measured after the widening, no
+        # parameter in the file appears ONLY in its declaration and in spill
+        # lines, and the pass drops nothing new. Kept because the narrow form
+        # was right by accident rather than by argument, and the next shape of
+        # emitted spill would not be.
+        if re.fullmatch(r"(?:\s*setReg\('\w+', \w+\);)+(?:\s*return;)?\s*",
+                        line) and use.search(line):
             if any(TRANSFER.search(lines[j])
                    for j in range(i + 1, min(i + 8, len(lines)))):
                 return "input"

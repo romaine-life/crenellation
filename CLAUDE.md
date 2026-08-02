@@ -108,7 +108,7 @@ Measured 2026-08-02 in `frontend/src/rom/names.txt`:
 |---|---|
 | Functions with a name that says what they do | **1,187 of 1,187** |
 | Still named for their address | **0** |
-| Parameters that say what they are | 1,954 of 4,419 |
+| Parameters that say what they are | 2,009 of 4,419 |
 
 `names.test.ts` **enforces** the first — `expect(byAddress).toEqual([])`, not a
 ratchet, because at the bar a `<=` would quietly accept a regeneration that
@@ -134,7 +134,7 @@ down, so read it as a smaller honest count rather than a regression:
   count did not change by one.
 
 Under the same honest definition the count was 2,501 of 6,279 before the day
-and is 1,954 of 4,419 after it: 3,778 parameters said nothing, 2,465 do.
+and is 2,009 of 4,419 after it: 3,778 parameters said nothing, 2,410 do.
 
 - **`names.curated.json` is where a name goes**, as `{"name": ..., "why": ...}`.
   `idents.py` refuses an object with no `why`: a wrong name is worse than an
@@ -175,6 +175,30 @@ and is 1,954 of 4,419 after it: 3,778 parameters said nothing, 2,465 do.
   all, and `readparam.py` prints the lines so a reader can see. Every rule
   above came out of one of those counts; `dropunread.py` exists because
   `whyunread.py` said 1,860 of the things being counted were not parameters.
+- **`rolecandidates.py` measures a rule before it is added**, which is what
+  `roles.py`'s own history demands — a `shift` role was built, found to name
+  nothing, and removed. Of three candidates, `flag` (only ever tested against
+  zero) reaches 22 and lives in `moreroles.py` — which also closed a hole worth
+  29 more, because a parameter still *called* `a3` is one `roles.py` never
+  reached rather than one it declined: single-block routines never go through
+  `blocks.py`, where `roles.apply` is called. `kind` by *equality* reaches
+  **two** in the whole file; `stored` reaches **zero**. The order guard is why
+  `flag` is 22 and not 149: `counterStep` replaces the low word of its `d2` and
+  *then* asks whether it is zero, so the test is about a value the routine
+  computed, and 127 of the 149 were that shape.
+- **The mechanical levers are now measured out.** Of the 1,748 parameters left
+  that are not repointed, 649 are *only* spilled to the machine and 162 more
+  only spilled and pushed: values passed along and nothing else, which no rule
+  about the routine can name because the routine does nothing with them. The
+  call graph is at a fixed point in both directions with unanimity required.
+  Naming the struct fields was the obvious next lever and it is **measured
+  dead** for this metric: of the unnamed parameters, *zero* are stored into or
+  loaded from a field of a known structure, zero are stored through a pointer
+  at a fixed displacement at all, and 44 are loaded from an absolute address —
+  which means the parameter was overwritten, not named. `out/fields.txt` is
+  still worth naming for the routines, but it will not move this number.
+  What is left is reading, one routine at a time, the same grind the 400
+  hand-read routine names were.
 - **Dispatch loops are down from 228 to 11**, and `decompiled.ts` is *smaller*
   than before — 8.3 MB against 14 MB — because most of what those loops cost
   was duplication. Three faults: `cfg.reducible()` collapsed the graph keeping
@@ -195,15 +219,16 @@ When only names or the lifter changed:
 
 `cd romlab && python3 idents.py && python3 blocks.py && rm -f out/unproven.json
 && python3 decomp.py && python3 handedits.py && python3 dropunread.py &&
-python3 paramnames.py && python3 callernames.py && python3 stackargnames.py`
+python3 moreroles.py && python3 paramnames.py && python3 callernames.py &&
+python3 stackargnames.py`
 
 When the *map* changed — funcs, entries, extents — the chain starts earlier
 and regenerates both translations:
 
 `python3 describe.py && python3 gen_ts.py && python3 cfg.py && python3
 idents.py && python3 blocks.py && rm -f out/unproven.json && python3 decomp.py
-&& python3 handedits.py && python3 dropunread.py && python3 paramnames.py &&
-python3 callernames.py && python3 stackargnames.py`
+&& python3 handedits.py && python3 dropunread.py && python3 moreroles.py &&
+python3 paramnames.py && python3 callernames.py && python3 stackargnames.py`
 
 Order matters and these steps are easy to get wrong:
 
@@ -213,14 +238,14 @@ Order matters and these steps are easy to get wrong:
 - **`rm out/unproven.json` before `decomp.py`, not after.** It is read at
   generation time; clearing it afterwards silently emits the previous run's
   held-back set and every count is wrong.
-- **`handedits.py` then the four naming passes last.** Regeneration overwrites
+- **`handedits.py` then the five naming passes last.** Regeneration overwrites
   `decompiled.ts`, so every deliberate edit lives in `handedits.py` too and is
   re-applied. An edit that no longer applies is an *error* — the lifter now
   produces different text and the change has to be re-expressed, or taught to
   the lifter. The naming passes run after it, because they rename locals and
-  would otherwise move the text a hand edit matches on; all four are
+  would otherwise move the text a hand edit matches on; all five are
   idempotent, so a second run reports zero rather than renaming again.
-- **`dropunread.py` before the three that name.** It removes parameters, and a
+- **`dropunread.py` before the four that name.** It removes parameters, and a
   naming pass that ran first would spend its evidence on things about to stop
   being parameters — which is exactly what happened the first time round: 1,009
   of the 1,860 it drops had names, and `callernames.py` reported 384 before it
