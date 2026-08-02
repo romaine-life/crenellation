@@ -124,7 +124,7 @@ describe('colour base', () => {
       // so what differs is what the routine is GIVEN, not what it contains.
       // Twelve register parameters arrive here; this records all of them at
       // every visit, so the first visit that differs says which.
-      if (pc === 0x1399c && n <= 390) {
+      if (pc === 0x198c0 && n <= 390) {
         // A checksum of all sixteen, so one pass covers every register without
         // a file of millions of numbers. Where the checksums first differ names
         // the address and the visit; which register it was is then one targeted
@@ -158,7 +158,14 @@ describe('colour base', () => {
         // different owners: a scheduling difference is the dispatchers, a port
         // difference at the same frame is the harness.
         const M2 = sys.m;
-        a0seq.push(n | 0, M2.byte(0x640002) | 0, M2.a0 | 0, M2.d0 | 0);
+        // sequenceAdvanceInner's entry state. Bisection says lifting this one
+        // function produces the fault, and every readable part of it matches
+        // the oracle - so if its inputs also match, the fault is in something
+        // neither the text nor the entry state shows, and that is worth
+        // knowing before another session reads the routine again.
+        a0seq.push(n | 0, M2.a2 | 0, M2.a3 | 0, M2.a0 | 0, M2.a1 | 0,
+                   M2.d0 | 0, M2.d1 | 0, M2.d2 | 0, M2.d3 | 0,
+                   M2.load((M2.a7 + 4) >>> 0, 32) | 0, M2.load((M2.a7 + 8) >>> 0, 32) | 0, 0);
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
