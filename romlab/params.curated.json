@@ -1541,6 +1541,22 @@
     "d6": {
       "name": "lastColumn",
       "why": "the column limit the x counter at -0x14(a6) is compared against with `ble` - so the loop runs while the counter is at or below it, and the limit is inclusive."
+    },
+    "a5": {
+      "name": "unused",
+      "why": "the row-advance tail of boardCellRunRenderer's walk: a5 appears in no instruction of 0x11ea..0x122a but the movem that restores it at 0x1222."
+    },
+    "d4": {
+      "name": "firstColumn",
+      "why": "the walk's column counter at -0x14(a6) is reset from it whenever a row restarts (0xe82), and that counter is what 0x120a compares against lastColumn."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f at 0xf30 - the low six bits this ROM treats as the cell's kind, the owner being the 0xc0 bits."
+    },
+    "d2": {
+      "name": "argWasZero",
+      "why": "0xe74-0xe7c sets it to 0xff when the word argument at 0x1a(a6) is zero and 0 otherwise (moveq/seq/neg), and no instruction in the whole walk reads it again - it is computed for whatever the walk hands control to."
     }
   },
   "0x1204": {
@@ -1563,6 +1579,22 @@
     "d6": {
       "name": "lastColumn",
       "why": "the column limit the x counter at -0x14(a6) is compared against with `ble` - so the loop runs while the counter is at or below it, and the limit is inclusive."
+    },
+    "a5": {
+      "name": "unused",
+      "why": "the row-advance tail of boardCellRunRenderer's walk: a5 appears in no instruction of 0x11ea..0x122a but the movem that restores it at 0x1222."
+    },
+    "d4": {
+      "name": "firstColumn",
+      "why": "the walk's column counter at -0x14(a6) is reset from it whenever a row restarts (0xe82), and that counter is what 0x120a compares against lastColumn."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f at 0xf30 - the low six bits this ROM treats as the cell's kind, the owner being the 0xc0 bits."
+    },
+    "d2": {
+      "name": "argWasZero",
+      "why": "0xe74-0xe7c sets it to 0xff when the word argument at 0x1a(a6) is zero and 0 otherwise (moveq/seq/neg), and no instruction in the whole walk reads it again - it is computed for whatever the walk hands control to."
     }
   },
   "0x1214": {
@@ -1585,6 +1617,22 @@
     "d6": {
       "name": "lastColumn",
       "why": "the column limit the x counter at -0x14(a6) is compared against with `ble` - so the loop runs while the counter is at or below it, and the limit is inclusive."
+    },
+    "a5": {
+      "name": "unused",
+      "why": "the row-advance tail of boardCellRunRenderer's walk: a5 appears in no instruction of 0x11ea..0x122a but the movem that restores it at 0x1222."
+    },
+    "d4": {
+      "name": "firstColumn",
+      "why": "the walk's column counter at -0x14(a6) is reset from it whenever a row restarts (0xe82), and that counter is what 0x120a compares against lastColumn."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f at 0xf30 - the low six bits this ROM treats as the cell's kind, the owner being the 0xc0 bits."
+    },
+    "d2": {
+      "name": "argWasZero",
+      "why": "0xe74-0xe7c sets it to 0xff when the word argument at 0x1a(a6) is zero and 0 otherwise (moveq/seq/neg), and no instruction in the whole walk reads it again - it is computed for whatever the walk hands control to."
     }
   },
   "0x137a0": {
@@ -4191,18 +4239,34 @@
     "d5": {
       "name": "cellByte",
       "why": "the byte as read, before the mask, so the owner bits are still on it where d4 has had them taken off."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x28d2 is moveq #0,d0 - destroyed before anything reads it."
+    },
+    "d1": {
+      "name": "unused2",
+      "why": "every path from this entry assigns it before reading: 0x2978 from (a0), or clr.w at 0x297c."
     }
   },
   "0x28e8": {
     "d3": {
       "name": "shifted",
       "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "the only thing done with it is 0x2978's move.w (a0),d1 or the clr.w at 0x297c; nothing reads what arrived, and the routine returns through d0."
     }
   },
   "0x28fa": {
     "d3": {
       "name": "shifted",
       "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "same as the entry above: assigned at 0x2978 or cleared at 0x297c before any read."
     }
   },
   "0x2908": {
@@ -4225,6 +4289,22 @@
     "d6": {
       "name": "stepped",
       "why": "set to 1 on the path that moves a1 a whole row, and left at zero otherwise - so it records whether the walk moved rather than counting anything."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x297e is moveq #0,d0, and every other path assigns it too."
+    },
+    "d1": {
+      "name": "unused2",
+      "why": "assigned on every path - moveq at 0x2912, the call result at 0x2948, the byte at 0x294e, or the clr.w at 0x297c."
+    },
+    "d2": {
+      "name": "unused3",
+      "why": "0x295a assigns it from d1 before anything reads it."
+    },
+    "a2": {
+      "name": "unused4",
+      "why": "its only appearance from this entry to the rts is the movem pop at 0x2982."
     }
   },
   "0x61c2": {
@@ -4613,6 +4693,18 @@
     "d4": {
       "name": "cellValue",
       "why": "the byte written into every cell of the column as it goes."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x66ea assigns it from d5 before anything reads it; the value that arrived is dead."
+    },
+    "d2": {
+      "name": "unused2",
+      "why": "its only appearance in the 58-byte extent is the movem at 0x6704 that restores it from the frame."
+    },
+    "d3": {
+      "name": "unused3",
+      "why": "no instruction in the extent mentions it at all - not even the movem, which restores d2-d5 as a block."
     }
   },
   "0x66e0": {
@@ -4627,6 +4719,18 @@
     "d4": {
       "name": "cellValue",
       "why": "the byte written into every cell of the column as it goes."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x66ea assigns it from d5 before anything reads it; the value that arrived is dead."
+    },
+    "d2": {
+      "name": "unused2",
+      "why": "its only appearance in the 58-byte extent is the movem at 0x6704 that restores it from the frame."
+    },
+    "d3": {
+      "name": "unused3",
+      "why": "no instruction in the extent mentions it at all - not even the movem, which restores d2-d5 as a block."
     }
   },
   "0x66fa": {
@@ -4637,6 +4741,14 @@
     "d4": {
       "name": "cellValue",
       "why": "the byte written into every cell of the column as it goes."
+    },
+    "d2": {
+      "name": "unused2",
+      "why": "its only appearance in the 58-byte extent is the movem at 0x6704 that restores it from the frame."
+    },
+    "d3": {
+      "name": "unused3",
+      "why": "no instruction in the extent mentions it at all - not even the movem, which restores d2-d5 as a block."
     }
   },
   "0x18c3c": {
@@ -5271,6 +5383,152 @@
     "d2": {
       "name": "remaining",
       "why": "the first thing done with it is subq.w #1,d2 at 0x16c4c - it is counted down, not assigned, so it arrives carrying the count."
+    }
+  },
+  "0x1a318": {
+    "d2": {
+      "name": "unused",
+      "why": "0x1a330 assigns it the byte at 2(a3) with no branch between the entry and that store; the value that arrived is never read."
+    },
+    "d3": {
+      "name": "unused2",
+      "why": "0x1a334 is moveq #0,d3 - destroyed before anything looks at it."
+    }
+  },
+  "0x1a368": {
+    "d2": {
+      "name": "unused",
+      "why": "the entry instruction itself, move.b 1(a1),d2 at 0x1a368, overwrites it."
+    }
+  },
+  "0x1a39a": {
+    "d2": {
+      "name": "unused",
+      "why": "no instruction in 0x1a39a..0x1a3e4 touches it but the movem pop at 0x1a3e0, which replaces it with what an earlier routine pushed."
+    },
+    "d3": {
+      "name": "unused2",
+      "why": "same: only the movem pop at 0x1a3e0 mentions it."
+    },
+    "a2": {
+      "name": "unused3",
+      "why": "same: only the movem pop at 0x1a3e0 mentions it."
+    },
+    "a3": {
+      "name": "unused4",
+      "why": "same: only the movem pop at 0x1a3e0 mentions it."
+    }
+  },
+  "0x1a3b0": {
+    "d2": {
+      "name": "sample",
+      "why": "zero-extended into d1 and pushed as the only argument to startSampleIfPriority at 0x1b1d2. It is the sample this branch asks for."
+    }
+  },
+  "0x1a3ce": {
+    "d0": {
+      "name": "unused",
+      "why": "0x1a3d6 assigns it the byte at 1(a1) before anything reads it; the value is then or'd into 0x3e36ee."
+    }
+  },
+  "0x38b0": {
+    "a5": {
+      "name": "unused",
+      "why": "its only appearance in the 326-byte extent is the movem at 0x38b4 that saves it."
+    },
+    "a0": {
+      "name": "unused2",
+      "why": "0x393c assigns it from d0 before anything reads it."
+    },
+    "stack4": {
+      "name": "cursor",
+      "why": "the record at 8(a6): its word at 0xc is a row, rejected when negative or at least 0x1e - the board's 30 rows - and its long at 4 is a pointer the routine steps by two at 0x3948 and writes back at 0x3960."
+    }
+  },
+  "0x39c2": {
+    "d1": {
+      "name": "unused",
+      "why": "0x39ce assigns it from d5 before anything reads it."
+    },
+    "d5": {
+      "name": "unused2",
+      "why": "0x39c6 assigns it the byte at (a1) - the entry's first instruction touching it is a store."
+    },
+    "d6": {
+      "name": "unused3",
+      "why": "0x39c8 assigns it from d5 before anything reads it."
+    },
+    "d2": {
+      "name": "ownerColours",
+      "why": "read at 0x39d6 as movea.l d2,a1 and then indexed by the cell byte's top two bits - the owner - at 0x39da. It holds 0xfe02, the same table drawPanelPlayerNothingNegative indexes by player at 0x420c."
+    }
+  },
+  "0x6166": {
+    "d5": {
+      "name": "cellAddr",
+      "why": "movea.l d5,a0 then subq.l #1,d5 at 0x6174 and again at 0x61a8 - it walks the board backwards one cell at a time, exactly as placementValidate does."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f, or'd with the owner bits and stored back to the cell at 0x617e and 0x61b2."
+    },
+    "d4": {
+      "name": "ownerBits",
+      "why": "the only thing done with it is or.b d4,d2 after d2 has been masked to its low six bits - so it supplies the 0xc0 owner bits the cell keeps."
+    }
+  },
+  "0x61a8": {
+    "d5": {
+      "name": "cellAddr",
+      "why": "movea.l d5,a0 then subq.l #1,d5 at 0x6174 and again at 0x61a8 - it walks the board backwards one cell at a time, exactly as placementValidate does."
+    },
+    "d2": {
+      "name": "cellValue",
+      "why": "masked to 0x3f, or'd with the owner bits and stored back to the cell at 0x617e and 0x61b2."
+    },
+    "d4": {
+      "name": "ownerBits",
+      "why": "the only thing done with it is or.b d4,d2 after d2 has been masked to its low six bits - so it supplies the 0xc0 owner bits the cell keeps."
+    }
+  },
+  "0x5fa6": {
+    "d4": {
+      "name": "unused2",
+      "why": "0x5fca assigns it a byte out of the table at (a0,d1) - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
+    },
+    "d6": {
+      "name": "unused3",
+      "why": "0x5fce assigns it from d4 - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
+    },
+    "d5": {
+      "name": "unused4",
+      "why": "0x5fee assigns it from d0 - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
+    },
+    "d7": {
+      "name": "unused5",
+      "why": "0x6004 assigns it the byte at -3(a6) - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
+    },
+    "d3": {
+      "name": "unused6",
+      "why": "0x6030 assigns it the constant 0x128b8 - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
+    }
+  },
+  "0x62a6": {
+    "d5": {
+      "name": "unused2",
+      "why": "0x62ca assigns it a byte out of the table at (a0,d1) - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
+    },
+    "d6": {
+      "name": "unused3",
+      "why": "0x62ce assigns it from d5 - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
+    },
+    "d4": {
+      "name": "unused4",
+      "why": "0x62e2 assigns it from d0 - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
+    },
+    "d3": {
+      "name": "unused5",
+      "why": "0x633e assigns it the constant 0x128b8 - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
     }
   }
 }

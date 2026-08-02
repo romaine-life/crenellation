@@ -34,6 +34,19 @@ with it is, which is the only question that decides whether it is an input:
                 than the routine's own brace level does not settle the
                 question, so it counts as an input and the parameter stays.
 
+A SECOND RULE WAS MEASURED AND REFUSED, 2026-08-02. Widen "overwritten before
+anything reads it" from the FIRST statement to the whole body - a parameter no
+statement anywhere reads, counting only statements that are not spills - and it
+reaches 64. It still cannot name them, and it must not remove them either: the
+spills are the point. A register this routine never reads but DOES spill before
+a transfer is handed to whatever runs next, so the value flows on and the
+parameter is real. rowStepCellWalk is the case that settles it - its d2, d3 and
+d4 are read by nothing in the walk and are `argWasZero`, `kind` and
+`firstColumn`, computed in the host for the code the walk hands control to.
+Calling any of them `unused` would have been false in the one direction that
+matters. The number is a targeting signal, not a lever: those 64 are cheap to
+read, because the only question left about each is who reads it downstream.
+
 AND THERE ARE NO PURELY LIVE-THROUGH ONES LEFT, measured 2026-08-02 after the
 last few were named by hand: of the unnamed register parameters, ZERO have
 every appearance be a spill. Every one is genuinely read, written or otherwise

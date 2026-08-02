@@ -72,11 +72,19 @@ def family(host):
     return sorted(a for a in known if a == host or lo < a < hi)
 
 
-def apply(host, names, save=True):
+def apply(host, names, save=True, only=False):
+    """`only=True` names the given address and NOT the entries inside it.
+
+    A host and its inner entries share registers, but they do not share which
+    of them are live: at the host's own first instruction a register is often
+    about to be overwritten, where at an entry twenty bytes in the same
+    register carries the loop's state. `unused` is the name that goes wrong
+    this way, so it is written with `only=True` and read at each entry.
+    """
     bound = slots()
     cur = json.loads(CURATED.read_text(encoding="utf-8"))
     reached, missed = 0, []
-    for a in family(host):
+    for a in ([host] if only else family(host)):
         key = hex(a)
         have = bound.get(a, set())
         here = cur.setdefault(key, {})
