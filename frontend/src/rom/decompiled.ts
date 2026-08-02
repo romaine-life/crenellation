@@ -172202,7 +172202,7 @@ export function roundQuotientHalfDivisorKeeping(limit_: number, limit2_: number,
   setReg('d1', limit2);
 }
 
-export function sequenceAdvanceInner(dst_: number, index22_: number, d2_: number, index2_: number, arg0: number, arg1: number): void {
+export function sequenceAdvanceInner(dst_: number, index22_: number, d2_: number, index2_: number, record: number, tableRef: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -172265,8 +172265,8 @@ export function sequenceAdvanceInner(dst_: number, index22_: number, d2_: number
   save_d3_1 = index2;
   save_a2_2 = dst2;
   save_a3_3 = ptr2;
-  dst2 = (arg0) >>> 0;
-  ptr2 = (arg1) >>> 0;
+  dst2 = (record) >>> 0;
+  ptr2 = (tableRef) >>> 0;
   t4 = load32(ptr2);
   ptr = (t4) >>> 0;
   t5 = load32(dst2 + 0x8);

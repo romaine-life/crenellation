@@ -2010,5 +2010,15 @@
     "name": "score one cell into the running total",
     "ident": "scoreOneCellIntoTotal",
     "why": "hands a3, d2 and d4 to 0x3da0 and uses the answer to index the BYTE table at 0xfd96, adding what it finds to d5 - so d5 is a running total and the table is the value of whatever 0x3da0 identified. It then compares d3 against the 0xc0 owner bits of the cell byte at (a2), which is the same mask the piece walker and the flood fill use to ask whose a cell is. The arguments arrive in registers from the caller's loop rather than on the stack, which is why this is an inner step and not a routine anyone calls."
+  },
+  "0x47c6": {
+    "name": "register seven of one table and a run of another",
+    "ident": "registerTablesForPhase",
+    "why": "two loops through the same registrar 0x450c that 0x46e0 uses. The first puts 0xfdc2 into slots 0 to 6 - seven of them, `cmp.l d2,d4; ble` with d2 at 6. The second walks 0x1f6d0 in steps of 0x20 - `asl.l #$4` then `add.l d1,d1`, which is times sixteen then doubled - registering each into slot 8 with a third argument that counts up. So one table is seven separate registrations and the other is a run of equally spaced entries."
+  },
+  "0x198c0": {
+    "name": "step one sequence record, flushing any pending byte first",
+    "ident": "stepSequenceRecord",
+    "why": "the record's fields come out of what it does with them: 8(a2) is a pending write and 0x10(a2) its argument - when 8 is set it calls 0x19a24 and stores the answering byte through the pointer at 0xc(a2), then clears 8 so it happens once. 0(a2) is the sequence pointer, 4(a2) an index into it, 0x12(a2) a state and 0x16(a2) the value being matched. The state indexes the PC-relative BYTE table at 0x1996a - the twelve bytes that census work reclassified from a routine to data - and that byte, doubled, offsets the index before the comparison."
   }
 }

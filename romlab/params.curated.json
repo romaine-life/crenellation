@@ -762,5 +762,15 @@
       "name": "player",
       "why": "the longword at 8(a6): its byte pair at 0x3c is the coordinate drawn at, and its byte at 2 - plus one - picks the colour out of 0xfe02."
     }
+  },
+  "0x198c0": {
+    "stack4": {
+      "name": "record",
+      "why": "the longword at 0x14(a7) after the movem: the sequence record whose 0, 4, 8, 0xc, 0x10, 0x12 and 0x16 this routine reads and writes."
+    },
+    "stack8": {
+      "name": "tableRef",
+      "why": "the longword at 0x18(a7), dereferenced ONCE into a1 before anything else - so it is a pointer to a pointer, and a1 is the table the comparison indexes."
+    }
   }
 }
