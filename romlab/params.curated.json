@@ -1213,6 +1213,18 @@
     "d6": {
       "name": "lastColumn",
       "why": "the column limit the x counter at -0x14(a6) is compared against with `ble` - so the loop runs while the counter is at or below it, and the limit is inclusive."
+    },
+    "a5": {
+      "name": "unused",
+      "why": "saved by the movem at 0xe52 and restored at 0x1222, and it appears in no other instruction of the whole 0xe4e..0x122c extent. The routine preserves the register; it does not take a value in it."
+    },
+    "d4": {
+      "name": "firstColumn",
+      "why": "the word at 0xa(a6), written to the column counter at -0x14(a6) each time a row restarts (0xe82). The counter is then compared against lastColumn at 0x120a, so this is the other end."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the cell byte at -0xd(a6) masked to 0x3f at 0xf30 - the low six bits every walk in this ROM treats as the cell's kind, the owner being the 0xc0 bits."
     }
   },
   "0x1545c": {
@@ -1503,6 +1515,10 @@
     "d1": {
       "name": "assembled",
       "why": "the answer being built one channel at a time, each masked to its own field before being or-ed in."
+    },
+    "a0": {
+      "name": "listHead",
+      "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     }
   },
   "0x11ea": {
@@ -1963,6 +1979,10 @@
     "d3": {
       "name": "count",
       "why": "the record's 0xf less two and floored at zero - how many extra entries beyond the first this tick walks."
+    },
+    "a0": {
+      "name": "listHead",
+      "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     }
   },
   "0x126b6": {
@@ -1977,6 +1997,10 @@
     "d0": {
       "name": "current",
       "why": "the entry as it stands, read before anything is added to it."
+    },
+    "a0": {
+      "name": "listHead",
+      "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     }
   },
   "0x1271e": {
@@ -2007,6 +2031,10 @@
     "d3": {
       "name": "count",
       "why": "the record's 0xf less two and floored at zero - how many extra entries beyond the first this tick walks."
+    },
+    "a0": {
+      "name": "listHead",
+      "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     }
   },
   "0x12782": {
@@ -2025,6 +2053,10 @@
     "d3": {
       "name": "count",
       "why": "the record's 0xf less two and floored at zero - how many extra entries beyond the first this tick walks."
+    },
+    "a0": {
+      "name": "listHead",
+      "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     }
   },
   "0x127ca": {
@@ -2039,6 +2071,10 @@
     "d3": {
       "name": "count",
       "why": "the record's 0xf less two and floored at zero - how many extra entries beyond the first this tick walks."
+    },
+    "a0": {
+      "name": "listHead",
+      "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     }
   },
   "0x127fe": {
@@ -2061,6 +2097,10 @@
     "d3": {
       "name": "count",
       "why": "the record's 0xf less two and floored at zero - how many extra entries beyond the first this tick walks."
+    },
+    "a0": {
+      "name": "listHead",
+      "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     }
   },
   "0x12836": {
@@ -2083,6 +2123,10 @@
     "d3": {
       "name": "count",
       "why": "the record's 0xf less two and floored at zero - how many extra entries beyond the first this tick walks."
+    },
+    "a0": {
+      "name": "listHead",
+      "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     }
   },
   "0x12864": {
@@ -2119,6 +2163,10 @@
     "d3": {
       "name": "count",
       "why": "the record's 0xf less two and floored at zero - how many extra entries beyond the first this tick walks."
+    },
+    "a0": {
+      "name": "listHead",
+      "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     }
   },
   "0x1a8e0": {
@@ -2239,6 +2287,10 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d6": {
+      "name": "chosenPtrAt",
+      "why": "the constant 0x3e36da the driver loads at 0x1a608, and here it is dereferenced: movea.l d6,a0 then move.l (a0),d0 gives a record whose byte at 6 takes a small code (0xd, 0x6, 0xb, 0xc at 0x1aa96, 0x1aaa8, 0x1aac2, 0x1aad8) and whose byte at 4 takes the operand. So d6 is the address OF the pointer, not the pointer."
     }
   },
   "0x1aa9c": {
@@ -2249,6 +2301,10 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d6": {
+      "name": "chosenPtrAt",
+      "why": "the constant 0x3e36da the driver loads at 0x1a608, and here it is dereferenced: movea.l d6,a0 then move.l (a0),d0 gives a record whose byte at 6 takes a small code (0xd, 0x6, 0xb, 0xc at 0x1aa96, 0x1aaa8, 0x1aac2, 0x1aad8) and whose byte at 4 takes the operand. So d6 is the address OF the pointer, not the pointer."
     }
   },
   "0x1aaba": {
@@ -2259,6 +2315,10 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d6": {
+      "name": "chosenPtrAt",
+      "why": "the constant 0x3e36da the driver loads at 0x1a608, and here it is dereferenced: movea.l d6,a0 then move.l (a0),d0 gives a record whose byte at 6 takes a small code (0xd, 0x6, 0xb, 0xc at 0x1aa96, 0x1aaa8, 0x1aac2, 0x1aad8) and whose byte at 4 takes the operand. So d6 is the address OF the pointer, not the pointer."
     }
   },
   "0x1aaf2": {
@@ -2303,6 +2363,10 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d6": {
+      "name": "chosenPtrAt",
+      "why": "the constant 0x3e36da the driver loads at 0x1a608, and here it is dereferenced: movea.l d6,a0 then move.l (a0),d0 gives a record whose byte at 6 takes a small code (0xd, 0x6, 0xb, 0xc at 0x1aa96, 0x1aaa8, 0x1aac2, 0x1aad8) and whose byte at 4 takes the operand. So d6 is the address OF the pointer, not the pointer."
     }
   },
   "0x1ab70": {
@@ -3001,6 +3065,10 @@
     "d5": {
       "name": "ownerBits",
       "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
     }
   },
   "0x6472": {
@@ -3027,6 +3095,14 @@
     "a3": {
       "name": "eventRef",
       "why": "dereferenced for the longword pushed to 0x90e6, the gate that only passes when the word at 0x3e1948 is set - so it is a pointer to an event descriptor, not the descriptor itself."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
+    },
+    "a4": {
+      "name": "altGraphics",
+      "why": "a table of two words indexed by the 0/1 toggle kept at -4(a6) (0x6522), and the word read out is the third argument to decompressOneEightPixelColumn at 0x11efe - so it alternates between two graphic ids as the walk steps."
     }
   },
   "0x64b4": {
@@ -3041,6 +3117,10 @@
     "d5": {
       "name": "ownerBits",
       "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
     }
   },
   "0x64c8": {
@@ -3067,6 +3147,14 @@
     "a3": {
       "name": "eventRef",
       "why": "dereferenced for the longword pushed to 0x90e6, the gate that only passes when the word at 0x3e1948 is set - so it is a pointer to an event descriptor, not the descriptor itself."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
+    },
+    "a4": {
+      "name": "altGraphics",
+      "why": "a table of two words indexed by the 0/1 toggle kept at -4(a6) (0x6522), and the word read out is the third argument to decompressOneEightPixelColumn at 0x11efe - so it alternates between two graphic ids as the walk steps."
     }
   },
   "0x64ce": {
@@ -3085,6 +3173,10 @@
     "a2": {
       "name": "record",
       "why": "its byte at 0x14 is bumped by 1 or 2 depending on the path - a counter that decides whether the notify at 0x90e6 fires again."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
     }
   },
   "0x64ee": {
@@ -3117,6 +3209,14 @@
     "a2": {
       "name": "record",
       "why": "its byte at 0x14 is bumped by 1 or 2 depending on the path - a counter that decides whether the notify at 0x90e6 fires again."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
+    },
+    "a4": {
+      "name": "altGraphics",
+      "why": "a table of two words indexed by the 0/1 toggle kept at -4(a6) (0x6522), and the word read out is the third argument to decompressOneEightPixelColumn at 0x11efe - so it alternates between two graphic ids as the walk steps."
     }
   },
   "0x653e": {
@@ -3131,6 +3231,10 @@
     "d5": {
       "name": "ownerBits",
       "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
     }
   },
   "0x655e": {
@@ -3157,6 +3261,14 @@
     "a3": {
       "name": "eventRef",
       "why": "dereferenced for the longword pushed to 0x90e6, the gate that only passes when the word at 0x3e1948 is set - so it is a pointer to an event descriptor, not the descriptor itself."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
+    },
+    "a4": {
+      "name": "altGraphics",
+      "why": "a table of two words indexed by the 0/1 toggle kept at -4(a6) (0x6522), and the word read out is the third argument to decompressOneEightPixelColumn at 0x11efe - so it alternates between two graphic ids as the walk steps."
     }
   },
   "0x657c": {
@@ -3171,6 +3283,10 @@
     "d5": {
       "name": "ownerBits",
       "why": "or-ed into the top of the cell byte after the mask, which is the 0xc0 owner field the enclosure test, the flood fill and the piece walker all read."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
     }
   },
   "0x3a4a": {
@@ -3197,6 +3313,10 @@
     "a4": {
       "name": "byteStream",
       "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x3a7e": {
@@ -3215,6 +3335,10 @@
     "d4": {
       "name": "at",
       "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x3ac6": {
@@ -3241,6 +3365,10 @@
     "a4": {
       "name": "byteStream",
       "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x3b06": {
@@ -3259,6 +3387,10 @@
     "d4": {
       "name": "at",
       "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x3b0e": {
@@ -3277,6 +3409,10 @@
     "d4": {
       "name": "at",
       "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x3b2c": {
@@ -3295,6 +3431,10 @@
     "d4": {
       "name": "at",
       "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x3b34": {
@@ -3313,6 +3453,10 @@
     "d4": {
       "name": "at",
       "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x3b3c": {
@@ -3339,6 +3483,10 @@
     "a4": {
       "name": "byteStream",
       "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x3b4c": {
@@ -3365,6 +3513,10 @@
     "a4": {
       "name": "byteStream",
       "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x3b54": {
@@ -3391,6 +3543,10 @@
     "a4": {
       "name": "byteStream",
       "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
+    },
+    "d6": {
+      "name": "wantKind",
+      "why": "its low byte is compared at 0x3ad6 against the cell byte's low six bits - the kind - and the whole family branches away when they differ. Nothing else in the 346-byte extent touches it but the movem that restores it."
     }
   },
   "0x1ae3c": {
@@ -4083,6 +4239,14 @@
     "d4": {
       "name": "ownerBits",
       "why": "or-ed into the top of the byte - the 0xc0 field, which 0x6460's family calls the same thing while writing forwards."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the raw cell byte at the address it is stepping through equals it (0x626a) - the same terminator placementCommit carries, and this routine is that walk run backwards: it decrements the cell address at every case where placementCommit increments it."
+    },
+    "a2": {
+      "name": "walkRecord",
+      "why": "pushed to 0x6bc0 together with the routine's own word argument, and 0x3c(a2) takes a copy of that same word at 0x61fc. The record the walk is being run for."
     }
   },
   "0x61e2": {
@@ -4111,6 +4275,14 @@
     "d4": {
       "name": "ownerBits",
       "why": "or-ed into the top of the byte - the 0xc0 field, which 0x6460's family calls the same thing while writing forwards."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the raw cell byte at the address it is stepping through equals it (0x626a) - the same terminator placementCommit carries, and this routine is that walk run backwards: it decrements the cell address at every case where placementCommit increments it."
+    },
+    "a2": {
+      "name": "walkRecord",
+      "why": "pushed to 0x6bc0 together with the routine's own word argument, and 0x3c(a2) takes a copy of that same word at 0x61fc. The record the walk is being run for."
     }
   },
   "0x6232": {
@@ -4125,6 +4297,10 @@
     "d4": {
       "name": "ownerBits",
       "why": "or-ed into the top of the byte - the 0xc0 field, which 0x6460's family calls the same thing while writing forwards."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the raw cell byte at the address it is stepping through equals it (0x626a) - the same terminator placementCommit carries, and this routine is that walk run backwards: it decrements the cell address at every case where placementCommit increments it."
     }
   },
   "0x6252": {
@@ -4143,6 +4319,14 @@
     "d4": {
       "name": "ownerBits",
       "why": "or-ed into the top of the byte - the 0xc0 field, which 0x6460's family calls the same thing while writing forwards."
+    },
+    "d6": {
+      "name": "endMark",
+      "why": "the walk stops when the raw cell byte at the address it is stepping through equals it (0x626a) - the same terminator placementCommit carries, and this routine is that walk run backwards: it decrements the cell address at every case where placementCommit increments it."
+    },
+    "a2": {
+      "name": "walkRecord",
+      "why": "pushed to 0x6bc0 together with the routine's own word argument, and 0x3c(a2) takes a copy of that same word at 0x61fc. The record the walk is being run for."
     }
   },
   "0xf630": {
@@ -5035,6 +5219,58 @@
     "d5": {
       "name": "sumAt",
       "why": "the constant 0x3e36e2, the driver's scratch longword. Every accumulate site clears it and sums the channel's fields into it: 0x1a740 adds the pitch words at 8(a2) and 0x1c(a2), 0x1a7be adds the byte at 0x18(a2) and clamps to 0..0x1f, then 0x1a7e6 reads its low byte out to 0x3e3708."
+    }
+  },
+  "0xe82": {
+    "d4": {
+      "name": "firstColumn",
+      "why": "the word at 0xa(a6), written to the column counter at -0x14(a6) each time a row restarts (0xe82). The counter is then compared against lastColumn at 0x120a, so this is the other end."
+    }
+  },
+  "0xefc": {
+    "d3": {
+      "name": "kind",
+      "why": "the cell byte at -0xd(a6) masked to 0x3f at 0xf30 - the low six bits every walk in this ROM treats as the cell's kind, the owner being the 0xc0 bits."
+    }
+  },
+  "0x16bda": {
+    "d5": {
+      "name": "unused",
+      "why": "0x16c22 assigns it from the value mergeMaskedResultBits returned, with no branch between the entry and that store, so nothing reads what arrived. Saved by the movem at 0x16bda and restored."
+    },
+    "d6": {
+      "name": "unused2",
+      "why": "0x16c12 is moveq #0,d6 - the first thing the host does with it is destroy it. Preserved by the movem, not taken."
+    }
+  },
+  "0x16c18": {
+    "d5": {
+      "name": "unused",
+      "why": "0x16c22 assigns it from the value mergeMaskedResultBits returned, with no branch between the entry and that store, so nothing reads what arrived. Saved by the movem at 0x16bda and restored."
+    },
+    "d6": {
+      "name": "unused2",
+      "why": "0x16c12 is moveq #0,d6 - the first thing the host does with it is destroy it. Preserved by the movem, not taken."
+    },
+    "a4": {
+      "name": "waitFrame",
+      "why": "the constant 0x17ede loaded by lea at 0x16be8, which is waitUntilLongChanges; every use is jsr (a4) with no argument."
+    },
+    "a2": {
+      "name": "mergeBits",
+      "why": "the constant 0x1851c loaded at 0x16be2, which is mergeMaskedResultBits; called at 0x16c20 with 0x30000f0 and at 0x16c26 with zero, and its result is what d5 and d1 then hold."
+    },
+    "a3": {
+      "name": "setAttributes",
+      "why": "the constant 0x17fcc loaded by lea at 0x16bde, which is defaultAttributesThenMeasure."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "0x16c28 assigns it mergeBits' second result, reached from the entry without a branch, so the incoming value is never read."
+    },
+    "d2": {
+      "name": "remaining",
+      "why": "the first thing done with it is subq.w #1,d2 at 0x16c4c - it is counted down, not assigned, so it arrives carrying the count."
     }
   }
 }
