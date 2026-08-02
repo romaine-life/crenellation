@@ -134700,7 +134700,7 @@ export function soundCallMarshaller(arg0: number, kind: number, arg2: number, ar
   setReg('a6', a6);
 }
 
-export function soundChannelKeyWrapper(index_: number, limit2_: number, index3_: number, index2_: number, count_: number, kind: number): void {
+export function soundChannelKeyWrapper(index_: number, limit2_: number, index3_: number, index2_: number, count_: number, slotMask: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a2');
@@ -134777,7 +134777,7 @@ export function soundChannelKeyWrapper(index_: number, limit2_: number, index3_:
   save_d4_2 = count;
   save_a2_3 = ptr;
   save_a3_4 = a3;
-  t5 = (kind & 0xff);
+  t5 = (slotMask & 0xff);
   index3 = ((index3 & 0xffffff00) | (t5 & 255));
   ptr = (0x3e3444) >>> 0;
   a3 = (0x3e3447) >>> 0;

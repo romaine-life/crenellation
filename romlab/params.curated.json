@@ -732,5 +732,11 @@
       "name": "channel",
       "why": "its low word at 0xe(a6), pushed as 0x14b2c's second argument. The slot is hard-wired to zero here, so this always writes the head of the queue."
     }
+  },
+  "0x13e94": {
+    "stack4": {
+      "name": "slotMask",
+      "why": "only its low byte, at 0x1b(a7), and it is consumed two bits per slot: a pair equal to 1 is a coin on that slot, and anything else on that pair is ignored. `lsr.b #$2` walks to the next."
+    }
   }
 }

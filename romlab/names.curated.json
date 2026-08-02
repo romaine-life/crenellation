@@ -1925,5 +1925,35 @@
     "name": "clear from 0x200000 to 0x3e07fe, kicking the watchdog every 1024 words",
     "ident": "clearAllRamKickingWatchdog",
     "why": "one huge wipe - `clr.w (a0)+` from 0x200000 until a0 reaches 0x3e07fe, which is the playfield, everything above it and the low work RAM together. The dbeq counts 0x3ff at a time and the exit test is `cmpa.l a0,a1`, so on each thousand-word block that does NOT reach the end it writes 0x72fffe and starts another: the watchdog would trip long before a wipe that size finished otherwise. It leaves by `jmp $300`, not by returning."
+  },
+  "0x5e08": {
+    "name": "do nothing",
+    "ident": "doNothing5E08",
+    "why": "one instruction, `rts`, and nothing else in its extent."
+  },
+  "0xa7e4": {
+    "name": "do nothing",
+    "ident": "doNothingA7E4",
+    "why": "one instruction, `rts`, and nothing else in its extent."
+  },
+  "0xfc0e": {
+    "name": "do nothing",
+    "ident": "doNothingFC0E",
+    "why": "one instruction, `rts`, and nothing else in its extent."
+  },
+  "0xfc44": {
+    "name": "do nothing",
+    "ident": "doNothingFC44",
+    "why": "one instruction, `rts`, and nothing else in its extent."
+  },
+  "0x66cc": {
+    "name": "re-enter the board walk at its default-cell path",
+    "ident": "boardWalkDefaultCellEntry",
+    "why": "NOT a do-nothing, whatever the derived name says: its two bytes are `bra.b $669c`, which lands inside 0x6648 - the routine that lays the board out from a nibble-per-cell stream - at the point that takes the default for a cell instead of reading a nibble. So it is an inner entry that says 'this cell is an edge', reached by a jump table rather than by a call, and a reader who trusts the name will look for a body that is not there."
+  },
+  "0x13e94": {
+    "name": "credit the coin slots that fired",
+    "ident": "creditCoinSlotsThatFired",
+    "why": "the byte argument is a bitmask read TWO BITS at a time - `andi.w #$3,d0` then `lsr.b #$2` around the loop - so it is a per-slot mask and a slot's pair being exactly 1 is what counts as a coin. For each such slot it adds 1 to a bookkeeping counter through 0x14a36, then takes a three-bit field out of the cached options word at 0x3e3444 - shifted right three for the second slot and unshifted for the first, masked to 7 and plus one, so the settings run 1 to 8 - and adds that to BOTH 0x3e3448 and 0x3e3447. Those are the bytes 0x141c4 clears and 0x1418a adds together, which makes them the credit accumulators and this the routine that fills them. It does nothing at all unless the options word has been loaded, and clears 0x3e3448 and stops if bit 15 of it is set."
   }
 }
