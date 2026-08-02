@@ -1790,5 +1790,10 @@
     "name": "fill bytes, with a full 32-bit count",
     "ident": "fillBytesLongCount",
     "why": "writes the byte at 8(a7) count-plus-one times - dbra counts to -1, so the argument is one less than the length - and gets past 65535 with `subi.l #$10000,d0; bcc`, which runs the dbra again for each whole 64K. It answers the address it started at, not the address it finished at."
+  },
+  "0xe332": {
+    "name": "set up the high-score entry: three A's, a random prompt, a 1200-tick clock",
+    "ident": "setUpHighScoreEntry",
+    "why": "picks one of EIGHT strings from the longword table at 0x11a50 - `pea 8` to the RNG at 0x11e58, whose answer is scaled into 0..7 rather than masked - and keeps the pointer at 0x3e1cdc. It fills three bytes at 0x3e1cd8 with 0x41, which is 'A', so the initials start at AAA; copies the chosen string's first byte to 0x3e1cd6 and clears the two bytes after it; and sets 0x3e1cd2 to 0x4b0, which is 1200 - twenty seconds at sixty ticks. The draw at the end takes 0x12, 0x19, the buffer and 0xf0."
   }
 }
