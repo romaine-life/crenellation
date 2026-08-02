@@ -16362,7 +16362,7 @@ export function readDipSwitchesSplitThem(a0_: number, a2_: number, index_: numbe
   setReg('d1', d1);
 }
 
-export function entitySpawn(index_: number, count_: number, limit_: number, arg0: number, arg1: number, arg2: number, arg3: number): void {
+export function entitySpawn(index_: number, count_: number, limit_: number, x: number, y: number, attr: number, kind: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -16390,11 +16390,11 @@ export function entitySpawn(index_: number, count_: number, limit_: number, arg0
   const _t0 = tick(216, 0x0220c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('d0', index); setReg('d1', count); setReg('d2', limit); if (_t0) takeIrq(); }
   t0 = limit;
   push(t0, 4);
-  t1 = (arg0 & 0xffff);
+  t1 = (x & 0xffff);
   index = ((index & 0xffff0000) | (t1 & 65535));
-  t2 = (arg1 & 0xffff);
+  t2 = (y & 0xffff);
   count = ((count & 0xffff0000) | (t2 & 65535));
-  t3 = (arg2 & 0xffff);
+  t3 = (attr & 0xffff);
   limit = ((limit & 0xffff0000) | (t3 & 65535));
   t4 = 0;
   push(t4, 4);
@@ -16413,7 +16413,7 @@ export function entitySpawn(index_: number, count_: number, limit_: number, arg0
   t11 = index;
   push(t11, 4);
   index = (0) >>> 0;
-  t12 = (arg3 & 0xff);
+  t12 = (kind & 0xff);
   index = ((index & 0xffffff00) | (t12 & 255));
   t13 = (index & 65535);
   t14 = ((0x2) & 63);

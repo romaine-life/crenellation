@@ -458,5 +458,23 @@
       "name": "extra",
       "why": "only its low word, read by the FIRST `move.w $1e(a7),d0` while a7 is still where it started. It is zero-extended and becomes the constant 0x357a hands to every per-cell call without looking at it."
     }
+  },
+  "0x220c": {
+    "stack4": {
+      "name": "x",
+      "why": "its low word, sign-extended and pushed as the allocator's second argument, which 0x5b40 reads at 0x2a(a7) and stores at 0x8 of the new entry - the same field 0xaf72 writes a moved unit's first coordinate into."
+    },
+    "stack8": {
+      "name": "y",
+      "why": "its low word, stored by 0x5b40 at 0x6 of the entry, the field 0xaf72 writes the second coordinate into. 0x6cae passes the muzzle height less nine here."
+    },
+    "stack12": {
+      "name": "attr",
+      "why": "only its low BYTE survives: 0x5b40 reads it at 0x33(a7) and writes it to BOTH 0xa and 0xb of the entry. 0x6cae passes zero."
+    },
+    "stack16": {
+      "name": "kind",
+      "why": "its low byte, at 0x2b(a7) once five pushes have moved a7, shifted left two to index the longword table at 0xfd5e - the per-kind descriptor pointer that becomes the allocator's first argument."
+    }
   }
 }
