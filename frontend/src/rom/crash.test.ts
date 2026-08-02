@@ -78,8 +78,12 @@ function run(entry: Entry, p: Pattern): string {
         // names the block the bad address was computed in, not the
         // instruction. The last entry is where control went; the ones before
         // it are the suspects.
-        hit = `address error by frame ${n}, ${sys.m.addressErrors} of them;`
-          + ` blocks before it: ${caught}`;
+        // irqTaken as well as the frame, because that is the clock writes.test
+        // windows on - and after a `stop #$2700` the lifted run takes no more
+        // interrupts, so asking for a later one silently compares against a
+        // machine that has gone quiet.
+        hit = `address error by frame ${n}, ${sys.m.addressErrors} of them,`
+          + ` at irqTaken ${sys.m.irqTaken}; blocks before it: ${caught}`;
         throw STOP;
       }
       if (n >= FRAMES) throw STOP;
