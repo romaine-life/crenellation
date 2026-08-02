@@ -800,5 +800,83 @@
       "name": "player",
       "why": "the longword at 8(a7); its byte at 2 selects the descriptor and its 0x24 receives the ring pointer."
     }
+  },
+  "0x11d96": {
+    "stack4": {
+      "name": "dest",
+      "why": "the longword at 0x28(a7), written forwards a byte at a time and advanced by 0x200 between rows."
+    },
+    "stack8": {
+      "name": "step",
+      "why": "the longword at 0x2c(a7), subtracted from a counter that starts at 0x40 on BOTH axes - so the ratio is 64 to this, and 0x40 means one to one."
+    },
+    "stack12": {
+      "name": "width",
+      "why": "only its low word, at 0x32(a7), the source count per row."
+    },
+    "stack16": {
+      "name": "height",
+      "why": "the longword at 0x34(a7), the source row count."
+    }
+  },
+  "0x18b5c": {
+    "stack12": {
+      "name": "value",
+      "why": "the longword at 0x10(a6), pushed first to the formatter at 0x195b4 - the number being printed."
+    },
+    "stack16": {
+      "name": "width",
+      "why": "the longword at 0x14(a6), the formatter's third argument."
+    },
+    "stack20": {
+      "name": "padZeroes",
+      "why": "the longword at 0x18(a6), the formatter's fourth. Zero pads, as in 0x19614."
+    }
+  },
+  "0x18afe": {
+    "stack12": {
+      "name": "value",
+      "why": "the longword at 0x10(a6), the first argument of the printf conversion at 0x1946e."
+    },
+    "stack16": {
+      "name": "width",
+      "why": "the longword at 0x14(a6), pushed first so it lands as 0x1946e's fifth argument."
+    },
+    "stack20": {
+      "name": "flags",
+      "why": "only bit 1 reaches the callee - `moveq #$2,d0; and.l $18(a6),d0` - and 0x64, the letter 'd', is pushed as the conversion, so this always formats decimal."
+    }
+  },
+  "0x13e6a": {
+    "stack4": {
+      "name": "attrHigh",
+      "why": "the longword at 8(a6), pushed second-to-last to 0x18b76 - the same attribute pair position 0x18b26 uses."
+    },
+    "stack8": {
+      "name": "attrLow",
+      "why": "the longword at 0xc(a6), pushed last to 0x18b76."
+    },
+    "stack12": {
+      "name": "packed",
+      "why": "the longword at 0x10(a6), handed with a pointer to a LOCAL buffer to the calendar reducer at 0x13d1e, which writes the reduced value back into that slot on the stack."
+    },
+    "stack16": {
+      "name": "second",
+      "why": "the longword at 0x14(a6), given to 0x13d1e the same way as the first - two values reduced against the same scratch buffer before either is drawn."
+    }
+  },
+  "0x19010": {
+    "stack4": {
+      "name": "dest",
+      "why": "the longword at 4(a7), taken into a1 and handed on to 0x18f10 unchanged."
+    },
+    "stack8": {
+      "name": "glyph",
+      "why": "only its low word, at 0xa(a7), used to index the PC-relative BYTE table at 0x192e6 - so it is a glyph number and the table maps it to something one byte wide."
+    },
+    "stack12": {
+      "name": "attrs",
+      "why": "only its low word, at 0xe(a7), and only the bits in 0x30f0 survive the mask - the rest of the word is ignored entirely."
+    }
   }
 }

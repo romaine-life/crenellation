@@ -118614,7 +118614,7 @@ export function distance(ptr_: number, limit2_: number, dx: number, dy: number):
   setReg('d1', limit2);
 }
 
-export function scalingBlitter(src_: number, a3_: number, index_: number, d2_: number, d6_: number, arg0: number, count: number, arg2: number, arg3: number): void {
+export function scalingBlitter(src_: number, a3_: number, index_: number, d2_: number, d6_: number, dest: number, step: number, width: number, height: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -118687,9 +118687,9 @@ export function scalingBlitter(src_: number, a3_: number, index_: number, d2_: n
   save_a1_6 = dst;
   save_a2_7 = src;
   save_a3_8 = a3;
-  dst = (arg0) >>> 0;
-  d1 = (count) >>> 0;
-  d5 = (arg3) >>> 0;
+  dst = (dest) >>> 0;
+  d1 = (step) >>> 0;
+  d5 = (height) >>> 0;
   a0 = (0x21e000) >>> 0;
   d3 = (0) >>> 0;
   d4 = (0) >>> 0;
@@ -118702,7 +118702,7 @@ export function scalingBlitter(src_: number, a3_: number, index_: number, d2_: n
     t10 = 0x40;
     d3 = ((d3 & 0xffff0000) | (((d3 & 65535) + 0x40) & 65535));
     d6 = ((d6 & 0xffff0000) | (0 & 65535));
-    t11 = (arg2 & 0xffff);
+    t11 = (width & 0xffff);
     d4 = ((d4 & 0xffff0000) | (t11 & 65535));
     a3 = (dst) >>> 0;
     setXAdd(t9, t10, 16);
@@ -134038,7 +134038,7 @@ export function returnOne(): void {
   setReg('d0', 1);
 }
 
-export function formatNumberPaddingSeparatorsWrapper(packed: number, arg1: number): void {
+export function formatNumberPaddingSeparatorsWrapper(packed: number, packed2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -134105,7 +134105,7 @@ export function formatNumberPaddingSeparatorsWrapper(packed: number, arg1: numbe
   save_d3_1 = d3;
   save_d4_2 = d4;
   index = (3) >>> 0;
-  d2 = (arg1) >>> 0;
+  d2 = (packed2) >>> 0;
   t3 = ((index & 65535) & (d2 & 65535));
   index = ((index & 0xffff0000) | (t3 & 65535));
   t4 = d2;
@@ -134646,7 +134646,7 @@ export function formatTimeHoursMinutesSeconds(arg0: number, arg1: number): void 
   setReg('d2', d2);
 }
 
-export function soundCallMarshaller(arg0: number, kind: number, arg2: number, arg3: number): void {
+export function soundCallMarshaller(attrHigh: number, attrLow: number, packed: number, second: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -134662,11 +134662,11 @@ export function soundCallMarshaller(arg0: number, kind: number, arg2: number, ar
   a6 = stackPointer();
   drop(-20);
   dst = (stackPointer()) >>> 0;
-  t0 = arg3;
+  t0 = second;
   push(t0, 4);
   t1 = dst;
   push(t1, 4);
-  t2 = arg2;
+  t2 = packed;
   push(t2, 4);
   t3 = dst;
   push(t3, 4);
@@ -134679,9 +134679,9 @@ export function soundCallMarshaller(arg0: number, kind: number, arg2: number, ar
   a6 = getReg('a6');
   const _t1 = tick(74, 0x13e80) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', dst); setReg('a6', a6); if (_t1) takeIrq(); }
   drop(8);
-  t4 = kind;
+  t4 = attrLow;
   push(t4, 4);
-  t5 = arg0;
+  t5 = attrHigh;
   push(t5, 4);
   setFlagsCmp(t5, 0, 32);
   setReg('a0', dst);
@@ -166917,7 +166917,7 @@ export function plotGlyphStringClippingVisible(src2_: number, dst_: number, kind
   setReg('d2', kind);
 }
 
-export function soundCallTwoLongArgs(arg2: number, arg3: number, arg4: number): void {
+export function soundCallTwoLongArgs(value: number, width: number, flags: number): void {
   let _guard = 0;
   void _guard;
   let a6 = getReg('a6');
@@ -166932,16 +166932,16 @@ export function soundCallTwoLongArgs(arg2: number, arg3: number, arg4: number): 
   push(a6, 4);
   a6 = stackPointer();
   drop(-16);
-  t0 = arg3;
+  t0 = width;
   push(t0, 4);
   count = (2) >>> 0;
-  t1 = (count & arg4);
+  t1 = (count & flags);
   count = (t1) >>> 0;
   t2 = count;
   push(t2, 4);
   push(0x64, 4);
   push((a6 + -0x10), 4);
-  t3 = arg2;
+  t3 = value;
   push(t3, 4);
   setFlagsCmp(t3, 0, 32);
   setReg('a6', a6);
@@ -167059,7 +167059,7 @@ export function helperUsedHelperInsideJumpFrom1(ptr_: number): void {
   setReg('a6', ptr);
 }
 
-export function soundCallThreeLongArgs(arg2: number, arg3: number, arg4: number): void {
+export function soundCallThreeLongArgs(value: number, width: number, padZeroes: number): void {
   let _guard = 0;
   void _guard;
   let a6 = getReg('a6');
@@ -167070,12 +167070,12 @@ export function soundCallThreeLongArgs(arg2: number, arg3: number, arg4: number)
   push(a6, 4);
   a6 = stackPointer();
   drop(-16);
-  t0 = arg4;
+  t0 = padZeroes;
   push(t0, 4);
-  t1 = arg3;
+  t1 = width;
   push(t1, 4);
   push((a6 + -0x10), 4);
-  t2 = arg2;
+  t2 = value;
   push(t2, 4);
   setFlagsCmp(t2, 0, 32);
   setReg('a6', a6);
@@ -168891,19 +168891,19 @@ export function formatNumberIntoGlyphBuffer(dst_: number, src_: number, kind_: n
   setReg('d3', d3);
 }
 
-export function drawGlyphRunDownColumn(d0: number, d1: number, arg0: number, arg1: number, arg2: number): void {
+export function drawGlyphRunDownColumn(d0: number, d1: number, dest: number, glyph: number, attrs: number): void {
   if (tick(90, 0x19010)) { setReg('d0', d0); setReg('d1', d1); takeIrq(); }
-  const t0 = (arg2 & 0xffff);
+  const t0 = (attrs & 0xffff);
   const t1 = ((d1 & 0xffff0000) | (t0 & 0xffff));
   const t2 = ((t1 & 0xffff) & 0x30f0);
   const t3 = ((t1 & 0xffff0000) | (t2 & 0xffff));
-  const t4 = (arg1 & 0xffff);
+  const t4 = (glyph & 0xffff);
   const t5 = ((d0 & 0xffff0000) | (t4 & 0xffff));
   const t6 = 0x192e6;
   const t7 = load8((t6 + ((t5 << 16) >> 16)));
   const t8 = ((t5 & 0xffffff00) | (t7 & 0xff));
   setReg('a0', 0xfffe0080);
-  setReg('a1', arg0);
+  setReg('a1', dest);
   setReg('d0', t8);
   setReg('d1', t3);
   jumpRom(0x18f10);
@@ -170637,7 +170637,7 @@ export function copyDigitsOutInsertingSeparator(dst_: number, src_: number, d0_:
   setReg('d1', d1);
 }
 
-export function convertLongDigitsPowerTwo(arg0: number, arg1: number, arg2: number, ptr: number): void {
+export function convertLongDigitsPowerTwo(value: number, width: number, padZeroes: number, ptr: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -170669,7 +170669,7 @@ export function convertLongDigitsPowerTwo(arg0: number, arg1: number, arg2: numb
   let t18 = 0;
   let t19 = 0;
   const _t0 = tick(40, 0x195b4) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', a1); setReg('d0', count); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t0) takeIrq(); }
-  d1 = (arg0) >>> 0;
+  d1 = (value) >>> 0;
   count = (0) >>> 0;
   t0 = (ptr & 0xffff);
   setFlagsCmp(t0, 0, 16);
@@ -170680,9 +170680,9 @@ export function convertLongDigitsPowerTwo(arg0: number, arg1: number, arg2: numb
     setFlagsCmp((count & 65535), 0, 16);
   }
   const _t2 = tick(82, 0x195c2) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', dst); setReg('a1', a1); setReg('d0', count); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t2) takeIrq(); }
-  t1 = (arg2 & 0xffff);
+  t1 = (padZeroes & 0xffff);
   count = ((count & 0xffff0000) | (t1 & 65535));
-  dst = (arg1) >>> 0;
+  dst = (width) >>> 0;
   push(d5, 4);
   push(d4, 4);
   push(d3, 4);
