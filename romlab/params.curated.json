@@ -1483,6 +1483,14 @@
     "d7": {
       "name": "startBit",
       "why": "0x8000 for the upward passes and 1 for the downward ones - the bit that walks through the word, shifted right or left until it falls out."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted one place per iteration until it falls out of the word, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; a mismatch is eor-ed against expected so the failure exit gets the differing bits."
     }
   },
   "0x137a8": {
@@ -1513,6 +1521,14 @@
     "d7": {
       "name": "startBit",
       "why": "0x8000 for the upward passes and 1 for the downward ones - the bit that walks through the word, shifted right or left until it falls out."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted one place per iteration until it falls out of the word, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; a mismatch is eor-ed against expected so the failure exit gets the differing bits."
     }
   },
   "0x137b0": {
@@ -1555,6 +1571,14 @@
     "d7": {
       "name": "startBit",
       "why": "0x8000 for the upward passes and 1 for the downward ones - the bit that walks through the word, shifted right or left until it falls out."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted one place per iteration until it falls out of the word, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; a mismatch is eor-ed against expected so the failure exit gets the differing bits."
     }
   },
   "0x137c6": {
@@ -1581,6 +1605,14 @@
     "d6": {
       "name": "passCount",
       "why": "incremented once per pass and never read by the test itself; it is what the caller sees of how far it got."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted one place per iteration until it falls out of the word, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; a mismatch is eor-ed against expected so the failure exit gets the differing bits."
     }
   },
   "0x137ce": {
@@ -1611,6 +1643,14 @@
     "d7": {
       "name": "startBit",
       "why": "0x8000 for the upward passes and 1 for the downward ones - the bit that walks through the word, shifted right or left until it falls out."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted one place per iteration until it falls out of the word, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; a mismatch is eor-ed against expected so the failure exit gets the differing bits."
     }
   },
   "0x137d6": {
@@ -1637,6 +1677,14 @@
     "d6": {
       "name": "passCount",
       "why": "incremented once per pass and never read by the test itself; it is what the caller sees of how far it got."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted one place per iteration until it falls out of the word, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; a mismatch is eor-ed against expected so the failure exit gets the differing bits."
     }
   },
   "0x137de": {
@@ -1681,6 +1729,14 @@
     "d7": {
       "name": "startBit",
       "why": "0x8000 for the upward passes and 1 for the downward ones - the bit that walks through the word, shifted right or left until it falls out."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted one place per iteration until it falls out of the word, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; a mismatch is eor-ed against expected so the failure exit gets the differing bits."
     }
   },
   "0x137f0": {
@@ -1707,6 +1763,14 @@
     "d6": {
       "name": "passCount",
       "why": "incremented once per pass and never read by the test itself; it is what the caller sees of how far it got."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted one place per iteration until it falls out of the word, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; a mismatch is eor-ed against expected so the failure exit gets the differing bits."
     }
   },
   "0x137f8": {
@@ -1729,6 +1793,10 @@
     "d6": {
       "name": "passCount",
       "why": "incremented once per pass and never read by the test itself; it is what the caller sees of how far it got."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; a mismatch is eor-ed against expected so the failure exit gets the differing bits."
     }
   },
   "0x13800": {
@@ -2169,6 +2237,26 @@
     "d0": {
       "name": "expected",
       "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
+    },
+    "d7": {
+      "name": "startBit",
+      "why": "0x80 here where 0x1378e uses 0x8000, which is the whole difference between the two chains: this one tests a BYTE lane at a time, with move.b and lsr.b, where the other tests words."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted along one place per iteration until it falls out of the byte, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; when it differs from expected the two are eor-ed and the failure exit takes the difference."
     }
   },
   "0x13994": {
@@ -2187,6 +2275,26 @@
     "d0": {
       "name": "expected",
       "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
+    },
+    "d7": {
+      "name": "startBit",
+      "why": "0x80 here where 0x1378e uses 0x8000, which is the whole difference between the two chains: this one tests a BYTE lane at a time, with move.b and lsr.b, where the other tests words."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted along one place per iteration until it falls out of the byte, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; when it differs from expected the two are eor-ed and the failure exit takes the difference."
     }
   },
   "0x1399c": {
@@ -2209,6 +2317,34 @@
     "d0": {
       "name": "expected",
       "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    },
+    "a0": {
+      "name": "at",
+      "why": "the address the pass walks, stepped two bytes at a time from a1."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
+    },
+    "d5": {
+      "name": "background",
+      "why": "0 or 0xff, and the two entries into each pass differ only in this - every pattern runs against both."
+    },
+    "d7": {
+      "name": "startBit",
+      "why": "0x80 here where 0x1378e uses 0x8000, which is the whole difference between the two chains: this one tests a BYTE lane at a time, with move.b and lsr.b, where the other tests words."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted along one place per iteration until it falls out of the byte, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; when it differs from expected the two are eor-ed and the failure exit takes the difference."
     }
   },
   "0x139ae": {
@@ -2227,6 +2363,22 @@
     "d0": {
       "name": "expected",
       "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted along one place per iteration until it falls out of the byte, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; when it differs from expected the two are eor-ed and the failure exit takes the difference."
     }
   },
   "0x139b6": {
@@ -2245,6 +2397,26 @@
     "d0": {
       "name": "expected",
       "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
+    },
+    "d7": {
+      "name": "startBit",
+      "why": "0x80 here where 0x1378e uses 0x8000, which is the whole difference between the two chains: this one tests a BYTE lane at a time, with move.b and lsr.b, where the other tests words."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted along one place per iteration until it falls out of the byte, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; when it differs from expected the two are eor-ed and the failure exit takes the difference."
     }
   },
   "0x139be": {
@@ -2263,12 +2435,36 @@
     "d0": {
       "name": "expected",
       "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted along one place per iteration until it falls out of the byte, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; when it differs from expected the two are eor-ed and the failure exit takes the difference."
     }
   },
   "0x139c6": {
     "a3": {
       "name": "watchdogPort",
       "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
     }
   },
   "0x139d0": {
@@ -2287,6 +2483,26 @@
     "d0": {
       "name": "expected",
       "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
+    },
+    "d7": {
+      "name": "startBit",
+      "why": "0x80 here where 0x1378e uses 0x8000, which is the whole difference between the two chains: this one tests a BYTE lane at a time, with move.b and lsr.b, where the other tests words."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted along one place per iteration until it falls out of the byte, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; when it differs from expected the two are eor-ed and the failure exit takes the difference."
     }
   },
   "0x139d8": {
@@ -2305,6 +2521,22 @@
     "d0": {
       "name": "expected",
       "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
+    },
+    "d2": {
+      "name": "walkingBit",
+      "why": "a copy of startBit shifted along one place per iteration until it falls out of the byte, eor-ed into the value each time."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; when it differs from expected the two are eor-ed and the failure exit takes the difference."
     }
   },
   "0x139e0": {
@@ -2319,6 +2551,18 @@
     "d6": {
       "name": "passCount",
       "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
+    },
+    "d1": {
+      "name": "actual",
+      "why": "what was read back; when it differs from expected the two are eor-ed and the failure exit takes the difference."
     }
   },
   "0x139e8": {
@@ -3075,6 +3319,16 @@
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
+    }
+  },
+  "0x1397a": {
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region, in the register 0x1357c and 0x130b0 both load it into."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end a sweep."
     }
   }
 }
