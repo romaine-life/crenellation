@@ -94,6 +94,24 @@ describe('names', () => {
       .map(([k]) => k);
     expect(unevidenced).toEqual([]);
 
+    // ...and the hole that assertion had, which was exactly the width of the
+    // older form. An entry may also be a bare string, which is the name and
+    // nothing else, and a bare string is not an object so it slipped past both
+    // this check and `idents.py`'s. 71 of the 400 were bare strings; 17 of
+    // those have their evidence in manual_names.json, which stores
+    // [name, why] pairs, and the rest had none anywhere.
+    //
+    // A ratchet rather than an assertion, because the fix is reading the
+    // disassembly one routine at a time and a suite that cannot be green until
+    // that finishes is a suite nobody reads. It may only fall.
+    const manual = JSON.parse(readFileSync(join(
+      here, '..', '..', '..', 'romlab', 'manual_names.json'), 'utf8')) as
+      Record<string, unknown>;
+    const bare = Object.entries(curated)
+      .filter(([k, v]) => typeof v === 'string' && !(k in manual))
+      .map(([k]) => k);
+    expect(bare.length).toBeLessThanOrEqual(base.unevidencedNames ?? 0);
+
     // Parameters are still a ratchet, and it is on the remainder: 2,401 of
     // 4,415 do not say what they are, and the bar is none of them. Ratcheting
     // the remainder rather than the total is what lets a pass that REMOVES a

@@ -7,7 +7,10 @@
     "name": "lower the interrupt mask to zero",
     "why": "`move.w #$2000,sr; rts` - supervisor, trace off, mask 0. The counterpart of saveInterruptMaskRaise, which sets it the other way."
   },
-  "0x626": "set interrupt mask from argument",
+  "0x626": {
+    "name": "set interrupt mask from argument",
+    "why": "move.w sr,d0 then move.w $6(a7),sr: it installs the status word the caller pushed and hands back the one it replaced, which is what makes it usable as a save-and-set pair with the caller's own restore."
+  },
   "0x62e": {
     "name": "halt with every interrupt masked",
     "why": "the whole routine is `stop #$2700` - halt, supervisor, interrupt mask 7. 0x642 is a second entry doing exactly the same thing."
@@ -24,10 +27,22 @@
     "name": "two nops, then fall through",
     "why": "`nop; nop` with no terminator: a patch slot the routine after it runs into."
   },
-  "0x64a": "save interrupt mask and raise it",
-  "0x656": "restore saved interrupt mask",
-  "0x8b4": "piece walker",
-  "0xbc2": "enclosure test",
+  "0x64a": {
+    "name": "save interrupt mask and raise it",
+    "why": "move.w sr,$3e0804 then move.w #$2500,sr - saves the status register to a fixed word and sets supervisor with interrupt level 5. 0x656 is the other half and reads the same word back."
+  },
+  "0x656": {
+    "name": "restore saved interrupt mask",
+    "why": "move.w $3e0804.l,sr and rts, the exact word 0x64a saved, and the two have the same six callers."
+  },
+  "0x8b4": {
+    "name": "piece walker",
+    "why": "walks a byte-encoded path over the board from a starting cell. a3 is the byte stream at $a(a6); each pair of bytes is added to the running x,y at 8(a6)/9(a6), which are then bounds-checked against $2a and $1e - the board is 42 by 30 cells. 0xfcca gives the cell-address delta per direction and 0xfcda/0xfce2 the x and y deltas, and a 0x0b byte in the stream switches to a second step. The 0xc0 mask on the cell byte is the owner field, compared against the current player's byte from 0x1000a indexed by the player at 0x3e1960+2; when $e(a6) is non-zero it stamps the cell and calls the sprite draw at 0x2338. A negative byte ends the walk."
+  },
+  "0xbc2": {
+    "name": "enclosure test",
+    "why": "walks the boundary of a wall from the cell at 8(a6) in the direction at $e(a6), turning left or right by whether the cell ahead carries the current player's wall byte - 0x1000a indexed by the player at 0x3e1960+2, or'd with 1 and with 3 for the two wall forms - and counting the turns in the word at -2(a6). It stops when the walk returns to the cell it started from (cmpa.l d3,a4) and answers whether the net turn count is -4: four turns the same way round a closed rectilinear loop is a winding number of one, which is an enclosure."
+  },
   "0xcac": {
     "name": "walk the eight neighbours of a cell for the current player's wall",
     "why": "0xFCCA is the eight-way step table this ROM uses everywhere; this takes the current player's owner byte through 0x1000A, ors in 1 for a wall, and walks the neighbours of the cell cellAddress returns, with 0xFCEA as a second table for the diagonal cases."
@@ -48,8 +63,14 @@
     "name": "walk the eight neighbours of a cell in screen space as well as board space",
     "why": "takes both cellAddress and screenAddress for the same coordinate, works out the parity of the two coordinate bytes, keeps the cell's owner bits with `andi.w #$c0`, and walks the 0xFCCA steps four at a time."
   },
-  "0x15b4": "set flag after player array",
-  "0x15d6": "clear status bits in every player",
+  "0x15b4": {
+    "name": "set flag after player array",
+    "why": "writes 0xff to 0x3e1ae2, which is 0x3e1968 + 3 * 0x7e - the byte immediately after the third player's struct, in an array whose stride 0x7e and count of three are what 0x15d6 next door loops over."
+  },
+  "0x15d6": {
+    "name": "clear status bits in every player",
+    "why": "lea 0x3e1968, and.w #$6bff,(a0), lea $7e(a0),a0, three times: it clears bits 15, 12 and 10 of the flag word at offset 0 of each of the three player structs. The 0x7e stride and the count of three are the player array."
+  },
   "0x15fe": {
     "name": "open the round: clear the hand slots and seed the protection counter",
     "why": "writes 0xFF into the three bytes at 0x3E0DCE - the hand slots - and, once 0x3E1952 has passed 1, copies 0x3E0DD4 into 0x3E0DD2 and seeds 0x3E0DE6 from the table at 0xFD06 indexed one past it. Then testWordProtectionWindow and the rest of the round's setup."
@@ -70,7 +91,10 @@
     "name": "advance to the next active player, or wrap to the first",
     "why": "`seq` on the caller's word decides whether to look at the byte at +0x1E; then it walks the three structs for one with bit 15 set, keeping 0x3E195C and 0x3E1952 up to date. The counterpart of 0x1C66, which counts rather than advances."
   },
-  "0x1f3a": "raise player counter capped at four",
+  "0x1f3a": {
+    "name": "raise player counter capped at four",
+    "why": "multiplies the word argument at 6(a7) by 126 - add.l d0,d0 then asl.l #6 then subtract, which is x2 then x128 minus x2 - and 126 is 0x7e, the player stride, so it indexes the player array at 0x3e1968. It then increments the byte at 0x1d of that player unless it has already reached 4, the cmpi.b #$4 / bcc skipping the addq."
+  },
   "0x1f82": {
     "name": "retire the entity: redraw it, release its hand slot and clear its flags",
     "why": "with a non-zero flag it calls entityDrawDispatch on the record and handTableEntryTwelvePast with the byte at +2. Either way it clears all but 0x71FF of the record's first word, writes 0xFF into the byte at 0x3E0DCE indexed by the record's byte at +3, and clears field 0x1D when 0x3E1954 is exactly 1."
@@ -79,7 +103,10 @@
     "name": "read the DIP switches and split them into the option bytes",
     "why": "reads sound request 0x15 into 0x3E0DE0; bit 13 set means the word at 0x284 replaces it and is sent back. Then the low two bits go to 0x3E0DDA and bits 2 and 3 are masked off for the next option."
   },
-  "0x220c": "entity spawn",
+  "0x220c": {
+    "name": "entity spawn",
+    "why": "pushes two zero longs, then the three word arguments at $a/$e/$12(a7) sign-extended, then the longword from the table at 0xfd5e indexed by the byte at $2b(a7) times four - a descriptor pointer per kind - and calls the allocator at 0x5b40. So it is the by-kind spawn: kind byte in, descriptor and three coordinates out to the allocator."
+  },
   "0x2788": {
     "name": "dispatch a cell type between 0x1A and 0x29 through its table",
     "why": "`moveq #$1a,d1; cmp.l d0,d1; bgt` and `moveq #$29,d1; ...; blt` bound the index, then `jmp $27a2(pc,d0.w)` through the word table at 0x276E. What capstone shows after the jump is that table, not code."
@@ -184,17 +211,38 @@
     "name": "draw the score panel's box and rule it into rows",
     "why": "rectGrab for the box at 0x80, 0x59, 0x50, 0x38, then rules rows from 0x200004 with a pitch of 0xA8 and a spacing of `0xA00 / 0x40`, sixteen of them, 0x75 wide."
   },
-  "0x5892": "rect grab",
-  "0x59ee": "piece bag builder",
-  "0x5afc": "piece rotation",
-  "0x5b40": "entity allocator",
-  "0x5c80": "set flag bit 4 on every motion object",
+  "0x5892": {
+    "name": "rect grab",
+    "why": "a0 = 0x200004 + y * 0x200 + x, a1 = 0x21e000, then width bytes copied per row for height rows with the source advanced by 0x200 - width between them. 0x200 is the playfield row stride and 0x200004 its base, so it lifts a rectangle of the screen into the buffer at 0x21e000."
+  },
+  "0x59ee": {
+    "name": "piece bag builder",
+    "why": "the first word argument picks one of three bags - table 0xffc8 with its pointer at 0x3e1f0a, 0xffe0 at 0x3e1f0e, or 0xfff8 at 0x3e1f12 - and the second is the level, clamped to 4 by cmpi.w #$4/bls. The table entry is a run-length list: each byte says how many copies of the current piece index to emit, the index rises with each byte, and a negative byte ends it. d4 counts what was emitted, 0xff terminates the bag, and the two calls to 0x5ab0 four times over shuffle it through the scratch at 0x3e1ee0."
+  },
+  "0x5afc": {
+    "name": "piece rotation",
+    "why": "takes a pointer to a cursor, steps it on by four and looks at what it now points at: a non-zero long means there is another rotation and it answers 0, a zero long means the list ended so it steps on once more, writes the long there back into the cursor - the head of the ring - and answers 1. So the answer is 'did it wrap', which is what a rotation cycle needs to know."
+  },
+  "0x5b40": {
+    "name": "entity allocator",
+    "why": "refuses with -1 when the count at 0x3e02ca has reached 0x45, then raises the interrupt mask and takes the index at 0x3e02c6. That index addresses two parallel arrays at once: 0x3e0000 with a stride of 8 (asl.l #3) and 0x3e02d8 with a stride of 16 (asl.l #4), which is the same base and stride 0x5c80 walks 0x45 times. It fills the second from the descriptor the caller passed, resolves two pointers through 0xf2ee, packs the coordinates into 0x4(a4) and 0x6(a4) with the asl #7 that puts the sub-cell part in the low seven bits, links the entry with 0xf306, drops the mask and answers the index."
+  },
+  "0x5c80": {
+    "name": "set flag bit 4 on every motion object",
+    "why": "lea 0x3e02d8, dbra from 0x45, adda 0x10 each time: 70 entries of 16 bytes at the base the allocator at 0x5b40 hands out, with the same cap. Inside the loop it raises the interrupt mask, sets bit 4 of the byte at offset 2 if it is not already set, and drops the mask again - one entry at a time rather than once around the whole array."
+  },
   "0x5cce": {
     "name": "reset the display list and its counters for a new round",
     "why": "saves the interrupt mask with 0x56, clears the word pairs at 0x3E02CA and 0x3E02CC, sets 0x3E02C6 to 1 and 0x3E02C8 to 0x47, clears 0x3E02B0 and 0x3E02B2, and then zeroes the three words at the head of work RAM."
   },
-  "0x5e38": "seal event post",
-  "0x5ea2": "territory fill",
+  "0x5e38": {
+    "name": "seal event post",
+    "why": "turns the cell address it is given into a coordinate pair by subtracting the board base 0x3e0864 and splitting the remainder - asr.l #5 for the row, andi.b #$1f for the column, so the board is 32 bytes to a row - and pushes those two bytes onto the coordinate stack that 0x663c hands out slots in. Around that it saves the current player's 0x66 field into 0x3e209c and puts it back afterwards, clears 0x58, sets 0x3c to 0xff, and calls 0xee90 with 0x11ae2. The player comes from the pointer at 0x3e1960."
+  },
+  "0x5ea2": {
+    "name": "territory fill",
+    "why": "the scanline flood fill. It takes the current player's cell byte from 0x1000a indexed by the player's byte at offset 2, pops a coordinate, and stops when it pops 0xff - the stack's empty marker - pushing the marker back and scoring through 0x865e when 0x3c of the player is positive. Otherwise 0x11bd8 turns the coordinate into a cell address, cells whose 0xc0 owner bits already match are skipped, and 0x5fa6 and 0x62a6 find the two ends of the span. It then lays the player's wall byte or'd with 1 along the row above and the row below - the subq.b #$1 and addq.b #$2 on the y byte - by calling the span scanner at 0x65aa for each."
+  },
   "0x5fa6": {
     "name": "lay the player's wall along the cell run, from table 0x11742",
     "why": "0x1000A maps a player index to its owner byte and 0x1000E to its wall byte; `ori.b #$1` on the owner is how this ROM spells 'a wall of that owner'. Takes the record's player index, its width from the word table 0x11742, both the cell and screen addresses of the coordinate, and works from the counter block at 0x3E1F16.",
@@ -224,7 +272,10 @@
     "why": "identical to 0x60BE - the same four calls with the same constants - except that it writes d5 into the cell at d4 and steps *up*, and leaves through 0x655E rather than 0x6252.",
     "ident": "chargeItemThenDecompressForwards"
   },
-  "0x65aa": "span scanner",
+  "0x65aa": {
+    "name": "span scanner",
+    "why": "walks from the cell at the first coordinate to the cell at the second, both turned into addresses by 0x11bd8, comparing each cell byte against the byte at 0xf(a6). It pushes a coordinate onto the stack at 0x663c at the START of each run that does not match, and steps past the rest of that run without pushing again - which is exactly the seed list a scanline fill needs from the row above or below the span it just filled."
+  },
   "0x66c8": {
     "name": "scan the screen for cells, taking the value from the pointer",
     "why": "`move.b (a1),d4` then into tailFullScreenCellScan at 0x66D4. The byte a1 points at is the only thing this entry contributes."
@@ -233,7 +284,10 @@
     "name": "scan the screen for cells with value six",
     "why": "`moveq #$6,d4` then into tailFullScreenCellScan at 0x66D4. The constant is the whole difference from 0x66C8."
   },
-  "0x670e": "clear player pair and run script",
+  "0x670e": {
+    "name": "clear player pair and run script",
+    "why": "lea 0x3e1968 - the first player struct - clears the byte pair at 0x46 and 0x47, and calls the event post at 0xee90 with the script address 0x11ae8, a neighbour of the 0x11ae2 the seal post uses. Two bytes and a script, nothing else."
+  },
   "0x672e": {
     "name": "move the cursor to the player's marked cell, unless event 0x11AE2 is up",
     "why": "returns at once when eventTest finds 0x11AE2. Otherwise it takes the coordinate pair at +0x46 of the first player struct, calls cellAddress, and walks the players against the block at 0x3E1960."
@@ -246,13 +300,22 @@
     "name": "take the next free entry in the record's 0x1A-byte list and stamp it",
     "why": "does nothing once the count at +0x16 has reached 0x1D. Otherwise it steps that count, walks the list at +0x6A for an entry whose byte at +1 is negative - reusing a dead one by clearing it - writes the caller's two bytes into it, sets +5 to 0xC, copies the owner byte from +2 of the record, sets +4 to 2, and returns the entry."
   },
-  "0x6c20": "cannon aiming",
-  "0x6cae": "fire trigger",
+  "0x6c20": {
+    "name": "cannon aiming",
+    "why": "steps one cannon of the player at 0x10(a7) towards where it should be pointing. a3 is the cursor at 0x6e(a2) into a list of 0x1a-byte entries whose head is 0x6a(a2); a negative first byte ends the list and resets the cursor to the head. For a live entry it turns the cannon's cell coordinates into pixels - times 8 - subtracts them from the target at 0x4e(a2) and 0x50(a2), and asks 0x11cf8 which of eight directions that is. If it differs from the direction byte at 0x4(a3) it moves ONE step towards it: (want - have) & 7 - 4 decides which way round is shorter, and the result is masked back to 7. Then it redraws through 0x2698 and advances the cursor by 0x1a."
+  },
+  "0x6cae": {
+    "name": "fire trigger",
+    "why": "fires the cannon at 0x72(a2). It refuses when 0x16(a3) is already set - a shot in flight - or when either cell coordinate byte is negative. The muzzle is the cannon's cell plus one, times eight, which is pixels; unless the byte at 0x3e1952 is 1 and the player at 0x3e1c84 is this one, the direction byte at 0x4(a3) then indexes the pair of tables at 0x11754 and 0x11764 by two for the per-direction x and y offsets. It spawns through 0x220c twice, nine and eight pixels up, takes the second entity's word from 0x1f920 through 0xf2fa, and stores the first entity - 0x3e02d8 indexed by the returned index times 16, the allocator's own array and stride - into 0x16(a3) as the shot in flight."
+  },
   "0x6ef8": {
     "name": "which of the four neighbours of a cell are unowned",
     "why": "checks the cells at +0x20 and -0x20 - one row either way - and the two beside them, adding 1, 2, 4 or 8 to the answer for each whose owner bits are clear. A four-bit mask of free directions."
   },
-  "0x6fb4": "projectile scheduler",
+  "0x6fb4": {
+    "name": "projectile scheduler",
+    "why": "advances the player's selected-cannon cursor at 0x72(a2) to the next cannon that can actually fire, trying at most four (dbra from 3) and wrapping to the list head at 0x6a(a2) whenever the entry's first byte goes negative. A cannon qualifies when its second byte is not negative and 0x16 - the shot in flight the fire trigger writes there - is zero; the first one that does gets the event at 0x11afa removed and the cursor stops on it. Same 0x1a stride and same head pointer as the aiming walk at 0x6c20."
+  },
   "0x7004": {
     "name": "step every shot in flight and draw it",
     "why": "walks the 0x1C-byte shot records from 0x3E0F48 through the pointer at +0x16, with accessorStateBlock and offsetRecordTableBase to hand and the four shape tables 0x1F8D8, 0x1F8EC, 0x1F900 and 0x1F910 chosen by what the shot is."
@@ -299,7 +362,10 @@
     "name": "is the cell's wall run unbroken in all eight directions",
     "why": "starts from `seq` on whether the cell's byte equals the caller's, then for each of the eight steps in the table at 0xFCCA looks one cell out and two cells out: a matching neighbour whose own neighbour is a different non-empty owner clears the answer. Returns the flag."
   },
-  "0x7a24": "phase countdown",
+  "0x7a24": {
+    "name": "phase countdown",
+    "why": "counts down the byte at 0x3e1870. It first hands the current value and the word argument to 0x7a88, then decrements, and when the result goes negative removes the event 0x11b00 for that argument. While it is still positive and the argument is zero, a value of 5 or less indexes the table of longwords at 0x11792 by four and passes the entry to 0x90e6 - the gate that only forwards when the word at 0x3e1948 is set - so the last five ticks are the ones that announce themselves."
+  },
   "0x7b3e": {
     "name": "draw each player's score line, wide or narrow",
     "why": "textWidthMeasure with zero picks 2 or 0 as the base, and the strings come from 0x1178A. It then walks the three player structs from 0x3E1968 drawing one line each."
@@ -333,9 +399,18 @@
     "name": "dissolve to the next screen when the record's bank has changed",
     "why": "does nothing unless bit 12 of the record's first word is set and its byte at +2 differs from 0x3E1AE2. Then screenDissolve, runSequenceDifferentRoutineIndex, copySixteenWords for that bank, blits 0xAE034 to 0x200004, calls 0x54A8 and passes 0x13 through the gate."
   },
-  "0x8598": "damage selector",
-  "0x8606": "damage handler",
-  "0x865e": "territory scoring",
+  "0x8598": {
+    "name": "damage selector",
+    "why": "walks the three player structs at 0x3e1968 with the 0x7e stride, and for each one whose flag word has bit 15 set it picks a damage script: the table at 0x22 of the block pointed to by 0x3e0dca, indexed by the player's byte at offset 3 times four. It then steps that script forward by the player's counter at 0x1d - each step skipping words until a negative byte and then one more - stores the resulting pointer in 0x3e(a2), and posts 0x11bcc. 0x8606 is the handler that consumes 0x3e two bytes at a time."
+  },
+  "0x8606": {
+    "name": "damage handler",
+    "why": "consumes the script pointer at 0x3e(a2) that 0x8598 set up. It reads the word there as a coordinate, turns it into a cell address with 0x11bd8, and when that cell is empty writes 0x30 into it and redraws through 0x3194 - which is the rubble. Either way it steps 0x3e on by two, and a negative byte at the new position ends the script and removes 0x11bcc, the event 0x8598 posted."
+  },
+  "0x865e": {
+    "name": "territory scoring",
+    "why": "reads the territory count the fill accumulated in 0x58(a2) and walks the ten words at 0x117ce until one is not below it, which gives a band index; the parallel table of words at 0x117e2, indexed by that band times two, is the award, and it is added to 0x56(a2). It then calls 0x441c with the player and the band and sets 0x3c(a2) to 0xff, which is the byte 0x5ea2 tests before calling this at all."
+  },
   "0x875e": {
     "name": "walk the current record's script to the terminating byte",
     "why": "follows the pointer at +0x4A of the record at 0x3E1960 two bytes at a time, skipping over the caller's string while its bytes are non-zero, and reads the byte it lands on sign-extended."
@@ -429,7 +504,10 @@
     "name": "pick a random one of the twenty entries and mark it",
     "why": "rng with 0xA, floored at 3, indexes the twenty 0x13-byte entries the pointer at +0x1E of the block at 0x3E0DCA names, and 0x1A goes in the frame byte. 0x3E1AE4 is the block it records into."
   },
-  "0xaf72": "unit movement",
+  "0xaf72": {
+    "name": "unit movement",
+    "why": "walks seven units - lea 0x3e1bc6, adda 0x12, dbra from 6 - and moves each one that has a display entry at 0x4. The words at 0xe and 0x10 are the velocity and are added to the position at 0xa and 0xc; the position is then shifted right by five into 0x8 and 0x6 of the display entry, so the low five bits are sub-pixel, and bit 5 of the entry's byte 2 is set to mark it for redraw. The counter at 0x8 counts the move down and retires the unit through 0xb53a when it reaches zero. The answer is 1 if anything is still moving."
+  },
   "0xafda": {
     "name": "expand one of three random score strings into the buffer",
     "why": "rng with 3 picks between the strings at 0x1181A, 0x11820 and 0x11826, then copies each byte of it plus the caller's word, masked to three bits, into the destination until a negative byte ends it, and terminates with 0xFF."
@@ -512,7 +590,10 @@
     "why": "the fifth of the family around takeFirstItemListZero: same record fill, same `bank << 5` addressing and 0x200-word half select as 0xC7BC and 0xC8DE, with its own kind byte.",
     "ident": "schedulePaletteEffectKindThree"
   },
-  "0xcae2": "scheduled trigger",
+  "0xcae2": {
+    "name": "scheduled trigger",
+    "why": "three word arguments and three conditions, all of them equalities against fixed bytes: 0x3e195c must equal the third, 0x3e1870 - the phase countdown byte 0x7a24 decrements - must equal the first, and 0x3e1950 must be zero. Only then does it call 0xcbae with the second. Nothing else happens either way."
+  },
   "0xcb24": {
     "name": "post 0x11B0C for each player not already carrying 0x11B06",
     "why": "for each of the three player structs, `pairAlreadyEventQueue` asks whether 0x11B06 is already queued for it, and only if not does it post 0x11B0C. 0xF is the count it works to."
@@ -623,8 +704,14 @@
     "name": "draw the panel graphic for a slot at its fixed screen position",
     "why": "takes the difficulty byte at 0xFE02 indexed by the slot plus one, the screen address of the coordinate word from the table at 0x11AB4, and the graphic pointer from the long table at 0x215E6 indexed by the slot, and hands all of it to drawArgumentRepack with 0xC and 9."
   },
-  "0xee44": "phase dispatcher",
-  "0xee90": "event post",
+  "0xee44": {
+    "name": "phase dispatcher",
+    "why": "the event list itself. The count is the word at 0x3e1cf4 and the entries start at 0x3e1cf6 with a stride of 0xc, which is the array 0xee90 appends to. Each tick it decrements the entry's word; when that reaches zero it reloads it from the byte at 2, checks the guard byte at 3 against 0x3e0802, and calls the routine whose pointer is at 4 with the longword at 8 as its argument."
+  },
+  "0xee90": {
+    "name": "event post",
+    "why": "appends to the same array 0xee44 runs: count at 0x3e1cf4, entries at 0x3e1cf6 with a stride of 0xc. It first scans for an entry with the same routine pointer AND the same argument and does nothing if it finds one, so posting twice does not schedule twice. A new entry takes the routine from the descriptor's first long, the argument the caller passed, the period from the descriptor's byte 4 - written both as the reload at 2 and as the initial countdown at 0 - and the guard from byte 5."
+  },
   "0xeeee": "event remove",
   "0xeffa": "event test",
   "0xf630": {
