@@ -1850,5 +1850,25 @@
     "name": "audio and video reset, then 0x168f8",
     "ident": "resetThen168F8",
     "why": "calls 0x181a4 then 0x168f8 and branches straight to 0x16fe0, taking no argument and leaving nothing on the stack - which is why it goes to the shared exit directly where 0x16d4e has to go through the drop at 0x16d48 first. The variant of the three that differs is 0x16d3e, which calls 0x160ba instead of 0x181a4."
+  },
+  "0x16d6e": {
+    "name": "render the title screen, then the shared exit at 0x16fe0",
+    "ident": "titleScreenThenTail",
+    "why": "two instructions: call 0x1520e and branch to 0x16fe0. It is the fourth of the group that all end at 0x16fe0 - with 0x16d3e, 0x16d4e and 0x16d60 - and the one that leaves nothing on the stack, so it takes the exit directly."
+  },
+  "0x193da": {
+    "name": "wait for the counter at 0x3e3404 to change, n plus one times",
+    "ident": "waitCounterChanges",
+    "why": "reads the word at 0x3e3404 into d1 and then spins on `cmp.w (a0),d1; beq` until it differs - so it waits for something OUTSIDE this program to move that word, which is what makes it a hardware counter rather than a variable. The dbra around it runs the wait once more than the argument says. There is no timeout and no watchdog kick inside the spin."
+  },
+  "0x18e00": {
+    "name": "claim one of four slots in the 0x3e3400 block, as kind three",
+    "ident": "claimSlotKindThree",
+    "why": "sets d0 to the kind and falls into the common body at 0x18e06, which scans the four bytes below 0x19(a2) BACKWARDS with `tst.b -(a1); dbeq` looking for a zero - a free slot - and gives up if it finds none. On success it writes 1 at 0x2c, clears 0x30, stores the word argument at 0x1c indexed by twice the slot, and clears 0x24. So the block at 0x3e3400 holds four entries with byte fields at 0x19, 0x2c and 0x30 and word fields at 0x1c and 0x24."
+  },
+  "0x18db6": {
+    "name": "claim a slot as kind five or six, by the sign of the argument",
+    "ident": "claimSlotBySign",
+    "why": "another head on the body at 0x18e06 that 0x18e00 also falls into. It picks the kind from the SIGN of the word argument - 6 when positive, and 5 after negating it when not - so one argument carries both a magnitude and a choice of kind. 0x18dc4 is a third head on the same body, using kind 7 and setting 0x3e340a and 0x3e3406 first."
   }
 }

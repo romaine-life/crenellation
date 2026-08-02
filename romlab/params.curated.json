@@ -696,5 +696,11 @@
       "name": "value",
       "why": "read straight into d0 and returned. Nothing else happens, so whatever the caller means by it is the whole meaning."
     }
+  },
+  "0x193da": {
+    "stack4": {
+      "name": "timesLessOne",
+      "why": "only its low word, at 6(a7), used as a dbra counter - so the wait happens one MORE time than the number says, and a zero still waits once."
+    }
   }
 }
