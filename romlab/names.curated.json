@@ -1810,5 +1810,25 @@
     "name": "answer the argument unchanged",
     "ident": "identityArgDB66",
     "why": "two instructions - `move.l $4(a7),d0` and `rts` - so it is the identity function on its first argument. There are at least two of these in the image, 0x5e02 and 0xdb66, each called from one place (playerFlagHandler here), which is what a compiler leaves behind when a call that used to do something has had its body removed rather than its call sites."
+  },
+  "0xdb78": {
+    "name": "answer the argument unchanged",
+    "ident": "identityArgDB78",
+    "why": "`move.l $4(a7),d0` then `rts`, the third of these in the image after 0x5e02 and 0xdb66, called from fireTrigger. Two instructions and no effect."
+  },
+  "0x5dea": {
+    "name": "do nothing",
+    "ident": "doNothing5DEA",
+    "why": "one instruction, `rts`. It is reached from mainLoop and there is nothing else to say about it - which is worth saying, because a routine with a caller and no body is the shape a reader stops and re-reads."
+  },
+  "0x5dfe": {
+    "name": "do nothing",
+    "ident": "doNothing5DFE",
+    "why": "one instruction, `rts`. It is reached from mainGameStateMachine and there is nothing else to say about it - which is worth saying, because a routine with a caller and no body is the shape a reader stops and re-reads."
+  },
+  "0x3ea": {
+    "name": "kick the watchdog, then stamp a fixed block and clear two words",
+    "ident": "kickWatchdogAndStampBlock",
+    "why": "calls the watchdog kick at 0x618 and then writes a fixed pattern nobody computes: the words 9, 0xd, 0xa, 0xe into 0x3e3f00 onwards, then 0x5b95, 0x1016 and 0xb087 into 0x3e3f08, 0x3e3f0a and 0x3e3f0c. All seven are constants in the instruction stream, so this is a signature or a seed rather than anything derived. It then clears the words at 0x3e0802 and 0x3e0800 and reads each back, which is the shape of a write-then-verify on hardware rather than of a variable being reset."
   }
 }

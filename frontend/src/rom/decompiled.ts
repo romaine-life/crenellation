@@ -104936,9 +104936,9 @@ export function returnFirstStackArgumentSecond(arg0: number): void {
   setReg('d0', arg0);
 }
 
-export function helperCannonFireTrigger(dst: number): void {
+export function helperCannonFireTrigger(value: number): void {
   if (tick(30, 0x0db78)) { takeIrq(); }
-  setReg('d0', dst);
+  setReg('d0', value);
 }
 
 export function textLineDraw(kind_: number, d2_: number, arg0: number): void {
