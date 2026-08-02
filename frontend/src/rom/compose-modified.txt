@@ -1,1 +1,1 @@
-one player: coin, join at the middle station, then fire: 380 pixels differ, box x 36..262 y 16..78
+attract, two demo loops: 630 pixels differ, box x 36..310 y 16..78
