@@ -4378,5 +4378,55 @@
       "name": "neighbourByte",
       "why": "the byte read from whichever neighbour is being tested, compared against both wanted values in turn."
     }
+  },
+  "0xf000": {
+    "a0": {
+      "name": "entry",
+      "why": "walks the event array at 0x3e1cf6 in 0xc-byte steps - the body 0xeffa falls into, so it arrives with the movem already done and its stack offsets are four higher than a caller would expect."
+    },
+    "d1": {
+      "name": "wantRoutine",
+      "why": "the descriptor's first longword, matched against 0x4 of each entry and nothing else - this operation ignores the argument, which is what separates it from remove."
+    },
+    "d2": {
+      "name": "unused",
+      "why": "saved by the caller's movem and never read here. It is in the signature because the lifter saw it live, not because the routine wants it."
+    }
+  },
+  "0x12306": {
+    "a5": {
+      "name": "base",
+      "why": "added to each of the two bytes taken from the stream, so the stream holds OFFSETS from it rather than values - and a5 arriving in an address register is what lets that addition be a word add."
+    },
+    "d4": {
+      "name": "firstOffset",
+      "why": "the first byte of the pair, plus base."
+    },
+    "d7": {
+      "name": "secondOffset",
+      "why": "the second byte of the pair, plus base."
+    },
+    "d5": {
+      "name": "count",
+      "why": "doubled and incremented before the loop - `add.w d5,d5; addq.w #$1,d5` - so the caller passes half of one less than the real count."
+    }
+  },
+  "0x17d6e": {
+    "d4": {
+      "name": "flags",
+      "why": "only bits 7 and 6 are read, with btst - bit 7 steps the index back and bit 6 steps it forward when the word at (a2) is exactly one past it. So it is two independent one-bit controls, not a number."
+    },
+    "d3": {
+      "name": "index",
+      "why": "moved by those two bits and then shifted left three - eight bytes an entry - to offset the base in a3."
+    },
+    "a3": {
+      "name": "base",
+      "why": "the array the index addresses, in eight-byte steps."
+    },
+    "a0": {
+      "name": "wordThere",
+      "why": "the word at (a2) taken into an address register purely to be compared with cmpa.l against the index plus one - a comparison, not a pointer."
+    }
   }
 }
