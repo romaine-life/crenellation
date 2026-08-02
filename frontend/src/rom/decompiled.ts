@@ -24687,7 +24687,7 @@ export function blitRunRowsFixedScreen(a3_: number, d0_: number, d3_: number, d4
   setReg('d6', d6);
 }
 
-export function drawParameterMarshaller(d1_: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number): void {
+export function drawParameterMarshaller(d1_: number, cells: number, at: number, width: number, height: number, extra: number): void {
   let _guard = 0;
   void _guard;
   let d0 = getReg('d0');
@@ -24711,16 +24711,16 @@ export function drawParameterMarshaller(d1_: number, arg0: number, arg1: number,
   push(d2, 4);
   save_d2_0 = d2;
   save_d3_1 = d3;
-  d3 = (arg0) >>> 0;
-  d2 = (arg1) >>> 0;
-  t2 = (arg2 & 0xffff);
+  d3 = (cells) >>> 0;
+  d2 = (at) >>> 0;
+  t2 = (width & 0xffff);
   d1 = ((d1 & 0xffff0000) | (t2 & 65535));
   d0 = (0) >>> 0;
-  t3 = (arg4 & 0xffff);
+  t3 = (extra & 0xffff);
   d0 = ((d0 & 0xffff0000) | (t3 & 65535));
   t4 = d0;
   push(t4, 4);
-  t5 = (arg3 & 0xffff);
+  t5 = (height & 0xffff);
   d0 = ((d0 & 0xffff0000) | (t5 & 65535));
   t6 = ((((d0 & 65535)) << 16) >> 16);
   d0 = (t6) >>> 0;
@@ -24837,7 +24837,7 @@ export function drawImageColumnColumn(d1_: number, arg0: number, arg1: number, a
   setReg('d3', d3);
 }
 
-export function drawArgumentRepack(d1_: number, arg0: number, count: number, arg2: number, arg3: number, arg4: number): void {
+export function drawArgumentRepack(d1_: number, cells: number, at: number, width: number, height: number, extra: number): void {
   let _guard = 0;
   void _guard;
   let d0 = getReg('d0');
@@ -24861,16 +24861,16 @@ export function drawArgumentRepack(d1_: number, arg0: number, count: number, arg
   push(d2, 4);
   save_d2_0 = d2;
   save_d3_1 = d3;
-  d3 = (arg0) >>> 0;
-  d2 = (count) >>> 0;
-  t2 = (arg2 & 0xffff);
+  d3 = (cells) >>> 0;
+  d2 = (at) >>> 0;
+  t2 = (width & 0xffff);
   d1 = ((d1 & 0xffff0000) | (t2 & 65535));
   d0 = (0) >>> 0;
-  t3 = (arg4 & 0xffff);
+  t3 = (extra & 0xffff);
   d0 = ((d0 & 0xffff0000) | (t3 & 65535));
   t4 = d0;
   push(t4, 4);
-  t5 = (arg3 & 0xffff);
+  t5 = (height & 0xffff);
   d0 = ((d0 & 0xffff0000) | (t5 & 65535));
   t6 = ((((d0 & 65535)) << 16) >> 16);
   d0 = (t6) >>> 0;
@@ -166966,7 +166966,7 @@ export function soundCallTwoLongArgs(arg2: number, arg3: number, arg4: number): 
   setReg('d0', count);
 }
 
-export function helperUsedHelperInsideJump(arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number): void {
+export function helperUsedHelperInsideJump(attrHigh: number, attrLow: number, value: number, width: number, padZeroes: number, dest: number): void {
   let _guard = 0;
   void _guard;
   let a6 = getReg('a6');
@@ -166983,12 +166983,12 @@ export function helperUsedHelperInsideJump(arg0: number, arg1: number, arg2: num
   push(a6, 4);
   a6 = stackPointer();
   drop(-16);
-  t0 = arg4;
+  t0 = padZeroes;
   push(t0, 4);
-  t1 = arg3;
+  t1 = width;
   push(t1, 4);
   push((a6 + -0x10), 4);
-  t2 = arg2;
+  t2 = value;
   push(t2, 4);
   setFlagsCmp(t2, 0, 32);
   setReg('a6', a6);
@@ -166999,13 +166999,13 @@ export function helperUsedHelperInsideJump(arg0: number, arg1: number, arg2: num
   t3 = 0;
   push(t3, 2);
   push((a6 + -0x10), 4);
-  t4 = (arg1 & 0xffff);
+  t4 = (attrLow & 0xffff);
   t5 = t4;
   push(t5, 2);
-  t6 = (arg0 & 0xff);
+  t6 = (attrHigh & 0xff);
   t7 = t6;
   store8(stackPointer() + 0, t7);
-  t8 = arg5;
+  t8 = dest;
   push(t8, 4);
   push((stackPointer() + 0x4), 4);
   setFlagsCmp(t8, 0, 32);

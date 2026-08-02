@@ -1743,5 +1743,15 @@
     "name": "schedule a palette fade to an explicit IRGB colour",
     "ident": "schedulePaletteFadeToColour",
     "why": "kind ZERO - clr.b 0xc(a2) - and the one that takes a colour apart rather than a packed word. Four byte arguments are masked and shifted into four separate words in the record: & 1 << 15 at 0x10, & 0x1f << 10 at 0x12, & 0x1f << 5 at 0x14, and & 0x1f at 0x16. That is exactly the IRGB 1-5-5-5 the port's own palette decode in system.ts reassembles - intensity, red, green, blue - so the record holds the target colour as components, which is what lets the tick ramp each of them separately. The address at 0x8 and the link into 0x3e20a0 are the same as the rest of the family."
+  },
+  "0x35ee": {
+    "name": "walk a rectangle with the per-cell routine at 0x11eda",
+    "ident": "walkRectWith11EDA",
+    "why": "sixty bytes, and every one of them is argument shuffling: it reorders its five arguments and pushes 0x11eda in front of them for the higher-order walk at 0x357a. 0x35ee and 0x3666 are the same instructions with a different per-cell routine, which is the entire difference between them. A trap in reading it: the two `move.w $1e(a7),d0` are NOT the same slot - a7 has dropped four bytes between them, so the first reads the argument at off 20 and the second the one at off 16."
+  },
+  "0x3666": {
+    "name": "walk a rectangle with the per-cell routine at 0x11ee6",
+    "ident": "walkRectWith11EE6",
+    "why": "sixty bytes, and every one of them is argument shuffling: it reorders its five arguments and pushes 0x11ee6 in front of them for the higher-order walk at 0x357a. 0x35ee and 0x3666 are the same instructions with a different per-cell routine, which is the entire difference between them. A trap in reading it: the two `move.w $1e(a7),d0` are NOT the same slot - a7 has dropped four bytes between them, so the first reads the argument at off 20 and the second the one at off 16."
   }
 }

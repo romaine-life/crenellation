@@ -388,5 +388,75 @@
       "name": "extra",
       "why": "only its low word, at 0x1e(a6), kept in a local and pushed unchanged as the third argument of every call. This routine never looks at it."
     }
+  },
+  "0x18b26": {
+    "stack4": {
+      "name": "attrHigh",
+      "why": "only its low byte is read, at 0xb(a6), and it is written OVER the high byte of the word already pushed from the next argument - so the two together make one attribute word for the draw at 0x18a5e, and neither is a value on its own."
+    },
+    "stack8": {
+      "name": "attrLow",
+      "why": "only its low word, at 0xe(a6), pushed whole and then half-overwritten by attrHigh. What survives is its low byte."
+    },
+    "stack12": {
+      "name": "value",
+      "why": "the longword at 0x10(a6), pushed first to the formatter at 0x19614 - which reads it at 8(a7) - so it is the number being printed."
+    },
+    "stack16": {
+      "name": "width",
+      "why": "the longword at 0x14(a6); the formatter reads its low word at 0x12(a7) as the field width, and null-terminates the buffer at exactly that many characters before writing anything."
+    },
+    "stack20": {
+      "name": "padZeroes",
+      "why": "the longword at 0x18(a6); the formatter reads its low word at 0x16(a7) and a ZERO there is what sets bit 31 of its own flag word, which is what makes it keep emitting digits past a zero quotient. So zero means pad and non-zero means trim."
+    },
+    "stack24": {
+      "name": "dest",
+      "why": "the longword at 0x1c(a6), passed to the draw at 0x18a5e and never touched here. The formatted text goes to a 16-byte buffer on this routine's own frame, which is the reason the two calls have to be in one routine."
+    }
+  },
+  "0x35ee": {
+    "stack4": {
+      "name": "cells",
+      "why": "passed straight through as the flat word list 0x357a reads a cell at a time."
+    },
+    "stack8": {
+      "name": "at",
+      "why": "passed through as the starting address 0x357a threads from one call to the next."
+    },
+    "stack12": {
+      "name": "width",
+      "why": "only its low word, at 0x16(a7), sign-extended and passed as the column count."
+    },
+    "stack16": {
+      "name": "height",
+      "why": "only its low word, and read by the SECOND `move.w $1e(a7),d0` - after a7 has already dropped four bytes for the previous push, so it is the slot at off 16 and not off 20."
+    },
+    "stack20": {
+      "name": "extra",
+      "why": "only its low word, read by the FIRST `move.w $1e(a7),d0` while a7 is still where it started. It is zero-extended and becomes the constant 0x357a hands to every per-cell call without looking at it."
+    }
+  },
+  "0x3666": {
+    "stack4": {
+      "name": "cells",
+      "why": "passed straight through as the flat word list 0x357a reads a cell at a time."
+    },
+    "stack8": {
+      "name": "at",
+      "why": "passed through as the starting address 0x357a threads from one call to the next."
+    },
+    "stack12": {
+      "name": "width",
+      "why": "only its low word, at 0x16(a7), sign-extended and passed as the column count."
+    },
+    "stack16": {
+      "name": "height",
+      "why": "only its low word, and read by the SECOND `move.w $1e(a7),d0` - after a7 has already dropped four bytes for the previous push, so it is the slot at off 16 and not off 20."
+    },
+    "stack20": {
+      "name": "extra",
+      "why": "only its low word, read by the FIRST `move.w $1e(a7),d0` while a7 is still where it started. It is zero-extended and becomes the constant 0x357a hands to every per-cell call without looking at it."
+    }
   }
 }
