@@ -189,11 +189,39 @@ class Lifter:
             self.bump(r, -self.step_of(r, bits))
             return self.mem_read(r, 0, bits)
         if tok == "sr":
-            # `move sr,dN` reads the real condition codes, which nothing here
-            # models - the lifted code never sets N/Z/V/C, so it would return
-            # whatever the last machine instruction happened to leave. Writing
-            # sr is fine; reading it is not.
-            raise Bail("reads the condition codes")
+            # `move sr,dN` saves the condition codes. When this bailed, the
+            # lifted code really did never set N/Z/V/C - but it does now, and
+            # `sync_flags` is the routine that puts the pending state into the
+            # machine before control leaves. It can be asked for here too, so
+            # the save reads what the chip would have saved.
+            #
+            # fn_0b032 is why it matters. It computes `sub.w d0,d1`, saves the
+            # flags, stores a word - which on the chip would clobber them -
+            # restores the CCR and branches on the restored bits:
+            #
+            #     sub.w  d0,d1 / move.w sr,d7 / move.w d1,-$c(a6)
+            #     move.w d7,ccr / bgt.b $b198
+            #
+            # Bailing meant that branch was answered from whatever the machine
+            # last happened to leave, so the loop at 0xB198 ran a different
+            # number of times, the counter at -$8(a6) came out non-zero, and
+            # the routine took its `pea $1b` path where the machine takes
+            # `pea $5`. That is the 0x1B-for-0x05 at 0x3E0A69 that baseline.json
+            # has carried as the last known-wrong routine.
+            #
+            # Only states this pass can rebuild. The check is the emission
+            # itself: if `sync_flags` writes nothing, there is nothing in the
+            # machine to read and the old bail is still the right answer.
+            fl = getattr(self, "flags", None)
+            if not getattr(self, "flags_certain", False) or not fl:
+                raise Bail("reads the condition codes")
+            if fl[0] not in ("bit", "cmp", "sub", "add"):
+                raise Bail("reads condition codes this pass cannot rebuild")
+            before = len(self.stmts)
+            self.sync_flags()
+            if len(self.stmts) == before:
+                raise Bail("reads condition codes this pass cannot rebuild")
+            return Expr("getSr()", "expr")
         raise Bail(f"operand {tok!r}")
 
     def reg_value(self, r, bits):
@@ -458,6 +486,16 @@ class Lifter:
         if tok == "ccr":
             # The low byte of the status register: the condition codes alone.
             self.stmts.append(f"setSr((getSr() & 0xff00) | (({value.text}) & 0xff));")
+            # And the machine now holds the authoritative flags, so a branch
+            # after this has to ask it rather than the state this pass was
+            # tracking. `condition` already knows how - flags None with
+            # flags_certain set emits cc('..'), which reads the machine's own
+            # bits - it just has to be told. Without this the restore updated
+            # the machine and the branch went on using the flags of whatever
+            # the lift last computed, which in fn_0b032 is the very store the
+            # save-and-restore exists to survive.
+            self.flags = None
+            self.flags_certain = True
             return
         raise Bail(f"destination {tok!r}")
 
