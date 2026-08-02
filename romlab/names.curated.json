@@ -1647,5 +1647,25 @@
     "name": "queue an index and value for the consumer, or just mark it",
     "ident": "queueIndexValuePair",
     "why": "a four-entry ring at 0x3e3508, eight bytes each - the longword argument at 0x20(a7) and the index word at 0x1c(a7) - with the write cursor at 0x3e3528 and the read cursor at 0x3e352a. Full is write+1 == read, and it SPINS there, clearing the watchdog at 0x72fffe and re-reading 0x12(a2) until something else moves the read cursor, so this routine blocks. Before enqueuing it consults the table at 0x1d64a, eight bytes an entry and terminated by a zero long at +4: a base word (0xff meaning take the base from 0x3e34ed), a count, and a key. An index inside a band whose key matches value - index*10 is NOT enqueued; instead bit (index & 7) of 0x3e352c + (index >> 3) is set, which is a bitmap of things already accounted for. It is called by the bookkeeping counter writer at 0x1485c with 0x3e3536, the counter and its new value. What drains the ring is not visible from here, and the entry this replaces called it a sound channel update on the strength of the address alone."
+  },
+  "0x17fcc": {
+    "name": "substitute the stored default attributes, then measure the string",
+    "ident": "defaultAttributesThenMeasure",
+    "why": "two byte arguments with 0xff meaning 'use the stored default': 0xff in the second takes BOTH bytes from the pair at 0x3e3d7a and 0x3e3d7b, which 0x1357c initialises with move.b #$f,0x3e3d7b followed by copying it to 0x3e3d7a; 0xff in the first alone falls back to 0x2a. It then pushes the string pointer and calls 0x1868c, and its extent ends on that jsr - the branches to 0x18006 leave this routine and land in the next one, so it falls through rather than returning."
+  },
+  "0x663c": {
+    "name": "reserve two bytes on the coordinate stack",
+    "ident": "reserveCoordinateSlot",
+    "why": "three instructions: it adds 2 to the pointer at 0x3e209c and answers the new value. It writes nothing THERE - every caller does that itself, and 0x5e38 is the pattern, taking the answer into a1 and copying its two coordinate bytes through it. So this reserves a slot rather than pushing a value, which is why the flood fill can hand the address straight to a byte copy."
+  },
+  "0xee3a": {
+    "name": "empty the event list",
+    "ident": "emptyEventList",
+    "why": "one store: 0xffff into the word at 0x3e1cf4. That word is the event list's count held as count-minus-one, which is why the dispatcher at 0xee44 and both the post and the remove start with `bmi` - negative means none - so -1 is empty and this is the whole reset."
+  },
+  "0x1e6b2": {
+    "name": "turn a cell x and y into a screen address, in place",
+    "ident": "cellToScreenAddressInPlace",
+    "why": "takes the byte at 0x27(a7) as the row and the byte at 0x23(a7) as the column, and computes row << 12 plus column << 3 plus 0x200004 - the same address 0x11bec builds, because a cell is eight bytes wide and a row of cells is 0x1000, eight screen rows of 0x200. It then writes that address BACK over its own argument at 0x20(a7) and copies the word at 0x2a(a7) down to 0x26(a7), so it is a fixup of a parameter block rather than a function with an answer."
   }
 }

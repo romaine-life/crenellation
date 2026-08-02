@@ -158,5 +158,33 @@
       "name": "value",
       "why": "the longword at 0x20(a7), stored whole in the ring entry, and compared - after index*10 is taken off it - against the key at +4 of each suppression band."
     }
+  },
+  "0x17fcc": {
+    "stack4": {
+      "name": "attrA",
+      "why": "only its low byte is read, at 0x17(a7). 0xff makes it 0x2a, unless attrB was 0xff first, in which case it comes from 0x3e3d7a instead."
+    },
+    "stack8": {
+      "name": "attrB",
+      "why": "only its low byte is read, at 0x1b(a7), and 0xff in THIS one overrides both bytes from the stored pair at 0x3e3d7a and 0x3e3d7b - it is tested first."
+    },
+    "stack12": {
+      "name": "text",
+      "why": "the longword at 0x1c(a7), untouched by either substitution and pushed straight to 0x1868c."
+    }
+  },
+  "0x1e6b2": {
+    "stack8": {
+      "name": "column",
+      "why": "its top byte, at 0x23(a7), is the column - shifted left three because a cell is eight bytes wide. The same longword is then OVERWRITTEN with the computed screen address, which is why this slot is both an input and the result."
+    },
+    "stack12": {
+      "name": "row",
+      "why": "its top byte, at 0x27(a7), is the row - swapped and shifted right four, which is left twelve, because a row of cells is 0x1000 bytes. Its low word is overwritten with the word from the next argument."
+    },
+    "stack16": {
+      "name": "extra",
+      "why": "only its high word is read, at 0x2a(a7), and it is copied down into 0x26(a7) unchanged. Nothing here interprets it; it is moved so the block the caller passes on has it in the right place."
+    }
   }
 }

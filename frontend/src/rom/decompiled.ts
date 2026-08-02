@@ -163030,7 +163030,7 @@ export function textBlitTable(): void {
   return;
 }
 
-export function stringLengthWrapper(kind_: number, d3_: number, d4_: number, arg0: number, arg1: number, ptr: number): void {
+export function stringLengthWrapper(kind_: number, d3_: number, d4_: number, attrA: number, attrB: number, text: number): void {
   let _guard = 0;
   void _guard;
   let kind = kind_;
@@ -163053,11 +163053,11 @@ export function stringLengthWrapper(kind_: number, d3_: number, d4_: number, arg
   save_d3_1 = d3;
   save_d4_2 = d4;
   save_d5_3 = d5;
-  t4 = (arg0 & 0xff);
+  t4 = (attrA & 0xff);
   kind = ((kind & 0xffffff00) | (t4 & 255));
-  t5 = (arg1 & 0xff);
+  t5 = (attrB & 0xff);
   d4 = ((d4 & 0xffffff00) | (t5 & 255));
-  d5 = (ptr) >>> 0;
+  d5 = (text) >>> 0;
   if ((((d4 & 255)) & 255) !== ((0xff) & 255)) {
     const _t2 = tick(18, 0x17ff0) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((d4 & 255), 0xff, 8); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t2) takeIrq(); }
     if ((((kind & 255)) & 255) !== ((0xff) & 255)) {
@@ -186214,7 +186214,7 @@ export function startEveryOtherChannelType(kind2_: number, kind_: number, d3_: n
   setReg('d3', d3);
 }
 
-export function helperBlitParameterSetup(a0: number, a1: number, d1: number, d2: number, d3: number, kind3: number, kind: number, kind2: number, index: number): void {
+export function helperBlitParameterSetup(a0: number, a1: number, d1: number, d2: number, d3: number, kind3: number, column: number, row: number, extra: number): void {
   if (tick(172, 0x1e6b2)) { setReg('a0', a0); setReg('a1', a1); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', kind3); takeIrq(); }
   push(a1, 4);
   push(a0, 4);
@@ -186222,9 +186222,9 @@ export function helperBlitParameterSetup(a0: number, a1: number, d1: number, d2:
   push(d3, 4);
   push(d2, 4);
   push(d1, 4);
-  const t0 = (kind2 & 0xff);
+  const t0 = (row & 0xff);
   const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
-  const t2 = (kind & 0xff);
+  const t2 = (column & 0xff);
   const t3 = ((0 & 0xffffff00) | (t2 & 0xff));
   const t4 = ((((t1) >>> 16) & 0xffff) | (((t1) & 0xffff) << 16));
   const t5 = ((0x4) & 63);
@@ -186234,7 +186234,7 @@ export function helperBlitParameterSetup(a0: number, a1: number, d1: number, d2:
   const t9 = (t8 + t6);
   const t10 = (t9 + 0x200004);
   store32(stackPointer() + 32, t10);
-  store16(stackPointer() + 38, (index & 0xffff));
+  store16(stackPointer() + 38, (extra & 0xffff));
   setReg('d0', t6);
   setReg('d1', t10);
   jumpRom(0x1e6e0);
