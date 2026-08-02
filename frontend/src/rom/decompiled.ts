@@ -169552,7 +169552,7 @@ export function clearGlyphLayerSState(): void {
   setReg('d1', count);
 }
 
-export function clearGlyphLayerSStateFrom1(arg0: number, arg1: number): void {
+export function clearGlyphLayerSStateFrom1(wordIndex: number, value: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -169561,10 +169561,10 @@ export function clearGlyphLayerSStateFrom1(arg0: number, arg1: number): void {
   let t1 = 0;
   const _t0 = tick(84, 0x193c6) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('d0', d0); if (_t0) takeIrq(); }
   a0 = (0x200000) >>> 0;
-  d0 = (arg0) >>> 0;
+  d0 = (wordIndex) >>> 0;
   a0 = ((a0 + d0)) >>> 0;
   a0 = ((a0 + d0)) >>> 0;
-  t0 = (arg1 & 0xffff);
+  t0 = (value & 0xffff);
   t1 = t0;
   store16(a0, t1);
   setFlagsCmp(t1, 0, 16);

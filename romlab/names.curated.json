@@ -1870,5 +1870,25 @@
     "name": "claim a slot as kind five or six, by the sign of the argument",
     "ident": "claimSlotBySign",
     "why": "another head on the body at 0x18e06 that 0x18e00 also falls into. It picks the kind from the SIGN of the word argument - 6 when positive, and 5 after negating it when not - so one argument carries both a magnitude and a choice of kind. 0x18dc4 is a third head on the same body, using kind 7 and setting 0x3e340a and 0x3e3406 first."
+  },
+  "0x193c6": {
+    "name": "write one word into the playfield by word index",
+    "ident": "writeWordByIndex",
+    "why": "`adda.l d0,a0` twice rather than a shift, which is the compiler's way of doubling without touching the flags, so the argument is a WORD index and not a byte offset - the address is 0x200000 + index * 2. It writes the word at 0xa(a7) there and returns. Note the base is 0x200000, four bytes below the 0x200004 every drawing routine uses."
+  },
+  "0x141c4": {
+    "name": "clear both allowance bytes",
+    "ident": "clearAllowanceBytes",
+    "why": "three instructions: zero into 0x3e3447 and 0x3e3446. Those are the pair that 0x1418a adds together to decide whether a count is still within the allowance, so this is the reset of that budget - and it clears 0x3e3447 as well, which 0x1418a does not read, so the two bytes are not simply a two-digit number."
+  },
+  "0x14104": {
+    "name": "draw the allowance down until it is under a whole unit",
+    "ident": "drawDownAllowance",
+    "why": "answers 0xff when the options word has not been loaded, and 1 immediately when the option 0x13f98 reads is zero - which is the same 'no limit' answer 0x1418a gives. Otherwise it calls 0x14044 and, while that answers 0x10000 or more, subtracts the option value from 0x3e3448 and asks again, answering 0 once it drops below. So the loop spends the allowance a unit at a time rather than dividing."
+  },
+  "0x14230": {
+    "name": "divide the counter read by 0x141d4 by the option value",
+    "ident": "divideCounterByOption",
+    "why": "the same two guards as its neighbours - 0xff when the options word is not loaded, 0 when the option 0x13f98 reads is zero - and then it pushes that option, calls 0x141d4 to read counter 2 through 0x14772, and hands both to the divide at 0x1869e. The zero guard is what stops the divide from being by zero, which is worth seeing before anyone rearranges it."
   }
 }

@@ -702,5 +702,15 @@
       "name": "timesLessOne",
       "why": "only its low word, at 6(a7), used as a dbra counter - so the wait happens one MORE time than the number says, and a zero still waits once."
     }
+  },
+  "0x193c6": {
+    "stack4": {
+      "name": "wordIndex",
+      "why": "doubled by two `adda.l d0,a0` rather than shifted, so it counts WORDS from 0x200000, not bytes."
+    },
+    "stack8": {
+      "name": "value",
+      "why": "only its low word, at 0xa(a7), written whole to the computed address."
+    }
   }
 }
