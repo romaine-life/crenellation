@@ -32922,7 +32922,7 @@ export function helperAttractModeController(kind_: number, d2_: number, d6_: num
   setReg('d6', d6);
 }
 
-export function helperTerritoryScoringVerified(d2_: number, dst: number): void {
+export function helperTerritoryScoringVerified(d2_: number, player: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -32970,7 +32970,7 @@ export function helperTerritoryScoringVerified(d2_: number, dst: number): void {
   push(d2, 4);
   save_d2_0 = d2;
   save_a2_1 = ptr;
-  ptr = (dst) >>> 0;
+  ptr = (player) >>> 0;
   ptr3 = ((ptr + 0x3c)) >>> 0;
   a0 = ((ptr2 + -0x2)) >>> 0;
   t2 = load8(ptr3);

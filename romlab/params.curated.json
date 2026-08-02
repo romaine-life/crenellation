@@ -756,5 +756,11 @@
       "name": "player",
       "why": "the longword at 0xc(a7), used only for the pointer at 0x4a - the piece list this routine draws after the board."
     }
+  },
+  "0x441c": {
+    "stack4": {
+      "name": "player",
+      "why": "the longword at 8(a6): its byte pair at 0x3c is the coordinate drawn at, and its byte at 2 - plus one - picks the colour out of 0xfe02."
+    }
   }
 }
