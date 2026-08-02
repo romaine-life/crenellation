@@ -139,7 +139,12 @@ and is 2,009 of 4,419 after it: 3,778 parameters said nothing, 2,410 do.
 - **`names.curated.json` is where a name goes**, as `{"name": ..., "why": ...}`.
   `idents.py` refuses an object with no `why`: a wrong name is worse than an
   address, and the only defence is being able to read afterwards why it was
-  chosen. Add `"ident"` when the prose does not camelise to something unique —
+  chosen. That had a hole exactly the width of the older form — an entry may
+  also be a **bare string**, which is not an object, so 71 of the 400 slipped
+  past both `idents.py` and `names.test`. 17 have their evidence in
+  `manual_names.json` (`[name, why]` pairs); the other 54 had none anywhere and
+  have now been read and recorded, so the test asserts zero rather than
+  ratcheting. `romlab/readunevidenced.py` is the reader. Add `"ident"` when the prose does not camelise to something unique —
   `camel` drops hex and truncates to five words, and it silently discarded four
   names that differed only in a field offset before that was noticed. It now
   reports any hand-written name it could not apply.

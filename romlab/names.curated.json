@@ -320,7 +320,10 @@
     "name": "step every shot in flight and draw it",
     "why": "walks the 0x1C-byte shot records from 0x3E0F48 through the pointer at +0x16, with accessorStateBlock and offsetRecordTableBase to hand and the four shape tables 0x1F8D8, 0x1F8EC, 0x1F900 and 0x1F910 chosen by what the shot is."
   },
-  "0x7008": "projectile flight",
+  "0x7008": {
+    "name": "projectile flight",
+    "why": "sits inside the routine at 0x7004 - facts.json has no extent for it because it is the movem of that routine's own prologue - and 0x7004 runs to 0x71b2. It flies a projectile along an arc: a2 is the record at 0x3e0f48 and a3 its display entry at 0x16(a2); the words at 0x6 and 0xa are added to the positions at 0x8 and 0xc, which are then shifted right by six into the entry's 0x8 and 0x6, so the low six bits are sub-pixel. The height at 0x10 is subtracted from the y before that shift and is itself advanced by the word at 0xe each tick, which is the fall; 0xe counts down and reaching zero is what ends the flight."
+  },
   "0x71c4": {
     "name": "map cursor code 0x11 or 0x30 to its handler",
     "why": "`cmpi.w #$11,d1` jumps to 0x72EC, `cmpi.w #$30,d1` to 0x7318, and anything else to 0x735C. Two constants and a default; the routine is the table.",
@@ -712,8 +715,14 @@
     "name": "event post",
     "why": "appends to the same array 0xee44 runs: count at 0x3e1cf4, entries at 0x3e1cf6 with a stride of 0xc. It first scans for an entry with the same routine pointer AND the same argument and does nothing if it finds one, so posting twice does not schedule twice. A new entry takes the routine from the descriptor's first long, the argument the caller passed, the period from the descriptor's byte 4 - written both as the reload at 2 and as the initial countdown at 0 - and the guard from byte 5."
   },
-  "0xeeee": "event remove",
-  "0xeffa": "event test",
+  "0xeeee": {
+    "name": "event remove",
+    "why": "the other end of 0xee90. Same array - count at 0x3e1cf4, entries at 0x3e1cf6 with a stride of 0xc - and the same match on routine pointer AND argument together. Having found one it compacts the array down over it, three longs per entry, writes 0x7fff into the countdown of the entry left at the end and clears its routine pointer so a stale one cannot fire, and decrements the count."
+  },
+  "0xeffa": {
+    "name": "event test",
+    "why": "the third operation on the event array 0xee90 appends to and 0xeeee compacts - count at 0x3e1cf4, entries at 0x3e1cf6, stride 0xc. It differs from the other two in what it matches on: the routine pointer ALONE, not the routine and the argument together, so it answers whether a routine is scheduled at all rather than whether one particular posting exists. Answers 1 or 0. The map splits it at 0xf000, so facts.json records this head as six bytes and the scan itself as the routine after it."
+  },
   "0xf630": {
     "name": "rebuild the display list from the motion objects, highest priority first",
     "why": "the display list at 0x3E02B4 is eight priority buckets of words, and 0x3E02D8 the 0x10-byte motion object records. `move.w #$2700,sr` masks every interrupt around the walk, because the frame handler reads the same list. This entry walks the eight buckets from 7 downwards, taking each record from 0x3E02D8 and threading it into the list at 0x3E0000."
@@ -726,7 +735,10 @@
     "name": "rebuild the display list from the first bucket up",
     "why": "the display list at 0x3E02B4 is eight priority buckets of words, and 0x3E02D8 the 0x10-byte motion object records. `move.w #$2700,sr` masks every interrupt around the walk, because the frame handler reads the same list. The third of the family, walking from bucket zero upward with a 0x10-byte record stride, and giving up as soon as 0x3E02B4 itself is empty."
   },
-  "0xfb80": "checksum a table against its stored sum",
+  "0xfb80": {
+    "name": "checksum a table against its stored sum",
+    "why": "checks one table per call and rotates through five of them: the byte at 0x3e1cca is stepped and wrapped at 5, and multiplied by 0xc to index 0x11e7e, where each entry is a start pointer, an end pointer and the expected sum. It adds longwords from start until the pointer reaches end, compares the total with the third field, and answers 1 on a mismatch and 0 on agreement."
+  },
   "0xfc1e": {
     "name": "is the protection counter in step with 0x3E0DE6",
     "why": "`move.b $3e0de6,d1; move.b $3e0de2,d0; eor.w d0,d1; btst.b #$0,d1` - the low bit of the exclusive or, so it asks whether the two counters agree in parity. Falls into the reader that steps the counter when they do not.",
@@ -749,17 +761,38 @@
     "name": "read the second protection word, then step the two-bit counter",
     "why": "`tst.w $1461bc` - the other board ROM window - then the same `addq.w #$1,d0; andi.w #$3,d0; move.b d0,$3e0de2` tail as 0xFC32 reaches through 0xFC3A."
   },
-  "0x11bd8": "cell address",
-  "0x11bec": "screen address",
+  "0x11bd8": {
+    "name": "cell address",
+    "why": "byte at 4(a7) shifted left five, plus the byte at 5(a7), plus 0x3e0864 - the board base, 32 bytes to a row. It is the exact inverse of the decomposition 0x5e38 does to turn a cell address back into a coordinate pair."
+  },
+  "0x11bec": {
+    "name": "screen address",
+    "why": "byte at 5(a7) shifted left nine, plus the byte at 4(a7), all shifted left three, plus 0x200004. That is (y * 512 + x) * 8: 0x200 is the playfield row stride 0x5892 copies with and 0x200004 its base, so a cell is eight pixels across and a row of cells is eight screen rows."
+  },
   "0x11c04": {
     "name": "follow the header's self-relative pointer and copy from there",
     "why": "`move.w (a0),d0; adda.l d0,a0` - the first word of the block is an offset to itself, which is how this ROM's graphics headers point at their own data - and then copies from the address that yields."
   },
-  "0x11cf8": "aiming direction",
-  "0x11d5c": "distance",
-  "0x11d96": "scaling blitter",
-  "0x11e10": "screen dissolve",
-  "0x11e58": "RNG",
+  "0x11cf8": {
+    "name": "aiming direction",
+    "why": "takes the two word arguments as a dx and a dy, works with their absolute values, and picks one of three positions within a quadrant by comparing 16 times one against 7 times the other - a ratio of 7:16, which is 0.4375 where the exact octant boundary tan 22.5 degrees is 0.4142. Mostly-vertical gives 2, mostly-horizontal 0, diagonal 1. It then folds the signs back in: a negative dx negates and adds 4, a negative dy negates and adds 8, and the result is masked to 7. Eight directions, which is the space the cannon aiming at 0x6c20 steps around with the same mask."
+  },
+  "0x11d5c": {
+    "name": "distance",
+    "why": "an approximate hypotenuse. It takes the absolute values of the two word arguments, swaps them so the larger is in d0, forms the smaller squared divided by the larger, and answers larger + that/2 - that/8 - which is max + three eighths of min squared over max. The bvc after the divu substitutes 0x7fff when it overflows, and a zero pair returns zero without dividing."
+  },
+  "0x11d96": {
+    "name": "scaling blitter",
+    "why": "stretches the rectangle 0x5892 grabbed into 0x21e000 as it copies it out. Both axes run on the same accumulator trick: a counter starts at 0x40 and the scale step is subtracted from it, and while it stays positive the same source byte is written again or the whole row just written is copied again. Rows advance by 0x200, the playfield stride. So the ratio is 64 to the step the caller passes."
+  },
+  "0x11e10": {
+    "name": "screen dissolve",
+    "why": "waits for the frame at 0x512, clears 0x3c0000, then walks 0xf000 offsets of the playfield at 0x200004 in the order of a maximal-length shift register - x >>= 1 with an eor of 0xb400 when a 1 falls off, retried until the value is back below 0xf000 - clearing a word at each. Every offset once, in an order that looks random, which is what makes it a dissolve rather than a wipe. It ends with a jmp to 0x52a rather than an rts."
+  },
+  "0x11e58": {
+    "name": "RNG",
+    "why": "a 16-bit linear congruential generator whose state is the word at 0x3e0842: x = x * 0x3619 + 0x5d35. The new state is then multiplied by the caller's longword argument and the high half taken - swap and ext.l - which scales the result into the range the caller asked for rather than masking it."
+  },
   "0x11eda": {
     "name": "decompress the graphics at 0xE5930",
     "why": "`movem.l d1-d4/a0-a1,-(a7); lea $e5930.l,a0; bra.b $11f08` - the same shared body as 0x11EE6 and 0x11EF2, pointed at a third fixed source.",
@@ -775,13 +808,22 @@
     "why": "`movem.l d1-d4/a0-a1,-(a7); lea $daddc.l,a0; bra.b $11f08` - the same shared body as 0x11ee6, pointed at a different fixed source.",
     "ident": "decompressGraphicsAtDADDC"
   },
-  "0x11f2a": "graphics decompressor",
-  "0x11ff8": "block recolour",
+  "0x11f2a": {
+    "name": "graphics decompressor",
+    "why": "a run-length decoder for 4-bit pixels. Every path writes bytes to (a1)+ and wraps the destination the same way - dbra on a counter of 7, then adda 0x1f8 and reload 7 - which is an eight-byte-wide column on a 0x200 row stride, so 0x1f8 is the stride less the width. d2 is added to every pixel, which is the palette base. A positive control byte carries its own count in the high nibble and its pixel in the low one. A negative one takes its count from the low five bits and the next two bits pick the form: skip that many, two pixels packed in one following byte, one following byte repeated, or two following bytes alternated. 0xfc is the terminator, and it is the only way out."
+  },
+  "0x11ff8": {
+    "name": "block recolour",
+    "why": "walks an eight by eight block - dbra from 7 twice, with adda 0x1f8 between rows, the same geometry the decompressor at 0x11f2a writes - and rewrites each byte as its low nibble plus the word argument. So it moves a block from one palette bank to another and touches nothing else about it."
+  },
   "0x120a2": {
     "name": "decode a run-length stream, three opcode shapes",
     "why": "a non-negative byte is a literal run; a negative one keeps its low five bits as a count and the next two bits, shifted out with `asl.b`, choose between a repeated byte, a two-byte pattern and a back-reference."
   },
-  "0x1217e": "rect palette remap",
+  "0x1217e": {
+    "name": "rect palette remap",
+    "why": "rewrites a rectangle of pixels through a sixteen-entry table. For each byte the HIGH nibble indexes the table at 0x18(a7) and the entry is added to the LOW nibble, so the top half selects which remap applies and the bottom half is the pixel. Width and height come from 0x1c and 0x20(a7), and between rows it takes the width back off the pointer and adds 0x200, the playfield stride."
+  },
   "0x121c4": {
     "name": "decode one eight-by-eight block from two sources into the playfield",
     "why": "points a0 and a3 into the graphics at 0xDADDC by two separate word offsets, runs decompressorInnerLoop and rleDecoderVariant for each of eight columns, stepping the destination one byte at a time and 0x1F8 at the end of a row, and returns the destination advanced by eight."
@@ -794,7 +836,10 @@
     "name": "start a decoder run with the emit table at 0x12354",
     "why": "`lea $12354.l,a4` - the pair of emit helpers - then reads two bytes through a3, biases each by a5, doubles d5 and sets its low bit, and joins the decoder body at 0x1232A."
   },
-  "0x124be": "terrain painter",
+  "0x124be": {
+    "name": "terrain painter",
+    "why": "sets up the eight-wide, 0x200-stride geometry the block routines all share - d4 counts 8 then becomes 7, d5 is 0x200 minus 8, which is the 0x1f8 wrap - and branches to the worker at 0x124e2 with the source at 0x20(a7) and the destination at 0x24(a7). It answers a0, the source pointer the worker left behind, so a caller can paint one block after another from a single stream."
+  },
   "0x12574": {
     "name": "emit two decoded bytes a row at a time",
     "why": "`move.b (a0)+,d0; move.b (a0)+,d3` then each written through a1 with a `dbra` on the row counter, and at the end of a row `adda.l d5,a1` and the counter reloaded to 0x1FF less the stride. The two-byte inner loop of the decoder at 0x124E4.",
@@ -816,7 +861,10 @@
     "name": "run the two self-test passes and return the second's result",
     "why": "`bsr.w $13662` then `bsr.w $136ee`, and `move.l d5,d0` for the answer, with every register saved around them. 0x1310C below it is a separate entry: it clears the playfield up to 0x3E07FE, kicks the watchdog at 0x72FFFE on each pass, and jumps to 0x300 when it finishes."
   },
-  "0x13134": "self test failure report",
+  "0x13134": {
+    "name": "self test failure report",
+    "why": "takes a record through a0: a word that goes to 0x72fffe - the watchdog port the whole self test pokes to stay alive - then a byte pair written into 0x3c0000 at a stride of 4 for 0x101 entries, then a second word and a second pair written into 0x3c0018 at a stride of 0x10 for nine more. It returns with jmp (a4), not rts, which is the self test's own convention: a4 holds where to go next and a6 holds the step after that, because this code runs before there is a usable stack."
+  },
   "0x133a6": {
     "name": "mask interrupts and restart through the reset vector",
     "why": "`move.w #$2700,sr; suba.l a0,a0; movea.l (a0)+,a7; movea.l (a0),a0; jmp (a0)` - zeroes a0, loads the stack pointer and entry address from the first eight bytes of the image, and jumps. That is a reset."
@@ -825,7 +873,10 @@
     "name": "read both input ports and step the self-test cursor",
     "why": "packs 0x640000 and 0x640002 into one long, inverts it - the ports are active low - and masks off the bits that are not buttons, then steps the cursor at 0x3E368B by 5 or 4 depending on its sign."
   },
-  "0x1357c": "power on self test",
+  "0x1357c": {
+    "name": "power on self test",
+    "why": "the entry the board comes up on. It masks all interrupts with sr = 0x2700, points a7 at 0x3e32fe, fills 0x3c0000 to 0x3c07fc with an incrementing word and kicks 0x72fffe in a loop. It then walks a table at 0x1325e in 14-byte entries - lea -$e(a5) steps back over one - each holding a flag long, a start and end pointer, and a word choosing between the RAM test at 0x1378e and 0x1397a. A failure is reported through 0x13134 and then the switches at 0x640000 decide what happens: bit 0 holds the failure on screen, bit 3 advances. When the table runs out it calls 0x13000 and jumps to 0x13350."
+  },
   "0x13662": {
     "name": "checksum every ROM region against its stored sum",
     "why": "walks the region table at 0x132F8 as start/end pairs, sums each, and compares against the answers at 0x13328, kicking the watchdog and recording the result in 0x3E3D7A and 0x3E3D7B."
@@ -834,10 +885,22 @@
     "name": "checksum every ROM region, reporting the address of the first bad one",
     "why": "the same region table at 0x132F8, but this one keeps the region's base shifted into the high word so a failure names where it was."
   },
-  "0x1378e": "ram test all patterns",
-  "0x1380e": "ram test fill with pattern",
-  "0x1381e": "ram test walking bit up",
-  "0x13864": "ram test walking bit down",
+  "0x1378e": {
+    "name": "ram test all patterns",
+    "why": "the RAM test, run as a chain of steps rather than as calls: a6 holds the next step and a4 the failure exit, and every step ends jmp (a6) or jmp (a4), because there is no stack yet. a3 is 0x72fffe and is written inside every inner loop so the watchdog cannot trip during a long pass. The steps are a fill with d0, a walking-bit pass upward from 0x8000 and the same pass with the complement (d5 = 0 or 0xff), then a walking-bit pass downward from the top of the region, with 0xff and 0x00 fills between them. Each pass reads before it writes and leaves the eor of expected against actual in d0 on the way out, so the failure exit gets the bits that differed."
+  },
+  "0x1380e": {
+    "name": "ram test fill with pattern",
+    "why": "one step of the chain at 0x1378e, which is why facts.json has no extent for it - it is a label inside that routine, entered by a branch with a6 already loaded. lea -$2(a1),a0 then addq.w #$2,a0 before each write walks the region from a1 up to a2 writing the word in d0, with move.w d0,(a3) after every one so the watchdog at 0x72fffe cannot trip during a long region, and it leaves through jmp (a6) rather than rts."
+  },
+  "0x1381e": {
+    "name": "ram test walking bit up",
+    "why": "the walking-bit pass upward, and the two entry points 0x1381e and 0x13822 differ only in the background: clr.l d5 for zeroes, moveq #$ff,d5 for ones. d7 starts at 0x8000 and lsr.w #$1 walks the bit down through the word while the address stays put, reading and comparing against the expected value BEFORE each write, so a cell that does not hold what was last written is caught the moment the next bit is tried. A mismatch leaves the eor of expected against actual in d0 and takes jmp (a4), the failure exit; a clean pass walks the region back down comparing again and continues at a6."
+  },
+  "0x13864": {
+    "name": "ram test walking bit down",
+    "why": "the same pass in the other direction, and the same pair of entries for the two backgrounds - clr.l d5 and moveq #$ff,d5. It starts at the top with lea $2(a2),a0 and subq.w #$2,a0, and the bit walks the other way too: d7 is 1 and lsl.w #$1 carries it up through the word. Running the region downward with the bit ascending catches address-line faults the ascending pass at 0x1381e cannot, which is why both are in the chain."
+  },
   "0x1397a": {
     "name": "the RAM test's pass sequence, chained through a6",
     "why": "eleven passes over the region a1..a2, each written as `lea $X(pc),a6; bra <pass>` so the pass returns with `jmp (a6)` to the address after it - a continuation chain rather than calls, which is why the routine has eleven entry points. The passes are a fill, two walking-bit sweeps, and their inverses with d0 = 0xFF; the watchdog at 0x72FFFE is kicked throughout, and bit 3 of 0x640002 skips the second half."
@@ -1197,7 +1260,10 @@
     "name": "pad the field with spaces and return",
     "why": "`moveq #$20,d1` then `move.b d1,-(a0)` under a `dbra`, filling backwards to the start of the field with 0x20, and into the exit at 0x19604. The left padding of the number formatter."
   },
-  "0x19614": "format a number with padding and separators",
+  "0x19614": {
+    "name": "format a number with padding and separators",
+    "why": "digits are produced back to front from the end of the buffer - divu #$a, swap, add 0x30, move.b d1,-(a0) - which is decimal, and the buffer is the pointer at 0xc(a7) with the width at 0x12(a7), null-terminated at that width before anything is written. Values above 0x1869f, which is 99,999, are halved and divided by 0xc350 first so the top half survives a 16-bit divu, with addx putting the halving back. Bit 31 of d2 is set when the word at 0x16(a7) is zero and is what makes the loop keep going past a zero quotient - so that argument is the pad-with-zeroes flag. Every sixth position is skipped by the subq.w #$6 path, which is where a separator goes. When it is 1 the leading spaces are stripped by copying the string down, and otherwise the head is filled with 0x20."
+  },
   "0x19786": {
     "name": "start the divide helper with a zero high word",
     "why": "`suba.l a0,a0` for a zero a0, saves d3, moves the argument into it, and joins the body at 0x197A0."
@@ -1331,7 +1397,10 @@
     "why": "`move.b $5e(a0),d0` and falls into signExtendByteLong at 0x1A5EA. The offset is the whole routine.",
     "ident": "signExtendField5E"
   },
-  "0x1a5ea": "sign extend byte to long",
+  "0x1a5ea": {
+    "name": "sign extend byte to long",
+    "why": "ext.w d0, ext.l d0, rts. Three instructions and no memory: the byte in d0 widened to a long with its sign, which is what a caller that has just done a move.b into d0 needs before using it as an index or an offset."
+  },
   "0x1a5f0": {
     "name": "run one channel's script to its next rest",
     "why": "clears the flag at 0x3E36EC and keeps the record in the frame, then enters the script reader's loop at 0x1B054 with 0x3E36E2 and 0x3E36DA - the note table and the current instrument - in registers."
@@ -1523,6 +1592,12 @@
     "name": "restart through the reset vector",
     "why": "`suba.l a0,a0; movea.l (a0)+,a7; movea.l (a0),a0; jmp (a0)` - the same restart as 0x133a6 without masking interrupts first."
   },
-  "0x140010": "board ROM zero stub",
-  "0x1400e4": "board ROM table compare"
+  "0x140010": {
+    "name": "board ROM zero stub",
+    "why": "moveq #0,d0 and rts, at the first address of the protection window. It is one of the two routines that cannot be compared against silicon, and the reason is recorded: that window is served by a state machine, so what the chip FETCHES there depends on the access sequence and differs from what reading the same address returns. The port answers zero, and difficultyClamp is its only caller."
+  },
+  "0x1400e4": {
+    "name": "board ROM table compare",
+    "why": "the other half of the protection probe, and it is a comparison whose result is never stored: cmpm.w (a0)+,(a1)+ against 0x1432a0 and against 0x40148 plus the argument times 16, with dead tst instructions on 0x140000 and 0x1432b0 before each. Only the flags survive the rts, so the caller branches on Z. Like 0x140010 it is incomparable against the chip because the window is a state machine and fetching differs from reading."
+  }
 }

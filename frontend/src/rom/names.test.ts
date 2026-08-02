@@ -101,16 +101,18 @@ describe('names', () => {
     // those have their evidence in manual_names.json, which stores
     // [name, why] pairs, and the rest had none anywhere.
     //
-    // A ratchet rather than an assertion, because the fix is reading the
-    // disassembly one routine at a time and a suite that cannot be green until
-    // that finishes is a suite nobody reads. It may only fall.
+    // It started as a ratchet, because the fix was reading the disassembly one
+    // routine at a time and a suite that cannot be green until that finishes is
+    // a suite nobody reads. All 54 have been read, so it is an assertion now,
+    // for the same reason `byAddress` is: at the bar a `<=` would quietly
+    // accept the next name that arrives without its evidence.
     const manual = JSON.parse(readFileSync(join(
       here, '..', '..', '..', 'romlab', 'manual_names.json'), 'utf8')) as
       Record<string, unknown>;
     const bare = Object.entries(curated)
       .filter(([k, v]) => typeof v === 'string' && !(k in manual))
       .map(([k]) => k);
-    expect(bare.length).toBeLessThanOrEqual(base.unevidencedNames ?? 0);
+    expect(bare).toEqual([]);
 
     // Parameters are still a ratchet, and it is on the remainder: 2,401 of
     // 4,415 do not say what they are, and the bar is none of them. Ratcheting
