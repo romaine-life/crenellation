@@ -2812,5 +2812,147 @@
       "name": "table",
       "why": "the longword at 0x2155e, loaded once before the loop and indexed inside it."
     }
+  },
+  "0x130b0": {
+    "a5": {
+      "name": "tableCursor",
+      "why": "the table of regions from 0x38(a7), read forwards with (a5)+ - a flag long, a start, an end and a word choosing which test - the same 14-byte entry format 0x1357c walks with lea -$e(a5)."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the entry's second longword, handed to the RAM test in the register it expects."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the entry's third longword."
+    },
+    "a4": {
+      "name": "returnTo",
+      "why": "`lea $130d2(pc),a4` before branching into 0x1378e - the return address, because the test it calls cannot use a stack."
+    },
+    "d3": {
+      "name": "failed",
+      "why": "cleared before each entry and left non-zero by a failing test, which is what the code after the branch tests."
+    }
+  },
+  "0x130d2": {
+    "a5": {
+      "name": "tableCursor",
+      "why": "the table of regions from 0x38(a7), read forwards with (a5)+ - a flag long, a start, an end and a word choosing which test - the same 14-byte entry format 0x1357c walks with lea -$e(a5)."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the entry's second longword, handed to the RAM test in the register it expects."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the entry's third longword."
+    },
+    "a4": {
+      "name": "returnTo",
+      "why": "`lea $130d2(pc),a4` before branching into 0x1378e - the return address, because the test it calls cannot use a stack."
+    },
+    "d3": {
+      "name": "failed",
+      "why": "cleared before each entry and left non-zero by a failing test, which is what the code after the branch tests."
+    }
+  },
+  "0x130dc": {
+    "a5": {
+      "name": "tableCursor",
+      "why": "the table of regions from 0x38(a7), read forwards with (a5)+ - a flag long, a start, an end and a word choosing which test - the same 14-byte entry format 0x1357c walks with lea -$e(a5)."
+    },
+    "a1": {
+      "name": "regionStart",
+      "why": "the entry's second longword, handed to the RAM test in the register it expects."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the entry's third longword."
+    },
+    "a4": {
+      "name": "returnTo",
+      "why": "`lea $130d2(pc),a4` before branching into 0x1378e - the return address, because the test it calls cannot use a stack."
+    },
+    "d3": {
+      "name": "failed",
+      "why": "cleared before each entry and left non-zero by a failing test, which is what the code after the branch tests."
+    }
+  },
+  "0x27c2": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    }
+  },
+  "0x27da": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    }
+  },
+  "0x27f2": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    }
+  },
+  "0x2818": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    }
+  },
+  "0x2840": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "a0": {
+      "name": "at",
+      "why": "the address whichever helper just computed, adjusted by d3 and then used by the common path at 0x2978."
+    }
+  },
+  "0x285e": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "a0": {
+      "name": "at",
+      "why": "the address whichever helper just computed, adjusted by d3 and then used by the common path at 0x2978."
+    }
+  },
+  "0x28c4": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "a0": {
+      "name": "at",
+      "why": "the address whichever helper just computed, adjusted by d3 and then used by the common path at 0x2978."
+    }
+  },
+  "0x28e8": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    }
+  },
+  "0x28fa": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    }
+  },
+  "0x2908": {
+    "d3": {
+      "name": "shifted",
+      "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "a0": {
+      "name": "at",
+      "why": "the address whichever helper just computed, adjusted by d3 and then used by the common path at 0x2978."
+    }
   }
 }
