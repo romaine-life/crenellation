@@ -116,8 +116,9 @@
     "why": "cellDrawCoordinate for the sprite, cellAddress for the cell, and the cell's owner nibble shifted right six indexes 0xFE06 for the tile. Counts the caller's byte at 0x19(a7) down, then screenAddress."
   },
   "0x357a": {
-    "name": "blit a run of rows at a fixed screen pitch",
-    "why": "computes the start as `(0x40 - x) * 8 + 0xE00` and steps a row counter from the caller's word less one, so the destination walks up the screen as x grows. Everything else is the caller's - the source at 0xC(a6) and the two counts."
+    "name": "walk a rectangle of cells calling a supplied routine for each",
+    "ident": "walkRectCallingPerCell",
+    "why": "the only indirect call in it is `jsr (a3)` where a3 came from the caller, so this is a higher-order walk rather than a blit of its own: for each of height rows and width columns it takes the next WORD from the source list and calls the supplied routine with that word, the running address, and a constant the caller passed - then takes the routine's answer as the new running address. Between rows it adds ((0x40 - width) << 3) + 0xe00, which together with whatever the callee advanced per column is what steps to the next row, so the two have to agree about the per-cell stride and neither says what it is alone."
   },
   "0x3c00": {
     "name": "score a cell from both neighbour weightings and bias by 0xA0",

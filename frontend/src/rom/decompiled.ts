@@ -24476,7 +24476,7 @@ export function cellRegionDraw(a0_: number, src_: number, src2_: number, kind_: 
   setReg('d3', index);
 }
 
-export function blitRunRowsFixedScreen(a3_: number, d0_: number, d3_: number, d4_: number, limit_: number, d6_: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number): void {
+export function blitRunRowsFixedScreen(a3_: number, d0_: number, d3_: number, d4_: number, limit_: number, d6_: number, perCell: number, cells: number, at: number, width: number, height: number, extra: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a2');
@@ -24544,18 +24544,18 @@ export function blitRunRowsFixedScreen(a3_: number, d0_: number, d3_: number, d4
   save_d6_4 = d6;
   save_a2_5 = src;
   save_a3_6 = a3;
-  src = (arg1) >>> 0;
-  d1 = (arg2) >>> 0;
-  t7 = (arg5 & 0xffff);
+  src = (cells) >>> 0;
+  d1 = (at) >>> 0;
+  t7 = (extra & 0xffff);
   t8 = t7;
   store16(dst + -0x4, t8);
-  t9 = (arg4 & 0xffff);
+  t9 = (height & 0xffff);
   limit = ((limit & 0xffff0000) | (t9 & 65535));
   t10 = (limit & 65535);
   t11 = 0x1;
   limit = ((limit & 0xffff0000) | (((limit & 65535) - 0x1) & 65535));
   d2 = (64) >>> 0;
-  t12 = (arg3 & 0xffff);
+  t12 = (width & 0xffff);
   d0 = ((d0 & 0xffff0000) | (t12 & 65535));
   t13 = ((((d0 & 65535)) << 16) >> 16);
   d0 = (t13) >>> 0;
@@ -24569,7 +24569,7 @@ export function blitRunRowsFixedScreen(a3_: number, d0_: number, d3_: number, d4
   t19 = d2;
   t20 = 0xe00;
   d2 = ((d2 + 0xe00)) >>> 0;
-  t21 = (arg3 & 0xffff);
+  t21 = (width & 0xffff);
   d3 = ((d3 & 0xffff0000) | (t21 & 65535));
   t22 = (d3 & 65535);
   t23 = 0x1;
@@ -24604,7 +24604,7 @@ export function blitRunRowsFixedScreen(a3_: number, d0_: number, d3_: number, d4
           d0 = ((d0 & 0xffff0000) | (t29 & 65535));
           t30 = d0;
           push(t30, 4);
-          a3 = (arg0) >>> 0;
+          a3 = (perCell) >>> 0;
           setFlagsCmp(t30, 0, 32);
           setReg('a2', src);
           setReg('a3', a3);

@@ -362,5 +362,31 @@
       "name": "blue",
       "why": "masked to five bits and left at 0, the B field. The four are kept as SEPARATE words at 0x10, 0x12, 0x14 and 0x16 rather than combined, which is what lets the effect ramp each channel on its own."
     }
+  },
+  "0x357a": {
+    "stack4": {
+      "name": "perCell",
+      "why": "loaded into a3 and called with `jsr (a3)` once per cell. Its answer becomes the running address for the next cell, so it both draws and advances."
+    },
+    "stack8": {
+      "name": "cells",
+      "why": "read a WORD at a time with (a2)+ across the whole rectangle, row after row without a break - so it is one flat list, not a row-per-pointer."
+    },
+    "stack12": {
+      "name": "at",
+      "why": "the starting address, passed to the first call and then replaced by each answer. The caller's row stride and the callee's column stride have to add up to 0x1000."
+    },
+    "stack16": {
+      "name": "width",
+      "why": "only its low word, at 0x16(a6). Used twice: minus one as the inner count, and inside ((0x40 - width) << 3) + 0xe00 as the between-rows advance."
+    },
+    "stack20": {
+      "name": "height",
+      "why": "only its low word, at 0x1a(a6), minus one as the outer count."
+    },
+    "stack24": {
+      "name": "extra",
+      "why": "only its low word, at 0x1e(a6), kept in a local and pushed unchanged as the third argument of every call. This routine never looks at it."
+    }
   }
 }
