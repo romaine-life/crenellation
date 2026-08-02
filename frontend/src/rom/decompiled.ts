@@ -169832,7 +169832,7 @@ export function replaceHighNibbleEightRows(d1_: number, d3_: number, arg0: numbe
   setReg('d3', d3);
 }
 
-export function formatOneConversionLetter(src_: number, count_: number, kind_: number, kind2_: number, d3_: number, d4_: number, d5_: number, value: number, arg1: number, count2: number, arg3: number, dst2: number): void {
+export function formatOneConversionLetter(src_: number, count_: number, kind_: number, kind2_: number, d3_: number, d4_: number, d5_: number, value: number, out: number, letter: number, flags: number, dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -169894,8 +169894,8 @@ export function formatOneConversionLetter(src_: number, count_: number, kind_: n
   let t48 = 0;
   let t49 = 0;
   const _t0 = tick(44, 0x1946e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('d0', count); setReg('d1', kind); setReg('d2', kind2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t0) takeIrq(); }
-  dst = (arg1) >>> 0;
-  t0 = (count2 & 0xff);
+  dst = (out) >>> 0;
+  t0 = (letter & 0xff);
   kind = ((kind & 0xffffff00) | (t0 & 255));
   if ((((kind & 255)) & 255) === ((0x64) & 255)) {
     const _t11 = tick(14, 0x194d0) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp((kind & 255), 0x64, 8); setReg('a0', dst); setReg('a1', src); setReg('d0', count); setReg('d1', kind); setReg('d2', kind2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t11) takeIrq(); }
@@ -169904,7 +169904,7 @@ export function formatOneConversionLetter(src_: number, count_: number, kind_: n
     const _t12 = tick(42, 0x194d4) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('d0', count); setReg('d1', kind); setReg('d2', kind2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t12) takeIrq(); }
     t7 = (dst2 & 0xffff);
     src = ((((t7) << 16) >> 16)) >>> 0;
-    t8 = (arg3 & 0xffff);
+    t8 = (flags & 0xffff);
     kind = ((kind & 0xffff0000) | (t8 & 65535));
     t9 = ((kind & 255) ^ 0x1);
     kind = ((kind & 0xffffff00) | (t9 & 255));
@@ -169974,8 +169974,8 @@ export function formatOneConversionLetter(src_: number, count_: number, kind_: n
     t26 = load32(stackPointer() + 0);
     drop(4);
     src = (t26) >>> 0;
-    dst = (arg1) >>> 0;
-    t27 = (arg3 & 0xffff);
+    dst = (out) >>> 0;
+    t27 = (flags & 0xffff);
     kind = ((kind & 0xffff0000) | (t27 & 65535));
     t28 = ((kind & 255) ^ 0x1);
     kind = ((kind & 0xffffff00) | (t28 & 255));
@@ -170145,7 +170145,7 @@ export function formatOneConversionLetter(src_: number, count_: number, kind_: n
       const _t12 = tick(42, 0x194d4) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('d0', count); setReg('d1', kind); setReg('d2', kind2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t12) takeIrq(); }
       t7 = (dst2 & 0xffff);
       src = ((((t7) << 16) >> 16)) >>> 0;
-      t8 = (arg3 & 0xffff);
+      t8 = (flags & 0xffff);
       kind = ((kind & 0xffff0000) | (t8 & 65535));
       t9 = ((kind & 255) ^ 0x1);
       kind = ((kind & 0xffffff00) | (t9 & 255));
@@ -170215,8 +170215,8 @@ export function formatOneConversionLetter(src_: number, count_: number, kind_: n
       t26 = load32(stackPointer() + 0);
       drop(4);
       src = (t26) >>> 0;
-      dst = (arg1) >>> 0;
-      t27 = (arg3 & 0xffff);
+      dst = (out) >>> 0;
+      t27 = (flags & 0xffff);
       kind = ((kind & 0xffff0000) | (t27 & 65535));
       t28 = ((kind & 255) ^ 0x1);
       kind = ((kind & 0xffffff00) | (t28 & 255));
@@ -170408,7 +170408,7 @@ export function formatOneConversionLetter(src_: number, count_: number, kind_: n
       count = (0) >>> 0;
       t5 = (dst2 & 0xffff);
       count = ((count & 0xffff0000) | (t5 & 65535));
-      dst = (arg1) >>> 0;
+      dst = (out) >>> 0;
       setFlagsCmp((count & 65535), 0, 16);
       setReg('a0', dst);
       setReg('a1', src);

@@ -1209,7 +1209,7 @@
   "0x19054": {
     "name": "format a value through the scaled converter and draw it",
     "ident": "formatScaledAndDraw",
-    "why": "formats into a 16-byte buffer on its own frame and falls THROUGH into the shared tail at 0x190a2, which 0x1908a also enters - so the two are one routine with two heads. This head uses the converter at 0x1946e with a scale of 0x64, a hundred, where 0x1908a's head uses the plain formatter at 0x19614. Before converting it sets bit 1 of the byte at 0x1e(a6) always and bit 2 of it when bit 1 of the argument at 0x18(a6) is clear, so it modifies a flags byte IN the caller's frame - which is why that argument is absent from the params table. The tail draws through 0x18e66 where 0x18b26 draws through 0x18a5e."
+    "why": "formats into a 16-byte buffer on its own frame and falls THROUGH into the shared tail at 0x190a2, which 0x1908a also enters - so the two are one routine with two heads. This head uses the converter at 0x1946e and pushes 0x64 as its third argument, which is the ASCII letter 'd' - 0x1946e is a printf conversion and that byte selects decimal, NOT a scale of a hundred, which is what an earlier version of this note said. 0x1908a's head uses the plain formatter at 0x19614 instead. Before converting it sets bit 1 of the byte at 0x1e(a6) always and bit 2 of it when bit 1 of the argument at 0x18(a6) is clear, so it modifies a flags byte IN the caller's frame - which is why that argument is absent from the params table. The tail draws through 0x18e66 where 0x18b26 draws through 0x18a5e."
   },
   "0x1908a": {
     "name": "format a number with separators into a local buffer and plot it",
@@ -1240,8 +1240,9 @@
     "why": "`move.w #$3ff,d0` then the shared loop at 0x1940E, which fills longs from 0x200004 plus (the byte argument << 12). 0x1940A is the same loop entered with 0x7FF, which is why that one is named for eight kilobytes."
   },
   "0x1946e": {
-    "name": "format one conversion by its letter",
-    "why": "branches on the conversion character: 0x64 'd' and 0x73 's' take the decimal path through 0x19614, emitting 0x2b '+' or 0x2d '-' and a 0x2c ',' between groups; 0x58 'X' and 0x78 'x' and 0x68 'h' set d3/d4/d5 to 4/0xF/7 for hexadecimal, 0x6f 'o' to 3/7 for octal, and anything else to 1/1 for binary, then fall into the digit loop at 0x195D4."
+    "name": "convert one value according to a printf conversion letter",
+    "ident": "convertOnePrintfLetter",
+    "why": "the byte at 0xf(a7) is an ASCII CONVERSION LETTER and the routine is a printf %-spec in one piece: 0x64 'd' and 0x73 's' each branch to their own path, and the rest fall into a common integer path whose base is set by the letter - 0x58 'X', 0x78 'x' and 0x68 'h' give four bits a digit with a mask of 0xf, 0x6f 'o' gives three and 7, and anything else gives one and 1, which is binary. The 0x27 against 7 in d5 is the difference between 'A'-'F' and 'a'-'f'. The 's' path emits 0x2b '+' or, for a negative value, negates it and emits 0x2d '-' before falling on."
   },
   "0x19552": {
     "name": "choose the sign character and the group mask for the field",

@@ -538,5 +538,23 @@
       "name": "flags",
       "why": "only bit 1 is looked at: `moveq #$2,d0; and.l $18(a6),d0` and a ZERO there sets a second bit in the caller's flags byte. The whole longword is then passed on to the converter as its fourth argument."
     }
+  },
+  "0x1946e": {
+    "stack4": {
+      "name": "value",
+      "why": "read at 0x14(a7) once the movem has moved a7, and at 4(a7) on the 's' path which has no movem - the same argument both times, and the number being converted."
+    },
+    "stack8": {
+      "name": "out",
+      "why": "the buffer, taken into a0 at entry and again at 0x18(a7) after the movem. Digits are written through it with (a0)+."
+    },
+    "stack12": {
+      "name": "letter",
+      "why": "only its low byte, at 0xf(a7), and it is an ASCII conversion letter: 'd', 's', 'X', 'x', 'h', 'o', or anything else for binary. It picks both the path and the bits-per-digit."
+    },
+    "stack16": {
+      "name": "flags",
+      "why": "the fourth argument, which 0x19054 builds as `moveq #$2,d0; and.l flags,d0` - one bit of its own caller's flags - and hands straight on."
+    }
   }
 }
