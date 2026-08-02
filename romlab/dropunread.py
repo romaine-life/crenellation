@@ -40,18 +40,29 @@ What is NOT dropped, deliberately:
   - any parameter not in the plain `let x = x_;` form, because the rewrite is
     only obviously equivalent when the declaration is exactly that.
 
-CONSIDERED AND NOT DONE, so it is not re-derived. A spill before a call counts
-as a read here, and for 649 of the parameters that survive, being spilled is
-ALL the routine does with them. Some of those spills are not arguments: the
+CONSIDERED, MEASURED AND NOT DONE, so it is not re-derived. A spill before a
+call counts as a read here, and for a good number of the parameters that
+survive, being spilled is ALL the routine does with them. Some of those spills are not arguments: the
 lifter writes the whole live set back before every call so the callee sees
 consistent machine state, and if no callee reads that register the entry value
-is dead and the parameter is not interface either. Deciding which is which is
-an inter-procedural liveness question - the callee may not declare the register
-and still read it with `getReg`, having been through this pass itself, and it
-may pass it on to something that reads it - and getting it wrong costs a
-signature that has lost a real input. The rewrite would still RUN correctly,
+is dead and the parameter is not interface either. Deciding which is which is an
+inter-procedural liveness question, and it was worked out rather than left
+vague: propagate "declares this register, or reads it with `getReg`" forwards
+over the call graph to a fixed point, then ask whether anything a routine
+reaches wants the register it is spilling. Measured 2026-08-02: 231 parameters
+are only ever spilled, and for 92 of them nothing downstream declares the
+register at all.
+
+92 is not enough to take the risk, and the risk is specific. The call graph
+that analysis walks is built from `callRom`/`jumpRom` with a CONSTANT address.
+It cannot see an indirect transfer - 0x357a's whole purpose is `jsr (a3)` with
+a3 from its caller, and a jump table has the same problem - so a routine that
+dispatches indirectly looks like it reaches nothing, and every register spilled
+through it would read as unwanted. The rewrite would still RUN correctly,
 because `getReg` is what the dispatcher would have read; only the signature
 would be wrong, and a signature that lies is what this pass exists to stop.
+Making it safe means teaching the graph about indirect targets, which is a
+bigger piece of work than 92 parameters justifies.
 
 Run after `handedits.py` and before `paramnames.py`, which reads the table.
 Idempotent: a routine with nothing left to drop reports nothing.
