@@ -1575,6 +1575,22 @@
     "a0": {
       "name": "listHead",
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1288a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "fromRecord",
+      "why": "0x126c8 reads a longword out of the record with (a3)+ and 0x126da writes it into palette RAM with movep.l - alternate bytes, which is how the byte-wide palette hangs off a 16-bit bus. The value going in."
+    },
+    "d5": {
+      "name": "inRam",
+      "why": "0x126cc reads the palette entry back with movep.l 0(a2),d5, then 0x126d2 masks it to the channel and 0x126d6 compares it with the target. The value already there."
+    },
+    "d6": {
+      "name": "step",
+      "why": "built from inRam at 0x126e0: add the target, mask to the channel's field and shift down five (0x126ea), then subtract it from the working copy at 0x126ec. How far this tick moves."
     }
   },
   "0x11ea": {
@@ -2087,6 +2103,22 @@
     "a0": {
       "name": "listHead",
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1288a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "fromRecord",
+      "why": "0x126c8 reads a longword out of the record with (a3)+ and 0x126da writes it into palette RAM with movep.l - alternate bytes, which is how the byte-wide palette hangs off a 16-bit bus. The value going in."
+    },
+    "d5": {
+      "name": "inRam",
+      "why": "0x126cc reads the palette entry back with movep.l 0(a2),d5, then 0x126d2 masks it to the channel and 0x126d6 compares it with the target. The value already there."
+    },
+    "d6": {
+      "name": "step",
+      "why": "built from inRam at 0x126e0: add the target, mask to the channel's field and shift down five (0x126ea), then subtract it from the working copy at 0x126ec. How far this tick moves."
     }
   },
   "0x126b6": {
@@ -2107,12 +2139,20 @@
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
     },
     "d4": {
-      "name": "unused",
-      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x126c8 is `move.l (a3)+, d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+      "name": "fromRecord",
+      "why": "0x126c8 reads a longword out of the record with (a3)+ and 0x126da writes it into palette RAM with movep.l - alternate bytes, which is how the byte-wide palette hangs off a 16-bit bus. The value going in."
     },
     "d7": {
       "name": "unused2",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x126d0 is `move.l d5, d7` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d5": {
+      "name": "inRam",
+      "why": "0x126cc reads the palette entry back with movep.l 0(a2),d5, then 0x126d2 masks it to the channel and 0x126d6 compares it with the target. The value already there."
+    },
+    "d6": {
+      "name": "step",
+      "why": "built from inRam at 0x126e0: add the target, mask to the channel's field and shift down five (0x126ea), then subtract it from the working copy at 0x126ec. How far this tick moves."
     }
   },
   "0x1271e": {
@@ -2147,6 +2187,22 @@
     "a0": {
       "name": "listHead",
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1288a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "fromRecord",
+      "why": "0x126c8 reads a longword out of the record with (a3)+ and 0x126da writes it into palette RAM with movep.l - alternate bytes, which is how the byte-wide palette hangs off a 16-bit bus. The value going in."
+    },
+    "d5": {
+      "name": "inRam",
+      "why": "0x126cc reads the palette entry back with movep.l 0(a2),d5, then 0x126d2 masks it to the channel and 0x126d6 compares it with the target. The value already there."
+    },
+    "d6": {
+      "name": "step",
+      "why": "built from inRam at 0x126e0: add the target, mask to the channel's field and shift down five (0x126ea), then subtract it from the working copy at 0x126ec. How far this tick moves."
     }
   },
   "0x12782": {
@@ -2169,6 +2225,22 @@
     "a0": {
       "name": "listHead",
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1288a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "fromRecord",
+      "why": "0x126c8 reads a longword out of the record with (a3)+ and 0x126da writes it into palette RAM with movep.l - alternate bytes, which is how the byte-wide palette hangs off a 16-bit bus. The value going in."
+    },
+    "d5": {
+      "name": "inRam",
+      "why": "0x126cc reads the palette entry back with movep.l 0(a2),d5, then 0x126d2 masks it to the channel and 0x126d6 compares it with the target. The value already there."
+    },
+    "d6": {
+      "name": "step",
+      "why": "built from inRam at 0x126e0: add the target, mask to the channel's field and shift down five (0x126ea), then subtract it from the working copy at 0x126ec. How far this tick moves."
     }
   },
   "0x127ca": {
@@ -2187,6 +2259,22 @@
     "a0": {
       "name": "listHead",
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1288a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "fromRecord",
+      "why": "0x126c8 reads a longword out of the record with (a3)+ and 0x126da writes it into palette RAM with movep.l - alternate bytes, which is how the byte-wide palette hangs off a 16-bit bus. The value going in."
+    },
+    "d5": {
+      "name": "inRam",
+      "why": "0x126cc reads the palette entry back with movep.l 0(a2),d5, then 0x126d2 masks it to the channel and 0x126d6 compares it with the target. The value already there."
+    },
+    "d6": {
+      "name": "step",
+      "why": "built from inRam at 0x126e0: add the target, mask to the channel's field and shift down five (0x126ea), then subtract it from the working copy at 0x126ec. How far this tick moves."
     }
   },
   "0x127fe": {
@@ -2213,6 +2301,22 @@
     "a0": {
       "name": "listHead",
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1288a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "fromRecord",
+      "why": "0x126c8 reads a longword out of the record with (a3)+ and 0x126da writes it into palette RAM with movep.l - alternate bytes, which is how the byte-wide palette hangs off a 16-bit bus. The value going in."
+    },
+    "d5": {
+      "name": "inRam",
+      "why": "0x126cc reads the palette entry back with movep.l 0(a2),d5, then 0x126d2 masks it to the channel and 0x126d6 compares it with the target. The value already there."
+    },
+    "d6": {
+      "name": "step",
+      "why": "built from inRam at 0x126e0: add the target, mask to the channel's field and shift down five (0x126ea), then subtract it from the working copy at 0x126ec. How far this tick moves."
     }
   },
   "0x12836": {
@@ -2239,6 +2343,22 @@
     "a0": {
       "name": "listHead",
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1288a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "fromRecord",
+      "why": "0x126c8 reads a longword out of the record with (a3)+ and 0x126da writes it into palette RAM with movep.l - alternate bytes, which is how the byte-wide palette hangs off a 16-bit bus. The value going in."
+    },
+    "d5": {
+      "name": "inRam",
+      "why": "0x126cc reads the palette entry back with movep.l 0(a2),d5, then 0x126d2 masks it to the channel and 0x126d6 compares it with the target. The value already there."
+    },
+    "d6": {
+      "name": "step",
+      "why": "built from inRam at 0x126e0: add the target, mask to the channel's field and shift down five (0x126ea), then subtract it from the working copy at 0x126ec. How far this tick moves."
     }
   },
   "0x12864": {
@@ -2279,6 +2399,22 @@
     "a0": {
       "name": "listHead",
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
+    },
+    "d7": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1288a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "fromRecord",
+      "why": "0x126c8 reads a longword out of the record with (a3)+ and 0x126da writes it into palette RAM with movep.l - alternate bytes, which is how the byte-wide palette hangs off a 16-bit bus. The value going in."
+    },
+    "d5": {
+      "name": "inRam",
+      "why": "0x126cc reads the palette entry back with movep.l 0(a2),d5, then 0x126d2 masks it to the channel and 0x126d6 compares it with the target. The value already there."
+    },
+    "d6": {
+      "name": "step",
+      "why": "built from inRam at 0x126e0: add the target, mask to the channel's field and shift down five (0x126ea), then subtract it from the working copy at 0x126ec. How far this tick moves."
     }
   },
   "0x1a8e0": {
@@ -3133,6 +3269,10 @@
     "d2": {
       "name": "plainCueSet",
       "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
+    },
+    "a5": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x073d2) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x73c4": {
@@ -3171,6 +3311,10 @@
     "d2": {
       "name": "plainCueSet",
       "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
+    },
+    "a5": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x073d2) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x6460": {
@@ -3697,6 +3841,10 @@
     "d6": {
       "name": "chosenPtrAt",
       "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
+    },
+    "d2": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1b064) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x1ae44": {
@@ -3757,6 +3905,10 @@
     "d6": {
       "name": "chosenPtrAt",
       "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
+    },
+    "d2": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1b064) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x1b050": {
@@ -3787,6 +3939,10 @@
     "d6": {
       "name": "chosenPtrAt",
       "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
+    },
+    "d2": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1b064) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x1b054": {
@@ -3813,6 +3969,10 @@
     "d6": {
       "name": "chosenPtrAt",
       "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
+    },
+    "d2": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1b064) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x1b062": {
@@ -6239,6 +6399,10 @@
     "d3": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x18906) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a2": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x18906) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x18d18": {
@@ -6257,6 +6421,34 @@
     "d3": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x1a1ca) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x272e": {
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x02732 is `move.w $20(a7), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x7664": {
+    "a2": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x07676) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0xd43a": {
+    "a3": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x0d48a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0xd45c": {
+    "a2": {
+      "name": "preserved",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x0d48a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a3": {
+      "name": "preserved2",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x0d48a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   }
 }

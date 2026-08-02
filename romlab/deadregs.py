@@ -136,6 +136,57 @@ def straight(md, image, at, lo, hi):
     return run
 
 
+BRANCH = re.compile(r"\$([0-9a-f]+)(?:\.[wl])?$")
+
+
+def reachable(md, image, at, lo, hi):
+    """Every instruction control can get to from `at`, without leaving lo..hi.
+
+    The straight-line run answers "is this register dead on arrival"; this
+    answers the other question, "does this entry ever touch it at all". A
+    handler block reached through a jump table is one case of a routine among
+    ten, and nine of the ten never see d4 - but a scan of the whole extent
+    sees all ten and reports that they do.
+
+    Successors are the fall-through and any branch target that parses as an
+    absolute inside the routine. An indirect `jmp (a0)` or `jsr (a0)` has no
+    target here, and the walk simply stops rather than guessing - which keeps
+    this an under-approximation of what runs and so an over-approximation of
+    what is untouched. That is the wrong direction for safety, so a register
+    is only called preserved when the walk saw no unresolved transfer at all.
+    """
+    seen, todo, insns, blind = set(), [at], [], False
+    while todo:
+        pc = todo.pop()
+        while lo <= pc < hi and pc not in seen:
+            seen.add(pc)
+            block = list(md.disasm(image[pc:hi], pc))
+            if not block:
+                break
+            i = block[0]
+            insns.append(i)
+            mn, base = i.mnemonic, i.mnemonic.split(".")[0]
+            nxt = i.address + i.size
+            if not transfers(mn):
+                pc = nxt
+                continue
+            if base in ("rts", "rte", "rtr", "rtd"):
+                break
+            m = BRANCH.search(i.op_str.strip())
+            if m:
+                t = int(m.group(1), 16)
+                if lo <= t < hi:
+                    todo.append(t)
+                elif base in ("bra", "jmp"):
+                    blind = True           # leaves the routine: cannot follow
+            else:
+                blind = True               # indirect, or a register target
+            if base in ("bra", "jmp"):
+                break
+            pc = nxt
+    return insns, blind
+
+
 RANK = {"b": 1, "w": 2, "l": 3}
 
 
@@ -210,11 +261,20 @@ def main():
         # to the callee, which is the case whyunread.py refused to call unused
         # - but nothing here reads it, and saying so is the useful thing.
         # Whole-extent rather than reachable-set, so it holds for every entry.
+        near, blind = reachable(md, image, a, lo, hi)
         for reg in sorted(want - set(dead)):
             uses = [i for i in line
                     if re.search(r"\b" + reg + r"\b", i.op_str)]
             if uses and all(i.mnemonic.startswith("movem") for i in uses):
-                kept.setdefault(a, {})[reg] = uses[0].address
+                kept.setdefault(a, {})[reg] = (uses[0].address, "the routine")
+                continue
+            if blind:
+                continue
+            here = [i for i in near
+                    if re.search(r"\b" + reg + r"\b", i.op_str)]
+            if here and all(i.mnemonic.startswith("movem") for i in here):
+                kept.setdefault(a, {})[reg] = (here[0].address,
+                                               "everything this entry reaches")
         if dead:
             found[a] = dead
 
@@ -252,15 +312,14 @@ def main():
         reached += r
     for a, regs in sorted(kept.items()):
         names, n = {}, 0
-        for reg, at in sorted(regs.items()):
+        for reg, (at, scope) in sorted(regs.items()):
             n += 1
             names[reg] = {
                 "name": "preserved" + ("" if n == 1 else str(n)),
-                "why": f"every appearance of it in this routine is inside a"
-                       f" movem (the first at 0x{at:05x}) - the routine saves"
-                       f" and restores it and never touches it. Not dead: a"
-                       f" spill before a call still hands it on. Found by"
-                       f" deadregs.py.",
+                "why": f"every appearance of it in {scope} is inside a movem"
+                       f" (the first at 0x{at:05x}) - saved and restored and"
+                       f" never touched. Not dead: a spill before a call still"
+                       f" hands it on. Found by deadregs.py.",
             }
         r, _ = F.apply(a, names, only=True)
         reached += r
