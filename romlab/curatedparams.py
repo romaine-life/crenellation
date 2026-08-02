@@ -20,6 +20,15 @@ the REGISTER the parameter arrives in, not its current name - a name changes
 when a pass renames it and the register does not, so keying on the register is
 the only form that stays valid across a regeneration.
 
+A STACK ARGUMENT THE ROUTINE ONLY TAKES THE ADDRESS OF IS NOT IN THE TABLE,
+and the guard below is how that gets found. `decomp.py` records a stack slot as
+a parameter when it READS a value out of it; 0x8fc8 does `lea $8(a6),a2` and
+walks from there, so its first argument - which the disassembly shows plainly -
+appears nowhere in `params`, and the entry for it is rejected rather than
+silently dropped. That is a gap in parameter recovery rather than a mistake in
+the reading, and it will bite again on anything that treats an argument as a
+buffer.
+
 `why` is not optional, for the reason `idents.py` refuses a curated routine
 name without one: a wrong name costs more than `d3` does, and the only defence
 is being able to read afterwards why it was chosen. An entry whose routine or

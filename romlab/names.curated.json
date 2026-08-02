@@ -1722,5 +1722,20 @@
     "name": "count one more of bookkeeping counter 13",
     "ident": "countOneOfCounterThirteen",
     "why": "five instructions: push 1, push 0xd, call the counter adder at 0x14a36, drop the arguments. Nothing else. It is a named place to add one to counter 13, which is why it has its own six-byte stub at 0x278."
+  },
+  "0x8fc8": {
+    "name": "find a pair in the 0x3e1900 table and mark it taken",
+    "ident": "findPairAndMarkTaken",
+    "why": "walks two-byte entries at 0x3e1900 until the first byte goes negative, which is the terminator, comparing each against the pair the caller passed. On a match it writes 0xff into the SECOND byte of that entry and answers 1; running off the end answers 0. The caller's pair is copied a byte at a time into a local before being read as a word, which is the lifter-visible form of reading a word that may sit at an odd address."
+  },
+  "0x125da": {
+    "name": "tick the head of the 0x3e20a0 timer list and dispatch it",
+    "ident": "tickTimerListHead",
+    "why": "does nothing while the byte at 0x3e2498 is set, which is the pause. The list at 0x3e20a0 is circular and empty when the head points at itself - `cmpa.l a0,a1; beq` is the whole emptiness test. It counts the byte at 0xe of the first record down, and only when it reaches zero reloads it from 0xd - so 0xd is the period and 0xe the remainder - takes the pointer at 8 into a2, and jumps through a PC-relative word table at 0x1261a indexed by the kind byte at 0xc times two."
+  },
+  "0x7c72": {
+    "name": "start the phase: post two events, arm two flags",
+    "ident": "startPhaseTwoEventsTwoFlags",
+    "why": "posts 0x11b30 with an argument of 1 and 0x11b1e with 0 through 0xee90, writes 0xfe to 0x3e0dc4 and 1 to 0x3e0ebe, and hands the longword at 0x117b6 to 0x53a6. Five side effects and no answer - it is the opening of a phase rather than anything that decides. The derived name says a countdown beep and nothing here reaches a sound chip."
   }
 }
