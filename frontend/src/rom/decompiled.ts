@@ -140268,7 +140268,7 @@ export function helperSoundEnvelopeStep(d0_: number, d1_: number, limit2_: numbe
   setReg('d4', kind);
 }
 
-export function helperSoundEnvelopeStepFrom1(ptr2_: number, d1_: number, limit2_: number, limit_: number, kind_: number, d5_: number, arg0: number, arg1: number): void {
+export function helperSoundEnvelopeStepFrom1(ptr2_: number, d1_: number, limit2_: number, limit_: number, kind_: number, d5_: number, slot: number, channel: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -140330,9 +140330,9 @@ export function helperSoundEnvelopeStepFrom1(ptr2_: number, d1_: number, limit2_
   save_d4_2 = kind;
   save_d5_3 = d5;
   save_a2_4 = ptr2;
-  t5 = (arg0 & 0xffff);
+  t5 = (slot & 0xffff);
   limit2 = ((limit2 & 0xffff0000) | (t5 & 65535));
-  t6 = (arg1 & 0xffff);
+  t6 = (channel & 0xffff);
   d1 = ((d1 & 0xffff0000) | (t6 & 65535));
   t7 = 0;
   push(t7, 4);
@@ -140937,7 +140937,7 @@ export function soundEnvelopeStep(count_: number, limit2_: number, limit_: numbe
   setReg('d6', d6);
 }
 
-export function soundEnvelopeStepFrom1(a2_: number, d1_: number, limit2_: number, kind_: number, arg0: number, arg1: number): void {
+export function soundEnvelopeStepFrom1(a2_: number, d1_: number, limit2_: number, kind_: number, value: number, channel: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -140983,8 +140983,8 @@ export function soundEnvelopeStepFrom1(a2_: number, d1_: number, limit2_: number
   save_d3_1 = limit2;
   save_d4_2 = kind;
   save_a2_3 = a2;
-  limit = (arg0) >>> 0;
-  t4 = (arg1 & 0xffff);
+  limit = (value) >>> 0;
+  t4 = (channel & 0xffff);
   d1 = ((d1 & 0xffff0000) | (t4 & 65535));
   push((ptr3 + -0x4), 4);
   d0 = (0) >>> 0;

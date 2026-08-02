@@ -1890,5 +1890,15 @@
     "name": "divide the counter read by 0x141d4 by the option value",
     "ident": "divideCounterByOption",
     "why": "the same two guards as its neighbours - 0xff when the options word is not loaded, 0 when the option 0x13f98 reads is zero - and then it pushes that option, calls 0x141d4 to read counter 2 through 0x14772, and hands both to the divide at 0x1869e. The zero guard is what stops the divide from being by zero, which is worth seeing before anyone rearranges it."
+  },
+  "0x14b8a": {
+    "name": "unpack a channel queue entry into its three-byte and two-byte fields",
+    "ident": "unpackQueueEntry",
+    "why": "asks 0x14b2c for the address of one five-byte entry - slot first, channel second, and a null third argument because it does not want the remaining count - and answers 0 when that comes back null. It then reassembles bytes 0, 1 and 2 into a 24-bit value at 0x3e344c and bytes 3 and 4 into a 16-bit one, which is what the five bytes are: three plus two, not five separate things."
+  },
+  "0x14d48": {
+    "name": "write a 24-bit value into a channel's queue",
+    "ident": "writeQueueEntryValue",
+    "why": "the inverse of 0x14b8a and it uses the same 0x14b2c, but with slot ZERO and a real pointer for the remaining count - so it always writes at the head and wants to know how much room is left. It refuses anything above 0xffffff, which confirms the entry's first field is 24 bits wide and not a longword."
   }
 }

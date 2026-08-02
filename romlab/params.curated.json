@@ -712,5 +712,25 @@
       "name": "value",
       "why": "only its low word, at 0xa(a7), written whole to the computed address."
     }
+  },
+  "0x14b8a": {
+    "stack4": {
+      "name": "slot",
+      "why": "its low word, at 0x1a(a7), pushed as 0x14b2c's FIRST argument - the entry within the channel, 0 to 10."
+    },
+    "stack8": {
+      "name": "channel",
+      "why": "its low word, at 0x1e(a7), pushed as 0x14b2c's second - one of three."
+    }
+  },
+  "0x14d48": {
+    "stack4": {
+      "name": "value",
+      "why": "the longword at 8(a6), refused above 0xffffff before anything is written, so the field it goes into is 24 bits - three of the entry's five bytes."
+    },
+    "stack8": {
+      "name": "channel",
+      "why": "its low word at 0xe(a6), pushed as 0x14b2c's second argument. The slot is hard-wired to zero here, so this always writes the head of the queue."
+    }
   }
 }
