@@ -18229,7 +18229,7 @@ export function cellPairDraw(dst_: number, count_: number, owner_: number, scree
   setReg('d3', d3);
 }
 
-export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_: number, index2_: number, count2_: number, d5_: number, limit: number, limit2: number): void {
+export function cellRedraw(dst_: number, kind_: number, count_: number, cellByte_: number, kindLocal_: number, owner_: number, colour_: number, coord: number, kind2: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -18237,10 +18237,10 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
   let dst = dst_;
   let kind = kind_;
   let count = count_;
-  let kind22 = kind22_;
-  let index2 = index2_;
-  let count2 = count2_;
-  let d5 = d5_;
+  let cellByte = cellByte_;
+  let kindLocal = kindLocal_;
+  let owner = owner_;
+  let colour = colour_;
   let save_d2_0 = 0;
   let save_d3_1 = 0;
   let save_d4_2 = 0;
@@ -18281,20 +18281,20 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
   let t37 = 0;
   let t38 = 0;
   let t39 = 0;
-  const _t0 = tick(110, 0x02698) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', kind22); setReg('d3', index2); setReg('d4', count2); setReg('d5', d5); if (_t0) takeIrq(); }
+  const _t0 = tick(110, 0x02698) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', cellByte); setReg('d3', kindLocal); setReg('d4', owner); setReg('d5', colour); if (_t0) takeIrq(); }
   push(dst, 4);
-  push(d5, 4);
-  push(count2, 4);
-  push(index2, 4);
-  push(kind22, 4);
-  save_d2_0 = kind22;
-  save_d3_1 = index2;
-  save_d4_2 = count2;
-  save_d5_3 = d5;
+  push(colour, 4);
+  push(owner, 4);
+  push(kindLocal, 4);
+  push(cellByte, 4);
+  save_d2_0 = cellByte;
+  save_d3_1 = kindLocal;
+  save_d4_2 = owner;
+  save_d5_3 = colour;
   save_a2_4 = dst;
-  t5 = ((limit2 >>> 16) & 0xffff);
-  index2 = ((index2 & 0xffff0000) | (t5 & 65535));
-  t6 = ((limit >>> 16) & 0xffff);
+  t5 = ((kind2 >>> 16) & 0xffff);
+  kindLocal = ((kindLocal & 0xffff0000) | (t5 & 65535));
+  t6 = ((coord >>> 16) & 0xffff);
   t7 = t6;
   push(t7, 2);
   setFlagsCmp(t7, 0, 16);
@@ -18303,10 +18303,10 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
   setReg('a2', dst);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', kind22);
-  setReg('d3', index2);
-  setReg('d4', count2);
-  setReg('d5', d5);
+  setReg('d2', cellByte);
+  setReg('d3', kindLocal);
+  setReg('d4', owner);
+  setReg('d5', colour);
   callRom(0x11bd8, 0x026aa);
   if (halted()) return;
   a0 = getReg('a0');
@@ -18314,33 +18314,33 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
   dst = getReg('a2');
   kind = getReg('d0');
   count = getReg('d1');
-  kind22 = getReg('d2');
-  index2 = getReg('d3');
-  count2 = getReg('d4');
-  d5 = getReg('d5');
-  const _t1 = tick(96, 0x026aa) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', kind22); setReg('d3', index2); setReg('d4', count2); setReg('d5', d5); if (_t1) takeIrq(); }
+  cellByte = getReg('d2');
+  kindLocal = getReg('d3');
+  owner = getReg('d4');
+  colour = getReg('d5');
+  const _t1 = tick(96, 0x026aa) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', cellByte); setReg('d3', kindLocal); setReg('d4', owner); setReg('d5', colour); if (_t1) takeIrq(); }
   ptr = (kind) >>> 0;
-  kind22 = (0) >>> 0;
+  cellByte = (0) >>> 0;
   t8 = load8(ptr);
-  kind22 = ((kind22 & 0xffffff00) | (t8 & 255));
-  count2 = ((count2 & 0xffff0000) | ((kind22 & 65535) & 65535));
-  t9 = (count2 & 65535);
+  cellByte = ((cellByte & 0xffffff00) | (t8 & 255));
+  owner = ((owner & 0xffff0000) | ((cellByte & 65535) & 65535));
+  t9 = (owner & 65535);
   t10 = ((0x6) & 63);
-  t11 = (t10 >= 16 ? 0 : (((count2 & 65535)) >>> t10));
-  count2 = ((count2 & 0xffff0000) | (t11 & 65535));
+  t11 = (t10 >= 16 ? 0 : (((owner & 65535)) >>> t10));
+  owner = ((owner & 0xffff0000) | (t11 & 65535));
   kind = (0) >>> 0;
-  kind = ((kind & 0xffff0000) | ((count2 & 65535) & 65535));
+  kind = ((kind & 0xffff0000) | ((owner & 65535) & 65535));
   a0 = (0xfe02) >>> 0;
-  d5 = (0) >>> 0;
-  d5 = ((d5 & 0xffffff00) | (load8((a0 + (kind | 0))) & 255));
+  colour = (0) >>> 0;
+  colour = ((colour & 0xffffff00) | (load8((a0 + (kind | 0))) & 255));
   drop(2);
-  if ((((index2 & 65535)) & 65535) === ((0x8) & 65535)) {
-    const _t3 = tick(18, 0x0270e) ? 1 : 0; if (_t3 || SPILL_ALL) { setXShift((((t9) >>> 5) & 1), 1); setFlagsCmp((index2 & 65535), 0x8, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', kind22); setReg('d3', index2); setReg('d4', count2); setReg('d5', d5); if (_t3) takeIrq(); }
+  if ((((kindLocal & 65535)) & 65535) === ((0x8) & 65535)) {
+    const _t3 = tick(18, 0x0270e) ? 1 : 0; if (_t3 || SPILL_ALL) { setXShift((((t9) >>> 5) & 1), 1); setFlagsCmp((kindLocal & 65535), 0x8, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', cellByte); setReg('d3', kindLocal); setReg('d4', owner); setReg('d5', colour); if (_t3) takeIrq(); }
     count = (load32(0x20652)) >>> 0;
     setXShift((((t9) >>> 5) & 1), 1);
     setFlagsCmp(count, 0, 32);
   } else {
-    const _t2 = tick(194, 0x026cc) ? 1 : 0; if (_t2 || SPILL_ALL) { setXShift((((t9) >>> 5) & 1), 1); setFlagsCmp((index2 & 65535), 0x8, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', kind22); setReg('d3', index2); setReg('d4', count2); setReg('d5', d5); if (_t2) takeIrq(); }
+    const _t2 = tick(194, 0x026cc) ? 1 : 0; if (_t2 || SPILL_ALL) { setXShift((((t9) >>> 5) & 1), 1); setFlagsCmp((kindLocal & 65535), 0x8, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', cellByte); setReg('d3', kindLocal); setReg('d4', owner); setReg('d5', colour); if (_t2) takeIrq(); }
     kind = (ptr) >>> 0;
     count = (32) >>> 0;
     t12 = kind;
@@ -18349,19 +18349,19 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
     t14 = kind;
     t15 = 0x1;
     kind = ((kind + 0x1)) >>> 0;
-    t16 = ((kind22 & 255) & 0xc0);
-    kind22 = ((kind22 & 0xffffff00) | (t16 & 255));
-    t17 = (kind22 & 255);
+    t16 = ((cellByte & 255) & 0xc0);
+    cellByte = ((cellByte & 0xffffff00) | (t16 & 255));
+    t17 = (cellByte & 255);
     t18 = 0x9;
-    kind22 = ((kind22 & 0xffffff00) | (((kind22 & 255) + 0x9) & 255));
-    t19 = (kind22 & 255);
-    t20 = (index2 & 255);
-    kind22 = ((kind22 & 0xffffff00) | (((kind22 & 255) + (index2 & 255)) & 255));
+    cellByte = ((cellByte & 0xffffff00) | (((cellByte & 255) + 0x9) & 255));
+    t19 = (cellByte & 255);
+    t20 = (kindLocal & 255);
+    cellByte = ((cellByte & 0xffffff00) | (((cellByte & 255) + (kindLocal & 255)) & 255));
     dst = (kind) >>> 0;
-    t21 = (kind22 & 255);
+    t21 = (cellByte & 255);
     store8(dst, t21);
     count = (0) >>> 0;
-    count = ((count & 0xffff0000) | ((count2 & 65535) & 65535));
+    count = ((count & 0xffff0000) | ((owner & 65535) & 65535));
     a0 = (0x3e186c) >>> 0;
     kind = (0) >>> 0;
     kind = ((kind & 0xffffff00) | (load8((a0 + (count | 0))) & 255));
@@ -18369,11 +18369,11 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
     t23 = ((0x3) & 63);
     t24 = (t23 >= 16 ? 0 : (((kind & 65535)) << t23));
     kind = ((kind & 0xffff0000) | (t24 & 65535));
-    t25 = (index2 & 65535);
+    t25 = (kindLocal & 65535);
     t26 = (kind & 65535);
-    index2 = ((index2 & 0xffff0000) | (((index2 & 65535) + (kind & 65535)) & 65535));
+    kindLocal = ((kindLocal & 0xffff0000) | (((kindLocal & 65535) + (kind & 65535)) & 65535));
     kind = (0) >>> 0;
-    kind = ((kind & 0xffff0000) | ((index2 & 65535) & 65535));
+    kind = ((kind & 0xffff0000) | ((kindLocal & 65535) & 65535));
     t27 = kind;
     t28 = ((0x2) & 63);
     t29 = (t28 >= 32 ? 0 : ((kind) << t28));
@@ -18392,12 +18392,12 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
     setXAdd(t33, t34, 32);
     setFlagsCmp(count, 0, 32);
   }
-  const _t4 = tick(78, 0x02714) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp(count, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', kind22); setReg('d3', index2); setReg('d4', count2); setReg('d5', d5); if (_t4) takeIrq(); }
+  const _t4 = tick(78, 0x02714) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp(count, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', cellByte); setReg('d3', kindLocal); setReg('d4', owner); setReg('d5', colour); if (_t4) takeIrq(); }
   kind = (0) >>> 0;
-  kind = ((kind & 0xffff0000) | ((d5 & 65535) & 65535));
+  kind = ((kind & 0xffff0000) | ((colour & 65535) & 65535));
   t36 = kind;
   push(t36, 4);
-  t37 = ((limit >>> 16) & 0xffff);
+  t37 = ((coord >>> 16) & 0xffff);
   t38 = t37;
   push(t38, 2);
   t39 = count;
@@ -18408,10 +18408,10 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
   setReg('a2', dst);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', kind22);
-  setReg('d3', index2);
-  setReg('d4', count2);
-  setReg('d5', d5);
+  setReg('d2', cellByte);
+  setReg('d3', kindLocal);
+  setReg('d4', owner);
+  setReg('d5', colour);
   callRom(0x02fb6, 0x02724);
   if (halted()) return;
   a0 = getReg('a0');
@@ -18419,16 +18419,16 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
   dst = getReg('a2');
   kind = getReg('d0');
   count = getReg('d1');
-  kind22 = getReg('d2');
-  index2 = getReg('d3');
-  count2 = getReg('d4');
-  d5 = getReg('d5');
-  const _t5 = tick(72, 0x02724) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', kind22); setReg('d3', index2); setReg('d4', count2); setReg('d5', d5); if (_t5) takeIrq(); }
+  cellByte = getReg('d2');
+  kindLocal = getReg('d3');
+  owner = getReg('d4');
+  colour = getReg('d5');
+  const _t5 = tick(72, 0x02724) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', cellByte); setReg('d3', kindLocal); setReg('d4', owner); setReg('d5', colour); if (_t5) takeIrq(); }
   drop(10);
-  kind22 = load32(stackPointer());
-  index2 = load32(stackPointer() + 4);
-  count2 = load32(stackPointer() + 8);
-  d5 = load32(stackPointer() + 12);
+  cellByte = load32(stackPointer());
+  kindLocal = load32(stackPointer() + 4);
+  owner = load32(stackPointer() + 8);
+  colour = load32(stackPointer() + 12);
   dst = load32(stackPointer() + 16);
   drop(20);
   setReg('a0', a0);
@@ -18436,20 +18436,20 @@ export function cellRedraw(dst_: number, kind_: number, count_: number, kind22_:
   setReg('a2', dst);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', kind22);
-  setReg('d3', index2);
-  setReg('d4', count2);
-  setReg('d5', d5);
-  setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', kind22); setReg('d3', index2); setReg('d4', count2); setReg('d5', d5); return;
+  setReg('d2', cellByte);
+  setReg('d3', kindLocal);
+  setReg('d4', owner);
+  setReg('d5', colour);
+  setReg('a0', a0); setReg('a1', ptr); setReg('a2', dst); setReg('d0', kind); setReg('d1', count); setReg('d2', cellByte); setReg('d3', kindLocal); setReg('d4', owner); setReg('d5', colour); return;
   setReg('a0', a0);
   setReg('a1', ptr);
   setReg('a2', dst);
   setReg('d0', kind);
   setReg('d1', count);
-  setReg('d2', kind22);
-  setReg('d3', index2);
-  setReg('d4', count2);
-  setReg('d5', d5);
+  setReg('d2', cellByte);
+  setReg('d3', kindLocal);
+  setReg('d4', owner);
+  setReg('d5', colour);
 }
 
 export function cellOwnerRead(index_: number, limit_: number, kind2_: number, index2_: number, count2_: number, d5_: number, d6_: number, limit2: number, limit3: number): void {
@@ -36925,14 +36925,14 @@ export function cursorEntityDraw(dst_: number, d0_: number): void {
   setReg('d0', d0);
 }
 
-export function chooseCursorSShapeWhat(d0_: number, kind2_: number): void {
+export function chooseCursorSShapeWhat(shape_: number, kind2_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
   let a1 = getReg('a1');
   let a2 = getReg('a2');
   let dst = getReg('a3');
-  let d0 = d0_;
+  let shape = shape_;
   let kind2 = kind2_;
   let save_a2_0 = 0;
   let save_a3_1 = 0;
@@ -36980,7 +36980,7 @@ export function chooseCursorSShapeWhat(d0_: number, kind2_: number): void {
   let t43 = 0;
   let t44 = 0;
   let t45 = 0;
-  const _t0 = tick(128, 0x05192) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t0) takeIrq(); }
+  const _t0 = tick(128, 0x05192) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t0) takeIrq(); }
   push(dst, 4);
   push(a2, 4);
   save_a2_0 = a2;
@@ -36994,7 +36994,7 @@ export function chooseCursorSShapeWhat(d0_: number, kind2_: number): void {
   t4 = load32(a0 + 0x24);
   setFlagsCmp(t4, 0, 32);
   if (t4 !== 0) {
-    const _t2 = tick(56, 0x051b6) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(t4, 0, 32); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t2) takeIrq(); }
+    const _t2 = tick(56, 0x051b6) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(t4, 0, 32); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t2) takeIrq(); }
     t5 = load32(a2);
     a0 = (t5) >>> 0;
     t6 = load32(a0 + 0x24);
@@ -37003,63 +37003,63 @@ export function chooseCursorSShapeWhat(d0_: number, kind2_: number): void {
     a0 = (t7) >>> 0;
     t8 = load8(a0);
     if (((t8) & 255) !== ((0x46) & 255)) {
-      const _t5 = tick(70, 0x051de) ? 1 : 0; if (_t5 || SPILL_ALL) { setFlagsCmp(t8, 0x46, 8); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t5) takeIrq(); }
+      const _t5 = tick(70, 0x051de) ? 1 : 0; if (_t5 || SPILL_ALL) { setFlagsCmp(t8, 0x46, 8); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t5) takeIrq(); }
       t16 = load32(a2);
       a0 = (t16) >>> 0;
       t17 = load32(a0 + 0x24);
       a0 = (t17) >>> 0;
       t18 = load32(a0);
       a0 = (t18) >>> 0;
-      d0 = (0) >>> 0;
+      shape = (0) >>> 0;
       t19 = load8(a0);
-      d0 = ((d0 & 0xffffff00) | (t19 & 255));
-      t20 = d0;
-      t21 = d0;
-      d0 = ((d0 + d0)) >>> 0;
+      shape = ((shape & 0xffffff00) | (t19 & 255));
+      t20 = shape;
+      t21 = shape;
+      shape = ((shape + shape)) >>> 0;
       a0 = (0x1f7f2) >>> 0;
       setXAdd(t20, t21, 32);
       setFlagsAdd(t20, t21, 32);
-      const _t6 = tick(24, 0x051f2) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t6) takeIrq(); }
-      push((a0 + (d0 | 0)), 4);
+      const _t6 = tick(24, 0x051f2) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t6) takeIrq(); }
+      push((a0 + (shape | 0)), 4);
     } else {
-      const _t3 = tick(40, 0x051c4) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t8, 0x46, 8); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t3) takeIrq(); }
+      const _t3 = tick(40, 0x051c4) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(t8, 0x46, 8); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t3) takeIrq(); }
       t9 = load32(a2);
       a0 = (t9) >>> 0;
-      d0 = (0) >>> 0;
+      shape = (0) >>> 0;
       t10 = load8(a0 + 0x15);
-      d0 = ((d0 & 0xffffff00) | (t10 & 255));
-      d0 = ((d0 & 0xffff0000) | ((d0 & 65535) & 65535));
-      setFlagsCmp((d0 & 65535), 0, 16);
-      if ((((d0 & 65535)) & 65535) === ((0) & 65535)) {
-        const _t1 = tick(36, 0x051ae) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t1) takeIrq(); }
+      shape = ((shape & 0xffffff00) | (t10 & 255));
+      shape = ((shape & 0xffff0000) | ((shape & 65535) & 65535));
+      setFlagsCmp((shape & 65535), 0, 16);
+      if ((((shape & 65535)) & 65535) === ((0) & 65535)) {
+        const _t1 = tick(36, 0x051ae) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t1) takeIrq(); }
         push(0x1f7f2, 4);
       } else {
-        const _t4 = tick(46, 0x051d0) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp((d0 & 65535), 0, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t4) takeIrq(); }
-        t11 = ((((d0 & 65535)) << 16) >> 16);
-        d0 = (t11) >>> 0;
-        t12 = d0;
+        const _t4 = tick(46, 0x051d0) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp((shape & 65535), 0, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t4) takeIrq(); }
+        t11 = ((((shape & 65535)) << 16) >> 16);
+        shape = (t11) >>> 0;
+        t12 = shape;
         t13 = 0x1;
-        d0 = ((d0 - 0x1)) >>> 0;
-        t14 = d0;
-        t15 = d0;
-        d0 = ((d0 + d0)) >>> 0;
+        shape = ((shape - 0x1)) >>> 0;
+        t14 = shape;
+        t15 = shape;
+        shape = ((shape + shape)) >>> 0;
         a0 = (0x1fae8) >>> 0;
         setXAdd(t14, t15, 32);
         setFlagsAdd(t14, t15, 32);
-        const _t6 = tick(24, 0x051f2) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t6) takeIrq(); }
-        push((a0 + (d0 | 0)), 4);
+        const _t6 = tick(24, 0x051f2) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t6) takeIrq(); }
+        push((a0 + (shape | 0)), 4);
       }
     }
   } else {
-    const _t1 = tick(36, 0x051ae) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t1) takeIrq(); }
+    const _t1 = tick(36, 0x051ae) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t1) takeIrq(); }
     push(0x1f7f2, 4);
   }
-  const _t7 = tick(20, 0x051f6) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t7) takeIrq(); }
+  const _t7 = tick(20, 0x051f6) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t7) takeIrq(); }
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
   setReg('a3', dst);
-  setReg('d0', d0);
+  setReg('d0', shape);
   setReg('d1', kind2);
   callRom(a1, 0x051f8);
   if (halted()) return;
@@ -37067,47 +37067,47 @@ export function chooseCursorSShapeWhat(d0_: number, kind2_: number): void {
   a1 = getReg('a1');
   a2 = getReg('a2');
   dst = getReg('a3');
-  d0 = getReg('d0');
+  shape = getReg('d0');
   kind2 = getReg('d1');
-  const _t8 = tick(124, 0x051f8) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t8) takeIrq(); }
-  kind2 = ((kind2 & 0xffff0000) | ((d0 & 65535) & 65535));
+  const _t8 = tick(124, 0x051f8) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t8) takeIrq(); }
+  kind2 = ((kind2 & 0xffff0000) | ((shape & 65535) & 65535));
   drop(4);
   t22 = load32(a2);
   a0 = (t22) >>> 0;
   t23 = load8(a0 + 0x46);
-  d0 = ((d0 & 0xffffff00) | (t23 & 255));
-  t24 = ((((d0 & 255)) << 24) >> 24);
-  d0 = ((d0 & 0xffff0000) | (t24 & 65535));
-  t25 = (d0 & 65535);
+  shape = ((shape & 0xffffff00) | (t23 & 255));
+  t24 = ((((shape & 255)) << 24) >> 24);
+  shape = ((shape & 0xffff0000) | (t24 & 65535));
+  t25 = (shape & 65535);
   t26 = ((0x3) & 63);
-  t27 = (t26 >= 16 ? 0 : (((d0 & 65535)) << t26));
-  d0 = ((d0 & 0xffff0000) | (t27 & 65535));
-  t28 = (d0 & 65535);
+  t27 = (t26 >= 16 ? 0 : (((shape & 65535)) << t26));
+  shape = ((shape & 0xffff0000) | (t27 & 65535));
+  t28 = (shape & 65535);
   t29 = 0x4;
-  d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + 0x4) & 65535));
-  t30 = (d0 & 65535);
+  shape = ((shape & 0xffff0000) | (((shape & 65535) + 0x4) & 65535));
+  t30 = (shape & 65535);
   store16(dst + 0x8, t30);
   t31 = load8(a0 + 0x47);
-  d0 = ((d0 & 0xffffff00) | (t31 & 255));
-  t32 = ((((d0 & 255)) << 24) >> 24);
-  d0 = ((d0 & 0xffff0000) | (t32 & 65535));
-  t33 = ((((d0 & 65535)) << 16) >> 16);
-  d0 = (t33) >>> 0;
-  t34 = d0;
+  shape = ((shape & 0xffffff00) | (t31 & 255));
+  t32 = ((((shape & 255)) << 24) >> 24);
+  shape = ((shape & 0xffff0000) | (t32 & 65535));
+  t33 = ((((shape & 65535)) << 16) >> 16);
+  shape = (t33) >>> 0;
+  t34 = shape;
   t35 = ((0x3) & 63);
-  t36 = (t35 >= 32 ? 0 : ((d0) << t35));
-  d0 = (t36) >>> 0;
-  t37 = d0;
+  t36 = (t35 >= 32 ? 0 : ((shape) << t35));
+  shape = (t36) >>> 0;
+  t37 = shape;
   t38 = 0x4;
-  d0 = ((d0 + 0x4)) >>> 0;
-  t39 = (d0 & 65535);
+  shape = ((shape + 0x4)) >>> 0;
+  t39 = (shape & 65535);
   store16(dst + 0x6, t39);
   t40 = load16(dst);
   setXAdd(t37, t38, 32);
   setFlagsCmp((kind2 & 65535), t40, 16);
   if ((((kind2 & 65535)) & 65535) === ((t40) & 65535)) {
   } else {
-    const _t9 = tick(24, 0x05220) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t37, t38, 32); setFlagsCmp((kind2 & 65535), t40, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t9) takeIrq(); }
+    const _t9 = tick(24, 0x05220) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t37, t38, 32); setFlagsCmp((kind2 & 65535), t40, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t9) takeIrq(); }
     t41 = (kind2 & 65535);
     store16(dst, t41);
     t42 = load8(dst + 0x2);
@@ -37118,7 +37118,7 @@ export function chooseCursorSShapeWhat(d0_: number, kind2_: number): void {
     setXAdd(t37, t38, 32);
     setFlagsCmp(t45, 0, 8);
   }
-  const _t10 = tick(50, 0x05228) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t37, t38, 32); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); if (_t10) takeIrq(); }
+  const _t10 = tick(50, 0x05228) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t37, t38, 32); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); if (_t10) takeIrq(); }
   a2 = load32(stackPointer());
   dst = load32(stackPointer() + 4);
   drop(8);
@@ -37127,14 +37127,14 @@ export function chooseCursorSShapeWhat(d0_: number, kind2_: number): void {
   setReg('a1', a1);
   setReg('a2', a2);
   setReg('a3', dst);
-  setReg('d0', d0);
+  setReg('d0', shape);
   setReg('d1', kind2);
-  setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', d0); setReg('d1', kind2); return;
+  setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', dst); setReg('d0', shape); setReg('d1', kind2); return;
   setReg('a0', a0);
   setReg('a1', a1);
   setReg('a2', a2);
   setReg('a3', dst);
-  setReg('d0', d0);
+  setReg('d0', shape);
   setReg('d1', kind2);
 }
 

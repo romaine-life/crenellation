@@ -4556,5 +4556,37 @@
       "name": "saved",
       "why": "pushed and popped around the body and never read - the routine preserves it for its caller and does nothing with it."
     }
+  },
+  "0x2698": {
+    "stack4": {
+      "name": "coord",
+      "why": "its low word at 0x18(a7), pushed straight to 0x11bd8 - a packed row-then-column pair. It was called `limit`, which came from the mechanical passes and is wrong."
+    },
+    "stack8": {
+      "name": "kind",
+      "why": "its low word at 0x1c(a7), compared against 8 to pick between two whole paths. It was called `limit2`; nothing here bounds anything."
+    },
+    "d2": {
+      "name": "cellByte",
+      "why": "the byte at the cell, kept whole and later masked to 0xc0 with 9 added - so the routine holds the raw byte and derives from it rather than keeping only the parts."
+    },
+    "d4": {
+      "name": "owner",
+      "why": "the cell byte shifted right six - the 0xc0 field as 0..3."
+    },
+    "d5": {
+      "name": "colour",
+      "why": "the byte from the table at 0xfe02 indexed by the owner, which is the same table and the same indexing 0x441c uses to colour the territory marker."
+    },
+    "d3": {
+      "name": "kindLocal",
+      "why": "the kind argument in a register for the rest of the routine, compared against 8 before either path runs."
+    }
+  },
+  "0x5192": {
+    "d0": {
+      "name": "shape",
+      "why": "the answer being chosen - the cursor shape this routine settles on before returning it."
+    }
   }
 }
