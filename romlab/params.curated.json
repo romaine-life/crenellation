@@ -656,5 +656,27 @@
       "name": "value",
       "why": "the longword at 0x18(a7), written to 0x10 of the record. Kind six stores no original alongside it, where kinds four and five write the same value to 0x16 as well."
     }
+  },
+  "0xc832": {
+    "stack4": {
+      "name": "page",
+      "why": "only tested against zero; non-zero contributes 0x200 before the doubling, so 0x400 bytes - one page of 256 four-byte palette entries."
+    },
+    "stack8": {
+      "name": "bank",
+      "why": "its low byte, shifted left five and doubled: 64 bytes to a bank, which is sixteen four-byte entries."
+    },
+    "stack12": {
+      "name": "step",
+      "why": "its low byte, and SIGNED - the only signed argument in the family. Positive puts the start at bank * 16 + step; negative puts it at bank * 16 + repeats + |step| - 1, the far end of the run. It is also stored whole at 0x10."
+    },
+    "stack16": {
+      "name": "period",
+      "why": "its low byte, written to 0xd - the reload the ticker at 0x125da copies into 0xe."
+    },
+    "stack20": {
+      "name": "repeats",
+      "why": "its low byte, written to 0xf, and read a second time on the negative path as part of working out where the run starts. Changing it moves the start as well as the length, which is true of no other kind."
+    }
   }
 }

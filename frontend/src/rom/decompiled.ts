@@ -96733,7 +96733,7 @@ export function schedulePaletteEffectKindSix(a0_: number, dst_: number, d0_: num
   setReg('d4', d4);
 }
 
-export function schedulePaletteEffectCountingBack(dst2_: number, dst_: number, d0_: number, d1_: number, limit_: number, d3_: number, d4_: number, limit2: number, arg1: number, limit3: number, arg3: number, arg4: number): void {
+export function schedulePaletteEffectCountingBack(dst2_: number, dst_: number, d0_: number, d1_: number, limit_: number, d3_: number, d4_: number, page: number, bank: number, step: number, period: number, repeats: number): void {
   let _guard = 0;
   void _guard;
   let dst2 = dst2_;
@@ -96795,11 +96795,11 @@ export function schedulePaletteEffectCountingBack(dst2_: number, dst_: number, d
   save_d3_1 = d3;
   save_d4_2 = d4;
   save_a2_3 = dst;
-  t4 = (limit2 & 0xff);
+  t4 = (page & 0xff);
   d3 = ((d3 & 0xffffff00) | (t4 & 255));
-  t5 = (arg1 & 0xff);
+  t5 = (bank & 0xff);
   d4 = ((d4 & 0xffffff00) | (t5 & 255));
-  t6 = (limit3 & 0xff);
+  t6 = (step & 0xff);
   limit = ((limit & 0xffffff00) | (t6 & 255));
   setFlagsCmp((limit & 255), 0, 8);
   setReg('a0', dst2);
@@ -96862,7 +96862,7 @@ export function schedulePaletteEffectCountingBack(dst2_: number, dst_: number, d
       }
       const _t6 = tick(56, 0x0c860) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp((d3 & 65535), 0, 16); setReg('a0', dst2); setReg('a2', dst); setReg('d0', d0); setReg('d1', d1); setReg('d2', limit); setReg('d3', d3); setReg('d4', d4); if (_t6) takeIrq(); }
       d0 = (0) >>> 0;
-      t7 = (arg4 & 0xff);
+      t7 = (repeats & 0xff);
       d0 = ((d0 & 0xffffff00) | (t7 & 255));
       d1 = (0) >>> 0;
       d1 = ((d1 & 0xffffff00) | ((d4 & 255) & 255));
@@ -96903,10 +96903,10 @@ export function schedulePaletteEffectCountingBack(dst2_: number, dst_: number, d
     store8(dst + 0xc, t32);
     t33 = (limit & 255);
     store8(dst + 0x10, t33);
-    t34 = (arg4 & 0xff);
+    t34 = (repeats & 0xff);
     t35 = t34;
     store8(dst + 0xf, t35);
-    t36 = (arg3 & 0xff);
+    t36 = (period & 0xff);
     t37 = t36;
     store8(dst + 0xd, t37);
     t38 = 0x1;
