@@ -1,23 +1,951 @@
 {
+  "0x3e8": {
+    "name": "raise trap zero",
+    "why": "the whole routine is `trap #$0`. Two bytes; nothing else to say about it."
+  },
+  "0x620": {
+    "name": "lower the interrupt mask to zero",
+    "why": "`move.w #$2000,sr; rts` - supervisor, trace off, mask 0. The counterpart of saveInterruptMaskRaise, which sets it the other way."
+  },
+  "0x626": "set interrupt mask from argument",
+  "0x62e": {
+    "name": "halt with every interrupt masked",
+    "why": "the whole routine is `stop #$2700` - halt, supervisor, interrupt mask 7. 0x642 is a second entry doing exactly the same thing."
+  },
+  "0x632": {
+    "name": "raise trap zero unless d0 is set",
+    "why": "`nop; nop; tst.w d0; bne $3ea; jmp $3e8` - falls through to the trap at 0x3e8 when d0 is zero and skips it otherwise. An assertion."
+  },
+  "0x642": {
+    "name": "halt with every interrupt masked, second entry",
+    "why": "`stop #$2700`, identical to 0x62e and separately called."
+  },
+  "0x646": {
+    "name": "two nops, then fall through",
+    "why": "`nop; nop` with no terminator: a patch slot the routine after it runs into."
+  },
+  "0x64a": "save interrupt mask and raise it",
+  "0x656": "restore saved interrupt mask",
+  "0x8b4": "piece walker",
+  "0xbc2": "enclosure test",
+  "0xcac": {
+    "name": "walk the eight neighbours of a cell for the current player's wall",
+    "why": "0xFCCA is the eight-way step table this ROM uses everywhere; this takes the current player's owner byte through 0x1000A, ors in 1 for a wall, and walks the neighbours of the cell cellAddress returns, with 0xFCEA as a second table for the diagonal cases."
+  },
+  "0x10de": {
+    "name": "draw the cell in whichever way its type and owner call for",
+    "why": "a jump table's worth of tails: the owner nibble at -0xD(a6) shifted right six selects a wall byte from 0x1000E and writes it through cellWriteHelper with 8; other entries call cellDraw, cellOverlayDrawSecondForm or cellStateDraw on the same cell word at -0x14(a6), or clear the top two bits of the byte at -4(a6). Every path ends at 0x11EA or 0x11DE."
+  },
+  "0x11c6": {
+    "name": "call the player's handler, then clear the top two bits of its byte",
+    "why": "pushes the frame's pointer at -0x12 and the word the pointer at -0xC names, calls through the handler at -8, and on a non-zero d2 does `andi.b #$3f,(a0)` on the byte at -4 - the owner bits cleared, the rest kept."
+  },
+  "0x122c": {
+    "name": "scan the whole board for cells of type one and their neighbours",
+    "why": "walks the board from 0x3E0864, masking each cell with 0x3F and looking for type 1, and for each looks at the eight neighbours through the step table at 0xFCCA. Two frame bytes at -1 and -2 carry the row and the answer."
+  },
+  "0x13b2": {
+    "name": "walk the eight neighbours of a cell in screen space as well as board space",
+    "why": "takes both cellAddress and screenAddress for the same coordinate, works out the parity of the two coordinate bytes, keeps the cell's owner bits with `andi.w #$c0`, and walks the 0xFCCA steps four at a time."
+  },
+  "0x15b4": "set flag after player array",
+  "0x15d6": "clear status bits in every player",
+  "0x15fe": {
+    "name": "open the round: clear the hand slots and seed the protection counter",
+    "why": "writes 0xFF into the three bytes at 0x3E0DCE - the hand slots - and, once 0x3E1952 has passed 1, copies 0x3E0DD4 into 0x3E0DD2 and seeds 0x3E0DE6 from the table at 0xFD06 indexed one past it. Then testWordProtectionWindow and the rest of the round's setup."
+  },
+  "0x18a6": {
+    "name": "point each active player at its script, counting sign bytes",
+    "why": "clears 0x3E0DD8, then for each of the three players whose first word has either owner bit set: indexes the pointer table at +0x16 of the block at 0x3E0DCA by the player's byte at +3, and walks that pointer forward two bytes at a time, skipping runs of non-negative bytes, once for each of the count in the player's byte at 0x1D. The address it lands on goes in field 0x4A."
+  },
+  "0x1b96": {
+    "name": "count the round up for every player still in, and reset their state",
+    "why": "for each of the three player structs with bit 11 set: counts the byte at +0x1E, raises 0x3E186D to a maximum of 2, clears the long at +0x28 and the byte at +0x16, runs playerFlagHandler, and walks the list at +0x6A. 0x3E1954 and 0x3E1956 are the flags it consults."
+  },
+  "0x1c66": {
+    "name": "count the players still in and pick who acts next",
+    "why": "walks the three player structs, counting those with bit 15 set and a non-zero byte at +0x14, and keeps the running answers in the frame - the count at -6, the chosen index at -2 starting from 0xFF, and 0x3E1952's value at -0xC. 0x3E1954 is the mode flag."
+  },
+  "0x1e74": {
+    "name": "advance to the next active player, or wrap to the first",
+    "why": "`seq` on the caller's word decides whether to look at the byte at +0x1E; then it walks the three structs for one with bit 15 set, keeping 0x3E195C and 0x3E1952 up to date. The counterpart of 0x1C66, which counts rather than advances."
+  },
+  "0x1f3a": "raise player counter capped at four",
+  "0x1f82": {
+    "name": "retire the entity: redraw it, release its hand slot and clear its flags",
+    "why": "with a non-zero flag it calls entityDrawDispatch on the record and handTableEntryTwelvePast with the byte at +2. Either way it clears all but 0x71FF of the record's first word, writes 0xFF into the byte at 0x3E0DCE indexed by the record's byte at +3, and clears field 0x1D when 0x3E1954 is exactly 1."
+  },
+  "0x219a": {
+    "name": "read the DIP switches and split them into the option bytes",
+    "why": "reads sound request 0x15 into 0x3E0DE0; bit 13 set means the word at 0x284 replaces it and is sent back. Then the low two bits go to 0x3E0DDA and bits 2 and 3 are masked off for the next option."
+  },
+  "0x220c": "entity spawn",
+  "0x2788": {
+    "name": "dispatch a cell type between 0x1A and 0x29 through its table",
+    "why": "`moveq #$1a,d1; cmp.l d0,d1; bgt` and `moveq #$29,d1; ...; blt` bound the index, then `jmp $27a2(pc,d0.w)` through the word table at 0x276E. What capstone shows after the jump is that table, not code."
+  },
+  "0x3242": {
+    "name": "redraw a cell and the sprite that sits on it",
+    "why": "cellDrawCoordinate for the sprite, cellAddress for the cell, and the cell's owner nibble shifted right six indexes 0xFE06 for the tile. Counts the caller's byte at 0x19(a7) down, then screenAddress."
+  },
+  "0x357a": {
+    "name": "blit a run of rows at a fixed screen pitch",
+    "why": "computes the start as `(0x40 - x) * 8 + 0xE00` and steps a row counter from the caller's word less one, so the destination walks up the screen as x grows. Everything else is the caller's - the source at 0xC(a6) and the two counts."
+  },
+  "0x3c00": {
+    "name": "score a cell from both neighbour weightings and bias by 0xA0",
+    "why": "calls scoreNeighboursOneStrideEither and translates its answer through the table at 0xFDAC, calls scoreThreeNeighboursWeightsOne and translates that through 0xFD9C, adds the two and 0xA0, and tail-jumps to 0x3CCC. Reached through a function-pointer table, so it is one scoring policy of several."
+  },
+  "0x41be": {
+    "name": "draw the panel for a player, or nothing for a negative index",
+    "why": "a negative index returns immediately. Otherwise it multiplies the index by 0x7E to reach the player struct, indexes the block at 0x3E0DCA by the struct's byte at +3, and draws from there."
+  },
+  "0x4332": {
+    "name": "draw one decompressed graphic at a screen row",
+    "why": "`jsr $11bec` - screenAddress - then conditionalDraw at 0x435A with 0xC0, and the result handed to decompressGraphicsAtDADDC. Three calls and the argument shuffling between them."
+  },
+  "0x4552": {
+    "name": "fade the title screen's five palettes",
+    "why": "paletteFadeStep on banks 4 and 7 with tables 0x1EE60 and 0x1F1A0, then paletteFadeStepFlag on 0x1EFC0 and 0x1EC00, and paletteSequenceTables between them. Table addresses and bank numbers throughout."
+  },
+  "0x463c": {
+    "name": "fade all seven palette banks a step",
+    "why": "paletteFadeStep seven times through a2, with tables 0x1ED20, 0x1ED40, 0x1ED60, 0x1ED80, 0x1EDA0, 0x1EEA0 and 0x1EF00 for banks 9 to 0xF. The table addresses and bank numbers are the whole routine."
+  },
+  "0x4880": {
+    "name": "copy the four difficulty bytes out of 0xFE03 and run 0x48AE",
+    "why": "four `move.b` from 0xFE03, 0xFE07, 0xFE05 and 0xFE09 into 0x3E1CA6 to 0x3E1CA9, then one call. A fixed table read into a fixed block."
+  },
+  "0x48ae": {
+    "name": "fade the two attract palettes according to the difficulty byte",
+    "why": "in attract - 0x3E1954 exactly 1 - it takes the record at 0x3E1964 and sets a flag from whether its byte at +0x1D has reached 3, then works from table 0x1F240 with the high nibble of the difficulty byte at 0x3E1CA6, calling paletteFadeStep and paletteFadeStepFlag through a2 and a3."
+  },
+  "0x4ab8": {
+    "name": "run the palette sequence for table 0x1EDA0 and start the level intro",
+    "why": "paletteFadeStep with 0x1EDA0 and 0xD, then 0xC724 with 0x1F540 and six more constants, then 0xC832 with 0xFFFC and three more, then levelIntroSequence. Four calls whose arguments are all immediates, so the table addresses are the whole of what distinguishes it."
+  },
+  "0x4b0a": {
+    "name": "load the eight level palettes and start their fades",
+    "why": "waits a frame, then for each of eight word entries of the table at 0x1F7C0 calls helperPaletteUpdate into consecutive longs from 0x3C0360, and follows with two calls to the backwards-counting scheduler on bank 0xD with -0xC and -8."
+  },
+  "0x4d44": {
+    "name": "run the palette sequence for table 0xFE18",
+    "why": "seven pushed constants - 0, 8, 0xFE18, 0xD, 4, 3, 4 - and one call to 0xC688. The table address is what makes this entry different from its siblings; everything else is the same call."
+  },
+  "0x4e20": {
+    "name": "fade bank eight to the level's palette, or to the attract one",
+    "why": "with 0x3E1954 exactly 1 it picks the 0x20-byte entry of 0x1EE00 indexed by 0x3E195A plus one and uses steps 5, 5, 3; otherwise the fixed table 0x1F6B0 with 3, 5, 3. Either way 0xC832 then paletteFadeStep, both on bank 8."
+  },
+  "0x5000": {
+    "name": "fade all three palette banks a step",
+    "why": "three `jsr $450c.w` - paletteFadeStep - with the same pointer and bank numbers 0, 1 and 2, then drops the pushed arguments. Reached through a function-pointer table, so it is one phase's palette handler."
+  },
+  "0x5056": {
+    "name": "fill the six-entry list for a kind with freshly spawned entities",
+    "why": "does nothing if the list at 0xFE3E indexed by the kind already has a first entry. Otherwise spawns six entities, each stamped with the shape from 0x1F7F0 and bit 5 of its byte at +2, addressed as 0x10-byte records from 0x3E02D8, and links them into the list. The kind byte comes from 0xFD92."
+  },
+  "0x5192": {
+    "name": "choose the cursor's shape from what the current record holds",
+    "why": "with no long at +0x24 of the block at 0x3E1960 it uses shape 0x1F7F2; otherwise it follows that pointer and, on finding a 0x46 there, picks the shape by the block's byte at +0x15. The sprite record is at +0x42."
+  },
+  "0x52e2": {
+    "name": "move the cursor sprite to the current player's cell and flag it changed",
+    "why": "takes the sprite record at +0x42 of the block at 0x3E1960, sets its words at +8 and +6 to `(byte << 3) + 8` of the two coordinate bytes at +0x48, and when the shape from 0x1FAFE differs from the one already in the record writes it and sets bit 5 of the byte at +2."
+  },
+  "0x54a8": {
+    "name": "spawn the round's banner sprite and point 0x3E0EC2 at it",
+    "why": "entitySpawn with 0xAE, 0x4D and 6, addressed as a 0x10-byte record from 0x3E02D8, its address kept in 0x3E0EC2. Then shape 0x1FB5C, bit 5 of the byte at +2, and the bank chosen by 0x3E1AE2."
+  },
+  "0x5558": {
+    "name": "claim the pending flag, count the request and clear the slot's word",
+    "why": "`tst.b (a3)` leaves through 0x5578 when the flag is already set; otherwise counts 0x3E0DC4 up, clears the word the pointer at $62(a1) names, writes 0xFF into the flag, and calls through a2 with 0x48."
+  },
+  "0x5572": {
+    "name": "drop four bytes of stack, then restore a2 and a3 and return",
+    "why": "`addq.l #$4,a7; bra.w $561c`, where 0x561C is the shared `movem.l (a7)+,a2-a3; rts` epilogue."
+  },
+  "0x5578": {
+    "name": "count one off the byte a3 points at, then restore a2 and a3 and return",
+    "why": "`subq.b #$1,(a3); bra.w $561c` - one decrement and the shared epilogue."
+  },
+  "0x557e": {
+    "name": "hold the attract text until it scrolls off, then start the next",
+    "why": "the word the pointer at $62(a1) names is the position: above 0x50 or below -0x50 it calls through a2 with 0x5D, runs walkWholeListFlagRaised and bumps 0x3E0DC4. Inside that band it counts the byte at (a3) down, and on reaching zero starts attractTextSequence, calls a2 with 0x14, reloads the counter with 0xB4 and sets 0x3E0DC4 to 3."
+  },
+  "0x55c4": {
+    "name": "slide the record down the screen, and tear it down past 0xA0",
+    "why": "counts 0x3E0EC0 up and adds it to the word at +6 every frame, so the step grows; once that word reaches 0xA0 it removes event 0x11BC6, runs the palette fade, and calls through a2 three times with 0x49, 0x2C and 0x14 before leaving through the shared epilogue at 0x561C."
+  },
+  "0x561c": {
+    "name": "restore a2 and a3, then return",
+    "why": "`movem.l (a7)+,a2-a3; rts` - the epilogue half of a save/restore pair, reached as its own address so several exits can share it."
+  },
+  "0x5818": {
+    "name": "draw the score panel's box and rule it into rows",
+    "why": "rectGrab for the box at 0x80, 0x59, 0x50, 0x38, then rules rows from 0x200004 with a pitch of 0xA8 and a spacing of `0xA00 / 0x40`, sixteen of them, 0x75 wide."
+  },
+  "0x5892": "rect grab",
+  "0x59ee": "piece bag builder",
+  "0x5afc": "piece rotation",
+  "0x5b40": "entity allocator",
+  "0x5c80": "set flag bit 4 on every motion object",
+  "0x5cce": {
+    "name": "reset the display list and its counters for a new round",
+    "why": "saves the interrupt mask with 0x56, clears the word pairs at 0x3E02CA and 0x3E02CC, sets 0x3E02C6 to 1 and 0x3E02C8 to 0x47, clears 0x3E02B0 and 0x3E02B2, and then zeroes the three words at the head of work RAM."
+  },
+  "0x5e38": "seal event post",
+  "0x5ea2": "territory fill",
+  "0x5fa6": {
+    "name": "lay the player's wall along the cell run, from table 0x11742",
+    "why": "0x1000A maps a player index to its owner byte and 0x1000E to its wall byte; `ori.b #$1` on the owner is how this ROM spells 'a wall of that owner'. Takes the record's player index, its width from the word table 0x11742, both the cell and screen addresses of the coordinate, and works from the counter block at 0x3E1F16.",
+    "ident": "layPlayerWallFromTable11742"
+  },
+  "0x60be": {
+    "name": "charge the item, then decompress its graphic, writing the cell backwards",
+    "why": "findEntryMatchingWord on the frame's word, cellSignTest on the answer, accessorStateBlock, then deductItemSCost with 0x1C. It writes d4 into the cell at d5 and steps d5 *down*, then calls decompressOneEightPixelColumn with a width from the table a4 points at. 0x63CA is the same routine writing forwards.",
+    "ident": "chargeItemThenDecompressBackwards"
+  },
+  "0x6114": {
+    "name": "claim the cell for the player and redraw its neighbour if it is type two",
+    "why": "reads the byte one row and one column on - `d5 + 0x20 + 1` - into the frame, writes the owner bits into the cell at d5 with `andi.b #$3f; or.b d4`, and when that neighbour's low six bits are 2 passes it through the gate once - guarded by the byte at $14(a2) - and calls cellOwnerDraw with 1."
+  },
+  "0x6166": {
+    "name": "claim the cell and pass it on when the neighbour is type 0x1A",
+    "why": "the same claim as 0x6114 - the byte a row and a column on read into the frame, the owner bits written into the cell at d5 - but the neighbour test is against 0x1A rather than 2, the guard byte at $14(a2) is stepped by two rather than one, and the redraw is framebufferPairDraw.",
+    "ident": "claimCellAndPassOnWhenNeighbourIs1A"
+  },
+  "0x62a6": {
+    "name": "lay the player's wall along the next row, from the counter at 0x3E1F18",
+    "why": "0x1000A maps a player index to its owner byte and 0x1000E to its wall byte; `ori.b #$1` on the owner is how this ROM spells 'a wall of that owner'. The sibling of 0x5FA6, differing in the counter block it uses - 0x3E1F18 rather than 0x3E1F16 - and in stepping the caller's second coordinate byte by one before it starts.",
+    "ident": "layPlayerWallFromCounter3E1F18"
+  },
+  "0x63ca": {
+    "name": "charge the item, then decompress its graphic, writing the cell forwards",
+    "why": "identical to 0x60BE - the same four calls with the same constants - except that it writes d5 into the cell at d4 and steps *up*, and leaves through 0x655E rather than 0x6252.",
+    "ident": "chargeItemThenDecompressForwards"
+  },
+  "0x65aa": "span scanner",
+  "0x66c8": {
+    "name": "scan the screen for cells, taking the value from the pointer",
+    "why": "`move.b (a1),d4` then into tailFullScreenCellScan at 0x66D4. The byte a1 points at is the only thing this entry contributes."
+  },
+  "0x66ce": {
+    "name": "scan the screen for cells with value six",
+    "why": "`moveq #$6,d4` then into tailFullScreenCellScan at 0x66D4. The constant is the whole difference from 0x66C8."
+  },
+  "0x670e": "clear player pair and run script",
+  "0x672e": {
+    "name": "move the cursor to the player's marked cell, unless event 0x11AE2 is up",
+    "why": "returns at once when eventTest finds 0x11AE2. Otherwise it takes the coordinate pair at +0x46 of the first player struct, calls cellAddress, and walks the players against the block at 0x3E1960."
+  },
+  "0x67f6": {
+    "name": "redraw the record's whole wall run into the playfield",
+    "why": "0x1000A maps a player index to its owner byte and 0x1000E to its wall byte; `ori.b #$1` on the owner is how this ROM spells 'a wall of that owner'. Walks the board cells from 0x3E0864 and writes into the playfield from 0x200004, taking the tile shapes from the table at 0x21BE0 and toggling on the low bit of a counter, so alternate cells get alternate tiles."
+  },
+  "0x6bc0": {
+    "name": "take the next free entry in the record's 0x1A-byte list and stamp it",
+    "why": "does nothing once the count at +0x16 has reached 0x1D. Otherwise it steps that count, walks the list at +0x6A for an entry whose byte at +1 is negative - reusing a dead one by clearing it - writes the caller's two bytes into it, sets +5 to 0xC, copies the owner byte from +2 of the record, sets +4 to 2, and returns the entry."
+  },
+  "0x6c20": "cannon aiming",
+  "0x6cae": "fire trigger",
+  "0x6ef8": {
+    "name": "which of the four neighbours of a cell are unowned",
+    "why": "checks the cells at +0x20 and -0x20 - one row either way - and the two beside them, adding 1, 2, 4 or 8 to the answer for each whose owner bits are clear. A four-bit mask of free directions."
+  },
+  "0x6fb4": "projectile scheduler",
+  "0x7004": {
+    "name": "step every shot in flight and draw it",
+    "why": "walks the 0x1C-byte shot records from 0x3E0F48 through the pointer at +0x16, with accessorStateBlock and offsetRecordTableBase to hand and the four shape tables 0x1F8D8, 0x1F8EC, 0x1F900 and 0x1F910 chosen by what the shot is."
+  },
+  "0x7008": "projectile flight",
+  "0x71c4": {
+    "name": "map cursor code 0x11 or 0x30 to its handler",
+    "why": "`cmpi.w #$11,d1` jumps to 0x72EC, `cmpi.w #$30,d1` to 0x7318, and anything else to 0x735C. Two constants and a default; the routine is the table.",
+    "ident": "dispatchCursorCode11Or30"
+  },
+  "0x71dc": {
+    "name": "place the cursor sprite for a player, several ways",
+    "why": "each entry multiplies the record's byte at +2 by 0x7E to reach that player's struct at 0x3E1968, calls through a4 with 0x128B0, and then some combination of 0x73DC and 0x6EF8 before writing the sprite's words: +8 from the byte at -0x18(a6) scaled by eight plus four, +6 from the byte at -0x17 scaled by eight. The entries differ in which of the two helpers they run and what they do with the answer."
+  },
+  "0x73dc": {
+    "name": "walk the neighbours for a wall the record's owner does not hold",
+    "why": "returns at once when the cell's owner bits already match the record's owner byte from 0x1000A; otherwise walks the 0xFCCA steps with a count of 3 and a stride of 1."
+  },
+  "0x747a": {
+    "name": "stamp the wall byte for the cell's own owner",
+    "why": "cellAddress for the coordinate, the owner nibble shifted right six less one indexes 0x1000E for that owner's wall byte, and the cell is written with it."
+  },
+  "0x74fa": {
+    "name": "dispatch the piece's low six bits through its thirty-seven-way table",
+    "why": "`move.b (a0),d2; andi.b #$3f,d2` takes the low six bits of the byte the caller points at, rejects anything outside 1..0x25 to 0x7672, and jumps through the word table at 0x752C. a2 is pointed at 0x767C first, so every case has the same helper to hand."
+  },
+  "0x7578": {
+    "name": "stamp the shot's cell, several ways by what it hit",
+    "why": "one entry writes type 0x27 for a 0x25 and type 3 otherwise, keeping the owner bits with `andi.b #$c0`, and redraws through 0x3242. Another calls through a2 with 8 and only proceeds on an answer of 8, then indexes by the cell's owner nibble shifted right six. Every entry leaves through 0x7670 or 0x7672."
+  },
+  "0x767c": {
+    "name": "walk backwards along the run until the cell type changes",
+    "why": "compares each cell's low six bits against the caller's byte and steps back with `move.b -(a0),d2`, counting down the second coordinate byte in the frame, so it finds where a run of one type begins."
+  },
+  "0x7800": {
+    "name": "aim the unit at the next cell of its path and step it",
+    "why": "translates the record's byte at +2 through the table at 0x1000A, asks 0x7870 for the coordinate pair - retrying with a zero flag when the first byte comes back negative - and on a valid pair copies it into the record's fields at +0x46 and calls unitStepWrapper."
+  },
+  "0x7870": {
+    "name": "find the next cell of the path the unit can move to",
+    "why": "walks the board from 0x3E0864 a row at a time - `moveq #$20,d3` is the row stride - asking 0x7954 whether each candidate's wall run is unbroken, and keeps the answer in the frame at -6. 0x3E0F46 is the shot block it consults."
+  },
+  "0x7954": {
+    "name": "is the cell's wall run unbroken in all eight directions",
+    "why": "starts from `seq` on whether the cell's byte equals the caller's, then for each of the eight steps in the table at 0xFCCA looks one cell out and two cells out: a matching neighbour whose own neighbour is a different non-empty owner clears the answer. Returns the flag."
+  },
+  "0x7a24": "phase countdown",
+  "0x7b3e": {
+    "name": "draw each player's score line, wide or narrow",
+    "why": "textWidthMeasure with zero picks 2 or 0 as the base, and the strings come from 0x1178A. It then walks the three player structs from 0x3E1968 drawing one line each."
+  },
+  "0x7c04": {
+    "name": "end the round: post the outcome event and set the follow-on state",
+    "why": "posts the caller's event if there is one, forces 0x3E0DC4 to 0xFE, and for a non-negative outcome posts 0x11B1E, scans the entity list named by the long table at 0x117AE, and sets 0x3E0EBE to 1 or 2 depending on the outcome and on whether 0x3E195C has reached 2."
+  },
+  "0x7cf0": {
+    "name": "draw the panel graphic for a slot, choosing the wide or narrow variant",
+    "why": "phase 0xD uses base 6 and colour 7, anything else base 0 and colour 0xB; textWidthMeasure with 1 adds three more to the base when it answers non-zero. The result indexes the long table at 0x21516 and goes to 0x41BE with 0xC."
+  },
+  "0x7dce": {
+    "name": "draw the round summary screen",
+    "why": "blits 0x35642 to 0x200004 at 0x2A by 0x1E through 0x36A2 with the palette at 0x3EF80, then walks the player structs drawing from the strings at 0x11784, and posts event 0x11BA2."
+  },
+  "0x7ea4": {
+    "name": "move the score towards its target, at most 0x3D3 or 0xA1 a step",
+    "why": "takes the pair of longs at +4 and +0xC of the record - the shown value and what is left to add - clamps the step to 0x3D3, or to 0xA1 when what remains is smaller, adds it to one and subtracts it from the other. The score counting up on screen."
+  },
+  "0x8008": {
+    "name": "post each active player's phase event, chosen by the difficulty byte",
+    "why": "walks the three player structs; for each with bit 15 set it takes the block at 0x3E0DCA, the difficulty bytes from 0xFE02, the shapes from 0x214FA, and posts one of 0x11BA8, 0x11BB4 or 0x11BBA through eventPost.",
+    "ident": "postEachPlayersPhaseEventByDifficulty"
+  },
+  "0x8326": {
+    "name": "redraw the cell one row below the record's position",
+    "why": "0x1000A maps a player index to its owner byte and 0x1000E to its wall byte; `ori.b #$1` on the owner is how this ROM spells 'a wall of that owner'. Copies the record's coordinate pair from +0x30, adds one to the first byte, and takes both the cell and screen addresses of that."
+  },
+  "0x84da": {
+    "name": "dissolve to the next screen when the record's bank has changed",
+    "why": "does nothing unless bit 12 of the record's first word is set and its byte at +2 differs from 0x3E1AE2. Then screenDissolve, runSequenceDifferentRoutineIndex, copySixteenWords for that bank, blits 0xAE034 to 0x200004, calls 0x54A8 and passes 0x13 through the gate."
+  },
+  "0x8598": "damage selector",
+  "0x8606": "damage handler",
+  "0x865e": "territory scoring",
+  "0x875e": {
+    "name": "walk the current record's script to the terminating byte",
+    "why": "follows the pointer at +0x4A of the record at 0x3E1960 two bytes at a time, skipping over the caller's string while its bytes are non-zero, and reads the byte it lands on sign-extended."
+  },
+  "0x88b0": {
+    "name": "sweep the five-by-five neighbourhood of a cell, freeing what it finds",
+    "why": "steps both coordinate bytes back by one for a five-by-five box - the counts 4 and 4 in the frame - and runs runCellsFree at 0x8A24 on each, with 0xF and 0x30 as the masks."
+  },
+  "0x8a9c": {
+    "name": "walk the path until it reaches the target cell, and say how far",
+    "why": "steps a coordinate pair by the deltas at 0xFCDA and 0xFCE2 indexed by each byte of the path, counting steps, and returns that count when the pair matches the caller's word. A negative path byte ends the walk and returns -1."
+  },
+  "0x8b0c": {
+    "name": "step a path one cell and follow it from the current player's position",
+    "why": "adds the first two bytes of the path to the caller's coordinate pair, takes the current player's path pointer at +0x7A and coordinate pair at +0x30, and walks with the delta tables 0xFCDA and 0xFCE2."
+  },
+  "0x8bb2": {
+    "name": "walk a record's whole path, cell by cell",
+    "why": "reads the record's path pointer at +0x7A for the starting pair and walks it with the same 0xFCDA and 0xFCE2 delta tables, calling cellAddress for each cell. The caller's word decides the direction with `sne`."
+  },
+  "0x8c7a": {
+    "name": "follow the record's second path to its end",
+    "why": "takes the coordinate pair at +0x46 and the path pointer at +0x76 - the second of the record's two - and walks it with the 0xFCDA and 0xFCE2 delta tables until a negative byte ends it."
+  },
+  "0x8d0e": {
+    "name": "retire the current record's path, and start the next stage",
+    "why": "with a long at +0x24 of the block at 0x3E1960: a byte of 0xFE at +0x22 clears bit 13 of the first word, walks the path with 0x8BB2 and writes 0xFD; the other cases carry the walk on with the 0xFCE2 deltas."
+  },
+  "0x9080": "drain event queue",
+  "0x91b2": {
+    "name": "the main loop",
+    "why": "initialisation once - the sound sequence player, the high score renderer, initialisePlayerStructs, entitySpawn, state word cleared and sub-state set to 1, the palette cleared, flagTestWord, difficultyClamp - and then an endless `bra.b` round drainEventQueueWrapper, runHandlerEveryFlagBit, the state dispatcher at 0x9208 and phaseDispatcher. This is the loop that never returns, which is why System.run does not either."
+  },
+  "0x9208": {
+    "name": "dispatch the game state at 0x3E1948 through its twenty-four-way table",
+    "why": "`link a6,#-8`, points a4 at 0x3E1960 and a frame long at 0x3E194A, reads the state word at 0x3E1948, rejects anything above 0x17 to 0xA7DA, and jumps through the word table at 0x9236. The dispatcher the main game state machine sits under."
+  },
+  "0x9d80": {
+    "name": "set the game state to 0xE, then to 0xC with a timer and two lines",
+    "why": "`move.w #$e,$3e1948` and into 0x9E80; the second entry sets a phase timer of 0xF, draws a text line, calls 0xDEC8 with 1, and sets the state word to 0xC. Two entries into the same state change."
+  },
+  "0x9db2": {
+    "name": "award the round to the current player and set up the next",
+    "why": "with 0x3E1AE2 at 3 it just calls 0x1E74 with 1; otherwise it awards a thousand to that player, reads their field, raises their counter capped at four, and calls 0x1E74 with zero. Then roundTeardown, and either 0x3E1958 set to 3 in attract or a4 pointed back at the first player struct."
+  },
+  "0x9e80": {
+    "name": "draw the state's message line and post its event",
+    "why": "the entries share the state word at 0x3E1948 and the countdown byte at 0x3E1870: one leaves at once unless d5 is set and drains 0x11B3C; another draws a text line with the state number and the countdown as its arguments."
+  },
+  "0xa000": {
+    "name": "point the handler slot at the player block and post event 0x11B7E",
+    "why": "`move.l $3e1964.l,(a4)` then `jsr $ee90.l` - eventPost - with 0x11B7E and a zero. Reached through a function-pointer table, so this is one phase's entry."
+  },
+  "0xa016": {
+    "name": "the game's phase entries, one per state word",
+    "why": "each entry sets 0x3E1948 to the next state and leaves through 0xA7DA. Between them: waiting for event 0x11B06 to drain, resetting the players and the piece bag, arming the round with a countdown of 0xA at 0x3E1870, ending the round through 0x7C04 with event 0x11B24, and passing 0xE, 4 and 6 through the gate. This is the largest routine in the port at 1,162 bytes, and it is a switch, not a computation."
+  },
+  "0xa4a0": {
+    "name": "the attract and join phases, one entry each",
+    "why": "the entries share the frame word at -4(a6) as their timer. One counts it down; one runs 0x7004 and unitMovement and only proceeds when both are quiet and the timer has expired; that one then, in attract, calls 0xC436 and reads and raises the counter for the player at 0x3E195A before reloading the timer with 0xB4. 0x3E1954, 0x3E1956 and 0x3E1CB4 are the flags they branch on."
+  },
+  "0xa74a": {
+    "name": "drop twenty bytes of arguments and continue at 0xa7da",
+    "why": "`lea $14(a7),a7; bra.w $a7da` - unwinds a caller's pushed arguments and tail-jumps. 0x14 is the argument block's size, not a frame."
+  },
+  "0xa752": {
+    "name": "advance the operator menu, or run out its timer and start the game",
+    "why": "one entry steps the cursor by 0x7E - a player struct - and counts 0x3E1958. Another runs operatorMenu for 0x3E1954 less one and, when it answers non-zero, steps the same cursor, sets the frame word to 0x78 and the state to 0x15. A third counts that word down while event 0x11BA2 is absent and, at zero, clears the palette and runs the round summary."
+  },
+  "0xa90e": {
+    "name": "hand the current record its table and post 0x11B48 for each player",
+    "why": "points the record at 0x3E1C84's field +0x2C at 0x3E1C44, and in two player mode - 0x3E1954 exactly 2 - posts 0x11B48 for every player struct with bit 15 set, with that player's owner byte from 0x1000A."
+  },
+  "0xa9be": {
+    "name": "drain the round's four events and clear the current record",
+    "why": "only when 0x3E1956 is set: drains 0x11B48 through eventQueueAccess, then removes 0x11B66, 0x11B6C and 0x11B78, and clears fields of the record at 0x3E1C84."
+  },
+  "0xaa86": {
+    "name": "post the round-start events, one set in attract and another in play",
+    "why": "in attract - 0x3E1954 exactly 1 - it posts 0x11B72 with zero and 0x11B4E with the current record at 0x3E1C84; otherwise it walks the three player structs posting one each."
+  },
+  "0xab58": {
+    "name": "point the message pointer at the string for the current option",
+    "why": "in attract it indexes the 0x1A-byte entries of 0x11842 by the option byte at 0x3E0DDA and stores the address in 0x3E1C9A, then reads the record at 0x3E1964's byte at +0x1D to choose within it."
+  },
+  "0xad5a": {
+    "name": "split a cell number into its row and column and act on each",
+    "why": "`andi.w #$3f` takes the column and the rest shifted right six less one is the row; a column of zero means the whole row. 0x3E1C9E is the block it works through."
+  },
+  "0xaef2": {
+    "name": "pick a random one of the twenty entries and mark it",
+    "why": "rng with 0xA, floored at 3, indexes the twenty 0x13-byte entries the pointer at +0x1E of the block at 0x3E0DCA names, and 0x1A goes in the frame byte. 0x3E1AE4 is the block it records into."
+  },
+  "0xaf72": "unit movement",
+  "0xafda": {
+    "name": "expand one of three random score strings into the buffer",
+    "why": "rng with 3 picks between the strings at 0x1181A, 0x11820 and 0x11826, then copies each byte of it plus the caller's word, masked to three bits, into the destination until a negative byte ends it, and terminates with 0xFF."
+  },
+  "0xb032": {
+    "name": "advance the current record to the next moving unit, wrapping",
+    "why": "adds 0xE to the record's pointer at +0x34 and wraps to 0x3E1AE6 when it reaches the end of the units at 0x3E1BC6, writing it back. cellWriteHelper and the string at 0x11808 are what it then draws with."
+  },
+  "0xb330": {
+    "name": "is the cell part of a castle, and which corner",
+    "why": "cellAddress, then the cell must be type 5; the cell before it must be 5, 7 or 6, and the cell a row on is read too. A castle is a block of those types, so this identifies one and says where in it the cell sits."
+  },
+  "0xb3b4": {
+    "name": "index the shape table at 0x1F930 by kind, flip and frame",
+    "why": "builds an offset from three things - 8 when the byte at +1 is set, 0x10 for kind 0x24 and 0x20 for kind 0x25, plus the caller's word - doubles it, and hands 0x1F930 plus that to offsetRecordTableBase."
+  },
+  "0xb40a": {
+    "name": "link the two records together and place the sprite between them",
+    "why": "writes each record's address into the other - +8 of one, offset zero of the other - then takes the coordinate pair at +0xC and scales the first byte by eight plus eight for the sprite's position."
+  },
+  "0xb53a": {
+    "name": "unlink the record and take its string from 0x11812",
+    "why": "clears the long at +4 of the head and at +8 of the record it names, takes the coordinate pair at +0xC, and indexes 0x11812 by the byte at +4 of the record the pointer at +4 names."
+  },
+  "0xb738": {
+    "name": "find the moving unit nearest the record, skipping the current one",
+    "why": "the record's owner byte is zero when it is the current one at 0x3E1C84, and its own owner from 0x1000A otherwise. Then it walks the seven 0x12-byte units at 0x3E1BC6 against the record's pointer at +0x34, with 0x3E1AE6 and 0x3E1CB0 as the bounds."
+  },
+  "0xb958": {
+    "name": "which of the seven moving units is within 0x180 of the point",
+    "why": "scales both coordinates by 32, then for each of the seven 0x12-byte units at 0x3E1BC6 with a live pointer at +4 checks both differences lie between -0x180 and 0x180. On a hit it runs 0xB9C8 on the unit and answers 2 or 1 by the result; 0 if none is near."
+  },
+  "0xb9c8": {
+    "name": "age the unit, faster once the round counter has passed two",
+    "why": "steps the byte at +1 of the unit by one, and by the round counter at +0x1E of the record at 0x3E1964 less two on top of that once that counter is above 2 - so units decay faster in later rounds."
+  },
+  "0xbb7c": {
+    "name": "allocate a two-byte slot, stamp the cell and record its coordinates",
+    "why": "findFreeTwoByteSlot first, and does nothing if there is none. Otherwise cellAddress for the cell, writes the byte from the table at 0x1000A indexed by the current record's field +2 plus the caller's owner code, calls cellStateDraw, copies the two coordinate bytes into the slot and counts 0x3E1C98 on by four."
+  },
+  "0xbbd2": {
+    "name": "walk the current record's ring of targets and act on each",
+    "why": "steps the pointer at +0x2C of the record at 0x3E1C84 by two, wrapping back to 0x3E1C44 when it reaches 0x3E1C84 itself - a ring - and works through what it finds. At 1,406 bytes this is the second largest routine in the port."
+  },
+  "0xc240": {
+    "name": "draw the entity at a cell, one step brighter",
+    "why": "findEntryMatchingWord for the cell, screenAddress for the position, and helperUsedSpriteEntityUpdate with 1 and 1; the caller's byte at 0x1B is stepped on the way through."
+  },
+  "0xc436": {
+    "name": "how much of the claimed area is left to award",
+    "why": "takes the record at 0x3E1964's byte at +0x16, multiplies it by six with shifts and adds, and subtracts that from the running total at 0x3E1C98."
+  },
+  "0xc688": {
+    "name": "schedule palette effect kind five over one entry",
+    "why": "takeFirstItemListZero hands back a free effect record or nothing; the record's byte at +0xC is the effect kind, +8 the palette address, +0x10 the table, and +0xE and +0xF the step and count. The bank's second half is selected by adding 0x200 words. Kind 5, addressing one entry: `((bank << 4) + index) * 2`, so sixteen entries to a bank.",
+    "ident": "schedulePaletteEffectKindFive"
+  },
+  "0xc724": {
+    "name": "schedule palette effect kind four over one entry",
+    "why": "takeFirstItemListZero hands back a free effect record or nothing; the record's byte at +0xC is the effect kind, +8 the palette address, +0x10 the table, and +0xE and +0xF the step and count. The bank's second half is selected by adding 0x200 words. Kind 4, the same one-entry addressing as 0xC688 - the kind byte is the only difference between them.",
+    "ident": "schedulePaletteEffectKindFour"
+  },
+  "0xc7bc": {
+    "name": "schedule palette effect kind six over a whole bank",
+    "why": "takeFirstItemListZero hands back a free effect record or nothing; the record's byte at +0xC is the effect kind, +8 the palette address, +0x10 the table, and +0xE and +0xF the step and count. The bank's second half is selected by adding 0x200 words. Kind 6, addressing a whole bank with `bank << 5`, and it sets the step to 0x10 and the count to 1 and raises 0x3E2498.",
+    "ident": "schedulePaletteEffectKindSix"
+  },
+  "0xc832": {
+    "name": "schedule a palette effect counting backwards from an entry",
+    "why": "takeFirstItemListZero hands back a free effect record or nothing; the record's byte at +0xC is the effect kind, +8 the palette address, +0x10 the table, and +0xE and +0xF the step and count. The bank's second half is selected by adding 0x200 words. The sign of the caller's byte picks the direction: negative counts down from `(bank << 4) + index` less that byte less one, non-negative counts up. The kind comes from the caller too, which is why this one is called with 0xD and 0xFFFC and 0xFFF8 rather than a fixed number.",
+    "ident": "schedulePaletteEffectCountingBack"
+  },
+  "0xc8de": {
+    "name": "schedule palette effect kind two over a whole bank",
+    "why": "takeFirstItemListZero hands back a free effect record or nothing; the record's byte at +0xC is the effect kind, +8 the palette address, +0x10 the table, and +0xE and +0xF the step and count. The bank's second half is selected by adding 0x200 words. Kind 2, `bank << 5` addressing, with the caller's byte in +0xD and its count plus one in +0xE.",
+    "ident": "schedulePaletteEffectKindTwo"
+  },
+  "0xc95e": {
+    "name": "schedule palette effect kind three over a whole bank",
+    "why": "the fifth of the family around takeFirstItemListZero: same record fill, same `bank << 5` addressing and 0x200-word half select as 0xC7BC and 0xC8DE, with its own kind byte.",
+    "ident": "schedulePaletteEffectKindThree"
+  },
+  "0xcae2": "scheduled trigger",
+  "0xcb24": {
+    "name": "post 0x11B0C for each player not already carrying 0x11B06",
+    "why": "for each of the three player structs, `pairAlreadyEventQueue` asks whether 0x11B06 is already queued for it, and only if not does it post 0x11B0C. 0xF is the count it works to."
+  },
+  "0xcbae": {
+    "name": "dispatch each active player's pending action, five ways",
+    "why": "walks the three player structs, skipping any whose first word lacks bit 15 or whose byte at 0x1D is set, and jumps through the five-way word table at 0xCC0E on the caller's selector. The two event ids 0x11924 and 0x11930 and the masks 0x3F and 0x40 are hoisted into registers for the cases to use."
+  },
+  "0xcc18": {
+    "name": "pass the record's byte at 0x14 through the gate unless it is set",
+    "why": "reads `$14(a3)` into the frame word at -2, and calls passByteOnlyWhenGate only when that word is zero; either way it leaves through 0xCC88."
+  },
+  "0xcd4a": {
+    "name": "queue the entity for the record's script and stop the phase timer",
+    "why": "takes the two coordinate bytes at +0xC of the block at 0x3E0DCA indexed by the record's byte at +3, calls entitySpawnQueue with them, 2, 1 and the record's byte at +2 plus one, sets the record's byte at 0x1A to 2 and 0x3E1950 to 0x46, and calls phaseTimerStop."
+  },
+  "0xcdae": {
+    "name": "format the caller's long against the string at 0x1FB10",
+    "why": "`move.l $4(a7),d0; move.l d0,-(a7); pea $1fb10.l; bsr.b $cd4a; addq.l #$8,a7` - one argument and one fixed format string."
+  },
+  "0xce76": {
+    "name": "total the sixteen-cell counts across the active players",
+    "why": "walks the three 0x7E-byte player structs, and for each with bit 15 set reads the byte at +0x16 and accumulates over 0x18 entries of 0x60. The constants 0x60, 0x18, 3 and 0x7E are hoisted before the loop."
+  },
+  "0xcee8": {
+    "name": "post event 0x11BC0 for each player whose counter has passed 0x18",
+    "why": "only once 0x3E1952 has reached 2. For each of the three 0x7E-byte player structs whose first word has bit 15 set and whose byte at +0x20 is above 0x18, it posts 0x11BC0 with the struct and writes 0xFF into the byte at +0x22."
+  },
+  "0xcfda": {
+    "name": "dispatch the sub-state at 0x3E194C through its seventeen-way table",
+    "why": "returns at once when the word at 0x3E194A is non-zero - the state machine is busy - then reads the byte at 0x3E194C, rejects anything outside 1..0x11, and jumps through the word table at 0xD00C."
+  },
+  "0xd1ec": {
+    "name": "the round's phase sequence, one entry per phase",
+    "why": "each entry does a phase's work and sets the next phase byte at (a2) before falling into the shared tail: fade the palettes and give every player their own board (state 0xA); wait until events 0x11B1E, 0x11B8A and 0x11B90 have all drained, then clear the indices, walk the list, reset the palette sequence tables, clear the palette, clear a framebuffer band and set a 0x168 timer (state 0xB); or set a 0xB4 timer and test 0x11B00. The phase timer at (a3) and the phase byte at (a2) are the two things every entry touches."
+  },
+  "0xd43a": {
+    "name": "run the battle phase's tick and decide which text line to draw",
+    "why": "one entry sets the byte at (a2) to 1; the other counts the word at (a3) down and, at kind 4, runs 0x7004 and unitMovement, calling roundTeardown when the counter reaches zero. Then eventTest for 0x11B1E: present, it reads field six of the current record and draws line 0 if that is at least 0xA0 and line 1 otherwise; absent, line 1."
+  },
+  "0xd490": {
+    "name": "reset the round: clear the queue, the hand slots and the block",
+    "why": "eventQueueReset first, then 0x3E195C set to 1, the three hand slots at 0x3E0DCE cleared and the block at 0x3E0DCA reindexed by the caller's word scaled by 0x18."
+  },
+  "0xd6e6": {
+    "name": "take each active player's next target and post event 0x11B8A",
+    "why": "the sibling of 0xD74E: the same walk over the three player structs and the same per-player pointer at 0x3E1CB8 stepped by four, but the pair it reads goes into fields 0x32 and 0x33, the byte at 0x14 is copied to 0x15, the longs at 0x24 and 0x2C are set to 0xFFC4, and the event is 0x11B8A.",
+    "ident": "takeEachPlayersNextTargetAndPost11B8A"
+  },
+  "0xd74e": {
+    "name": "take each active player's next coordinate pair and post event 0x11B9C",
+    "why": "walks the three 0x7E-byte player structs at 0x3E1968, and for each whose first word has bit 14 set steps that player's pointer at 0x3E1CB8 on by four, copies the two words it now names into fields 0x52 and 0x54, and posts 0x11B9C. Then chooseEachPlayerSStarting once at the end.",
+    "ident": "takeEachPlayersNextCoordinateAndPost11B9C"
+  },
+  "0xd854": {
+    "name": "make the record current, and remove its event unless the sub-state is 0xE",
+    "why": "writes the record into 0x3E1960, and unless 0x3E194C is 0xE draws the current piece and removes event 0x11AD0 for it."
+  },
+  "0xdb04": {
+    "name": "checksum the five tables and start the cue the answer selects",
+    "why": "reads sound request 0x16, and if it appears in the list at 0x1193C runs checksumTableAgainstStoredSum five times, oring each answer into 0x3E1CC8. A result of 0x22B starts cue 0x228 on channel 0x16; anything else keys channel 0x16 with 1."
+  },
+  "0xdb6c": {
+    "name": "return the first stack argument",
+    "why": "`move.l $4(a7),d0; rts` - reads the longword above the return address and hands it back. 0xdb72 is a second, identical copy."
+  },
+  "0xdb72": {
+    "name": "return the first stack argument, second copy",
+    "why": "`move.l $4(a7),d0; rts`, byte for byte what 0xdb6c does, at its own address and separately called."
+  },
+  "0xde1a": {
+    "name": "give each player a starting hand of three",
+    "why": "for each player index it calls helperInitialisePlayerStructs with 3, masks the answer to two bits, and works through the countdown byte at 0x3E1870."
+  },
+  "0xdec8": {
+    "name": "choose the player to act, by flag and by the caller's three words",
+    "why": "walks the three player structs testing bit 15, keeping the best index in the frame at -4 starting from 0xFF, with the caller's three words as the criteria and 0x8000 and 1 hoisted into registers."
+  },
+  "0xe0ee": {
+    "name": "draw the high score entry screen",
+    "why": "framebufferDraw's helper first, then blits the graphic the long at 0x214C6 names to 0x200004 at 0x2A by 0xA with the palette at 0x80, and draws the rest through drawParameterMarshaller at 0x35EE."
+  },
+  "0xe5ae": {
+    "name": "seed the three players' starting positions from the random pick",
+    "why": "helperInitialisePlayerStructs with 3 gives an index masked to two bits, and the blocks at 0x3E1CD4 and 0x3E1CE0 hold the answers."
+  },
+  "0xe7a8": {
+    "name": "is any player still in the game",
+    "why": "walks the three 0x7E-byte structs for the first with bit 15 set and answers with its index; four iterations, so it returns 3 when none is."
+  },
+  "0xeaee": {
+    "name": "clear the six option bytes and reload them for the current mode",
+    "why": "clears the six bytes at 0x3E1CEC, and when 0x3E195C is set indexes by 0x3E1CB4 scaled by four to reload them."
+  },
+  "0xebba": {
+    "name": "drop sixteen bytes of arguments, then fall through",
+    "why": "`lea $10(a7),a7` and no terminator: unwinds the argument block and runs into the restore-and-return at 0xebbe."
+  },
+  "0xebbe": {
+    "name": "restore d2 to d4 and a2 to a5, then return",
+    "why": "`movem.l (a7)+,d2-d4/a2-a5; rts` - the epilogue for the routines that save that set, shared by address."
+  },
+  "0xec3a": {
+    "name": "has the record reached its target, and what to do if not",
+    "why": "compares the coordinate pair at +0x48 against the word at +0x32; equal means arrived. 0xECB0 - twoPlayerDrawGate - is held in a3 for the not-arrived path, and 0x3E1954 picks between one and two player rules."
+  },
+  "0xed8e": {
+    "name": "draw the panel graphic for a slot at its fixed screen position",
+    "why": "takes the difficulty byte at 0xFE02 indexed by the slot plus one, the screen address of the coordinate word from the table at 0x11AB4, and the graphic pointer from the long table at 0x215E6 indexed by the slot, and hands all of it to drawArgumentRepack with 0xC and 9."
+  },
+  "0xee44": "phase dispatcher",
+  "0xee90": "event post",
+  "0xeeee": "event remove",
+  "0xeffa": "event test",
+  "0xf630": {
+    "name": "rebuild the display list from the motion objects, highest priority first",
+    "why": "the display list at 0x3E02B4 is eight priority buckets of words, and 0x3E02D8 the 0x10-byte motion object records. `move.w #$2700,sr` masks every interrupt around the walk, because the frame handler reads the same list. This entry walks the eight buckets from 7 downwards, taking each record from 0x3E02D8 and threading it into the list at 0x3E0000."
+  },
+  "0xf79e": {
+    "name": "rebuild the display list, skipping empty buckets",
+    "why": "the display list at 0x3E02B4 is eight priority buckets of words, and 0x3E02D8 the 0x10-byte motion object records. `move.w #$2700,sr` masks every interrupt around the walk, because the frame handler reads the same list. The sibling of 0xF630: the same walk, but it reads the bucket word into d5 first and skips the bucket entirely when it is zero."
+  },
+  "0xf936": {
+    "name": "rebuild the display list from the first bucket up",
+    "why": "the display list at 0x3E02B4 is eight priority buckets of words, and 0x3E02D8 the 0x10-byte motion object records. `move.w #$2700,sr` masks every interrupt around the walk, because the frame handler reads the same list. The third of the family, walking from bucket zero upward with a 0x10-byte record stride, and giving up as soon as 0x3E02B4 itself is empty."
+  },
+  "0xfb80": "checksum a table against its stored sum",
+  "0xfc1e": {
+    "name": "is the protection counter in step with 0x3E0DE6",
+    "why": "`move.b $3e0de6,d1; move.b $3e0de2,d0; eor.w d0,d1; btst.b #$0,d1` - the low bit of the exclusive or, so it asks whether the two counters agree in parity. Falls into the reader that steps the counter when they do not.",
+    "ident": "protectionCounterParityCheck"
+  },
+  "0xfc32": {
+    "name": "read the first protection word, then step the two-bit counter",
+    "why": "`tst.w $1460bc` - a read of the board ROM window, which is what the protection check is - then `addq.w #$1,d0` and into stepTwoBitCounterToward at 0xFC3A. 0xFC88 is the same with 0x1461BC."
+  },
+  "0xfc3a": {
+    "name": "keep the low two bits of the counter and store it",
+    "why": "`andi.w #$3,d0; move.b d0,$3e0de2` - the tail both protection-window readers at 0xFC32 and 0xFC88 fall into, which is why the counter at 0x3E0DE2 only ever holds 0 to 3."
+  },
+  "0xfc74": {
+    "name": "the attract mode's copy of the protection parity check",
+    "why": "byte for byte the same test as 0xFC1E on the same two counters, at its own address and called from attractModeController, falling into its own copy of the step at 0xFC88.",
+    "ident": "protectionCounterParityCheckAttract"
+  },
+  "0xfc88": {
+    "name": "read the second protection word, then step the two-bit counter",
+    "why": "`tst.w $1461bc` - the other board ROM window - then the same `addq.w #$1,d0; andi.w #$3,d0; move.b d0,$3e0de2` tail as 0xFC32 reaches through 0xFC3A."
+  },
   "0x11bd8": "cell address",
   "0x11bec": "screen address",
+  "0x11c04": {
+    "name": "follow the header's self-relative pointer and copy from there",
+    "why": "`move.w (a0),d0; adda.l d0,a0` - the first word of the block is an offset to itself, which is how this ROM's graphics headers point at their own data - and then copies from the address that yields."
+  },
   "0x11cf8": "aiming direction",
   "0x11d5c": "distance",
   "0x11d96": "scaling blitter",
   "0x11e10": "screen dissolve",
   "0x11e58": "RNG",
+  "0x11eda": {
+    "name": "decompress the graphics at 0xE5930",
+    "why": "`movem.l d1-d4/a0-a1,-(a7); lea $e5930.l,a0; bra.b $11f08` - the same shared body as 0x11EE6 and 0x11EF2, pointed at a third fixed source.",
+    "ident": "decompressGraphicsAtE5930"
+  },
+  "0x11ee6": {
+    "name": "decompress the graphics at 0xf1d8a",
+    "why": "`movem.l d1-d4/a0-a1,-(a7); lea $f1d8a.l,a0; bra.b $11f08` - saves, points a0 at one fixed source, and joins the shared body at 0x11f08 that calls the decompressor. The source address is the whole difference between this and 0x11ef2.",
+    "ident": "decompressGraphicsAtF1D8A"
+  },
+  "0x11ef2": {
+    "name": "decompress the graphics at 0xdaddc",
+    "why": "`movem.l d1-d4/a0-a1,-(a7); lea $daddc.l,a0; bra.b $11f08` - the same shared body as 0x11ee6, pointed at a different fixed source.",
+    "ident": "decompressGraphicsAtDADDC"
+  },
   "0x11f2a": "graphics decompressor",
   "0x11ff8": "block recolour",
+  "0x120a2": {
+    "name": "decode a run-length stream, three opcode shapes",
+    "why": "a non-negative byte is a literal run; a negative one keeps its low five bits as a count and the next two bits, shifted out with `asl.b`, choose between a repeated byte, a two-byte pattern and a back-reference."
+  },
   "0x1217e": "rect palette remap",
+  "0x121c4": {
+    "name": "decode one eight-by-eight block from two sources into the playfield",
+    "why": "points a0 and a3 into the graphics at 0xDADDC by two separate word offsets, runs decompressorInnerLoop and rleDecoderVariant for each of eight columns, stepping the destination one byte at a time and 0x1F8 at the end of a row, and returns the destination advanced by eight."
+  },
+  "0x122ae": {
+    "name": "store the byte in d0 through a1",
+    "why": "`move.b d0,(a1); rts`. The whole routine."
+  },
+  "0x12306": {
+    "name": "start a decoder run with the emit table at 0x12354",
+    "why": "`lea $12354.l,a4` - the pair of emit helpers - then reads two bytes through a3, biases each by a5, doubles d5 and sets its low bit, and joins the decoder body at 0x1232A."
+  },
   "0x124be": "terrain painter",
+  "0x12574": {
+    "name": "emit two decoded bytes a row at a time",
+    "why": "`move.b (a0)+,d0; move.b (a0)+,d3` then each written through a1 with a `dbra` on the row counter, and at the end of a row `adda.l d5,a1` and the counter reloaded to 0x1FF less the stride. The two-byte inner loop of the decoder at 0x124E4.",
+    "ident": "emitTwoDecodedBytesWithStride"
+  },
+  "0x1262a": {
+    "name": "the palette RAM operations, one entry each",
+    "why": "every entry addresses the palette with `movep.w`, which is what makes this routine palette-specific: the RAM is byte-wide on a sixteen-bit bus, so a colour is two bytes four apart. The first entry adds four separate deltas to the intensity bit and the three five-bit channels, masking each back into place with 0x8000, 0x7C00, 0x3E0 and 0x1F; the others rotate a run of entries forwards or backwards by the count at +0xF. All of them leave through 0x12880."
+  },
+  "0x1288e": {
+    "name": "return immediately",
+    "why": "`rts` at the head, and what capstone shows after it is data: this address is a routine only because something calls it, and calling it does nothing. Named for the instruction that is really there rather than for the sixteen bytes the extent covers."
+  },
+  "0x13000": {
+    "name": "clear the playfield and work RAM, kicking the watchdog",
+    "why": "two `clr.w (a0)+` loops with `dbeq` - 0x200000 to 0x21FFFE and 0x3E0000 to 0x3E07FE - each restarting with a write to the watchdog at 0x72FFFE so the board does not reset while the clear runs."
+  },
+  "0x130f8": {
+    "name": "run the two self-test passes and return the second's result",
+    "why": "`bsr.w $13662` then `bsr.w $136ee`, and `move.l d5,d0` for the answer, with every register saved around them. 0x1310C below it is a separate entry: it clears the playfield up to 0x3E07FE, kicks the watchdog at 0x72FFFE on each pass, and jumps to 0x300 when it finishes."
+  },
   "0x13134": "self test failure report",
+  "0x133a6": {
+    "name": "mask interrupts and restart through the reset vector",
+    "why": "`move.w #$2700,sr; suba.l a0,a0; movea.l (a0)+,a7; movea.l (a0),a0; jmp (a0)` - zeroes a0, loads the stack pointer and entry address from the first eight bytes of the image, and jumps. That is a reset."
+  },
+  "0x13408": {
+    "name": "read both input ports and step the self-test cursor",
+    "why": "packs 0x640000 and 0x640002 into one long, inverts it - the ports are active low - and masks off the bits that are not buttons, then steps the cursor at 0x3E368B by 5 or 4 depending on its sign."
+  },
   "0x1357c": "power on self test",
+  "0x13662": {
+    "name": "checksum every ROM region against its stored sum",
+    "why": "walks the region table at 0x132F8 as start/end pairs, sums each, and compares against the answers at 0x13328, kicking the watchdog and recording the result in 0x3E3D7A and 0x3E3D7B."
+  },
+  "0x136ee": {
+    "name": "checksum every ROM region, reporting the address of the first bad one",
+    "why": "the same region table at 0x132F8, but this one keeps the region's base shifted into the high word so a failure names where it was."
+  },
   "0x1378e": "ram test all patterns",
   "0x1380e": "ram test fill with pattern",
   "0x1381e": "ram test walking bit up",
   "0x13864": "ram test walking bit down",
-  "0x15b4": "set flag after player array",
-  "0x15d6": "clear status bits in every player",
+  "0x1397a": {
+    "name": "the RAM test's pass sequence, chained through a6",
+    "why": "eleven passes over the region a1..a2, each written as `lea $X(pc),a6; bra <pass>` so the pass returns with `jmp (a6)` to the address after it - a continuation chain rather than calls, which is why the routine has eleven entry points. The passes are a fill, two walking-bit sweeps, and their inverses with d0 = 0xFF; the watchdog at 0x72FFFE is kicked throughout, and bit 3 of 0x640002 skips the second half."
+  },
+  "0x13b8c": {
+    "name": "write the four sound registers for a channel",
+    "why": "two calls to bitfieldExtract - register 4 then 0x17, taking the longs the caller points at and the byte at 0x3E3D7B - then two to soundCallThreeLongArgs, registers 0xD and 0x21. Every register number is an immediate."
+  },
+  "0x13c36": {
+    "name": "write the self-test result into the sound registers",
+    "why": "steps the counter at 0x3E3D7B, and calls bitfieldExtract with 1 and that counter and the string at 0x13CC6."
+  },
+  "0x13d1a": {
+    "name": "return one",
+    "why": "`moveq #$1,d0; rts`. A constant-true result for a caller that tests d0."
+  },
+  "0x13e0a": {
+    "name": "format a time as hours, minutes and seconds separated by colons",
+    "why": "divides by 0xE10 - 3,600 - and formats the quotient, writes 0x3A, divides the remainder by 0x3C and formats that, writes another 0x3A, and formats what is left. Three calls to formatNumberPaddingSeparators at width 2 into consecutive positions."
+  },
+  "0x13f98": {
+    "name": "tempo divisor from the sound rate word",
+    "why": "`tst.b $3e344a` and return -1 if the driver is not running; bit 15 of the rate word at 0x3E3444 set returns 0; otherwise ((0x3E3444 >> 11) & 7) + 1. A divisor between 1 and 8, and the value every routine in this block divides its tick accumulator by. It was `soundEnableCheckVariant`, named for the `tst.b` at its head, which is the guard rather than the answer."
+  },
+  "0x13fce": {
+    "name": "advance the tick accumulator and scale it to twelfths",
+    "why": "carries the fractional ticks at 0x3E3446 into the whole ticks at 0x3E3448 a divisor at a time, clamps the whole count at 30, and returns (whole * 12) / divisor. The divisor is 0x13F98's. Returns -1 when the driver is stopped and 0x18 when the divisor is zero."
+  },
+  "0x14044": {
+    "name": "advance the tick accumulator and pack whole, numerator and denominator",
+    "why": "the same carry and clamp as 0x13FCE, then splits the accumulator into whole = acc / divisor and a fraction acc mod divisor over the divisor, halves both until one is odd - lowest terms - special-cases 3/6 to 1/2, and returns whole in the high word, numerator in bits 8-15 and denominator in the low byte."
+  },
+  "0x14138": {
+    "name": "take a count of ticks from the accumulator if there are that many",
+    "why": "adds the fractional byte at 0x3E3446 to the whole byte at 0x3E3448 and returns 0 if the total is below the requested count; otherwise decrements both until the count is met and returns 1. 0x1418A is the same question asked without taking anything, and 0x141C4 clears the fraction at 0x3E3446 and 0x3E3447."
+  },
+  "0x14772": {
+    "name": "look up a sound request and unpack its packed fields",
+    "why": "rejects a request id above 0x16, indexes the word table at 0x1D616 by it, and unpacks that word: bits 5 to 11 as a seven-bit value, bits 12 and 13 plus one added to it, and the result used to index the channel bytes at 0x3E34CC."
+  },
+  "0x14dd2": {
+    "name": "step all eight sound envelopes",
+    "why": "eight passes of soundEnvelopeStep's helper at 0x14B2C with the index in the frame long at -4."
+  },
+  "0x14e5c": {
+    "name": "clear and rebuild all twelve sound channel blocks",
+    "why": "six times round: fillBytesLongCount zeroes 0x14 bytes at the cursor, then two calls to soundChannelDispatch with 0x3E3536 and the next two channel numbers, the cursor stepping 0xA each time from 0x3E3454. Twelve channels of ten bytes."
+  },
+  "0x14f7a": {
+    "name": "clear one of the six twenty-byte channel blocks",
+    "why": "rejects an index of 6 or more with -1, then addresses `0x3E3454 + index * 0x14` and clears its twenty bytes."
+  },
+  "0x1540a": {
+    "name": "draw the title's version line",
+    "why": "writes 0x78 into the word at 0x3E361E, floors it at 3, calls 0x18B26 with 0x1A, 0xF, that word, 3, 1 and 0x20, then plots the string at 0x1D6B4. Every argument is an immediate, so the two addresses are the whole of what it does."
+  },
+  "0x15504": {
+    "name": "format a number and draw it left-trimmed",
+    "why": "`link a6,#-12` for the buffer, formatNumberPaddingSeparators into it with width 0xB, then walks past the leading 0x20 spaces and hands the first non-space to stringLengthWrapper with the caller's two sign-extended bytes as its position."
+  },
+  "0x1586a": {
+    "name": "run the self-test entry the index names, if there is one",
+    "why": "indexes the long table at 0x1DAF8 by the caller's word; a zero entry means nothing to do, otherwise it runs four steps from there."
+  },
+  "0x1594c": {
+    "name": "the service menu screen, one entry per page",
+    "why": "at 1,200 bytes the third largest routine here, and it is a screen painter: stringLengthWrapper at 0x17FCC, selfTestResultAccumulate at 0x1851C and bitfieldExtract at 0x18B76 are held in registers, and the frame words at -4 and -8 are the page and the row."
+  },
+  "0x15dfc": {
+    "name": "scale the sound request's three fields and divide",
+    "why": "returns zero when soundEnableCheck says the driver is off; otherwise looks up requests 0xB, 0xA and 0x9, adds the last two to the first, and computes `x*4` then `(x*4)*16 - x*4` - sixty times the sum - before handing it and the enable result to dualDivideHelper."
+  },
+  "0x15e50": {
+    "name": "scale a sound request by two others and the enable answer",
+    "why": "soundEnableCheck for the enable, then requests 0xC and 3, and the caller's two words as the scale. The sibling of 0x15DFC, which uses requests 0xB, 0xA and 9."
+  },
+  "0x15f3e": {
+    "name": "show the coin and credit page of the service menu",
+    "why": "selfTestResultAccumulate at 0x1851C and stringLengthWrapper at 0x17FCC held in registers, and it branches on bit 24 of the accumulator's answer before drawing."
+  },
+  "0x16148": {
+    "name": "draw one service-menu row from a packed byte",
+    "why": "the row byte's high nibble is the column and its low nibble the field width, and the caller's two words are the position. Three fields to a row - `moveq #$2,d5`."
+  },
+  "0x16358": {
+    "name": "the operator adjustments page, one row per setting",
+    "why": "at 1,268 bytes the second largest routine in the upper image. stringLengthWrapper and skipNthRecordPackedList at 0x160F8 are its two tools, 0x1622A the string table, and the byte at 0x372 selects between two layouts."
+  },
+  "0x16af8": {
+    "name": "draw the service screen's frame and title",
+    "why": "recordWhetherVectorHoldsStub, the two nested borders at 0x174A2, and soundTableInit, then the title string at 0x1E252 at position 0x2030 when the caller's word is set."
+  },
+  "0x16d78": {
+    "name": "run the self test, then back to the service menu",
+    "why": "`bsr.w $17800` - selfTestMain - then `bra.w $16fe0`, the tail every case of this jump table returns through."
+  },
+  "0x16d80": {
+    "name": "run the routine at 0x16FF0, then back to the service menu",
+    "why": "`bsr.w $16ff0; bra.w $16fe0`. One call and the shared tail; the callee is still an address, so this name can only say which.",
+    "ident": "runRoutineAt16FF0ThenBackToMenu"
+  },
+  "0x16e14": {
+    "name": "run the routine at 0x175DE, then back to the service menu",
+    "why": "`bsr.w $175de; bra.w $16fe0`.",
+    "ident": "runRoutineAt175DEThenBackToMenu"
+  },
+  "0x16e1c": {
+    "name": "show the self-test detail screen, then back to the service menu",
+    "why": "`bsr.w $1798c` - selfTestDetailScreen - then `bra.w $16fe0`."
+  },
+  "0x16e24": {
+    "name": "accumulate the self-test result, then back to the service menu",
+    "why": "`bsr.w $169c8` - selfTestResultAccumulateWrapper - then `bra.w $16fe0`."
+  },
+  "0x16e2c": {
+    "name": "run the seven-step input test",
+    "why": "blitParameterSetup with 7, then walks the seven word entries of 0x1E454 as the labels for each step."
+  },
+  "0x16eec": {
+    "name": "run the sixteen-step switch test",
+    "why": "the sibling of 0x16E2C with a count of 0x10 and the label table at 0x1E45E."
+  },
+  "0x16ff0": {
+    "name": "the service menu's main loop",
+    "why": "draws the frame through 0x16AF8, then loops on selfTestResultBranch at 0x1796E with bitfieldExtract, selfTestResultAccumulate and waitUntilLongChanges held in registers. This is what the menu's jump table cases return to."
+  },
+  "0x17330": {
+    "name": "draw the two-column diagnostic readout",
+    "why": "two calls to bitfieldExtract, the first with 0xF, 9 and the string at 0x1DDB6 at colour 0x2000, the second with 4 and a zero string."
+  },
+  "0x173d8": {
+    "name": "draw the burn-in screen's frame and its two lines",
+    "why": "the same frame as 0x16AF8 - 0x17500, the borders, soundTableInit - then the strings at 0x1E16A at 0x2030 and 0x1E012 at 0x2040."
+  },
+  "0x174a2": {
+    "name": "draw the two nested frame borders in colour 0x0101",
+    "why": "eight passes of 0xA8 columns writing 0x101 at the top of the screen and 0x1CC00 below it - the outer border - then 0xE6 passes of four writing at +2 and +0x148 with a 0x1F8 stride, which is the inner one. Both coordinates and the colour are immediates."
+  },
+  "0x175de": {
+    "name": "the colour bars page of the service menu",
+    "why": "draws the frame and banner, then writes a colour straight into the palette at 0x3C003C through 0x1829C with 0x39EF, with bitfieldExtract and the chain plotter held in registers."
+  },
+  "0x17b04": {
+    "name": "read the two switch words and decide which page to show",
+    "why": "waitUntilLongChanges, then two calls to selfTestResultAccumulate - the second with 0x30000F0 - and masks the answer with 0x3000000 to see whether both service switches are held."
+  },
+  "0x17bf6": {
+    "name": "nudge the record's two words by the four direction bits",
+    "why": "bits 7 and 6 of d5 add and subtract 0x80 on the word at +6; bits 5 and 4 do the same to the word at +4. Four independent tests, one per direction, and 0x80 is the step."
+  },
+  "0x17c2c": {
+    "name": "index the string table at 0x1DEF0 by the record's packed field",
+    "why": "the word at +6 gives a row in bits 4 to 6 - `and 0x70` then `asr` - and a column in bits 0 to 2, and their sum indexes the table."
+  },
+  "0x17cb8": {
+    "name": "step the record's low three bits by the flag, wrapping within them",
+    "why": "bit 7 of d4 adds one to the low three bits of the word at +6, keeping the rest with `andi.w #$fff8`, so the field wraps at eight. The three-bit sibling of the four-bit 0x17D2C."
+  },
+  "0x17d2c": {
+    "name": "step the record's low nibble up or down by the flag bits",
+    "why": "bit 7 of d4 adds one to the low nibble of the word at +4, bit 6 subtracts one, and neither leaves it alone; the top twelve bits are put back unchanged with `andi.w #$fff0`, so the nibble wraps within itself."
+  },
+  "0x17d58": {
+    "name": "flip the sign bit of the record's word when the two owner bits are set",
+    "why": "`andi.l #$c0,d0` on the value moved through a0 - the owner bits - and `eori.w #$8000,$2(a2)` only when they are non-zero.",
+    "ident": "flipRecordSignWhenOwned"
+  },
+  "0x17d6e": {
+    "name": "step the record index by the flag bits, within its list",
+    "why": "bit 7 of d4 counts d3 down when it is not already zero; bit 6 counts it up, but only when the word a2 points at is exactly one past it - the end of the list. Either way the new index is scaled by eight and added to the base in a3."
+  },
+  "0x17d9c": {
+    "name": "draw the adjustment row's label, value and units",
+    "why": "three calls through a4 with colour 0x2000 at columns 0x16, 0x14 and 3, the middle one carrying the sign-extended value in d3. The tail every case of the adjustment page branches to."
+  },
+  "0x17f42": {
+    "name": "blit the two text tables at 0x1DFB2 and 0x1E034",
+    "why": "two identical calls to stringLengthWrapper at 0x17FCC, each with 0xFFFF, a row number - 0x1B then 0x1C - a table address and 0x2040. Consecutive rows of the same screen."
+  },
+  "0x18040": {
+    "name": "write a long as two palette entries",
+    "why": "splits the caller's long with `lsr.l #$10` and passes each half to 0x1829C, which writes one colour into the first palette."
+  },
+  "0x181a4": {
+    "name": "call 0x18040 with 0x30 and the constant 0x3DE07BC0",
+    "why": "`pea $3de07bc0.l; pea $30.w; bsr.w $18040; addq.l #$8,a7`. Two pushed constants and one call; the meaning is the callee's."
+  },
+  "0x181b6": {
+    "name": "clear the whole palette to entry zero",
+    "why": "walks two counters from zero calling 0x1829C for each, so every entry is written with the same colour."
+  },
+  "0x1830c": {
+    "name": "draw the eight-byte switch state at 0x3E367C",
+    "why": "indexes the byte block at 0x3E367C by the caller's long and draws it at colour 0x2020, position 2 - one row of the switch display."
+  },
   "0x18548": "bad int exception stub",
   "0x18556": "bus err exception stub",
   "0x18564": "adress err exception stub",
@@ -33,41 +961,481 @@
   "0x18614": "format err exception stub",
   "0x18626": "uninitialized vec exception stub",
   "0x1863e": "spurious int exception stub",
+  "0x18658": {
+    "name": "halt on an unhandled vector",
+    "why": "`jmp $1e8d2.l`, which is the `stop #$2700` in the upper image. Reached through the exception vector table, so an entry that lands here stops the machine with every interrupt masked."
+  },
+  "0x18764": {
+    "name": "step the glyph layer one frame",
+    "why": "bumps the frame counter at 0x3E3404, and when the rate word at 0x3E3402 is set counts 0x3E3408 up to 0x3E340A before bumping 0x3E3406 and calling 0x18A06. Then for each of the four slots: a kind of 7 walks the record chain at +8, dropping records whose byte at +1 has passed the counter - 0x29 or 0x1D rows depending on 0x3E340E - and plots the survivor through 0x18A66; the other kinds count 0x24 up to 0x1C and enter a jump table on kinds one to six."
+  },
+  "0x1884a": {
+    "name": "release the slot and take its record",
+    "why": "`clr.b $18(a2,d2.w)` marks the slot free, `movea.l $34(a2,d0.w),a0` takes the record pointer and `clr.l` drops it, then into the shared tail at 0x1886A. The teardown case of the 0x3E3400 table's jump table."
+  },
+  "0x1885a": {
+    "name": "toggle the slot's blink flag and draw or erase it",
+    "why": "`tst.b $2c(a2,d2.w)` picks the branch: set, it is cleared and the record goes to 0x18D18; clear, it is set to 1 and the record goes to 0x18A66 with the slot's word at +0x10. Both rejoin the frame walk at 0x18902, so this is one slot alternating between two treatments every time round."
+  },
+  "0x1888c": {
+    "name": "step the slot's repeat count and run its script",
+    "why": "reads the byte at +0x30 of the slot, increments it in place, picks the word at +0x10 and the record pointer at +0x34, and calls scriptInterpreterStep at 0x18C48 with the old count in d0."
+  },
+  "0x188aa": {
+    "name": "run the slot's script test, and advance to the next record when it fails",
+    "why": "steps the slot's repeat count at +0x30 and calls scriptInterpreterTest at 0x18CAA; a non-zero answer returns to the frame walk. A zero one takes the record's byte at +6 plus the word at 0x3E3400, and either frees the slot when that has run out or follows the chain pointer at +8 and resets the repeat count."
+  },
+  "0x188ec": {
+    "name": "run the handler for the slot's record and rejoin the frame step",
+    "why": "`add.w d0,d0; movea.l $34(a2,d0.w),a0` picks the slot's record pointer out of the 0x3E3400 block, `bsr.w $18940` runs it, and `bra.b $18902` returns to the per-frame walk in 0x18764."
+  },
+  "0x188f8": {
+    "name": "run the slot's record handler, then finish the frame walk",
+    "why": "`add.w d0,d0; movea.l $34(a2,d0.w),a0; bsr.w $189a0` then the `dbra` that ends 0x18764's four-slot loop and its epilogue. The sibling of 0x188EC, which calls 0x18940 instead and rejoins mid-loop."
+  },
+  "0x18940": {
+    "name": "rotate one row or column of the glyph grid by a cell",
+    "why": "0x3E340E picks which: set, it walks a column upward with a 0xC0 stride over 0x1D cells, carrying the first word round to the end; clear, it shifts a row of 0x1F words left and wraps the first into the last. The row or column is the record's byte at +1, and the chain is followed by the byte at +6 plus 0x3E3400 and the pointer at +8."
+  },
+  "0x189a0": {
+    "name": "scroll the glyph grid a row up, or copy it back down",
+    "why": "one entry moves 0x29 words at a time backwards with `move.w -(a0),-(a1)` over 0x1E rows, striding 0x92, clearing the vacated word; the other copies 0x20 words forwards over 0x1D rows and clears a final row of 0x20. The two halves of scrolling a 0x92-byte-pitch grid."
+  },
+  "0x18a06": {
+    "name": "scroll the whole glyph grid one cell, in whichever direction 0x3E340E says",
+    "why": "set, it walks backwards over 0x1E rows of 0x29 words with a 0x92 stride, clearing the word each row vacates; clear, it copies 0x1D rows of 0x20 words forwards and clears a final row. The whole-grid version of the single row or column at 0x18940."
+  },
+  "0x18a5e": {
+    "name": "take a pointer and a width, then plot a glyph string",
+    "why": "`move.w $a(a7),d1; movea.l $4(a7),a0` and falls into the body at 0x18A66, which is what 0x18E06 also calls. Two arguments off the stack and nothing else; the work is all in the body."
+  },
+  "0x18a66": {
+    "name": "plot a glyph string, clipping to the visible rows",
+    "why": "reads two bytes as the position, adds the scroll offset at 0x3E3406 to the row, and skips the string entirely when that falls outside 0..0x2A. 0x40 in a1 is the row pitch. This is the body 0x18A5E and 0x18E06 both enter."
+  },
+  "0x18c3c": {
+    "name": "take a pointer, a width and a count, then plot a glyph string",
+    "why": "`move.w $a(a7),d1; movea.l $4(a7),a0; move.w $e(a7),d0` and falls through. One argument more than 0x18A5E, which sets up the same body."
+  },
+  "0x18cce": {
+    "name": "take a cell and a colour, then address the playfield",
+    "why": "`move.w $e(a7),d0; move.w $12(a7),d1; andi.w #$30f0,d1` and falls into 0x18CDE, the eight-by-eight cell address routine. The 0x30F0 mask is the same colour mask the glyph plotters use."
+  },
+  "0x18d18": {
+    "name": "decompress the chain's tiles into the playfield",
+    "why": "computes a playfield address from the record's two bytes - `(b0 << 3) + (b1 >> 4)` biased by 0x200004 - then feeds each byte of the string at +2 to decompressTileId with 0x33 and 0x1000, threading the returned address into the next call. Follows the chain by the byte at +6 plus 0x3E3400 and the pointer at +8, exactly as the plotters do."
+  },
+  "0x18dea": {
+    "name": "claim a slot at 0x3E3400 with kind four, clearing the caller's word",
+    "why": "`moveq #$4,d0; move.w $a(a7),d1; clr.w $a(a7)` and into 0x18E06's body. The only entry that zeroes the caller's argument on the way in, and one of the two kinds 0x18E06 does not run 0x18A66 for."
+  },
+  "0x18df6": {
+    "name": "claim a slot at 0x3E3400 with kind two",
+    "why": "`moveq #$2,d0` and into 0x18E06's body."
+  },
+  "0x18dfc": {
+    "name": "claim a slot at 0x3E3400 with kind one",
+    "why": "`moveq #$1,d0` and into 0x18E06's body. The kind byte is the only difference between this, 0x18DF6, the kind-three entry inside it, and 0x18DEA."
+  },
+  "0x18e06": {
+    "name": "claim one of the four slots at 0x3E3400 and fill it",
+    "why": "scans the four bytes at 0x3E3415..0x3E3418 downward with `tst.b -(a1)` / `dbeq` for a zero, returns 0 if all four are busy. Fills the slot's parallel fields - the byte at +0x2c set to 1 and +0x30 cleared, the words at +0x1c, +0x24 and +0x10, the long at +0x34 - runs 0x18A66 for kinds 1 and 2 only, writes the kind byte into the slot and returns 1."
+  },
+  "0x18e66": {
+    "name": "plot a chain of strings and return the width drawn",
+    "why": "reads two bytes as a cell address into the playfield at 0x200004, and when bit 1 of the flags is set walks the string to the first comma or space to right-align it, filling sixteen rows of a column with (flags & 0xF0) + 5 as the colour. Then plots each byte through the translation table at 0x192E6 and 0x18F10, adding up the widths, and follows the chain by the count at 0x3E3400 and the pointer at +2."
+  },
   "0x18f10": "format a number into the glyph buffer",
+  "0x19010": {
+    "name": "draw a glyph run down a column",
+    "why": "the same as 0x19032 but with a0 = 0xFFFE0080: a step of 0x80 bytes, which is one row of the 64-word-wide glyph grid, and a paired write two bytes back."
+  },
+  "0x19032": {
+    "name": "draw a glyph run along a row",
+    "why": "masks the colour word with 0x30F0, translates the character through the table at 0x192E6, and calls 0x18F10 with a0 = 0x00800002 - a step of two bytes to the next cell and a paired write 0x80 further on. 0x19010 is the same call with the strides the other way round."
+  },
+  "0x19054": {
+    "name": "format one conversion into a local buffer and plot it",
+    "why": "`link a6,#-16` for a sixteen-byte buffer, sets bit 1 - and bit 2 unless bit 1 of the caller's flags is set - calls 0x1946E to format into it, and plots the result with 0x18E66."
+  },
+  "0x1908a": {
+    "name": "format a number with separators into a local buffer and plot it",
+    "why": "the same sixteen-byte local buffer as 0x19054, filled by 0x19614 - the decimal formatter that groups digits - and plotted with 0x18E66."
+  },
+  "0x190c0": {
+    "name": "format a number in a power-of-two base into a local buffer and plot it",
+    "why": "`link a6,#-16`, 0x195B4 to fill the buffer with digits, then the shared plot tail at 0x190A2. The sibling of 0x19054 and 0x1908A, differing only in which formatter fills the buffer."
+  },
+  "0x190da": {
+    "name": "plot a chain of strings with the caller's colour byte",
+    "why": "moves the byte at $7(a7) into the colour slot at $a(a7), clears $10(a7), and calls 0x18E66 with the flags word. Argument shuffling and one call."
+  },
+  "0x190f6": {
+    "name": "erase a chain of glyph runs and return how many cells were cleared",
+    "why": "the same walk as 0x18E66 - orientation from 0x3E340E, cell address from two bytes, chain followed by the count at 0x3E3400 - but each character becomes `clr.w (a1)` and `clr.w (a1,d2.w)` rather than a glyph. It clears one extra cell for characters outside 0x27..0x2E, and returns the count."
+  },
+  "0x1939c": {
+    "name": "clear the glyph layer's state block at 0x3E3400",
+    "why": "clears the words at 0x3E3400, 0x3E3402, 0x3E3406, 0x3E3408 and 0x3E340A, then the four slot bytes from 0x3E3418 and the four longs from 0x3E3434 - exactly the fields 0x18E06 fills."
+  },
+  "0x193f2": {
+    "name": "store two bytes at a pointer and clear the byte four past them",
+    "why": "`move.b $b(a7),(a0)+; move.b $f(a7),(a0)+; clr.b $4(a0)`. Three fields of a record the caller points at, and nothing else."
+  },
+  "0x19404": {
+    "name": "clear a kilobyte of the playfield from a row offset",
+    "why": "`move.w #$3ff,d0` then the shared loop at 0x1940E, which fills longs from 0x200004 plus (the byte argument << 12). 0x1940A is the same loop entered with 0x7FF, which is why that one is named for eight kilobytes."
+  },
+  "0x1946e": {
+    "name": "format one conversion by its letter",
+    "why": "branches on the conversion character: 0x64 'd' and 0x73 's' take the decimal path through 0x19614, emitting 0x2b '+' or 0x2d '-' and a 0x2c ',' between groups; 0x58 'X' and 0x78 'x' and 0x68 'h' set d3/d4/d5 to 4/0xF/7 for hexadecimal, 0x6f 'o' to 3/7 for octal, and anything else to 1/1 for binary, then fall into the digit loop at 0x195D4."
+  },
+  "0x19552": {
+    "name": "choose the sign character and the group mask for the field",
+    "why": "picks a group mask out of the table at 0x1959C by the field index, and for a conversion that is not 'd' (0x64) takes the character already at the buffer head and writes a space over it - the sign the caller placed. Both go into d1, one half each, for the emit loop."
+  },
+  "0x19572": {
+    "name": "emit one copy of the byte, or two when the mask bit is set",
+    "why": "`add.w d1,d1` shifts the next group-width bit out of the mask; on a carry an extra `move.b d0,(a0)+` runs before the ordinary one. The separator step of the grouped number formatter."
+  },
+  "0x1957a": {
+    "name": "copy the digits out, inserting a separator where the mask says",
+    "why": "walks the formatted digits, skipping leading 0x20 spaces, emitting the sign byte held in the high half of d1 once, and shifting the group mask in the low half - a carry emits 0x2C before the next digit, a zero ends the run. The table it reads the mask from is at 0x1959E, which is what capstone shows as instructions after the `rts`."
+  },
+  "0x195b4": {
+    "name": "convert a long to digits in a power-of-two base, right aligned",
+    "why": "d3 digits' worth of bits at a time, masked with d4, +0x30 for '0'..'9' and +d5 more when the digit is 10 or above - 7 gives 'A'..'F' and 0x27 gives 'a'..'f'. Written backwards from the end of a field of the given width with `move.b d2,-(a0)`, so the result is right aligned."
+  },
+  "0x1960a": {
+    "name": "pad the field with spaces and return",
+    "why": "`moveq #$20,d1` then `move.b d1,-(a0)` under a `dbra`, filling backwards to the start of the field with 0x20, and into the exit at 0x19604. The left padding of the number formatter."
+  },
   "0x19614": "format a number with padding and separators",
-  "0x1f3a": "raise player counter capped at four",
-  "0x220c": "entity spawn",
-  "0x5892": "rect grab",
-  "0x59ee": "piece bag builder",
-  "0x5afc": "piece rotation",
-  "0x5b40": "entity allocator",
-  "0x5c80": "set flag bit 4 on every motion object",
-  "0x5e38": "seal event post",
-  "0x5ea2": "territory fill",
-  "0x626": "set interrupt mask from argument",
-  "0x64a": "save interrupt mask and raise it",
-  "0x656": "restore saved interrupt mask",
-  "0x65aa": "span scanner",
-  "0x670e": "clear player pair and run script",
-  "0x6c20": "cannon aiming",
-  "0x6cae": "fire trigger",
-  "0x6fb4": "projectile scheduler",
-  "0x7008": "projectile flight",
-  "0x7a24": "phase countdown",
-  "0x8598": "damage selector",
-  "0x8606": "damage handler",
-  "0x865e": "territory scoring",
-  "0x8b4": "piece walker",
-  "0x9080": "drain event queue",
-  "0xaf72": "unit movement",
-  "0xbc2": "enclosure test",
-  "0xcae2": "scheduled trigger",
-  "0xee44": "phase dispatcher",
-  "0xee90": "event post",
-  "0xeeee": "event remove",
-  "0xeffa": "event test",
-  "0xfb80": "checksum a table against its stored sum",
+  "0x19786": {
+    "name": "start the divide helper with a zero high word",
+    "why": "`suba.l a0,a0` for a zero a0, saves d3, moves the argument into it, and joins the body at 0x197A0."
+  },
+  "0x197f4": {
+    "name": "round the quotient by half the divisor, keeping the sign",
+    "why": "halves the caller's word with `asr.w #$1`, makes it positive, flips its sign to match the dividend's, and adds it before the division - which is how this ROM rounds to nearest rather than truncating."
+  },
+  "0x1994c": {
+    "name": "branch to the d2/d3/a2/a3 epilogue",
+    "why": "`bra.w $19a1e` and nothing else: an exit path that exists at its own address so a jump table can name it."
+  },
+  "0x19950": {
+    "name": "branch into the routine at 0x19966",
+    "why": "`bra.w $19966` and nothing else - an entry point that exists so a caller has an address for a place inside another routine.",
+    "ident": "branchIntoRoutineAt19966"
+  },
+  "0x19954": {
+    "name": "write a byte to the sound chip with interrupts held off",
+    "why": "saves sr, raises the mask to 7 with `ori.w #$700,sr`, pokes the saved status byte at 0x5AFFFF and the value at (a1,d0.w), then restores sr. The critical section is the point: the write pair must not be interrupted."
+  },
+  "0x19966": {
+    "name": "branch into the routine at 0x1997C",
+    "why": "`bra.w $1997c`; what follows in the extent does not decode as a continuation of it. An entry point at its own address, like 0x19950.",
+    "ident": "branchIntoRoutineAt1997C"
+  },
+  "0x19a1e": {
+    "name": "restore d2, d3, a2 and a3, then return",
+    "why": "`movem.l (a7)+,d2-d3/a2-a3; rts` - a shared epilogue several routines in the sound driver branch to."
+  },
+  "0x19a24": {
+    "name": "expand one row of a compressed sprite, inverted",
+    "why": "the record's byte at +5 is the row width; the source advances by it and the destination by twice the product with the row number, and each byte is complemented with `not.b` as it goes."
+  },
+  "0x19b06": {
+    "name": "expand a compressed sprite two pixels at a time",
+    "why": "returns at once on a null pointer at (a2), biases the destination by the word at +4, and walks the width at +5 of the record halving it with `lsr.b #$1` - two pixels to a byte."
+  },
+  "0x19bb8": {
+    "name": "take a destination and a source pointer off the stack",
+    "why": "`movea.l $4(a7),a1; move.l a1,d0; movea.l $8(a7),a0` and falls through. Two arguments and a copy of one into d0; the work is in what follows."
+  },
+  "0x19c2e": {
+    "name": "trap and halt",
+    "why": "`trap #$0` then `stop #$2700`. The fatal path - called from exceptionReporter and from the sound driver's own error branches - and it does not return."
+  },
+  "0x19c34": {
+    "name": "reset the bus and restart through the reset vector",
+    "why": "`reset` asserts the chip's reset line to the rest of the board, then `suba.l a0,a0; movea.l (a0)+,a7; jmp (a0)` restarts from the first eight bytes of the image. Harder than 0x1E9B4, which restarts the processor alone."
+  },
+  "0x19c70": {
+    "name": "track two axes and record the direction each has just reversed in",
+    "why": "for each of two bytes: copies the current value down, subtracts the previous, and compares the sign of the difference with the byte holding the last one - writing the new difference into the field two further on only when the sign has changed or gone to zero. Fields 0, 2, 4, 6 for the first axis and 1, 3, 5, 7 for the second."
+  },
+  "0x19ccc": {
+    "name": "swap the halves of d1",
+    "why": "`moveq #$30,d0; rol.l d0,d1` - a rotate of 48, which on a longword is a rotate of 16, so the two halves change places. Falls through into what follows."
+  },
+  "0x19f3e": {
+    "name": "initialise the sixteen records at 0x3E370E and their rings",
+    "why": "links sixteen 0x60-byte records head to tail by storing each one's successor at its own offset zero, clearing the fields at +8, +0x14, +0x16, +0x24, +0x25 and +0x5F of each; terminates the last with a zero long; clears thirteen longs at 0x3E3D12; and points the two ring pairs at 0x3E3D56/0x3E3D5A and 0x3E3D62/0x3E3D66 at 0x3E3D46 and 0x3E3D5E."
+  },
+  "0x1a05a": {
+    "name": "clear a ring's head, or link a record into it",
+    "why": "the first entry clears the bytes at +8 and +0xA and the long at +4 - an empty ring. The second writes the caller's pointer into +4 and, when it is not null, threads the record it names on after it."
+  },
+  "0x1a1ca": {
+    "name": "dispatch a channel command through the twenty-two-way table at 0x1A204",
+    "why": "indexes the ten-byte records at 0x1B674 by the command byte - `d0*2` then `d0*4 + that`, which is ten - takes the opcode byte from the record, rejects anything above 0x15 to the command tail at 0x1A3E0, and jumps through the word table. a2 is pointed at the sixteen records at 0x3E370E first, so every case has them to hand."
+  },
+  "0x1a230": {
+    "name": "store the command's byte into 0x3E36E8",
+    "why": "`move.b $1(a1),$3e36e8` and back to the command tail at 0x1A3E0. One byte of the command into one global."
+  },
+  "0x1a23c": {
+    "name": "store the command's byte through its own pointer",
+    "why": "`movea.l $6(a1),a0; move.b $1(a1),(a0)` and back to 0x1A3E0. The command carries both the value at +1 and where to put it at +6."
+  },
+  "0x1a248": {
+    "name": "add the command's byte through its own pointer",
+    "why": "`movea.l $6(a1),a0; move.b $1(a1),d0; add.b d0,(a0)` and back to 0x1A3E0. The additive sibling of 0x1A23C."
+  },
+  "0x1a256": {
+    "name": "call through the pointer at offset 6 of the command",
+    "why": "`movea.l $6(a1),a0; jsr (a0)` then `bra.w $1a3e0`, the tail every case of this command table returns through. The command carries its own handler."
+  },
+  "0x1a260": {
+    "name": "mark every record whose field 0x15 matches the command's byte",
+    "why": "walks the sixteen 0x60-byte records, comparing `$15(a2,d0.w)` against the byte at +1 of the command and writing 0xFF into `$12(a2,d0.w)` on a match, then back to the command tail at 0x1A3E0.",
+    "ident": "markRecordsMatchingCommandByte"
+  },
+  "0x1a284": {
+    "name": "mark every record whose field 0x12 matches, when the command is kind eight",
+    "why": "indexes the ten-byte command records by the byte at +1, requires the opcode there to be 8, and then walks the sixteen 0x60-byte records writing 0xFF into `$12(a2,d0.w)` wherever it already equals the command's byte at +2.",
+    "ident": "markRecordsMatchingField12WhenKindEight"
+  },
+  "0x1a2c6": {
+    "name": "mark every record on the list the command's two nibbles select",
+    "why": "splits the byte at +1 into two nibbles: the high one indexes the six-byte records at 0x19CE4 and its field +5 is added to the low one, and that sum indexes the thirteen list heads at 0x3E3D12. It then walks the list, writing 0xFF into each record's field 0x12 and following the link at offset zero."
+  },
+  "0x1a318": {
+    "name": "silence the records the command names, and drain the ring",
+    "why": "two nearly identical walks over the sixteen 0x60-byte records: one matches field 0x12 against the byte at +2 of the ten-byte command record the byte at +1 selects, the other matches field 0x15 against that byte directly. A match clears +0x5C, sets +0x58 to 0x100 and +0x5A to 0xD000, and writes 0xFE into +0x12. A third entry pushes the byte into the ring at 0x1A19A."
+  },
+  "0x1a58a": {
+    "name": "read the channel's value, from the table above six or the jump table below",
+    "why": "a selector of 6 or more indexes the bytes at 0x3E36AC by selector minus six and sign-extends; below six it jumps through the five-way table at 0x1A5BE, whose cases are the field reads at 0x1A5C8 to 0x1A5E0. Anything above four in that range falls to the field 0x5E read at 0x1A5E6."
+  },
+  "0x1a5c8": {
+    "name": "read the word at offset 0x1C and shift it right three",
+    "why": "`move.w $1c(a0),d0; lsr.w #$3,d0; andi.b #$ff,d0` and into signExtendByteLong at 0x1A5EA - so the top five bits of the field become the answer.",
+    "ident": "readField1CShiftedThree"
+  },
+  "0x1a5d4": {
+    "name": "sign-extend the byte at offset 0x19 of the record",
+    "why": "`move.b $19(a0),d0; bra.b $1a5ea` - one field read and the shared sign extension. A jump-table case; the offset is what the case selects.",
+    "ident": "signExtendField19"
+  },
+  "0x1a5da": {
+    "name": "sign-extend the byte at offset 0x1B of the record",
+    "why": "`move.b $1b(a0),d0; bra.b $1a5ea`.",
+    "ident": "signExtendField1B"
+  },
+  "0x1a5e0": {
+    "name": "sign-extend the byte at offset 0x16 of the record",
+    "why": "`move.b $16(a0),d0; bra.b $1a5ea`.",
+    "ident": "signExtendField16"
+  },
+  "0x1a5e6": {
+    "name": "sign-extend the byte at offset 0x5E of the record",
+    "why": "`move.b $5e(a0),d0` and falls into signExtendByteLong at 0x1A5EA. The offset is the whole routine.",
+    "ident": "signExtendField5E"
+  },
+  "0x1a5ea": "sign extend byte to long",
+  "0x1a5f0": {
+    "name": "run one channel's script to its next rest",
+    "why": "clears the flag at 0x3E36EC and keeps the record in the frame, then enters the script reader's loop at 0x1B054 with 0x3E36E2 and 0x3E36DA - the note table and the current instrument - in registers."
+  },
+  "0x1a704": {
+    "name": "raise flag bit one and clear the two counters at 0x3E3706",
+    "why": "`ori.b #$2,(a4)` then `clr.w` into 0x3E3706 and a zero byte into 0x3E3708, and out through 0x1B050."
+  },
+  "0x1a71a": {
+    "name": "quarter the record's word at 0x22, or clear the counters",
+    "why": "with the word at +8 zero it falls to 0x1B050 or to 0x1A704 depending on the frame long; otherwise, when neither of bits 1 and 2 of 0x3E36D4 is set, `asr.w #$2` halves the word at +0x22 twice."
+  },
+  "0x1a740": {
+    "name": "total the channel's pitch, offset and bend into the long at d5",
+    "why": "the word at +8 always; and when the frame long is set, the words at +0x1C and +0x22 as well. The three components of a channel's final pitch."
+  },
+  "0x1a808": {
+    "name": "clear the frame byte five below a6, then continue at 0x1B048",
+    "why": "`clr.b -$5(a6); bra.w $1b048`. One field of the caller's frame and a tail jump."
+  },
+  "0x1a810": {
+    "name": "read two script bytes and dispatch opcodes 0x80 to 0xBB",
+    "why": "takes two bytes through the cursor at +4 of the record, stepping it each time, and jumps through the word table at 0x1A848 for a first byte between 0x80 and 0xBB; anything else goes to 0x1AE44. The second byte is left in d4, which is the operand every case there reads."
+  },
+  "0x1abc6": {
+    "name": "copy field 0x5D into 0x5E, and the arithmetic that precedes it",
+    "why": "the shared tail `move.b $5d(a2),$5e(a2); bra.w $1b048`, reached from four entries above it that first apply d4 to field 0x5D - subtract, and, or, eor - and from a fifth that advances the script cursor at +4 by four times the field less one.",
+    "ident": "copyField5DToField5E"
+  },
+  "0x1abf6": {
+    "name": "take the next byte of the script and step its pointer",
+    "why": "`movea.l $4(a2),a0; addq.l #$1,$4(a2); moveq #$0,d3; move.b (a0),d3` - reads through the cursor at +4 of the record and advances it, which is what makes this a script reader rather than a field read."
+  },
+  "0x1ac02": {
+    "name": "read a three-byte big-endian operand from the script",
+    "why": "three passes of `movea.l $4(a2),a0; addq.l #$1,$4(a2); move.b (a0),d0` shifted by 8, 0x10 and 0 into d3 - the cursor at +4 stepping once per byte, most significant first."
+  },
+  "0x1ace0": {
+    "name": "sign-extend field 0x5D of the record into the word at 0x1C",
+    "why": "`move.b $5d(a2),d1; ext.w d1; move.w d1,$1c(a2)` then `bra.b $1ad4c`.",
+    "ident": "signExtendField5DIntoWord1C"
+  },
+  "0x1acec": {
+    "name": "copy field 0x5D of the record into field 0x19",
+    "why": "`move.b $5d(a2),$19(a2); bra.w $1b048`. One field to another and the shared tail."
+  },
+  "0x1acf6": {
+    "name": "sign-extend field 0x5D of the record into the word at 0x1A",
+    "why": "`move.b $5d(a2),d1; ext.w d1; move.w d1,$1a(a2)`. Field 0x1A where 0x1ACE0 writes 0x1C.",
+    "ident": "signExtendField5DIntoWord1A"
+  },
+  "0x1ad04": {
+    "name": "copy field 0x5D into 0x16 unless field 0x12 is 0xFE",
+    "why": "`cmpi.b #$fe,$12(a2)` returns straight to the tail; otherwise `move.b $5d(a2),$16(a2)` and then the same `tst.l -$a(a6)` branch to 0x1A90E that 0x1AD6E makes.",
+    "ident": "copyField5DToField16Unless12IsFE"
+  },
+  "0x1ad20": {
+    "name": "dispatch on d4 through the five-way table at 0x1AD38",
+    "why": "`cmpi.w #$4,d1` rejects anything above four straight to the tail, then `jmp $1ad38(pc,d1.w)` through a word table of relative offsets. The script opcode's sub-dispatch.",
+    "ident": "dispatchScriptSubOpcode"
+  },
+  "0x1ad42": {
+    "name": "subtract sign-extended field 0x5D from the word at 0x1C, and mark",
+    "why": "`move.b $5d(a2),d1; ext.w d1; sub.w d1,$1c(a2)` then `ori.b #$1,(a4)`, which is the tail 0x1ACE0 also branches to - so every write to that word raises the same flag bit.",
+    "ident": "subtractSignExtendedField5DFromWord1C"
+  },
+  "0x1ad54": {
+    "name": "add field 0x5D of the record to field 0x19",
+    "why": "`move.b $5d(a2),d4; add.b d4,$19(a2); bra.w $1b048`. The additive sibling of 0x1ACEC, which copies rather than adds.",
+    "ident": "addField5DToField19"
+  },
+  "0x1ad60": {
+    "name": "add sign-extended field 0x5D to the word at 0x1A",
+    "why": "`move.b $5d(a2),d1; ext.w d1; add.w d1,$1a(a2)`. The additive sibling of 0x1ACF6.",
+    "ident": "addSignExtendedField5DToWord1A"
+  },
+  "0x1ad6e": {
+    "name": "add field 0x5D to field 0x16, and run 0x1A90E if the frame long is set",
+    "why": "`move.b $5d(a2),d4; add.b d4,$16(a2)` then a `tst.l -$a(a6)`: zero takes the ordinary tail at 0x1B048, non-zero jumps to 0x1A90E instead.",
+    "ident": "addField5DToField16ThenMaybe"
+  },
+  "0x1ad82": {
+    "name": "run the script's test and store the result in fields 0x5D and 0x5E",
+    "why": "the same call to 0x1A58A the branching cases make, but the byte it returns is written to both fields rather than tested.",
+    "ident": "scriptTestIntoFields5D5E"
+  },
+  "0x1ad9a": {
+    "name": "read field 0x5D of the record and shift it right by d4",
+    "why": "`move.b $5d(a2),d0; asr.b d4,d0; bra.b $1ada8` - a jump-table case whose whole content is which field it reads and that it shifts arithmetically.",
+    "ident": "shiftField5DRightByD4"
+  },
+  "0x1ada2": {
+    "name": "shift field 0x5D of the record left by d4",
+    "why": "`move.b $5d(a2),d0; asl.b d4,d0; move.b d0,$5d(a2)` - and the store is the tail 0x1AD9A branches to, so the right shift there writes the field back through this instruction.",
+    "ident": "shiftField5DLeftByD4"
+  },
+  "0x1adb0": {
+    "name": "run the script's test and skip a longword when it is zero",
+    "why": "the same call as 0x1ADCC; a non-zero result carries on reading the script, a zero one does `addq.l #$4,$4(a2)` first - stepping the cursor past the four bytes of the branch it did not take.",
+    "ident": "scriptTestSkipLongIfZero"
+  },
+  "0x1adcc": {
+    "name": "run the script's test and branch on any non-zero result",
+    "why": "pushes the record and d4, calls 0x1A58A, and takes the loop back to 0x1ABF6 - the script reader - only when the result is zero; otherwise 0x1ADC4. The three cases 0x1ADCC, 0x1ADE2 and 0x1ADF8 differ in nothing but the condition they branch on.",
+    "ident": "scriptTestBranchIfNonZero"
+  },
+  "0x1ade2": {
+    "name": "run the script's test and branch when the result is negative",
+    "why": "identical to 0x1ADCC but for `bge.w` where that has `bne.b`, so this continues reading the script when the result is zero or positive.",
+    "ident": "scriptTestBranchIfNegative"
+  },
+  "0x1adf8": {
+    "name": "run the script's test and branch when the result is not negative",
+    "why": "identical to 0x1ADCC but for `blt.w`, the opposite of 0x1ADE2.",
+    "ident": "scriptTestBranchIfNotNegative"
+  },
+  "0x1ae0e": {
+    "name": "set field 0x5E to field 0x5D less the script's test result",
+    "why": "`move.b $5d(a2),d3`, calls 0x1A58A, `sub.b d0,d3; move.b d3,$5e(a2)`. The computed sibling of 0x1AE2A, which subtracts d4 instead.",
+    "ident": "setField5EToField5DLessTestResult"
+  },
+  "0x1ae2a": {
+    "name": "set field 0x5E to field 0x5D less d4",
+    "why": "`move.b $5d(a2),d0; moveq #$0,d2; move.b d4,d2; sub.b d2,d0; move.b d0,$5e(a2)`.",
+    "ident": "setField5EToField5DLessD4"
+  },
+  "0x1ae3c": {
+    "name": "set the channel's pitch from the note table, and the rest of the note opcodes",
+    "why": "the main entry biases the note byte by the record's field 0x19, indexes the word table 0x3E36DE points at, and subtracts that from field 8 into field 0x22 - the pitch offset. Around it: field 0x5F set from d4, a guard on bit 7 of the note, a portamento path taken when field 0x13 is set and the frame long is non-zero, and 0x3E36FC selecting a second table. All of them leave through 0x1B048."
+  },
+  "0x1b06e": {
+    "name": "look the note up in the table at 0x1EA3C, or take the bend",
+    "why": "masks the caller's word to four bits, indexes 0x1EA3C, and a 0xFF entry means there is no note there and the word at +0x5A of the record - the bend - is used instead."
+  },
+  "0x1b166": {
+    "name": "count the four sample voices down and retrigger the ones that expire",
+    "why": "only every eighth call - the byte at 0x3E3D6C counts down from 7. For each of the four bits of the mask byte, decrements that voice's word in the pair table at 0x3E3D72 and, when it reaches zero, writes the voice's byte from 0x1EA94 to the OKI port and reloads the counter with 5."
+  },
+  "0x1b2b2": {
+    "name": "start the sample for a channel by writing its number to the OKI",
+    "why": "walks the four bytes at 0x3E3D6E, indexing the ten-byte records at 0x1B674 by each, and on the first whose field +1 matches the requested channel writes that slot's byte from 0x1EA94 straight to 0x460000 - the OKI6295's command port."
+  },
+  "0x1b306": {
+    "name": "start a channel: clear its counters and run its script",
+    "why": "zeroes 0x3E3706, 0x3E36FA and 0x3E36EC, then runs the channel's script through 0x1A5F0."
+  },
+  "0x1b42e": {
+    "name": "select the instrument the channel's byte names",
+    "why": "indexes the six-byte records at 0x19CE4 by the byte and stores the long it finds in 0x3E36DA, which is the instrument pointer every note lookup then reads."
+  },
+  "0x1b4be": {
+    "name": "strobe the input latch and write the YM's address",
+    "why": "clears bit 0 of the shadow at 0x3E3D8E, writes it to 0x640000, sets the bit and writes again - a strobe - then works on the YM2413 at 0x480000."
+  },
+  "0x1b538": {
+    "name": "play one channel's next event on the YM",
+    "why": "clears 0x3E3708, then works through the channel's counters at 0x3E3706 and 0x3E370A with the flag at 0x3E36EC, writing to the YM2413 at 0x480000."
+  },
+  "0x1b612": {
+    "name": "start every other channel of the type's pair, up to nine",
+    "why": "takes the type's field +5 from the six-byte records at 0x19CE4, points 0x3E36DE at 0x19CF0, and adds one to the index when bit 0 of 0x3E36D4 is set. Then it walks two at a time to nine, calling 0x1B538 on each with the list head from 0x3E3D12."
+  },
+  "0x1e7b8": {
+    "name": "emit two decoded bytes a row at a time, biased by d2",
+    "why": "the same two-byte loop as 0x12574, but each byte has d2 added - the colour base - and the row stride is the fixed 0x1F8 with a count of 7 rather than a stride in d5.",
+    "ident": "emitTwoDecodedBytesBiasedByD2"
+  },
+  "0x1e7e4": {
+    "name": "expand one nibble pair across an eight-by-eight block",
+    "why": "the high nibble of d0 is the repeat count and the low nibble plus d2 the value, written down a column with the 0x1F8 row stride and a count of 7. 0x1E804 below it is a separate entry doing the same expansion in place, rewriting each byte's low nibble from the caller's word."
+  },
+  "0x1e834": {
+    "name": "fill an eight-by-four block of the playfield with one byte",
+    "why": "four `move.b d0,(a1)+` under a `dbra` on d1, then `lea $1fc(a1),a1` to the next row and d1 reloaded, eight rows in all. 0x1FC plus the four bytes just written is the 0x200 stride."
+  },
+  "0x1e862": {
+    "name": "decompress a byte as two hexadecimal digits",
+    "why": "splits the byte at (a3) into nibbles, turns each into 0x30..0x39 or 0x41.. by adding 7 past 0x3A, biases by 0x13 and hands it to decompressTileId with 0x1B - so each nibble becomes the tile of its own digit. Loops on d3, so it renders a whole number."
+  },
+  "0x1e8d2": {
+    "name": "halt with every interrupt masked, upper image",
+    "why": "`stop #$2700` in the upper half of the image, reached separately from the overlay's 0x62e and 0x642."
+  },
+  "0x1e8d6": {
+    "name": "the crash screen: freeze the machine and print its registers",
+    "why": "masks every interrupt, clears the watchdog, pushes all sixteen registers, copies eight bytes of palette from 0x1E85A to 0x3C03E0 so there is something visible, and renders the register dump as hexadecimal from 0x203030 through 0x1E8C8. It does not return."
+  },
+  "0x1e9b4": {
+    "name": "restart through the reset vector",
+    "why": "`suba.l a0,a0; movea.l (a0)+,a7; movea.l (a0),a0; jmp (a0)` - the same restart as 0x133a6 without masking interrupts first."
+  },
   "0x140010": "board ROM zero stub",
-  "0x1400e4": "board ROM table compare",
-  "0x1a5ea": "sign extend byte to long"
+  "0x1400e4": "board ROM table compare"
 }

@@ -480,8 +480,23 @@ class Lifter:
         if tok == "sr":
             # With the address of the next instruction, so that an interrupt
             # let in by lowering the mask stacks what the chip stacks.
+            #
+            # And with the register spill in front of it, for the same reason
+            # the block head has one: writing the status register can lower the
+            # mask and let a waiting interrupt in, and the handler's first act
+            # is `movem.l d2-d7/a2-a3,-(a7)` - it saves the registers of
+            # whatever it interrupted. On the chip those are the chip's. Here
+            # they are JavaScript locals, so without this the handler saves
+            # whatever the machine last happened to hold and writes THAT to the
+            # stack. Measured 2026-08-01 at write 337,414 of attract: the two
+            # dispatchers pushed 0x250 against 0x40 at 0x3e329e, from
+            # soundIrqAcknowledge reached through setSr in fn_0f630, with d0,
+            # d3, d4, d5 and a0 all stale on the lifted side. The handler
+            # restores what it saved, so nothing the lifted code goes on to do
+            # is wrong - it reads its locals - which is exactly why this hid
+            # behind a byte-identical compose for as long as it did.
             at = getattr(self, "nxt", 0)
-            self.stmts.append(f"setSr({value.text}, 0x{at:05x});")
+            self.stmts.append(f"__IRQSPILL__setSr({value.text}, 0x{at:05x});")
             return
         if tok == "ccr":
             # The low byte of the status register: the condition codes alone.
@@ -928,7 +943,8 @@ class Lifter:
             # the halt. The recompiler has always written it; this is another
             # rule m68kts.py had and only the lift dropped, which is now the
             # eighth of that shape.
-            self.stmts.append(f"setSr({self.read(ops[0], 16).text}, 0x{at:05x});")
+            self.stmts.append(
+                f"__IRQSPILL__setSr({self.read(ops[0], 16).text}, 0x{at:05x});")
             self.stmts.append(f"halt(0x{at:05x});")
             self.stmts.append("return;")
             return
@@ -1079,6 +1095,10 @@ class Lifter:
             # and the census duly recorded a jump to 0x0. With a real address
             # stacked it fails loudly at 0x14510 instead, which is how this
             # was found.
+            # No spill: `rte` is leaving a handler, not entering one. The
+            # registers the machine holds here are the ones the handler's
+            # movem just restored, and overwriting them with this routine's
+            # locals would undo that.
             self.stmts.append("setSr(popWord());")
             self.flush()
             self.stmts.append("popLong();")
@@ -1210,6 +1230,15 @@ class Lifter:
                 stmts[-1:-1] = spill
             else:
                 stmts.extend(spill)
+        # The same placeholder blocks.py fills, for the same reason: a statement
+        # that can let an interrupt in has to put this routine's registers back
+        # in the machine first, and which registers those are is only known once
+        # the whole routine has been lifted. Written here as well as there
+        # because a single-block routine never goes through blocks.py, and a
+        # leftover __IRQSPILL__ would reach the TypeScript.
+        irqspill = "".join(f"setReg('{r}', {r}); "
+                           for r in sorted(self.used_regs) if r != "a7")
+        stmts = [s.replace("__IRQSPILL__", irqspill) for s in stmts]
         body = "\n".join("  " + s for s in stmts) or "  // nothing observable"
         return (f"{head}\nexport function {ident(addr)}({sig}): void {{\n{body}\n}}").strip()
 
@@ -1364,6 +1393,23 @@ const setFlagsSub = (a: number, b: number, bits: number): void => {
   const sa = (ua << sh) >> sh; const sb = (ub << sh) >> sh; const sr = (r << sh) >> sh;
   M.z = r === 0; M.n = sr < 0; M.c = ua < ub; M.x = M.c; M.v = (sa - sb) !== sr;
 };
+/**
+ * What a shift leaves in the condition codes.
+ *
+ * N and Z come from the result, C and X from the last bit shifted out, and V
+ * from whether the sign changed during the shift - which only `asl` can do, so
+ * every other shift passes 0. Until this existed, `sync_flags` simply returned
+ * for a shift and the machine kept whatever the last compare or add had left,
+ * which reached the stack: the exception frame taken at the head of the block
+ * after `asl.b #1,d0` in graphicsDecompressor stacked 0x2314 where the oracle
+ * stacked 0x2319.
+ */
+const setFlagsShift = (r: number, cout: number, v: number, bits: number): void => {
+  const mask = widthMask(bits); const sh = 32 - bits;
+  const res = (r & mask) >>> 0;
+  M.z = res === 0; M.n = ((res << sh) >> sh) < 0;
+  M.c = cout !== 0; M.x = cout !== 0; M.v = v !== 0;
+};
 const setFlagsAdd = (a: number, b: number, bits: number): void => {
   const mask = widthMask(bits); const sh = 32 - bits;
   const ua = (a & mask) >>> 0; const ub = (b & mask) >>> 0;
@@ -1400,6 +1446,44 @@ const setFlagsAdd = (a: number, b: number, bits: number): void => {
 const SPILL_ALL = typeof process !== 'undefined'
   && (process as { env?: Record<string, string | undefined> }).env?.SPILL_ALL === '1';
 void SPILL_ALL;
+
+/**
+ * Rules this port changes on purpose.
+ *
+ * The decompiled source is the source, so changing a rule means editing it -
+ * and once a rule is changed the port is no longer trying to be the ROM. That
+ * makes "identical to the recompiled dispatcher" the wrong question in
+ * general, and the right question only where the rules still agree.
+ *
+ * A switch keeps both questions askable, which is the whole reason it exists.
+ * With every rule original, the two dispatchers must be byte-identical for a
+ * whole game - that is the equivalence proof, and a hard-coded change makes it
+ * unprovable rather than false. With the changes on, the difference must
+ * appear exactly where the changed rule applies and nowhere else - that is the
+ * proof the change is live, and it is only worth anything against a run that
+ * would otherwise match.
+ *
+ * Default is the game as it ships: the change is live. `original` is what the
+ * harnesses set to ask the other question. Each flag is named for what it
+ * turns OFF, so the field reads as the rule it restores.
+ *
+ * The flags themselves come from romlab/handedits.py along with the edits that
+ * read them - this block is the generator's, the uses are the hand edits'.
+ */
+export const RULES = {
+  /**
+   * `wallCellSet` counts the cell above as connected. The ROM does; this port
+   * deliberately does not, so vertical runs read as separate pieces.
+   */
+  wallsConnectUp: false,
+};
+
+/** Put every rule back the way the ROM has it. Returns a restore function. */
+export function original(): () => void {
+  const was = { ...RULES };
+  RULES.wallsConnectUp = true;
+  return () => { Object.assign(RULES, was); };
+}
 
 const setXAdd = (a: number, b: number, bits: number): void => {
   const mask = widthMask(bits);
@@ -1455,7 +1539,7 @@ const callRom = (addr: number, ret = 0): void => {
   callee(addr, M);
 };
 void load8; void load16; void load32; void store8; void store16; void store32;
-void setXAdd; void setXSub; void setXShift;
+void setXAdd; void setXSub; void setXShift; void setFlagsShift;
 /** Tail-jump to another routine: same stack, no return address.
  *
  *  Recorded rather than called, so the dispatcher below can carry on with it
@@ -1485,6 +1569,9 @@ const popWord = (): number => { const v = M.load(M.a7 >>> 0, 16); M.a7 = (M.a7 +
  * on. Without it nothing can ever interrupt a busy-wait - and the sound driver
  * spins on a byte that only an interrupt changes.
  */
+/** A block's cycles, held from the poll that found an interrupt until the
+ *  handler returns and the block actually runs. See tick and takeIrq. */
+let __defer = 0;
 const tick = (n: number, at = 0): boolean => {
   M.steps += 1;
   // Where the machine is, as far as the lifted world can say: the head of the
@@ -1511,7 +1598,23 @@ const tick = (n: number, at = 0): boolean => {
   // clock, so the frame boundary arrived at a different point and a loop that
   // spins until an interrupt comes stopped on a different iteration.
   const take = M.irqPending !== 0 && ((M.sr >> 8) & 7) < M.irqPending;
-  M.cycles += n;
+  // Charged now if the block is about to run, and after the handler if it is
+  // not. That distinction is the whole of the last composed divergence.
+  //
+  // The chip takes an interrupt *between* instructions: the instruction it
+  // interrupted has not started, so none of its cycles are spent yet, and the
+  // handler runs on the clock as it stood. The recompiled dispatcher is that
+  // by construction - it raises before executing, and the instruction charges
+  // when it is re-run afterwards. Charging here put the decompiled side into
+  // every handler with the interrupted block's whole cost already spent: 26
+  // cycles ahead at the first block of the handler at frame 389, measured.
+  //
+  // The two clocks reconverge when the block finally runs, so it never shows
+  // as drift - it shows as the two runs disagreeing about where they are for
+  // the duration of every handler, and eventually a frame threshold falls
+  // inside one of those windows and they cross it at different instructions.
+  if (take) __defer = n;
+  else M.cycles += n;
   return take;
 };
 /**
@@ -1528,12 +1631,21 @@ const tick = (n: number, at = 0): boolean => {
  */
 const takeIrq = (): void => {
   const lvl = M.irqPending;
+  // The interrupted block's cost, taken before the handler can set its own -
+  // handlers tick like any other code, so this must not be left live across
+  // the call or a nested take would carry the wrong number back.
+  const n = __defer; __defer = 0;
   if (M.clearOnTake) M.irqPending = 0;
   M.irqDepth += 1;
   try {
     call(M.interruptFrame(lvl), M);
   } finally {
     M.irqDepth -= 1;
+    // The block runs now, so it is charged now - the same instant the
+    // recompiled dispatcher charges it, re-running the instruction it was
+    // interrupted at. Inside the `finally` because the block's caller carries
+    // on either way, and a handler that unwinds must not lose the cycles.
+    M.cycles += n;
     if (M.irqDepth === 0 && M.onIrqReturn) M.onIrqReturn();
   }
 };

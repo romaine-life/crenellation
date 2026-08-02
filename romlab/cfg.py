@@ -206,38 +206,52 @@ def reducible(nblocks, edges):
             order.append(node)
             stack.pop()
 
-    # A graph is reducible exactly when removing the back edges leaves a DAG
-    # whose every cycle is gone. Collapse test: repeatedly remove nodes with a
-    # single predecessor into it (T1/T2 reduction).
+    # A graph is reducible exactly when T1 and T2 collapse it to a single
+    # node: T1 removes a self-edge, T2 merges a node that has exactly one
+    # predecessor into that predecessor.
+    #
+    # BOTH maps have to be maintained, and only `preds` was. Merging x into
+    # `only` makes `only` inherit x's successors, and without writing that
+    # down the successors keep naming x - which is dead - so their live
+    # predecessor set empties and they can never be merged themselves. The
+    # collapse then stalls with several nodes alive and the graph reads as
+    # irreducible. Measured 2026-08-02: 159 routines reported irreducible and
+    # only 3 of them had a component with two entries, which is what
+    # irreducible means. 0x022BA is the smallest: 0 -> 1, 1 -> 2, 2 -> {1, 3},
+    # an ordinary loop with a tail, stalling with {0, 3} alive.
     preds = defaultdict(set)
+    succs = defaultdict(set)
     for a, outs in edges.items():
         for b in outs:
             if b != a:
                 preds[b].add(a)
+                succs[a].add(b)
     alive = {n for n in range(nblocks) if colour[n] != 0}
+    for n in list(succs):
+        succs[n] &= alive
     changed = True
     while changed and len(alive) > 1:
         changed = False
         for n in sorted(alive):
             if n == 0:
                 continue
-            p = preds[n] & alive
-            if len(p) == 1:
-                only = next(iter(p))
-                for t in edges.get(n, []):
-                    if t in alive and t != n:
-                        preds[t].discard(n)
-                        # Not if that makes it its own predecessor. Collapsing
-                        # a loop's body into its header turns the back edge
-                        # into a self-edge, and a self-edge is removed by T1,
-                        # not counted as a second way in. Without this, every
-                        # ordinary loop reads as irreducible - which is what
-                        # the 194 "irreducible" routines mostly were.
-                        if only != t:
-                            preds[t].add(only)
-                alive.discard(n)
-                changed = True
-                break
+            p = (preds[n] & alive) - {n}
+            if len(p) != 1:
+                continue
+            only = next(iter(p))
+            for t in succs[n] & alive:
+                if t == n:
+                    continue
+                preds[t].discard(n)
+                # A merge that makes `only` its own successor is a self-edge,
+                # which T1 removes rather than counting as a way in.
+                if only != t:
+                    preds[t].add(only)
+                    succs[only].add(t)
+            succs[only].discard(n)
+            alive.discard(n)
+            changed = True
+            break
     return len(alive) == 1, back
 
 

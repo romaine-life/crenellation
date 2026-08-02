@@ -42,6 +42,7 @@ def camel(text, limit=5):
 
 def load():
     names = {}
+    forced = {}
     n = json.loads((HERE / "out" / "names.json").read_text())
     for k, v in (n.get("names", n)).items():
         names[int(k, 16)] = v
@@ -70,13 +71,38 @@ def load():
             return seen
         for k, v in json.loads(hand.read_text(),
                                object_pairs_hook=no_dupes).items():
+            # Two shapes. A bare string is a name and nothing else, which is
+            # how this file started. An object is a name plus the evidence for
+            # it - `{"name": ..., "why": ...}` - which is the bar DELIVERY.md
+            # sets: every name backed by something recorded, the way
+            # reviewed_entries.json records data verdicts. A wrong name is
+            # worse than an address, and the only defence against one is being
+            # able to read afterwards why it was chosen. New names take the
+            # object form; the older bare strings are left as they are rather
+            # than given invented justifications.
+            if isinstance(v, dict):
+                if not v.get("why"):
+                    raise SystemExit(
+                        f"names.curated.json: {k} is an object with no `why`. "
+                        f"Either record the evidence or write a bare string, "
+                        f"which at least does not claim to have any.")
+                # An explicit identifier, for when the prose does not survive
+                # camelisation. `camel` drops hex - `trampoline to 0x18df6`
+                # should not carry the address - and truncates to five words,
+                # so four names differing only in an offset all collapsed to
+                # `signExtendByteOffsetRecord` and three of them were silently
+                # dropped as collisions. Say the identifier when the name needs
+                # one.
+                if v.get("ident"):
+                    forced[int(k, 16)] = v["ident"]
+                v = v.get("name")
             if v:
                 curated[int(k, 16)] = v
-    return names, curated
+    return names, curated, forced
 
 
 def main():
-    described, curated = load()
+    described, curated, forced = load()
     facts = json.loads((HERE / "out" / "facts.json").read_text())
     addrs = sorted((f["at"] if isinstance(f, dict) else f[0]) for f in facts["funcs"])
 
@@ -92,7 +118,7 @@ def main():
     idents, source = {}, {}
     for a in addrs:
         if a in curated:
-            idents[a], source[a] = camel(curated[a]), "curated"
+            idents[a], source[a] = forced.get(a) or camel(curated[a]), "curated"
         elif not useless(described.get(a)):
             idents[a], source[a] = camel(described[a]), "evidence"
 
@@ -104,6 +130,19 @@ def main():
     collisions = {n: v for n, v in groups.items() if len(v) > 1}
 
     unnamed = [a for a in addrs if a not in idents]
+    # A hand-written name that collides is silently discarded below, and
+    # silence is the one thing this file must not do: the whole point of
+    # names.curated.json is that adding a name has a visible effect. Say which
+    # ones lost, and to what, so the fix is obvious - usually an `ident` field.
+    lost = [(a, idents[a]) for a in curated
+            if a in idents and len(groups[idents[a]]) > 1]
+    if lost:
+        print(f"  HAND-WRITTEN NAMES THAT COLLIDE AND SO DO NOT APPLY: {len(lost)}")
+        for a, n in sorted(lost):
+            print(f"    0x{a:05x}  {n}  (shared with "
+                  f"{', '.join('0x%05x' % x for x in groups[n] if x != a)})")
+        print("    give each an \"ident\" in names.curated.json, or make the"
+              " prose differ in its first five words")
     print(f"routines: {len(addrs)}")
     print(f"  named from a stated purpose: {len(idents)}"
           f" ({sum(1 for a in source if source[a] == 'curated')} of them by hand)")
@@ -152,6 +191,38 @@ def main():
             taken.add(name)
         return got
 
+    import bisect
+    _inner_p = HERE / "out" / "inner_entries.json"
+    _inner = sorted(json.loads(_inner_p.read_text())) if _inner_p.exists() else []
+    _ends = {a: e for a, e in
+             ((f["at"], f["end"]) if isinstance(f, dict) else (f[0], f[1])
+              for f in facts["funcs"])}
+    _starts = sorted(_ends)
+
+    def name_inner():
+        """Name entry points after the routine they sit inside. Returns how many.
+
+        Numbered in address order within their host, which is the one thing
+        that distinguishes them - they are the same routine entered at
+        different places, so there is nothing finer to say.
+        """
+        seen_host, got = {}, 0
+        for e in _inner:
+            k = bisect.bisect_right(_starts, e) - 1
+            if k < 0:
+                continue
+            host = _starts[k]
+            if not host < e < _ends[host] or host not in unique:
+                continue
+            seen_host[host] = seen_host.get(host, 0) + 1
+            if e in unique:
+                continue
+            want = f"{unique[host]}From{seen_host[host]}"
+            if want not in set(unique.values()):
+                unique[e] = want
+                got += 1
+        return got
+
     stubbed = name_stubs()
 
     # Callees name their callers. A routine with no stated purpose that calls
@@ -197,10 +268,11 @@ def main():
         # named here becomes nameable next round. The two rules feed each other,
         # so both belong inside the fixed point.
         more = name_stubs()
+        entries = name_inner()
         stubbed += more
         wrapped += found
         rounds += 1
-        if not found and not more:
+        if not found and not more and not entries:
             break
     print(f"  wrappers named after the one routine they call: {wrapped}"
           f" (converged in {rounds} rounds)")
@@ -251,28 +323,15 @@ def main():
     # reached by a tail jump or a jump table because a decompiled function has
     # only one way in. Named after the routine they continue, and numbered in
     # address order, which is what they are.
-    import bisect
-    inner_p = HERE / "out" / "inner_entries.json"
-    if inner_p.exists():
-        inner = sorted(json.loads(inner_p.read_text()))
-        ends = {a: e for a, e in
-                ((f["at"], f["end"]) if isinstance(f, dict) else (f[0], f[1])
-                 for f in facts["funcs"])}
-        starts = sorted(ends)
-        seen_host = {}
-        for e in inner:
-            k = bisect.bisect_right(starts, e) - 1
-            if k < 0:
-                continue
-            host = starts[k]
-            if not host < e < ends[host] or host not in unique:
-                continue
-            seen_host[host] = seen_host.get(host, 0) + 1
-            want = f"{unique[host]}From{seen_host[host]}"
-            if want not in set(unique.values()):
-                unique[e] = want
-        print(f"  entry points named after the routine they continue: "
-              f"{sum(1 for a in unique if a in set(inner))}")
+    #
+    # Run inside the fixed point above as well as here, for the same reason the
+    # stub rule is: a jump stub whose target is an entry point cannot be named
+    # until that entry point is, and this used to run afterwards - so twenty-odd
+    # stubs into the C runtime's formatter stayed addresses for ever, waiting on
+    # names that were assigned one step too late.
+    name_inner()
+    print(f"  entry points named after the routine they continue: "
+          f"{sum(1 for a in unique if a in set(_inner))}")
     print(f"  usable, unique names: {len(unique)}")
     (HERE / "out" / "idents.json").write_text(json.dumps(
         {"idents": {hex(a): n for a, n in unique.items()},

@@ -17,7 +17,17 @@ import { describe, expect, it } from 'vitest';
 
 import { Machine } from './machine';
 import { call } from './dispatch';
-import { DECOMPILED, bind, call as viaDecompiled, useCallee } from './decompiled';
+import { DECOMPILED, bind, call as viaDecompiled, useCallee, original }
+  from './decompiled';
+
+// Every rule as the ROM has it. This compares each lifted routine against the
+// recompiled one, and the recompiled one is generated from the ROM - so a rule
+// the port changes on purpose is a guaranteed disagreement for the routine that
+// carries it. wallCellSet is the case, and it passed only because the harness
+// never happened to build a state where the changed line ran; that is luck, not
+// coverage, and `original()` removes the need for it. See RULES in
+// decompiled.ts.
+original();
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));

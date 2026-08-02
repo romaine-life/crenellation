@@ -30,8 +30,10 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
   executed, and no missing routine in the port under any input pattern.
   `SWEEPLOG.md` is the ledger. A new input pattern resets the count.
 - Every routine is proved against the oracle on random machine states, none
-  held back. One disagrees — 0xB032, named in `baseline.json` with what it
-  does wrong. **901 of 907 are also matched against a frozen 68000** (24,097
+  held back, and **none disagrees** — `decomp.txt` reads "all identical" over
+  3,631 comparisons and `decompKnownWrong` in `baseline.json` is empty. 0xB032
+  was the last one and it is gone. **901 of 907 are also matched against a
+  frozen 68000** (24,097
   step-state snapshots; two capture sessions hours apart froze byte-identical
   machines, which is the determinism claim that makes the rest mean
   anything). Of the six: four have every silicon trial voided because the
@@ -48,41 +50,123 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
   falling from 832 to 95.
 - The game boots, draws the attract screen in colour, and plays. Under the
   pure decompiled dispatcher every sweep pattern runs its full length —
-  including games on all three stations — with no missing routines. The
-  composed decompiled run is byte-identical to the recompiled one through
-  frame ~270.
+  including games on all three stations — with no missing routines.
+- **The two translations run the same game.** Every input pattern to its own
+  end — 19,200 frames across the six — with work RAM, the playfield and the
+  palette byte-identical at every frame; every write either makes identical in
+  address, value and order, 62 million of them; the same 80,640 pixels on
+  screen on every pattern. `compose`, `writes` and `draws` all assert identity
+  now, and **the `compose` and `writes` floors are retired**. It takes about
+  four minutes, not the 3h41m the old unbounded form did: the per-frame digest
+  runs over a mirror kept current by hooking `setByte`, and the write
+  comparison streams a hash and only pays for a full recording when something
+  differs.
+- **What is left is one bit.** 1,219 of 2,125 exception frames on attract stack
+  an identical return address and status register, and the 1,220th differs in
+  X alone. X outlives the instruction after it — a move or a compare leaves it
+  — so it can be set several routines back, and the lifted world computes
+  flags in JavaScript and writes them to the machine only at sync points. It is
+  not a missing sync point: `SPILL_ALL=1`, which spills at every block head,
+  does not change the number. It reaches memory only inside a frame the handler
+  immediately pops, which is why every other instrument reports identity, and
+  it is the `frames` floor in `baseline.json` — the only floor left in the
+  equivalence suite. `polls.test` is the instrument.
+- Four faults were fixed to get there, all the same shape — something one
+  dispatcher did that the other did not:
+  - `tick` charged an interrupted block's cycles **before** running the
+    handler, where the chip has not spent them yet. The lifted side entered
+    every handler ahead by that block's cost.
+  - `move to sr` let an interrupt in **without spilling the routine's
+    registers**, so the handler's `movem` saved stale values to the stack. The
+    third place needing the spill a block head already had.
+  - **The oracle** stacked the address after a taken branch instead of the
+    branch target: the generated case sets `m.next` to the fall-through before
+    choosing the target. Invisible until now because `rte` pops that address
+    and discards it.
+  - `xstate` — the X bit's tracked state — was the one piece of carried flag
+    state that did not reach a block from its **predecessors**, so a block
+    inherited the X of whatever sat before it in *address* order. And shifts
+    never synced their condition codes at all, because `sync_flags` returned
+    early for any kind that was not cmp, sub or add.
 - One deliberate rule change is live: `wallCellSet` no longer counts the cell
-  above as connected (see `romlab/handedits.py`).
-- **What still differs between the two runs is the seam, not the game.** An
-  exception frame carries the program counter and condition codes of whatever
-  was interrupted, and the two dispatchers interrupt at different points by
-  design: the chip between instructions, the decompiled code at the head of a
-  block, because its expressions span instructions and there is no boundary
-  inside one to poll at. So a frame pushed mid-block differs in six bytes, and
-  a loop that spins until an interrupt arrives — `fn_00430` rotating four
-  register patterns until 0x3E0802 goes non-zero — stops on a different
-  iteration. `interruptFrame` marks the frame so `writes.test` can skip it;
-  what is left agrees for 27,627 writes under every input pattern.
-- Both composed instruments carry floors rather than demanding identity, and
-  both are bounded: `writes` records 300,000 writes and stops, `compose` runs
-  one pattern by default. Unbounded they took the suite 3h41m; bounded it is
-  nine minutes and measures the same things. Pacing interrupts off the write
-  count was tried to remove the spin-loop difference and made it worse — the
-  reasoning is in `writes.test.ts` so nobody repeats it.
+  above as connected (`romlab/handedits.py`). It is a **switch**, not a
+  constant — `RULES.wallsConnectUp` in `decompiled.ts`, off in the game and put
+  back by `original()` in every equivalence harness. A hard-coded change makes
+  the equivalence proof unprovable rather than false, and it makes "the change
+  is live" unprovable too: `draws.test` used to assert 380 pixels with the
+  change compiled in either way, so both claims were the same number and
+  neither could fail on its own. Now the ROM's rules give 0 differing pixels on
+  all six patterns and `MODIFIED=1` gives exactly 455 on the two that lay a
+  wall.
+
+## Making it readable
+
+The equivalence half is done, and so is the function half of this one.
+Measured 2026-08-02 in `frontend/src/rom/names.txt`:
+
+| | |
+|---|---|
+| Functions with a name that says what they do | **1,187 of 1,187** |
+| Still named for their address | **0** |
+| Parameters that say what they are | 3,137 of 6,279 |
+
+`names.test.ts` **enforces** the first — `expect(byAddress).toEqual([])`, not a
+ratchet, because at the bar a `<=` would quietly accept a regeneration that
+lost a name, and losing one is exactly what a regeneration does when a curated
+name stops applying. It also asserts the second half of the bar: every object
+entry in `names.curated.json` carries a `why`. Parameters stay a ratchet
+against `baseline.json`, and may only rise.
+
+- **`names.curated.json` is where a name goes**, as `{"name": ..., "why": ...}`.
+  `idents.py` refuses an object with no `why`: a wrong name is worse than an
+  address, and the only defence is being able to read afterwards why it was
+  chosen. Add `"ident"` when the prose does not camelise to something unique —
+  `camel` drops hex and truncates to five words, and it silently discarded four
+  names that differed only in a field offset before that was noticed. It now
+  reports any hand-written name it could not apply.
+- **`romlab/readsmall.py [from] [count] [--max BYTES]`** prints the unnamed
+  routines smallest first, with callers, callees and disassembly, skipping
+  anything already named — so a batch can be named, `idents.py` re-run, and the
+  next batch read without regenerating.
+- **`romlab/distinguish.py`** prints, per colliding routine, the fields, slots
+  and constants that separate it from its namesakes.
+- The mechanical levers are exhausted and run to a fixed point in `idents.py`:
+  trampolines named after their target, wrappers after the one routine they
+  call, entry points after the routine they continue. Folding that last one
+  *into* the fixed point rather than after it took jump stubs from 31 to 57.
+- **`paramnames.py`** names a parameter after the callee it is handed to: a
+  call spills its arguments into the machine immediately before `callRom`, and
+  the callee's table says which parameter comes from which register. It is a
+  rename and nothing else — compose, writes and draws all still report identity
+  after it. The reverse direction was built, measured at 3,247 renames and zero
+  movement, and dropped; the note is in the file.
+- **Dispatch loops are down from 228 to 11**, and `decompiled.ts` is *smaller*
+  than before — 8.3 MB against 14 MB — because most of what those loops cost
+  was duplication. Three faults: `cfg.reducible()` collapsed the graph keeping
+  only the predecessor map, so a merged block's successors went on naming it
+  and the collapse stalled (159 routines read as irreducible where 3 were);
+  the join of an `if` was a guess rather than the branch's immediate
+  post-dominator; and a loop with several ways out gave up instead of
+  continuing at the header's post-dominator. The structurer also carries a
+  budget now (`_EMIT_BUDGET`), because with the wrong join one routine nested
+  exponentially — 219 MB on its own — and past 24,000 statements it falls back
+  to the dispatch form, which is what that form is for.
+  **`WHYDISPATCH=1 python3 blocks.py` prints why each routine falls back**, and
+  that is how all three were found.
 
 ## Regenerating
 
 When only names or the lifter changed:
 
 `cd romlab && python3 idents.py && python3 blocks.py && rm -f out/unproven.json
-&& python3 decomp.py && python3 handedits.py`
+&& python3 decomp.py && python3 handedits.py && python3 paramnames.py`
 
 When the *map* changed — funcs, entries, extents — the chain starts earlier
 and regenerates both translations:
 
 `python3 describe.py && python3 gen_ts.py && python3 cfg.py && python3
 idents.py && python3 blocks.py && rm -f out/unproven.json && python3 decomp.py
-&& python3 handedits.py`
+&& python3 handedits.py && python3 paramnames.py`
 
 Order matters and these steps are easy to get wrong:
 
@@ -92,10 +176,13 @@ Order matters and these steps are easy to get wrong:
 - **`rm out/unproven.json` before `decomp.py`, not after.** It is read at
   generation time; clearing it afterwards silently emits the previous run's
   held-back set and every count is wrong.
-- **`handedits.py` last.** Regeneration overwrites `decompiled.ts`, so every
-  deliberate edit lives there too and is re-applied. An edit that no longer
-  applies is an *error* — the lifter now produces different text and the change
-  has to be re-expressed, or taught to the lifter.
+- **`handedits.py` then `paramnames.py` last.** Regeneration overwrites
+  `decompiled.ts`, so every deliberate edit lives in `handedits.py` too and is
+  re-applied. An edit that no longer applies is an *error* — the lifter now
+  produces different text and the change has to be re-expressed, or taught to
+  the lifter. `paramnames.py` runs after it, because it renames locals and
+  would otherwise move the text a hand edit matches on; it is idempotent, so a
+  second run reports zero rather than renaming again.
 - **`rm -rf romlab/__pycache__`** after editing a module another script imports.
   Stale bytecode has survived edits here more than once.
 
@@ -151,15 +238,32 @@ inputs from the main checkout: `romlab/out/*.json`, `prog_ext.bin`,
   test isolates one routine. `DECOMP_ONLY=13000-13a00` restricts the range; the
   full run is slow.
 - **`compose.test.ts`** — the same ROM booted both ways, all of work RAM, the
-  playfield **and the palette** compared every frame. `MODIFIED=1` flips it to
-  assert the opposite — that a deliberate change is present — which is the
-  right question once a rule has been changed on purpose.
-- **`writes.test.ts`** — every write to a region from both runs, first
-  difference, plus the JavaScript stack that made it. `W_LO`/`W_HI` set the
-  window. This is the instrument that works: call sequences are *not*
-  comparable between the two dispatchers, because the recompiled one only sees
-  calls that leave a routine's own switch while the decompiled one routes every
-  call through.
+  playfield **and the palette** compared every frame, on all six patterns to
+  their own full length. Asserts identity. `MODIFIED=1` flips it to assert the
+  opposite — that the deliberate change is present — which only became a real
+  proof once the unmodified run was identical; before that a pre-existing
+  divergence masked the edit entirely.
+- **`writes.test.ts`** — every write from both runs, in address, value and
+  order, over a whole game. A streaming digest with a checkpoint every 100,000
+  writes makes the full length affordable; a difference is then bounded to one
+  checkpoint block and only that block is recorded in full, with registers, the
+  cycle clock and the ROM call stack. `W_LO`/`W_HI` set the address window.
+  Call sequences are *not* comparable between the two dispatchers — the
+  recompiled one only sees calls that leave a routine's own switch — which is
+  why writes are the thing compared.
+- **`polls.test.ts`** — the seam itself, and the instrument to reach for when
+  compose or writes reports a difference. Four questions, each narrower than
+  the last: do both runs cross every frame boundary at the same pc, clock,
+  stack pointer and interrupt count; do they stack the same exception frame at
+  every interrupt; do they reach the same poll points in the same order having
+  spent the same cycles (`POLL_QUIET=1` delivers no interrupts at all, which is
+  the only mode where that clock column means what it says); and, for one named
+  frame, every poll inside it (`POLL_FRAME=N`, with `POLL_WATCH=addr` and
+  `SPILL_ALL=1` to compare registers at a routine entry).
+- **`draws.test.ts`** — the screens, rendered through the palette. With the
+  ROM's rules the two runs must draw the same picture on every pattern, 0 of
+  80,640 pixels differing; with `MODIFIED=1` the changed rule must show, at the
+  exact per-pattern counts in `baseline.json`.
 
 Per-routine verification passing does **not** mean the game works. `movep` was
 stubbed as a no-op and every routine still verified clean, because the harness

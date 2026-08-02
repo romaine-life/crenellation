@@ -1,0 +1,2 @@
+recompiled crossed 2400 frame boundaries, decompiled 2400
+both cross all 2400 at the same pc, clock, stack depth, interrupt count and handler depth

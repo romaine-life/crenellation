@@ -24,14 +24,12 @@ import { describe, it, expect } from 'vitest';
 
 import { System } from './system';
 import { call as viaRecompiled } from './dispatch';
-import { call as viaDecompiled, bind, POLL_AT } from './decompiled';
+import { call as viaDecompiled, bind, POLL_AT, original } from './decompiled';
 import { PATTERNS, type Pattern } from './patterns';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
-const floor: number = (JSON.parse(
-  readFileSync(join(here, 'baseline.json'), 'utf8')) as Record<string, number>)['compose'] ?? 0;
 
 type Machine = System['m'];
 type Entry = (addr: number, m: Machine) => void;
@@ -41,71 +39,60 @@ type Entry = (addr: number, m: Machine) => void;
 // matching decompilation projects handle this with a build flag; same idea.
 const POKE = process.env.POKE === '1';
 const MODIFIED = process.env.MODIFIED === '1';
-// How much of the stack below a7 counts as dead. The two dispatchers push
-// exception frames at different instants, so bytes under the stack pointer
-// legitimately differ; 0x100 was enough for boot. DEAD_BYTES widens it as a
-// diagnostic - if a difference vanishes at a larger window it was dead
-// stack, not a fault. Default unchanged.
+// Without MODIFIED this asks whether the two dispatchers run the same program,
+// so it runs with every rule as the ROM has it - a rule the port changes on
+// purpose is not a translation fault and must not be measured as one. With
+// MODIFIED the changed rules stay live, because that test's whole claim is
+// that they show. See RULES in decompiled.ts.
+if (!MODIFIED) original();
+// How much of the stack below a7 counts as dead.
+//
+// This is the one allowance left in this file, and it now covers exactly one
+// known thing rather than a vague "the two take interrupts at different
+// instants". They do not: polls.test asserts both cross every frame boundary
+// at the same pc with the same clock and the same stack pointer, and that
+// every exception frame either pushes carries the same return address. What
+// still differs is the X bit of the status register in some stacked frames -
+// one interrupt in 2,125 on attract, recorded as `frames` in baseline.json -
+// and X is sticky across routine boundaries, so the lifted side, which keeps
+// its flags in JavaScript and writes them to the machine at sync points, can
+// hold a different one. The handler pops that frame; the bytes are residue
+// below the stack pointer by the time a frame boundary arrives.
+//
+// Measured 2026-08-02 with DEAD_BYTES=0 - no allowance at all - the six
+// patterns are identical to frames 1640, 614, 575, 502, 424 and 1640, and the
+// first difference each time is a single byte five below the stack pointer,
+// the low half of a popped frame's status word. So the allowance buys the
+// whole game, and what it hides is one bit, in memory nothing reads.
+// DEAD_BYTES widens or removes it; a difference that survives a larger window
+// is not dead stack.
 const DEAD = Number(process.env.DEAD_BYTES ?? 0x100);
 
-// Which patterns to run. One by default, and the reason is the cost of a
-// snapshot: work RAM is a Map, so every byte of the 264 KB compared per frame
-// is a map lookup, and six patterns at a thousand frames each is billions of
-// them - the suite spent an hour and fifty minutes on it. Attract reaches the
-// same divergence as every other pattern, so the default proves the same thing
-// in a fraction of the time; COMPOSE_ONLY='' runs the full sweep.
+// Which patterns to run: all six, each to its own full length, by default.
 //
-// The real fix is to stop snapshotting: a checksum kept up to date by hooking
-// writes would make the per-frame digest free, the way writes.test already
-// hooks them. That is worth doing and is not done here. Measured 2026-07-30:
-// the full sweep was still running after 2h52m and was killed - though the
-// machine was also carrying four orphaned vitest workers from earlier days at
-// ~270 CPU-hours between them, so that figure is contention as well as cost.
+// It ran one pattern for 1,200 frames until 2026-08-01, on a cost argument
+// that had stopped being true. The cost was never the hashing - it was
+// `snapshot`, 264,000 `m.byte()` calls a frame against a Map - and it is gone:
+// a mirror Uint8Array kept current by hooking `setByte` costs one array store
+// per write, which is hundreds a frame rather than hundreds of thousands. The
+// mirror is checked against the old path for the first eight frames of every
+// run, always, not behind a flag: a faster digest that quietly drifted would
+// report agreement that is not there, which is worse than no digest at all.
 //
-// The design, so whoever does it does not have to rediscover it:
+// The other half of the old cost story was a hang - a frame boundary landing
+// inside an interrupt handler deferred the digest, and the replay's
+// `frames == upto` was then skipped, so it ran for ever - plus, on
+// 2026-07-30, four orphaned vitest workers holding ~270 CPU-hours between
+// them. Neither was the instrument being expensive.
 //
-//   * The cost is not the hashing, it is `snapshot`: 264,000 calls to
-//     `m.byte()` a frame, and work RAM is a Map, so every one is a hash
-//     lookup. Keep a **mirror Uint8Array** updated by hooking `setByte` the
-//     way writes.test already does - O(writes per frame), which is hundreds,
-//     not hundreds of thousands - and hash the mirror instead. Flat typed
-//     array reads, same FNV-1a, byte-for-byte the same digest.
-//   * Keep `digestOf` exactly as it is. That is the point: an *unchanged*
-//     hash over a mirror that is right by construction cannot disagree with
-//     the old path, so validating it is comparing two numbers rather than
-//     reasoning about a new algorithm.
-//   * The dead-stack mask still works: save the 0x100 bytes below a7 out of
-//     the mirror, zero them, hash, put them back. Cheap and identical to what
-//     `snapshot` does today.
-//   * A rolling *sum* (subtract the old byte's contribution, add the new)
-//     avoids the per-frame hash entirely and is tempting. It is also where
-//     this gets dangerous: it needs a new order-independent mix, it cannot
-//     reuse FNV-1a, and if it is subtly wrong it reports *agreement that is
-//     not there* - turning the strongest instrument in the repo into a rubber
-//     stamp, silently. The mirror gets the thousandfold win without that risk.
-//     Take it, and only reach for the sum if hashing the mirror is somehow
-//     still the bottleneck.
-//   * Either way, VALIDATE AGAINST THE OLD PATH over a few hundred frames -
-//     same digests, same first differing frame - before trusting a green run.
-//     Do not ship it on the strength of being faster.
-// The "service switch hangs at frame 276" was the instrument, not the game.
-// A frame boundary that lands inside an interrupt handler defers `take`
-// until the handler finishes, and by then `frames` has moved on - so the
-// replay's `frames == upto` was skipped and it ran for ever. It is `>=` now.
-// Frame 275 quiesced outside a handler and 276 did not, which is the entire
-// reason one number worked and the next did not.
-//
-// COMPOSE_ONLY='' now runs all six patterns in about 41 seconds. Nothing
-// about it was ever unaffordable; the cost story was one hang plus, on
-// 2026-07-30, four orphaned vitest workers holding ~270 CPU-hours.
-const ONLY = process.env.COMPOSE_ONLY ?? 'attract';
-// Frames per pattern. The default is a bound on the cost, not on the claim:
-// six patterns at their full length is twenty thousand frames of the game run
-// twice over with a snapshot and a digest every frame, which took the suite
-// past three hours - and a suite that takes an afternoon is a suite nobody
-// runs. COMPOSE_FRAMES=0 asks for the full length of every pattern.
+// COMPOSE_ONLY picks patterns by substring while narrowing something down.
+const ONLY = process.env.COMPOSE_ONLY ?? '';
+// Frames per pattern. Zero means each pattern's own full length, which is the
+// default now: the claim is that the two dispatchers agree for a whole game,
+// and a cap is the instrument's bound rather than the game's. Set
+// COMPOSE_FRAMES=N to stop short while narrowing something down.
 const CAP = process.env.COMPOSE_FRAMES !== undefined
-  ? Number(process.env.COMPOSE_FRAMES) : 1200;
+  ? Number(process.env.COMPOSE_FRAMES) : 0;
 
 /** Everything either run could have touched, for a byte-level comparison. */
 function snapshot(sys: System): Uint8Array {
@@ -301,6 +288,15 @@ function play(p: Pattern, entry: Entry, upto = 0): {
   // half way through the handler's work against one that has not started it.
   // Waiting for the handler to finish compares the game, not the seam.
   const take = (): void => {
+    // Reaching here at all means the machine quiesced outside a handler, which
+    // is the only thing the 90-frame guard below is watching for. It used to be
+    // recorded only on the digest path, so a *replay* - which takes no digests
+    // - looked stalled from its ninety-first frame and died there every time.
+    // Every replay past frame 90 therefore returned no snapshot, and `compare`
+    // fell through to the branch that reports the frame number with no bytes:
+    // "diverges at frame 390 (2400 vs 2400 frames run)" was the instrument
+    // declining to look, not a divergence it could not describe.
+    lastTook = frames;
     if (upto) {
       // When sampling by position, `upto` is a sample index, not a frame:
       // count the digests this replay would have taken and stop on the same
@@ -344,21 +340,24 @@ function play(p: Pattern, entry: Entry, upto = 0): {
       if (digests.length >= limit) throw STOP;
     }
   };
-  // Sampled at the frame boundary, and that is the ceiling on what this
-  // harness can claim. There is no moment in wall-clock time at which the two
-  // dispatchers are at the same point in the program: the recompiler charges
-  // cycles per instruction and the decompiled code per block, so a cycle count
-  // is not a program point. Handler entry and handler return are no better -
-  // an interrupt lands wherever it lands, and the two runs' first one lands
-  // sixty bytes of stack apart. What is left over at a boundary is a sampling
-  // difference, and it says so: the stack pointers differ. The instrument that
-  // compares whole runs without a common clock is writes.test, which compares
-  // the sequence of writes rather than the state at an instant.
-  const onQuiesce = (): void => {
-    if (sys.m.irqDepth !== 0) return;
-    sys.m.atPcExtra = null;
-    take();
-  };
+  // Sampled at the frame boundary, and the frame boundary is now a program
+  // point in both runs rather than a moment on two different clocks.
+  //
+  // It was not always. This used to defer the digest until the machine came
+  // out of any handler, because a boundary that landed inside one caught a
+  // machine half way through work the other had not started - the recompiler
+  // charging cycles per instruction and the lifted code per block meant the
+  // two crossed at different instructions. That is measured, and it is fixed:
+  // both poll only at block heads, a block costs the sum of its instructions,
+  // and the lifted side now defers a block's charge across the handler that
+  // interrupted it, so both cross every boundary at the same pc with the same
+  // clock, stack pointer and interrupt count. polls.test asserts exactly that.
+  //
+  // Waiting to quiesce is therefore no longer needed, and it was doing harm:
+  // the service-switch pattern runs its work *inside* the vblank handler and
+  // never comes out, so no digest was ever taken, the run hit the ninety-frame
+  // guard and died at frame 366 of 1800 - and the comparison reported
+  // "identical", because both runs had stopped looking at the same place.
   if (SAMPLE) {
     // Only at a poll point and only outside a handler: both runs are then at
     // the same instruction with the same call depth.
@@ -388,24 +387,22 @@ function play(p: Pattern, entry: Entry, upto = 0): {
       // meaning anything - a run that did that reported "diverges at frame
       // 350" against 328 samples, which cannot both be true.
       if (SAMPLE) { /* position sampling drives take() */ }
-      else if (sys.m.irqDepth === 0) take();
-      else { deferred += 1; sys.m.atPcExtra = onQuiesce; }
-      // A digest is only taken once the machine is out of any handler. If it
-      // never comes out, no digest is ever taken, the run never reaches
-      // `limit`, and the test hangs with nothing to show for it - which is
-      // exactly what "service switch hangs at frame 276" looked like for a
-      // whole session. Fail instead, carrying the state that explains it.
-      if (frames - lastTook > 90) {
-        throw new Error(`no digest for 90 frames: at frame ${frames}, `
-          + `irqDepth ${sys.m.irqDepth}, digests ${digests.length}, `
-          + `last took at ${lastTook}, deferred ${deferred} times`);
-      }
+      else { if (sys.m.irqDepth !== 0) deferred += 1; take(); }
+      // The guard that used to be here fired when no digest had been taken for
+      // ninety frames, which could only happen while digests waited on the
+      // machine leaving a handler. Nothing waits now - every boundary takes
+      // one - so `frames` and `digests.length` advance together and there is
+      // no state left for it to detect. `deferred` is kept as a count of the
+      // boundaries that landed inside a handler, which is a fact about the
+      // game worth reporting rather than a reason to look away.
+      void lastTook;
     }, entry);
   } catch (e) {
     if (e !== STOP) died = (e as Error).message.slice(0, 90);
   }
   return { digests, pf, frames, shot, sp: sys.m.a7 >>> 0,
-    ended: `${frames} frames, stopped=${sys.m.stopped}${died ? `, died: ${died}` : ''}` };
+    ended: `${frames} frames, ${deferred} of them crossing inside a handler,`
+      + ` stopped=${sys.m.stopped}${died ? `, died: ${died}` : ''}` };
 }
 
 /** The first frame whose digests differ, or -1. */
@@ -415,12 +412,26 @@ function firstDiff(a: number[], b: number[]): number {
   return a.length === b.length ? -1 : n + 1;
 }
 
-function compare(p: Pattern): { note: string; frame: number } {
+function compare(p: Pattern): { note: string; frame: number; short: boolean } {
   const a = play(p, viaRecompiled);
   const b = play(p, viaDecompiled);
   const f = firstDiff(a.digests, b.digests);
-  if (f < 0) return { note: `${p.name}: identical for ${a.frames} frames`,
-    frame: Number.MAX_SAFE_INTEGER };
+  // A pattern that stops early is not a pass. Both runs agreeing to halt at
+  // frame 366 of 1800 reads as "identical" to a digest comparison and says
+  // nothing about the other 1,434 - and the shape it hides is the one this
+  // suite has been caught by before, an instrument declining to look. The
+  // limit is `CAP || p.frames`, so a full-length run must produce exactly that
+  // many digests; anything less is reported and fails.
+  const want = CAP || p.frames;
+  const short = a.digests.length < want || b.digests.length < want;
+  if (f < 0) {
+    return {
+      note: `${p.name}: identical for ${a.digests.length} of ${want} frames`
+        + (short ? ` - STOPPED SHORT (${a.ended} / ${b.ended})` : ''),
+      frame: Number.MAX_SAFE_INTEGER,
+      short,
+    };
+  }
   // Say which bytes, by replaying both to that frame. Only then is a snapshot
   // worth keeping.
   const sa2 = play(p, viaRecompiled, f);
@@ -428,8 +439,10 @@ function compare(p: Pattern): { note: string; frame: number } {
   const sa = sa2.shot;
   const sb = sb2.shot;
   if (!sa || !sb) {
-    return { note: `${p.name}: diverges at frame ${f} (${a.frames} vs ${b.frames} frames run)`,
-      frame: f };
+    return { note: `${p.name}: diverges at frame ${f} (${a.frames} vs ${b.frames} frames run)`
+      + ` - the replay reached no snapshot, which is a fault in this harness,`
+      + ` not a divergence it could not describe`,
+      frame: f, short };
   }
   const diffs: string[] = [];
   let total = 0;
@@ -441,7 +454,7 @@ function compare(p: Pattern): { note: string; frame: number } {
   }
   return { note: `${p.name}: frame ${f} of ${a.frames}, ${total} bytes differ`
     + ` (sp 0x${sa2.sp.toString(16)} vs 0x${sb2.sp.toString(16)}) - ${diffs.join(' ')}`,
-    frame: f };
+    frame: f, short };
 }
 
 describe('the decompiled routines compose', () => {
@@ -451,18 +464,29 @@ describe('the decompiled routines compose', () => {
     const results = chosen.map(compare);
     writeFileSync(join(here, 'compose.txt'),
       results.map((r) => r.note).join('\n') + '\n');
-    // A floor, like every other harness here, and for a reason this one can
-    // state exactly: there is no moment in wall-clock time at which the two
-    // dispatchers are at the same point in the program. The recompiler charges
-    // cycles per instruction and the decompiled code per block, so a frame
-    // boundary finds one of them mid-call with a value pushed that the other
-    // has already popped - which is what the stack pointers in the report say
-    // whenever this stops. Demanding identity here would make the suite
-    // permanently red, which is how a test that had stopped compiling went
-    // unread for several rounds. The instrument that compares whole runs
-    // without a common clock is writes.test.
-    const worst = Math.min(...results.map((r) => r.frame));
-    expect(worst).toBeGreaterThanOrEqual(floor);
+    // Identity, not a floor.
+    //
+    // The floor that used to be here was argued from a real observation - the
+    // two dispatchers have no common clock, the recompiler charging cycles per
+    // instruction and the lifted code per block - and the conclusion drawn
+    // from it was wrong. They do share a clock at every point either of them
+    // can be *looked at*: both poll only at block heads, and a block costs the
+    // sum of its instructions, so the clocks are equal at every poll. What
+    // separated them was two things, both fixable and both fixed. The lifted
+    // side charged a block's cycles before running the handler that
+    // interrupted it, where the chip has not spent them yet - so it went into
+    // every handler ahead by that block's cost. And the deliberate wall rule
+    // was compiled in, so a run with it on was not trying to match. With the
+    // rules original and the charge deferred, all 2,400 frame boundaries of
+    // attract are crossed at the same pc, clock, stack depth and interrupt
+    // count (polls.test), and every frame of every pattern digests the same.
+    //
+    // So a difference here is now a fault, and this says so. A floor would
+    // swallow the next one exactly as it swallowed this one for weeks.
+    const parted = results.filter((r) => r.frame !== Number.MAX_SAFE_INTEGER);
+    expect(parted.map((r) => r.note)).toEqual([]);
+    // And a run that stopped early is not agreement either - see compare.
+    expect(results.filter((r) => r.short).map((r) => r.note)).toEqual([]);
   }, 3600000);
 
   // With a rule changed, the useful claim is the opposite one: the change is
@@ -480,54 +504,44 @@ describe('the decompiled routines compose', () => {
     // *expected* to match, and demanding a difference from all six would
     // fail for the right behaviour. Per-pattern numbers are recorded so the
     // reader can see which exercised it.
-    // WARNING - this cannot currently prove what it claims. `firstDiff` is
-    // 351 for five of six patterns *with the change reverted*, verified by
-    // regenerating without handedits.py and clearing node_modules/.vite. So
-    // the pre-existing divergence at 351 masks the edit entirely: this test
-    // would pass just the same if the change were silently lost. It only
-    // becomes a real proof once frame 351 is fixed and the unmodified sweep
-    // is identical. draws.test IS a real proof today - it asserts the exact
-    // 380 pixels, and 0 without the edit - so the change is demonstrably
-    // live; it is this instrument, not the change, that is not yet load
-    // bearing. Do not treat a green run here as evidence until 351 is gone.
+    // LOAD BEARING SINCE 2026-08-02, and it was not before.
+    //
+    // The old warning here said this could not prove what it claims, and it
+    // was right: with the change reverted the two runs still parted at frame
+    // 351 for five of six patterns, so a difference found here said nothing
+    // about the edit and the test would have passed just the same if the edit
+    // had been silently lost. That divergence is gone - the test above now
+    // asserts the two dispatchers are identical over every frame of every
+    // pattern with the ROM's rules - so a difference under MODIFIED can only
+    // come from the rules that were changed. That is what makes this a proof
+    // rather than an echo, and it is the whole reason the changed rule became
+    // a switch (RULES in decompiled.ts) instead of staying compiled in.
     const lines: string[] = [];
     let seen = 0;
     for (const p of chosen) {
       const a = play(p, viaRecompiled);
       const b = play(p, viaDecompiled);
-      // The playfield alone, which is finer than the combined digest - but
-      // MEASURED, and it does not make this a proof either. The combined
-      // digest parts at frame 351 whether or not the edit is present; the
-      // playfield parts at ~390 with it and ~391 without. Regenerate without
-      // handedits.py and this test still passes. So the playfield diverges
-      // on its own, transiently, for a reason unrelated to wallCellSet.
+      // The visible screen, not the raw playfield buffer, and now a clean
+      // comparison on every pattern rather than on two of them.
       //
-      // Not a contradiction with draws.test reporting the screens identical
-      // without the edit: that compares the 336x240 *visible* screen at one
-      // frame, this digests the whole 512x256 buffer every frame. A
-      // difference that appears at 391 and is gone by 600 shows here and not
-      // there.
+      // The note that used to be here recorded a transient playfield
+      // divergence at ~391 present with the edit reverted, and a visible
+      // difference on the gameplay patterns that draws.test never saw because
+      // draws.test only ran attract. Both were the same fault this file's
+      // first test used to floor at, and both are gone: with the ROM's rules
+      // every pattern is byte-identical at every frame, and draws.test reports
+      // zero differing pixels on all six. So whatever shows below is the
+      // changed rule.
       //
       // draws.test remains the real proof the change is live - exact 380
       // pixels with it, 0 without. Making this one a proof needs the
       // transient playfield divergence understood first; it is not simply a
       // matter of digesting a smaller region.
-      // Compare the *visible screen* rendered from each run's final snapshot,
-      // not the raw playfield buffer. That is what makes this a proof rather
-      // than an echo: the buffer parts at ~391 for reasons unrelated to the
-      // edit - measured, with the edit reverted - while the visible 336x240
-      // through the palette is identical without the change and differs by
-      // exactly the wall glyphs with it. draws.test establishes that for
-      // attract; doing it here extends the same proof to every pattern -
-      // except it does not, and finding that out is the point. Measured
-      // 2026-07-31 with the edit REVERTED: attract and the idle run correctly
-      // report nothing, but `one player` and `two players` still show a
-      // visible difference. So the two runs' screens diverge on gameplay
-      // patterns for reasons unrelated to wallCellSet, and draws.test never
-      // saw it because draws.test only runs attract. This comparison is
-      // therefore a clean proof on attract and idle, and contaminated on the
-      // two gameplay patterns; chase that divergence before trusting it
-      // everywhere.
+      // Rendered through the palette, because a tile index that changed and a
+      // colour that changed are different faults and only the pixels tell them
+      // apart. Each pattern is compared at its own full length, so a pattern
+      // that reports nothing is one where the demo never laid a wall by then -
+      // which is a fact about the pattern, not a gap in the proof.
       const px = (s: Uint8Array, i: number): number => {
         const c = s[0x20000 + i];
         return (s[0x40000 + c * 4] << 8) | s[0x40000 + c * 4 + 2];

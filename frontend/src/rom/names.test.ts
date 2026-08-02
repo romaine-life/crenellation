@@ -11,8 +11,10 @@
 // measures the first half - the second lives in names.curated.json and
 // manual_names.json, where a name is a data change with its reason beside it.
 //
-// A ratchet, not a target: the counts here are what was measured, and they
-// may only move the right way. Lower `addressNamed`, raise `namedParams`.
+// The function half of the bar is MET, as of 2026-08-02: 1,187 of 1,187 carry
+// a name that says what they do, and this asserts exactly that rather than
+// ratcheting it. The parameter half is not - 3,069 of 6,279 - and stays a
+// ratchet that may only rise.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -48,10 +50,32 @@ describe('names', () => {
     ].join('\n');
     writeFileSync(join(here, 'names.txt'), report + '\n');
 
-    // Ratchets. Both fail on a regression, and both are meant to be edited
-    // down (or up) whenever a session moves them - that edit is the record
-    // that the work happened.
-    expect(byAddress.length).toBeLessThanOrEqual(base.addressNamed ?? 1e9);
+    // Reached, so enforced rather than ratcheted. `addressNamed` is 0 in
+    // baseline.json and this asserts exactly that: every one of the 1,187
+    // functions carries a name that says what it does. A ratchet was right
+    // while the number was falling; now that it is at the bar, `<=` would
+    // quietly accept a regeneration that lost a name, and losing one is
+    // exactly what a regeneration does when a curated name stops applying.
+    expect(byAddress).toEqual([]);
+
+    // The other half of the bar, from DELIVERY.md: every name backed by
+    // recorded evidence rather than being merely plausible. idents.py refuses
+    // a curated entry that is an object with no `why`, but nothing outside
+    // romlab checked it, and the generator is not run by the suite. A wrong
+    // name is worse than an address - 0x9080 was confidently called
+    // `creditCompare` and drains a ring buffer with nothing to do with
+    // credits - and the only defence is being able to read afterwards why a
+    // name was chosen.
+    const curated = JSON.parse(readFileSync(
+      join(here, '..', '..', '..', 'romlab', 'names.curated.json'), 'utf8')) as
+      Record<string, string | { name?: string; why?: string }>;
+    const unevidenced = Object.entries(curated)
+      .filter(([, v]) => typeof v === 'object' && v !== null && !v.why)
+      .map(([k]) => k);
+    expect(unevidenced).toEqual([]);
+
+    // Parameters are still a ratchet: 3,069 of 6,279, and the bar is all of
+    // them.
     expect(named).toBeGreaterThanOrEqual(base.namedParams ?? 0);
   });
 });

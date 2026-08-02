@@ -6,3 +6,11 @@ first difference at poll 71679: recompiled 0x1381c vs decompiled 0x13812
 clocks first differ at poll 9000, which is the frame boundary (9000): the discounted re-tick, not drift
 clocks first differ at poll 9000 (0x13812): recompiled 288712 vs decompiled 288674 (-38 apart)
   blocks before it: 13812@288446/288446 13812@288484/288484 13812@288522/288522 13812@288560/288560 13812@288598/288598 13812@288636/288636 13812@288712/288674
+the gap changes at 7 polls:
+  poll 9000 0x13812 from 0x13812: charged 76/38 (gap now -38)
+  poll 18000 0x13812 from 0x13812: charged 76/38 (gap now -76)
+  poll 27000 0x13812 from 0x13812: charged 76/38 (gap now -114)
+  poll 36000 0x13812 from 0x13812: charged 76/38 (gap now -152)
+  poll 45000 0x13812 from 0x13812: charged 76/38 (gap now -190)
+  poll 54000 0x13812 from 0x13812: charged 76/38 (gap now -228)
+  poll 63000 0x13812 from 0x13812: charged 76/38 (gap now -266)

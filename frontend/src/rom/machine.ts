@@ -149,8 +149,23 @@ export class Machine {
     this.steps += 1;
     // An interrupt is taken between instructions, never inside one. Raised
     // here, the instruction about to run has not started, so the address to
-    // return to is this one - which `next` already holds, because the
-    // instruction before it set `next` to its own successor.
+    // return to is `pc`.
+    //
+    // This used to say `next` already held it, "because the instruction before
+    // it set `next` to its own successor", and leave it alone. That is true of
+    // a fall-through and false of a taken branch: the generated case for
+    // `beq $14510` reads `m.next = 0x14516; if (m.cond('eq')) { pc = 0x14510; }`
+    // - the fall-through in `next`, the target in `pc` - so an interrupt at the
+    // top of a loop stacked the address after the branch instead of the
+    // instruction it was about to run. Nothing in this dispatcher noticed,
+    // because `rte` pops the address and discards it: control returns through
+    // the JavaScript call, so the stacked value only ever reached memory. It
+    // showed up as one byte of the sound driver's busy-wait frame differing
+    // from the decompiled run's, which stacks its block head and was right.
+    //
+    // `afterInstruction` raises - a `move to sr` that lowers the mask - are
+    // thrown from setSR instead, and keep `next` as the following instruction,
+    // which is what the chip stacks for those.
     // The line stays asserted until the device is acknowledged - taking the
     // interrupt does not clear it. The mask the exception raises is what stops
     // it firing again immediately, and if the handler returns without
@@ -159,6 +174,7 @@ export class Machine {
         && (this.pollAt === null || this.pollAt.has(pc))) {
       const lvl = this.irqPending;
       if (this.clearOnTake) this.irqPending = 0;
+      this.next = pc >>> 0;
       throw new PendingInterrupt(lvl);
     }
     if (this.steps > this.budget) {

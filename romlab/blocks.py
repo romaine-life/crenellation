@@ -126,7 +126,11 @@ class BlockLifter(Lifter):
                 # ran on the machine - has set flags here, so the machine's are
                 # the current ones and can be read straight out.
                 return Expr("getSr()", "expr")
-            kind, lhs, rhs, fbits = self.flags
+            kind, lhs, rhs, fbits = self.flags[:4]
+            if kind == "shift":
+                self.stmts.append(
+                    f"setFlagsShift({lhs}, {rhs}, {self.flags[4]}, {fbits});")
+                return Expr("getSr()", "expr")
             if kind not in ("cmp", "sub", "add"):
                 raise Bail(f"reads the condition codes after {kind}")
             call = {"add": "setFlagsAdd", "sub": "setFlagsSub"}.get(kind, "setFlagsCmp")
@@ -259,8 +263,13 @@ class BlockLifter(Lifter):
         # arithmetic never reaches the machine at all, and `move sr` saves a
         # word with X clear. Emitted before the rest so that a state which does
         # set X overwrites this with its own.
-        if self.xstate and self.flags_certain:
-            xkind, xl, xr, xb = self.xstate
+        # `xstate`, not `flags_certain`: they are different questions, and
+        # coupling them suppressed X syncs at every block whose FLAGS were
+        # uncertain even where X was known exactly. Since xstate reaches a
+        # block from its predecessors and is None when they disagree, "not
+        # None" already means "this pass can name X".
+        if self.xstate:
+            xkind, xl, xr, xb = self.xstate[:4]
             if xkind == "add":
                 self.stmts.append(f"setXAdd({xl}, {xr}, {xb});")
             elif xkind == "sub":
@@ -269,7 +278,17 @@ class BlockLifter(Lifter):
                 self.stmts.append(f"setXShift({xr}, 1);")
         if not self.flags or not self.flags_certain:
             return
-        kind, lhs, rhs, bits = self.flags
+        kind, lhs, rhs, bits = self.flags[:4]
+        if kind == "shift":
+            # N and Z from the result, C and X from the bit shifted out, V from
+            # whether the sign changed. This used to fall through the `kind not
+            # in (cmp, sub, add)` return below, so a shift's condition codes
+            # never reached the machine at all and an exception frame taken at
+            # the head of the next block stacked whatever was there before -
+            # 0x2314 against the oracle's 0x2319 at 0x11F88, three bits out.
+            self.stmts.append(
+                f"setFlagsShift({lhs}, {rhs}, {self.flags[4]}, {bits});")
+            return
         if kind == "bit":
             self.stmts.append(f"setFlagsBit({lhs}, {rhs}, {bits - 1});")
             return
@@ -433,6 +452,21 @@ class BlockLifter(Lifter):
                 pre = self.pin(self.read(ops[-1], bits)).text
                 off = cnt - 1 if b in ("lsr", "asr") else bits - cnt
                 shifted = f"((({pre}) >>> {off}) & 1)"
+                # Overflow, which only `asl` can set: V is 1 if the sign bit
+                # changed at any point during the shift, which is exactly
+                # "the top cnt+1 bits of the operand were not all alike".
+                # Every other shift clears it. Exact, and computable from the
+                # operand this already pinned.
+                if b == "asl":
+                    # The top cnt+1 bits, or the whole operand when the shift
+                    # is wide enough to carry every bit past the sign.
+                    wide = min(cnt + 1, bits)
+                    top = (1 << wide) - 1
+                    shifted_v = (f"(((({pre}) >>> {bits - wide}) & {top}) === 0"
+                                 f" || (((({pre}) >>> {bits - wide}) & {top})"
+                                 f" === {top}) ? 0 : 1)")
+                else:
+                    shifted_v = "0"
         before = len(self.stmts)
         super().step(ins)
         # Anything that writes a data register also sets the flags from what it
@@ -473,7 +507,10 @@ class BlockLifter(Lifter):
                 # here - see sync_flags.
                 self.xstate = self.flags
             elif shifted is not None:
-                self.flags = ("shift", self.reg_value(dst, bits).text, shifted, bits)
+                self.flags = ("shift", self.reg_value(dst, bits).text, shifted,
+                              bits, shifted_v)
+                # X takes the same shape but only its `shifted` element is
+                # read, so the extra member is harmless here.
                 self.xstate = self.flags
             elif dst in DATA:
                 self.flags = ("cmp", self.reg_value(dst, bits).text, "0", bits)
@@ -627,7 +664,10 @@ class BlockLifter(Lifter):
             # middle of a routine whose first instruction is a conditional
             # branch on the caller's flags.
             return f"cc('{mnemonic[1:]}')"
-        return self.condition_of(*self.flags, mnemonic=mnemonic)
+        # [:4] because a shift's state carries a fifth member, the overflow
+        # expression, which only sync_flags reads. Splatting all five put it
+        # on `mnemonic` and crashed 31 routines out of the lift.
+        return self.condition_of(*self.flags[:4], mnemonic=mnemonic)
 
     def condition_of(self, kind, lhs, rhs, bits, mnemonic="b"):
         if kind == "sub":
@@ -745,11 +785,70 @@ def loop_body(edges, latches, header):
     return body
 
 
-def loop_exit(edges, body):
+# WITHDRAWN: `returns_only`, which let a block reached twice be emitted twice
+# when everything reachable from it returned. It measured as a no-op while the
+# reducibility test was wrong, and once that was fixed and the graphs actually
+# nested it duplicated tails through every level of nesting: decompiled.ts went
+# from 14 MB to 272 MB and the TypeScript compiler ran out of heap. Tail
+# duplication belongs in `split_nodes`, which bounds it, not in the emitter,
+# which has no budget. The two routines it would have bought are not worth 258
+# megabytes.
+
+
+def loop_exit(edges, body, header):
+    """Where control goes when the loop ends, or None if it never does.
+
+    A loop needs one place to continue at, because the structurer emits it as
+    `for (;;) { ... }` and then carries on with whatever follows. Several exits
+    to different places have no such single point - that is what the dispatch
+    form is for.
+
+    But an exit that only ever RETURNS is not a way out of the loop at all: the
+    blocks it leads to end the function, so the structurer can emit them inline
+    where the branch is and nothing follows them. Dropping those first leaves
+    the exits that actually rejoin, and it is only when more than one of THOSE
+    remains that the shape genuinely has no nesting. Measured 2026-08-02:
+    twenty-four routines were falling back on this and are not any more.
+    """
     outs = {m for n in body for m in edges.get(n, []) if m not in body}
-    if len(outs) > 1:
+    if len(outs) <= 1:
+        return next(iter(outs)) if outs else None
+
+    def terminal(target):
+        """Does everything reachable from `target` end the function?
+
+        Re-entering the loop body or reaching another exit means it does not:
+        the first is a second latch, the second a join the caller has to know
+        about. Otherwise every path from here runs out of successors, which is
+        an `rts`, and the structurer emits `return;` at each.
+        """
+        seen, stack = set(), [target]
+        while stack:
+            n = stack.pop()
+            if n in seen:
+                continue
+            seen.add(n)
+            if n in body or (n != target and n in outs):
+                return False
+            nxt = edges.get(n, [])
+            stack.extend(nxt)
+        return True
+
+    rejoin = {m for m in outs if not terminal(m)}
+    if len(rejoin) <= 1:
+        return next(iter(rejoin)) if rejoin else None
+    # Several places to rejoin at, so take the one every path must reach: the
+    # header's immediate post-dominator. The exits that are not it get walked
+    # into by the structurer and stop there, so they are emitted inside the
+    # loop and fall out of it - which is what leaving by one of several doors
+    # into a common corridor looks like when it is written as `for (;;)`.
+    #
+    # None means the loop has no common continuation at all, and then it
+    # really does need the dispatch form.
+    after = ipdoms(edges).get(header)
+    if after is None or after in body:
         raise Bail("loop with more than one way out")
-    return next(iter(outs)) if outs else None
+    return after
 
 
 
@@ -800,6 +899,9 @@ def sccs(edges, n):
     return out
 
 
+_WHY = bool(__import__('os').environ.get('WHYDISPATCH'))
+
+
 def split_nodes(edges, nblocks, limit):
     """Duplicate blocks until every loop has one way in.
 
@@ -833,11 +935,16 @@ def split_nodes(edges, nblocks, limit):
                 target = (inside, entries)
                 break
         if target is None:
+            if _WHY:
+                print('SPLITFAIL no multi-entry component, round %d' % _
+                      if False else 'SPLITFAIL no multi-entry component')
             return None, None, None, None
         inside, entries = target
         keep, extra = entries[0], entries[1:]
         for entry in extra:
             if total + len(inside) > limit:
+                if _WHY:
+                    print('SPLITFAIL over the budget')
                 return None, None, None, None
             mapping = {}
             for node in sorted(inside):
@@ -855,6 +962,14 @@ def split_nodes(edges, nblocks, limit):
             del keep
     return None, None, None
 
+
+
+# How many emitted statements a structured routine may cost before the
+# dispatch form is used instead. Measured: the largest routine that nests
+# honestly needs about four thousand, and the one that exploded wanted
+# millions.
+_EMIT_BUDGET = 24_000
+_EMITTED = 0
 
 
 def dispatch_form(starts, edges, lifted, conds):
@@ -940,7 +1055,7 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset
             header = node
             latches = [v for v, w in backs if w == header]
             body = loop_body(edges, latches, header)
-            after = loop_exit(edges, body)
+            after = loop_exit(edges, body, header)
             inner = structure(blocks, edges, lifted, conds, header, after, depth + 1,
                               frozenset((v, w) for v, w in backs if w != header),
                               open_loops + (header,), header)
@@ -951,9 +1066,30 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset
             out.append("}")
             node = after
             continue
-        if node in seen or depth > 40:
-            raise Bail("control flow this pass cannot shape")
+        if node in seen:
+            raise Bail("a block reached twice - the shape needs it duplicated")
+        if depth > 40:
+            raise Bail("nesting deeper than forty")
         seen.add(node)
+        # A budget on what the structured form may cost.
+        #
+        # `seen` stops a block being emitted twice within one call, but each
+        # arm of an `if` and each loop body is its own call with its own set,
+        # so a tail both arms reach - one the join finder did not spot - is
+        # written into both, and again at every level of nesting. That is
+        # exponential, and it is not theoretical: with the reducibility test
+        # fixed so these graphs finally nested, `serviceMenuSMainLoop` alone
+        # came out at 219 MB and decompiled.ts at 272 MB, where the TypeScript
+        # compiler runs out of heap.
+        #
+        # Past the budget this bails, and the caller falls back to the
+        # dispatch form - which is what that form is for. A routine that only
+        # nests by being written out fifty thousand times is more readable as
+        # a switch.
+        global _EMITTED
+        _EMITTED += len(lifted[node])
+        if _EMITTED > _EMIT_BUDGET:
+            raise Bail("the structured form costs more than the dispatch one")
         out.extend(lifted[node])
         outs = edges.get(node, [])
         if not outs:
@@ -980,7 +1116,9 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset
         if len(fall) != 1:
             raise Bail("branch whose two edges cannot be told apart")
         fall = fall[0]
-        join = meet(edges, taken, fall)
+        # The branch's immediate post-dominator, not a node the two arms
+        # happen to share - see ipdoms.
+        join = ipdoms(edges).get(node)
         cond = cond_text
         then = structure(blocks, edges, lifted, conds, taken, join, depth + 1,
                          backs, open_loops)
@@ -1000,30 +1138,87 @@ def structure(blocks, edges, lifted, conds, node, stop, depth=0, backs=frozenset
     return out
 
 
-def meet(edges, a, b):
-    """The first node both paths reach - where an if/else joins again."""
-    def reach(n, seen):
-        if n in seen:
-            return
-        seen.add(n)
-        for m in edges.get(n, []):
-            reach(m, seen)
-    ra, rb = set(), set()
-    reach(a, ra)
-    reach(b, rb)
-    both = ra & rb
-    if not both:
-        return None
-    # the one nothing else in the set reaches first: the earliest join
-    order = sorted(both)
-    for n in order:
-        others = set()
-        for m in both:
-            if m != n:
-                reach(m, others)
-        if n not in others:
-            return n
-    return order[0]
+_IPDOM_CACHE = {}
+
+
+def ipdoms(edges):
+    """Immediate post-dominator of every node, by Cooper, Harvey and Kennedy.
+
+    The join of an `if` is the branch's immediate post-dominator: the first
+    node every path from the branch must reach. Nothing else is correct - a
+    node both arms happen to reach is not necessarily one they must.
+
+    `meet` used to pick, out of the nodes both arms can reach, one that no
+    other such node reaches first, and fall back to the lowest index when the
+    reachable sets had a cycle among them. That guess is right most of the
+    time and wrong exactly where the structurer then found a block reached
+    twice, because the arms had been told to stop at a node that was not a
+    join at all and walked past it into each other.
+
+    Computed on the reverse graph from a virtual exit that every node without
+    successors reaches. A node in an endless loop post-dominates nothing and
+    gets None.
+    """
+    key = tuple(sorted((k, tuple(v)) for k, v in edges.items()))
+    hit = _IPDOM_CACHE.get(key)
+    if hit is not None:
+        return hit
+    nodes = set(edges)
+    for outs in edges.values():
+        nodes.update(outs)
+    EXIT = -1
+    rev = {n: [] for n in nodes}
+    succ = {n: list(edges.get(n, [])) for n in nodes}
+    exits = [n for n in nodes if not succ[n]]
+    for n in nodes:
+        for m in succ[n]:
+            rev[m].append(n)
+    succ[EXIT] = []
+    rev[EXIT] = list(exits)
+    for n in exits:
+        succ[n] = [EXIT]
+
+    # Reverse post-order of the reverse graph, rooted at the virtual exit.
+    order, seen, stack = [], {EXIT}, [(EXIT, iter(rev[EXIT]))]
+    while stack:
+        n, it = stack[-1]
+        for m in it:
+            if m not in seen:
+                seen.add(m)
+                stack.append((m, iter(rev.get(m, []))))
+                break
+        else:
+            order.append(n)
+            stack.pop()
+    rpo = list(reversed(order))
+    pos = {n: i for i, n in enumerate(rpo)}
+
+    idom = {EXIT: EXIT}
+
+    def intersect(a, b):
+        while a != b:
+            while pos[a] > pos[b]:
+                a = idom[a]
+            while pos[b] > pos[a]:
+                b = idom[b]
+        return a
+
+    changed = True
+    while changed:
+        changed = False
+        for n in rpo:
+            if n == EXIT:
+                continue
+            new = None
+            for m in succ.get(n, []):
+                if m in idom:
+                    new = m if new is None else intersect(new, m)
+            if new is not None and idom.get(n) != new:
+                idom[n] = new
+                changed = True
+    out = {n: (None if idom.get(n) in (None, EXIT) else idom[n]) for n in nodes}
+    _IPDOM_CACHE[key] = out
+    return out
 
 
 def lift(lo, hi, names):
@@ -1104,6 +1299,18 @@ def lift_once(lo, hi, names, seed=()):
             preds[b_].add(a)
     end_flags = {}
     end_pushed = {}
+    # And the X bit's state, which reaches a block from its predecessors for
+    # the same reason the flags and the stack depth do. THE THIRTEENTH FAULT OF
+    # THIS SHAPE, found 2026-08-01: `xstate` was the one piece of carried state
+    # the merge below did not carry, so a block inherited the X of whatever
+    # happened to sit before it in ADDRESS order rather than of what actually
+    # ran. 0x11F88 in graphicsDecompressor is the case - one predecessor,
+    # correctly named, its flags correctly merged as a shift - and the head
+    # spill emitted `setXAdd(t16, t17, 16)` from an add three blocks earlier in
+    # memory and on another path. It reached the stack: the exception frame
+    # that interrupt pushed carried a status register of 0x2304 where the
+    # oracle's was 0x2319.
+    end_xstate = {}
     for n, (s, e) in enumerate(zip(starts, ends)):
         if n not in seen_r:
             lifted[n] = []
@@ -1138,6 +1345,12 @@ def lift_once(lo, hi, names, seed=()):
             knownp = {end_pushed[p] for p in ps if p in end_pushed}
             if len(knownp) == 1:
                 lifter.pushed = next(iter(knownp))
+            # X, the same way. `None` when the predecessors disagree, rather
+            # than the previous block's: a fabricated X is worse than an
+            # unsynced one, because sync_flags then writes a definite wrong
+            # value where leaving it alone at least writes nothing.
+            knownx = {end_xstate[p] for p in ps if p in end_xstate}
+            lifter.xstate = next(iter(knownx)) if len(knownx) == 1 else None
             # Predecessors that disagree leave whatever the block before this
             # one in memory left. That is not sound in general, but it is what
             # the graph cannot answer, and the oracle is the thing deciding
@@ -1352,6 +1565,7 @@ def lift_once(lo, hi, names, seed=()):
             + list(lifter.stmts) + tail_flags
         end_flags[n] = lifter.flags
         end_pushed[n] = lifter.pushed
+        end_xstate[n] = lifter.xstate
     for copy, orig in clone_of.items():
         lifted[copy] = list(lifted[orig])
         if orig in conds:
@@ -1396,14 +1610,20 @@ def lift_once(lo, hi, names, seed=()):
         lifted[len(starts) - 1] = lifted.get(len(starts) - 1, []) + list(lifter.stmts) + [
             f"jumpRom(0x{hi:05x});", "return;"]
 
-    global EXIT
+    global EXIT, _EMITTED
     EXIT = [f"setReg('{x}', {x});" for x in sorted(lifter.used_regs) if x != "a7"]
+    _EMITTED = 0
+    import os as _os
     if dispatch:
+        if _os.environ.get('WHYDISPATCH'):
+            print('DISPATCH 0x%05x irreducible' % lo)
         return lifter, dispatch_form(starts, edges, lifted, conds)
     try:
         backs = frozenset(back_edges(edges, len(starts) + len(clone_of)))
         return lifter, structure(starts, edges, lifted, conds, 0, None, 0, backs, ())
-    except Bail:
+    except Bail as _b:
+        if _os.environ.get('WHYDISPATCH'):
+            print('DISPATCH 0x%05x %s' % (lo, _b))
         # Shapes the structurer cannot nest - a loop with several ways out, a
         # region it cannot bound - are not failures, they are what the dispatch
         # form exists for. Falling back keeps the block bodies as recovered

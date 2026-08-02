@@ -12,20 +12,25 @@ import { dirname, join } from 'node:path';
 import { describe, it, expect } from 'vitest';
 import { System } from './system';
 import { call as viaRecompiled } from './dispatch';
-import { call as viaDecompiled, bind, POLL_AT } from './decompiled';
+import { call as viaDecompiled, bind, POLL_AT, original } from './decompiled';
 import { PATTERNS, type Pattern } from './patterns';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
-// How far the two write streams agree before the first known divergence -
-// today that is the sound sequencer's boot-tail state around frame 276, the
-// one CLAUDE.md documents. The floor ratchets: a change that diverges earlier
-// is a regression and fails; a change that pushes the divergence later (or to
-// nothing) should raise the floor. It sat at 6139 - a palette write in the
-// self test - until the self-test region was mapped and lifted properly.
-const floor: number = (JSON.parse(
-  readFileSync(join(here, 'baseline.json'), 'utf8')) as Record<string, number>)['writes'] ?? 0;
+// There is no floor here any more, and `writes` is gone from baseline.json.
+// It counted how many writes the two runs agreed on before parting, which was
+// the right instrument while they parted; now they do not, and a floor would
+// only be a way for the next divergence to pass unnoticed as long as it landed
+// late enough. What it measured is in the note each pattern prints: every
+// write of the whole pattern, compared.
+//
+// Every rule as the ROM has it. This compares the two dispatchers' write
+// streams, so a rule the port changes on purpose writes a different byte for
+// the right reason and would be counted here as a fault. It was: with the
+// changed wall rule live, `wallCellSet` picks a different tile index, and that
+// index is what the first differing write carried.
+original();
 // Zero means each pattern's own full length.
 const FRAMES = Number(process.env.WRITE_FRAMES ?? 0);
 const LO = Number(process.env.W_LO ?? 0x3e0000);
@@ -67,7 +72,7 @@ type Run = { addr: Int32Array; val: Int32Array; cyc: Int32Array;
   irq: Int32Array; pol: Int32Array; a6: Int32Array; d2: Int32Array; wpc: Int32Array; rg: Int32Array; a0pc: Int32Array; n: number };
 
 function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
-                stopAt = -1): { run: Run; stack: string; romStack: number[];
+                stopAt = -1, from = 0): { run: Run; stack: string; romStack: number[];
                                 pcs: Int32Array | null; pn: number; cyc: Int32Array | null; srs: Int32Array | null; frs: Int32Array | null; fcyc: Int32Array | null; d2s: Int32Array | null; regs: Int32Array | null; early: Int32Array | null; io: number[]; hpoll: Int32Array; hidx: number; irqRegs: number[]; pend: Int32Array | null } {
   const sys = new System(rom, board);
   // Every input the machine observes, in order. The registers part at an input
@@ -132,6 +137,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   let lastA0pc = 0;
   let prevPc = 0;
   sys.m.atPcExtra = (pc: number): void => {
+    if (POLL_AT.has(pc)) totalPolls += 1;
     // prevPc, not pc: a change is noticed by comparing against the previous
     // sample, so the callback that SEES the new value runs one instruction
     // after the one that made it. Recording pc here named a moveq that clears
@@ -209,6 +215,7 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     pol: new Int32Array(CAP), a6: new Int32Array(CAP), d2: new Int32Array(CAP), wpc: new Int32Array(CAP), rg: new Int32Array(CAP * 16), a0pc: new Int32Array(CAP), n: 0 };
   let stack = '';
   let romStack: number[] = [];
+  let skipped = 0;
   const FULL = new Error('recorded enough');
   const note = (a: number, v: number, bits: number): void => {
     if (a < LO || a >= HI) return;
@@ -240,6 +247,10 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // indices count different streams), so the same value names the same
     // moment in both runs, which is exactly what a start offset has to promise.
     if (FROM_IRQ && (sys.m.irqTaken | 0) < FROM_IRQ) return;
+    // Skip the writes the streaming pass has already proved identical. Both
+    // runs skip the same count of the same stream, so index N here means write
+    // `from + N` in both, and the report says so.
+    if (skipped < from) { skipped += 1; return; }
     // Full: stop the run rather than carry on executing the game with a hook
     // on every store, recording nothing. Thrown from inside the machine, which
     // unwinds the dispatcher the same way the frame limit does.
@@ -343,44 +354,25 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   // the two dispatchers do not share: `steps` counts instructions on one side
   // and blocks on the other. Pacing by writes made the streams part earlier,
   // at 14,464 rather than 27,627.
-  // The frame interrupt, driven off poll points rather than cycles.
+  // The frame interrupt is the board's: a cycle threshold, tested at a poll
+  // point. WITHDRAWN, 2026-08-01: this used to drive it off a poll count
+  // instead, counting block heads because "a cycle total is not a sequence the
+  // two runs share". They do share it. Both poll only at block heads, and a
+  // block costs the sum of the instructions the recompiler charges for one at
+  // a time, so the clocks are equal at every point either dispatcher can be
+  // interrupted at - measured over 2,400 frame boundaries in polls.test, same
+  // pc, same clock, same stack pointer, same interrupt count. What was really
+  // wrong was that the lifted side charged an interrupted block BEFORE running
+  // the handler, where the chip has not spent those cycles yet; that is fixed
+  // in `tick`, and the poll-count pacing it motivated is no longer measuring
+  // anything real.
   //
-  // Both runs execute the same code, so they arrive at the same block heads in
-  // the same order - that is the one sequence they share exactly. A cycle
-  // total is not: the lifted code pays for a whole block on entry and the
-  // recompiler pays per instruction, so between block heads they are apart by
-  // up to the rest of the block. Nine hundred cycles against a frame of a
-  // quarter of a million almost never matters, and then once it lands either
-  // side of the threshold and the decompiled run misses a frame - the
-  // semaphore at 0x3E0802 reaching two where the other run had already
-  // consumed it. Counting block heads removes the dependence entirely.
-  // One asymmetry survives even then. When the recompiler takes an interrupt
-  // it resumes by re-running the instruction it was interrupted at, so that
-  // block head arrives twice; the lifted side takes the interrupt inside the
-  // block it has already entered and arrives once. That is one extra poll per
-  // interrupt on one side, which is exactly the sort of slow creep that ends a
-  // spin loop an iteration early. The re-run is skipped, and only on the side
-  // that makes it.
-  const PER_FRAME = Number(process.env.POLLS_PER_FRAME ?? 9000);
-  const isRecompiled = entry === viaRecompiled;
-  let polls = 0;
+  // Removing it matters beyond tidiness: with it, this harness ran a
+  // differently-timed pair of machines from the one compose runs, so the two
+  // could not be reasoned about together - and the streaming pass above,
+  // written against the real schedule, disagreed with this one about which
+  // writes a pattern makes.
   let totalPolls = 0;
-  // The re-run is at the same address, and it arrives after the handler has
-  // returned - not on the next poll point, which is inside the handler. That
-  // is what the first version of this discounted, which was simply the wrong
-  // event.
-  let rerunAt = -1;
-  sys.pacedIrq = () => {
-    const pc = sys.m.pc;
-    if (!POLL_AT.has(pc)) return false;
-    if (rerunAt === pc) { rerunAt = -1; return false; }
-    polls += 1;
-    totalPolls += 1;
-    if (polls < PER_FRAME) return false;
-    polls = 0;
-    if (isRecompiled) rerunAt = pc;
-    return true;
-  };
   const STOP = new Error('enough');
   let n = 0;
   try {
@@ -401,10 +393,118 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
   return { run, stack, romStack, pcs, pn, cyc, srs, frs, fcyc, d2s, regs, early, io, hpoll, hidx, irqRegs, pend };
 }
 
+/**
+ * Every write of a whole game, as a digest and a set of checkpoints.
+ *
+ * The recording pass above keeps ten arrays a write, one of them sixteen wide,
+ * because it is built to *explain* a divergence. That is affordable for the
+ * six hundred thousand writes it was capped at and impossible for the sixty-two
+ * million the six patterns actually make - and a cap is not identity. It has
+ * been read as identity here four times, and `_writes` in baseline.json says so
+ * each time.
+ *
+ * So the claim and the explanation are separated. This pass keeps one running
+ * hash over (address, value, width) and a checkpoint every BLOCK writes: two
+ * numbers per hundred thousand writes rather than forty-four bytes per write,
+ * which makes the whole game affordable. If the digests match, the two runs
+ * wrote the same bytes to the same addresses in the same order for the entire
+ * pattern, and there is nothing to explain. If they do not, the first
+ * checkpoint that differs bounds the divergence to one block, and the
+ * recording pass is then pointed at exactly that block.
+ *
+ * The clock is carried at each checkpoint too. It is *expected* to differ:
+ * the lifted code charges a block's cycles at its head and the recompiler as
+ * each instruction runs, so between block heads the two are apart by up to a
+ * block, bounded and harmless. What matters is that they agree at every point
+ * either can be interrupted at, which is what polls.test asserts.
+ */
+const BLOCK = 100_000;
+
+type Stream = { n: number; digest: number; marks: number[]; cyc: number[] };
+
+function stream(p: Pattern, entry: (addr: number, m: System['m']) => void): Stream {
+  const sys = new System(rom, board);
+  sys.irqPhase = Number(process.env.IRQ_PHASE ?? 0);
+  bind(sys.m);
+  sys.m.pollAt = POLL_AT as Set<number>;
+  let h = 0x811c9dc5;
+  let n = 0;
+  const marks: number[] = [];
+  const cyc: number[] = [];
+  const m = sys.m as unknown as {
+    setByte(a: number, v: number): void; store(a: number, v: number, b: number): void;
+  };
+  const sb = m.setByte.bind(m); const st = m.store.bind(m);
+  let inStore = false;
+  const note = (a: number, v: number, bits: number): void => {
+    if (a < LO || a >= HI) return;
+    // The same two exclusions the recording pass makes, for the same reasons -
+    // see `note` there. They have to match exactly or the two passes disagree
+    // about which write index a divergence is at.
+    if (sys.m.inFrame && !FRAME_BYTES) return;
+    if (WAIT_SKIP && inWaitStream) return;
+    if (n % BLOCK === 0) { marks.push(h >>> 0); cyc.push(sys.m.cycles | 0); }
+    h = (h ^ (a | 0)) >>> 0; h = Math.imul(h, 0x01000193) >>> 0;
+    h = (h ^ ((v & ((1 << bits) - 1 || -1)) | (bits << 24))) >>> 0;
+    h = Math.imul(h, 0x01000193) >>> 0;
+    n += 1;
+  };
+  let inWaitStream = false;
+  sys.m.atPcExtra = (pc: number): void => {
+    inWaitStream = pc >= WAIT_LO && pc < WAIT_HI;
+  };
+  m.setByte = (a, v) => { if (!inStore) note(a, v, 8); sb(a, v); };
+  m.store = (a, v, b) => {
+    note(a, v, b);
+    inStore = true;
+    try { st(a, v, b); } finally { inStore = false; }
+  };
+  const STOP = new Error('enough');
+  let frames = 0;
+  const limit = FRAMES || p.frames;
+  try {
+    sys.run(() => {
+      frames += 1;
+      p.at(frames, sys);
+      if (frames >= limit) throw STOP;
+    }, entry);
+  } catch (e) {
+    if (e !== STOP) { /* a run that dies has still written what it wrote */ }
+  }
+  return { n, digest: h >>> 0, marks, cyc };
+}
+
 /** One pattern's two write streams, compared. */
 function compare(p: Pattern): { note: string; agreed: number } {
-    const ra = record(p, viaRecompiled);
-    const rb = record(p, viaDecompiled);
+    // The whole game first, cheaply. Only a difference is worth paying the
+    // recording pass for, and then only over the block that contains it.
+    const sa = stream(p, viaRecompiled);
+    const sb2 = stream(p, viaDecompiled);
+    if (sa.n === sb2.n && sa.digest === sb2.digest) {
+      let lo = 0; let hi = 0;
+      for (let k = 0; k < Math.min(sa.cyc.length, sb2.cyc.length); k += 1) {
+        const d = sb2.cyc[k] - sa.cyc[k];
+        if (d < lo) lo = d;
+        if (d > hi) hi = d;
+      }
+      return {
+        note: `${p.name}: identical - all ${sa.n} writes of ${FRAMES || p.frames}`
+          + ` frames, same addresses, same values, same order`
+          + ` (mid-block clock gap ${lo}..${hi}, which is the two dispatchers'`
+          + ` charging granularity and not a difference in what they did)`,
+        agreed: sa.n,
+      };
+    }
+    // Bound the divergence to one block of BLOCK writes, then record that
+    // block in full. `from` is what makes this affordable: the recording pass
+    // costs forty-four bytes a write, so it can afford a hundred thousand of
+    // them and not sixty-two million.
+    let blk = 0;
+    while (blk < Math.min(sa.marks.length, sb2.marks.length)
+      && sa.marks[blk] === sb2.marks[blk]) blk += 1;
+    const from = Math.max(0, (blk - 1) * BLOCK);
+    const ra = record(p, viaRecompiled, -1, from);
+    const rb = record(p, viaDecompiled, -1, from);
     const a = ra.run;
     const b = rb.run;
     if (PC_SEQ && ra.pcs && rb.pcs) {
@@ -789,16 +889,18 @@ function compare(p: Pattern): { note: string; agreed: number } {
     while (gi < n && Math.abs(b.cyc[gi] - a.cyc[gi]) < 1000) gi += 1;
     let gwho = '';
     if (gi < n) {
-      try { gwho = record(p, viaDecompiled, gi).stack; }
+      try { gwho = record(p, viaDecompiled, gi, from).stack; }
       catch (e) { gwho = `(${(e as Error).message})`; }
     }
     const gap = gi < n
       ? `
-  gap passes 1000 at write ${gi} (${b.cyc[gi] - a.cyc[gi]}, at`
+  gap passes 1000 at write ${from + gi} (${b.cyc[gi] - a.cyc[gi]}, at`
         + ` 0x${a.addr[gi].toString(16)})
   gap stack: ${gwho}`
       : '';
-    let note = `identical: ${a.n} writes`      + (ci < a.n && ci < b.n        ? `, but the cycle clocks part at write ${ci}`          + ` (${a.cyc[ci]} vs ${b.cyc[ci]}, at 0x${a.addr[ci].toString(16)})`        : ', and the cycle clocks agree');
+    let note = `the streaming pass found a difference and this window did not`
+      + ` - the two passes disagree, which is a fault in this harness:`
+      + ` ${a.n} writes recorded from ${from}`      + (ci < a.n && ci < b.n        ? `, but the cycle clocks part at write ${ci}`          + ` (${a.cyc[ci]} vs ${b.cyc[ci]}, at 0x${a.addr[ci].toString(16)})`        : ', and the cycle clocks agree');
     if (i < a.n || i < b.n) {
       const show = (r: Run, k: number): string => (k < r.n
         ? `0x${r.addr[k].toString(16)}=${(r.val[k] & 0xffffff).toString(16)}/${r.val[k] >>> 24}`
@@ -814,13 +916,13 @@ function compare(p: Pattern): { note: string; agreed: number } {
       // parallel execution (see _flaky in baseline.json).
       let rs = '';
       try {
-        const ra = record(p, viaRecompiled, i);
+        const ra = record(p, viaRecompiled, i, from);
         rs += `
   rom stack recompiled: ${ra.romStack.map((v) => '0x' + v.toString(16)).join(' <- ')}`;
       } catch (e) { rs += `
   rom stack recompiled: (${(e as Error).message})`; }
       try {
-        const rb = record(p, viaDecompiled, i);
+        const rb = record(p, viaDecompiled, i, from);
         who = rb.stack;
         rs += `
   rom stack decompiled: ${rb.romStack.map((v) => '0x' + v.toString(16)).join(' <- ')}`;
@@ -835,9 +937,9 @@ function compare(p: Pattern): { note: string; agreed: number } {
         return out.join(' ');
       };
       let cwho = '';
-      if (ci < i) { try { cwho = record(p, viaDecompiled, ci).stack; }
+      if (ci < i) { try { cwho = record(p, viaDecompiled, ci, from).stack; }
         catch (e) { cwho = `(${(e as Error).message})`; } }
-      note = [`diverge at write ${i} of ${a.n}/${b.n}`        + (ci < i ? `; cycles first differ at write ${ci}`          + ` (${a.cyc[ci]} vs ${b.cyc[ci]}, ${a.addr[ci].toString(16)})`          + `
+      note = [`diverge at write ${from + i} of ${from + a.n}/${from + b.n}`        + (ci < i ? `; cycles first differ at write ${from + ci}`          + ` (${a.cyc[ci]} vs ${b.cyc[ci]}, ${a.addr[ci].toString(16)})`          + `
   cycle stack: ${cwho}` : '')        + ` (cycles ${a.cyc[i - 1]} vs ${b.cyc[i - 1]} at the last common write,`        + ` ${a.cyc[i]} vs ${b.cyc[i]} at this one)`,
         `  common:     ${run(a, i - 8, i - 1)}`,
         `  recompiled: ${run(a, i, i + 9)}`,
@@ -863,20 +965,23 @@ describe('writes to work RAM', () => {
     if (seq.length) {
       writeFileSync(join(here, 'writes-pcseq.txt'), seq.join(String.fromCharCode(10)) + String.fromCharCode(10));
     }
-    const worst = Math.min(...results.map((r) => r.agreed));
+    // Identity, and no floor.
+    //
+    // The floor that used to be here counted how many writes the two runs
+    // agreed on before parting, and it was read as identity four separate
+    // times because the number it reported was the recording cap rather than
+    // the run: "identical: 600,000 writes" said only that the instrument had
+    // stopped looking. There is nothing left to floor. The streaming pass runs
+    // each pattern to its own full length - eighteen million writes for the
+    // longest - and compares every one of them, so the claim is the whole game
+    // or it is a failure with the differing write located.
+    //
+    // A windowed run (W_LO/W_HI) is a diagnostic and still asserted: the claim
+    // is that the two runs write the same bytes to whatever region is being
+    // watched, which is true of a window as much as of all of work RAM. What
+    // it is NOT is a weaker claim that can be quietly satisfied by watching
+    // fewer bytes, so it does not get its own exemption any more.
     const bad = results.filter((r) => !r.note.includes('identical'));
-    // The floor describes the DEFAULT window - all of work RAM. A run windowed
-    // with W_LO/W_HI legitimately parts far sooner, because it is watching a
-    // few hundred bytes rather than 128k, so asserting the floor against it
-    // reports red for doing exactly what it was asked to do. Every diagnostic
-    // run in the 0x3e3280 investigation was piped to /dev/null and so nobody
-    // saw those reds; the next person would have read one as a regression.
-    const windowed = process.env.W_LO !== undefined || process.env.W_HI !== undefined;
-    if (windowed) {
-      console.log(`windowed run (${LO.toString(16)}..${HI.toString(16)}): `
-        + 'floor not asserted, it describes the whole of work RAM');
-    } else if (bad.length) {
-      expect(worst).toBeGreaterThanOrEqual(floor);
-    }
+    expect(bad.map((r) => r.note)).toEqual([]);
   }, 3600000);
 });

@@ -1,1 +1,6 @@
-attract, two demo loops: diverges at frame 390 (1200 vs 1200 frames run)
+attract, two demo loops: identical for 2400 of 2400 frames
+one player: coin, join at the middle station, then fire: identical for 3600 of 3600 frames
+two players: both coin slots, left and right stations: identical for 3600 of 3600 frames
+three stations at once, second buttons too: identical for 3000 of 3000 frames
+service switch held, then released: identical for 1800 of 1800 frames
+no input at all, long run: identical for 4800 of 4800 frames

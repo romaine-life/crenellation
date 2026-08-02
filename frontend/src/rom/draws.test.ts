@@ -6,12 +6,14 @@ import { describe, it, expect } from 'vitest';
 import { PATTERNS, type Pattern } from './patterns';
 import { System } from './system';
 import { call as viaRecompiled, useLift } from './dispatch';
-import { call as viaDecompiled, bind, useOracle, useCallee, POLL_AT } from './decompiled';
+import { call as viaDecompiled, bind, useOracle, useCallee, POLL_AT, original } from './decompiled';
 import { png } from './png';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const floorPx: number = (JSON.parse(
-  readFileSync(join(here, 'baseline.json'), 'utf8')) as Record<string, number>)['draws'] ?? 0;
+const base = JSON.parse(readFileSync(join(here, 'baseline.json'), 'utf8')) as
+  Record<string, unknown>;
+const floorPx = (base['draws'] as number) ?? 0;
+const byPattern = (base['drawsByPattern'] as Record<string, number>) ?? {};
 const rom = new Uint8Array(readFileSync(join(here, 'rom.bin')));
 const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 // Once a rule has been changed on purpose the two runs are meant to draw
@@ -20,7 +22,17 @@ const board = new Uint8Array(readFileSync(join(here, 'io-baseline.bin')));
 // could appear would be a fault; MODIFIED=1 runs on to where the changed
 // rule shows and requires that it does.
 const MODIFIED = process.env.MODIFIED === '1';
-const FRAMES = Number(process.env.DRAW_FRAMES ?? (MODIFIED ? 900 : 600));
+// Without MODIFIED the rules are the ROM's, and then the claim is the strong
+// one: the two runs draw THE SAME PICTURE, exactly, with no allowance. It used
+// to be that this test ran with the changed wall rule compiled in and asserted
+// the 380 pixels the change happened to move, so "the change is live" and "the
+// translation is faithful" were the same number and neither could fail
+// independently. They are two runs now, and each proves its own thing.
+if (!MODIFIED) original();
+// Far enough in that walls are on the board either way. The old default of 600
+// stopped before the demo laid one, so the unmodified run was asserting
+// sameness over a screen the changed rule could not have touched.
+const FRAMES = Number(process.env.DRAW_FRAMES ?? 900);
 
 function lit(entry: (a: number, m: System['m']) => void, label: string,
              pat?: Pattern): { note: string; screen: Uint32Array } {
@@ -126,6 +138,7 @@ describe('drawing', () => {
   // rather than hiding inside a pass.
   it('happens on every pattern', () => {
     const seen: string[] = [];
+    const counts: Record<string, number> = {};
     for (const p of PATTERNS) {
       // Sanitised: pattern names contain ':' and ',', and a colon is not legal in
       // a Windows filename - the PNGs came out extensionless and unopenable.
@@ -135,8 +148,18 @@ describe('drawing', () => {
       let d = 0;
       for (let i = 0; i < x.screen.length; i += 1) if (x.screen[i] !== y.screen[i]) d += 1;
       seen.push(`${p.name}: ${d}`);
+      counts[p.name] = d;
     }
     writeFileSync(join(here, 'draws-patterns.txt'), seen.join('\n'));
+    // Asserted, not merely recorded. This wrote a file and checked nothing,
+    // which is how six patterns could report "380 0 0 0 0 380" on a green run:
+    // the numbers were there to be read and nothing failed when they changed.
+    // With the ROM's rules every pattern must draw the same picture; with
+    // MODIFIED each must match what baseline.json records for it, and a
+    // pattern that never lays a wall correctly records zero.
+    const want: Record<string, number> = MODIFIED ? byPattern
+      : Object.fromEntries(PATTERNS.map((p) => [p.name, 0]));
+    expect(counts).toEqual(want);
   }, 600000);
 
   it('happens', () => {
@@ -179,18 +202,21 @@ describe('drawing', () => {
       differs ? `screens differ in ${differs} of ${a.screen.length} pixels`
         : `screens identical: ${a.screen.length} pixels`];
     writeFileSync(join(here, 'draws.txt'), lines.join('\n'));
-    // Not a floor. The two runs draw the *same picture*: regenerate without
-    // handedits.py and this is `screens identical: 80640 pixels`, measured,
-    // both ways. Every one of the 380 is the deliberate wallCellSet change -
-    // d3 is a tile index and the edit picks a different wall tile, which is
-    // why work RAM stays byte-identical while these pixels do not. They land
-    // inside the wall glyphs, x 36..262 y 16..78, and nowhere else.
+    // Two claims, two runs, and neither is a floor.
     //
-    // So assert the exact count, not "no worse than". A floor here would
-    // swallow a new fault as long as it stayed under the deliberate change's
-    // footprint; an exact number fails on a real regression *and* on the
-    // change being silently lost.
-    if (MODIFIED) expect(differs).toBeGreaterThan(0);
-    else expect(differs).toBe(floorPx);
+    // With the ROM's rules, the two dispatchers must draw the SAME PICTURE -
+    // zero pixels, no allowance. That is the visible half of what compose and
+    // writes assert about memory, and it is the half that matters: `movep` was
+    // stubbed as a no-op once and every routine still verified clean while the
+    // game drew every frame perfectly in black.
+    //
+    // With MODIFIED, the changed wall rule must SHOW - `wallCellSet` moves a
+    // tile index, so the difference lands inside the wall glyphs and nowhere
+    // else, and the exact count is recorded in baseline.json rather than
+    // merely being greater than zero. An exact number fails both on a new
+    // fault and on the change being silently lost; "more than none" fails on
+    // neither.
+    if (MODIFIED) expect(differs).toBe(floorPx);
+    else expect(differs).toBe(0);
   }, 900000);
 });

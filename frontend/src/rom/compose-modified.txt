@@ -1,1 +1,6 @@
-attract, two demo loops: 630 pixels differ, box x 36..310 y 16..78
+attract, two demo loops: no wall laid, so nothing to see (2400 frames)
+one player: coin, join at the middle station, then fire: no wall laid, so nothing to see (3600 frames)
+two players: both coin slots, left and right stations: no wall laid, so nothing to see (3600 frames)
+three stations at once, second buttons too: no wall laid, so nothing to see (3000 frames)
+service switch held, then released: 455 pixels differ, box x 36..262 y 16..78
+no input at all, long run: 1242 pixels differ, box x 36..326 y 56..207

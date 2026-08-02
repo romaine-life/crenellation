@@ -27,6 +27,11 @@ def _uses(body, name):
     return re.findall(r"[^\w]" + re.escape(name) + r"[^\w]", body)
 
 
+def tested_first(compared, reassigned):
+    """Does the comparison happen before the register is reused?"""
+    return reassigned is None or compared.start() < reassigned.start()
+
+
 def role(name, body, is_addr):
     """A word for what this parameter is used as, or None if nothing is clear."""
     n = re.escape(name)
@@ -41,14 +46,37 @@ def role(name, body, is_addr):
     # `bcs` back to the top is this ROM's standard loop: a0 steps, a2 is the
     # end. Naming it `end` says what it is; `a2_` says which register it
     # arrived in, which the reader can already see.
-    compared = re.search(rf"[<>]=? *{n}\b|{n} *[<>]=?", body)
+    #
+    # Two spellings, because the lifted form of a comparison is not `x < y`.
+    # A `cmp` becomes `setFlagsCmp(...)` and the branch becomes a condition
+    # several layers of masking and sign extension deep, so an operator next
+    # to the name almost never appears. Measured 2026-08-02: the adjacent
+    # form matched 15 parameters in the whole file and the second one 149.
+    # The second is bounded to a single line so it cannot run past the
+    # statement it is in.
+    # A bound is a value the routine tests BEFORE it starts using the
+    # register for something else. `limit` and `end` both mean "a value
+    # this routine only ever tests against", and neither had checked.
+    # `negateStore` had a d3 called `limit` while the routine overwrites
+    # its low byte first and asks `>= 0` about the result - a working
+    # value, not a bound. `written_through` does not catch that: it looks
+    # for a store through the pointer, not for the local being written.
+    #
+    # The test is ORDER, not reassignment. Measured 2026-08-02: only two
+    # parameters in the whole file are overwritten before ever being
+    # read, so these registers really are inputs - they are just reused
+    # as scratch afterwards, and a name for what the routine was GIVEN is
+    # honest as long as the test it names happens before the reuse.
+    reassigned = re.search(rf"^  +{n} = (?!{n}_;)", body, re.M)
+    compared = (re.search(rf"[<>]=? *{n}\b|{n} *[<>]=?", body)
+                or re.search(rf"\({n}\b[^;\n]{{0,120}}?\)\s*(?:<=?|>=?)\s", body))
 
     if is_addr:
         if written_through and deref:
             return "dst" if re.search(rf"store\d+\({n}\b", body) else "ptr"
         if deref:
             return "src" if stepped else "ptr"
-        if compared and not stepped:
+        if compared and not stepped and tested_first(compared, reassigned):
             return "end"
         return None
     if counted:
@@ -59,10 +87,20 @@ def role(name, body, is_addr):
     # wrong. Do not re-add it without checking the count moves.
     if indexes and not deref:
         return "index"
+    # A value compared against two or more DIFFERENT constants is a selector:
+    # the routine is asking which of several things it was given, not whether
+    # a number is in range. `kind` says that; one constant does not qualify,
+    # because a single comparison is a bound and `limit` below already says so.
+    # Measured before adding, as this file's own note about the dropped
+    # "shift" role demands: 92 parameters match, and each is also a seed for
+    # paramnames.py, which names whatever is handed to them.
+    kinds = set(re.findall(rf"setFlagsCmp\(\({n}[^,]*, (0x[0-9a-f]+|\d+), ", body))
+    if len(kinds) >= 2:
+        return "kind"
     # A value nothing writes through, indexes with, or counts down, but which
     # a comparison tests, is a bound. `limit` says that; `d3_` says which
     # register it arrived in, which the reader can already see.
-    if compared and not stepped:
+    if compared and not stepped and tested_first(compared, reassigned):
         return "limit"
     if written_through:
         return "value"
