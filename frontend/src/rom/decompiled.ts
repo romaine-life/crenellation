@@ -96184,7 +96184,7 @@ export function paletteClearInner(a0_: number, dst_: number, d0_: number, d1_: n
   setReg('d4', d4);
 }
 
-export function schedulePaletteEffectKindFive(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number, arg6: number): void {
+export function schedulePaletteEffectKindFive(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, page: number, bank: number, value: number, index: number, period: number, repeats: number, innerPeriod: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -96241,11 +96241,11 @@ export function schedulePaletteEffectKindFive(a0_: number, dst_: number, d0_: nu
   save_d3_1 = d3;
   save_d4_2 = d4;
   save_a2_3 = dst;
-  t4 = (arg0 & 0xff);
+  t4 = (page & 0xff);
   d2 = ((d2 & 0xffffff00) | (t4 & 255));
-  t5 = (arg1 & 0xff);
+  t5 = (bank & 0xff);
   d3 = ((d3 & 0xffffff00) | (t5 & 255));
-  d4 = (arg2) >>> 0;
+  d4 = (value) >>> 0;
   setFlagsCmp(d4, 0, 32);
   setReg('a0', a0);
   setReg('a2', dst);
@@ -96282,7 +96282,7 @@ export function schedulePaletteEffectKindFive(a0_: number, dst_: number, d0_: nu
     }
     const _t5 = tick(300, 0x0c6b6) ? 1 : 0; if (_t5 || SPILL_ALL) { setFlagsCmp((d2 & 65535), 0, 16); setReg('a0', a0); setReg('a2', dst); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); if (_t5) takeIrq(); }
     d1 = (0) >>> 0;
-    t7 = (arg3 & 0xff);
+    t7 = (index & 0xff);
     d1 = ((d1 & 0xffffff00) | (t7 & 255));
     d0 = (0) >>> 0;
     d0 = ((d0 & 0xffffff00) | ((d3 & 255) & 255));
@@ -96311,20 +96311,20 @@ export function schedulePaletteEffectKindFive(a0_: number, dst_: number, d0_: nu
     store32(dst + 0x10, t21);
     t22 = d4;
     store32(dst + 0x16, t22);
-    t23 = (arg5 & 0xff);
+    t23 = (repeats & 0xff);
     d0 = ((d0 & 0xffffff00) | (t23 & 255));
     t24 = (d0 & 255);
     t25 = 0x1;
     d0 = ((d0 & 0xffffff00) | (((d0 & 255) - 0x1) & 255));
     t26 = (d0 & 255);
     store8(dst + 0xf, t26);
-    t27 = (arg6 & 0xff);
+    t27 = (innerPeriod & 0xff);
     t28 = t27;
     store8(dst + 0x14, t28);
-    t29 = (arg6 & 0xff);
+    t29 = (innerPeriod & 0xff);
     t30 = t29;
     store8(dst + 0x15, t30);
-    t31 = (arg4 & 0xff);
+    t31 = (period & 0xff);
     t32 = t31;
     store8(dst + 0xd, t32);
     t33 = 0x1;
@@ -96385,7 +96385,7 @@ export function schedulePaletteEffectKindFive(a0_: number, dst_: number, d0_: nu
   setReg('d4', d4);
 }
 
-export function schedulePaletteEffectKindFour(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number, arg6: number): void {
+export function schedulePaletteEffectKindFour(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, page: number, bank: number, value: number, index: number, period: number, repeats: number, innerPeriod: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -96440,11 +96440,11 @@ export function schedulePaletteEffectKindFour(a0_: number, dst_: number, d0_: nu
   save_d3_1 = d3;
   save_d4_2 = d4;
   save_a2_3 = dst;
-  t4 = (arg0 & 0xff);
+  t4 = (page & 0xff);
   d2 = ((d2 & 0xffffff00) | (t4 & 255));
-  t5 = (arg1 & 0xff);
+  t5 = (bank & 0xff);
   d3 = ((d3 & 0xffffff00) | (t5 & 255));
-  d4 = (arg2) >>> 0;
+  d4 = (value) >>> 0;
   setFlagsCmp(d4, 0, 32);
   setReg('a0', a0);
   setReg('a2', dst);
@@ -96481,7 +96481,7 @@ export function schedulePaletteEffectKindFour(a0_: number, dst_: number, d0_: nu
     }
     const _t5 = tick(292, 0x0c752) ? 1 : 0; if (_t5 || SPILL_ALL) { setFlagsCmp((d2 & 65535), 0, 16); setReg('a0', a0); setReg('a2', dst); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); if (_t5) takeIrq(); }
     d0 = (0) >>> 0;
-    t7 = (arg3 & 0xff);
+    t7 = (index & 0xff);
     d0 = ((d0 & 0xffffff00) | (t7 & 255));
     d1 = (0) >>> 0;
     d1 = ((d1 & 0xffffff00) | ((d3 & 255) & 255));
@@ -96510,16 +96510,16 @@ export function schedulePaletteEffectKindFour(a0_: number, dst_: number, d0_: nu
     store32(dst + 0x10, t21);
     t22 = d4;
     store32(dst + 0x16, t22);
-    t23 = (arg5 & 0xff);
+    t23 = (repeats & 0xff);
     t24 = t23;
     store8(dst + 0xf, t24);
-    t25 = (arg6 & 0xff);
+    t25 = (innerPeriod & 0xff);
     t26 = t25;
     store8(dst + 0x14, t26);
-    t27 = (arg6 & 0xff);
+    t27 = (innerPeriod & 0xff);
     t28 = t27;
     store8(dst + 0x15, t28);
-    t29 = (arg4 & 0xff);
+    t29 = (period & 0xff);
     t30 = t29;
     store8(dst + 0xd, t30);
     t31 = 0x1;

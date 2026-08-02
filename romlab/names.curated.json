@@ -564,14 +564,14 @@
     "why": "takes the record at 0x3E1964's byte at +0x16, multiplies it by six with shifts and adds, and subtracts that from the running total at 0x3E1C98."
   },
   "0xc688": {
-    "name": "schedule palette effect kind five over one entry",
-    "why": "takeFirstItemListZero hands back a free effect record or nothing; the record's byte at +0xC is the effect kind, +8 the palette address, +0x10 the table, and +0xE and +0xF the step and count. The bank's second half is selected by adding 0x200 words. Kind 5, addressing one entry: `((bank << 4) + index) * 2`, so sixteen entries to a bank.",
-    "ident": "schedulePaletteEffectKindFive"
+    "name": "schedule a palette effect of kind five",
+    "ident": "schedulePaletteEffectFive",
+    "why": "kind 5 into 0xc(a2), and allocates a record through 0xc504, stamps its kind byte at 0xc, and links it into the circular timer list at 0x3e20a0 that 0x125da ticks - with 0x3e2498 set to 1 across the link and cleared after, which is that ticker's own pause byte used as a critical section. The record's 0x8 is a palette RAM address: 0x3c0000 + (bank * 16 + index) * 4, plus 0x400 when the page argument is non-zero, so an entry is four bytes and a page is 0x400 - which is the 0x101 entries at stride 4 the self-test failure report at 0x13134 writes. 0x10 and 0x16 both take the value, current and original; 0xd is the tick period and 0xe is set to 1 so it fires on the next tick; 0x14 and 0x15 are a second period and its remainder. Kind five stores the repeat count MINUS ONE at 0xf; kind four at 0xc724 is otherwise the same routine and stores it as it stands."
   },
   "0xc724": {
-    "name": "schedule palette effect kind four over one entry",
-    "why": "takeFirstItemListZero hands back a free effect record or nothing; the record's byte at +0xC is the effect kind, +8 the palette address, +0x10 the table, and +0xE and +0xF the step and count. The bank's second half is selected by adding 0x200 words. Kind 4, the same one-entry addressing as 0xC688 - the kind byte is the only difference between them.",
-    "ident": "schedulePaletteEffectKindFour"
+    "name": "schedule a palette effect of kind four",
+    "ident": "schedulePaletteEffectFour",
+    "why": "kind 4 into 0xc(a2), and allocates a record through 0xc504, stamps its kind byte at 0xc, and links it into the circular timer list at 0x3e20a0 that 0x125da ticks - with 0x3e2498 set to 1 across the link and cleared after, which is that ticker's own pause byte used as a critical section. The record's 0x8 is a palette RAM address: 0x3c0000 + (bank * 16 + index) * 4, plus 0x400 when the page argument is non-zero, so an entry is four bytes and a page is 0x400 - which is the 0x101 entries at stride 4 the self-test failure report at 0x13134 writes. 0x10 and 0x16 both take the value, current and original; 0xd is the tick period and 0xe is set to 1 so it fires on the next tick; 0x14 and 0x15 are a second period and its remainder. Identical to 0xc688 instruction for instruction apart from the kind byte, a different register pair carrying the same arithmetic, and the repeat count: kind four stores it as it stands where kind five stores it minus one."
   },
   "0xc7bc": {
     "name": "schedule palette effect kind six over a whole bank",
