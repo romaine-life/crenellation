@@ -186,5 +186,21 @@
       "name": "extra",
       "why": "only its high word is read, at 0x2a(a7), and it is copied down into 0x26(a7) unchanged. Nothing here interprets it; it is moved so the block the caller passes on has it in the right place."
     }
+  },
+  "0x12026": {
+    "stack4": {
+      "name": "pixels",
+      "why": "the longword at 0x10(a7): the top-left of the block, advanced by 4 then 0x1fc for each of the eight rows."
+    },
+    "stack8": {
+      "name": "value",
+      "why": "only its low byte is used, from the word at 0x16(a7), and the same byte is written to all thirty-two positions."
+    }
+  },
+  "0xf2cc": {
+    "stack4": {
+      "name": "entry",
+      "why": "the longword at 0xc(a7), dereferenced for a WORD which is an offset from 0x1f7f0 - not a pointer to follow directly. The result is dereferenced the same way a second time."
+    }
   }
 }

@@ -114231,11 +114231,11 @@ export function motionObjectWordPack(a0_: number, dst_: number, ptr_: number): v
   setReg('d1', d1);
 }
 
-export function helperMotionObjectEntryWrite(dst2: number, d2: number, dst22: number): void {
+export function helperMotionObjectEntryWrite(dst2: number, d2: number, entry: number): void {
   if (tick(152, 0x0f2cc)) { setReg('a3', dst2); setReg('d2', d2); takeIrq(); }
   push(dst2, 4);
   push(d2, 4);
-  const t0 = (0x1f7f0 + load16(dst22));
+  const t0 = (0x1f7f0 + load16(entry));
   const t1 = ((0x1f7f0 & 0xffff0000) | (t0 & 0xffff));
   const t2 = load16(t1);
   const t3 = ((0 & 0xffff0000) | (t2 & 0xffff));
@@ -119714,7 +119714,7 @@ export function blockRecolour(kind_: number, count3_: number, pixels: number, pa
   setReg('d3', count2);
 }
 
-export function helperCellValueDraw(count3_: number, count4: number, arg1: number): void {
+export function helperCellValueDraw(count3_: number, pixels: number, value: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a1');
@@ -119733,9 +119733,9 @@ export function helperCellValueDraw(count3_: number, count4: number, arg1: numbe
   save_d1_0 = count;
   save_d2_1 = count2;
   save_a1_2 = dst;
-  t3 = (arg1 & 0xffff);
+  t3 = (value & 0xffff);
   count3 = ((count3 & 0xffff0000) | (t3 & 65535));
-  dst = (count4) >>> 0;
+  dst = (pixels) >>> 0;
   count = (3) >>> 0;
   count2 = (7) >>> 0;
   setFlagsCmp((count2 & 65535), 0, 16);
