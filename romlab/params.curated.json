@@ -207,6 +207,10 @@
     "stack12": {
       "name": "text",
       "why": "the longword at 0x1c(a7), untouched by either substitution and pushed straight to 0x1868c."
+    },
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x17fd4 is `move.b $1b(a7), d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0x1e6b2": {
@@ -1033,6 +1037,10 @@
     "stack4": {
       "name": "sample",
       "why": "only its low byte, at 0x1b(a7), multiplied by ten to index the ten-byte descriptors at 0x1b674."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1b1d6 is `move.b $1b(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0xd916": {
@@ -1133,6 +1141,14 @@
     "stack12": {
       "name": "attrs",
       "why": "only its low word, at 0xe(a7), and only the bits in 0x30f0 survive the mask - the rest of the word is ignored entirely."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19018 is `move.w $a(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19010 is `move.w $e(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0x19032": {
@@ -1147,6 +1163,14 @@
     "stack12": {
       "name": "attrs",
       "why": "only its low word, at 0xe(a7), and only the bits in 0x30f0 survive the mask - the rest of the word is ignored entirely."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1903a is `move.w $a(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19032 is `move.w $e(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0x3de8": {
@@ -1175,6 +1199,10 @@
     "stack12": {
       "name": "arg",
       "why": "the longword at 0x18(a7), taken into d2 at the top and not touched by the owner comparison itself."
+    },
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x024d0 is `move.w $16(a7), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0xe4e": {
@@ -2049,6 +2077,14 @@
     "a0": {
       "name": "listHead",
       "why": "the fixed address 0x3e20a0 loaded by lea at 0x125e8, and both the list head and its sentinel: the walk starts at the long stored there and stops when the node pointer equals a0 again (0x125f2). Every handler carries it because the walk resumes after each. It is the one thing this block of handlers genuinely shares - their d2, d4, d5 mean different things per handler and are left alone."
+    },
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x126c8 is `move.l (a3)+, d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d7": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x126d0 is `move.l d5, d7` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0x1271e": {
@@ -2431,12 +2467,20 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1abb6 is `move.b d4, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0x1abbc": {
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1abbc is `move.b d4, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0x1abc2": {
@@ -4429,6 +4473,10 @@
     "d5": {
       "name": "firstEntry",
       "why": "the word out of the bucket head, and the emptiness test: `tst.w d5; beq` skips the bucket before anything else is read."
+    },
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0f658 is `moveq #$0, d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0x7262": {
@@ -4479,6 +4527,10 @@
     "d4": {
       "name": "failed",
       "why": "a copy of the test's answer, kept because the switch reads at 0x640000 that follow it clobber d0."
+    },
+    "a4": {
+      "name": "unused",
+      "why": "0x135d8 - the second instruction from this entry - assigns it the next continuation address."
     }
   },
   "0x135e0": {
@@ -4493,6 +4545,10 @@
     "d4": {
       "name": "failed",
       "why": "a copy of the test's answer, kept because the switch reads at 0x640000 that follow it clobber d0."
+    },
+    "a4": {
+      "name": "unused",
+      "why": "0x135e8 assigns it the next continuation address, and nothing reads it before that."
     }
   },
   "0x135f0": {
@@ -4763,6 +4819,14 @@
     "stack12": {
       "name": "count",
       "why": "only its low word, at 0xe(a7), into d0."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18c44 is `move.w $e(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18c3c is `move.w $a(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0x1753c": {
@@ -4777,6 +4841,10 @@
     "stack12": {
       "name": "count",
       "why": "the longword at 0x14(a7), compared against a counter that starts at zero, so exactly this many entries are written."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x17544 is `move.w $12(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   },
   "0x14c3c": {
@@ -5325,6 +5393,18 @@
     "a4": {
       "name": "changedAt",
       "why": "the fixed address 0x3e36ec, loaded by lea at 0x1a5fc and cleared at 0x1a60e. Every later touch reports something: ori #1 when the pitch moved (0x1ae9a), 2 written when a note ended (0x1afa2, 0x1b00c), ori #2 at 0x1a704. A status byte, carried in a register across the tail jumps."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "both paths out of the test at 0x1a618 assign it a fresh 0 or 1 (0x1a61c, 0x1a620) before anything reads it."
+    },
+    "d4": {
+      "name": "unused2",
+      "why": "0x1a634 clears its low byte and only that byte is stored."
+    },
+    "d3": {
+      "name": "unused3",
+      "why": "0x1a6b0's seq.b writes its low byte and only that byte is used."
     }
   },
   "0x1a740": {
@@ -5529,6 +5609,482 @@
     "d3": {
       "name": "unused5",
       "why": "0x633e assigns it the constant 0x128b8 - the first thing this routine does with the register is destroy it, so the value the caller left there is never read. It is saved and restored by the movem."
+    }
+  },
+  "0x135ba": {
+    "a2": {
+      "name": "unused",
+      "why": "0x135c8 assigns it the third long out of the descriptor at (a5)+ - the region end - before anything reads it."
+    },
+    "a4": {
+      "name": "unused2",
+      "why": "0x135ce assigns it a pc-relative continuation address before anything reads it."
+    }
+  },
+  "0x135c2": {
+    "a2": {
+      "name": "unused",
+      "why": "0x135c8 assigns it the third long out of the descriptor at (a5)+ before anything reads it."
+    },
+    "a4": {
+      "name": "unused2",
+      "why": "0x135ce assigns it a pc-relative continuation address before anything reads it."
+    }
+  },
+  "0x1a5f0": {
+    "a2": {
+      "name": "channel",
+      "why": "read as tst.l (a2) at 0x1a618 and then all through: 0x12 through 0x16 are its state bytes, 0x58 a word cleared with them, and the long at (a2) is unlinked into the free list at 0x3e3d0e."
+    },
+    "d2": {
+      "name": "unused",
+      "why": "its only appearance in the 276-byte extent is the movem at 0x1a5f4 that saves it."
+    },
+    "d4": {
+      "name": "unused2",
+      "why": "0x1a634 clears its low byte and only that byte is ever stored (to 0x13, 0x16 and 0x14 of the channel), so nothing the caller left in it is read. Saved and restored by the movem, not taken."
+    },
+    "d3": {
+      "name": "unused3",
+      "why": "0x1a6b0's seq.b writes its low byte and only that byte is used - negated and stored to 0x3e36fc - so the incoming value reaches nothing. Saved and restored by the movem, not taken."
+    }
+  },
+  "0x626": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x00626 is `move.w sr, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x14dc": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x014f6 is `move.w d4, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1512": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01526 is `move.w d4, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1584": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01584 is `move.w $6(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1592": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01592 is `move.w $6(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x18fa": {
+    "a3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01902 is `lea.l $3e1968.l, a3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1e74": {
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01e78 is `move.w $2a(a7), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x5280": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x05284 is `move.w $e(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x5818": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0581e is `move.w #$a8, d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x5b40": {
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x05b48 is `move.w $2a(a7), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x603e": {
+    "d2": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x06040 is `move.b (a0), d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x634a": {
+    "d2": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0634c is `move.b (a0), d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x669c": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0669c is `move.b d0, d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x66c8": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x066c8 is `move.b (a1), d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x74fa": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x074fe is `move.b $19(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x7b14": {
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x07b20 is `clr.w d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0xc206": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0c224 is `move.w -$2(a6), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0xdc10": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0dc10 is `move.w $6(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0xdec8": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0ded0 is `move.w $a(a6), d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d6": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0dedc is `move.w #$8000, d6` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0xecfa": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0ed32 is `move.w d0, d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0xf13e": {
+    "a0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0f160 is `movea.l #$3e02b4, a0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0xf306": {
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0f32a is `move.w d1, d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1204c": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x12054 is `move.w $16(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x121c4": {
+    "d2": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x121d6 is `move.w $3a(a7), d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1228c": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1228e is `move.w d3, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1232e": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x12330 is `move.w d7, d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1238c": {
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1238c is `clr.l d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x124e2": {
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x124e2 is `clr.l d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x12574": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x12574 is `move.b (a0)+, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d3": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x12576 is `move.b (a0)+, d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x13134": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x13134 is `move.w (a0)+, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x13662": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x13688 is `move.l d0, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x141c4": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x141c4 is `clr.b d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x15100": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x15100 is `move.w $6(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1540a": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x15412 is `move.b #$78, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x17cb8": {
+    "d6": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x17cb8 is `move.w $6(a2), d6` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x17d2c": {
+    "d6": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x17d2c is `move.w $4(a2), d6` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x181b6": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x181c2 is `moveq #$0, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x18940": {
+    "a1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18940 is `lea.l $200000.l, a1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x189a0": {
+    "a1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x189a0 is `lea.l $200000.l, a1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x18a5e": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18a5e is `move.w $a(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x18dea": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18dec is `move.w $a(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x18e00": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18e02 is `move.w $e(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x18e02": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18e02 is `move.w $e(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x190f6": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19104 is `moveq #$29, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x19954": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19954 is `move.w sr, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x19a24": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19a42 is `move.b $8(a1), d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d5": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19a3c is `move.b $10(a1), d5` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x19c70": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19c74 is `move.b (a0), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x19f3e": {
+    "a1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19f9c is `movea.l a2, a1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a19a": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a19a is `move.b $7(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a248": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a24c is `move.b $1(a1), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a260": {
+    "d2": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a260 is `move.b $1(a1), d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a2c6": {
+    "d2": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a2c6 is `move.b $1(a1), d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d3": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a2d0 is `move.b $1(a1), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a5c8": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a5c8 is `move.w $1c(a0), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a5d4": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a5d4 is `move.b $19(a0), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a5da": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a5da is `move.b $1b(a0), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a5e0": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a5e0 is `move.b $16(a0), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a5e6": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a5e6 is `move.b $5e(a0), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a704": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a708 is `clr.w d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1a810": {
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a818 is `move.b (a0), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d4": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a822 is `move.b (a0), d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1ad54": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ad54 is `move.b $5d(a2), d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1ad6e": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ad6e is `move.b $5d(a2), d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1ad9a": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ad9a is `move.b $5d(a2), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1ada2": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ada2 is `move.b $5d(a2), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1ae0e": {
+    "d3": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ae0e is `move.b $5d(a2), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1ae2a": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ae2a is `move.b $5d(a2), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1b2b2": {
+    "a0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1b2c6 is `lea.l $3e3d6e.l, a0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "unused2",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1b2b6 is `move.b $f(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x1e834": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1e838 is `move.w $16(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x875e": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0877c is `move.l a2, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    }
+  },
+  "0x18dfc": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18e02 is `move.w $e(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
     }
   }
 }
