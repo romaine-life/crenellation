@@ -2055,5 +2055,15 @@
     "name": "clear the entity, marker and unit tables",
     "ident": "clearEntityMarkerUnitTables",
     "why": "three sized wipes, and the sizes are the useful part: sixteen records of 14 bytes from 0x3e1ae6 - dbra from 0xf with `lea $e(a0),a0` - then 32 BYTES at stride two from 0x3e1c44 all set to 0xff, and then seven records from 0x3e1bc6, which is the unit array 0xaf72 walks with the same count and the same 0x12 stride. So the three table geometries agree with what the routines that use them do, read from the other end. It calls 0xeac8 first, which does nothing unless the mode byte is 1."
+  },
+  "0x169c8": {
+    "name": "draw the screen test pattern in sixteen-step bands",
+    "ident": "drawScreenTestPattern",
+    "why": "holds two routine addresses PC-relative in a2 and a3 - 0x1829c and 0x16958 - and then calls a2 over and over with a first argument that climbs 0, 0x10, 0x20, 0x30 and on, written out longhand rather than looped. Before that it clears the screen and reinitialises video through 0x17500 and sets d2 to 0x8000. Sixteen-step bands drawn one call at a time is a test pattern, and the unrolling is why it is 304 bytes."
+  },
+  "0x40d2": {
+    "name": "draw a sprite through the per-cell attribute map",
+    "ident": "drawSpriteViaAttributeMap",
+    "why": "its first two BYTES are a coordinate pair - the byte at 9(a6) less one times 80, and the byte at 8(a6) less one doubled, added to the longword at 0x3e0e7a - so the map it indexes has an 80-byte row and two bytes a column, which is 40 columns and not the 42 the board uses. It takes the screen address for the same pair from 0x11bec, and walks with 0x28 - 40 - as the row limit. So this draws against the 40-column attribute map rather than against the 42-column board, and the two are not the same grid."
   }
 }
