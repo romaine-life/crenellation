@@ -6077,10 +6077,10 @@ export function walkEightNeighboursCellCurrent(index_: number, kind2_: number, d
   setReg('d6', aheadDelta);
 }
 
-export function counterReset(a2_: number, limit_: number): void {
+export function counterReset(belowRightCell_: number, limit_: number): void {
   let _guard = 0;
   void _guard;
-  let a2 = a2_;
+  let belowRightCell = belowRightCell_;
   let limit = limit_;
   let t0 = 0;
   let t1 = 0;
@@ -6097,12 +6097,12 @@ export function counterReset(a2_: number, limit_: number): void {
   let t12 = 0;
   let t13 = 0;
   let t14 = 0;
-  const _t0 = tick(164, 0x00d9a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('d0', limit); if (_t0) takeIrq(); }
-  t0 = a2;
+  const _t0 = tick(164, 0x00d9a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', belowRightCell); setReg('d0', limit); if (_t0) takeIrq(); }
+  t0 = belowRightCell;
   push(t0, 4);
-  a2 = (0x3e0dc4) >>> 0;
+  belowRightCell = (0x3e0dc4) >>> 0;
   push(0x1, 4);
-  t1 = load8(a2);
+  t1 = load8(belowRightCell);
   limit = ((limit & 0xffffff00) | (t1 & 255));
   t2 = ((((limit & 255)) << 24) >> 24);
   limit = ((limit & 0xffff0000) | (t2 & 65535));
@@ -6116,50 +6116,50 @@ export function counterReset(a2_: number, limit_: number): void {
   t6 = 0;
   push(t6, 4);
   setFlagsCmp(0, 0, 32);
-  setReg('a2', a2);
+  setReg('a2', belowRightCell);
   setReg('d0', limit);
   callRom(0x00e4e, 0x00dba);
   if (halted()) return;
-  a2 = getReg('a2');
+  belowRightCell = getReg('a2');
   limit = getReg('d0');
-  const _t1 = tick(44, 0x00dba) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', a2); setReg('d0', limit); if (_t1) takeIrq(); }
-  t7 = load8(a2);
+  const _t1 = tick(44, 0x00dba) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', belowRightCell); setReg('d0', limit); if (_t1) takeIrq(); }
+  t7 = load8(belowRightCell);
   t8 = t7;
   t9 = 0x1;
-  t10 = load8(a2);
+  t10 = load8(belowRightCell);
   t11 = (t10 + 0x1);
-  store8(a2, t11);
-  t12 = load8(a2);
+  store8(belowRightCell, t11);
+  t12 = load8(belowRightCell);
   drop(20);
   setXAdd(t8, t9, 8);
   setFlagsCmp(t12, 0x1e, 8);
   if (((t12) & 255) !== ((0x1e) & 255)) {
   } else {
-    const _t2 = tick(66, 0x00dc6) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t8, t9, 8); setFlagsCmp(t12, 0x1e, 8); setReg('a2', a2); setReg('d0', limit); if (_t2) takeIrq(); }
+    const _t2 = tick(66, 0x00dc6) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t8, t9, 8); setFlagsCmp(t12, 0x1e, 8); setReg('a2', belowRightCell); setReg('d0', limit); if (_t2) takeIrq(); }
     t13 = 0;
     push(t13, 4);
     push(0x11b2a, 4);
     setXAdd(t8, t9, 8);
     setFlagsCmp(0, 0, 32);
-    setReg('a2', a2);
+    setReg('a2', belowRightCell);
     setReg('d0', limit);
     callRom(0x0eeee, 0x00dd4);
     if (halted()) return;
-    a2 = getReg('a2');
+    belowRightCell = getReg('a2');
     limit = getReg('d0');
-    const _t3 = tick(6, 0x00dd4) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t8, t9, 8); setReg('a2', a2); setReg('d0', limit); if (_t3) takeIrq(); }
+    const _t3 = tick(6, 0x00dd4) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t8, t9, 8); setReg('a2', belowRightCell); setReg('d0', limit); if (_t3) takeIrq(); }
     drop(8);
     setXAdd(t8, t9, 8);
   }
-  const _t4 = tick(26, 0x00dd6) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t8, t9, 8); setReg('a2', a2); setReg('d0', limit); if (_t4) takeIrq(); }
+  const _t4 = tick(26, 0x00dd6) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t8, t9, 8); setReg('a2', belowRightCell); setReg('d0', limit); if (_t4) takeIrq(); }
   t14 = load32(stackPointer() + 0);
   drop(4);
-  a2 = (t14) >>> 0;
+  belowRightCell = (t14) >>> 0;
   setXAdd(t8, t9, 8);
-  setReg('a2', a2);
+  setReg('a2', belowRightCell);
   setReg('d0', limit);
-  setReg('a2', a2); setReg('d0', limit); return;
-  setReg('a2', a2);
+  setReg('a2', belowRightCell); setReg('d0', limit); return;
+  setReg('a2', belowRightCell);
   setReg('d0', limit);
 }
 
@@ -6321,20 +6321,20 @@ export function counterStep(limit_: number, limit2_: number, arg0: number): void
   setReg('d2', limit2);
 }
 
-export function boardCellRunRenderer(a2_: number, dst3_: number, a4_: number, ptr_: number, limit_: number, limit2_: number, limit22_: number, count_: number, d5_: number, d6_: number, x: number, y: number, count2: number, flag: number): void {
+export function boardCellRunRenderer(belowRightCell_: number, leftCell_: number, rightCell_: number, ptr_: number, limit_: number, limit2_: number, limit22_: number, count_: number, screenAt_: number, lastColumn_: number, x: number, y: number, count2: number, flag: number): void {
   let _guard = 0;
   void _guard;
-  let a2 = a2_;
-  let dst3 = dst3_;
-  let a4 = a4_;
+  let belowRightCell = belowRightCell_;
+  let leftCell = leftCell_;
+  let rightCell = rightCell_;
   let ptr = ptr_;
   let dst = getReg('a6');
   let limit = limit_;
   let limit2 = limit2_;
   let limit22 = limit22_;
   let count = count_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let screenAt = screenAt_;
+  let lastColumn = lastColumn_;
   let save_d2_0 = 0;
   let save_d3_1 = 0;
   let save_d4_2 = 0;
@@ -6350,53 +6350,53 @@ export function boardCellRunRenderer(a2_: number, dst3_: number, a4_: number, pt
   let t12 = 0;
   let t13 = 0;
   let t14 = 0;
-  const _t0 = tick(140, 0x00e4e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(140, 0x00e4e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t0) takeIrq(); }
   push(dst, 4);
   dst = stackPointer();
   drop(-20);
   push(ptr, 4);
-  push(a4, 4);
-  push(dst3, 4);
-  push(a2, 4);
-  push(d6, 4);
-  push(d5, 4);
+  push(rightCell, 4);
+  push(leftCell, 4);
+  push(belowRightCell, 4);
+  push(lastColumn, 4);
+  push(screenAt, 4);
   push(count, 4);
   push(limit22, 4);
   push(limit2, 4);
   save_d2_0 = limit2;
   save_d3_1 = limit22;
   save_d4_2 = count;
-  save_d5_3 = d5;
-  save_d6_4 = d6;
-  save_a2_5 = a2;
-  save_a3_6 = dst3;
-  save_a4_7 = a4;
+  save_d5_3 = screenAt;
+  save_d6_4 = lastColumn;
+  save_a2_5 = belowRightCell;
+  save_a3_6 = leftCell;
+  save_a4_7 = rightCell;
   save_a5_8 = ptr;
   t9 = (x & 0xffff);
   count = ((count & 0xffff0000) | (t9 & 65535));
   t10 = (y & 0xffff);
   limit = ((limit & 0xffff0000) | (t10 & 65535));
   t11 = (count2 & 0xffff);
-  d6 = ((d6 & 0xffff0000) | (t11 & 65535));
+  lastColumn = ((lastColumn & 0xffff0000) | (t11 & 65535));
   t12 = 0x11efe;
   store32(dst + -0x8, t12);
   if (((((limit & 65535)) << 16) >> 16) < (((0) << 16) >> 16)) {
     setFlagsCmp((limit & 65535), 0, 16);
-    setReg('a2', a2);
-    setReg('a3', dst3);
-    setReg('a4', a4);
+    setReg('a2', belowRightCell);
+    setReg('a3', leftCell);
+    setReg('a4', rightCell);
     setReg('a5', ptr);
     setReg('a6', dst);
     setReg('d0', limit);
     setReg('d2', limit2);
     setReg('d3', limit22);
     setReg('d4', count);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); setReg('d6', d6); jumpRom(0x01222);
-  setReg('a2', a2); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', screenAt);
+    setReg('d6', lastColumn);
+    setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); setReg('d6', lastColumn); jumpRom(0x01222);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); setReg('d6', lastColumn);   return;
   }
-  const _t1 = tick(50, 0x00e70) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((limit & 65535), 0, 16); setReg('a2', a2); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(50, 0x00e70) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((limit & 65535), 0, 16); setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t1) takeIrq(); }
   t13 = (limit & 255);
   store8(dst + -0x13, t13);
   limit2 = (0) >>> 0;
@@ -6404,42 +6404,42 @@ export function boardCellRunRenderer(a2_: number, dst3_: number, a4_: number, pt
   limit2 = ((limit2 & 0xffffff00) | (((((t14) & 65535) === ((0) & 65535)) ? 0xff : 0) & 255));
   limit2 = ((limit2 & 0xffffff00) | ((0 - ((limit2 & 255))) & 255));
   setFlagsCmp((limit2 & 255), 0, 8);
-  setReg('a2', a2);
-  setReg('a3', dst3);
-  setReg('a4', a4);
+  setReg('a2', belowRightCell);
+  setReg('a3', leftCell);
+  setReg('a4', rightCell);
   setReg('a5', ptr);
   setReg('a6', dst);
   setReg('d0', limit);
   setReg('d2', limit2);
   setReg('d3', limit22);
   setReg('d4', count);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); setReg('d6', d6); jumpRom(0x01214);
-  setReg('a2', a2); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); setReg('d6', d6); return;
-  setReg('a2', a2);
-  setReg('a3', dst3);
-  setReg('a4', a4);
+  setReg('d5', screenAt);
+  setReg('d6', lastColumn);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); setReg('d6', lastColumn); jumpRom(0x01214);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); setReg('d6', lastColumn); return;
+  setReg('a2', belowRightCell);
+  setReg('a3', leftCell);
+  setReg('a4', rightCell);
   setReg('a5', ptr);
   setReg('a6', dst);
   setReg('d0', limit);
   setReg('d2', limit2);
   setReg('d3', limit22);
   setReg('d4', count);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); setReg('d6', d6); return;
-  setReg('a2', a2);
-  setReg('a3', dst3);
-  setReg('a4', a4);
+  setReg('d5', screenAt);
+  setReg('d6', lastColumn);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', dst); setReg('d0', limit); setReg('d2', limit2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); setReg('d6', lastColumn); return;
+  setReg('a2', belowRightCell);
+  setReg('a3', leftCell);
+  setReg('a4', rightCell);
   setReg('a5', ptr);
   setReg('a6', dst);
   setReg('d0', limit);
   setReg('d2', limit2);
   setReg('d3', limit22);
   setReg('d4', count);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', screenAt);
+  setReg('d6', lastColumn);
 }
 
 export function boardCellRunRendererFrom1(a3_: number, a4_: number, dst_: number, d0_: number, d1_: number, d4_: number, d5_: number): void {
@@ -8007,12 +8007,12 @@ export function callPlayerSHandlerThenFrom1(dst_: number, ptr_: number, d2_: num
   setReg('d2', d2);
 }
 
-export function rowStepCellWalk(a2_: number, a3_: number, a4_: number, a5_: number, dst_: number, limit_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function rowStepCellWalk(belowRightCell_: number, leftCell_: number, rightCell_: number, a5_: number, dst_: number, limit_: number, d2_: number, d3_: number, d4_: number, screenAt_: number, lastColumn_: number): void {
   let _guard = 0;
   void _guard;
-  let a2 = a2_;
-  let a3 = a3_;
-  let a4 = a4_;
+  let belowRightCell = belowRightCell_;
+  let leftCell = leftCell_;
+  let rightCell = rightCell_;
   let a5 = a5_;
   let dst = dst_;
   let limit = limit_;
@@ -8020,8 +8020,8 @@ export function rowStepCellWalk(a2_: number, a3_: number, a4_: number, a5_: numb
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let screenAt = screenAt_;
+  let lastColumn = lastColumn_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -8054,7 +8054,7 @@ export function rowStepCellWalk(a2_: number, a3_: number, a4_: number, a5_: numb
   let t29 = 0;
   let t30 = 0;
   let t31 = 0;
-  const _t0 = tick(94, 0x011ea) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(94, 0x011ea) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t0) takeIrq(); }
   t0 = load32(dst + -0xc);
   t1 = t0;
   t2 = 0x2;
@@ -8068,35 +8068,35 @@ export function rowStepCellWalk(a2_: number, a3_: number, a4_: number, a5_: numb
   t8 = load32(dst + -0x4);
   t9 = (t8 + d1);
   store32(dst + -0x4, t9);
-  a4 = ((a4 + d1)) >>> 0;
-  a3 = ((a3 + d1)) >>> 0;
-  a2 = ((a2 + d1)) >>> 0;
+  rightCell = ((rightCell + d1)) >>> 0;
+  leftCell = ((leftCell + d1)) >>> 0;
+  belowRightCell = ((belowRightCell + d1)) >>> 0;
   t10 = load32(dst + -0x12);
   t11 = t10;
   t12 = 0x8;
   t13 = load32(dst + -0x12);
   t14 = (t13 + 0x8);
   store32(dst + -0x12, t14);
-  t15 = d5;
+  t15 = screenAt;
   t16 = 0x8;
-  d5 = ((d5 + 0x8)) >>> 0;
+  screenAt = ((screenAt + 0x8)) >>> 0;
   t17 = load8(dst + -0x14);
   t18 = t17;
   t19 = 0x1;
   t20 = load8(dst + -0x14);
   t21 = (t20 + 0x1);
   store8(dst + -0x14, t21);
-  const _t1 = tick(30, 0x01204) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t18, t19, 8); setFlagsAdd(t18, t19, 8); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(30, 0x01204) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t18, t19, 8); setFlagsAdd(t18, t19, 8); setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t1) takeIrq(); }
   t22 = load8(dst + -0x14);
   limit = ((limit & 0xffffff00) | (t22 & 255));
   t23 = ((((limit & 255)) << 24) >> 24);
   limit = ((limit & 0xffff0000) | (t23 & 65535));
-  if (((((limit & 65535)) << 16) >> 16) <= ((((d6 & 65535)) << 16) >> 16)) {
+  if (((((limit & 65535)) << 16) >> 16) <= ((((lastColumn & 65535)) << 16) >> 16)) {
     setXAdd(t18, t19, 8);
-    setFlagsCmp((limit & 65535), (d6 & 65535), 16);
-    setReg('a2', a2);
-    setReg('a3', a3);
-    setReg('a4', a4);
+    setFlagsCmp((limit & 65535), (lastColumn & 65535), 16);
+    setReg('a2', belowRightCell);
+    setReg('a3', leftCell);
+    setReg('a4', rightCell);
     setReg('a5', a5);
     setReg('a6', dst);
     setReg('d0', limit);
@@ -8104,19 +8104,19 @@ export function rowStepCellWalk(a2_: number, a3_: number, a4_: number, a5_: numb
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x00efc);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', screenAt);
+    setReg('d6', lastColumn);
+    setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); jumpRom(0x00efc);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn);   return;
   }
-  const _t2 = tick(12, 0x01210) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t18, t19, 8); setFlagsCmp((limit & 65535), (d6 & 65535), 16); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(12, 0x01210) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t18, t19, 8); setFlagsCmp((limit & 65535), (lastColumn & 65535), 16); setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t2) takeIrq(); }
   t24 = load8(dst + -0x13);
   t25 = t24;
   t26 = 0x1;
   t27 = load8(dst + -0x13);
   t28 = (t27 + 0x1);
   store8(dst + -0x13, t28);
-  const _t3 = tick(38, 0x01214) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsAdd(t25, t26, 8); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(38, 0x01214) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsAdd(t25, t26, 8); setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t3) takeIrq(); }
   t29 = load8(dst + -0x13);
   limit = ((limit & 0xffffff00) | (t29 & 255));
   t30 = ((((limit & 255)) << 24) >> 24);
@@ -8125,9 +8125,9 @@ export function rowStepCellWalk(a2_: number, a3_: number, a4_: number, a5_: numb
   if (((((limit & 65535)) << 16) >> 16) <= (((t31) << 16) >> 16)) {
     setXAdd(t25, t26, 8);
     setFlagsCmp((limit & 65535), t31, 16);
-    setReg('a2', a2);
-    setReg('a3', a3);
-    setReg('a4', a4);
+    setReg('a2', belowRightCell);
+    setReg('a3', leftCell);
+    setReg('a4', rightCell);
     setReg('a5', a5);
     setReg('a6', dst);
     setReg('d0', limit);
@@ -8135,28 +8135,28 @@ export function rowStepCellWalk(a2_: number, a3_: number, a4_: number, a5_: numb
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x00e82);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', screenAt);
+    setReg('d6', lastColumn);
+    setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); jumpRom(0x00e82);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn);   return;
   }
-  const _t4 = tick(90, 0x01222) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp((limit & 65535), t31, 16); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+  const _t4 = tick(90, 0x01222) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t25, t26, 8); setFlagsCmp((limit & 65535), t31, 16); setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t4) takeIrq(); }
   d2 = load32((dst + -0x38) + 0);
   d3 = load32((dst + -0x38) + 4);
   d4 = load32((dst + -0x38) + 8);
-  d5 = load32((dst + -0x38) + 12);
-  d6 = load32((dst + -0x38) + 16);
-  a2 = load32((dst + -0x38) + 20);
-  a3 = load32((dst + -0x38) + 24);
-  a4 = load32((dst + -0x38) + 28);
+  screenAt = load32((dst + -0x38) + 12);
+  lastColumn = load32((dst + -0x38) + 16);
+  belowRightCell = load32((dst + -0x38) + 20);
+  leftCell = load32((dst + -0x38) + 24);
+  rightCell = load32((dst + -0x38) + 28);
   a5 = load32((dst + -0x38) + 32);
   setStackPointer(dst);
   dst = popLong();
   setXAdd(t25, t26, 8);
   setFlagsCmp((limit & 65535), t31, 16);
-  setReg('a2', a2);
-  setReg('a3', a3);
-  setReg('a4', a4);
+  setReg('a2', belowRightCell);
+  setReg('a3', leftCell);
+  setReg('a4', rightCell);
   setReg('a5', a5);
   setReg('a6', dst);
   setReg('d0', limit);
@@ -8164,12 +8164,12 @@ export function rowStepCellWalk(a2_: number, a3_: number, a4_: number, a5_: numb
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
-  setReg('a2', a2);
-  setReg('a3', a3);
-  setReg('a4', a4);
+  setReg('d5', screenAt);
+  setReg('d6', lastColumn);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); return;
+  setReg('a2', belowRightCell);
+  setReg('a3', leftCell);
+  setReg('a4', rightCell);
   setReg('a5', a5);
   setReg('a6', dst);
   setReg('d0', limit);
@@ -8177,24 +8177,24 @@ export function rowStepCellWalk(a2_: number, a3_: number, a4_: number, a5_: numb
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', screenAt);
+  setReg('d6', lastColumn);
 }
 
-export function rowStepCellWalkFrom1(a2_: number, a3_: number, a4_: number, a5_: number, dst_: number, limit_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function rowStepCellWalkFrom1(belowRightCell_: number, leftCell_: number, rightCell_: number, a5_: number, dst_: number, limit_: number, d2_: number, d3_: number, d4_: number, screenAt_: number, lastColumn_: number): void {
   let _guard = 0;
   void _guard;
-  let a2 = a2_;
-  let a3 = a3_;
-  let a4 = a4_;
+  let belowRightCell = belowRightCell_;
+  let leftCell = leftCell_;
+  let rightCell = rightCell_;
   let a5 = a5_;
   let dst = dst_;
   let limit = limit_;
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let screenAt = screenAt_;
+  let lastColumn = lastColumn_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -8205,35 +8205,35 @@ export function rowStepCellWalkFrom1(a2_: number, a3_: number, a4_: number, a5_:
   let t7 = 0;
   let t8 = 0;
   let t9 = 0;
-  const _t0 = tick(30, 0x01204) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(30, 0x01204) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t0) takeIrq(); }
   t0 = load8(dst + -0x14);
   limit = ((limit & 0xffffff00) | (t0 & 255));
   t1 = ((((limit & 255)) << 24) >> 24);
   limit = ((limit & 0xffff0000) | (t1 & 65535));
-  if (((((limit & 65535)) << 16) >> 16) <= ((((d6 & 65535)) << 16) >> 16)) {
-    setFlagsCmp((limit & 65535), (d6 & 65535), 16);
-    setReg('a2', a2);
-    setReg('a3', a3);
-    setReg('a4', a4);
+  if (((((limit & 65535)) << 16) >> 16) <= ((((lastColumn & 65535)) << 16) >> 16)) {
+    setFlagsCmp((limit & 65535), (lastColumn & 65535), 16);
+    setReg('a2', belowRightCell);
+    setReg('a3', leftCell);
+    setReg('a4', rightCell);
     setReg('a5', a5);
     setReg('a6', dst);
     setReg('d0', limit);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x00efc);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', screenAt);
+    setReg('d6', lastColumn);
+    setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); jumpRom(0x00efc);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn);   return;
   }
-  const _t1 = tick(12, 0x01210) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((limit & 65535), (d6 & 65535), 16); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(12, 0x01210) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((limit & 65535), (lastColumn & 65535), 16); setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t1) takeIrq(); }
   t2 = load8(dst + -0x13);
   t3 = t2;
   t4 = 0x1;
   t5 = load8(dst + -0x13);
   t6 = (t5 + 0x1);
   store8(dst + -0x13, t6);
-  const _t2 = tick(38, 0x01214) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t3, t4, 8); setFlagsAdd(t3, t4, 8); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+  const _t2 = tick(38, 0x01214) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t3, t4, 8); setFlagsAdd(t3, t4, 8); setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t2) takeIrq(); }
   t7 = load8(dst + -0x13);
   limit = ((limit & 0xffffff00) | (t7 & 255));
   t8 = ((((limit & 255)) << 24) >> 24);
@@ -8242,77 +8242,77 @@ export function rowStepCellWalkFrom1(a2_: number, a3_: number, a4_: number, a5_:
   if (((((limit & 65535)) << 16) >> 16) <= (((t9) << 16) >> 16)) {
     setXAdd(t3, t4, 8);
     setFlagsCmp((limit & 65535), t9, 16);
-    setReg('a2', a2);
-    setReg('a3', a3);
-    setReg('a4', a4);
+    setReg('a2', belowRightCell);
+    setReg('a3', leftCell);
+    setReg('a4', rightCell);
     setReg('a5', a5);
     setReg('a6', dst);
     setReg('d0', limit);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x00e82);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', screenAt);
+    setReg('d6', lastColumn);
+    setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); jumpRom(0x00e82);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn);   return;
   }
-  const _t3 = tick(90, 0x01222) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t3, t4, 8); setFlagsCmp((limit & 65535), t9, 16); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(90, 0x01222) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t3, t4, 8); setFlagsCmp((limit & 65535), t9, 16); setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t3) takeIrq(); }
   d2 = load32((dst + -0x38) + 0);
   d3 = load32((dst + -0x38) + 4);
   d4 = load32((dst + -0x38) + 8);
-  d5 = load32((dst + -0x38) + 12);
-  d6 = load32((dst + -0x38) + 16);
-  a2 = load32((dst + -0x38) + 20);
-  a3 = load32((dst + -0x38) + 24);
-  a4 = load32((dst + -0x38) + 28);
+  screenAt = load32((dst + -0x38) + 12);
+  lastColumn = load32((dst + -0x38) + 16);
+  belowRightCell = load32((dst + -0x38) + 20);
+  leftCell = load32((dst + -0x38) + 24);
+  rightCell = load32((dst + -0x38) + 28);
   a5 = load32((dst + -0x38) + 32);
   setStackPointer(dst);
   dst = popLong();
   setXAdd(t3, t4, 8);
   setFlagsCmp((limit & 65535), t9, 16);
-  setReg('a2', a2);
-  setReg('a3', a3);
-  setReg('a4', a4);
+  setReg('a2', belowRightCell);
+  setReg('a3', leftCell);
+  setReg('a4', rightCell);
   setReg('a5', a5);
   setReg('a6', dst);
   setReg('d0', limit);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
-  setReg('a2', a2);
-  setReg('a3', a3);
-  setReg('a4', a4);
+  setReg('d5', screenAt);
+  setReg('d6', lastColumn);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', dst); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); return;
+  setReg('a2', belowRightCell);
+  setReg('a3', leftCell);
+  setReg('a4', rightCell);
   setReg('a5', a5);
   setReg('a6', dst);
   setReg('d0', limit);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', screenAt);
+  setReg('d6', lastColumn);
 }
 
-export function rowStepCellWalkFrom2(a2_: number, a3_: number, a4_: number, a5_: number, ptr_: number, limit_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function rowStepCellWalkFrom2(belowRightCell_: number, leftCell_: number, rightCell_: number, a5_: number, ptr_: number, limit_: number, d2_: number, d3_: number, d4_: number, screenAt_: number, lastColumn_: number): void {
   let _guard = 0;
   void _guard;
-  let a2 = a2_;
-  let a3 = a3_;
-  let a4 = a4_;
+  let belowRightCell = belowRightCell_;
+  let leftCell = leftCell_;
+  let rightCell = rightCell_;
   let a5 = a5_;
   let ptr = ptr_;
   let limit = limit_;
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let screenAt = screenAt_;
+  let lastColumn = lastColumn_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
-  const _t0 = tick(38, 0x01214) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(38, 0x01214) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t0) takeIrq(); }
   t0 = load8(ptr + -0x13);
   limit = ((limit & 0xffffff00) | (t0 & 255));
   t1 = ((((limit & 255)) << 24) >> 24);
@@ -8320,56 +8320,56 @@ export function rowStepCellWalkFrom2(a2_: number, a3_: number, a4_: number, a5_:
   t2 = load16(ptr + 0x16);
   if (((((limit & 65535)) << 16) >> 16) <= (((t2) << 16) >> 16)) {
     setFlagsCmp((limit & 65535), t2, 16);
-    setReg('a2', a2);
-    setReg('a3', a3);
-    setReg('a4', a4);
+    setReg('a2', belowRightCell);
+    setReg('a3', leftCell);
+    setReg('a4', rightCell);
     setReg('a5', a5);
     setReg('a6', ptr);
     setReg('d0', limit);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x00e82);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', screenAt);
+    setReg('d6', lastColumn);
+    setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); jumpRom(0x00e82);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn);   return;
   }
-  const _t1 = tick(90, 0x01222) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((limit & 65535), t2, 16); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(90, 0x01222) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((limit & 65535), t2, 16); setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); if (_t1) takeIrq(); }
   d2 = load32((ptr + -0x38) + 0);
   d3 = load32((ptr + -0x38) + 4);
   d4 = load32((ptr + -0x38) + 8);
-  d5 = load32((ptr + -0x38) + 12);
-  d6 = load32((ptr + -0x38) + 16);
-  a2 = load32((ptr + -0x38) + 20);
-  a3 = load32((ptr + -0x38) + 24);
-  a4 = load32((ptr + -0x38) + 28);
+  screenAt = load32((ptr + -0x38) + 12);
+  lastColumn = load32((ptr + -0x38) + 16);
+  belowRightCell = load32((ptr + -0x38) + 20);
+  leftCell = load32((ptr + -0x38) + 24);
+  rightCell = load32((ptr + -0x38) + 28);
   a5 = load32((ptr + -0x38) + 32);
   setStackPointer(ptr);
   ptr = popLong();
   setFlagsCmp((limit & 65535), t2, 16);
-  setReg('a2', a2);
-  setReg('a3', a3);
-  setReg('a4', a4);
+  setReg('a2', belowRightCell);
+  setReg('a3', leftCell);
+  setReg('a4', rightCell);
   setReg('a5', a5);
   setReg('a6', ptr);
   setReg('d0', limit);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
-  setReg('a2', a2);
-  setReg('a3', a3);
-  setReg('a4', a4);
+  setReg('d5', screenAt);
+  setReg('d6', lastColumn);
+  setReg('a2', belowRightCell); setReg('a3', leftCell); setReg('a4', rightCell); setReg('a5', a5); setReg('a6', ptr); setReg('d0', limit); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', screenAt); setReg('d6', lastColumn); return;
+  setReg('a2', belowRightCell);
+  setReg('a3', leftCell);
+  setReg('a4', rightCell);
   setReg('a5', a5);
   setReg('a6', ptr);
   setReg('d0', limit);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', screenAt);
+  setReg('d6', lastColumn);
 }
 
 export function rowStepCellWalkFrom3(ptr_: number): void {
@@ -92179,14 +92179,14 @@ export function walkCurrentRecordSRing(a2_: number, index2_: number, kind_: numb
   setReg('d2', kind);
 }
 
-export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: number, ptr_: number, limit22_: number, count_: number, d5_: number): void {
+export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, rightCell_: number, ptr_: number, limit22_: number, count_: number, screenAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
   let dst2 = getReg('a1');
   let dst22 = dst22_;
   let dst3 = dst3_;
-  let a4 = a4_;
+  let rightCell = rightCell_;
   let ptr = ptr_;
   let ptr2 = getReg('a6');
   let limit = getReg('d0');
@@ -92194,7 +92194,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
   let d2 = getReg('d2');
   let limit22 = limit22_;
   let count = count_;
-  let d5 = d5_;
+  let screenAt = screenAt_;
   let save_d2_0 = 0;
   let save_d3_1 = 0;
   let save_d4_2 = 0;
@@ -92283,25 +92283,25 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
   let t85 = 0;
   let t86 = 0;
   let t87 = 0;
-  const _t0 = tick(140, 0x0bd84) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t0) takeIrq(); }
+  const _t0 = tick(140, 0x0bd84) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t0) takeIrq(); }
   push(ptr2, 4);
   ptr2 = stackPointer();
   drop(-4);
   push(ptr, 4);
-  push(a4, 4);
+  push(rightCell, 4);
   push(dst3, 4);
   push(dst22, 4);
-  push(d5, 4);
+  push(screenAt, 4);
   push(count, 4);
   push(limit22, 4);
   push(d2, 4);
   save_d2_0 = d2;
   save_d3_1 = limit22;
   save_d4_2 = count;
-  save_d5_3 = d5;
+  save_d5_3 = screenAt;
   save_a2_4 = dst22;
   save_a3_5 = dst3;
-  save_a4_6 = a4;
+  save_a4_6 = rightCell;
   save_a5_7 = ptr;
   dst = (load32(0x3e1c84)) >>> 0;
   t8 = load32(dst + 0x34);
@@ -92315,12 +92315,12 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
   setFlagsCmp(count2, d2, 32);
   if (count2 !== d2) {
   } else {
-    const _t1 = tick(6, 0x0bda4) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t9, t10, 32); setFlagsCmp(count2, d2, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t1) takeIrq(); }
+    const _t1 = tick(6, 0x0bda4) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t9, t10, 32); setFlagsCmp(count2, d2, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t1) takeIrq(); }
     d2 = (0x3e1ae6) >>> 0;
     setXAdd(t9, t10, 32);
     setFlagsCmp(d2, 0, 32);
   }
-  const _t2 = tick(62, 0x0bdaa) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t9, t10, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t2) takeIrq(); }
+  const _t2 = tick(62, 0x0bdaa) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t9, t10, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t2) takeIrq(); }
   dst = (load32(0x3e1c84)) >>> 0;
   t11 = d2;
   store32(dst + 0x34, t11);
@@ -92330,7 +92330,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
   setFlagsCmp(t12, 0, 32);
   if (t12 === 0) {
   } else {
-    const _t3 = tick(104, 0x0bdbe) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t9, t10, 32); setFlagsCmp(t12, 0, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t3) takeIrq(); }
+    const _t3 = tick(104, 0x0bdbe) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t9, t10, 32); setFlagsCmp(t12, 0, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t3) takeIrq(); }
     ptr = (d2) >>> 0;
     dst = ((ptr + 0xc)) >>> 0;
     dst2 = ((ptr2 + -0x2)) >>> 0;
@@ -92353,7 +92353,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
     setReg('a1', dst2);
     setReg('a2', dst22);
     setReg('a3', dst3);
-    setReg('a4', a4);
+    setReg('a4', rightCell);
     setReg('a5', ptr);
     setReg('a6', ptr2);
     setReg('d0', limit);
@@ -92361,14 +92361,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
     setReg('d2', d2);
     setReg('d3', limit22);
     setReg('d4', count);
-    setReg('d5', d5);
+    setReg('d5', screenAt);
     callRom(0x11bd8, 0x0bdd6);
     if (halted()) return;
     dst = getReg('a0');
     dst2 = getReg('a1');
     dst22 = getReg('a2');
     dst3 = getReg('a3');
-    a4 = getReg('a4');
+    rightCell = getReg('a4');
     ptr = getReg('a5');
     ptr2 = getReg('a6');
     limit = getReg('d0');
@@ -92376,25 +92376,25 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
     d2 = getReg('d2');
     limit22 = getReg('d3');
     count = getReg('d4');
-    d5 = getReg('d5');
-    const _t4 = tick(96, 0x0bdd6) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t9, t10, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t4) takeIrq(); }
-    d5 = (limit) >>> 0;
+    screenAt = getReg('d5');
+    const _t4 = tick(96, 0x0bdd6) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t9, t10, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t4) takeIrq(); }
+    screenAt = (limit) >>> 0;
     limit22 = (0x118be) >>> 0;
     dst22 = (0xfcca) >>> 0;
     dst3 = (0xfcda) >>> 0;
-    a4 = (0xfce2) >>> 0;
+    rightCell = (0xfce2) >>> 0;
     dst2 = ((ptr2 + -0x2)) >>> 0;
     drop(2);
     setXAdd(t9, t10, 32);
     setFlagsCmp(limit22, 0, 32);
     l23: for (;;) {
       if (++_guard > 4000000) throw new Error('loop 23 did not end');
-      const _t23 = tick(24, 0x0beee) ? 1 : 0; if (_t23 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t23) takeIrq(); }
+      const _t23 = tick(24, 0x0beee) ? 1 : 0; if (_t23 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t23) takeIrq(); }
       dst = (limit22) >>> 0;
       t87 = load8(dst);
       setFlagsCmp(t87, 0, 8);
       if ((((t87) << 24) >> 24) >= (((0) << 24) >> 24)) {
-        const _t5 = tick(140, 0x0bdfa) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t5) takeIrq(); }
+        const _t5 = tick(140, 0x0bdfa) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t5) takeIrq(); }
         ptr = (limit22) >>> 0;
         t19 = load8(ptr);
         count = ((count & 0xffffff00) | (t19 & 255));
@@ -92408,9 +92408,9 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         limit = ((limit & 0xffff0000) | (load16((dst22 + (count2 | 0))) & 65535));
         t23 = ((((limit & 65535)) << 16) >> 16);
         limit = (t23) >>> 0;
-        t24 = d5;
+        t24 = screenAt;
         t25 = limit;
-        d5 = ((d5 + limit)) >>> 0;
+        screenAt = ((screenAt + limit)) >>> 0;
         limit = (0) >>> 0;
         limit = ((limit & 0xffff0000) | ((count & 65535) & 65535));
         limit = ((limit & 0xffffff00) | (load8((dst3 + (limit | 0))) & 255));
@@ -92422,7 +92422,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         store8(dst2, t30);
         limit = (0) >>> 0;
         limit = ((limit & 0xffff0000) | ((count & 65535) & 65535));
-        limit = ((limit & 0xffffff00) | (load8((a4 + (limit | 0))) & 255));
+        limit = ((limit & 0xffffff00) | (load8((rightCell + (limit | 0))) & 255));
         t31 = load8(dst2 + 0x1);
         t32 = t31;
         t33 = (limit & 255);
@@ -92433,7 +92433,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         setXAdd(t32, t33, 8);
         setFlagsCmp(t36, 0, 8);
         if ((((t36) << 24) >> 24) < (((0) << 24) >> 24)) {
-          const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t22) takeIrq(); }
+          const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t22) takeIrq(); }
           t85 = limit22;
           t86 = 0x1;
           limit22 = ((limit22 + 0x1)) >>> 0;
@@ -92441,12 +92441,12 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           setFlagsAdd(t85, t86, 32);
           continue l23;
         } else {
-          const _t6 = tick(22, 0x0be2a) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t36, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t6) takeIrq(); }
+          const _t6 = tick(22, 0x0be2a) ? 1 : 0; if (_t6 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t36, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t6) takeIrq(); }
           t37 = load8(dst2 + 0x1);
           setXAdd(t32, t33, 8);
           setFlagsCmp(t37, 0, 8);
           if ((((t37) << 24) >> 24) < (((0) << 24) >> 24)) {
-            const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t22) takeIrq(); }
+            const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t22) takeIrq(); }
             t85 = limit22;
             t86 = 0x1;
             limit22 = ((limit22 + 0x1)) >>> 0;
@@ -92454,12 +92454,12 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
             setFlagsAdd(t85, t86, 32);
             continue l23;
           } else {
-            const _t7 = tick(22, 0x0be32) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t37, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t7) takeIrq(); }
+            const _t7 = tick(22, 0x0be32) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t37, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t7) takeIrq(); }
             t38 = load8(dst2);
             setXAdd(t32, t33, 8);
             setFlagsCmp(t38, 0x2a, 8);
             if ((((t38) << 24) >> 24) >= (((0x2a) << 24) >> 24)) {
-              const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t22) takeIrq(); }
+              const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t22) takeIrq(); }
               t85 = limit22;
               t86 = 0x1;
               limit22 = ((limit22 + 0x1)) >>> 0;
@@ -92467,12 +92467,12 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
               setFlagsAdd(t85, t86, 32);
               continue l23;
             } else {
-              const _t8 = tick(26, 0x0be3a) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t38, 0x2a, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t8) takeIrq(); }
+              const _t8 = tick(26, 0x0be3a) ? 1 : 0; if (_t8 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t38, 0x2a, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t8) takeIrq(); }
               t39 = load8(dst2 + 0x1);
               setXAdd(t32, t33, 8);
               setFlagsCmp(t39, 0x1e, 8);
               if ((((t39) << 24) >> 24) >= (((0x1e) << 24) >> 24)) {
-                const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t22) takeIrq(); }
+                const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t22) takeIrq(); }
                 t85 = limit22;
                 t86 = 0x1;
                 limit22 = ((limit22 + 0x1)) >>> 0;
@@ -92480,13 +92480,13 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                 setFlagsAdd(t85, t86, 32);
                 continue l23;
               } else {
-                const _t9 = tick(24, 0x0be44) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t39, 0x1e, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t9) takeIrq(); }
-                dst = (d5) >>> 0;
+                const _t9 = tick(24, 0x0be44) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t39, 0x1e, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t9) takeIrq(); }
+                dst = (screenAt) >>> 0;
                 t40 = load8(dst);
                 setXAdd(t32, t33, 8);
                 setFlagsCmp(t40, 0, 8);
                 if (((t40) & 255) !== ((0) & 255)) {
-                  const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t22) takeIrq(); }
+                  const _t22 = tick(6, 0x0beec) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t22) takeIrq(); }
                   t85 = limit22;
                   t86 = 0x1;
                   limit22 = ((limit22 + 0x1)) >>> 0;
@@ -92494,21 +92494,21 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                   setFlagsAdd(t85, t86, 32);
                   continue l23;
                 } else {
-                  const _t10 = tick(28, 0x0be4c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t40, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t10) takeIrq(); }
+                  const _t10 = tick(28, 0x0be4c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t40, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t10) takeIrq(); }
                   dst = (d2) >>> 0;
                   t41 = load8(dst);
                   if (((t41) & 255) !== ((0x24) & 255)) {
-                    const _t14 = tick(28, 0x0be7a) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t41, 0x24, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t14) takeIrq(); }
+                    const _t14 = tick(28, 0x0be7a) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t41, 0x24, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t14) takeIrq(); }
                     dst = (d2) >>> 0;
                     t51 = load8(dst);
                     setXAdd(t32, t33, 8);
                     setFlagsCmp(t51, 0x11, 8);
                     if (((t51) & 255) === ((0x11) & 255)) {
-                      const _t16 = tick(28, 0x0be88) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t16) takeIrq(); }
+                      const _t16 = tick(28, 0x0be88) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t16) takeIrq(); }
                       dst = (d2) >>> 0;
                       t53 = load8(dst);
                       if (((t53) & 255) !== ((0x11) & 255)) {
-                        const _t18 = tick(16, 0x0be98) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t18) takeIrq(); }
+                        const _t18 = tick(16, 0x0be98) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t18) takeIrq(); }
                         t57 = load8(0x3e1ca0);
                         t58 = 0x1;
                         t59 = (load8(0x3e1ca0) + 0x1);
@@ -92516,7 +92516,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                         setXAdd(t57, t58, 8);
                         setFlagsAdd(t57, t58, 8);
                       } else {
-                        const _t17 = tick(26, 0x0be90) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t17) takeIrq(); }
+                        const _t17 = tick(26, 0x0be90) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t17) takeIrq(); }
                         t54 = load8(0x3e1c9e);
                         t55 = 0x1;
                         t56 = (load8(0x3e1c9e) + 0x1);
@@ -92524,7 +92524,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                         setXAdd(t54, t55, 8);
                         setFlagsAdd(t54, t55, 8);
                       }
-                      const _t19 = tick(100, 0x0be9e) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t19) takeIrq(); }
+                      const _t19 = tick(100, 0x0be9e) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t19) takeIrq(); }
                       dst22 = (d2) >>> 0;
                       dst = ((dst22 + 0xc)) >>> 0;
                       dst2 = ((ptr2 + -0x2)) >>> 0;
@@ -92545,7 +92545,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                       setReg('a1', dst2);
                       setReg('a2', dst22);
                       setReg('a3', dst3);
-                      setReg('a4', a4);
+                      setReg('a4', rightCell);
                       setReg('a5', ptr);
                       setReg('a6', ptr2);
                       setReg('d0', limit);
@@ -92553,14 +92553,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                       setReg('d2', d2);
                       setReg('d3', limit22);
                       setReg('d4', count);
-                      setReg('d5', d5);
+                      setReg('d5', screenAt);
                       callRom(0x0b2e8, 0x0beb2);
                       if (halted()) return;
                       dst = getReg('a0');
                       dst2 = getReg('a1');
                       dst22 = getReg('a2');
                       dst3 = getReg('a3');
-                      a4 = getReg('a4');
+                      rightCell = getReg('a4');
                       ptr = getReg('a5');
                       ptr2 = getReg('a6');
                       limit = getReg('d0');
@@ -92568,8 +92568,8 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                       d2 = getReg('d2');
                       limit22 = getReg('d3');
                       count = getReg('d4');
-                      d5 = getReg('d5');
-                      const _t20 = tick(202, 0x0beb2) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t20) takeIrq(); }
+                      screenAt = getReg('d5');
+                      const _t20 = tick(202, 0x0beb2) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t20) takeIrq(); }
                       push(0x1, 4);
                       t65 = load8(ptr2 + -0x1);
                       count2 = ((count2 & 0xffffff00) | (t65 & 255));
@@ -92615,7 +92615,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                       setReg('a1', dst2);
                       setReg('a2', dst22);
                       setReg('a3', dst3);
-                      setReg('a4', a4);
+                      setReg('a4', rightCell);
                       setReg('a5', ptr);
                       setReg('a6', ptr2);
                       setReg('d0', limit);
@@ -92623,14 +92623,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                       setReg('d2', d2);
                       setReg('d3', limit22);
                       setReg('d4', count);
-                      setReg('d5', d5);
+                      setReg('d5', screenAt);
                       callRom(0x00e4e, 0x0bee6);
                       if (halted()) return;
                       dst = getReg('a0');
                       dst2 = getReg('a1');
                       dst22 = getReg('a2');
                       dst3 = getReg('a3');
-                      a4 = getReg('a4');
+                      rightCell = getReg('a4');
                       ptr = getReg('a5');
                       ptr2 = getReg('a6');
                       limit = getReg('d0');
@@ -92638,22 +92638,22 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                       d2 = getReg('d2');
                       limit22 = getReg('d3');
                       count = getReg('d4');
-                      d5 = getReg('d5');
-                      const _t21 = tick(24, 0x0bee6) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t74, t75, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t21) takeIrq(); }
+                      screenAt = getReg('d5');
+                      const _t21 = tick(24, 0x0bee6) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t74, t75, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t21) takeIrq(); }
                       drop(24);
                       setXAdd(t74, t75, 32);
                     } else {
-                      const _t15 = tick(22, 0x0be82) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t51, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t15) takeIrq(); }
+                      const _t15 = tick(22, 0x0be82) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t51, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t15) takeIrq(); }
                       t52 = load8(dst);
                       setXAdd(t32, t33, 8);
                       setFlagsCmp(t52, 0x25, 8);
                       if (((t52) & 255) !== ((0x25) & 255)) {
                       } else {
-                        const _t16 = tick(28, 0x0be88) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t16) takeIrq(); }
+                        const _t16 = tick(28, 0x0be88) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t16) takeIrq(); }
                         dst = (d2) >>> 0;
                         t53 = load8(dst);
                         if (((t53) & 255) !== ((0x11) & 255)) {
-                          const _t18 = tick(16, 0x0be98) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t18) takeIrq(); }
+                          const _t18 = tick(16, 0x0be98) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t18) takeIrq(); }
                           t57 = load8(0x3e1ca0);
                           t58 = 0x1;
                           t59 = (load8(0x3e1ca0) + 0x1);
@@ -92661,7 +92661,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                           setXAdd(t57, t58, 8);
                           setFlagsAdd(t57, t58, 8);
                         } else {
-                          const _t17 = tick(26, 0x0be90) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t17) takeIrq(); }
+                          const _t17 = tick(26, 0x0be90) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t17) takeIrq(); }
                           t54 = load8(0x3e1c9e);
                           t55 = 0x1;
                           t56 = (load8(0x3e1c9e) + 0x1);
@@ -92669,7 +92669,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                           setXAdd(t54, t55, 8);
                           setFlagsAdd(t54, t55, 8);
                         }
-                        const _t19 = tick(100, 0x0be9e) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t19) takeIrq(); }
+                        const _t19 = tick(100, 0x0be9e) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t19) takeIrq(); }
                         dst22 = (d2) >>> 0;
                         dst = ((dst22 + 0xc)) >>> 0;
                         dst2 = ((ptr2 + -0x2)) >>> 0;
@@ -92690,7 +92690,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                         setReg('a1', dst2);
                         setReg('a2', dst22);
                         setReg('a3', dst3);
-                        setReg('a4', a4);
+                        setReg('a4', rightCell);
                         setReg('a5', ptr);
                         setReg('a6', ptr2);
                         setReg('d0', limit);
@@ -92698,14 +92698,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                         setReg('d2', d2);
                         setReg('d3', limit22);
                         setReg('d4', count);
-                        setReg('d5', d5);
+                        setReg('d5', screenAt);
                         callRom(0x0b2e8, 0x0beb2);
                         if (halted()) return;
                         dst = getReg('a0');
                         dst2 = getReg('a1');
                         dst22 = getReg('a2');
                         dst3 = getReg('a3');
-                        a4 = getReg('a4');
+                        rightCell = getReg('a4');
                         ptr = getReg('a5');
                         ptr2 = getReg('a6');
                         limit = getReg('d0');
@@ -92713,8 +92713,8 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                         d2 = getReg('d2');
                         limit22 = getReg('d3');
                         count = getReg('d4');
-                        d5 = getReg('d5');
-                        const _t20 = tick(202, 0x0beb2) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t20) takeIrq(); }
+                        screenAt = getReg('d5');
+                        const _t20 = tick(202, 0x0beb2) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t20) takeIrq(); }
                         push(0x1, 4);
                         t65 = load8(ptr2 + -0x1);
                         count2 = ((count2 & 0xffffff00) | (t65 & 255));
@@ -92760,7 +92760,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                         setReg('a1', dst2);
                         setReg('a2', dst22);
                         setReg('a3', dst3);
-                        setReg('a4', a4);
+                        setReg('a4', rightCell);
                         setReg('a5', ptr);
                         setReg('a6', ptr2);
                         setReg('d0', limit);
@@ -92768,14 +92768,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                         setReg('d2', d2);
                         setReg('d3', limit22);
                         setReg('d4', count);
-                        setReg('d5', d5);
+                        setReg('d5', screenAt);
                         callRom(0x00e4e, 0x0bee6);
                         if (halted()) return;
                         dst = getReg('a0');
                         dst2 = getReg('a1');
                         dst22 = getReg('a2');
                         dst3 = getReg('a3');
-                        a4 = getReg('a4');
+                        rightCell = getReg('a4');
                         ptr = getReg('a5');
                         ptr2 = getReg('a6');
                         limit = getReg('d0');
@@ -92783,20 +92783,20 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                         d2 = getReg('d2');
                         limit22 = getReg('d3');
                         count = getReg('d4');
-                        d5 = getReg('d5');
-                        const _t21 = tick(24, 0x0bee6) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t74, t75, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t21) takeIrq(); }
+                        screenAt = getReg('d5');
+                        const _t21 = tick(24, 0x0bee6) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t74, t75, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t21) takeIrq(); }
                         drop(24);
                         setXAdd(t74, t75, 32);
                       }
                     }
                   } else {
-                    const _t11 = tick(26, 0x0be54) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t41, 0x24, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t11) takeIrq(); }
+                    const _t11 = tick(26, 0x0be54) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t41, 0x24, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t11) takeIrq(); }
                     t42 = load8(0x3e1cac);
                     setXAdd(t32, t33, 8);
                     setFlagsCmp(t42, 0, 8);
                     if ((((t42) << 24) >> 24) <= (((0) << 24) >> 24)) {
                     } else {
-                      const _t12 = tick(78, 0x0be5e) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t42, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t12) takeIrq(); }
+                      const _t12 = tick(78, 0x0be5e) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t42, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t12) takeIrq(); }
                       count2 = (0) >>> 0;
                       count2 = ((count2 & 0xffff0000) | ((count & 65535) & 65535));
                       limit = (28) >>> 0;
@@ -92814,7 +92814,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                       setReg('a1', dst2);
                       setReg('a2', dst22);
                       setReg('a3', dst3);
-                      setReg('a4', a4);
+                      setReg('a4', rightCell);
                       setReg('a5', ptr);
                       setReg('a6', ptr2);
                       setReg('d0', limit);
@@ -92822,14 +92822,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                       setReg('d2', d2);
                       setReg('d3', limit22);
                       setReg('d4', count);
-                      setReg('d5', d5);
+                      setReg('d5', screenAt);
                       callRom(0x0bb7c, 0x0be70);
                       if (halted()) return;
                       dst = getReg('a0');
                       dst2 = getReg('a1');
                       dst22 = getReg('a2');
                       dst3 = getReg('a3');
-                      a4 = getReg('a4');
+                      rightCell = getReg('a4');
                       ptr = getReg('a5');
                       ptr2 = getReg('a6');
                       limit = getReg('d0');
@@ -92837,8 +92837,8 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
                       d2 = getReg('d2');
                       limit22 = getReg('d3');
                       count = getReg('d4');
-                      d5 = getReg('d5');
-                      const _t13 = tick(32, 0x0be70) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t43, t44, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t13) takeIrq(); }
+                      screenAt = getReg('d5');
+                      const _t13 = tick(32, 0x0be70) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t43, t44, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t13) takeIrq(); }
                       t48 = load8(0x3e1cac);
                       t49 = 0x1;
                       t50 = (load8(0x3e1cac) - 0x1);
@@ -92854,14 +92854,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           }
         }
       }
-      const _t24 = tick(90, 0x0bef6) ? 1 : 0; if (_t24 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t24) takeIrq(); }
+      const _t24 = tick(90, 0x0bef6) ? 1 : 0; if (_t24 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t24) takeIrq(); }
       d2 = load32((ptr2 + -0x24) + 0);
       limit22 = load32((ptr2 + -0x24) + 4);
       count = load32((ptr2 + -0x24) + 8);
-      d5 = load32((ptr2 + -0x24) + 12);
+      screenAt = load32((ptr2 + -0x24) + 12);
       dst22 = load32((ptr2 + -0x24) + 16);
       dst3 = load32((ptr2 + -0x24) + 20);
-      a4 = load32((ptr2 + -0x24) + 24);
+      rightCell = load32((ptr2 + -0x24) + 24);
       ptr = load32((ptr2 + -0x24) + 28);
       setStackPointer(ptr2);
       ptr2 = popLong();
@@ -92869,7 +92869,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
       setReg('a1', dst2);
       setReg('a2', dst22);
       setReg('a3', dst3);
-      setReg('a4', a4);
+      setReg('a4', rightCell);
       setReg('a5', ptr);
       setReg('a6', ptr2);
       setReg('d0', limit);
@@ -92877,25 +92877,25 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
       setReg('d2', d2);
       setReg('d3', limit22);
       setReg('d4', count);
-      setReg('d5', d5);
-  setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5);     return;
+      setReg('d5', screenAt);
+  setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt);     return;
       break;
     }
-    const _t10 = tick(28, 0x0be4c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t40, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t10) takeIrq(); }
+    const _t10 = tick(28, 0x0be4c) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t40, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t10) takeIrq(); }
     dst = (d2) >>> 0;
     t41 = load8(dst);
     if (((t41) & 255) !== ((0x24) & 255)) {
-      const _t14 = tick(28, 0x0be7a) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t41, 0x24, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t14) takeIrq(); }
+      const _t14 = tick(28, 0x0be7a) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t41, 0x24, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t14) takeIrq(); }
       dst = (d2) >>> 0;
       t51 = load8(dst);
       setXAdd(t32, t33, 8);
       setFlagsCmp(t51, 0x11, 8);
       if (((t51) & 255) === ((0x11) & 255)) {
-        const _t16 = tick(28, 0x0be88) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t16) takeIrq(); }
+        const _t16 = tick(28, 0x0be88) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t16) takeIrq(); }
         dst = (d2) >>> 0;
         t53 = load8(dst);
         if (((t53) & 255) !== ((0x11) & 255)) {
-          const _t18 = tick(16, 0x0be98) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t18) takeIrq(); }
+          const _t18 = tick(16, 0x0be98) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t18) takeIrq(); }
           t57 = load8(0x3e1ca0);
           t58 = 0x1;
           t59 = (load8(0x3e1ca0) + 0x1);
@@ -92903,7 +92903,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           setXAdd(t57, t58, 8);
           setFlagsAdd(t57, t58, 8);
         } else {
-          const _t17 = tick(26, 0x0be90) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t17) takeIrq(); }
+          const _t17 = tick(26, 0x0be90) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t17) takeIrq(); }
           t54 = load8(0x3e1c9e);
           t55 = 0x1;
           t56 = (load8(0x3e1c9e) + 0x1);
@@ -92911,7 +92911,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           setXAdd(t54, t55, 8);
           setFlagsAdd(t54, t55, 8);
         }
-        const _t19 = tick(100, 0x0be9e) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t19) takeIrq(); }
+        const _t19 = tick(100, 0x0be9e) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t19) takeIrq(); }
         dst22 = (d2) >>> 0;
         dst = ((dst22 + 0xc)) >>> 0;
         dst2 = ((ptr2 + -0x2)) >>> 0;
@@ -92932,7 +92932,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         setReg('a1', dst2);
         setReg('a2', dst22);
         setReg('a3', dst3);
-        setReg('a4', a4);
+        setReg('a4', rightCell);
         setReg('a5', ptr);
         setReg('a6', ptr2);
         setReg('d0', limit);
@@ -92940,14 +92940,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         setReg('d2', d2);
         setReg('d3', limit22);
         setReg('d4', count);
-        setReg('d5', d5);
+        setReg('d5', screenAt);
         callRom(0x0b2e8, 0x0beb2);
         if (halted()) return;
         dst = getReg('a0');
         dst2 = getReg('a1');
         dst22 = getReg('a2');
         dst3 = getReg('a3');
-        a4 = getReg('a4');
+        rightCell = getReg('a4');
         ptr = getReg('a5');
         ptr2 = getReg('a6');
         limit = getReg('d0');
@@ -92955,8 +92955,8 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         d2 = getReg('d2');
         limit22 = getReg('d3');
         count = getReg('d4');
-        d5 = getReg('d5');
-        const _t20 = tick(202, 0x0beb2) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t20) takeIrq(); }
+        screenAt = getReg('d5');
+        const _t20 = tick(202, 0x0beb2) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t20) takeIrq(); }
         push(0x1, 4);
         t65 = load8(ptr2 + -0x1);
         count2 = ((count2 & 0xffffff00) | (t65 & 255));
@@ -93002,7 +93002,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         setReg('a1', dst2);
         setReg('a2', dst22);
         setReg('a3', dst3);
-        setReg('a4', a4);
+        setReg('a4', rightCell);
         setReg('a5', ptr);
         setReg('a6', ptr2);
         setReg('d0', limit);
@@ -93010,14 +93010,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         setReg('d2', d2);
         setReg('d3', limit22);
         setReg('d4', count);
-        setReg('d5', d5);
+        setReg('d5', screenAt);
         callRom(0x00e4e, 0x0bee6);
         if (halted()) return;
         dst = getReg('a0');
         dst2 = getReg('a1');
         dst22 = getReg('a2');
         dst3 = getReg('a3');
-        a4 = getReg('a4');
+        rightCell = getReg('a4');
         ptr = getReg('a5');
         ptr2 = getReg('a6');
         limit = getReg('d0');
@@ -93025,22 +93025,22 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         d2 = getReg('d2');
         limit22 = getReg('d3');
         count = getReg('d4');
-        d5 = getReg('d5');
-        const _t21 = tick(24, 0x0bee6) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t74, t75, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t21) takeIrq(); }
+        screenAt = getReg('d5');
+        const _t21 = tick(24, 0x0bee6) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t74, t75, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t21) takeIrq(); }
         drop(24);
         setXAdd(t74, t75, 32);
       } else {
-        const _t15 = tick(22, 0x0be82) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t51, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t15) takeIrq(); }
+        const _t15 = tick(22, 0x0be82) ? 1 : 0; if (_t15 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t51, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t15) takeIrq(); }
         t52 = load8(dst);
         setXAdd(t32, t33, 8);
         setFlagsCmp(t52, 0x25, 8);
         if (((t52) & 255) !== ((0x25) & 255)) {
         } else {
-          const _t16 = tick(28, 0x0be88) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t16) takeIrq(); }
+          const _t16 = tick(28, 0x0be88) ? 1 : 0; if (_t16 || SPILL_ALL) { setXAdd(t32, t33, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t16) takeIrq(); }
           dst = (d2) >>> 0;
           t53 = load8(dst);
           if (((t53) & 255) !== ((0x11) & 255)) {
-            const _t18 = tick(16, 0x0be98) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t18) takeIrq(); }
+            const _t18 = tick(16, 0x0be98) ? 1 : 0; if (_t18 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t18) takeIrq(); }
             t57 = load8(0x3e1ca0);
             t58 = 0x1;
             t59 = (load8(0x3e1ca0) + 0x1);
@@ -93048,7 +93048,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
             setXAdd(t57, t58, 8);
             setFlagsAdd(t57, t58, 8);
           } else {
-            const _t17 = tick(26, 0x0be90) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t17) takeIrq(); }
+            const _t17 = tick(26, 0x0be90) ? 1 : 0; if (_t17 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t53, 0x11, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t17) takeIrq(); }
             t54 = load8(0x3e1c9e);
             t55 = 0x1;
             t56 = (load8(0x3e1c9e) + 0x1);
@@ -93056,7 +93056,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
             setXAdd(t54, t55, 8);
             setFlagsAdd(t54, t55, 8);
           }
-          const _t19 = tick(100, 0x0be9e) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t19) takeIrq(); }
+          const _t19 = tick(100, 0x0be9e) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t19) takeIrq(); }
           dst22 = (d2) >>> 0;
           dst = ((dst22 + 0xc)) >>> 0;
           dst2 = ((ptr2 + -0x2)) >>> 0;
@@ -93077,7 +93077,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           setReg('a1', dst2);
           setReg('a2', dst22);
           setReg('a3', dst3);
-          setReg('a4', a4);
+          setReg('a4', rightCell);
           setReg('a5', ptr);
           setReg('a6', ptr2);
           setReg('d0', limit);
@@ -93085,14 +93085,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           setReg('d2', d2);
           setReg('d3', limit22);
           setReg('d4', count);
-          setReg('d5', d5);
+          setReg('d5', screenAt);
           callRom(0x0b2e8, 0x0beb2);
           if (halted()) return;
           dst = getReg('a0');
           dst2 = getReg('a1');
           dst22 = getReg('a2');
           dst3 = getReg('a3');
-          a4 = getReg('a4');
+          rightCell = getReg('a4');
           ptr = getReg('a5');
           ptr2 = getReg('a6');
           limit = getReg('d0');
@@ -93100,8 +93100,8 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           d2 = getReg('d2');
           limit22 = getReg('d3');
           count = getReg('d4');
-          d5 = getReg('d5');
-          const _t20 = tick(202, 0x0beb2) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t20) takeIrq(); }
+          screenAt = getReg('d5');
+          const _t20 = tick(202, 0x0beb2) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t20) takeIrq(); }
           push(0x1, 4);
           t65 = load8(ptr2 + -0x1);
           count2 = ((count2 & 0xffffff00) | (t65 & 255));
@@ -93147,7 +93147,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           setReg('a1', dst2);
           setReg('a2', dst22);
           setReg('a3', dst3);
-          setReg('a4', a4);
+          setReg('a4', rightCell);
           setReg('a5', ptr);
           setReg('a6', ptr2);
           setReg('d0', limit);
@@ -93155,14 +93155,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           setReg('d2', d2);
           setReg('d3', limit22);
           setReg('d4', count);
-          setReg('d5', d5);
+          setReg('d5', screenAt);
           callRom(0x00e4e, 0x0bee6);
           if (halted()) return;
           dst = getReg('a0');
           dst2 = getReg('a1');
           dst22 = getReg('a2');
           dst3 = getReg('a3');
-          a4 = getReg('a4');
+          rightCell = getReg('a4');
           ptr = getReg('a5');
           ptr2 = getReg('a6');
           limit = getReg('d0');
@@ -93170,20 +93170,20 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
           d2 = getReg('d2');
           limit22 = getReg('d3');
           count = getReg('d4');
-          d5 = getReg('d5');
-          const _t21 = tick(24, 0x0bee6) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t74, t75, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t21) takeIrq(); }
+          screenAt = getReg('d5');
+          const _t21 = tick(24, 0x0bee6) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t74, t75, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t21) takeIrq(); }
           drop(24);
           setXAdd(t74, t75, 32);
         }
       }
     } else {
-      const _t11 = tick(26, 0x0be54) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t41, 0x24, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t11) takeIrq(); }
+      const _t11 = tick(26, 0x0be54) ? 1 : 0; if (_t11 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t41, 0x24, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t11) takeIrq(); }
       t42 = load8(0x3e1cac);
       setXAdd(t32, t33, 8);
       setFlagsCmp(t42, 0, 8);
       if ((((t42) << 24) >> 24) <= (((0) << 24) >> 24)) {
       } else {
-        const _t12 = tick(78, 0x0be5e) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t42, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t12) takeIrq(); }
+        const _t12 = tick(78, 0x0be5e) ? 1 : 0; if (_t12 || SPILL_ALL) { setXAdd(t32, t33, 8); setFlagsCmp(t42, 0, 8); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t12) takeIrq(); }
         count2 = (0) >>> 0;
         count2 = ((count2 & 0xffff0000) | ((count & 65535) & 65535));
         limit = (28) >>> 0;
@@ -93201,7 +93201,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         setReg('a1', dst2);
         setReg('a2', dst22);
         setReg('a3', dst3);
-        setReg('a4', a4);
+        setReg('a4', rightCell);
         setReg('a5', ptr);
         setReg('a6', ptr2);
         setReg('d0', limit);
@@ -93209,14 +93209,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         setReg('d2', d2);
         setReg('d3', limit22);
         setReg('d4', count);
-        setReg('d5', d5);
+        setReg('d5', screenAt);
         callRom(0x0bb7c, 0x0be70);
         if (halted()) return;
         dst = getReg('a0');
         dst2 = getReg('a1');
         dst22 = getReg('a2');
         dst3 = getReg('a3');
-        a4 = getReg('a4');
+        rightCell = getReg('a4');
         ptr = getReg('a5');
         ptr2 = getReg('a6');
         limit = getReg('d0');
@@ -93224,8 +93224,8 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
         d2 = getReg('d2');
         limit22 = getReg('d3');
         count = getReg('d4');
-        d5 = getReg('d5');
-        const _t13 = tick(32, 0x0be70) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t43, t44, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t13) takeIrq(); }
+        screenAt = getReg('d5');
+        const _t13 = tick(32, 0x0be70) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t43, t44, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t13) takeIrq(); }
         t48 = load8(0x3e1cac);
         t49 = 0x1;
         t50 = (load8(0x3e1cac) - 0x1);
@@ -93236,14 +93236,14 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
       }
     }
   }
-  const _t24 = tick(90, 0x0bef6) ? 1 : 0; if (_t24 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); if (_t24) takeIrq(); }
+  const _t24 = tick(90, 0x0bef6) ? 1 : 0; if (_t24 || SPILL_ALL) { setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); if (_t24) takeIrq(); }
   d2 = load32((ptr2 + -0x24) + 0);
   limit22 = load32((ptr2 + -0x24) + 4);
   count = load32((ptr2 + -0x24) + 8);
-  d5 = load32((ptr2 + -0x24) + 12);
+  screenAt = load32((ptr2 + -0x24) + 12);
   dst22 = load32((ptr2 + -0x24) + 16);
   dst3 = load32((ptr2 + -0x24) + 20);
-  a4 = load32((ptr2 + -0x24) + 24);
+  rightCell = load32((ptr2 + -0x24) + 24);
   ptr = load32((ptr2 + -0x24) + 28);
   setStackPointer(ptr2);
   ptr2 = popLong();
@@ -93251,7 +93251,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
   setReg('a1', dst2);
   setReg('a2', dst22);
   setReg('a3', dst3);
-  setReg('a4', a4);
+  setReg('a4', rightCell);
   setReg('a5', ptr);
   setReg('a6', ptr2);
   setReg('d0', limit);
@@ -93259,13 +93259,13 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
   setReg('d2', d2);
   setReg('d3', limit22);
   setReg('d4', count);
-  setReg('d5', d5);
-  setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', a4); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', d5); return;
+  setReg('d5', screenAt);
+  setReg('a0', dst); setReg('a1', dst2); setReg('a2', dst22); setReg('a3', dst3); setReg('a4', rightCell); setReg('a5', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', count2); setReg('d2', d2); setReg('d3', limit22); setReg('d4', count); setReg('d5', screenAt); return;
   setReg('a0', dst);
   setReg('a1', dst2);
   setReg('a2', dst22);
   setReg('a3', dst3);
-  setReg('a4', a4);
+  setReg('a4', rightCell);
   setReg('a5', ptr);
   setReg('a6', ptr2);
   setReg('d0', limit);
@@ -93273,7 +93273,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, a4_: 
   setReg('d2', d2);
   setReg('d3', limit22);
   setReg('d4', count);
-  setReg('d5', d5);
+  setReg('d5', screenAt);
 }
 
 export function walkCurrentRecordSRingFrom2(src2_: number, src_: number, dst2_: number, ptr_: number, ptr2_: number, count_: number, index2_: number): void {

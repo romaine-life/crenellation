@@ -1093,6 +1093,26 @@
     "stack20": {
       "name": "flag",
       "why": "only tested against zero, at 0x1a(a6), and the answer kept as 0 or -1 in a byte - so it is a boolean and its magnitude is never used."
+    },
+    "a3": {
+      "name": "leftCell",
+      "why": "the cell address less one, and one of three neighbours carried in parallel; the row tail advances all three by 0x20 together, which is one board row."
+    },
+    "a4": {
+      "name": "rightCell",
+      "why": "the cell address plus one, advanced by 0x20 with the others each row."
+    },
+    "a2": {
+      "name": "belowRightCell",
+      "why": "the cell address plus 0x20 and then plus one - one row down and one column right - so the three pointers cover the left, the right and the diagonal below."
+    },
+    "d5": {
+      "name": "screenAt",
+      "why": "the screen address for this cell from 0x11bec plus 0xc00, advanced by 8 per column and by 0x20 per row alongside the cell pointers."
+    },
+    "d6": {
+      "name": "lastColumn",
+      "why": "the column limit the x counter at -0x14(a6) is compared against with `ble` - so the loop runs while the counter is at or below it, and the limit is inclusive."
     }
   },
   "0x1545c": {
@@ -1351,6 +1371,72 @@
     "d3": {
       "name": "count",
       "why": "the record's 0xf less two, floored at zero - the number of extra entries this tick walks beyond the first."
+    }
+  },
+  "0x11ea": {
+    "a3": {
+      "name": "leftCell",
+      "why": "the cell address less one, and one of three neighbours carried in parallel; the row tail advances all three by 0x20 together, which is one board row."
+    },
+    "a4": {
+      "name": "rightCell",
+      "why": "the cell address plus one, advanced by 0x20 with the others each row."
+    },
+    "a2": {
+      "name": "belowRightCell",
+      "why": "the cell address plus 0x20 and then plus one - one row down and one column right - so the three pointers cover the left, the right and the diagonal below."
+    },
+    "d5": {
+      "name": "screenAt",
+      "why": "the screen address for this cell from 0x11bec plus 0xc00, advanced by 8 per column and by 0x20 per row alongside the cell pointers."
+    },
+    "d6": {
+      "name": "lastColumn",
+      "why": "the column limit the x counter at -0x14(a6) is compared against with `ble` - so the loop runs while the counter is at or below it, and the limit is inclusive."
+    }
+  },
+  "0x1204": {
+    "a3": {
+      "name": "leftCell",
+      "why": "the cell address less one, and one of three neighbours carried in parallel; the row tail advances all three by 0x20 together, which is one board row."
+    },
+    "a4": {
+      "name": "rightCell",
+      "why": "the cell address plus one, advanced by 0x20 with the others each row."
+    },
+    "a2": {
+      "name": "belowRightCell",
+      "why": "the cell address plus 0x20 and then plus one - one row down and one column right - so the three pointers cover the left, the right and the diagonal below."
+    },
+    "d5": {
+      "name": "screenAt",
+      "why": "the screen address for this cell from 0x11bec plus 0xc00, advanced by 8 per column and by 0x20 per row alongside the cell pointers."
+    },
+    "d6": {
+      "name": "lastColumn",
+      "why": "the column limit the x counter at -0x14(a6) is compared against with `ble` - so the loop runs while the counter is at or below it, and the limit is inclusive."
+    }
+  },
+  "0x1214": {
+    "a3": {
+      "name": "leftCell",
+      "why": "the cell address less one, and one of three neighbours carried in parallel; the row tail advances all three by 0x20 together, which is one board row."
+    },
+    "a4": {
+      "name": "rightCell",
+      "why": "the cell address plus one, advanced by 0x20 with the others each row."
+    },
+    "a2": {
+      "name": "belowRightCell",
+      "why": "the cell address plus 0x20 and then plus one - one row down and one column right - so the three pointers cover the left, the right and the diagonal below."
+    },
+    "d5": {
+      "name": "screenAt",
+      "why": "the screen address for this cell from 0x11bec plus 0xc00, advanced by 8 per column and by 0x20 per row alongside the cell pointers."
+    },
+    "d6": {
+      "name": "lastColumn",
+      "why": "the column limit the x counter at -0x14(a6) is compared against with `ble` - so the loop runs while the counter is at or below it, and the limit is inclusive."
     }
   }
 }
