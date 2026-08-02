@@ -4692,5 +4692,49 @@
       "name": "player",
       "why": "its byte at 2 is the player index handed to 0x41be, and its byte at 0x1a is set to 2 afterwards; 0x3e1950 also takes 0x46, the same byte 0xce48 writes."
     }
+  },
+  "0x41be": {
+    "stack4": {
+      "name": "cells",
+      "why": "pushed last before the jsr to 0x3666, which binds that slot as `cells` - this routine only forwards it."
+    },
+    "stack8": {
+      "name": "playerIndex",
+      "why": "its low word at 0xe(a6) times 0x7e indexes the player array at 0x3e1968 (the shift-6-minus-double is x126); NEGATIVE means no player, and that path nulls a2 and uses colour 0xf0 instead of the table."
+    },
+    "stack12": {
+      "name": "width",
+      "why": "forwarded as 0x3666's third stack argument, which drawArgumentRepack binds as `width`. 0xcd0c passes 0xc."
+    },
+    "stack16": {
+      "name": "height",
+      "why": "forwarded as 0x3666's fourth stack argument, bound there as `height`. 0xcd0c passes 8. It was called count2, which claimed a count it never counts."
+    },
+    "stack20": {
+      "name": "postEvent",
+      "why": "tested against zero at 0x425a and used for nothing else: non-zero posts the player record to eventPost with the record at 0x11b06. A flag, not the count3 it was called."
+    },
+    "d2": {
+      "name": "unused",
+      "why": "saved by the movem at 0x41c2 and restored at 0x4274; the incoming value is never read - 0x41dc overwrites it with scratch. The routine preserves the register, it does not take a value in it."
+    },
+    "d3": {
+      "name": "unused2",
+      "why": "same shape as d2: 0x41ce replaces its low word from the stack before anything reads it, and only that word is ever used. The caller's value reaches nothing."
+    }
+  },
+  "0x7a88": {
+    "stack4": {
+      "name": "value",
+      "why": "its low word becomes d2 and is handed to the printf entry at 0x260 as the value between a coordinate pair and the field width 2 - the number this draws."
+    },
+    "stack8": {
+      "name": "atFixedPlace",
+      "why": "compared against 1 and nothing else: 1 takes the screen position from the ROM constant at 0x117ac, anything else from the live one at 0x3e1886. Both paths then split the word into a row byte and a column byte for 0x260."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x7a92 replaces only its low word from the stack, and every later use assigns it first. The caller's value is never read."
+    }
   }
 }

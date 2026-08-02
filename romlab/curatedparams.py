@@ -146,6 +146,17 @@ def main():
                 cand = f"{got}{k}"
                 k += 1
             words.add(cand)
+            # ...and if uniquifying landed back on the name it already has,
+            # nothing happens and nothing should be reported. Two slots of one
+            # routine can want the same word - 0xe4e has two counts, 0x2698 two
+            # kinds - and a signature cannot repeat an identifier, so the second
+            # is `count2` already. Counting that as a rename made this pass
+            # report nine every round forever, and namepasses.py print "did not
+            # converge - something feeds itself" while the file's hash never
+            # changed once. A pass that reports work it did not do is worse than
+            # one that does none: it hides a real oscillation behind a fake one.
+            if cand == local:
+                continue
             new = re.sub(r"(?<!')\b" + re.escape(local) + r"(_?)\b(?!')",
                          lambda m: cand + m.group(1), new)
             moved += 1

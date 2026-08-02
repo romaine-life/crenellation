@@ -46,6 +46,16 @@ REG_SOURCE = re.compile(r"\{ from: 'reg', name: '(\w+)'")
 SPILL = re.compile(r"setReg\('(\w+)', (\w+)\);")
 CALL = re.compile(r"call(?:Rom|Decompiled)\((0x[0-9a-f]+)")
 
+# Names that describe the CALLEE's relationship to the value rather than the
+# value, and so must not travel back up the call graph. `unused` says "this
+# routine saves the register and never reads it" - true of the callee, and a
+# claim about the caller that nothing here checked. Left unguarded it spread
+# from three hand-read parameters to fourteen in one fixed point, which is the
+# same propagation-without-rechecking defect whylimit.py counts for `limit`.
+# The rule for adding one: if the name would still be true were the value
+# passed on to a DIFFERENT routine, it may propagate; if not, it belongs here.
+NOT_PROPAGATED = re.compile(r"^(unused|live[AD]\d)\d*$")
+
 
 def split_functions(text):
     """(name, signature, body, span) for each exported function."""
@@ -81,7 +91,7 @@ def main():
             if not r or i >= len(sig):
                 continue
             name = sig[i].rstrip("_")
-            if REG_PARAM.match(name):
+            if REG_PARAM.match(name) or NOT_PROPAGATED.match(name):
                 continue                      # nothing to pass on yet
             reg_param.setdefault(fn, {})[r.group(1)] = name
 
