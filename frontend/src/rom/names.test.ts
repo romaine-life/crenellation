@@ -11,15 +11,16 @@
 // measures the first half - the second lives in names.curated.json and
 // manual_names.json, where a name is a data change with its reason beside it.
 //
-// THE FUNCTION HALF IS NOT MET, and saying it was is the mistake this file now
-// exists to make impossible. `expect(byAddress).toEqual([])` is met - no
+// THE FUNCTION HALF WAS CLAIMED TOO EARLY ONCE, and this file exists to make
+// that impossible a second time. `expect(byAddress).toEqual([])` is met - no
 // routine is called `fn_0ccb2` - and that was reported as "1,187 of 1,187
 // carry a name that says what they do", which is not what it measures.
 // `idents.py` breaks a collision by APPENDING, so `mainGameStateMachineFrom3`
 // is unique, passes, and tells the reader only which routine it is a second
-// entry into. Three numbers are reported here now instead of one, and the
-// third is the bar: 168 routines are OPAQUE - nothing they or their host or
-// their target points at says what they are for.
+// entry into. Three numbers are reported here now instead of one. The sharpest
+// of them, OPAQUE - a routine where nothing it or its host or its target
+// points at says what it is for - went 168 to 0 by reading, and is asserted
+// rather than ratcheted now that it is there. What is left is parameters.
 //
 // The ratchet is on what is LEFT rather than on what is done, and the reason
 // is that the count of done ones stopped meaning what it said. 1,860 of the
@@ -214,6 +215,12 @@ describe('names', () => {
     // are floors rather than assertions.
     expect(unstated).toBeLessThanOrEqual(base.unstatedPurpose ?? 0);
     expect(suffixOnly).toBeLessThanOrEqual(base.suffixOnlyNames ?? 0);
-    expect(opaque).toBeLessThanOrEqual(base.opaquePurpose ?? 0);
+
+    // REACHED, so asserted rather than ratcheted, for the same reason
+    // `byAddress` is: at the bar a `<=` would quietly accept the next routine
+    // that arrives with nothing said about it or about anything it reaches.
+    // Every routine in the image now has a purpose written down somewhere it
+    // or its host or its target can be followed to.
+    expect(opaque).toBe(0);
   });
 });
