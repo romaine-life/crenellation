@@ -96580,7 +96580,7 @@ export function schedulePaletteEffectKindFour(a0_: number, dst_: number, d0_: nu
   setReg('d4', d4);
 }
 
-export function schedulePaletteEffectKindSix(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, arg0: number, arg1: number, arg2: number): void {
+export function schedulePaletteEffectKindSix(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, page: number, bank: number, value: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -96618,11 +96618,11 @@ export function schedulePaletteEffectKindSix(a0_: number, dst_: number, d0_: num
   save_d2_0 = d2;
   save_d3_1 = d3;
   save_d4_2 = d4;
-  t3 = (arg0 & 0xff);
+  t3 = (page & 0xff);
   d2 = ((d2 & 0xffffff00) | (t3 & 255));
-  t4 = (arg1 & 0xff);
+  t4 = (bank & 0xff);
   d3 = ((d3 & 0xffffff00) | (t4 & 255));
-  d4 = (arg2) >>> 0;
+  d4 = (value) >>> 0;
   setFlagsCmp(d4, 0, 32);
   setReg('a0', a0);
   setReg('a1', dst);

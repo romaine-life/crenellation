@@ -642,5 +642,19 @@
       "name": "countLessOne",
       "why": "the longword at 0xc(a7) used as a dbra counter, so the length is one MORE than it says; the `subi.l #$10000,d0; bcc` around the loop is what lets it exceed 65535."
     }
+  },
+  "0xc7bc": {
+    "stack4": {
+      "name": "page",
+      "why": "only tested against zero; non-zero contributes 0x200 before the doubling, so 0x400 bytes - one page of 256 four-byte palette entries."
+    },
+    "stack8": {
+      "name": "bank",
+      "why": "its low byte, shifted left five and doubled: 64 bytes to a bank, which is sixteen four-byte entries."
+    },
+    "stack12": {
+      "name": "value",
+      "why": "the longword at 0x18(a7), written to 0x10 of the record. Kind six stores no original alongside it, where kinds four and five write the same value to 0x16 as well."
+    }
   }
 }
