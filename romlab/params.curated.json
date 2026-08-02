@@ -4428,5 +4428,37 @@
       "name": "wordThere",
       "why": "the word at (a2) taken into an address register purely to be compared with cmpa.l against the index plus one - a comparison, not a pointer."
     }
+  },
+  "0x18000": {
+    "d2": {
+      "name": "column",
+      "why": "the centring offset worked out by the head at 0x17fcc - `sub.l d0,d2; asr.l #$1` is (width - length) / 2 - and after the draw, this plus the drawn length less one is written to 0x3e3d7a. So 0x3e3d7a and 0x3e3d7b are a stored CURSOR, and this routine advances it past what it drew, which is what makes 0x17fcc's 0xff mean 'carry on from there'."
+    },
+    "d4": {
+      "name": "attr",
+      "why": "written to 0x3e3d7b before the draw, so the attribute becomes the stored default as well as being used."
+    },
+    "d5": {
+      "name": "text",
+      "why": "the string, passed through to 0x18b76 untouched."
+    },
+    "d0": {
+      "name": "width",
+      "why": "the word at 0x22(a7) on the way in; after the call it holds what the draw answered, and that answer is what advances the cursor."
+    }
+  },
+  "0x18006": {
+    "d2": {
+      "name": "column",
+      "why": "the centring offset worked out by the head at 0x17fcc - `sub.l d0,d2; asr.l #$1` is (width - length) / 2 - and after the draw, this plus the drawn length less one is written to 0x3e3d7a. So 0x3e3d7a and 0x3e3d7b are a stored CURSOR, and this routine advances it past what it drew, which is what makes 0x17fcc's 0xff mean 'carry on from there'."
+    },
+    "d4": {
+      "name": "attr",
+      "why": "written to 0x3e3d7b before the draw, so the attribute becomes the stored default as well as being used."
+    },
+    "d5": {
+      "name": "text",
+      "why": "the string, passed through to 0x18b76 untouched."
+    }
   }
 }
