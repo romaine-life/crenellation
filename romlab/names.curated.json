@@ -2030,5 +2030,15 @@
     "name": "check a value through two tests, then draw a row that depends on a ROM byte",
     "ident": "checkThenDrawByRomByte",
     "why": "hands its first argument and the word at 0x26(a7) to 0x160f8, passes THAT answer to 0x160dc, and does nothing further when the second answers zero - so the two are a conversion followed by a validity test on the converted value, not two independent checks. The row it then draws at is 0x18 or 0x12 depending on the byte at 0x372, which is inside the exception vector table and so is a build-time constant rather than state - two fixed layouts chosen once."
+  },
+  "0x13d1e": {
+    "name": "reduce a packed count into calendar-shaped components",
+    "ident": "reducePackedCountCalendar",
+    "why": "the constants say what it is doing even though the routine names nothing. It splits the low TWO bits off the argument, divides what is left by 0x5460 - 21,600 - and rotates those two bits back into the top of the value it writes to its own argument slot, which is the standard way of carrying a phase alongside a reduced count. It then adds 0x2db, 731, and divides by 0x5b5, 1461: 1461 is four years of 365.25 days and 731 is two of them plus one, which is the Julian day-to-year reduction. So the packed value is a time and the two bits are its quarter."
+  },
+  "0x1997a": {
+    "name": "count the sequence step down and advance when it runs out",
+    "ident": "countStepDownAndAdvance",
+    "why": "`subq.w #$1,d3` then storing d3 into 0x12(a2) and taking `bpl` on the flags that STORE left - no separate test - so 0x12 is a countdown and everything below happens only on the tick it goes negative. Then it clears the sequence pointer at 0(a2), copies 4(a3) into 7(a2), and asks 0x1425c whether to carry on. The new index at 4(a2) is the old one multiplied by (5(a3) + 5) and then doubled, so the stride comes out of the descriptor a3 points at rather than being fixed."
   }
 }

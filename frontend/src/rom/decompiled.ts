@@ -134038,7 +134038,7 @@ export function returnOne(): void {
   setReg('d0', 1);
 }
 
-export function formatNumberPaddingSeparatorsWrapper(dst3: number, arg1: number): void {
+export function formatNumberPaddingSeparatorsWrapper(packed: number, arg1: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -134228,7 +134228,7 @@ export function formatNumberPaddingSeparatorsWrapper(dst3: number, arg1: number)
       t26 = d2;
       t27 = dst2;
       d2 = ((d2 - dst2)) >>> 0;
-      dst = (dst3) >>> 0;
+      dst = (packed) >>> 0;
       t28 = 0;
       push(t28, 4);
       push(0x2, 4);
@@ -134256,7 +134256,7 @@ export function formatNumberPaddingSeparatorsWrapper(dst3: number, arg1: number)
       d4 = getReg('d4');
       const _t7 = tick(28, 0x13d8c) ? 1 : 0; if (_t7 || SPILL_ALL) { setXSub(t26, t27, 32); setReg('a0', dst); setReg('a1', dst2); setReg('d0', index); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); if (_t7) takeIrq(); }
       drop(12);
-      dst = (dst3) >>> 0;
+      dst = (packed) >>> 0;
       setXSub(t26, t27, 32);
       l8: for (;;) {
         if (++_guard > 4000000) throw new Error('loop 8 did not end');
@@ -134323,7 +134323,7 @@ export function formatNumberPaddingSeparatorsWrapper(dst3: number, arg1: number)
       d4 = getReg('d4');
       const _t10 = tick(28, 0x13dbc) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t43, t44, 16); setReg('a0', dst); setReg('a1', dst2); setReg('d0', index); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); if (_t10) takeIrq(); }
       drop(16);
-      dst = (dst3) >>> 0;
+      dst = (packed) >>> 0;
       setXAdd(t43, t44, 16);
       l11: for (;;) {
         if (++_guard > 4000000) throw new Error('loop 11 did not end');
@@ -134382,7 +134382,7 @@ export function formatNumberPaddingSeparatorsWrapper(dst3: number, arg1: number)
   t26 = d2;
   t27 = dst2;
   d2 = ((d2 - dst2)) >>> 0;
-  dst = (dst3) >>> 0;
+  dst = (packed) >>> 0;
   t28 = 0;
   push(t28, 4);
   push(0x2, 4);
@@ -134410,7 +134410,7 @@ export function formatNumberPaddingSeparatorsWrapper(dst3: number, arg1: number)
   d4 = getReg('d4');
   const _t7 = tick(28, 0x13d8c) ? 1 : 0; if (_t7 || SPILL_ALL) { setXSub(t26, t27, 32); setReg('a0', dst); setReg('a1', dst2); setReg('d0', index); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); if (_t7) takeIrq(); }
   drop(12);
-  dst = (dst3) >>> 0;
+  dst = (packed) >>> 0;
   setXSub(t26, t27, 32);
   l8: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 8 did not end');
@@ -134477,7 +134477,7 @@ export function formatNumberPaddingSeparatorsWrapper(dst3: number, arg1: number)
   d4 = getReg('d4');
   const _t10 = tick(28, 0x13dbc) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t43, t44, 16); setReg('a0', dst); setReg('a1', dst2); setReg('d0', index); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); if (_t10) takeIrq(); }
   drop(16);
-  dst = (dst3) >>> 0;
+  dst = (packed) >>> 0;
   setXAdd(t43, t44, 16);
   l11: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 11 did not end');

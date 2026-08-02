@@ -782,5 +782,11 @@
       "name": "scale",
       "why": "only its low word, at 0x26(a7), and the second argument of 0x160f8 - so it modifies the conversion rather than being converted."
     }
+  },
+  "0x13d1e": {
+    "stack4": {
+      "name": "packed",
+      "why": "the longword at 0x14(a7), and it is both read and WRITTEN - the routine puts the reduced value with its two phase bits rotated to the top back into the caller's own slot, so the argument is updated in place."
+    }
   }
 }
