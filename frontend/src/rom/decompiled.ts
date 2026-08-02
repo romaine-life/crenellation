@@ -57971,7 +57971,7 @@ export function stampShotSCellSeveralFrom6(d2_: number): void {
   setReg('d3', d3);
 }
 
-export function walkBackwardsAlongRunUntil(d0_: number, d2_: number, arg0: number, arg1: number, arg2: number): void {
+export function walkBackwardsAlongRunUntil(d0_: number, d2_: number, wantedKind: number, cellRef: number, coord: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -58028,10 +58028,10 @@ export function walkBackwardsAlongRunUntil(d0_: number, d2_: number, arg0: numbe
   save_d2_0 = d2;
   save_a2_1 = dst2;
   save_a3_2 = dst3;
-  t3 = (arg0 & 0xff);
+  t3 = (wantedKind & 0xff);
   d0 = ((d0 & 0xffffff00) | (t3 & 255));
-  dst3 = (arg1) >>> 0;
-  dst2 = (arg2) >>> 0;
+  dst3 = (cellRef) >>> 0;
+  dst2 = (coord) >>> 0;
   src = (dst2) >>> 0;
   dst = ((dst4 + -0x2)) >>> 0;
   t4 = load8(src);

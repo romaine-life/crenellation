@@ -966,5 +966,19 @@
       "name": "check",
       "why": "only its low word, at 0x1e(a7), and only against zero: a zero here skips the walk entirely, so it is the switch that decides whether the run is followed at all."
     }
+  },
+  "0x767c": {
+    "stack4": {
+      "name": "wantedKind",
+      "why": "only its low byte, at 0xb(a6), compared against the cell byte masked to 0x3f - the KIND field, not the 0xc0 owner field that the enclosure and flood-fill code tests."
+    },
+    "stack8": {
+      "name": "cellRef",
+      "why": "the longword at 0xc(a6), dereferenced ONCE for the cell address - so it is a pointer to a pointer, and the caller can have it moved."
+    },
+    "stack12": {
+      "name": "coord",
+      "why": "the longword at 0x10(a6), read as two BYTES into a local pair; the walk decrements the second of them, so the pair is row then column and the run goes upward."
+    }
   }
 }

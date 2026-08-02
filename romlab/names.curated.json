@@ -771,8 +771,9 @@
     "why": "byte at 5(a7) shifted left nine, plus the byte at 4(a7), all shifted left three, plus 0x200004. That is (y * 512 + x) * 8: 0x200 is the playfield row stride 0x5892 copies with and 0x200004 its base, so a cell is eight pixels across and a row of cells is eight screen rows."
   },
   "0x11c04": {
-    "name": "follow the header's self-relative pointer and copy from there",
-    "why": "`move.w (a0),d0; adda.l d0,a0` - the first word of the block is an offset to itself, which is how this ROM's graphics headers point at their own data - and then copies from the address that yields."
+    "name": "follow a self-relative header and leave the pointer advanced",
+    "ident": "followSelfRelativeHeader",
+    "why": "reads the WORD at the pointer it is given and adds it to that same pointer - so the header stores an offset from its own address rather than an absolute one, which is how this ROM keeps a structure relocatable inside the first 128 KiB. It then writes the advanced pointer back into its own argument slot, so the caller sees it moved, and only then links a frame and gets on with the rest."
   },
   "0x11cf8": {
     "name": "aiming direction",
