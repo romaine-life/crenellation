@@ -2113,5 +2113,10 @@
     "name": "count how many of the three neighbours carry either value",
     "ident": "countNeighboursEitherValue",
     "why": "0x3de8's shape with a different answer: where that one adds 4 and 8 to make a two-bit mask, this adds ONE per match, so it answers a COUNT and not a set. Same three neighbours - the cell less one, that plus 0x20, and back again - and the same pair of acceptable values, either of which counts."
+  },
+  "0x3194": {
+    "name": "draw the rubble tile at a coordinate",
+    "ident": "drawRubbleTile",
+    "why": "ten instructions: turn the coordinate into a screen address with 0x11bec, then call the per-column decompressor 0x11efe with the WORD at 0x21c04 as the graphic offset and 0x10 as the palette base. The offset is read from memory rather than being a constant, so which graphic counts as rubble can be changed at run time. 0x8606 calls it right after writing 0x30 into a cell, which is what makes 0x30 the rubble value."
   }
 }

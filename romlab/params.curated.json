@@ -4476,5 +4476,29 @@
       "name": "cannon",
       "why": "cleared to zero first with `suba.l a3,a3` so a failure answers null, then walked along the cannon list in 0x1a steps until an entry with a non-negative first byte is found."
     }
+  },
+  "0x2338": {
+    "d5": {
+      "name": "wallByte",
+      "why": "the byte argument masked to 0xc0 and or'd with 1 - the owner bits with a wall form on them, the same value the enclosure test at 0xbc2 builds and compares cells against."
+    },
+    "d2": {
+      "name": "cellByte",
+      "why": "the byte at 0x11(a6) before masking; d5 is the masked form of it, so the routine keeps both."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the word at 0x14(a6), carried unchanged through to the calls."
+    }
+  },
+  "0x25f4": {
+    "d1": {
+      "name": "owner",
+      "why": "the cell byte shifted right six - the 0xc0 field as 0..3."
+    },
+    "d2": {
+      "name": "screenAt",
+      "why": "what 0x11bec made of the coordinate, kept while the cell address is worked out separately."
+    }
   }
 }
