@@ -4460,5 +4460,21 @@
       "name": "text",
       "why": "the string, passed through to 0x18b76 untouched."
     }
+  },
+  "0x2a5c": {
+    "d1": {
+      "name": "owner",
+      "why": "the cell byte shifted right six, so the 0xc0 field brought down to 0..3; zero - nobody - takes the other path."
+    },
+    "a0": {
+      "name": "cell",
+      "why": "what 0x11bd8 made of the coordinate, and stepped by one on the path where the owner is not zero."
+    }
+  },
+  "0x6bc0": {
+    "a3": {
+      "name": "cannon",
+      "why": "cleared to zero first with `suba.l a3,a3` so a failure answers null, then walked along the cannon list in 0x1a steps until an entry with a non-negative first byte is found."
+    }
   }
 }
