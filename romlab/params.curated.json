@@ -556,5 +556,15 @@
       "name": "flags",
       "why": "the fourth argument, which 0x19054 builds as `moveq #$2,d0; and.l flags,d0` - one bit of its own caller's flags - and hands straight on."
     }
+  },
+  "0x6648": {
+    "stack4": {
+      "name": "cells",
+      "why": "the longword at 8(a6), read a BYTE at a time with (a0)+ and masked to four bits - so it is a nibble-per-cell stream stored one nibble to a byte, not packed two to a byte."
+    },
+    "stack8": {
+      "name": "kind",
+      "why": "only its low word, at 0xe(a6), taken before the walk starts and carried unchanged through it."
+    }
   }
 }

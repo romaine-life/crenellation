@@ -48407,7 +48407,7 @@ export function coordinateStackPush(): void {
   setReg('d0', t1);
 }
 
-export function boardAccess(d0_: number, d2_: number, d3_: number, d4_: number, arg0: number, arg1: number): void {
+export function boardAccess(d0_: number, d2_: number, d3_: number, d4_: number, cells: number, kind: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -48437,8 +48437,8 @@ export function boardAccess(d0_: number, d2_: number, d3_: number, d4_: number, 
   save_d3_1 = d3;
   save_d4_2 = d4;
   save_d5_3 = d5;
-  a0 = (arg0) >>> 0;
-  t4 = (arg1 & 0xffff);
+  a0 = (cells) >>> 0;
+  t4 = (kind & 0xffff);
   d0 = ((d0 & 0xffff0000) | (t4 & 65535));
   a1 = (0x3e0864) >>> 0;
   d5 = (0x200004) >>> 0;

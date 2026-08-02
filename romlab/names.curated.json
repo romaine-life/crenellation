@@ -1765,5 +1765,15 @@
     "name": "walk a rectangle with a per-cell attribute byte alongside",
     "ident": "walkRectWithAttrStream",
     "why": "0x357a's shape with the per-cell routine fixed at 0x11eda and one thing added: a SECOND stream. Each cell takes a word from the list at 8(a6) and a BYTE from the pointer at 0x18(a6), and the attribute handed to 0x11eda is that byte shifted left four plus the base word from 0x1e(a6). The byte pointer is advanced with `addq.l #$1,$18(a6)` - in the caller's own stack slot, not in a register - so the caller sees it moved on return, and that is also why it is absent from the params table: the lifter cannot bind a slot the routine writes."
+  },
+  "0x46e0": {
+    "name": "register five graphic tables in five slots",
+    "ident": "registerFiveGraphicTables",
+    "why": "one routine address held in a2 and called five times with an address and a slot number: 0x1f040 into 8, 0x1f060 into 9, 0x1f080 into 0xa, 0x1f0a0 into 0xb, and 0x1ef00 into 0xf. The first four are 0x20 apart, which is what makes them one table of four; the fifth is somewhere else entirely and goes in a slot six higher."
+  },
+  "0x6648": {
+    "name": "lay the board out from a nibble-per-cell stream",
+    "ident": "layBoardFromNibbleStream",
+    "why": "walks the board at 0x3e0864 against the screen at 0x200004, taking a byte from the caller's stream and masking it to its low four bits for each cell. A nibble of 6 or less indexes a PC-relative jump table at 0x66ba, seven ways; anything higher takes the default. The bounds it tests are 0x29 and 0x1d - 41 and 29, one less than the 42 by 30 the piece walker at 0x8b4 bounds against - so the first and last row and column are handled as edges and take the default rather than reading a nibble."
   }
 }
