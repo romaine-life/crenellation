@@ -1955,5 +1955,25 @@
     "name": "credit the coin slots that fired",
     "ident": "creditCoinSlotsThatFired",
     "why": "the byte argument is a bitmask read TWO BITS at a time - `andi.w #$3,d0` then `lsr.b #$2` around the loop - so it is a per-slot mask and a slot's pair being exactly 1 is what counts as a coin. For each such slot it adds 1 to a bookkeeping counter through 0x14a36, then takes a three-bit field out of the cached options word at 0x3e3444 - shifted right three for the second slot and unshifted for the first, masked to 7 and plus one, so the settings run 1 to 8 - and adds that to BOTH 0x3e3448 and 0x3e3447. Those are the bytes 0x141c4 clears and 0x1418a adds together, which makes them the credit accumulators and this the routine that fills them. It does nothing at all unless the options word has been loaded, and clears 0x3e3448 and stops if bit 15 of it is set."
+  },
+  "0xfc9a": {
+    "name": "do nothing",
+    "ident": "doNothingFC9A",
+    "why": "one instruction, `rts`, and nothing else in its extent."
+  },
+  "0x1228a": {
+    "name": "do nothing",
+    "ident": "doNothing1228A",
+    "why": "one instruction, `rts`, and nothing else in its extent."
+  },
+  "0x1232c": {
+    "name": "do nothing",
+    "ident": "doNothing1232C",
+    "why": "one instruction, `rts`, and nothing else in its extent."
+  },
+  "0x43a": {
+    "name": "check that movem round-trips d0 to d3, rotating the pattern",
+    "ident": "checkMovemRoundTrip",
+    "why": "loads d0 to d3 with 0xaaaaaaaa, 0xff and 0, pushes all four with `movem.l d0-d3`, and compares each against the copy on the stack - any mismatch calls 0x3e8 with 0x3ab, which is the failure report. On a pass it ROTATES the four values, d0 taking d1's and so on round, and goes again, so every value visits every register. The loop runs until the word at 0x3e0802 counts down, and that word is also clamped to 4 afterwards. It is a self test of the instruction the whole lifted world depends on for saving registers across an interrupt."
   }
 }
