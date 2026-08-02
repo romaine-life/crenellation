@@ -437,9 +437,30 @@ class BlockLifter(Lifter):
         super().step(ins)
         # Anything that writes a data register also sets the flags from what it
         # wrote, which is what a bare `bne` after an `addq` is testing.
+        # ...except the two destinations that are the flags. `move to ccr` and
+        # `move to sr` LOAD the condition codes; they do not set them from the
+        # value moved. Falling into the rules below made the branch after a
+        # restore test the saved status word as though it were a result -
+        # fn_0b032 saves the flags of a `sub.w`, stores a word, restores the
+        # CCR and branches, and its `bgt` came out as `(d7 & 0xffff) > 0`,
+        # which is true whenever any flag bit is set. That is the 0x1B-for-0x05
+        # at 0x3E0A69: the loop at 0xB198 ran on, the counter at -$8(a6) came
+        # out non-zero, and the routine took its `pea $1b` path where the chip
+        # takes `pea $5`. The write path in decomp.py has already handed
+        # authority to the machine, so leaving its answer alone is the whole
+        # fix.
+        # EITHER operand, not just the destination. `MOVE from SR` does not
+        # affect the condition codes on this chip - it only copies them out -
+        # so `move.w sr,$3e0804` must not set flags from the word it stored.
+        # It did, and sync_flags then wrote that word back as a comparison,
+        # which is how saveInterruptMaskRaise came to save 0x2304 where the
+        # machine saves 0x2300: one Z bit, in the status register a routine
+        # exists to preserve.
+        prev_flags = self.flags
         if b in ("move", "moveq", "add", "addq", "addi", "sub", "subq", "subi",
                  "and", "andi", "or", "ori", "eor", "eori", "clr", "asl", "asr",
-                 "lsl", "lsr", "neg", "not", "ext") and ops:
+                 "lsl", "lsr", "neg", "not", "ext") and ops \
+                and not ({ops[0].strip(), ops[-1].strip()} & {"ccr", "sr"}):
             dst = ops[-1].strip()
             if addends is not None:
                 # A subtract's flags are exactly a compare's: `dst - src`. An
@@ -474,6 +495,19 @@ class BlockLifter(Lifter):
                 self.flags = ("cmp", self.temp(self.read(dst, bits)).text, "0", bits)
             elif b == "clr":
                 self.flags = ("cmp", "0", "0", bits)
+            # An instruction that sets the flags makes them KNOWN, whatever the
+            # head of this block knew. Certainty here is about whether this pass
+            # can name the condition codes, not about what a predecessor left -
+            # and without saying so, a routine that opens `moveq #$45,d3` and
+            # immediately calls one that saves the status register synced
+            # nothing, because an entry block starts uncertain and no
+            # flag-setter ever promoted it. saveInterruptMaskRaise then stored
+            # a stale Z: 0x2304 where the machine stores 0x2300. Only when the
+            # chain above actually assigned - the branches do not cover every
+            # operand shape, and leaving a previous block's flags marked
+            # certain would be the same mistake pointing the other way.
+            if self.flags is not prev_flags:
+                self.flags_certain = True
         del before
 
     def regs_of(self, tok):
@@ -1254,11 +1288,36 @@ def lift_once(lo, hi, names, seed=()):
         # turn it on to compare registers, and regenerate without it to ship.
         pre = (f" if (SPILL_ALL) {{ {irq_flags + ' ' if irq_flags else ''}"
                f"__IRQSPILL__}}" if SPILL_BEFORE else "")
+        # The flags this block ends with, written to the machine before leaving
+        # it. Everything else here syncs on a condition - before a call, before
+        # an rts, when an interrupt is actually taken - and each of those asks
+        # whether THIS block can name the flags. A block that cannot, because
+        # its predecessors disagree, then leaves the machine holding whatever
+        # some earlier sync left, and anything that reads the status register
+        # gets that instead of the real thing.
+        #
+        # 0x05C8E is the case: `jsr $64a` sits in a block that is also the latch
+        # target of `dbra d3,$5c8e`, so its flags are correctly uncertain and
+        # nothing was synced before the call - while the callee's first
+        # instruction is `move.w sr,$3e0804`. It saved 0x2304 against the
+        # machine's 0x2300, one Z bit, in the routine whose whole purpose is to
+        # preserve the status register.
+        #
+        # Asking the PREDECESSORS instead turns the question round: block 0
+        # knows its flags and so does the dbra block, so if each writes what it
+        # knows on the way out, the machine is current at the head of the
+        # uncertain block whichever path reached it. Emitted after the body, so
+        # it is the state at the block's end.
+        _stash = lifter.stmts
+        lifter.stmts = []
+        lifter.sync_flags()
+        tail_flags = list(lifter.stmts)
+        lifter.stmts = _stash
         lifted[n] = [f"{pre}const _t{n} = tick({cost}, 0x{head:05x}) ? 1 : 0;"
                      f" if (_t{n} || SPILL_ALL) {{ "
                      f"{irq_flags + ' ' if irq_flags else ''}__IRQSPILL__"
                      f"if (_t{n}) takeIrq(); }}"] \
-            + list(lifter.stmts)
+            + list(lifter.stmts) + tail_flags
         end_flags[n] = lifter.flags
     for copy, orig in clone_of.items():
         lifted[copy] = list(lifted[orig])

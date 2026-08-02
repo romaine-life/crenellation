@@ -1,8 +1,8 @@
-chip sequence: 6000000 addresses; port: 10002608
+chip sequence: 6000000 addresses; port: 8049426
 no alignment, so the masks cannot be compared
 port runs the request path: 0x1578:true 0x157c:false 0x14dc:true 0x14e2:false 0x14f0:false 0x1500:true
 port runs the mask-setters: 0xf77e:true 0xf902:true 0xfb4e:true 0x650:false 0x64a:true 0x656:true 0x620:true
-at the divergence: sr=0x2304 mask=3 irqPending=0 cycles=189062868 nextIrqAt=-1
+at the divergence: sr=0x2308 mask=3 irqPending=0 cycles=189062868 nextIrqAt=-1
 the port never runs the chip's opening sequence, so there is nothing to align on - it diverges before the chip's trace begins
 chip opens: 0x135ae 0x135b4 0x135b8 0x135ba 0x135be 0x135c2 0x135c4 0x135c6
 port runs 0x135b8: true; port opens: 0x1357c 0x13580 0x1358a 0x1359a 0x135a4 0x135ae 0x135b8 0x135ba 0x135c2 0x135c6

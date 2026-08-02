@@ -1,0 +1,4 @@
+trial 0: same path, 22475 blocks (control clean over 22475)
+trial 1: same path, 22475 blocks (control clean over 22475)
+trial 2: same path, 22475 blocks (control clean over 22475)
+trial 3: same path, 22475 blocks (control clean over 22475)
