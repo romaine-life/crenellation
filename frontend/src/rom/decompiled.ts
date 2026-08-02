@@ -104501,7 +104501,7 @@ export function picksPieceRotationGroup(a0_: number, dst_: number, index_: numbe
   setReg('d1', index2);
 }
 
-export function picksPieceRotationGroupFrom1(ptr_: number, count_: number, arg0: number): void {
+export function picksPieceRotationGroupFrom1(ptr_: number, count_: number, player: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -104517,7 +104517,7 @@ export function picksPieceRotationGroupFrom1(ptr_: number, count_: number, arg0:
   const _t0 = tick(80, 0x0d9a2) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', ptr); setReg('d0', count); if (_t0) takeIrq(); }
   t0 = ptr;
   push(t0, 4);
-  ptr = (arg0) >>> 0;
+  ptr = (player) >>> 0;
   push(0x11b1e, 4);
   setFlagsCmp(t0, 0, 32);
   setReg('a2', ptr);

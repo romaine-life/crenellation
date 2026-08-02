@@ -1975,5 +1975,15 @@
     "name": "check that movem round-trips d0 to d3, rotating the pattern",
     "ident": "checkMovemRoundTrip",
     "why": "loads d0 to d3 with 0xaaaaaaaa, 0xff and 0, pushes all four with `movem.l d0-d3`, and compares each against the copy on the stack - any mismatch calls 0x3e8 with 0x3ab, which is the failure report. On a pass it ROTATES the four values, d0 taking d1's and so on round, and goes again, so every value visits every register. The loop runs until the word at 0x3e0802 counts down, and that word is also clamped to 4 afterwards. It is a self test of the instruction the whole lifted world depends on for saving registers across an interrupt."
+  },
+  "0xd9a2": {
+    "name": "step the player's rotation cursor unless its event is still pending",
+    "ident": "stepRotationUnlessPending",
+    "why": "asks 0xeffa whether 0x11b1e is scheduled - the test that matches on the routine alone rather than on routine and argument - and does nothing at all if it is. Otherwise it steps the cursor at 0x24(a2) through 0x5afc, but only while 0x24 and 0x2c differ, so 0x2c is where the ring started. It then makes this player current by writing a2 to 0x3e1960 and calls 0x5192; and if the cursor has come back round to 0x2c it removes 0x11b96. So one event gates the stepping and another is retired when the rotation has been all the way round."
+  },
+  "0x1997c": {
+    "name": "store d3 into 0x12 of the record and branch on its sign",
+    "ident": "storeAndBranchOnSign",
+    "why": "an inner entry of 0x1997a that arrives with d3 and a2 already set: it writes the word and takes `bpl` on the flags THAT WRITE left, not on a separate test. A reader looking for the comparison will not find one - `move.w` sets N and Z from the value moved, which is the whole reason this is two instructions rather than three."
   }
 }

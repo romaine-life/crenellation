@@ -738,5 +738,11 @@
       "name": "slotMask",
       "why": "only its low byte, at 0x1b(a7), and it is consumed two bits per slot: a pair equal to 1 is a coin on that slot, and anything else on that pair is ignored. `lsr.b #$2` walks to the next."
     }
+  },
+  "0xd9a2": {
+    "stack4": {
+      "name": "player",
+      "why": "the longword at 8(a7), taken into a2 and written to 0x3e1960 - the pointer every other routine reads to find the current player - so passing it here is what makes it current."
+    }
   }
 }
