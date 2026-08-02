@@ -95941,7 +95941,7 @@ export function helperAccessorStateBlock(): void {
   setReg('d5', d5);
 }
 
-export function paletteClearInner(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number, arg6: number, arg7: number): void {
+export function paletteClearInner(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, page: number, bank: number, index: number, period: number, intensity: number, red: number, green: number, blue: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -96012,11 +96012,11 @@ export function paletteClearInner(a0_: number, dst_: number, d0_: number, d1_: n
   save_d3_1 = d3;
   save_d4_2 = d4;
   save_a2_3 = dst;
-  t4 = (arg0 & 0xff);
+  t4 = (page & 0xff);
   d2 = ((d2 & 0xffffff00) | (t4 & 255));
-  t5 = (arg1 & 0xff);
+  t5 = (bank & 0xff);
   d3 = ((d3 & 0xffffff00) | (t5 & 255));
-  t6 = (arg2 & 0xff);
+  t6 = (index & 0xff);
   d4 = ((d4 & 0xffffff00) | (t6 & 255));
   setFlagsCmp((d4 & 255), 0, 8);
   setReg('a0', a0);
@@ -96079,7 +96079,7 @@ export function paletteClearInner(a0_: number, dst_: number, d0_: number, d1_: n
     t20 = 0;
     store8(dst + 0xc, t20);
     t21 = load8(dst + 0xc);
-    t22 = (arg4 & 0xff);
+    t22 = (intensity & 0xff);
     d0 = ((d0 & 0xffffff00) | (t22 & 255));
     t23 = ((((d0 & 255)) << 24) >> 24);
     d0 = ((d0 & 0xffff0000) | (t23 & 65535));
@@ -96091,7 +96091,7 @@ export function paletteClearInner(a0_: number, dst_: number, d0_: number, d1_: n
     d0 = ((d0 & 0xffff0000) | (t26 & 65535));
     t27 = (d0 & 65535);
     store16(dst + 0x10, t27);
-    t28 = (arg5 & 0xff);
+    t28 = (red & 0xff);
     d0 = ((d0 & 0xffffff00) | (t28 & 255));
     t29 = ((((d0 & 255)) << 24) >> 24);
     d0 = ((d0 & 0xffff0000) | (t29 & 65535));
@@ -96103,7 +96103,7 @@ export function paletteClearInner(a0_: number, dst_: number, d0_: number, d1_: n
     d0 = ((d0 & 0xffff0000) | (t32 & 65535));
     t33 = (d0 & 65535);
     store16(dst + 0x12, t33);
-    t34 = (arg6 & 0xff);
+    t34 = (green & 0xff);
     d0 = ((d0 & 0xffffff00) | (t34 & 255));
     t35 = ((((d0 & 255)) << 24) >> 24);
     d0 = ((d0 & 0xffff0000) | (t35 & 65535));
@@ -96115,7 +96115,7 @@ export function paletteClearInner(a0_: number, dst_: number, d0_: number, d1_: n
     d0 = ((d0 & 0xffff0000) | (t39 & 65535));
     t40 = (d0 & 65535);
     store16(dst + 0x14, t40);
-    t41 = (arg7 & 0xff);
+    t41 = (blue & 0xff);
     d0 = ((d0 & 0xffffff00) | (t41 & 255));
     t42 = ((((d0 & 255)) << 24) >> 24);
     d0 = ((d0 & 0xffff0000) | (t42 & 65535));
@@ -96123,7 +96123,7 @@ export function paletteClearInner(a0_: number, dst_: number, d0_: number, d1_: n
     d0 = ((d0 & 0xffff0000) | (t43 & 65535));
     t44 = (d0 & 65535);
     store16(dst + 0x16, t44);
-    t45 = (arg3 & 0xff);
+    t45 = (period & 0xff);
     t46 = t45;
     store8(dst + 0xd, t46);
     t47 = 0x1;
@@ -96967,7 +96967,7 @@ export function schedulePaletteEffectCountingBack(dst2_: number, dst_: number, d
   setReg('d4', d4);
 }
 
-export function schedulePaletteEffectKindTwo(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, arg0: number, arg1: number, arg2: number, arg3: number, arg4: number): void {
+export function schedulePaletteEffectKindTwo(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, page: number, bank: number, period: number, value: number, delay: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -97010,11 +97010,11 @@ export function schedulePaletteEffectKindTwo(a0_: number, dst_: number, d0_: num
   save_d2_0 = d2;
   save_d3_1 = d3;
   save_d4_2 = d4;
-  t3 = (arg0 & 0xff);
+  t3 = (page & 0xff);
   d2 = ((d2 & 0xffffff00) | (t3 & 255));
-  t4 = (arg1 & 0xff);
+  t4 = (bank & 0xff);
   d4 = ((d4 & 0xffffff00) | (t4 & 255));
-  t5 = (arg2 & 0xff);
+  t5 = (period & 0xff);
   d3 = ((d3 & 0xffffff00) | (t5 & 255));
   setFlagsCmp((d3 & 255), 0, 8);
   setReg('a0', a0);
@@ -97067,11 +97067,11 @@ export function schedulePaletteEffectKindTwo(a0_: number, dst_: number, d0_: num
     store32(dst + 0x8, t13);
     t14 = 0x2;
     store8(dst + 0xc, t14);
-    t15 = arg3;
+    t15 = value;
     store32(dst + 0x10, t15);
     t16 = (d3 & 255);
     store8(dst + 0xd, t16);
-    t17 = (arg4 & 0xff);
+    t17 = (delay & 0xff);
     d0 = ((d0 & 0xffffff00) | (t17 & 255));
     t18 = (d0 & 255);
     t19 = 0x1;
@@ -97133,7 +97133,7 @@ export function schedulePaletteEffectKindTwo(a0_: number, dst_: number, d0_: num
   setReg('d4', d4);
 }
 
-export function schedulePaletteEffectKindThree(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, arg0: number, arg1: number, arg2: number, arg3: number): void {
+export function schedulePaletteEffectKindThree(a0_: number, dst_: number, d0_: number, d1_: number, d2_: number, d3_: number, d4_: number, page: number, bank: number, period: number, delay: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -97174,11 +97174,11 @@ export function schedulePaletteEffectKindThree(a0_: number, dst_: number, d0_: n
   save_d2_0 = d2;
   save_d3_1 = d3;
   save_d4_2 = d4;
-  t3 = (arg0 & 0xff);
+  t3 = (page & 0xff);
   d2 = ((d2 & 0xffffff00) | (t3 & 255));
-  t4 = (arg1 & 0xff);
+  t4 = (bank & 0xff);
   d4 = ((d4 & 0xffffff00) | (t4 & 255));
-  t5 = (arg2 & 0xff);
+  t5 = (period & 0xff);
   d3 = ((d3 & 0xffffff00) | (t5 & 255));
   setFlagsCmp((d3 & 255), 0, 8);
   setReg('a0', a0);
@@ -97233,7 +97233,7 @@ export function schedulePaletteEffectKindThree(a0_: number, dst_: number, d0_: n
     store8(dst + 0xc, t14);
     t15 = (d3 & 255);
     store8(dst + 0xd, t15);
-    t16 = (arg3 & 0xff);
+    t16 = (delay & 0xff);
     d0 = ((d0 & 0xffffff00) | (t16 & 255));
     t17 = (d0 & 255);
     t18 = 0x1;

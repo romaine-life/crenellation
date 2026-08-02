@@ -584,14 +584,14 @@
     "ident": "schedulePaletteEffectCountingBack"
   },
   "0xc8de": {
-    "name": "schedule palette effect kind two over a whole bank",
-    "why": "takeFirstItemListZero hands back a free effect record or nothing; the record's byte at +0xC is the effect kind, +8 the palette address, +0x10 the table, and +0xE and +0xF the step and count. The bank's second half is selected by adding 0x200 words. Kind 2, `bank << 5` addressing, with the caller's byte in +0xD and its count plus one in +0xE.",
-    "ident": "schedulePaletteEffectKindTwo"
+    "name": "schedule a palette effect of kind two",
+    "ident": "schedulePaletteEffectTwo",
+    "why": "kind 2 at 0xc, with a value longword at 0x10, the period at 0xd, and the delay argument PLUS ONE at 0xe, so it waits one tick longer than it says; 0xf is 1. Allocated through 0xc504 and linked into the circular timer list at 0x3e20a0 with 0x3e2498 held set across the link, the same critical section 0xc688 and 0xc724 use. The palette address at 0x8 is 0x3c0000 + bank * 64 + page * 0x400 - the bank shifted left five and doubled, which is sixteen four-byte entries - so these two take a whole BANK where kinds four and five take a bank and an index within it."
   },
   "0xc95e": {
-    "name": "schedule palette effect kind three over a whole bank",
-    "why": "the fifth of the family around takeFirstItemListZero: same record fill, same `bank << 5` addressing and 0x200-word half select as 0xC7BC and 0xC8DE, with its own kind byte.",
-    "ident": "schedulePaletteEffectKindThree"
+    "name": "schedule a palette effect of kind three",
+    "ident": "schedulePaletteEffectThree",
+    "why": "kind 3 at 0xc, the period at 0xd and the delay argument PLUS ONE at 0xe. It stores no value at all, where kind two next door does - which is the whole difference between them and the reason kind three takes one fewer argument. Allocated through 0xc504 and linked into the circular timer list at 0x3e20a0 with 0x3e2498 held set across the link, the same critical section 0xc688 and 0xc724 use. The palette address at 0x8 is 0x3c0000 + bank * 64 + page * 0x400 - the bank shifted left five and doubled, which is sixteen four-byte entries - so these two take a whole BANK where kinds four and five take a bank and an index within it."
   },
   "0xcae2": {
     "name": "scheduled trigger",
@@ -1737,5 +1737,10 @@
     "name": "start the phase: post two events, arm two flags",
     "ident": "startPhaseTwoEventsTwoFlags",
     "why": "posts 0x11b30 with an argument of 1 and 0x11b1e with 0 through 0xee90, writes 0xfe to 0x3e0dc4 and 1 to 0x3e0ebe, and hands the longword at 0x117b6 to 0x53a6. Five side effects and no answer - it is the opening of a phase rather than anything that decides. The derived name says a countdown beep and nothing here reaches a sound chip."
+  },
+  "0xc5ca": {
+    "name": "schedule a palette fade to an explicit IRGB colour",
+    "ident": "schedulePaletteFadeToColour",
+    "why": "kind ZERO - clr.b 0xc(a2) - and the one that takes a colour apart rather than a packed word. Four byte arguments are masked and shifted into four separate words in the record: & 1 << 15 at 0x10, & 0x1f << 10 at 0x12, & 0x1f << 5 at 0x14, and & 0x1f at 0x16. That is exactly the IRGB 1-5-5-5 the port's own palette decode in system.ts reassembles - intensity, red, green, blue - so the record holds the target colour as components, which is what lets the tick ramp each of them separately. The address at 0x8 and the link into 0x3e20a0 are the same as the rest of the family."
   }
 }
