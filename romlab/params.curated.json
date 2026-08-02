@@ -2152,5 +2152,273 @@
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
     }
+  },
+  "0x1398c": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    }
+  },
+  "0x13994": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    }
+  },
+  "0x1399c": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a6": {
+      "name": "nextStep",
+      "why": "where to go when a step passes. The whole test is `lea $x(pc),a6` then a branch, and each step ends `jmp (a6)`, which is what a call looks like when there is no stack yet."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    }
+  },
+  "0x139ae": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    }
+  },
+  "0x139b6": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    }
+  },
+  "0x139be": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    }
+  },
+  "0x139c6": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    }
+  },
+  "0x139d0": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    }
+  },
+  "0x139d8": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    }
+  },
+  "0x139e0": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d6": {
+      "name": "passCount",
+      "why": "counted up once per step and never read by the chain itself - it is what the caller sees of how far the test got."
+    }
+  },
+  "0x139e8": {
+    "a3": {
+      "name": "watchdogPort",
+      "why": "0x72fffe, held for the whole chain and written inside the inner loops - these tests run long enough to trip it otherwise."
+    },
+    "a4": {
+      "name": "failExit",
+      "why": "where a failing comparison jumps, with the difference left in d0. A failure cannot return, for the same reason a step cannot."
+    },
+    "d0": {
+      "name": "expected",
+      "why": "the value written and then read back; on a mismatch it becomes the eor of the two, so the failure exit gets the bits that differed."
+    }
+  },
+  "0x71dc": {
+    "a2": {
+      "name": "player",
+      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+    },
+    "a4": {
+      "name": "callTarget",
+      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    }
+  },
+  "0x7236": {
+    "a2": {
+      "name": "player",
+      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+    },
+    "a4": {
+      "name": "callTarget",
+      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    }
+  },
+  "0x726e": {
+    "a2": {
+      "name": "player",
+      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+    },
+    "a4": {
+      "name": "callTarget",
+      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    },
+    "a3": {
+      "name": "answerAt",
+      "why": "written through with `move.w d0,(a3)` - where the caller wants the word result put, rather than a value returned."
+    }
+  },
+  "0x72ec": {
+    "a4": {
+      "name": "callTarget",
+      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    }
+  },
+  "0x7318": {
+    "a4": {
+      "name": "callTarget",
+      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    }
+  },
+  "0x735c": {
+    "a4": {
+      "name": "callTarget",
+      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    }
+  },
+  "0x737e": {
+    "a2": {
+      "name": "player",
+      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+    }
+  },
+  "0x73c0": {
+    "a2": {
+      "name": "player",
+      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+    },
+    "a4": {
+      "name": "callTarget",
+      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    },
+    "a3": {
+      "name": "answerAt",
+      "why": "written through with `move.w d0,(a3)` - where the caller wants the word result put, rather than a value returned."
+    }
+  },
+  "0x73c4": {
+    "a2": {
+      "name": "player",
+      "why": "its byte at 2 is multiplied by 126 - doubled, then times 64 less itself - and 126 is 0x7e, the player stride, so it indexes the array at 0x3e1968."
+    },
+    "a4": {
+      "name": "callTarget",
+      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+    },
+    "a3": {
+      "name": "answerAt",
+      "why": "written through with `move.w d0,(a3)` - where the caller wants the word result put, rather than a value returned."
+    }
   }
 }
