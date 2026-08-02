@@ -41840,9 +41840,9 @@ export function doesNothing4(): void {
   if (tick(16, 0x05e00)) { takeIrq(); }
 }
 
-export function helperCurrentPieceDraw(arg0: number): void {
+export function helperCurrentPieceDraw(value: number): void {
   if (tick(30, 0x05e02)) { takeIrq(); }
-  setReg('d0', arg0);
+  setReg('d0', value);
 }
 
 export function doesNothing5(): void {
@@ -104921,9 +104921,9 @@ export function checksumFiveTablesStartCue(src_: number, a2_: number, kind2_: nu
   setReg('d3', kind);
 }
 
-export function helperPlayerFlagHandler(dst: number): void {
+export function helperPlayerFlagHandler(value: number): void {
   if (tick(30, 0x0db66)) { takeIrq(); }
-  setReg('d0', dst);
+  setReg('d0', value);
 }
 
 export function returnFirstStackArgument(arg0: number): void {

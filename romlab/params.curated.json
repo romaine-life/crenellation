@@ -678,5 +678,17 @@
       "name": "repeats",
       "why": "its low byte, written to 0xf, and read a second time on the negative path as part of working out where the run starts. Changing it moves the start as well as the length, which is true of no other kind."
     }
+  },
+  "0x5e02": {
+    "stack4": {
+      "name": "value",
+      "why": "read straight into d0 and returned. Nothing else happens, so whatever the caller means by it is the whole meaning."
+    }
+  },
+  "0xdb66": {
+    "stack4": {
+      "name": "value",
+      "why": "read straight into d0 and returned. Nothing else happens, so whatever the caller means by it is the whole meaning."
+    }
   }
 }
