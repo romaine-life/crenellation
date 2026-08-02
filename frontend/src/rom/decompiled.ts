@@ -119019,28 +119019,28 @@ export function rng(d0: number, range: number): void {
   setReg('d1', t10);
 }
 
-export function decompressGraphicsAtE5930(ptr: number, a1: number, kind2: number, d2: number, d3: number, d4: number): void {
-  if (tick(88, 0x11eda)) { setReg('a0', ptr); setReg('a1', a1); setReg('d1', kind2); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); takeIrq(); }
-  push(a1, 4);
-  push(ptr, 4);
-  push(d4, 4);
+export function decompressGraphicsAtE5930(bank: number, dst: number, runLength: number, paletteBase: number, d3: number, rowsLeft: number): void {
+  if (tick(88, 0x11eda)) { setReg('a0', bank); setReg('a1', dst); setReg('d1', runLength); setReg('d2', paletteBase); setReg('d3', d3); setReg('d4', rowsLeft); takeIrq(); }
+  push(dst, 4);
+  push(bank, 4);
+  push(rowsLeft, 4);
   push(d3, 4);
-  push(d2, 4);
-  push(kind2, 4);
+  push(paletteBase, 4);
+  push(runLength, 4);
   const t0 = 0xe5930;
   setReg('a0', t0);
   jumpRom(0x11f08);
   return;
 }
 
-export function decompressGraphicsAtF1D8A(a0: number, a1: number, d1: number, d2: number, d3: number, d4: number): void {
-  if (tick(88, 0x11ee6)) { setReg('a0', a0); setReg('a1', a1); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); takeIrq(); }
-  push(a1, 4);
-  push(a0, 4);
-  push(d4, 4);
+export function decompressGraphicsAtF1D8A(bank: number, dst: number, runLength: number, paletteBase: number, d3: number, rowsLeft: number): void {
+  if (tick(88, 0x11ee6)) { setReg('a0', bank); setReg('a1', dst); setReg('d1', runLength); setReg('d2', paletteBase); setReg('d3', d3); setReg('d4', rowsLeft); takeIrq(); }
+  push(dst, 4);
+  push(bank, 4);
+  push(rowsLeft, 4);
   push(d3, 4);
-  push(d2, 4);
-  push(d1, 4);
+  push(paletteBase, 4);
+  push(runLength, 4);
   const t0 = 0xf1d8a;
   setReg('a0', t0);
   jumpRom(0x11f08);

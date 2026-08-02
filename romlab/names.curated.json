@@ -796,14 +796,14 @@
     "why": "a 16-bit linear congruential generator whose state is the word at 0x3e0842: x = x * 0x3619 + 0x5d35. The new state is then multiplied by the caller's longword argument and the high half taken - swap and ext.l - which scales the result into the range the caller asked for rather than masking it."
   },
   "0x11eda": {
-    "name": "decompress the graphics at 0xE5930",
-    "why": "`movem.l d1-d4/a0-a1,-(a7); lea $e5930.l,a0; bra.b $11f08` - the same shared body as 0x11EE6 and 0x11EF2, pointed at a third fixed source.",
-    "ident": "decompressGraphicsAtE5930"
+    "name": "decompress one column from the bank at 0xe5930",
+    "ident": "decompressColumnFromE5930",
+    "why": "twelve bytes: save the decoder's registers, `lea 0xe5930,a0`, and branch to the common body at 0x11f08. 0x11eda, 0x11ee6 and 0x11efe are three heads that differ in NOTHING but that address - 0xe5930, 0xf1d8a and 0xd2608 - so the three per-cell routines the rectangle marshallers at 0x35ee, 0x3666 and 0x362a choose between are three banks of compressed graphics and one decoder. The body adds the caller's word offset to the base, which is why the cell lists can be flat lists of 16-bit offsets."
   },
   "0x11ee6": {
-    "name": "decompress the graphics at 0xf1d8a",
-    "why": "`movem.l d1-d4/a0-a1,-(a7); lea $f1d8a.l,a0; bra.b $11f08` - saves, points a0 at one fixed source, and joins the shared body at 0x11f08 that calls the decompressor. The source address is the whole difference between this and 0x11ef2.",
-    "ident": "decompressGraphicsAtF1D8A"
+    "name": "decompress one column from the bank at 0xf1d8a",
+    "ident": "decompressColumnFromF1D8A",
+    "why": "twelve bytes: save the decoder's registers, `lea 0xf1d8a,a0`, and branch to the common body at 0x11f08. 0x11eda, 0x11ee6 and 0x11efe are three heads that differ in NOTHING but that address - 0xe5930, 0xf1d8a and 0xd2608 - so the three per-cell routines the rectangle marshallers at 0x35ee, 0x3666 and 0x362a choose between are three banks of compressed graphics and one decoder. The body adds the caller's word offset to the base, which is why the cell lists can be flat lists of 16-bit offsets."
   },
   "0x11ef2": {
     "name": "decompress the graphics at 0xdaddc",

@@ -4134,5 +4134,49 @@
       "name": "ownerBits",
       "why": "the same byte masked to 0xc0, compared against the cell 0x20 further on - one board row down."
     }
+  },
+  "0x11eda": {
+    "a0": {
+      "name": "bank",
+      "why": "the compressed-graphics base this head chose; the common body adds the caller's word offset to it."
+    },
+    "a1": {
+      "name": "dst",
+      "why": "the destination the decoder writes through, wrapped by 0x1f8 every eight bytes - a cell is eight wide on a 0x200 stride."
+    },
+    "d1": {
+      "name": "runLength",
+      "why": "the decoder's run counter, cleared before entry because that is the state 0x11f2a expects to start from."
+    },
+    "d2": {
+      "name": "paletteBase",
+      "why": "added to every pixel the decoder emits, so a whole block changes palette bank by changing this alone."
+    },
+    "d4": {
+      "name": "rowsLeft",
+      "why": "seven on entry - the eight rows of a column, counted with dbra."
+    }
+  },
+  "0x11ee6": {
+    "a0": {
+      "name": "bank",
+      "why": "the compressed-graphics base this head chose; the common body adds the caller's word offset to it."
+    },
+    "a1": {
+      "name": "dst",
+      "why": "the destination the decoder writes through, wrapped by 0x1f8 every eight bytes - a cell is eight wide on a 0x200 stride."
+    },
+    "d1": {
+      "name": "runLength",
+      "why": "the decoder's run counter, cleared before entry because that is the state 0x11f2a expects to start from."
+    },
+    "d2": {
+      "name": "paletteBase",
+      "why": "added to every pixel the decoder emits, so a whole block changes palette bank by changing this alone."
+    },
+    "d4": {
+      "name": "rowsLeft",
+      "why": "seven on entry - the eight rows of a column, counted with dbra."
+    }
   }
 }
