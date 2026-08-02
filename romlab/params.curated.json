@@ -4588,5 +4588,47 @@
       "name": "shape",
       "why": "the answer being chosen - the cursor shape this routine settles on before returning it."
     }
+  },
+  "0x1890c": {
+    "stack4": {
+      "name": "a",
+      "why": "its low byte at 7(a7). Which of the two arguments is shifted left six and which is added depends on the word at 0x3e340e - so the packing ORDER is a mode, and neither argument has a fixed meaning until you know that word."
+    },
+    "stack8": {
+      "name": "b",
+      "why": "its low byte at 0xb(a7), the other half of the same swap. 64 to a row either way."
+    },
+    "d0": {
+      "name": "packed",
+      "why": "the result: one of the two bytes shifted left six with the other added, giving an index with 64 entries to a row."
+    }
+  },
+  "0xefba": {
+    "stack4": {
+      "name": "event",
+      "why": "the descriptor, dereferenced for its first longword - the routine pointer matched against 0x4 of each entry."
+    },
+    "stack8": {
+      "name": "arg",
+      "why": "matched against 0x8 of each entry as well, so this asks whether THIS posting exists - unlike 0xeffa, which matches the routine alone."
+    },
+    "a0": {
+      "name": "entry",
+      "why": "walks the array at 0x3e1cf6 in 0xc-byte steps."
+    },
+    "d1": {
+      "name": "wantRoutine",
+      "why": "the descriptor's first longword, one half of the match."
+    }
+  },
+  "0x5afc": {
+    "stack4": {
+      "name": "cursorRef",
+      "why": "a pointer TO the cursor, not the cursor - the routine advances the longword at it by four and writes back, so the caller sees the ring stepped."
+    },
+    "d0": {
+      "name": "wrapped",
+      "why": "1 when the step ran off the end of the ring and had to go back to the head, 0 otherwise. That is the whole answer."
+    }
   }
 }
