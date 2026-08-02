@@ -119,7 +119,7 @@ describe('colour base', () => {
       // design, so a path comparison that includes handler entry and rte
       // return finds that difference and nothing else. writes.test excludes
       // exception-frame writes for exactly this reason.
-      if (n >= 380 && n < 392 && sys.m.irqDepth === 0
+      if (n >= 385 && n <= 390 && sys.m.irqDepth === 0
           && pc >= 0x00400 && pc < 0x20000) {
         // A checksum of all sixteen, so one pass covers every register without
         // a file of millions of numbers. Where the checksums first differ names
