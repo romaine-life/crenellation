@@ -106,9 +106,22 @@ Measured 2026-08-02 in `frontend/src/rom/names.txt`:
 
 | | |
 |---|---|
-| Functions with a name that says what they do | **1,187 of 1,187** |
-| Still named for their address | **0** |
+| Still named for their address | **0 of 1,187** |
+| Named only by a suffix on another routine's name | 544 |
+| No *stated* purpose — the name was derived by rule | 455 of 1,182 |
 | Parameters that say what they are | 2,334 of 4,419 |
+
+**"1,187 of 1,187 carry a name that says what they do" was an overclaim and is
+retracted.** `expect(byAddress).toEqual([])` says no routine is called
+`fn_0ccb2`. It does not say the name is *useful*, and `idents.py` breaks a
+collision by appending — `mainGameStateMachineFrom3` — so a name can be unique,
+pass the assertion, and tell the reader only which routine it is a second entry
+into. The two new rows are the numbers that were hiding behind it, and both are
+ratchets in `baseline.json`. The literal collisions *are* gone: the forty-six
+routines all called `playerStateAccess` were broken apart by the `d(An)` field
+offset, which is what `distinguish.py` is for. Of the 544, 274 are
+`Wrapper`/`Stub` variants of one target and 270 are `FromN` entries into one
+routine — both say something true, just not what the entry *does*.
 
 `names.test.ts` **enforces** the first — `expect(byAddress).toEqual([])`, not a
 ratchet, because at the bar a `<=` would quietly accept a regeneration that

@@ -59,14 +59,47 @@ describe('names', () => {
       }
     }
 
+    // What `byAddress` does NOT measure, and the reason both numbers below
+    // exist. `expect(byAddress).toEqual([])` says no routine is called
+    // `fn_0ccb2`. It does not say the name is useful. `idents.py` breaks a
+    // collision by APPENDING - `mainGameStateMachineFrom3`, `samplePlayback
+    // WrapperFrom2` - so a name can be unique, pass the assertion, and still
+    // tell the reader only which routine it is a second entry into. 544 of
+    // 1,187 are that shape, and reporting "1,187 of 1,187 carry a name that
+    // says what they do" hid it for a day. Same failure as counting `argN` as
+    // named, and as the old `writes` floor that reported its recording cap.
+    const stem = (n: string) => n.replace(/(From\d+|Stub|Wrapper)*\d*$/, '');
+    const bySt = new Map<string, number>();
+    for (const n of fns) bySt.set(stem(n), (bySt.get(stem(n)) ?? 0) + 1);
+    const suffixOnly = fns.filter((n) => (bySt.get(stem(n)) ?? 0) > 1).length;
+
+    // And the other half of it: a name DERIVED by rule - a wrapper after its
+    // callee, a stub after its target, an entry point after the routine it
+    // continues - is evidence of a sort, but it is not a stated purpose. Only
+    // a routine in names.curated.json or manual_names.json has one of those.
+    const romlab = join(here, '..', '..', '..', 'romlab');
+    const curated = JSON.parse(readFileSync(
+      join(romlab, 'names.curated.json'), 'utf8')) as
+      Record<string, string | { name?: string; why?: string }>;
+    const manualN = JSON.parse(readFileSync(
+      join(romlab, 'manual_names.json'), 'utf8')) as Record<string, unknown>;
+    const stated = new Set([...Object.keys(curated), ...Object.keys(manualN)]
+      .map((k) => parseInt(k, 16)));
+    const addrs = [...src.matchAll(/\{ at: (0x[0-9a-f]+), fn: \w+ as /g)]
+      .map((m) => parseInt(m[1], 16));
+    const unstated = addrs.filter((a) => !stated.has(a)).length;
+
     const report = [
       `functions: ${fns.length}, semantic ${fns.length - byAddress.length}`
       + `, still an address ${byAddress.length}`,
+      `named only by a suffix on another routine's name: ${suffixOnly}`,
+      `no stated purpose - the name was derived by rule: ${unstated}`
+      + ` of ${addrs.length}`,
       `parameters: ${params}, named ${named}`
       + ` (${slots} more are a stack slot with a number on it)`,
       // The point of the file, stated where it will be read: what is left.
-      `remaining to the bar: ${byAddress.length} routines and`
-      + ` ${params - named} parameters`,
+      `remaining to the bar: ${byAddress.length} routines still an address,`
+      + ` ${unstated} without a stated purpose, ${params - named} parameters`,
     ].join('\n');
     writeFileSync(join(here, 'names.txt'), report + '\n');
 
@@ -86,9 +119,6 @@ describe('names', () => {
     // `creditCompare` and drains a ring buffer with nothing to do with
     // credits - and the only defence is being able to read afterwards why a
     // name was chosen.
-    const curated = JSON.parse(readFileSync(
-      join(here, '..', '..', '..', 'romlab', 'names.curated.json'), 'utf8')) as
-      Record<string, string | { name?: string; why?: string }>;
     const unevidenced = Object.entries(curated)
       .filter(([, v]) => typeof v === 'object' && v !== null && !v.why)
       .map(([k]) => k);
@@ -106,11 +136,8 @@ describe('names', () => {
     // a suite nobody reads. All 54 have been read, so it is an assertion now,
     // for the same reason `byAddress` is: at the bar a `<=` would quietly
     // accept the next name that arrives without its evidence.
-    const manual = JSON.parse(readFileSync(join(
-      here, '..', '..', '..', 'romlab', 'manual_names.json'), 'utf8')) as
-      Record<string, unknown>;
     const bare = Object.entries(curated)
-      .filter(([k, v]) => typeof v === 'string' && !(k in manual))
+      .filter(([k, v]) => typeof v === 'string' && !(k in manualN))
       .map(([k]) => k);
     expect(bare).toEqual([]);
 
@@ -126,5 +153,12 @@ describe('names', () => {
     // a map that grows by a routine is a legitimate reason for the total to
     // rise - a floor that goes red for a good reason is a floor nobody reads.
     expect(params - named).toBeLessThanOrEqual(base.unnamedParams ?? 0);
+
+    // Ratchets, both of them, and both may only fall. A routine reached only
+    // by a jump table or a tail jump has no caller to be named after and no
+    // purpose anyone has read, so these move by reading - which is why they
+    // are floors rather than assertions.
+    expect(unstated).toBeLessThanOrEqual(base.unstatedPurpose ?? 0);
+    expect(suffixOnly).toBeLessThanOrEqual(base.suffixOnlyNames ?? 0);
   });
 });
