@@ -104352,7 +104352,7 @@ export function makeRecordCurrentRemoveEvent(dst3_: number, dst_: number, index_
   setReg('d2', d2);
 }
 
-export function picksPieceRotationGroup(a0_: number, dst_: number, index_: number, index2_: number, arg0: number): void {
+export function picksPieceRotationGroup(a0_: number, dst_: number, index_: number, index2_: number, player: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -104394,7 +104394,7 @@ export function picksPieceRotationGroup(a0_: number, dst_: number, index_: numbe
   const _t0 = tick(56, 0x0d916) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a2', dst); setReg('d0', index); setReg('d1', index2); if (_t0) takeIrq(); }
   t0 = dst;
   push(t0, 4);
-  dst = (arg0) >>> 0;
+  dst = (player) >>> 0;
   if (((load8(0x3e194c)) & 255) === ((0xe) & 255)) {
     const _t3 = tick(36, 0x0d980) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsCmp(load8(0x3e194c), 0xe, 8); setReg('a0', a0); setReg('a2', dst); setReg('d0', index); setReg('d1', index2); if (_t3) takeIrq(); }
     t27 = 0xffc4;

@@ -2065,5 +2065,15 @@
     "name": "draw a sprite through the per-cell attribute map",
     "ident": "drawSpriteViaAttributeMap",
     "why": "its first two BYTES are a coordinate pair - the byte at 9(a6) less one times 80, and the byte at 8(a6) less one doubled, added to the longword at 0x3e0e7a - so the map it indexes has an 80-byte row and two bytes a column, which is 40 columns and not the 42 the board uses. It takes the screen address for the same pair from 0x11bec, and walks with 0x28 - 40 - as the row limit. So this draws against the 40-column attribute map rather than against the 42-column board, and the two are not the same grid."
+  },
+  "0xa20": {
+    "name": "resolve a shape's cells against a base and test the placement",
+    "ident": "resolveShapeAgainstBase",
+    "why": "reads a byte stream whose pairs are row then column: the first is shifted left FIVE - the board's 32-byte row - and added to the base longword the caller passes, and the second added on top. So it walks the same board geometry the piece walker at 0x8b4 and the cell address at 0x11bd8 use, but against a base the caller chooses rather than 0x3e0864, which is what lets a placement be tried somewhere other than where it currently is. It keeps 0xfcca - the per-direction delta table - in a local, and reads the current player's byte at 2 through the pointer at 0x3e1960."
+  },
+  "0xd916": {
+    "name": "choose the piece's rotation ring for this player",
+    "ident": "choosePieceRotationRing",
+    "why": "does nothing when the byte at 0x3e194c is 0xe. Otherwise the player's byte at 2 indexes the longword table at 0x3e1cb8 for a descriptor, and THAT descriptor's byte at 2, times four, indexes 0xff90 for a longword written into 0x24(a2). 0x24 is the rotation cursor - 0xd9a2 steps it through 0x5afc and stops when it comes back to 0x2c - so 0xff90 is the table of rotation rings and this is what points a player at one. The descriptor's byte at 3 is read the same way for the field after it."
   }
 }

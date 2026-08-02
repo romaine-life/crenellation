@@ -794,5 +794,11 @@
       "name": "sample",
       "why": "only its low byte, at 0x1b(a7), multiplied by ten to index the ten-byte descriptors at 0x1b674."
     }
+  },
+  "0xd916": {
+    "stack4": {
+      "name": "player",
+      "why": "the longword at 8(a7); its byte at 2 selects the descriptor and its 0x24 receives the ring pointer."
+    }
   }
 }
