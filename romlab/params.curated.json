@@ -2959,8 +2959,8 @@
   },
   "0x3a4a": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
@@ -2969,22 +2969,42 @@
     "a5": {
       "name": "ownerTable",
       "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "a4": {
+      "name": "byteStream",
+      "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
     }
   },
   "0x3a7e": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
     }
   },
   "0x3ac6": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
@@ -2993,52 +3013,96 @@
     "a5": {
       "name": "ownerTable",
       "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "a4": {
+      "name": "byteStream",
+      "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
     }
   },
   "0x3b06": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
     }
   },
   "0x3b0e": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
     }
   },
   "0x3b2c": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
     }
   },
   "0x3b34": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
       "why": "held in a data register and moved into a5 to be indexed by the owner times four, which is a table of longwords one per owner."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
     }
   },
   "0x3b3c": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
@@ -3047,12 +3111,24 @@
     "a5": {
       "name": "ownerTable",
       "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "a4": {
+      "name": "byteStream",
+      "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
     }
   },
   "0x3b4c": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
@@ -3061,12 +3137,24 @@
     "a5": {
       "name": "ownerTable",
       "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "a4": {
+      "name": "byteStream",
+      "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
     }
   },
   "0x3b54": {
     "d5": {
-      "name": "ownerIndex",
-      "why": "`lsr.b #$6` on the cell byte, so it is the 0xc0 owner field brought down to 0..3 - and a zero there is the 'nobody' case the routine leaves at once."
+      "name": "tileList",
+      "why": "a running pointer into a list of WORDS: `movea.l d5,a5` to read one and `addq.l #$2,d5` to step, so it walks two bytes at a time and each word is a tile handed to 0x11ef2."
     },
     "d3": {
       "name": "tableBase",
@@ -3075,6 +3163,18 @@
     "a5": {
       "name": "ownerTable",
       "why": "the table base moved into an address register to be indexed by the owner times four - a longword per owner, and the routine leaves at once when the owner is zero."
+    },
+    "a2": {
+      "name": "coordRef",
+      "why": "dereferenced for a WORD which is pushed straight to the address computers 0x3cee and 0x3ba4 - so it points at a packed coordinate pair, not at a cell."
+    },
+    "d4": {
+      "name": "at",
+      "why": "the screen address handed to the per-column decompressor at 0x11ef2, and replaced by nothing - the same argument goes to both calls."
+    },
+    "a4": {
+      "name": "byteStream",
+      "why": "read with (a4) for a byte on the paths that need one, separate from the word list d5 walks."
     }
   },
   "0x1ae3c": {
