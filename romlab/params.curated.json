@@ -772,5 +772,15 @@
       "name": "tableRef",
       "why": "the longword at 0x18(a7), dereferenced ONCE into a1 before anything else - so it is a pointer to a pointer, and a1 is the table the comparison indexes."
     }
+  },
+  "0x162d6": {
+    "stack4": {
+      "name": "value",
+      "why": "the longword at 0x18(a7), handed to 0x160f8 with the fourth argument and replaced by its answer before anything else uses it."
+    },
+    "stack16": {
+      "name": "scale",
+      "why": "only its low word, at 0x26(a7), and the second argument of 0x160f8 - so it modifies the conversion rather than being converted."
+    }
   }
 }

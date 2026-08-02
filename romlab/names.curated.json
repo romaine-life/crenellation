@@ -2020,5 +2020,15 @@
     "name": "step one sequence record, flushing any pending byte first",
     "ident": "stepSequenceRecord",
     "why": "the record's fields come out of what it does with them: 8(a2) is a pending write and 0x10(a2) its argument - when 8 is set it calls 0x19a24 and stores the answering byte through the pointer at 0xc(a2), then clears 8 so it happens once. 0(a2) is the sequence pointer, 4(a2) an index into it, 0x12(a2) a state and 0x16(a2) the value being matched. The state indexes the PC-relative BYTE table at 0x1996a - the twelve bytes that census work reclassified from a routine to data - and that byte, doubled, offsets the index before the comparison."
+  },
+  "0x16d88": {
+    "name": "draw the self-test results page",
+    "ident": "drawSelfTestResultsPage",
+    "why": "a page laid out by hand: 0x174a2 first, then the block of lines at row 0x19 through 0x1822c, then two lines at rows 0x16 and 0x17 with attribute 0x2010 and the strings at 0x1dcd4 and 0x1dcf4. Those two are drawn through `jsr (a3)` with 0xffff as the first argument - and 0xffff is the marker 0x17fcc reads as 'use the stored default attributes', so the caller is asking for the defaults rather than passing a real value. It then takes the result of 0x130f8 into d4 and draws different things depending on whether it was zero."
+  },
+  "0x162d6": {
+    "name": "check a value through two tests, then draw a row that depends on a ROM byte",
+    "ident": "checkThenDrawByRomByte",
+    "why": "hands its first argument and the word at 0x26(a7) to 0x160f8, passes THAT answer to 0x160dc, and does nothing further when the second answers zero - so the two are a conversion followed by a validity test on the converted value, not two independent checks. The row it then draws at is 0x18 or 0x12 depending on the byte at 0x372, which is inside the exception vector table and so is a build-time constant rather than state - two fixed layouts chosen once."
   }
 }

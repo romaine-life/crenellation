@@ -149567,7 +149567,7 @@ export function drawOneServiceMenuRow(count2_: number, index3_: number, d3_: num
   setReg('d5', d5);
 }
 
-export function clearEightKilobyteBandPlayfieldWrapper(d3_: number, d4_: number, d5_: number, d6_: number, arg0: number, arg1: number, arg2: number, count2: number, arg4: number): void {
+export function clearEightKilobyteBandPlayfieldWrapper(d3_: number, d4_: number, d5_: number, d6_: number, value: number, arg1: number, arg2: number, scale: number, arg4: number): void {
   let _guard = 0;
   void _guard;
   let count = getReg('d0');
@@ -149608,13 +149608,13 @@ export function clearEightKilobyteBandPlayfieldWrapper(d3_: number, d4_: number,
   save_d4_2 = d4;
   save_d5_3 = d5;
   save_d6_4 = d6;
-  d2 = (arg0) >>> 0;
+  d2 = (value) >>> 0;
   t5 = (arg1 & 0xffff);
   d4 = ((d4 & 0xffff0000) | (t5 & 65535));
   t6 = (arg2 & 0xffff);
   d3 = ((d3 & 0xffff0000) | (t6 & 65535));
   count = (0) >>> 0;
-  t7 = (count2 & 0xffff);
+  t7 = (scale & 0xffff);
   count = ((count & 0xffff0000) | (t7 & 65535));
   t8 = count;
   push(t8, 4);
