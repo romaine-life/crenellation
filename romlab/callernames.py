@@ -23,13 +23,24 @@ what it is, because the caller computed it.
 The rule:
 
   - Find every call site of a routine: `setReg('d1', local); ... callRom(F)`.
-  - A parameter takes a name only if EVERY call site that spills that register
-    hands a local with the same name, and that name is not itself a register.
+  - A parameter takes a name only if the call sites AGREE on it, and that name
+    is not itself a register, a temporary or an argN slot.
   - At least one call site must exist. A routine nobody calls has no evidence.
 
-Unanimity is the whole discipline. A parameter fed `count` by one caller and
+Agreement is the whole discipline. A parameter fed `count` by one caller and
 `colour` by another is not either of those things, and picking the more common
 one would be a guess dressed as a measurement.
+
+It runs in two passes and the order matters. The first demands that EVERY call
+site hands the same name. The second accepts a name that every caller which
+says anything agrees on, and there the callers handing a bare `d3` are not
+disagreeing - they have nothing to say, because the lifter made a parameter of
+a register their own routine never reads. That is a weaker claim than
+unanimity and it is stated separately for that reason, but it is not the
+majority rule this file rejects: no caller contradicts the name, and one
+caller stating it is one more than none. Measured at 91 parameters after the
+strict pass had run to a fixed point. Strict runs first so a name all callers
+agree on is never displaced by one only some of them state.
 
 Run after `paramnames.py`, which is the last step of the regeneration chain.
 It rewrites `decompiled.ts` in place and is idempotent - a parameter that has
@@ -105,10 +116,8 @@ def call_sites(funcs):
     return sites
 
 
-def main():
-    dry = "--dry" in sys.argv
-    text = DEST.read_text(encoding="utf-8")
-
+def pass_over(text, strict):
+    """Name what the callers agree on, to a fixed point. Returns text, count."""
     total, rounds = 0, 0
     while True:
         rounds += 1
@@ -137,12 +146,13 @@ def main():
                 if not handed:
                     continue
                 names = {h.rstrip("_") for h in handed}
-                if len(names) != 1:
-                    continue                      # callers disagree
-                got = names.pop()
-                if SAYS_NOTHING.match(got) or not IDENT.match(got):
-                    continue
-                want.setdefault(fn, {})[param] = got
+                speaking = {n for n in names
+                            if not SAYS_NOTHING.match(n) and IDENT.match(n)}
+                if len(speaking) != 1:
+                    continue                      # callers disagree, or none
+                if strict and len(names) != 1:
+                    continue                      # some caller had no name
+                want.setdefault(fn, {})[param] = speaking.pop()
 
         if not want:
             break
@@ -177,11 +187,21 @@ def main():
         # `paramnames.py` does.
         if not moved or rounds > 8:
             break
+    return text, total
 
+
+def main():
+    dry = "--dry" in sys.argv
+    text = DEST.read_text(encoding="utf-8")
+    # Unanimity first, then the weaker reading of it, and in that order so a
+    # name that ALL callers agree on is never displaced by one only some of
+    # them state.
+    text, strict = pass_over(text, True)
+    text, loose = pass_over(text, False)
     if not dry:
         DEST.write_text(text, encoding="utf-8")
-    print(f"parameters named from what every caller calls them: {total}"
-          f" (converged in {rounds} rounds)")
+    print(f"parameters named from what every caller calls them: {strict}"
+          f" unanimously, {loose} where every caller that says anything agrees")
 
 
 if __name__ == "__main__":

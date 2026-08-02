@@ -108,7 +108,7 @@ Measured 2026-08-02 in `frontend/src/rom/names.txt`:
 |---|---|
 | Functions with a name that says what they do | **1,187 of 1,187** |
 | Still named for their address | **0** |
-| Parameters that say what they are | 2,009 of 4,419 |
+| Parameters that say what they are | 2,334 of 4,419 |
 
 `names.test.ts` **enforces** the first — `expect(byAddress).toEqual([])`, not a
 ratchet, because at the bar a `<=` would quietly accept a regeneration that
@@ -134,7 +134,7 @@ down, so read it as a smaller honest count rather than a regression:
   count did not change by one.
 
 Under the same honest definition the count was 2,501 of 6,279 before the day
-and is 2,009 of 4,419 after it: 3,778 parameters said nothing, 2,410 do.
+and is 2,334 of 4,419 after it: 3,778 parameters said nothing, 2,085 do.
 
 - **`names.curated.json` is where a name goes**, as `{"name": ..., "why": ...}`.
   `idents.py` refuses an object with no `why`: a wrong name is worse than an
@@ -170,9 +170,15 @@ and is 2,009 of 4,419 after it: 3,778 parameters said nothing, 2,410 do.
   renames. Restricted that way it moves 197. **`stackargnames.py`** is the same
   rule for the other 721 — stack arguments, which neither existing pass reaches
   because a pushed value is never spilled to a register. `a7` pre-decrements, so
-  the last value pushed is `off: 4`. Both demand **unanimity**: a parameter fed
-  `count` by one caller and `colour` by another is neither, and picking the
-  commoner would be a guess dressed as a measurement.
+  the last value pushed is `off: 4`. Both run **two passes**: unanimity first —
+  every call site hands the same name — then the weaker reading, where every
+  caller that *says anything* agrees. A caller handing a bare `d3` is not
+  disagreeing; it has nothing to say, because the lifter made a parameter of a
+  register its own routine never reads. That is not the majority rule both
+  files reject — a parameter fed `count` by one caller and `colour` by another
+  is neither, and picking the commoner would be a guess dressed as a
+  measurement. Strict runs first so a name all callers agree on is never
+  displaced by one only some of them state.
 - **The diagnostics are the point, not the passes.** `whyunnamed.py` bins every
   unnamed parameter by what the routine does with it, `whyrole.py` replays
   `roles.py`'s decision and says which test came out empty, `whypassed.py` says
@@ -224,16 +230,14 @@ When only names or the lifter changed:
 
 `cd romlab && python3 idents.py && python3 blocks.py && rm -f out/unproven.json
 && python3 decomp.py && python3 handedits.py && python3 dropunread.py &&
-python3 moreroles.py && python3 paramnames.py && python3 callernames.py &&
-python3 stackargnames.py`
+python3 namepasses.py`
 
 When the *map* changed — funcs, entries, extents — the chain starts earlier
 and regenerates both translations:
 
 `python3 describe.py && python3 gen_ts.py && python3 cfg.py && python3
 idents.py && python3 blocks.py && rm -f out/unproven.json && python3 decomp.py
-&& python3 handedits.py && python3 dropunread.py && python3 moreroles.py &&
-python3 paramnames.py && python3 callernames.py && python3 stackargnames.py`
+&& python3 handedits.py && python3 dropunread.py && python3 namepasses.py`
 
 Order matters and these steps are easy to get wrong:
 
@@ -243,13 +247,17 @@ Order matters and these steps are easy to get wrong:
 - **`rm out/unproven.json` before `decomp.py`, not after.** It is read at
   generation time; clearing it afterwards silently emits the previous run's
   held-back set and every count is wrong.
-- **`handedits.py` then the five naming passes last.** Regeneration overwrites
+- **`handedits.py`, then `dropunread.py`, then `namepasses.py` last.** Regeneration overwrites
   `decompiled.ts`, so every deliberate edit lives in `handedits.py` too and is
   re-applied. An edit that no longer applies is an *error* — the lifter now
   produces different text and the change has to be re-expressed, or taught to
   the lifter. The naming passes run after it, because they rename locals and
-  would otherwise move the text a hand edit matches on; all five are
+  would otherwise move the text a hand edit matches on; all of them are
   idempotent, so a second run reports zero rather than renaming again.
+  `namepasses.py` runs the four that NAME to a **joint** fixed point, which is
+  not the same as each running to its own: they feed each other, and the second
+  round alone finds names the first round's output made findable. Run once each
+  they give 2,126 unnamed; run to the joint fixed point, 2,085.
 - **`dropunread.py` before the four that name.** It removes parameters, and a
   naming pass that ran first would spend its evidence on things about to stop
   being parameters — which is exactly what happened the first time round: 1,009

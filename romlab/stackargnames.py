@@ -30,9 +30,13 @@ shift every offset after it and quietly name the wrong parameter:
   - anything pushed before the previous transfer. Pushes are collected from
     the last call or jump, not from the top of the routine.
 
-Unanimity again: a slot takes a name only if every call site pushes a local
-with the same name, and that name is not itself a register, a temporary or
-another `argN`. Run alongside `callernames.py`, after it.
+Agreement again, and in the same two passes as `callernames.py` and for the
+same reason. The first demands that every call site pushes a local with the
+same name. The second accepts a name that every caller which pushes something
+NAMED agrees on: a caller pushing a bare `d3` is not disagreeing, it has
+nothing to say. Measured at 84 slots after the strict pass had run dry, and
+strict runs first so a name all callers agree on is never displaced by one
+only some of them state. Run alongside `callernames.py`, after it.
 
     python3 stackargnames.py [--dry]
 """
@@ -122,10 +126,8 @@ def pushed_at(funcs):
     return sites
 
 
-def main():
-    dry = "--dry" in sys.argv
-    text = DEST.read_text(encoding="utf-8")
-
+def pass_over(text, strict):
+    """Name what the callers agree on, to a fixed point. Returns text, count."""
     total, rounds = 0, 0
     while True:
         rounds += 1
@@ -153,12 +155,13 @@ def main():
                 if not handed:
                     continue
                 names = {h.rstrip("_") for h in handed}
-                if len(names) != 1:
-                    continue                  # callers disagree
-                got = names.pop()
-                if SAYS_NOTHING.match(got) or not IDENT.match(got):
-                    continue
-                want.setdefault(fn, {})[param] = got
+                speaking = {n for n in names
+                            if not SAYS_NOTHING.match(n) and IDENT.match(n)}
+                if len(speaking) != 1:
+                    continue                  # callers disagree, or none
+                if strict and len(names) != 1:
+                    continue                  # some caller had no name
+                want.setdefault(fn, {})[param] = speaking.pop()
 
         if not want:
             break
@@ -190,11 +193,18 @@ def main():
         total += moved
         if not moved or rounds > 8:
             break
+    return text, total
 
+
+def main():
+    dry = "--dry" in sys.argv
+    text = DEST.read_text(encoding="utf-8")
+    text, strict = pass_over(text, True)
+    text, loose = pass_over(text, False)
     if not dry:
         DEST.write_text(text, encoding="utf-8")
-    print(f"stack arguments named from what every caller pushes: {total}"
-          f" (converged in {rounds} rounds)")
+    print(f"stack arguments named from what every caller pushes: {strict}"
+          f" unanimously, {loose} where every caller that pushes a name agrees")
 
 
 if __name__ == "__main__":
