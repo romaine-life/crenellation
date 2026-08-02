@@ -6,6 +6,17 @@ lifter gives each its own signature carrying the same live registers the host
 has - because they ARE the same registers, in the same code. So a register read
 once is named once and written to every entry of the family.
 
+WHERE THIS DOES NOT APPLY, and it is worth knowing before reaching for it. A
+family is safe when the entries are points in ONE piece of logic sharing one
+set of registers - a loop's row tail, a test chain's steps. It is NOT safe when
+the host is a block of separate handlers side by side, which is what a jump
+table produces: 0x1262a's 612 bytes are about ten palette handlers, and its d2
+is one colour channel in the first, a 0x7bde7bde mask in the third and
+something else again further down. One name across those would be right at the
+top and wrong by the bottom, which is the same defect that took namedParams
+from 2852 to 2314. Name what the handlers genuinely share - the record they are
+handed, the operand the dispatcher pre-fetched - and leave the rest.
+
 Used from `params.curated.json` by hand, this would be the same block of JSON
 copied five or ten times. This does the copying, and validates: a name is only
 written where the lifter actually binds that slot, and anything it cannot place

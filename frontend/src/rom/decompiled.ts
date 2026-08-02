@@ -98383,19 +98383,19 @@ export function passRecordSByteThroughFrom1(): void {
   return;
 }
 
-export function computerPlayerParity(markAt_: number, record_: number, dst_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function computerPlayerParity(markAt_: number, player_: number, dst_: number, d2_: number, d3_: number, d4_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
-  let record = record_;
+  let player = player_;
   let a4 = getReg('a4');
   let dst = dst_;
   let count = getReg('d0');
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let onFlagClear = onFlagClear_;
+  let onFlagSet = onFlagSet_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -98411,9 +98411,9 @@ export function computerPlayerParity(markAt_: number, record_: number, dst_: num
   let t12 = 0;
   let t13 = 0;
   let t14 = 0;
-  const _t0 = tick(72, 0x0cc3a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(72, 0x0cc3a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t0) takeIrq(); }
   count = (0) >>> 0;
-  t0 = load8(record + 0x19);
+  t0 = load8(player + 0x19);
   count = ((count & 0xffffff00) | (t0 & 255));
   t1 = (count & 65535);
   store16(dst + -0x2, t1);
@@ -98423,45 +98423,45 @@ export function computerPlayerParity(markAt_: number, record_: number, dst_: num
   store16(dst + -0x2, t4);
   t5 = load16(dst + -0x2);
   a4 = (load32(0x2155e)) >>> 0;
-  const _t10 = tick(22, 0x0cc88) ? 1 : 0; if (_t10 || SPILL_ALL) { setFlagsCmp(t5, 0, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+  const _t10 = tick(22, 0x0cc88) ? 1 : 0; if (_t10 || SPILL_ALL) { setFlagsCmp(t5, 0, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t10) takeIrq(); }
   t6 = load16(dst + -0x2);
   setFlagsCmp(t6, 0, 16);
   if (((t6) & 65535) !== ((0) & 65535)) {
   } else {
-    const _t11 = tick(54, 0x0cc8e) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp(t6, 0, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
-    t7 = record;
+    const _t11 = tick(54, 0x0cc8e) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp(t6, 0, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t11) takeIrq(); }
+    t7 = player;
     push(t7, 4);
     t8 = a4;
     push(t8, 4);
     setFlagsCmp(t8, 0, 32);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', a4);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
     callRom(0x0cd0c, 0x0cc94);
     if (halted()) return;
     markAt = getReg('a2');
-    record = getReg('a3');
+    player = getReg('a3');
     a4 = getReg('a4');
     dst = getReg('a6');
     count = getReg('d0');
     d2 = getReg('d2');
     d3 = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
-    d6 = getReg('d6');
-    const _t12 = tick(6, 0x0cc94) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
+    onFlagClear = getReg('d5');
+    onFlagSet = getReg('d6');
+    const _t12 = tick(6, 0x0cc94) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t12) takeIrq(); }
     drop(8);
   }
-  const _t13 = tick(52, 0x0cc96) ? 1 : 0; if (_t13 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
+  const _t13 = tick(52, 0x0cc96) ? 1 : 0; if (_t13 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t13) takeIrq(); }
   count = (126) >>> 0;
-  record = ((record + count)) >>> 0;
+  player = ((player + count)) >>> 0;
   t9 = load16(dst + -0x4);
   t10 = t9;
   t11 = 0x1;
@@ -98473,67 +98473,67 @@ export function computerPlayerParity(markAt_: number, record_: number, dst_: num
     setXAdd(t10, t11, 16);
     setFlagsCmp(t14, 0x3, 16);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', a4);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', markAt); setReg('a3', record); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0cbe8);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
+    setReg('a2', markAt); setReg('a3', player); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); jumpRom(0x0cbe8);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet);   return;
   }
-  const _t14 = tick(90, 0x0cca8) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t10, t11, 16); setFlagsCmp(t14, 0x3, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t14) takeIrq(); }
+  const _t14 = tick(90, 0x0cca8) ? 1 : 0; if (_t14 || SPILL_ALL) { setXAdd(t10, t11, 16); setFlagsCmp(t14, 0x3, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t14) takeIrq(); }
   d2 = load32((dst + -0x24) + 0);
   d3 = load32((dst + -0x24) + 4);
   d4 = load32((dst + -0x24) + 8);
-  d5 = load32((dst + -0x24) + 12);
-  d6 = load32((dst + -0x24) + 16);
+  onFlagClear = load32((dst + -0x24) + 12);
+  onFlagSet = load32((dst + -0x24) + 16);
   markAt = load32((dst + -0x24) + 20);
-  record = load32((dst + -0x24) + 24);
+  player = load32((dst + -0x24) + 24);
   a4 = load32((dst + -0x24) + 28);
   setStackPointer(dst);
   dst = popLong();
   setXAdd(t10, t11, 16);
   setFlagsCmp(t14, 0x3, 16);
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', a4);
   setReg('a6', dst);
   setReg('d0', count);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', a4); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); return;
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', a4);
   setReg('a6', dst);
   setReg('d0', count);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom1(markAt_: number, record_: number, table_: number, dst2_: number, count_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function computerPlayerParityFrom1(markAt_: number, player_: number, table_: number, dst2_: number, count_: number, d2_: number, d3_: number, d4_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
-  let record = record_;
+  let player = player_;
   let table = table_;
   let dst2 = dst2_;
   let count = count_;
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let onFlagClear = onFlagClear_;
+  let onFlagSet = onFlagSet_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -98547,49 +98547,49 @@ export function computerPlayerParityFrom1(markAt_: number, record_: number, tabl
   let t10 = 0;
   let t11 = 0;
   let t12 = 0;
-  const _t0 = tick(22, 0x0cc52) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
-  t0 = load8(record + 0x19);
+  const _t0 = tick(22, 0x0cc52) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t0) takeIrq(); }
+  t0 = load8(player + 0x19);
   t1 = t0;
   if ((((t1) >>> ((0x1) & 7)) & 1) !== 0) {
-    const _t9 = tick(22, 0x0cc88) ? 1 : 0; if (_t9 || SPILL_ALL) { setFlagsBit(t1, 0x1, 7); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+    const _t9 = tick(22, 0x0cc88) ? 1 : 0; if (_t9 || SPILL_ALL) { setFlagsBit(t1, 0x1, 7); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t9) takeIrq(); }
     t4 = load16(dst2 + -0x2);
     setFlagsCmp(t4, 0, 16);
     if (((t4) & 65535) !== ((0) & 65535)) {
     } else {
-      const _t10 = tick(54, 0x0cc8e) ? 1 : 0; if (_t10 || SPILL_ALL) { setFlagsCmp(t4, 0, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
-      t5 = record;
+      const _t10 = tick(54, 0x0cc8e) ? 1 : 0; if (_t10 || SPILL_ALL) { setFlagsCmp(t4, 0, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t10) takeIrq(); }
+      t5 = player;
       push(t5, 4);
       t6 = table;
       push(t6, 4);
       setFlagsCmp(t6, 0, 32);
       setReg('a2', markAt);
-      setReg('a3', record);
+      setReg('a3', player);
       setReg('a4', table);
       setReg('a6', dst2);
       setReg('d0', count);
       setReg('d2', d2);
       setReg('d3', d3);
       setReg('d4', d4);
-      setReg('d5', d5);
-      setReg('d6', d6);
+      setReg('d5', onFlagClear);
+      setReg('d6', onFlagSet);
       callRom(0x0cd0c, 0x0cc94);
       if (halted()) return;
       markAt = getReg('a2');
-      record = getReg('a3');
+      player = getReg('a3');
       table = getReg('a4');
       dst2 = getReg('a6');
       count = getReg('d0');
       d2 = getReg('d2');
       d3 = getReg('d3');
       d4 = getReg('d4');
-      d5 = getReg('d5');
-      d6 = getReg('d6');
-      const _t11 = tick(6, 0x0cc94) ? 1 : 0; if (_t11 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t11) takeIrq(); }
+      onFlagClear = getReg('d5');
+      onFlagSet = getReg('d6');
+      const _t11 = tick(6, 0x0cc94) ? 1 : 0; if (_t11 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t11) takeIrq(); }
       drop(8);
     }
-    const _t12 = tick(52, 0x0cc96) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t12) takeIrq(); }
+    const _t12 = tick(52, 0x0cc96) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t12) takeIrq(); }
     count = (126) >>> 0;
-    record = ((record + count)) >>> 0;
+    player = ((player + count)) >>> 0;
     t7 = load16(dst2 + -0x4);
     t8 = t7;
     t9 = 0x1;
@@ -98601,122 +98601,122 @@ export function computerPlayerParityFrom1(markAt_: number, record_: number, tabl
       setXAdd(t8, t9, 16);
       setFlagsCmp(t12, 0x3, 16);
       setReg('a2', markAt);
-      setReg('a3', record);
+      setReg('a3', player);
       setReg('a4', table);
       setReg('a6', dst2);
       setReg('d0', count);
       setReg('d2', d2);
       setReg('d3', d3);
       setReg('d4', d4);
-      setReg('d5', d5);
-      setReg('d6', d6);
-      setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0cbe8);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);     return;
+      setReg('d5', onFlagClear);
+      setReg('d6', onFlagSet);
+      setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); jumpRom(0x0cbe8);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet);     return;
     }
-    const _t13 = tick(90, 0x0cca8) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t8, t9, 16); setFlagsCmp(t12, 0x3, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t13) takeIrq(); }
+    const _t13 = tick(90, 0x0cca8) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t8, t9, 16); setFlagsCmp(t12, 0x3, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t13) takeIrq(); }
     d2 = load32((dst2 + -0x24) + 0);
     d3 = load32((dst2 + -0x24) + 4);
     d4 = load32((dst2 + -0x24) + 8);
-    d5 = load32((dst2 + -0x24) + 12);
-    d6 = load32((dst2 + -0x24) + 16);
+    onFlagClear = load32((dst2 + -0x24) + 12);
+    onFlagSet = load32((dst2 + -0x24) + 16);
     markAt = load32((dst2 + -0x24) + 20);
-    record = load32((dst2 + -0x24) + 24);
+    player = load32((dst2 + -0x24) + 24);
     table = load32((dst2 + -0x24) + 28);
     setStackPointer(dst2);
     dst2 = popLong();
     setXAdd(t8, t9, 16);
     setFlagsCmp(t12, 0x3, 16);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst2);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet);   return;
   } else {
-    const _t1 = tick(40, 0x0cc5a) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsBit(t1, 0x1, 7); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+    const _t1 = tick(40, 0x0cc5a) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsBit(t1, 0x1, 7); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t1) takeIrq(); }
     t2 = d4;
     push(t2, 4);
     setFlagsCmp(t2, 0, 32);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst2);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
     callRom(0x090e6, 0x0cc62);
     if (halted()) return;
     markAt = getReg('a2');
-    record = getReg('a3');
+    player = getReg('a3');
     table = getReg('a4');
     dst2 = getReg('a6');
     count = getReg('d0');
     d2 = getReg('d2');
     d3 = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
-    d6 = getReg('d6');
-    const _t2 = tick(18, 0x0cc62) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+    onFlagClear = getReg('d5');
+    onFlagSet = getReg('d6');
+    const _t2 = tick(18, 0x0cc62) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t2) takeIrq(); }
     t3 = 0x46;
     store8(markAt, t3);
     setFlagsCmp(t3, 0, 8);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst2);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0cc36);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
+    setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); jumpRom(0x0cc36);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet);   return;
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst2);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst2); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet);   return;
   }
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', table);
   setReg('a6', dst2);
   setReg('d0', count);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom2(markAt_: number, record_: number, table_: number, dst_: number, count_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function computerPlayerParityFrom2(markAt_: number, player_: number, table_: number, dst_: number, count_: number, d2_: number, d3_: number, d4_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
-  let record = record_;
+  let player = player_;
   let table = table_;
   let dst = dst_;
   let count = count_;
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let onFlagClear = onFlagClear_;
+  let onFlagSet = onFlagSet_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -98729,82 +98729,82 @@ export function computerPlayerParityFrom2(markAt_: number, record_: number, tabl
   let t9 = 0;
   let t10 = 0;
   let t11 = 0;
-  const _t0 = tick(26, 0x0cc68) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
-  t0 = load8(record + 0x14);
+  const _t0 = tick(26, 0x0cc68) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t0) takeIrq(); }
+  t0 = load8(player + 0x14);
   setFlagsCmp(t0, 0x2, 8);
   if (((t0) & 255) !== ((0x2) & 255)) {
   } else {
-    const _t1 = tick(34, 0x0cc70) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0x2, 8); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
-    t1 = record;
+    const _t1 = tick(34, 0x0cc70) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0x2, 8); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t1) takeIrq(); }
+    t1 = player;
     push(t1, 4);
-    t2 = d5;
+    t2 = onFlagClear;
     push(t2, 4);
-    const _t4 = tick(30, 0x0cc82) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp(t2, 0, 32); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+    const _t4 = tick(30, 0x0cc82) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp(t2, 0, 32); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t4) takeIrq(); }
     setFlagsCmp(t2, 0, 32);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
     callRom(0x0ce48, 0x0cc86);
     if (halted()) return;
     markAt = getReg('a2');
-    record = getReg('a3');
+    player = getReg('a3');
     table = getReg('a4');
     dst = getReg('a6');
     count = getReg('d0');
     d2 = getReg('d2');
     d3 = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
-    d6 = getReg('d6');
-    const _t5 = tick(6, 0x0cc86) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+    onFlagClear = getReg('d5');
+    onFlagSet = getReg('d6');
+    const _t5 = tick(6, 0x0cc86) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t5) takeIrq(); }
     drop(8);
   }
-  const _t6 = tick(22, 0x0cc88) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+  const _t6 = tick(22, 0x0cc88) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t6) takeIrq(); }
   t3 = load16(dst + -0x2);
   setFlagsCmp(t3, 0, 16);
   if (((t3) & 65535) !== ((0) & 65535)) {
   } else {
-    const _t7 = tick(54, 0x0cc8e) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp(t3, 0, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
-    t4 = record;
+    const _t7 = tick(54, 0x0cc8e) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp(t3, 0, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t7) takeIrq(); }
+    t4 = player;
     push(t4, 4);
     t5 = table;
     push(t5, 4);
     setFlagsCmp(t5, 0, 32);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
     callRom(0x0cd0c, 0x0cc94);
     if (halted()) return;
     markAt = getReg('a2');
-    record = getReg('a3');
+    player = getReg('a3');
     table = getReg('a4');
     dst = getReg('a6');
     count = getReg('d0');
     d2 = getReg('d2');
     d3 = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
-    d6 = getReg('d6');
-    const _t8 = tick(6, 0x0cc94) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t8) takeIrq(); }
+    onFlagClear = getReg('d5');
+    onFlagSet = getReg('d6');
+    const _t8 = tick(6, 0x0cc94) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t8) takeIrq(); }
     drop(8);
   }
-  const _t9 = tick(52, 0x0cc96) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t9) takeIrq(); }
+  const _t9 = tick(52, 0x0cc96) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t9) takeIrq(); }
   count = (126) >>> 0;
-  record = ((record + count)) >>> 0;
+  player = ((player + count)) >>> 0;
   t6 = load16(dst + -0x4);
   t7 = t6;
   t8 = 0x1;
@@ -98816,68 +98816,68 @@ export function computerPlayerParityFrom2(markAt_: number, record_: number, tabl
     setXAdd(t7, t8, 16);
     setFlagsCmp(t11, 0x3, 16);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0cbe8);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
+    setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); jumpRom(0x0cbe8);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet);   return;
   }
-  const _t10 = tick(90, 0x0cca8) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t7, t8, 16); setFlagsCmp(t11, 0x3, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t10) takeIrq(); }
+  const _t10 = tick(90, 0x0cca8) ? 1 : 0; if (_t10 || SPILL_ALL) { setXAdd(t7, t8, 16); setFlagsCmp(t11, 0x3, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t10) takeIrq(); }
   d2 = load32((dst + -0x24) + 0);
   d3 = load32((dst + -0x24) + 4);
   d4 = load32((dst + -0x24) + 8);
-  d5 = load32((dst + -0x24) + 12);
-  d6 = load32((dst + -0x24) + 16);
+  onFlagClear = load32((dst + -0x24) + 12);
+  onFlagSet = load32((dst + -0x24) + 16);
   markAt = load32((dst + -0x24) + 20);
-  record = load32((dst + -0x24) + 24);
+  player = load32((dst + -0x24) + 24);
   table = load32((dst + -0x24) + 28);
   setStackPointer(dst);
   dst = popLong();
   setXAdd(t7, t8, 16);
   setFlagsCmp(t11, 0x3, 16);
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', table);
   setReg('a6', dst);
   setReg('d0', count);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); return;
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', table);
   setReg('a6', dst);
   setReg('d0', count);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom3(markAt_: number, record_: number, table_: number, dst_: number, count_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function computerPlayerParityFrom3(markAt_: number, player_: number, table_: number, dst_: number, count_: number, d2_: number, d3_: number, d4_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
   let markAt = markAt_;
-  let record = record_;
+  let player = player_;
   let table = table_;
   let dst = dst_;
   let count = count_;
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let onFlagClear = onFlagClear_;
+  let onFlagSet = onFlagSet_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -98891,87 +98891,87 @@ export function computerPlayerParityFrom3(markAt_: number, record_: number, tabl
   let t10 = 0;
   let t11 = 0;
   let t12 = 0;
-  const _t0 = tick(32, 0x0cc76) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
-  t0 = load32(record + 0x6a);
+  const _t0 = tick(32, 0x0cc76) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t0) takeIrq(); }
+  t0 = load32(player + 0x6a);
   ptr = (t0) >>> 0;
   t1 = load8(ptr);
   setFlagsCmp(t1, 0, 8);
   if ((((t1) << 24) >> 24) >= (((0) << 24) >> 24)) {
   } else {
-    const _t1 = tick(54, 0x0cc7e) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t1, 0, 8); setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
-    t2 = record;
+    const _t1 = tick(54, 0x0cc7e) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t1, 0, 8); setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t1) takeIrq(); }
+    t2 = player;
     push(t2, 4);
-    t3 = d6;
+    t3 = onFlagSet;
     push(t3, 4);
     setFlagsCmp(t3, 0, 32);
     setReg('a0', ptr);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
     callRom(0x0ce48, 0x0cc86);
     if (halted()) return;
     ptr = getReg('a0');
     markAt = getReg('a2');
-    record = getReg('a3');
+    player = getReg('a3');
     table = getReg('a4');
     dst = getReg('a6');
     count = getReg('d0');
     d2 = getReg('d2');
     d3 = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
-    d6 = getReg('d6');
-    const _t2 = tick(6, 0x0cc86) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+    onFlagClear = getReg('d5');
+    onFlagSet = getReg('d6');
+    const _t2 = tick(6, 0x0cc86) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t2) takeIrq(); }
     drop(8);
   }
-  const _t3 = tick(22, 0x0cc88) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(22, 0x0cc88) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t3) takeIrq(); }
   t4 = load16(dst + -0x2);
   setFlagsCmp(t4, 0, 16);
   if (((t4) & 65535) !== ((0) & 65535)) {
   } else {
-    const _t4 = tick(54, 0x0cc8e) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp(t4, 0, 16); setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
-    t5 = record;
+    const _t4 = tick(54, 0x0cc8e) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp(t4, 0, 16); setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t4) takeIrq(); }
+    t5 = player;
     push(t5, 4);
     t6 = table;
     push(t6, 4);
     setFlagsCmp(t6, 0, 32);
     setReg('a0', ptr);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
     callRom(0x0cd0c, 0x0cc94);
     if (halted()) return;
     ptr = getReg('a0');
     markAt = getReg('a2');
-    record = getReg('a3');
+    player = getReg('a3');
     table = getReg('a4');
     dst = getReg('a6');
     count = getReg('d0');
     d2 = getReg('d2');
     d3 = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
-    d6 = getReg('d6');
-    const _t5 = tick(6, 0x0cc94) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t5) takeIrq(); }
+    onFlagClear = getReg('d5');
+    onFlagSet = getReg('d6');
+    const _t5 = tick(6, 0x0cc94) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t5) takeIrq(); }
     drop(8);
   }
-  const _t6 = tick(52, 0x0cc96) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t6) takeIrq(); }
+  const _t6 = tick(52, 0x0cc96) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t6) takeIrq(); }
   count = (126) >>> 0;
-  record = ((record + count)) >>> 0;
+  player = ((player + count)) >>> 0;
   t7 = load16(dst + -0x4);
   t8 = t7;
   t9 = 0x1;
@@ -98984,26 +98984,26 @@ export function computerPlayerParityFrom3(markAt_: number, record_: number, tabl
     setFlagsCmp(t12, 0x3, 16);
     setReg('a0', ptr);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0cbe8);
-  setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
+    setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); jumpRom(0x0cbe8);
+  setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet);   return;
   }
-  const _t7 = tick(90, 0x0cca8) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t8, t9, 16); setFlagsCmp(t12, 0x3, 16); setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t7) takeIrq(); }
+  const _t7 = tick(90, 0x0cca8) ? 1 : 0; if (_t7 || SPILL_ALL) { setXAdd(t8, t9, 16); setFlagsCmp(t12, 0x3, 16); setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t7) takeIrq(); }
   d2 = load32((dst + -0x24) + 0);
   d3 = load32((dst + -0x24) + 4);
   d4 = load32((dst + -0x24) + 8);
-  d5 = load32((dst + -0x24) + 12);
-  d6 = load32((dst + -0x24) + 16);
+  onFlagClear = load32((dst + -0x24) + 12);
+  onFlagSet = load32((dst + -0x24) + 16);
   markAt = load32((dst + -0x24) + 20);
-  record = load32((dst + -0x24) + 24);
+  player = load32((dst + -0x24) + 24);
   table = load32((dst + -0x24) + 28);
   setStackPointer(dst);
   dst = popLong();
@@ -99011,42 +99011,42 @@ export function computerPlayerParityFrom3(markAt_: number, record_: number, tabl
   setFlagsCmp(t12, 0x3, 16);
   setReg('a0', ptr);
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', table);
   setReg('a6', dst);
   setReg('d0', count);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a0', ptr); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
+  setReg('a0', ptr); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); return;
   setReg('a0', ptr);
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', table);
   setReg('a6', dst);
   setReg('d0', count);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom4(markAt_: number, record_: number, table_: number, dst_: number, count_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function computerPlayerParityFrom4(markAt_: number, player_: number, table_: number, dst_: number, count_: number, d2_: number, d3_: number, d4_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
-  let record = record_;
+  let player = player_;
   let table = table_;
   let dst = dst_;
   let count = count_;
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let onFlagClear = onFlagClear_;
+  let onFlagSet = onFlagSet_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -99056,45 +99056,45 @@ export function computerPlayerParityFrom4(markAt_: number, record_: number, tabl
   let t6 = 0;
   let t7 = 0;
   let t8 = 0;
-  const _t0 = tick(22, 0x0cc88) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(22, 0x0cc88) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t0) takeIrq(); }
   t0 = load16(dst + -0x2);
   setFlagsCmp(t0, 0, 16);
   if (((t0) & 65535) !== ((0) & 65535)) {
   } else {
-    const _t1 = tick(54, 0x0cc8e) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
-    t1 = record;
+    const _t1 = tick(54, 0x0cc8e) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t1) takeIrq(); }
+    t1 = player;
     push(t1, 4);
     t2 = table;
     push(t2, 4);
     setFlagsCmp(t2, 0, 32);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
     callRom(0x0cd0c, 0x0cc94);
     if (halted()) return;
     markAt = getReg('a2');
-    record = getReg('a3');
+    player = getReg('a3');
     table = getReg('a4');
     dst = getReg('a6');
     count = getReg('d0');
     d2 = getReg('d2');
     d3 = getReg('d3');
     d4 = getReg('d4');
-    d5 = getReg('d5');
-    d6 = getReg('d6');
-    const _t2 = tick(6, 0x0cc94) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t2) takeIrq(); }
+    onFlagClear = getReg('d5');
+    onFlagSet = getReg('d6');
+    const _t2 = tick(6, 0x0cc94) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t2) takeIrq(); }
     drop(8);
   }
-  const _t3 = tick(52, 0x0cc96) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t3) takeIrq(); }
+  const _t3 = tick(52, 0x0cc96) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t3) takeIrq(); }
   count = (126) >>> 0;
-  record = ((record + count)) >>> 0;
+  player = ((player + count)) >>> 0;
   t3 = load16(dst + -0x4);
   t4 = t3;
   t5 = 0x1;
@@ -99106,76 +99106,76 @@ export function computerPlayerParityFrom4(markAt_: number, record_: number, tabl
     setXAdd(t4, t5, 16);
     setFlagsCmp(t8, 0x3, 16);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst);
     setReg('d0', count);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0cbe8);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
+    setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); jumpRom(0x0cbe8);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet);   return;
   }
-  const _t4 = tick(90, 0x0cca8) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t4, t5, 16); setFlagsCmp(t8, 0x3, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t4) takeIrq(); }
+  const _t4 = tick(90, 0x0cca8) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t4, t5, 16); setFlagsCmp(t8, 0x3, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t4) takeIrq(); }
   d2 = load32((dst + -0x24) + 0);
   d3 = load32((dst + -0x24) + 4);
   d4 = load32((dst + -0x24) + 8);
-  d5 = load32((dst + -0x24) + 12);
-  d6 = load32((dst + -0x24) + 16);
+  onFlagClear = load32((dst + -0x24) + 12);
+  onFlagSet = load32((dst + -0x24) + 16);
   markAt = load32((dst + -0x24) + 20);
-  record = load32((dst + -0x24) + 24);
+  player = load32((dst + -0x24) + 24);
   table = load32((dst + -0x24) + 28);
   setStackPointer(dst);
   dst = popLong();
   setXAdd(t4, t5, 16);
   setFlagsCmp(t8, 0x3, 16);
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', table);
   setReg('a6', dst);
   setReg('d0', count);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', count); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); return;
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', table);
   setReg('a6', dst);
   setReg('d0', count);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom5(markAt_: number, record_: number, table_: number, dst_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function computerPlayerParityFrom5(markAt_: number, player_: number, table_: number, dst_: number, d2_: number, d3_: number, d4_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
-  let record = record_;
+  let player = player_;
   let table = table_;
   let dst = dst_;
   let d0 = getReg('d0');
   let d2 = d2_;
   let d3 = d3_;
   let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
+  let onFlagClear = onFlagClear_;
+  let onFlagSet = onFlagSet_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
   let t3 = 0;
   let t4 = 0;
   let t5 = 0;
-  const _t0 = tick(52, 0x0cc96) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(52, 0x0cc96) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t0) takeIrq(); }
   d0 = (126) >>> 0;
-  record = ((record + d0)) >>> 0;
+  player = ((player + d0)) >>> 0;
   t0 = load16(dst + -0x4);
   t1 = t0;
   t2 = 0x1;
@@ -99187,52 +99187,52 @@ export function computerPlayerParityFrom5(markAt_: number, record_: number, tabl
     setXAdd(t1, t2, 16);
     setFlagsCmp(t5, 0x3, 16);
     setReg('a2', markAt);
-    setReg('a3', record);
+    setReg('a3', player);
     setReg('a4', table);
     setReg('a6', dst);
     setReg('d0', d0);
     setReg('d2', d2);
     setReg('d3', d3);
     setReg('d4', d4);
-    setReg('d5', d5);
-    setReg('d6', d6);
-    setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0cbe8);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('d5', onFlagClear);
+    setReg('d6', onFlagSet);
+    setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); jumpRom(0x0cbe8);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet);   return;
   }
-  const _t1 = tick(90, 0x0cca8) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t1, t2, 16); setFlagsCmp(t5, 0x3, 16); setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(90, 0x0cca8) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t1, t2, 16); setFlagsCmp(t5, 0x3, 16); setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); if (_t1) takeIrq(); }
   d2 = load32((dst + -0x24) + 0);
   d3 = load32((dst + -0x24) + 4);
   d4 = load32((dst + -0x24) + 8);
-  d5 = load32((dst + -0x24) + 12);
-  d6 = load32((dst + -0x24) + 16);
+  onFlagClear = load32((dst + -0x24) + 12);
+  onFlagSet = load32((dst + -0x24) + 16);
   markAt = load32((dst + -0x24) + 20);
-  record = load32((dst + -0x24) + 24);
+  player = load32((dst + -0x24) + 24);
   table = load32((dst + -0x24) + 28);
   setStackPointer(dst);
   dst = popLong();
   setXAdd(t1, t2, 16);
   setFlagsCmp(t5, 0x3, 16);
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', table);
   setReg('a6', dst);
   setReg('d0', d0);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('a2', markAt); setReg('a3', record); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
+  setReg('a2', markAt); setReg('a3', player); setReg('a4', table); setReg('a6', dst); setReg('d0', d0); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', onFlagClear); setReg('d6', onFlagSet); return;
   setReg('a2', markAt);
-  setReg('a3', record);
+  setReg('a3', player);
   setReg('a4', table);
   setReg('a6', dst);
   setReg('d0', d0);
   setReg('d2', d2);
   setReg('d3', d3);
   setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
+  setReg('d5', onFlagClear);
+  setReg('d6', onFlagSet);
 }
 
 export function tickRecordSCountdownFire(dst_: number, count_: number, arg0: number): void {
