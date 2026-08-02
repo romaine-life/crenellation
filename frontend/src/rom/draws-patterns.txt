@@ -1,6 +1,6 @@
 attract, two demo loops: 380
 one player: coin, join at the middle station, then fire: 0
-two players: both coin slots, left and right stations: 1920
-three stations at once, second buttons too: 120
+two players: both coin slots, left and right stations: 0
+three stations at once, second buttons too: 0
 service switch held, then released: 0
 no input at all, long run: 380

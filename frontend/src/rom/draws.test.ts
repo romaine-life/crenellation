@@ -6,7 +6,7 @@ import { describe, it, expect } from 'vitest';
 import { PATTERNS, type Pattern } from './patterns';
 import { System } from './system';
 import { call as viaRecompiled, useLift } from './dispatch';
-import { call as viaDecompiled, bind, useOracle, useCallee } from './decompiled';
+import { call as viaDecompiled, bind, useOracle, useCallee, POLL_AT } from './decompiled';
 import { png } from './png';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -33,6 +33,19 @@ function lit(entry: (a: number, m: System['m']) => void, label: string,
   // identical counts prove nothing, and an earlier attempt at this test failed
   // exactly there - its probe never fired and the clean numbers meant nothing.
   sys.irqPhase = Number(process.env.IRQ_PHASE ?? 0);
+  // Poll for interrupts at the same addresses in both runs. compose and writes
+  // have always done this and this test never did, which means every number it
+  // ever produced carried the seam: the recompiled dispatcher took interrupts
+  // between any two instructions while the lift took them at block heads, so
+  // the two ran the same game slightly out of phase and text drawn near a
+  // frame boundary landed on different sides of it. That is what the counts
+  // that moved every frame were - 2,427 pixels at one row, 1,920 at another,
+  // 832 at a third - and it is also why threshold bisection came out
+  // non-monotonic and why isolating a single routine reported 66,616 pixels
+  // against a fault of 31,872. None of those were measuring the lift.
+  // POLL_UNEVEN=1 restores the old behaviour, for asking what the seam alone
+  // is worth.
+  if (process.env.POLL_UNEVEN !== '1') sys.m.pollAt = POLL_AT as Set<number>;
   // BISECT=N runs every routine at or above address N on the recompiled oracle
   // and everything below it on the lift. The sanity check is the whole point:
   // BISECT=0 puts everything on the oracle and MUST report zero differing
@@ -127,8 +140,16 @@ describe('drawing', () => {
   }, 600000);
 
   it('happens', () => {
-    const a = lit(viaRecompiled, 'recompiled');
-    const b = lit(viaDecompiled, 'decompiled');
+    // DRAW_PATTERN names the pattern this test renders, by substring. Without
+    // it the per-pattern loop above reports a count and nothing else, so a
+    // difference that only appears once someone is playing had a number and no
+    // location - and the bounding box is what says whether 1,920 pixels are one
+    // sprite, one row, or the whole board.
+    const pick = process.env.DRAW_PATTERN;
+    const pat = pick ? PATTERNS.find((p) => p.name.includes(pick)) : undefined;
+    if (pick && !pat) throw new Error(`no pattern matching ${pick}`);
+    const a = lit(viaRecompiled, 'recompiled', pat);
+    const b = lit(viaDecompiled, 'decompiled', pat);
     // The pixels, not the byte count. Counting lit bytes is what let a game
     // drawn entirely in black look healthy for nine hundred frames: 80,640
     // bytes are set whether or not the palette was ever written. Both screens
