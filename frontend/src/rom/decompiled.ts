@@ -89212,7 +89212,7 @@ export function resolvesPlayerSOwnerCode(ptr2_: number, dst_: number, dst3_: num
   setReg('d3', d3);
 }
 
-export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: number, d0_: number, d1_: number, d3_: number, wallByte_: number, arg0: number): void {
+export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: number, recordOwner_: number, d1_: number, target_: number, wallByte_: number, player: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
@@ -89222,10 +89222,10 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
   let ptr = getReg('a4');
   let a5 = a5_;
   let ptr2 = getReg('a6');
-  let d0 = d0_;
+  let recordOwner = recordOwner_;
   let d1 = d1_;
   let d2 = getReg('d2');
-  let d3 = d3_;
+  let target = target_;
   let count = getReg('d4');
   let wallByte = wallByte_;
   let save_d2_0 = 0;
@@ -89264,7 +89264,7 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
   let t33 = 0;
   let t34 = 0;
   let t35 = 0;
-  const _t0 = tick(152, 0x0b738) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t0) takeIrq(); }
+  const _t0 = tick(152, 0x0b738) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t0) takeIrq(); }
   push(ptr2, 4);
   ptr2 = stackPointer();
   drop(-4);
@@ -89274,22 +89274,22 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
   push(dst2, 4);
   push(wallByte, 4);
   push(count, 4);
-  push(d3, 4);
+  push(target, 4);
   push(d2, 4);
   save_d2_0 = d2;
-  save_d3_1 = d3;
+  save_d3_1 = target;
   save_d4_2 = count;
   save_d5_3 = wallByte;
   save_a2_4 = dst2;
   save_a3_5 = a3;
   save_a4_6 = ptr;
   save_a5_7 = a5;
-  dst2 = (arg0) >>> 0;
+  dst2 = (player) >>> 0;
   a3 = (0x3e1cb0) >>> 0;
   t8 = load32(dst2 + 0x34);
   ptr = (t8) >>> 0;
   if (dst2 !== load32(0x3e1c84)) {
-    const _t2 = tick(52, 0x0b75a) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(dst2, load32(0x3e1c84), 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t2) takeIrq(); }
+    const _t2 = tick(52, 0x0b75a) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(dst2, load32(0x3e1c84), 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t2) takeIrq(); }
     d1 = (0) >>> 0;
     t9 = load8(dst2 + 0x2);
     d1 = ((d1 & 0xffffff00) | (t9 & 255));
@@ -89298,11 +89298,11 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
     wallByte = ((wallByte & 0xffffff00) | (load8((a0 + (d1 | 0))) & 255));
     setFlagsCmp((wallByte & 255), 0, 8);
   } else {
-    const _t1 = tick(14, 0x0b756) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(dst2, load32(0x3e1c84), 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t1) takeIrq(); }
+    const _t1 = tick(14, 0x0b756) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(dst2, load32(0x3e1c84), 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t1) takeIrq(); }
     wallByte = ((wallByte & 0xffff0000) | (0 & 65535));
     setFlagsCmp((wallByte & 65535), 0, 16);
   }
-  const _t3 = tick(32, 0x0b76c) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t3) takeIrq(); }
+  const _t3 = tick(32, 0x0b76c) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t3) takeIrq(); }
   d1 = (14) >>> 0;
   count = (7) >>> 0;
   d2 = (0x3e1bc6) >>> 0;
@@ -89310,61 +89310,61 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
   setFlagsCmp(d2, 0, 32);
   l4: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 4 did not end');
-    const _t4 = tick(44, 0x0b77c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t4) takeIrq(); }
+    const _t4 = tick(44, 0x0b77c) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t4) takeIrq(); }
     t10 = load32(ptr + 0x4);
-    d3 = (t10) >>> 0;
-    d0 = (0) >>> 0;
+    target = (t10) >>> 0;
+    recordOwner = (0) >>> 0;
     t11 = load8(ptr + 0x3);
-    d0 = ((d0 & 0xffffff00) | (t11 & 255));
-    setFlagsCmp((d0 & 65535), (wallByte & 65535), 16);
-    if ((((d0 & 65535)) & 65535) !== (((wallByte & 65535)) & 65535)) {
-      const _t9 = tick(26, 0x0b7da) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t9) takeIrq(); }
+    recordOwner = ((recordOwner & 0xffffff00) | (t11 & 255));
+    setFlagsCmp((recordOwner & 65535), (wallByte & 65535), 16);
+    if ((((recordOwner & 65535)) & 65535) !== (((wallByte & 65535)) & 65535)) {
+      const _t9 = tick(26, 0x0b7da) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t9) takeIrq(); }
       ptr = ((ptr + d1)) >>> 0;
       setFlagsCmp(d2, ptr, 32);
       if (d2 !== ptr) {
       } else {
-        const _t10 = tick(6, 0x0b7e0) ? 1 : 0; if (_t10 || SPILL_ALL) { setFlagsCmp(d2, ptr, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t10) takeIrq(); }
+        const _t10 = tick(6, 0x0b7e0) ? 1 : 0; if (_t10 || SPILL_ALL) { setFlagsCmp(d2, ptr, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t10) takeIrq(); }
         ptr = (a0) >>> 0;
         setFlagsCmp(d2, ptr, 32);
       }
-      const _t11 = tick(10, 0x0b7e2) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp(d2, ptr, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t11) takeIrq(); }
+      const _t11 = tick(10, 0x0b7e2) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp(d2, ptr, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t11) takeIrq(); }
       count = ((count & 0xffff0000) | (((count & 0xffff) - 1) & 0xffff));
       setFlagsCmp(d2, ptr, 32);
       if ((count & 0xffff) !== 0xffff) {
         continue l4;
       }
     } else {
-      const _t5 = tick(16, 0x0b78a) ? 1 : 0; if (_t5 || SPILL_ALL) { setFlagsCmp((d0 & 65535), (wallByte & 65535), 16); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t5) takeIrq(); }
-      setFlagsCmp(d3, 0, 32);
-      if (d3 === 0) {
-        const _t9 = tick(26, 0x0b7da) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t9) takeIrq(); }
+      const _t5 = tick(16, 0x0b78a) ? 1 : 0; if (_t5 || SPILL_ALL) { setFlagsCmp((recordOwner & 65535), (wallByte & 65535), 16); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t5) takeIrq(); }
+      setFlagsCmp(target, 0, 32);
+      if (target === 0) {
+        const _t9 = tick(26, 0x0b7da) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t9) takeIrq(); }
         ptr = ((ptr + d1)) >>> 0;
         setFlagsCmp(d2, ptr, 32);
         if (d2 !== ptr) {
         } else {
-          const _t10 = tick(6, 0x0b7e0) ? 1 : 0; if (_t10 || SPILL_ALL) { setFlagsCmp(d2, ptr, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t10) takeIrq(); }
+          const _t10 = tick(6, 0x0b7e0) ? 1 : 0; if (_t10 || SPILL_ALL) { setFlagsCmp(d2, ptr, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t10) takeIrq(); }
           ptr = (a0) >>> 0;
           setFlagsCmp(d2, ptr, 32);
         }
-        const _t11 = tick(10, 0x0b7e2) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp(d2, ptr, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t11) takeIrq(); }
+        const _t11 = tick(10, 0x0b7e2) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp(d2, ptr, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t11) takeIrq(); }
         count = ((count & 0xffff0000) | (((count & 0xffff) - 1) & 0xffff));
         setFlagsCmp(d2, ptr, 32);
         if ((count & 0xffff) !== 0xffff) {
           continue l4;
         }
       } else {
-        const _t6 = tick(24, 0x0b78e) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp(d3, 0, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t6) takeIrq(); }
-        a0 = (d3) >>> 0;
+        const _t6 = tick(24, 0x0b78e) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp(target, 0, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t6) takeIrq(); }
+        a0 = (target) >>> 0;
         t12 = load8(a0);
         setFlagsCmp(t12, 0, 8);
         if (((t12) & 255) !== ((0) & 255)) {
         } else {
-          const _t7 = tick(22, 0x0b794) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp(t12, 0, 8); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t7) takeIrq(); }
+          const _t7 = tick(22, 0x0b794) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp(t12, 0, 8); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t7) takeIrq(); }
           t13 = load8(dst2 + 0x22);
           setFlagsCmp(t13, 0, 8);
           if ((((t13) << 24) >> 24) < (((0) << 24) >> 24)) {
           } else {
-            const _t8 = tick(234, 0x0b79a) ? 1 : 0; if (_t8 || SPILL_ALL) { setFlagsCmp(t13, 0, 8); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t8) takeIrq(); }
+            const _t8 = tick(234, 0x0b79a) ? 1 : 0; if (_t8 || SPILL_ALL) { setFlagsCmp(t13, 0, 8); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t8) takeIrq(); }
             a0 = ((dst2 + 0x3a)) >>> 0;
             dst = ((ptr2 + -0x2)) >>> 0;
             t14 = load8(a0);
@@ -89378,7 +89378,7 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
             store8(dst, t17);
             dst = (dst + 1);
             a0 = ((ptr2 + -0x2)) >>> 0;
-            dst = (d3) >>> 0;
+            dst = (target) >>> 0;
             t18 = load8(a0);
             a0 = (a0 + 1);
             t19 = t18;
@@ -89389,15 +89389,15 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
             t21 = t20;
             store8(dst, t21);
             dst = (dst + 1);
-            d0 = (0) >>> 0;
+            recordOwner = (0) >>> 0;
             t22 = load8(a3);
-            d0 = ((d0 & 0xffffff00) | (t22 & 255));
-            t23 = (d0 & 65535);
-            t24 = (d0 & 65535);
-            d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
+            recordOwner = ((recordOwner & 0xffffff00) | (t22 & 255));
+            t23 = (recordOwner & 65535);
+            t24 = (recordOwner & 65535);
+            recordOwner = ((recordOwner & 0xffff0000) | (((recordOwner & 65535) + (recordOwner & 65535)) & 65535));
             a0 = (0x3e1c88) >>> 0;
             dst = ((ptr2 + -0x2)) >>> 0;
-            a0 = ((a0 + ((((d0 & 65535)) << 16) >> 16))) >>> 0;
+            a0 = ((a0 + ((((recordOwner & 65535)) << 16) >> 16))) >>> 0;
             t25 = load8(dst);
             dst = (dst + 1);
             t26 = t25;
@@ -89408,16 +89408,16 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
             t28 = t27;
             store8(a0, t28);
             a0 = (a0 + 1);
-            d0 = (0) >>> 0;
+            recordOwner = (0) >>> 0;
             t29 = load8(a3);
-            d0 = ((d0 & 0xffffff00) | (t29 & 255));
-            t30 = d0;
+            recordOwner = ((recordOwner & 0xffffff00) | (t29 & 255));
+            t30 = recordOwner;
             t31 = 0x1;
-            d0 = ((d0 + 0x1)) >>> 0;
+            recordOwner = ((recordOwner + 0x1)) >>> 0;
             d1 = (7) >>> 0;
-            t32 = (d0 & d1);
-            d0 = (t32) >>> 0;
-            t33 = (d0 & 255);
+            t32 = (recordOwner & d1);
+            recordOwner = (t32) >>> 0;
+            t33 = (recordOwner & 255);
             store8(a3, t33);
             t34 = 0xff;
             store8(dst2 + 0x22, t34);
@@ -89427,12 +89427,12 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
         }
       }
     }
-    const _t12 = tick(122, 0x0b7e6) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t12) takeIrq(); }
+    const _t12 = tick(122, 0x0b7e6) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t12) takeIrq(); }
     a0 = (load32(0x3e1c84)) >>> 0;
     t35 = ptr;
     store32(a0 + 0x34, t35);
     d2 = load32((ptr2 + -0x24) + 0);
-    d3 = load32((ptr2 + -0x24) + 4);
+    target = load32((ptr2 + -0x24) + 4);
     count = load32((ptr2 + -0x24) + 8);
     wallByte = load32((ptr2 + -0x24) + 12);
     dst2 = load32((ptr2 + -0x24) + 16);
@@ -89449,27 +89449,27 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
     setReg('a4', ptr);
     setReg('a5', a5);
     setReg('a6', ptr2);
-    setReg('d0', d0);
+    setReg('d0', recordOwner);
     setReg('d1', d1);
     setReg('d2', d2);
-    setReg('d3', d3);
+    setReg('d3', target);
     setReg('d4', count);
     setReg('d5', wallByte);
-  setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte);   return;
+  setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte);   return;
     break;
   }
-  const _t6 = tick(24, 0x0b78e) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp(d3, 0, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t6) takeIrq(); }
-  a0 = (d3) >>> 0;
+  const _t6 = tick(24, 0x0b78e) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp(target, 0, 32); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t6) takeIrq(); }
+  a0 = (target) >>> 0;
   t12 = load8(a0);
   setFlagsCmp(t12, 0, 8);
   if (((t12) & 255) !== ((0) & 255)) {
   } else {
-    const _t7 = tick(22, 0x0b794) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp(t12, 0, 8); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t7) takeIrq(); }
+    const _t7 = tick(22, 0x0b794) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp(t12, 0, 8); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t7) takeIrq(); }
     t13 = load8(dst2 + 0x22);
     setFlagsCmp(t13, 0, 8);
     if ((((t13) << 24) >> 24) < (((0) << 24) >> 24)) {
     } else {
-      const _t8 = tick(234, 0x0b79a) ? 1 : 0; if (_t8 || SPILL_ALL) { setFlagsCmp(t13, 0, 8); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t8) takeIrq(); }
+      const _t8 = tick(234, 0x0b79a) ? 1 : 0; if (_t8 || SPILL_ALL) { setFlagsCmp(t13, 0, 8); setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t8) takeIrq(); }
       a0 = ((dst2 + 0x3a)) >>> 0;
       dst = ((ptr2 + -0x2)) >>> 0;
       t14 = load8(a0);
@@ -89483,7 +89483,7 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
       store8(dst, t17);
       dst = (dst + 1);
       a0 = ((ptr2 + -0x2)) >>> 0;
-      dst = (d3) >>> 0;
+      dst = (target) >>> 0;
       t18 = load8(a0);
       a0 = (a0 + 1);
       t19 = t18;
@@ -89494,15 +89494,15 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
       t21 = t20;
       store8(dst, t21);
       dst = (dst + 1);
-      d0 = (0) >>> 0;
+      recordOwner = (0) >>> 0;
       t22 = load8(a3);
-      d0 = ((d0 & 0xffffff00) | (t22 & 255));
-      t23 = (d0 & 65535);
-      t24 = (d0 & 65535);
-      d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + (d0 & 65535)) & 65535));
+      recordOwner = ((recordOwner & 0xffffff00) | (t22 & 255));
+      t23 = (recordOwner & 65535);
+      t24 = (recordOwner & 65535);
+      recordOwner = ((recordOwner & 0xffff0000) | (((recordOwner & 65535) + (recordOwner & 65535)) & 65535));
       a0 = (0x3e1c88) >>> 0;
       dst = ((ptr2 + -0x2)) >>> 0;
-      a0 = ((a0 + ((((d0 & 65535)) << 16) >> 16))) >>> 0;
+      a0 = ((a0 + ((((recordOwner & 65535)) << 16) >> 16))) >>> 0;
       t25 = load8(dst);
       dst = (dst + 1);
       t26 = t25;
@@ -89513,16 +89513,16 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
       t28 = t27;
       store8(a0, t28);
       a0 = (a0 + 1);
-      d0 = (0) >>> 0;
+      recordOwner = (0) >>> 0;
       t29 = load8(a3);
-      d0 = ((d0 & 0xffffff00) | (t29 & 255));
-      t30 = d0;
+      recordOwner = ((recordOwner & 0xffffff00) | (t29 & 255));
+      t30 = recordOwner;
       t31 = 0x1;
-      d0 = ((d0 + 0x1)) >>> 0;
+      recordOwner = ((recordOwner + 0x1)) >>> 0;
       d1 = (7) >>> 0;
-      t32 = (d0 & d1);
-      d0 = (t32) >>> 0;
-      t33 = (d0 & 255);
+      t32 = (recordOwner & d1);
+      recordOwner = (t32) >>> 0;
+      t33 = (recordOwner & 255);
       store8(a3, t33);
       t34 = 0xff;
       store8(dst2 + 0x22, t34);
@@ -89530,12 +89530,12 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
       setFlagsCmp(t34, 0, 8);
     }
   }
-  const _t12 = tick(122, 0x0b7e6) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); if (_t12) takeIrq(); }
+  const _t12 = tick(122, 0x0b7e6) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); if (_t12) takeIrq(); }
   a0 = (load32(0x3e1c84)) >>> 0;
   t35 = ptr;
   store32(a0 + 0x34, t35);
   d2 = load32((ptr2 + -0x24) + 0);
-  d3 = load32((ptr2 + -0x24) + 4);
+  target = load32((ptr2 + -0x24) + 4);
   count = load32((ptr2 + -0x24) + 8);
   wallByte = load32((ptr2 + -0x24) + 12);
   dst2 = load32((ptr2 + -0x24) + 16);
@@ -89552,13 +89552,13 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
   setReg('a4', ptr);
   setReg('a5', a5);
   setReg('a6', ptr2);
-  setReg('d0', d0);
+  setReg('d0', recordOwner);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
+  setReg('d3', target);
   setReg('d4', count);
   setReg('d5', wallByte);
-  setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', d0); setReg('d1', d1); setReg('d2', d2); setReg('d3', d3); setReg('d4', count); setReg('d5', wallByte); return;
+  setReg('a0', a0); setReg('a1', dst); setReg('a2', dst2); setReg('a3', a3); setReg('a4', ptr); setReg('a5', a5); setReg('a6', ptr2); setReg('d0', recordOwner); setReg('d1', d1); setReg('d2', d2); setReg('d3', target); setReg('d4', count); setReg('d5', wallByte); return;
   setReg('a0', a0);
   setReg('a1', dst);
   setReg('a2', dst2);
@@ -89566,10 +89566,10 @@ export function findMovingUnitNearestRecord(a0_: number, dst_: number, a5_: numb
   setReg('a4', ptr);
   setReg('a5', a5);
   setReg('a6', ptr2);
-  setReg('d0', d0);
+  setReg('d0', recordOwner);
   setReg('d1', d1);
   setReg('d2', d2);
-  setReg('d3', d3);
+  setReg('d3', target);
   setReg('d4', count);
   setReg('d5', wallByte);
 }

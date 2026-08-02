@@ -4027,6 +4027,18 @@
     "d5": {
       "name": "wallByte",
       "why": "the player's byte from 0x1000a indexed by its byte at 2, or zero when the player is the current one - the value the search matches cells against."
+    },
+    "stack4": {
+      "name": "player",
+      "why": "the longword at 8(a6). Compared against 0x3e1c84 - the current player - and when they match the filter byte is ZEROED rather than looked up, so the search behaves differently on the caller's own behalf."
+    },
+    "d3": {
+      "name": "target",
+      "why": "the longword at 4 of the record being examined; a zero there skips the record, and when it is kept the marked byte pair at 0x3a of the player is copied THROUGH it - so it is where the answer goes as well as what is tested."
+    },
+    "d0": {
+      "name": "recordOwner",
+      "why": "the byte at 3 of the record, compared against the player's filter byte - so records belonging to someone else are skipped before anything else is read."
     }
   },
   "0xf79e": {
