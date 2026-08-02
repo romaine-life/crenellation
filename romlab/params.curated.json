@@ -1116,5 +1116,79 @@
       "name": "powerOn",
       "why": "1 when the board just came up and 0 when the operator asked from the menu - 0x130ee is the entry that clears it - and 0x1378e reads it to decide whether to run the long RAM passes."
     }
+  },
+  "0x1378e": {
+    "a1": {
+      "name": "regionStart",
+      "why": "the low end of the region under test, arriving in the register 0x1357c loaded it into from the table entry - the RAM test takes nothing on the stack because there is not one yet."
+    },
+    "a2": {
+      "name": "regionEnd",
+      "why": "the high end, compared with cmpa.l to end each sweep, and the pass that walks downward starts from `lea $2(a2),a0`."
+    }
+  },
+  "0x11f2a": {
+    "a0": {
+      "name": "src",
+      "why": "the compressed stream, read with (a0)+ for the control byte and for every operand after it."
+    },
+    "a1": {
+      "name": "dst",
+      "why": "the destination, advanced with (a1)+ and wrapped by adda 0x1f8 whenever the row counter runs out - eight bytes wide on a 0x200 stride."
+    },
+    "d0": {
+      "name": "control",
+      "why": "the byte just read, shifted left to test its top bits one at a time - `asl.b #$1` then `bmi` rather than a mask, so the flags do the selecting."
+    },
+    "d1": {
+      "name": "count",
+      "why": "the run length, taken from the control byte's low five bits on the negative paths and from its high nibble on the positive one."
+    },
+    "d2": {
+      "name": "paletteBase",
+      "why": "added to every pixel emitted, so a whole block moves palette bank by changing this alone."
+    },
+    "d4": {
+      "name": "rowsLeft",
+      "why": "counts the eight bytes of a column; when the dbra runs out the destination jumps by 0x1f8 and it is reloaded with 7."
+    }
+  },
+  "0xbc2": {
+    "d4": {
+      "name": "wallByteThree",
+      "why": "the player's byte from 0x1000a or'd with 3 - one of the two forms a wall can read as, and the cell ahead matching EITHER this or wallByteOne is what counts as wall."
+    },
+    "d5": {
+      "name": "wallByteOne",
+      "why": "the same byte or'd with 1, the other accepted wall form."
+    },
+    "d6": {
+      "name": "aheadDelta",
+      "why": "the cell-address step for the current direction, from the table at 0xfcca."
+    },
+    "d7": {
+      "name": "leftDelta",
+      "why": "the step from the parallel table at 0xfcea, which is what the walk turns onto - the two tables are the whole geometry of the boundary follow."
+    }
+  },
+  "0x8b4": {
+    "d5": {
+      "name": "streamByte",
+      "why": "the byte just taken from the path stream; negative ends the walk and 0x0b switches to the second delta table."
+    },
+    "d6": {
+      "name": "cellAddr",
+      "why": "the running cell address, advanced by the delta from 0xfcca rather than recomputed from the coordinates."
+    }
+  },
+  "0x5ea2": {
+    "d2": {
+      "name": "wallByte",
+      "why": "the current player's byte from 0x1000a indexed by the player's byte at 2 - the value or'd with 1 before being laid, and the one the 0xc0 owner test is compared against."
+    },
+    "a3": {
+      "name": "stackSlot",
+      "why": "the slot 0x663c reserved, written through only on the path that pushes the 0xff empty marker back before the fill stops."
+    }
   }
 }
