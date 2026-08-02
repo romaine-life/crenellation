@@ -145112,14 +145112,14 @@ export function findNthColonSeparatedField(index_: number, count_: number, count
   setReg('d1', count);
 }
 
-export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number, a3_: number, a4_: number, a5_: number, dst_: number, index_: number, count2_: number, limit_: number, d3_: number, kind3_: number, kind_: number, kind2_: number, d7_: number, index3: number): void {
+export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, drawWithDefaults_: number, drawB_: number, drawNumber_: number, a5_: number, dst_: number, index_: number, count2_: number, limit_: number, d3_: number, kind3_: number, kind_: number, kind2_: number, d7_: number, index3: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
   let ptr = ptr_;
-  let a2 = a2_;
-  let a3 = a3_;
-  let a4 = a4_;
+  let drawWithDefaults = drawWithDefaults_;
+  let drawB = drawB_;
+  let drawNumber = drawNumber_;
   let a5 = a5_;
   let dst = dst_;
   let index = index_;
@@ -145441,14 +145441,14 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
-        _t0 = tick(178, 0x1594c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t0) takeIrq(); }
+        _t0 = tick(178, 0x1594c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t0) takeIrq(); }
         push(dst, 4);
         dst = stackPointer();
         drop(-20);
         push(a5, 4);
-        push(a4, 4);
-        push(a3, 4);
-        push(a2, 4);
+        push(drawNumber, 4);
+        push(drawB, 4);
+        push(drawWithDefaults, 4);
         push(d7, 4);
         push(kind2, 4);
         push(kind, 4);
@@ -145461,23 +145461,23 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         save_d5_3 = kind;
         save_d6_4 = kind2;
         save_d7_5 = d7;
-        save_a2_6 = a2;
-        save_a3_7 = a3;
-        save_a4_8 = a4;
+        save_a2_6 = drawWithDefaults;
+        save_a3_7 = drawB;
+        save_a4_8 = drawNumber;
         save_a5_9 = a5;
         limit = (index3) >>> 0;
         t10 = 0;
         store16(dst + -0x8, t10);
         t11 = load16(dst + -0x8);
-        a2 = (0x17fcc) >>> 0;
-        a3 = (0x1851c) >>> 0;
-        a4 = (0x18b76) >>> 0;
+        drawWithDefaults = (0x17fcc) >>> 0;
+        drawB = (0x1851c) >>> 0;
+        drawNumber = (0x18b76) >>> 0;
         t12 = load16(dst + -0x8);
         setFlagsCmp(t12, 0, 16);
         _at = (((t12) & 65535) === ((0) & 65535)) ? 93 : 1; continue dispatch;
       }
       case 1: {
-        _t1 = tick(22, 0x15976) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t12, 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t1) takeIrq(); }
+        _t1 = tick(22, 0x15976) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t12, 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t1) takeIrq(); }
         t13 = 0;
         store16(dst + -0x4, t13);
         t14 = load16(dst + -0x4);
@@ -145485,12 +145485,12 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 92; continue dispatch;
       }
       case 2: {
-        _t2 = tick(28, 0x1597e) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t2) takeIrq(); }
+        _t2 = tick(28, 0x1597e) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t2) takeIrq(); }
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -145505,9 +145505,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -145521,12 +145521,12 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 3; continue dispatch;
       }
       case 3: {
-        _t3 = tick(28, 0x15984) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t3) takeIrq(); }
+        _t3 = tick(28, 0x15984) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t3) takeIrq(); }
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -145541,9 +145541,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -145557,24 +145557,24 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 4; continue dispatch;
       }
       case 4: {
-        _t4 = tick(26, 0x1598a) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t4) takeIrq(); }
+        _t4 = tick(26, 0x1598a) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t4) takeIrq(); }
         t15 = load8(0x372);
         _at = (((t15) & 255) === ((0) & 255)) ? 6 : 5; continue dispatch;
       }
       case 5: {
-        _t5 = tick(14, 0x15992) ? 1 : 0; if (_t5 || SPILL_ALL) { setFlagsCmp(t15, 0, 8); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t5) takeIrq(); }
+        _t5 = tick(14, 0x15992) ? 1 : 0; if (_t5 || SPILL_ALL) { setFlagsCmp(t15, 0, 8); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t5) takeIrq(); }
         index = (4) >>> 0;
         setFlagsCmp((index & 65535), 0, 16);
         _at = 7; continue dispatch;
       }
       case 6: {
-        _t6 = tick(4, 0x15996) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp(t15, 0, 8); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t6) takeIrq(); }
+        _t6 = tick(4, 0x15996) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsCmp(t15, 0, 8); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t6) takeIrq(); }
         index = (16) >>> 0;
         setFlagsCmp((index & 65535), 0, 16);
         _at = 7; continue dispatch;
       }
       case 7: {
-        _t7 = tick(96, 0x15998) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t7) takeIrq(); }
+        _t7 = tick(96, 0x15998) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t7) takeIrq(); }
         t16 = 0;
         push(t16, 4);
         push(0x1d7ba, 4);
@@ -145584,9 +145584,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t17, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -145597,13 +145597,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a2, 0x159a8);
+        callRom(drawWithDefaults, 0x159a8);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -145617,7 +145617,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 8; continue dispatch;
       }
       case 8: {
-        _t8 = tick(66, 0x159a8) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t8) takeIrq(); }
+        _t8 = tick(66, 0x159a8) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t8) takeIrq(); }
         t18 = load16(dst + -0x4);
         index = ((index & 0xffff0000) | (t18 & 65535));
         t19 = ((((index & 65535)) << 16) >> 16);
@@ -145631,9 +145631,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t22, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -145648,9 +145648,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -145664,7 +145664,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 9; continue dispatch;
       }
       case 9: {
-        _t9 = tick(142, 0x159b6) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t20, t21, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t9) takeIrq(); }
+        _t9 = tick(142, 0x159b6) ? 1 : 0; if (_t9 || SPILL_ALL) { setXAdd(t20, t21, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t9) takeIrq(); }
         t23 = 0;
         push(t23, 4);
         t24 = load16(dst + -0x4);
@@ -145682,9 +145682,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t28, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -145695,13 +145695,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a2, 0x159d2);
+        callRom(drawWithDefaults, 0x159d2);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -145715,7 +145715,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 10; continue dispatch;
       }
       case 10: {
-        _t10 = tick(60, 0x159d2) ? 1 : 0; if (_t10 || SPILL_ALL) { setXShift((((t25) >>> 14) & 1), 1); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t10) takeIrq(); }
+        _t10 = tick(60, 0x159d2) ? 1 : 0; if (_t10 || SPILL_ALL) { setXShift((((t25) >>> 14) & 1), 1); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t10) takeIrq(); }
         t29 = load16(dst + -0x4);
         index = ((index & 0xffff0000) | (t29 & 65535));
         t30 = ((((index & 65535)) << 16) >> 16);
@@ -145726,9 +145726,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t31, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -145743,9 +145743,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -145759,7 +145759,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 11; continue dispatch;
       }
       case 11: {
-        _t11 = tick(36, 0x159de) ? 1 : 0; if (_t11 || SPILL_ALL) { setXShift((((t25) >>> 14) & 1), 1); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t11) takeIrq(); }
+        _t11 = tick(36, 0x159de) ? 1 : 0; if (_t11 || SPILL_ALL) { setXShift((((t25) >>> 14) & 1), 1); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t11) takeIrq(); }
         t32 = (index & 65535);
         store16(dst + -0x2, t32);
         drop(40);
@@ -145768,7 +145768,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (((t32) & 65535) !== ((0) & 65535)) ? 31 : 12; continue dispatch;
       }
       case 12: {
-        _t12 = tick(102, 0x159ea) ? 1 : 0; if (_t12 || SPILL_ALL) { setXShift((((t25) >>> 14) & 1), 1); setFlagsCmp(t32, 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t12) takeIrq(); }
+        _t12 = tick(102, 0x159ea) ? 1 : 0; if (_t12 || SPILL_ALL) { setXShift((((t25) >>> 14) & 1), 1); setFlagsCmp(t32, 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t12) takeIrq(); }
         kind = ((kind & 0xffff0000) | (0 & 65535));
         kind3 = (4) >>> 0;
         kind3 = (Math.imul(((((kind3 & 65535)) << 16) >> 16), (((0x1e) << 16) >> 16))) >>> 0;
@@ -145784,43 +145784,43 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 13; continue dispatch;
       }
       case 13: {
-        _t13 = tick(18, 0x159fc) ? 1 : 0; if (_t13 || SPILL_ALL) { setXSub(t33, t34, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t13) takeIrq(); }
+        _t13 = tick(18, 0x159fc) ? 1 : 0; if (_t13 || SPILL_ALL) { setXSub(t33, t34, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t13) takeIrq(); }
         _at = (((((kind & 65535)) << 16) >> 16) >= (((0xa) << 16) >> 16)) ? 15 : 14; continue dispatch;
       }
       case 14: {
-        _t14 = tick(14, 0x15a02) ? 1 : 0; if (_t14 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((kind & 65535), 0xa, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t14) takeIrq(); }
+        _t14 = tick(14, 0x15a02) ? 1 : 0; if (_t14 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((kind & 65535), 0xa, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t14) takeIrq(); }
         d3 = (3) >>> 0;
         setXSub(t33, t34, 16);
         setFlagsCmp((d3 & 65535), 0, 16);
         _at = 19; continue dispatch;
       }
       case 15: {
-        _t15 = tick(18, 0x15a06) ? 1 : 0; if (_t15 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((kind & 65535), 0xa, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t15) takeIrq(); }
+        _t15 = tick(18, 0x15a06) ? 1 : 0; if (_t15 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((kind & 65535), 0xa, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t15) takeIrq(); }
         _at = (((((kind & 65535)) << 16) >> 16) >= (((0x64) << 16) >> 16)) ? 17 : 16; continue dispatch;
       }
       case 16: {
-        _t16 = tick(14, 0x15a0c) ? 1 : 0; if (_t16 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((kind & 65535), 0x64, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t16) takeIrq(); }
+        _t16 = tick(14, 0x15a0c) ? 1 : 0; if (_t16 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((kind & 65535), 0x64, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t16) takeIrq(); }
         index = (2) >>> 0;
         setXSub(t33, t34, 16);
         setFlagsCmp((index & 65535), 0, 16);
         _at = 18; continue dispatch;
       }
       case 17: {
-        _t17 = tick(4, 0x15a10) ? 1 : 0; if (_t17 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((kind & 65535), 0x64, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t17) takeIrq(); }
+        _t17 = tick(4, 0x15a10) ? 1 : 0; if (_t17 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((kind & 65535), 0x64, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t17) takeIrq(); }
         index = (1) >>> 0;
         setXSub(t33, t34, 16);
         setFlagsCmp((index & 65535), 0, 16);
         _at = 18; continue dispatch;
       }
       case 18: {
-        _t18 = tick(4, 0x15a12) ? 1 : 0; if (_t18 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t18) takeIrq(); }
+        _t18 = tick(4, 0x15a12) ? 1 : 0; if (_t18 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((index & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t18) takeIrq(); }
         d3 = ((d3 & 0xffff0000) | ((index & 65535) & 65535));
         setXSub(t33, t34, 16);
         setFlagsCmp((d3 & 65535), 0, 16);
         _at = 19; continue dispatch;
       }
       case 19: {
-        _t19 = tick(94, 0x15a14) ? 1 : 0; if (_t19 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((d3 & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t19) takeIrq(); }
+        _t19 = tick(94, 0x15a14) ? 1 : 0; if (_t19 || SPILL_ALL) { setXSub(t33, t34, 16); setFlagsCmp((d3 & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t19) takeIrq(); }
         t36 = ((((kind & 65535)) << 16) >> 16);
         kind = (t36) >>> 0;
         t37 = kind;
@@ -145841,9 +145841,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t43, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -145858,9 +145858,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -145874,7 +145874,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 20; continue dispatch;
       }
       case 20: {
-        _t20 = tick(112, 0x15a28) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t39, t40, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t20) takeIrq(); }
+        _t20 = tick(112, 0x15a28) ? 1 : 0; if (_t20 || SPILL_ALL) { setXAdd(t39, t40, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t20) takeIrq(); }
         t44 = 0;
         push(t44, 4);
         push(0x1d7c6, 4);
@@ -145891,9 +145891,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t48, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -145904,13 +145904,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a2, 0x15a3e);
+        callRom(drawWithDefaults, 0x15a3e);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -145924,12 +145924,12 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 21; continue dispatch;
       }
       case 21: {
-        _t21 = tick(32, 0x15a3e) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t46, t47, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t21) takeIrq(); }
+        _t21 = tick(32, 0x15a3e) ? 1 : 0; if (_t21 || SPILL_ALL) { setXAdd(t46, t47, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t21) takeIrq(); }
         drop(28);
         _at = ((((kind2 & 65535)) & 65535) === ((0x13) & 65535)) ? 24 : 22; continue dispatch;
       }
       case 22: {
-        _t22 = tick(102, 0x15a48) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t46, t47, 32); setFlagsCmp((kind2 & 65535), 0x13, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t22) takeIrq(); }
+        _t22 = tick(102, 0x15a48) ? 1 : 0; if (_t22 || SPILL_ALL) { setXAdd(t46, t47, 32); setFlagsCmp((kind2 & 65535), 0x13, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t22) takeIrq(); }
         t49 = ((((kind3 & 65535)) << 16) >> 16);
         kind3 = (t49) >>> 0;
         t50 = kind3;
@@ -145947,9 +145947,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t54, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -145964,9 +145964,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -145980,13 +145980,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 23; continue dispatch;
       }
       case 23: {
-        _t23 = tick(24, 0x15a5c) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t52, t53, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t23) takeIrq(); }
+        _t23 = tick(24, 0x15a5c) ? 1 : 0; if (_t23 || SPILL_ALL) { setXAdd(t52, t53, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t23) takeIrq(); }
         drop(12);
         setXAdd(t52, t53, 32);
         _at = 26; continue dispatch;
       }
       case 24: {
-        _t24 = tick(110, 0x15a62) ? 1 : 0; if (_t24 || SPILL_ALL) { setXAdd(t46, t47, 32); setFlagsCmp((kind2 & 65535), 0x13, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t24) takeIrq(); }
+        _t24 = tick(110, 0x15a62) ? 1 : 0; if (_t24 || SPILL_ALL) { setXAdd(t46, t47, 32); setFlagsCmp((kind2 & 65535), 0x13, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t24) takeIrq(); }
         t55 = 0;
         push(t55, 4);
         push(0x1d7c8, 4);
@@ -145996,9 +145996,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(0, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146009,13 +146009,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a2, 0x15a74);
+        callRom(drawWithDefaults, 0x15a74);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146029,13 +146029,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 25; continue dispatch;
       }
       case 25: {
-        _t25 = tick(14, 0x15a74) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t46, t47, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t25) takeIrq(); }
+        _t25 = tick(14, 0x15a74) ? 1 : 0; if (_t25 || SPILL_ALL) { setXAdd(t46, t47, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t25) takeIrq(); }
         drop(16);
         setXAdd(t46, t47, 32);
         _at = 26; continue dispatch;
       }
       case 26: {
-        _t26 = tick(92, 0x15a78) ? 1 : 0; if (_t26 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t26) takeIrq(); }
+        _t26 = tick(92, 0x15a78) ? 1 : 0; if (_t26 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t26) takeIrq(); }
         kind = ((kind & 0xffff0000) | ((kind3 & 65535) & 65535));
         t56 = (kind & 65535);
         t57 = 0x1;
@@ -146057,9 +146057,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t64, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146074,9 +146074,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146090,7 +146090,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 27; continue dispatch;
       }
       case 27: {
-        _t27 = tick(112, 0x15a92) ? 1 : 0; if (_t27 || SPILL_ALL) { setXAdd(t58, t59, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t27) takeIrq(); }
+        _t27 = tick(112, 0x15a92) ? 1 : 0; if (_t27 || SPILL_ALL) { setXAdd(t58, t59, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t27) takeIrq(); }
         d3 = ((d3 & 0xffff0000) | ((index & 65535) & 65535));
         t65 = ((((index & 65535)) << 16) >> 16);
         index = (t65) >>> 0;
@@ -146110,9 +146110,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t70, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146127,9 +146127,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146143,7 +146143,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 28; continue dispatch;
       }
       case 28: {
-        _t28 = tick(36, 0x15aaa) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t68, t69, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t28) takeIrq(); }
+        _t28 = tick(36, 0x15aaa) ? 1 : 0; if (_t28 || SPILL_ALL) { setXAdd(t68, t69, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t28) takeIrq(); }
         t71 = load16(dst + -0x2);
         drop(12);
         setXAdd(t68, t69, 32);
@@ -146151,7 +146151,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (((((d3 & 65535)) << 16) >> 16) <= (((t71) << 16) >> 16)) ? 30 : 29; continue dispatch;
       }
       case 29: {
-        _t29 = tick(12, 0x15ab4) ? 1 : 0; if (_t29 || SPILL_ALL) { setXAdd(t68, t69, 32); setFlagsCmp((d3 & 65535), t71, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t29) takeIrq(); }
+        _t29 = tick(12, 0x15ab4) ? 1 : 0; if (_t29 || SPILL_ALL) { setXAdd(t68, t69, 32); setFlagsCmp((d3 & 65535), t71, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t29) takeIrq(); }
         t72 = (d3 & 65535);
         store16(dst + -0x2, t72);
         setXAdd(t68, t69, 32);
@@ -146159,7 +146159,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 30; continue dispatch;
       }
       case 30: {
-        _t30 = tick(22, 0x15ab8) ? 1 : 0; if (_t30 || SPILL_ALL) { setXAdd(t68, t69, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t30) takeIrq(); }
+        _t30 = tick(22, 0x15ab8) ? 1 : 0; if (_t30 || SPILL_ALL) { setXAdd(t68, t69, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t30) takeIrq(); }
         t73 = (kind2 & 65535);
         t74 = 0x1;
         kind2 = ((kind2 & 0xffff0000) | (((kind2 & 65535) + 0x1) & 65535));
@@ -146168,7 +146168,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (((((kind2 & 65535)) << 16) >> 16) < (((0x14) << 16) >> 16)) ? 13 : 31; continue dispatch;
       }
       case 31: {
-        _t31 = tick(38, 0x15ac2) ? 1 : 0; if (_t31 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t31) takeIrq(); }
+        _t31 = tick(38, 0x15ac2) ? 1 : 0; if (_t31 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t31) takeIrq(); }
         t75 = 0;
         store16(dst + -0x6, t75);
         t76 = load16(dst + -0x6);
@@ -146185,7 +146185,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 32; continue dispatch;
       }
       case 32: {
-        _t32 = tick(76, 0x15ad0) ? 1 : 0; if (_t32 || SPILL_ALL) { setXShift((((t78) >>> 0) & 1), 1); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t32) takeIrq(); }
+        _t32 = tick(76, 0x15ad0) ? 1 : 0; if (_t32 || SPILL_ALL) { setXShift((((t78) >>> 0) & 1), 1); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t32) takeIrq(); }
         t81 = ((((kind2 & 65535)) << 16) >> 16);
         kind2 = (t81) >>> 0;
         t82 = kind2;
@@ -146200,9 +146200,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t85, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146217,9 +146217,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146233,7 +146233,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 33; continue dispatch;
       }
       case 33: {
-        _t33 = tick(298, 0x15ae2) ? 1 : 0; if (_t33 || SPILL_ALL) { setXShift((((t78) >>> 0) & 1), 1); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t33) takeIrq(); }
+        _t33 = tick(298, 0x15ae2) ? 1 : 0; if (_t33 || SPILL_ALL) { setXShift((((t78) >>> 0) & 1), 1); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t33) takeIrq(); }
         t86 = load16(dst + -0x6);
         d7 = ((d7 & 0xffff0000) | (t86 & 65535));
         t87 = (d7 & 65535);
@@ -146252,9 +146252,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(index, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146269,9 +146269,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146290,7 +146290,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = ((((d3) >>> ((0x0) & 31)) & 1) === 0) ? 36 : 34; continue dispatch;
       }
       case 34: {
-        _t34 = tick(140, 0x15b00) ? 1 : 0; if (_t34 || SPILL_ALL) { setXAdd(t90, t91, 16); setFlagsBit(d3, 0x0, 31); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t34) takeIrq(); }
+        _t34 = tick(140, 0x15b00) ? 1 : 0; if (_t34 || SPILL_ALL) { setXAdd(t90, t91, 16); setFlagsBit(d3, 0x0, 31); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t34) takeIrq(); }
         t95 = 0;
         push(t95, 4);
         push(0x7e, 4);
@@ -146321,9 +146321,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t107, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146338,9 +146338,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146354,13 +146354,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 35; continue dispatch;
       }
       case 35: {
-        _t35 = tick(14, 0x15b22) ? 1 : 0; if (_t35 || SPILL_ALL) { setXAdd(t105, t106, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t35) takeIrq(); }
+        _t35 = tick(14, 0x15b22) ? 1 : 0; if (_t35 || SPILL_ALL) { setXAdd(t105, t106, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t35) takeIrq(); }
         drop(16);
         setXAdd(t105, t106, 32);
         _at = 36; continue dispatch;
       }
       case 36: {
-        _t36 = tick(16, 0x15b26) ? 1 : 0; if (_t36 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t36) takeIrq(); }
+        _t36 = tick(16, 0x15b26) ? 1 : 0; if (_t36 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t36) takeIrq(); }
         t108 = (d3 & 65535);
         t109 = ((0x1) & 63);
         t110 = (t109 >= 16 ? (((((((d3 & 65535)) << 16) >> 16)) < 0) ? -1 : 0) : ((((((d3 & 65535)) << 16) >> 16)) >> t109));
@@ -146370,7 +146370,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 39; continue dispatch;
       }
       case 37: {
-        _t37 = tick(126, 0x15b2a) ? 1 : 0; if (_t37 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t37) takeIrq(); }
+        _t37 = tick(126, 0x15b2a) ? 1 : 0; if (_t37 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t37) takeIrq(); }
         t111 = 0;
         push(t111, 4);
         push(0x80, 4);
@@ -146395,9 +146395,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t119, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146412,9 +146412,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146428,7 +146428,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 38; continue dispatch;
       }
       case 38: {
-        _t38 = tick(18, 0x15b48) ? 1 : 0; if (_t38 || SPILL_ALL) { setXAdd(t117, t118, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t38) takeIrq(); }
+        _t38 = tick(18, 0x15b48) ? 1 : 0; if (_t38 || SPILL_ALL) { setXAdd(t117, t118, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t38) takeIrq(); }
         drop(16);
         t120 = (d3 & 65535);
         t121 = 0x1;
@@ -146438,11 +146438,11 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 39; continue dispatch;
       }
       case 39: {
-        _t39 = tick(14, 0x15b4e) ? 1 : 0; if (_t39 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t39) takeIrq(); }
+        _t39 = tick(14, 0x15b4e) ? 1 : 0; if (_t39 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t39) takeIrq(); }
         _at = (((((d3 & 65535)) << 16) >> 16) > (((0) << 16) >> 16)) ? 37 : 40; continue dispatch;
       }
       case 40: {
-        _t40 = tick(22, 0x15b52) ? 1 : 0; if (_t40 || SPILL_ALL) { setFlagsCmp((d3 & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t40) takeIrq(); }
+        _t40 = tick(22, 0x15b52) ? 1 : 0; if (_t40 || SPILL_ALL) { setFlagsCmp((d3 & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t40) takeIrq(); }
         t122 = (kind2 & 65535);
         t123 = 0x1;
         kind2 = ((kind2 & 0xffff0000) | (((kind2 & 65535) + 0x1) & 65535));
@@ -146451,7 +146451,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (((((kind2 & 65535)) << 16) >> 16) < (((0x14) << 16) >> 16)) ? 32 : 41; continue dispatch;
       }
       case 41: {
-        _t41 = tick(124, 0x15b5c) ? 1 : 0; if (_t41 || SPILL_ALL) { setXAdd(t122, t123, 16); setFlagsCmp((kind2 & 65535), 0x14, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t41) takeIrq(); }
+        _t41 = tick(124, 0x15b5c) ? 1 : 0; if (_t41 || SPILL_ALL) { setXAdd(t122, t123, 16); setFlagsCmp((kind2 & 65535), 0x14, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t41) takeIrq(); }
         push(0x2040, 4);
         push(0x1d7ce, 4);
         push(0x17, 4);
@@ -146460,9 +146460,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp((kind2 & 65535), 0x14, 16);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146473,13 +146473,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a4, 0x15b70);
+        callRom(drawNumber, 0x15b70);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146493,7 +146493,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 42; continue dispatch;
       }
       case 42: {
-        _t42 = tick(186, 0x15b70) ? 1 : 0; if (_t42 || SPILL_ALL) { setXAdd(t122, t123, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t42) takeIrq(); }
+        _t42 = tick(186, 0x15b70) ? 1 : 0; if (_t42 || SPILL_ALL) { setXAdd(t122, t123, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t42) takeIrq(); }
         push(0x2040, 4);
         push(0x2, 4);
         push(0x5, 4);
@@ -146508,9 +146508,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t125, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146525,9 +146525,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146541,7 +146541,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 43; continue dispatch;
       }
       case 43: {
-        _t43 = tick(70, 0x15b92) ? 1 : 0; if (_t43 || SPILL_ALL) { setXAdd(t122, t123, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t43) takeIrq(); }
+        _t43 = tick(70, 0x15b92) ? 1 : 0; if (_t43 || SPILL_ALL) { setXAdd(t122, t123, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t43) takeIrq(); }
         index = (0) >>> 0;
         t126 = load16(dst + -0x6);
         index = ((index & 0xffff0000) | (t126 & 65535));
@@ -146561,7 +146561,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 47; continue dispatch;
       }
       case 44: {
-        _t44 = tick(76, 0x15ba8) ? 1 : 0; if (_t44 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t44) takeIrq(); }
+        _t44 = tick(76, 0x15ba8) ? 1 : 0; if (_t44 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t44) takeIrq(); }
         t133 = ((((kind2 & 65535)) << 16) >> 16);
         kind2 = (t133) >>> 0;
         t134 = kind2;
@@ -146575,9 +146575,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t137, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146592,9 +146592,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146608,7 +146608,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 45; continue dispatch;
       }
       case 45: {
-        _t45 = tick(32, 0x15bba) ? 1 : 0; if (_t45 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t45) takeIrq(); }
+        _t45 = tick(32, 0x15bba) ? 1 : 0; if (_t45 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t45) takeIrq(); }
         d3 = ((d3 & 0xffff0000) | ((index & 65535) & 65535));
         t138 = load16(dst + -0x6);
         drop(8);
@@ -146616,7 +146616,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = ((((d3 & 65535)) & 65535) >= ((t138) & 65535)) ? 48 : 46; continue dispatch;
       }
       case 46: {
-        _t46 = tick(32, 0x15bc4) ? 1 : 0; if (_t46 || SPILL_ALL) { setFlagsCmp((d3 & 65535), t138, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t46) takeIrq(); }
+        _t46 = tick(32, 0x15bc4) ? 1 : 0; if (_t46 || SPILL_ALL) { setFlagsCmp((d3 & 65535), t138, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t46) takeIrq(); }
         t139 = load16(dst + -0x6);
         index = ((index & 0xffff0000) | (t139 & 65535));
         t140 = (index & 65535);
@@ -146632,12 +146632,12 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 47; continue dispatch;
       }
       case 47: {
-        _t47 = tick(18, 0x15bd0) ? 1 : 0; if (_t47 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t47) takeIrq(); }
+        _t47 = tick(18, 0x15bd0) ? 1 : 0; if (_t47 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t47) takeIrq(); }
         setFlagsCmp((kind2 & 65535), 0x13, 16);
         _at = (((((kind2 & 65535)) << 16) >> 16) < (((0x13) << 16) >> 16)) ? 44 : 48; continue dispatch;
       }
       case 48: {
-        _t48 = tick(78, 0x15bd6) ? 1 : 0; if (_t48 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t48) takeIrq(); }
+        _t48 = tick(78, 0x15bd6) ? 1 : 0; if (_t48 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t48) takeIrq(); }
         t145 = ((((kind2 & 65535)) << 16) >> 16);
         kind2 = (t145) >>> 0;
         t146 = kind2;
@@ -146651,9 +146651,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t149, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146668,9 +146668,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146684,19 +146684,19 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 49; continue dispatch;
       }
       case 49: {
-        _t49 = tick(22, 0x15be6) ? 1 : 0; if (_t49 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t49) takeIrq(); }
+        _t49 = tick(22, 0x15be6) ? 1 : 0; if (_t49 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t49) takeIrq(); }
         d3 = (index) >>> 0;
         drop(8);
         _at = (d3 === 0) ? 55 : 50; continue dispatch;
       }
       case 50: {
-        _t50 = tick(14, 0x15bec) ? 1 : 0; if (_t50 || SPILL_ALL) { setFlagsCmp(d3, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t50) takeIrq(); }
+        _t50 = tick(14, 0x15bec) ? 1 : 0; if (_t50 || SPILL_ALL) { setFlagsCmp(d3, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t50) takeIrq(); }
         a0 = ((dst + -0x12)) >>> 0;
         setFlagsCmp(d3, 0, 32);
         _at = 51; continue dispatch;
       }
       case 51: {
-        _t51 = tick(46, 0x15bf0) ? 1 : 0; if (_t51 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t51) takeIrq(); }
+        _t51 = tick(46, 0x15bf0) ? 1 : 0; if (_t51 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t51) takeIrq(); }
         ptr = (d3) >>> 0;
         t150 = d3;
         t151 = 0x1;
@@ -146711,7 +146711,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = ((((index & 255)) & 255) !== ((0x3a) & 255)) ? 51 : 52; continue dispatch;
       }
       case 52: {
-        _t52 = tick(114, 0x15bfe) ? 1 : 0; if (_t52 || SPILL_ALL) { setXAdd(t150, t151, 32); setFlagsCmp((index & 255), 0x3a, 8); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t52) takeIrq(); }
+        _t52 = tick(114, 0x15bfe) ? 1 : 0; if (_t52 || SPILL_ALL) { setXAdd(t150, t151, 32); setFlagsCmp((index & 255), 0x3a, 8); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t52) takeIrq(); }
         a0 = ((a0 - 0x1)) >>> 0;
         t154 = 0;
         store8(a0, t154);
@@ -146725,13 +146725,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 53; continue dispatch;
       }
       case 53: {
-        _t53 = tick(20, 0x15c12) ? 1 : 0; if (_t53 || SPILL_ALL) { setXAdd(t150, t151, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t53) takeIrq(); }
+        _t53 = tick(20, 0x15c12) ? 1 : 0; if (_t53 || SPILL_ALL) { setXAdd(t150, t151, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t53) takeIrq(); }
         setXAdd(t150, t151, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146742,13 +146742,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a4, 0x15c14);
+        callRom(drawNumber, 0x15c14);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146762,13 +146762,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 54; continue dispatch;
       }
       case 54: {
-        _t54 = tick(24, 0x15c14) ? 1 : 0; if (_t54 || SPILL_ALL) { setXAdd(t150, t151, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t54) takeIrq(); }
+        _t54 = tick(24, 0x15c14) ? 1 : 0; if (_t54 || SPILL_ALL) { setXAdd(t150, t151, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t54) takeIrq(); }
         drop(16);
         setXAdd(t150, t151, 32);
         _at = 63; continue dispatch;
       }
       case 55: {
-        _t55 = tick(96, 0x15c1c) ? 1 : 0; if (_t55 || SPILL_ALL) { setFlagsCmp(d3, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t55) takeIrq(); }
+        _t55 = tick(96, 0x15c1c) ? 1 : 0; if (_t55 || SPILL_ALL) { setFlagsCmp(d3, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t55) takeIrq(); }
         kind = ((kind & 0xffff0000) | (0 & 65535));
         kind3 = (4) >>> 0;
         kind3 = (Math.imul(((((kind3 & 65535)) << 16) >> 16), (((0x1e) << 16) >> 16))) >>> 0;
@@ -146780,7 +146780,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = ((((kind2 & 65535)) & 65535) === ((0) & 65535)) ? 57 : 56; continue dispatch;
       }
       case 56: {
-        _t56 = tick(46, 0x15c2a) ? 1 : 0; if (_t56 || SPILL_ALL) { setXSub(t156, t157, 16); setFlagsCmp((kind2 & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t56) takeIrq(); }
+        _t56 = tick(46, 0x15c2a) ? 1 : 0; if (_t56 || SPILL_ALL) { setXSub(t156, t157, 16); setFlagsCmp((kind2 & 65535), 0, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t56) takeIrq(); }
         kind = ((kind & 0xffff0000) | ((kind2 & 65535) & 65535));
         t158 = (kind & 65535);
         t159 = 0x1;
@@ -146811,7 +146811,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 57; continue dispatch;
       }
       case 57: {
-        _t57 = tick(176, 0x15c40) ? 1 : 0; if (_t57 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t57) takeIrq(); }
+        _t57 = tick(176, 0x15c40) ? 1 : 0; if (_t57 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t57) takeIrq(); }
         push(0x2040, 4);
         push(0x1, 4);
         push(0x3, 4);
@@ -146824,9 +146824,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t174, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146841,9 +146841,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146857,12 +146857,12 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 58; continue dispatch;
       }
       case 58: {
-        _t58 = tick(32, 0x15c5e) ? 1 : 0; if (_t58 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t58) takeIrq(); }
+        _t58 = tick(32, 0x15c5e) ? 1 : 0; if (_t58 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t58) takeIrq(); }
         drop(24);
         _at = ((((kind2 & 65535)) & 65535) !== ((0x13) & 65535)) ? 60 : 59; continue dispatch;
       }
       case 59: {
-        _t59 = tick(114, 0x15c68) ? 1 : 0; if (_t59 || SPILL_ALL) { setFlagsCmp((kind2 & 65535), 0x13, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t59) takeIrq(); }
+        _t59 = tick(114, 0x15c68) ? 1 : 0; if (_t59 || SPILL_ALL) { setFlagsCmp((kind2 & 65535), 0x13, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t59) takeIrq(); }
         push(0x2040, 4);
         push(0x1d7e2, 4);
         push(0x17, 4);
@@ -146871,7 +146871,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 53; continue dispatch;
       }
       case 60: {
-        _t60 = tick(124, 0x15c7c) ? 1 : 0; if (_t60 || SPILL_ALL) { setFlagsCmp((kind2 & 65535), 0x13, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t60) takeIrq(); }
+        _t60 = tick(124, 0x15c7c) ? 1 : 0; if (_t60 || SPILL_ALL) { setFlagsCmp((kind2 & 65535), 0x13, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t60) takeIrq(); }
         push(0x2040, 4);
         push(0x1d7ec, 4);
         push(0x17, 4);
@@ -146879,9 +146879,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp((kind2 & 65535), 0x13, 16);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146892,13 +146892,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a4, 0x15c90);
+        callRom(drawNumber, 0x15c90);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146912,7 +146912,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 61; continue dispatch;
       }
       case 61: {
-        _t61 = tick(176, 0x15c90) ? 1 : 0; if (_t61 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t61) takeIrq(); }
+        _t61 = tick(176, 0x15c90) ? 1 : 0; if (_t61 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t61) takeIrq(); }
         push(0x2040, 4);
         push(0x2, 4);
         push(0x3, 4);
@@ -146925,9 +146925,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t176, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -146942,9 +146942,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -146958,12 +146958,12 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 62; continue dispatch;
       }
       case 62: {
-        _t62 = tick(14, 0x15cae) ? 1 : 0; if (_t62 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t62) takeIrq(); }
+        _t62 = tick(14, 0x15cae) ? 1 : 0; if (_t62 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t62) takeIrq(); }
         drop(40);
         _at = 63; continue dispatch;
       }
       case 63: {
-        _t63 = tick(58, 0x15cb2) ? 1 : 0; if (_t63 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t63) takeIrq(); }
+        _t63 = tick(58, 0x15cb2) ? 1 : 0; if (_t63 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t63) takeIrq(); }
         t177 = load16(dst + -0x4);
         index = ((index & 0xffff0000) | (t177 & 65535));
         t178 = ((((index & 65535)) << 16) >> 16);
@@ -146978,14 +146978,14 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (index !== count2) ? 72 : 64; continue dispatch;
       }
       case 64: {
-        _t64 = tick(30, 0x15cc4) ? 1 : 0; if (_t64 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(index, count2, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t64) takeIrq(); }
+        _t64 = tick(30, 0x15cc4) ? 1 : 0; if (_t64 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(index, count2, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t64) takeIrq(); }
         setXSub(t181, t182, 32);
         setFlagsCmp(index, count2, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147000,9 +147000,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147016,13 +147016,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 65; continue dispatch;
       }
       case 65: {
-        _t65 = tick(16, 0x15cc8) ? 1 : 0; if (_t65 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t65) takeIrq(); }
+        _t65 = tick(16, 0x15cc8) ? 1 : 0; if (_t65 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t65) takeIrq(); }
         setXSub(t181, t182, 32);
         setFlagsCmp(limit, 0, 32);
         _at = (limit === 0) ? 75 : 66; continue dispatch;
       }
       case 66: {
-        _t66 = tick(124, 0x15ccc) ? 1 : 0; if (_t66 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(limit, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t66) takeIrq(); }
+        _t66 = tick(124, 0x15ccc) ? 1 : 0; if (_t66 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(limit, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t66) takeIrq(); }
         push(0x2040, 4);
         push(0x1df66, 4);
         push(0x19, 4);
@@ -147031,9 +147031,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(limit, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147044,13 +147044,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a2, 0x15ce0);
+        callRom(drawWithDefaults, 0x15ce0);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147064,27 +147064,27 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 67; continue dispatch;
       }
       case 67: {
-        _t67 = tick(40, 0x15ce0) ? 1 : 0; if (_t67 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t67) takeIrq(); }
+        _t67 = tick(40, 0x15ce0) ? 1 : 0; if (_t67 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t67) takeIrq(); }
         t183 = load16(dst + -0x8);
         drop(16);
         _at = ((((t183) << 16) >> 16) <= (((0x1) << 16) >> 16)) ? 69 : 68; continue dispatch;
       }
       case 68: {
-        _t68 = tick(28, 0x15cec) ? 1 : 0; if (_t68 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(t183, 0x1, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t68) takeIrq(); }
+        _t68 = tick(28, 0x15cec) ? 1 : 0; if (_t68 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(t183, 0x1, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t68) takeIrq(); }
         a0 = (0x1d7f8) >>> 0;
         setXSub(t181, t182, 32);
         setFlagsCmp(t183, 0x1, 16);
         _at = 70; continue dispatch;
       }
       case 69: {
-        _t69 = tick(18, 0x15cf4) ? 1 : 0; if (_t69 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(t183, 0x1, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t69) takeIrq(); }
+        _t69 = tick(18, 0x15cf4) ? 1 : 0; if (_t69 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(t183, 0x1, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t69) takeIrq(); }
         a0 = (0x1d808) >>> 0;
         setXSub(t181, t182, 32);
         setFlagsCmp(t183, 0x1, 16);
         _at = 70; continue dispatch;
       }
       case 70: {
-        _t70 = tick(94, 0x15cfa) ? 1 : 0; if (_t70 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(t183, 0x1, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t70) takeIrq(); }
+        _t70 = tick(94, 0x15cfa) ? 1 : 0; if (_t70 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(t183, 0x1, 16); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t70) takeIrq(); }
         t184 = a0;
         push(t184, 4);
         push(0x1d7ee, 4);
@@ -147093,9 +147093,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(t184, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147110,9 +147110,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147126,13 +147126,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 71; continue dispatch;
       }
       case 71: {
-        _t71 = tick(24, 0x15d0a) ? 1 : 0; if (_t71 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t71) takeIrq(); }
+        _t71 = tick(24, 0x15d0a) ? 1 : 0; if (_t71 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t71) takeIrq(); }
         drop(12);
         setXSub(t181, t182, 32);
         _at = 75; continue dispatch;
       }
       case 72: {
-        _t72 = tick(124, 0x15d10) ? 1 : 0; if (_t72 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(index, count2, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t72) takeIrq(); }
+        _t72 = tick(124, 0x15d10) ? 1 : 0; if (_t72 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(index, count2, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t72) takeIrq(); }
         push(0x2040, 4);
         push(0x1dfb2, 4);
         push(0x19, 4);
@@ -147141,9 +147141,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setFlagsCmp(index, count2, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147154,13 +147154,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a2, 0x15d24);
+        callRom(drawWithDefaults, 0x15d24);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147174,7 +147174,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 73; continue dispatch;
       }
       case 73: {
-        _t73 = tick(124, 0x15d24) ? 1 : 0; if (_t73 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t73) takeIrq(); }
+        _t73 = tick(124, 0x15d24) ? 1 : 0; if (_t73 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t73) takeIrq(); }
         push(0x2040, 4);
         push(0x1d812, 4);
         push(0x1a, 4);
@@ -147182,9 +147182,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setXSub(t181, t182, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147195,13 +147195,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a2, 0x15d38);
+        callRom(drawWithDefaults, 0x15d38);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147215,19 +147215,19 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 74; continue dispatch;
       }
       case 74: {
-        _t74 = tick(14, 0x15d38) ? 1 : 0; if (_t74 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t74) takeIrq(); }
+        _t74 = tick(14, 0x15d38) ? 1 : 0; if (_t74 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t74) takeIrq(); }
         drop(32);
         setXSub(t181, t182, 32);
         _at = 75; continue dispatch;
       }
       case 75: {
-        _t75 = tick(28, 0x15d3c) ? 1 : 0; if (_t75 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t75) takeIrq(); }
+        _t75 = tick(28, 0x15d3c) ? 1 : 0; if (_t75 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t75) takeIrq(); }
         setXSub(t181, t182, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147242,9 +147242,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147258,14 +147258,14 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 76; continue dispatch;
       }
       case 76: {
-        _t76 = tick(46, 0x15d42) ? 1 : 0; if (_t76 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t76) takeIrq(); }
+        _t76 = tick(46, 0x15d42) ? 1 : 0; if (_t76 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t76) takeIrq(); }
         push(0x1000000, 4);
         setXSub(t181, t182, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147276,13 +147276,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a3, 0x15d4a);
+        callRom(drawB, 0x15d4a);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147296,7 +147296,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 77; continue dispatch;
       }
       case 77: {
-        _t77 = tick(26, 0x15d4a) ? 1 : 0; if (_t77 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t77) takeIrq(); }
+        _t77 = tick(26, 0x15d4a) ? 1 : 0; if (_t77 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t77) takeIrq(); }
         t185 = (index & 0x1000000);
         index = (t185) >>> 0;
         drop(4);
@@ -147305,16 +147305,16 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (index === 0) ? 80 : 78; continue dispatch;
       }
       case 78: {
-        _t78 = tick(32, 0x15d54) ? 1 : 0; if (_t78 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t78) takeIrq(); }
+        _t78 = tick(32, 0x15d54) ? 1 : 0; if (_t78 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t78) takeIrq(); }
         t186 = 0;
         push(t186, 4);
         setXSub(t181, t182, 32);
         setFlagsCmp(0, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147325,13 +147325,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a3, 0x15d58);
+        callRom(drawB, 0x15d58);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147345,7 +147345,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 79; continue dispatch;
       }
       case 79: {
-        _t79 = tick(26, 0x15d58) ? 1 : 0; if (_t79 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t79) takeIrq(); }
+        _t79 = tick(26, 0x15d58) ? 1 : 0; if (_t79 || SPILL_ALL) { setXSub(t181, t182, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t79) takeIrq(); }
         t187 = (index & 0x2000000);
         index = (t187) >>> 0;
         drop(4);
@@ -147354,7 +147354,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (index === 0) ? 91 : 80; continue dispatch;
       }
       case 80: {
-        _t80 = tick(58, 0x15d62) ? 1 : 0; if (_t80 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t80) takeIrq(); }
+        _t80 = tick(58, 0x15d62) ? 1 : 0; if (_t80 || SPILL_ALL) { setXSub(t181, t182, 32); setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t80) takeIrq(); }
         t188 = load16(dst + -0x4);
         index = ((index & 0xffff0000) | (t188 & 65535));
         t189 = ((((index & 65535)) << 16) >> 16);
@@ -147371,16 +147371,16 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (index !== count2) ? 75 : 81; continue dispatch;
       }
       case 81: {
-        _t81 = tick(32, 0x15d74) ? 1 : 0; if (_t81 || SPILL_ALL) { setXSub(t192, t193, 32); setFlagsCmp(index, count2, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t81) takeIrq(); }
+        _t81 = tick(32, 0x15d74) ? 1 : 0; if (_t81 || SPILL_ALL) { setXSub(t192, t193, 32); setFlagsCmp(index, count2, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t81) takeIrq(); }
         t194 = 0;
         push(t194, 4);
         setXSub(t192, t193, 32);
         setFlagsCmp(0, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147391,13 +147391,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a3, 0x15d78);
+        callRom(drawB, 0x15d78);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147411,7 +147411,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 82; continue dispatch;
       }
       case 82: {
-        _t82 = tick(26, 0x15d78) ? 1 : 0; if (_t82 || SPILL_ALL) { setXSub(t192, t193, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t82) takeIrq(); }
+        _t82 = tick(26, 0x15d78) ? 1 : 0; if (_t82 || SPILL_ALL) { setXSub(t192, t193, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t82) takeIrq(); }
         t195 = (index & 0x1000000);
         index = (t195) >>> 0;
         drop(4);
@@ -147420,16 +147420,16 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (index === 0) ? 75 : 83; continue dispatch;
       }
       case 83: {
-        _t83 = tick(32, 0x15d82) ? 1 : 0; if (_t83 || SPILL_ALL) { setXSub(t192, t193, 32); setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t83) takeIrq(); }
+        _t83 = tick(32, 0x15d82) ? 1 : 0; if (_t83 || SPILL_ALL) { setXSub(t192, t193, 32); setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t83) takeIrq(); }
         t196 = 0;
         push(t196, 4);
         setXSub(t192, t193, 32);
         setFlagsCmp(0, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147440,13 +147440,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a3, 0x15d86);
+        callRom(drawB, 0x15d86);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147460,7 +147460,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 84; continue dispatch;
       }
       case 84: {
-        _t84 = tick(26, 0x15d86) ? 1 : 0; if (_t84 || SPILL_ALL) { setXSub(t192, t193, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t84) takeIrq(); }
+        _t84 = tick(26, 0x15d86) ? 1 : 0; if (_t84 || SPILL_ALL) { setXSub(t192, t193, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t84) takeIrq(); }
         t197 = (index & 0x2000000);
         index = (t197) >>> 0;
         drop(4);
@@ -147469,13 +147469,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (index === 0) ? 75 : 85; continue dispatch;
       }
       case 85: {
-        _t85 = tick(16, 0x15d90) ? 1 : 0; if (_t85 || SPILL_ALL) { setXSub(t192, t193, 32); setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t85) takeIrq(); }
+        _t85 = tick(16, 0x15d90) ? 1 : 0; if (_t85 || SPILL_ALL) { setXSub(t192, t193, 32); setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t85) takeIrq(); }
         setXSub(t192, t193, 32);
         setFlagsCmp(limit, 0, 32);
         _at = (limit === 0) ? 75 : 86; continue dispatch;
       }
       case 86: {
-        _t86 = tick(26, 0x15d94) ? 1 : 0; if (_t86 || SPILL_ALL) { setXSub(t192, t193, 32); setFlagsCmp(limit, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t86) takeIrq(); }
+        _t86 = tick(26, 0x15d94) ? 1 : 0; if (_t86 || SPILL_ALL) { setXSub(t192, t193, 32); setFlagsCmp(limit, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t86) takeIrq(); }
         index = (0) >>> 0;
         t198 = load16(dst + -0x4);
         t199 = t198;
@@ -147488,12 +147488,12 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 88; continue dispatch;
       }
       case 87: {
-        _t87 = tick(28, 0x15d9c) ? 1 : 0; if (_t87 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t87) takeIrq(); }
+        _t87 = tick(28, 0x15d9c) ? 1 : 0; if (_t87 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t87) takeIrq(); }
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147508,9 +147508,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147524,15 +147524,15 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 88; continue dispatch;
       }
       case 88: {
-        _t88 = tick(32, 0x15da2) ? 1 : 0; if (_t88 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t88) takeIrq(); }
+        _t88 = tick(32, 0x15da2) ? 1 : 0; if (_t88 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t88) takeIrq(); }
         t203 = 0;
         push(t203, 4);
         setFlagsCmp(0, 0, 32);
         setReg('a0', a0);
         setReg('a1', ptr);
-        setReg('a2', a2);
-        setReg('a3', a3);
-        setReg('a4', a4);
+        setReg('a2', drawWithDefaults);
+        setReg('a3', drawB);
+        setReg('a4', drawNumber);
         setReg('a5', a5);
         setReg('a6', dst);
         setReg('d0', index);
@@ -147543,13 +147543,13 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         setReg('d5', kind);
         setReg('d6', kind2);
         setReg('d7', d7);
-        callRom(a3, 0x15da6);
+        callRom(drawB, 0x15da6);
         if (halted()) return;
         a0 = getReg('a0');
         ptr = getReg('a1');
-        a2 = getReg('a2');
-        a3 = getReg('a3');
-        a4 = getReg('a4');
+        drawWithDefaults = getReg('a2');
+        drawB = getReg('a3');
+        drawNumber = getReg('a4');
         a5 = getReg('a5');
         dst = getReg('a6');
         index = getReg('d0');
@@ -147563,20 +147563,20 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 89; continue dispatch;
       }
       case 89: {
-        _t89 = tick(26, 0x15da6) ? 1 : 0; if (_t89 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t89) takeIrq(); }
+        _t89 = tick(26, 0x15da6) ? 1 : 0; if (_t89 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t89) takeIrq(); }
         t204 = (index & 0x1000000);
         index = (t204) >>> 0;
         drop(4);
         _at = (index !== 0) ? 87 : 90; continue dispatch;
       }
       case 90: {
-        _t90 = tick(4, 0x15db0) ? 1 : 0; if (_t90 || SPILL_ALL) { setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t90) takeIrq(); }
+        _t90 = tick(4, 0x15db0) ? 1 : 0; if (_t90 || SPILL_ALL) { setFlagsCmp(index, 0, 32); setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t90) takeIrq(); }
         limit = (0) >>> 0;
         setFlagsCmp((limit & 65535), 0, 16);
         _at = 91; continue dispatch;
       }
       case 91: {
-        _t91 = tick(12, 0x15db2) ? 1 : 0; if (_t91 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t91) takeIrq(); }
+        _t91 = tick(12, 0x15db2) ? 1 : 0; if (_t91 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t91) takeIrq(); }
         t205 = load16(dst + -0x4);
         t206 = t205;
         t207 = 0x1;
@@ -147588,7 +147588,7 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = 92; continue dispatch;
       }
       case 92: {
-        _t92 = tick(34, 0x15db6) ? 1 : 0; if (_t92 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t92) takeIrq(); }
+        _t92 = tick(34, 0x15db6) ? 1 : 0; if (_t92 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t92) takeIrq(); }
         t210 = load16(dst + -0x4);
         index = ((index & 0xffff0000) | (t210 & 65535));
         t211 = load16(dst + -0x8);
@@ -147596,16 +147596,16 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
         _at = (((((index & 65535)) << 16) >> 16) < (((t211) << 16) >> 16)) ? 2 : 93; continue dispatch;
       }
       case 93: {
-        _t93 = tick(90, 0x15dc2) ? 1 : 0; if (_t93 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t93) takeIrq(); }
+        _t93 = tick(90, 0x15dc2) ? 1 : 0; if (_t93 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('a2', drawWithDefaults); setReg('a3', drawB); setReg('a4', drawNumber); setReg('a5', a5); setReg('a6', dst); setReg('d0', index); setReg('d1', count2); setReg('d2', limit); setReg('d3', d3); setReg('d4', kind3); setReg('d5', kind); setReg('d6', kind2); setReg('d7', d7); if (_t93) takeIrq(); }
         limit = load32((dst + -0x3c) + 0);
         d3 = load32((dst + -0x3c) + 4);
         kind3 = load32((dst + -0x3c) + 8);
         kind = load32((dst + -0x3c) + 12);
         kind2 = load32((dst + -0x3c) + 16);
         d7 = load32((dst + -0x3c) + 20);
-        a2 = load32((dst + -0x3c) + 24);
-        a3 = load32((dst + -0x3c) + 28);
-        a4 = load32((dst + -0x3c) + 32);
+        drawWithDefaults = load32((dst + -0x3c) + 24);
+        drawB = load32((dst + -0x3c) + 28);
+        drawNumber = load32((dst + -0x3c) + 32);
         a5 = load32((dst + -0x3c) + 36);
         setStackPointer(dst);
         dst = popLong();
@@ -147637,9 +147637,9 @@ export function serviceMenuScreenOneEntry(a0_: number, ptr_: number, a2_: number
   }
   setReg('a0', a0);
   setReg('a1', ptr);
-  setReg('a2', a2);
-  setReg('a3', a3);
-  setReg('a4', a4);
+  setReg('a2', drawWithDefaults);
+  setReg('a3', drawB);
+  setReg('a4', drawNumber);
   setReg('a5', a5);
   setReg('a6', dst);
   setReg('d0', index);

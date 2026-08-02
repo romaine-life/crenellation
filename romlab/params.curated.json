@@ -3948,5 +3948,19 @@
       "name": "firstEntry",
       "why": "the word out of the bucket head, and the emptiness test: `tst.w d5; beq` skips the bucket before anything else is read."
     }
+  },
+  "0x1594c": {
+    "a2": {
+      "name": "drawWithDefaults",
+      "why": "0x17fcc held for the whole routine - the one that substitutes the stored default attributes when 0xff is passed. A 1200-byte screen keeps its three draw helpers in registers rather than naming them at each of the dozens of call sites."
+    },
+    "a3": {
+      "name": "drawB",
+      "why": "0x1851c, the second of the three held helpers."
+    },
+    "a4": {
+      "name": "drawNumber",
+      "why": "0x18b76, the one 0x13e6a and 0x18b26 both end by calling - the formatter-and-draw."
+    }
   }
 }
