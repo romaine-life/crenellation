@@ -2697,48 +2697,72 @@
   },
   "0x71dc": {
     "a2": {
-      "name": "unit",
-      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
+      "name": "flier",
+      "why": "6(a2) and 0xa(a2) are added into 8(a2) and 0xc(a2) each pass and the results shifted right six into the sprite's x and y, so those are 16.6 fixed-point position and velocity; 0xe(a2) is a countdown, 0x10(a2) an accumulator subtracted from y, 0x12/0x14 the final position and 2(a2) the player index. It was called unit."
     },
     "a4": {
-      "name": "callTarget",
-      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+      "name": "startCue",
+      "why": "every call through it is jsr (a4) with exactly one pushed pointer, and every pointer pushed is one of the cue records at 0x128a8/0x128ac/0x128b0 or 0x12890 indexed by the player - so it is whatever starts a cue, handed in by the caller."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x7236": {
     "a2": {
-      "name": "unit",
-      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
+      "name": "flier",
+      "why": "6(a2) and 0xa(a2) are added into 8(a2) and 0xc(a2) each pass and the results shifted right six into the sprite's x and y, so those are 16.6 fixed-point position and velocity; 0xe(a2) is a countdown, 0x10(a2) an accumulator subtracted from y, 0x12/0x14 the final position and 2(a2) the player index. It was called unit."
     },
     "a4": {
-      "name": "callTarget",
-      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+      "name": "startCue",
+      "why": "every call through it is jsr (a4) with exactly one pushed pointer, and every pointer pushed is one of the cue records at 0x128a8/0x128ac/0x128b0 or 0x12890 indexed by the player - so it is whatever starts a cue, handed in by the caller."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x726e": {
     "a2": {
-      "name": "unit",
-      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
+      "name": "flier",
+      "why": "6(a2) and 0xa(a2) are added into 8(a2) and 0xc(a2) each pass and the results shifted right six into the sprite's x and y, so those are 16.6 fixed-point position and velocity; 0xe(a2) is a countdown, 0x10(a2) an accumulator subtracted from y, 0x12/0x14 the final position and 2(a2) the player index. It was called unit."
     },
     "a4": {
-      "name": "callTarget",
-      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+      "name": "startCue",
+      "why": "every call through it is jsr (a4) with exactly one pushed pointer, and every pointer pushed is one of the cue records at 0x128a8/0x128ac/0x128b0 or 0x12890 indexed by the player - so it is whatever starts a cue, handed in by the caller."
     },
     "a3": {
       "name": "displayEntry",
@@ -2753,90 +2777,150 @@
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x72ec": {
     "a4": {
-      "name": "callTarget",
-      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+      "name": "startCue",
+      "why": "every call through it is jsr (a4) with exactly one pushed pointer, and every pointer pushed is one of the cue records at 0x128a8/0x128ac/0x128b0 or 0x12890 indexed by the player - so it is whatever starts a cue, handed in by the caller."
     },
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x7318": {
     "a4": {
-      "name": "callTarget",
-      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+      "name": "startCue",
+      "why": "every call through it is jsr (a4) with exactly one pushed pointer, and every pointer pushed is one of the cue records at 0x128a8/0x128ac/0x128b0 or 0x12890 indexed by the player - so it is whatever starts a cue, handed in by the caller."
     },
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x735c": {
     "a4": {
-      "name": "callTarget",
-      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+      "name": "startCue",
+      "why": "every call through it is jsr (a4) with exactly one pushed pointer, and every pointer pushed is one of the cue records at 0x128a8/0x128ac/0x128b0 or 0x12890 indexed by the player - so it is whatever starts a cue, handed in by the caller."
     },
     "d0": {
       "name": "coord",
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x737e": {
     "a2": {
-      "name": "unit",
-      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
+      "name": "flier",
+      "why": "6(a2) and 0xa(a2) are added into 8(a2) and 0xc(a2) each pass and the results shifted right six into the sprite's x and y, so those are 16.6 fixed-point position and velocity; 0xe(a2) is a countdown, 0x10(a2) an accumulator subtracted from y, 0x12/0x14 the final position and 2(a2) the player index. It was called unit."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x73c0": {
     "a2": {
-      "name": "unit",
-      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
+      "name": "flier",
+      "why": "6(a2) and 0xa(a2) are added into 8(a2) and 0xc(a2) each pass and the results shifted right six into the sprite's x and y, so those are 16.6 fixed-point position and velocity; 0xe(a2) is a countdown, 0x10(a2) an accumulator subtracted from y, 0x12/0x14 the final position and 2(a2) the player index. It was called unit."
     },
     "a4": {
-      "name": "callTarget",
-      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+      "name": "startCue",
+      "why": "every call through it is jsr (a4) with exactly one pushed pointer, and every pointer pushed is one of the cue records at 0x128a8/0x128ac/0x128b0 or 0x12890 indexed by the player - so it is whatever starts a cue, handed in by the caller."
     },
     "a3": {
       "name": "displayEntry",
@@ -2847,22 +2931,34 @@
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x73c4": {
     "a2": {
-      "name": "unit",
-      "why": "its byte at 2 is the player number - doubled, times 64 less itself, which is 126 and the player stride - so a2 is a record that KNOWS which player it belongs to rather than being the player itself."
+      "name": "flier",
+      "why": "6(a2) and 0xa(a2) are added into 8(a2) and 0xc(a2) each pass and the results shifted right six into the sprite's x and y, so those are 16.6 fixed-point position and velocity; 0xe(a2) is a countdown, 0x10(a2) an accumulator subtracted from y, 0x12/0x14 the final position and 2(a2) the player index. It was called unit."
     },
     "a4": {
-      "name": "callTarget",
-      "why": "a routine pointer from the caller, invoked with `jsr (a4)` after 0x128b0 is pushed - so which routine runs is the caller's choice and this one only supplies the argument."
+      "name": "startCue",
+      "why": "every call through it is jsr (a4) with exactly one pushed pointer, and every pointer pushed is one of the cue records at 0x128a8/0x128ac/0x128b0 or 0x12890 indexed by the player - so it is whatever starts a cue, handed in by the caller."
     },
     "a3": {
       "name": "displayEntry",
@@ -2873,12 +2969,24 @@
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x6460": {
@@ -3297,6 +3405,22 @@
     "d3": {
       "name": "note",
       "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    },
+    "a3": {
+      "name": "startedWith",
+      "why": "0x1a5f8 loads it from 8(a6) and writes the same value to -4(a6); the only use downstream is cmp.l a3,d0 at 0x1afaa against whatever -4(a6) now holds, and when they differ THAT record's byte 0x13 is forced to 0xff. Never dereferenced - it is the record the driver was entered with, kept to notice it changed."
+    },
+    "a4": {
+      "name": "changedAt",
+      "why": "the fixed address 0x3e36ec, loaded by lea at 0x1a5fc and cleared at 0x1a60e. Every later touch reports something: ori #1 when the pitch moved (0x1ae9a), 2 written when a note ended (0x1afa2, 0x1b00c), ori #2 at 0x1a704. A status byte, carried in a register across the tail jumps."
+    },
+    "d5": {
+      "name": "sumAt",
+      "why": "the constant 0x3e36e2, the driver's scratch longword. Every accumulate site clears it and sums the channel's fields into it: 0x1a740 adds the pitch words at 8(a2) and 0x1c(a2), 0x1a7be adds the byte at 0x18(a2) and clamps to 0..0x1f, then 0x1a7e6 reads its low byte out to 0x3e3708."
+    },
+    "d6": {
+      "name": "chosenPtrAt",
+      "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
     }
   },
   "0x1ae44": {
@@ -3311,6 +3435,22 @@
     "d3": {
       "name": "note",
       "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    },
+    "a3": {
+      "name": "startedWith",
+      "why": "0x1a5f8 loads it from 8(a6) and writes the same value to -4(a6); the only use downstream is cmp.l a3,d0 at 0x1afaa against whatever -4(a6) now holds, and when they differ THAT record's byte 0x13 is forced to 0xff. Never dereferenced - it is the record the driver was entered with, kept to notice it changed."
+    },
+    "a4": {
+      "name": "changedAt",
+      "why": "the fixed address 0x3e36ec, loaded by lea at 0x1a5fc and cleared at 0x1a60e. Every later touch reports something: ori #1 when the pitch moved (0x1ae9a), 2 written when a note ended (0x1afa2, 0x1b00c), ori #2 at 0x1a704. A status byte, carried in a register across the tail jumps."
+    },
+    "d5": {
+      "name": "sumAt",
+      "why": "the constant 0x3e36e2, the driver's scratch longword. Every accumulate site clears it and sums the channel's fields into it: 0x1a740 adds the pitch words at 8(a2) and 0x1c(a2), 0x1a7be adds the byte at 0x18(a2) and clamps to 0..0x1f, then 0x1a7e6 reads its low byte out to 0x3e3708."
+    },
+    "d6": {
+      "name": "chosenPtrAt",
+      "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
     }
   },
   "0x1b048": {
@@ -3325,6 +3465,22 @@
     "d3": {
       "name": "note",
       "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    },
+    "a3": {
+      "name": "startedWith",
+      "why": "0x1a5f8 loads it from 8(a6) and writes the same value to -4(a6); the only use downstream is cmp.l a3,d0 at 0x1afaa against whatever -4(a6) now holds, and when they differ THAT record's byte 0x13 is forced to 0xff. Never dereferenced - it is the record the driver was entered with, kept to notice it changed."
+    },
+    "a4": {
+      "name": "changedAt",
+      "why": "the fixed address 0x3e36ec, loaded by lea at 0x1a5fc and cleared at 0x1a60e. Every later touch reports something: ori #1 when the pitch moved (0x1ae9a), 2 written when a note ended (0x1afa2, 0x1b00c), ori #2 at 0x1a704. A status byte, carried in a register across the tail jumps."
+    },
+    "d5": {
+      "name": "sumAt",
+      "why": "the constant 0x3e36e2, the driver's scratch longword. Every accumulate site clears it and sums the channel's fields into it: 0x1a740 adds the pitch words at 8(a2) and 0x1c(a2), 0x1a7be adds the byte at 0x18(a2) and clamps to 0..0x1f, then 0x1a7e6 reads its low byte out to 0x3e3708."
+    },
+    "d6": {
+      "name": "chosenPtrAt",
+      "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
     }
   },
   "0x1b050": {
@@ -3339,6 +3495,22 @@
     "d3": {
       "name": "note",
       "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    },
+    "a3": {
+      "name": "startedWith",
+      "why": "0x1a5f8 loads it from 8(a6) and writes the same value to -4(a6); the only use downstream is cmp.l a3,d0 at 0x1afaa against whatever -4(a6) now holds, and when they differ THAT record's byte 0x13 is forced to 0xff. Never dereferenced - it is the record the driver was entered with, kept to notice it changed."
+    },
+    "a4": {
+      "name": "changedAt",
+      "why": "the fixed address 0x3e36ec, loaded by lea at 0x1a5fc and cleared at 0x1a60e. Every later touch reports something: ori #1 when the pitch moved (0x1ae9a), 2 written when a note ended (0x1afa2, 0x1b00c), ori #2 at 0x1a704. A status byte, carried in a register across the tail jumps."
+    },
+    "d5": {
+      "name": "sumAt",
+      "why": "the constant 0x3e36e2, the driver's scratch longword. Every accumulate site clears it and sums the channel's fields into it: 0x1a740 adds the pitch words at 8(a2) and 0x1c(a2), 0x1a7be adds the byte at 0x18(a2) and clamps to 0..0x1f, then 0x1a7e6 reads its low byte out to 0x3e3708."
+    },
+    "d6": {
+      "name": "chosenPtrAt",
+      "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
     }
   },
   "0x1b054": {
@@ -3349,6 +3521,22 @@
     "d3": {
       "name": "note",
       "why": "bit 7 set means leave without doing anything; otherwise a non-zero value has the voice's own 0x19 added to it - a transpose - before it doubles into the table at 0x3e36de."
+    },
+    "a3": {
+      "name": "startedWith",
+      "why": "0x1a5f8 loads it from 8(a6) and writes the same value to -4(a6); the only use downstream is cmp.l a3,d0 at 0x1afaa against whatever -4(a6) now holds, and when they differ THAT record's byte 0x13 is forced to 0xff. Never dereferenced - it is the record the driver was entered with, kept to notice it changed."
+    },
+    "a4": {
+      "name": "changedAt",
+      "why": "the fixed address 0x3e36ec, loaded by lea at 0x1a5fc and cleared at 0x1a60e. Every later touch reports something: ori #1 when the pitch moved (0x1ae9a), 2 written when a note ended (0x1afa2, 0x1b00c), ori #2 at 0x1a704. A status byte, carried in a register across the tail jumps."
+    },
+    "d5": {
+      "name": "sumAt",
+      "why": "the constant 0x3e36e2, the driver's scratch longword. Every accumulate site clears it and sums the channel's fields into it: 0x1a740 adds the pitch words at 8(a2) and 0x1c(a2), 0x1a7be adds the byte at 0x18(a2) and clamps to 0..0x1f, then 0x1a7e6 reads its low byte out to 0x3e3708."
+    },
+    "d6": {
+      "name": "chosenPtrAt",
+      "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
     }
   },
   "0x1b062": {
@@ -3373,6 +3561,18 @@
     "d6": {
       "name": "onFlagSet",
       "why": "the other of the pair, handed to 0xce48 when the player's 0x6a pointer leads to a negative byte."
+    },
+    "d2": {
+      "name": "state",
+      "why": "its only use is cmpi.w #4 at 0xcbfc and then the pc-relative jump table at 0xcc0e - a five-way switch on it, with everything above 4 falling through."
+    },
+    "d4": {
+      "name": "queuedCue",
+      "why": "the constant 0x3f loaded at 0xcbd6 and pushed at 0xcc5a to passByteOnlyWhenGate, which drops it in the ring at 0x3e1922. That case is the one where bit 1 of the player's byte at 0x19 is clear."
+    },
+    "d3": {
+      "name": "queuedCue2",
+      "why": "the constant 0x40 loaded at 0xcbdc, one more than queuedCue, and queued the same way from another case of the switch."
     }
   },
   "0xcc52": {
@@ -3395,6 +3595,18 @@
     "d6": {
       "name": "onFlagSet",
       "why": "the other of the pair, handed to 0xce48 when the player's 0x6a pointer leads to a negative byte."
+    },
+    "d2": {
+      "name": "state",
+      "why": "its only use is cmpi.w #4 at 0xcbfc and then the pc-relative jump table at 0xcc0e - a five-way switch on it, with everything above 4 falling through."
+    },
+    "d4": {
+      "name": "queuedCue",
+      "why": "the constant 0x3f loaded at 0xcbd6 and pushed at 0xcc5a to passByteOnlyWhenGate, which drops it in the ring at 0x3e1922. That case is the one where bit 1 of the player's byte at 0x19 is clear."
+    },
+    "d3": {
+      "name": "queuedCue2",
+      "why": "the constant 0x40 loaded at 0xcbdc, one more than queuedCue, and queued the same way from another case of the switch."
     }
   },
   "0xcc68": {
@@ -3417,6 +3629,18 @@
     "d6": {
       "name": "onFlagSet",
       "why": "the other of the pair, handed to 0xce48 when the player's 0x6a pointer leads to a negative byte."
+    },
+    "d2": {
+      "name": "state",
+      "why": "its only use is cmpi.w #4 at 0xcbfc and then the pc-relative jump table at 0xcc0e - a five-way switch on it, with everything above 4 falling through."
+    },
+    "d4": {
+      "name": "queuedCue",
+      "why": "the constant 0x3f loaded at 0xcbd6 and pushed at 0xcc5a to passByteOnlyWhenGate, which drops it in the ring at 0x3e1922. That case is the one where bit 1 of the player's byte at 0x19 is clear."
+    },
+    "d3": {
+      "name": "queuedCue2",
+      "why": "the constant 0x40 loaded at 0xcbdc, one more than queuedCue, and queued the same way from another case of the switch."
     }
   },
   "0xcc76": {
@@ -3439,6 +3663,18 @@
     "d6": {
       "name": "onFlagSet",
       "why": "the other of the pair, handed to 0xce48 when the player's 0x6a pointer leads to a negative byte."
+    },
+    "d2": {
+      "name": "state",
+      "why": "its only use is cmpi.w #4 at 0xcbfc and then the pc-relative jump table at 0xcc0e - a five-way switch on it, with everything above 4 falling through."
+    },
+    "d4": {
+      "name": "queuedCue",
+      "why": "the constant 0x3f loaded at 0xcbd6 and pushed at 0xcc5a to passByteOnlyWhenGate, which drops it in the ring at 0x3e1922. That case is the one where bit 1 of the player's byte at 0x19 is clear."
+    },
+    "d3": {
+      "name": "queuedCue2",
+      "why": "the constant 0x40 loaded at 0xcbdc, one more than queuedCue, and queued the same way from another case of the switch."
     }
   },
   "0xcc88": {
@@ -3461,6 +3697,18 @@
     "d6": {
       "name": "onFlagSet",
       "why": "the other of the pair, handed to 0xce48 when the player's 0x6a pointer leads to a negative byte."
+    },
+    "d2": {
+      "name": "state",
+      "why": "its only use is cmpi.w #4 at 0xcbfc and then the pc-relative jump table at 0xcc0e - a five-way switch on it, with everything above 4 falling through."
+    },
+    "d4": {
+      "name": "queuedCue",
+      "why": "the constant 0x3f loaded at 0xcbd6 and pushed at 0xcc5a to passByteOnlyWhenGate, which drops it in the ring at 0x3e1922. That case is the one where bit 1 of the player's byte at 0x19 is clear."
+    },
+    "d3": {
+      "name": "queuedCue2",
+      "why": "the constant 0x40 loaded at 0xcbdc, one more than queuedCue, and queued the same way from another case of the switch."
     }
   },
   "0xcc96": {
@@ -3483,6 +3731,18 @@
     "d6": {
       "name": "onFlagSet",
       "why": "the other of the pair, handed to 0xce48 when the player's 0x6a pointer leads to a negative byte."
+    },
+    "d2": {
+      "name": "state",
+      "why": "its only use is cmpi.w #4 at 0xcbfc and then the pc-relative jump table at 0xcc0e - a five-way switch on it, with everything above 4 falling through."
+    },
+    "d4": {
+      "name": "queuedCue",
+      "why": "the constant 0x3f loaded at 0xcbd6 and pushed at 0xcc5a to passByteOnlyWhenGate, which drops it in the ring at 0x3e1922. That case is the one where bit 1 of the player's byte at 0x19 is clear."
+    },
+    "d3": {
+      "name": "queuedCue2",
+      "why": "the constant 0x40 loaded at 0xcbdc, one more than queuedCue, and queued the same way from another case of the switch."
     }
   },
   "0x130b0": {
@@ -3913,12 +4173,24 @@
       "why": "a coordinate byte on its way to the display entry: sign-extended, shifted left three for the eight pixels of a cell, and on one of the two axes four is added."
     },
     "d4": {
-      "name": "callArg",
-      "why": "pushed as the argument of the indirect call through the routine pointer the caller left in a local. This routine never looks at it."
+      "name": "framesScored2",
+      "why": "the constant 0x1f8d8, pushed at 0x72f4 after the same 0x128a8 cue as framesScored, and its branch bumps the same byte at 0x17 of the player record at 0x7312. It was called callArg, which said only that it was pushed."
     },
     "d3": {
-      "name": "shape",
-      "why": "one of the two values handed to 0xb958 alongside the display entry's 0x6 and 0x8 - the coordinates - and the answer decides whether the rest of the path runs at all."
+      "name": "framesPlain2",
+      "why": "the constant 0x1f900, pushed at 0x731c after the same 0x128ac cue as framesPlain. It was called shape - it is not a shape but a list of them."
+    },
+    "d5": {
+      "name": "framesScored",
+      "why": "the constant 0x1f8ec, a null-terminated list of graphic ids six apart, pushed at 0x7260 to the indirect call at -6(a6) whose result becomes the sprite word at (a3). Its branch first cues 0x128a8 through a4 and bumps the byte at 0x17 of the player record it just computed - which the other pair of branches does not."
+    },
+    "d6": {
+      "name": "framesPlain",
+      "why": "the constant 0x1f910, a list of the same shape, pushed at 0x72e6 on the branch reached when the mode byte at 0x3e1956 is clear OR the probe at 0xb958 returned zero. That branch cues 0x128ac and bumps no counter."
+    },
+    "d2": {
+      "name": "plainCue",
+      "why": "the constant 0x128ac, one of three cue records handed to the indirect call in a4 (the others are pea'd inline at 0x128a8 and 0x128b0, and 0x12890 indexed by player). It goes with the branches that bump no counter. It was called kind."
     }
   },
   "0x1397a": {
@@ -4561,6 +4833,14 @@
     "d1": {
       "name": "value",
       "why": "the byte at 7(a7), the only thing passed on - and only when the word at 0x3e1948 is non-zero, which is the gate this routine exists to be."
+    },
+    "stack4": {
+      "name": "cue",
+      "why": "read as the low byte at 7(a7) and forwarded to the ring push at 0x90be when the gate word at 0x3e1948 is set. It was called limit2, which claimed a bound nothing applies."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x90f2 is moveq #0,d0 - the first thing done with it is to destroy it. The caller's value reaches nothing."
     }
   },
   "0x1869e": {
@@ -4579,6 +4859,10 @@
     "d2": {
       "name": "saved",
       "why": "pushed and popped around the body and never read - the routine preserves it for its caller and does nothing with it."
+    },
+    "stack4": {
+      "name": "cue",
+      "why": "the low byte of the pushed long goes straight into the 32-entry ring at 0x3e1922 at the head kept in 0x3e1942, which then advances and wraps at 0x1f. A queued cue id, not the `count` it was called."
     }
   },
   "0x2698": {
@@ -4735,6 +5019,22 @@
     "d0": {
       "name": "unused",
       "why": "0x7a92 replaces only its low word from the stack, and every later use assigns it first. The caller's value is never read."
+    }
+  },
+  "0x1a618": {
+    "a3": {
+      "name": "startedWith",
+      "why": "0x1a5f8 loads it from 8(a6) and writes the same value to -4(a6); the only use downstream is cmp.l a3,d0 at 0x1afaa against whatever -4(a6) now holds, and when they differ THAT record's byte 0x13 is forced to 0xff. Never dereferenced - it is the record the driver was entered with, kept to notice it changed."
+    },
+    "a4": {
+      "name": "changedAt",
+      "why": "the fixed address 0x3e36ec, loaded by lea at 0x1a5fc and cleared at 0x1a60e. Every later touch reports something: ori #1 when the pitch moved (0x1ae9a), 2 written when a note ended (0x1afa2, 0x1b00c), ori #2 at 0x1a704. A status byte, carried in a register across the tail jumps."
+    }
+  },
+  "0x1a740": {
+    "d5": {
+      "name": "sumAt",
+      "why": "the constant 0x3e36e2, the driver's scratch longword. Every accumulate site clears it and sums the channel's fields into it: 0x1a740 adds the pitch words at 8(a2) and 0x1c(a2), 0x1a7be adds the byte at 0x18(a2) and clamps to 0..0x1f, then 0x1a7e6 reads its low byte out to 0x3e3708."
     }
   }
 }
