@@ -30,8 +30,28 @@ A write is only counted when it cannot also be a read:
 
 `move.b` and `clr.b` write only the low byte, and are counted only when every
 later mention of the register is also byte-wide - otherwise the surviving upper
-bytes might still be the caller's. `add`, `or`, `and`, `sub` and the rest read
-the destination and are never writes for this purpose.
+bytes might still be the caller's. `move.w` has the same hole and cost 23 of
+the first 111 when it was found. `movea` is the exception both ways: it
+sign-extends into the whole address register, so `movea.w` IS a full kill.
+`add`, `or`, `and`, `sub` and the rest read the destination and never count.
+
+Three questions in the end, each with its own scope, and the scope is the whole
+difference between a sound answer and a plausible one:
+
+  dead on arrival   the straight line from the entry, as above. Unconditional
+                    branches are followed - one successor is not a fork.
+  killed everywhere both arms of every conditional branch to a depth of twelve.
+                    Every way of not knowing counts AGAINST: a call (the callee
+                    might read it), a return, an unresolved target, a loop back
+                    to a block already on the path, running off the end.
+  preserved         every appearance of the register in what this entry can
+                    REACH is inside a movem. Not the whole extent - a handler
+                    block reached through a jump table is one routine among ten
+                    and nine of them never touch d7. Not dead either: a spill
+                    before a call still hands the value on, which is why the
+                    name is different. Only claimed when the reachability walk
+                    met no unresolved transfer, because stopping early
+                    over-approximates what is untouched.
 
     python3 deadregs.py            # report only
     python3 deadregs.py --write    # write them to params.curated.json
@@ -187,6 +207,61 @@ def reachable(md, image, at, lo, hi):
     return insns, blind
 
 
+def killed_everywhere(md, image, at, lo, hi, reg, line, depth=0, seen=None):
+    """Is `reg` destroyed on EVERY path out of `at`, before anything reads it?
+
+    The straight-line rule stops at the first conditional branch, and a great
+    many of these registers are killed just past one - `moveq #0,d0` on one arm
+    and `moveq #1,d0` on the other is the shape, and neither arm reads what
+    arrived. Following both answers it properly.
+
+    Every way of not knowing returns False: an unresolved target, a call (the
+    callee can read the register - arguments go on the stack in this ROM, but
+    nothing here proves the callee ignores it), a return, running off the end,
+    or recursion deeper than the bound. A loop back to a block already on the
+    path is False too, not True: a register read on the second time round is
+    read.
+    """
+    if depth > 12:
+        return False
+    seen = set() if seen is None else seen
+    pc = at
+    while lo <= pc < hi:
+        if pc in seen:
+            return False
+        seen = seen | {pc}
+        block = list(md.disasm(image[pc:hi], pc))
+        if not block:
+            return False
+        i = block[0]
+        mn, base = i.mnemonic, i.mnemonic.split(".")[0]
+        if re.search(r"\b" + reg + r"\b", i.op_str):
+            size = kills(i, reg)
+            if size == "l" or (size in ("w", "b") and narrow(line, reg, size)):
+                return True
+            return False
+        if not transfers(mn):
+            pc = i.address + i.size
+            continue
+        if base in ("rts", "rte", "rtr", "rtd", "jsr", "bsr", "trap") \
+                or base.startswith("db"):
+            return False
+        m = BRANCH.search(i.op_str.strip())
+        if not m:
+            return False
+        target = int(m.group(1), 16)
+        if not (lo <= target < hi):
+            return False
+        if base in ("bra", "jmp"):
+            pc = target
+            continue
+        return (killed_everywhere(md, image, target, lo, hi, reg, line,
+                                  depth + 1, seen)
+                and killed_everywhere(md, image, i.address + i.size, lo, hi,
+                                      reg, line, depth + 1, seen))
+    return False
+
+
 RANK = {"b": 1, "w": 2, "l": 3}
 
 
@@ -261,6 +336,11 @@ def main():
         # to the callee, which is the case whyunread.py refused to call unused
         # - but nothing here reads it, and saying so is the useful thing.
         # Whole-extent rather than reachable-set, so it holds for every entry.
+        # ...and the same question asked of every path, not just the first.
+        for reg in sorted(want - set(dead)):
+            if killed_everywhere(md, image, a, lo, hi, reg, line):
+                dead[reg] = (a, None, None)
+
         near, blind = reachable(md, image, a, lo, hi)
         for reg in sorted(want - set(dead)):
             uses = [i for i in line
@@ -301,12 +381,19 @@ def main():
         names, n = {}, 0
         for reg, (at, mn, ops) in sorted(dead.items()):
             n += 1
+            why = (f"dead on arrival: walking forward from this entry in"
+                   f" address order, with no branch in between, 0x{at:05x} is"
+                   f" `{mn} {ops}` - the register is destroyed before anything"
+                   f" could read it."
+                   if mn else
+                   f"dead on arrival: every path out of this entry destroys it"
+                   f" before anything reads it - both arms of every conditional"
+                   f" branch, followed to a depth of twelve, and any path that"
+                   f" reaches a call, a return or an unresolved target counts"
+                   f" against rather than for.")
             names[reg] = {
                 "name": "unused" + ("" if n == 1 else str(n)),
-                "why": f"dead on arrival: walking forward from this entry in"
-                       f" address order, with no branch in between, 0x{at:05x}"
-                       f" is `{mn} {ops}` - the register is destroyed before"
-                       f" anything could read it. Proved by deadregs.py.",
+                "why": why + " Proved by deadregs.py.",
             }
         r, _ = F.apply(a, names, only=True)
         reached += r

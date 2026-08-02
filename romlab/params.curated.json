@@ -27,6 +27,10 @@
     "stack12": {
       "name": "remainingOut",
       "why": "a pointer, and the only reason this routine takes one: when it is not null the routine writes (10 - slot) * 5 through it, which is how much of the channel's queue is left after this entry. Null is allowed and skips the write."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
     }
   },
   "0x11bd8": {
@@ -2539,6 +2543,10 @@
     "d6": {
       "name": "chosenPtrAt",
       "why": "the constant 0x3e36da the driver loads at 0x1a608, and here it is dereferenced: movea.l d6,a0 then move.l (a0),d0 gives a record whose byte at 6 takes a small code (0xd, 0x6, 0xb, 0xc at 0x1aa96, 0x1aaa8, 0x1aac2, 0x1aad8) and whose byte at 4 takes the operand. So d6 is the address OF the pointer, not the pointer."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
     }
   },
   "0x1aa9c": {
@@ -4863,6 +4871,14 @@
     "a5": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x0b73c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a0": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "unused2",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
     }
   },
   "0xf79e": {
@@ -5489,6 +5505,10 @@
     "d0": {
       "name": "packed",
       "why": "the result: one of the two bytes shifted left six with the other added, giving an index with 64 entries to a row."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
     }
   },
   "0xefba": {
@@ -5585,6 +5605,10 @@
     "d3": {
       "name": "unused2",
       "why": "same shape as d2: 0x41ce replaces its low word from the stack before anything reads it, and only that word is ever used. The caller's value reaches nothing."
+    },
+    "a0": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
     }
   },
   "0x7a88": {
@@ -6147,6 +6171,10 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19104 is `moveq #$29, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a0": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
     }
   },
   "0x19954": {
@@ -6449,6 +6477,104 @@
     "a3": {
       "name": "preserved2",
       "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x0d48a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x255c": {
+    "stack4": {
+      "name": "cellAt",
+      "why": "movea.l 0xc(a7),a1 at 0x2560 - 0xc after the movem pushed eight bytes, so the first argument - and every neighbour is taken from it: +0x20 below, -0x20 above, -1 left, +1 right, the board's 32-byte row stride."
+    },
+    "d2": {
+      "name": "ownerBits",
+      "why": "the cell byte masked to 0xc0 at 0x2566, then shifted down six at 0x25a6 to index the table of tables at 0x2063a. The owner, in both the forms this routine wants it."
+    },
+    "d3": {
+      "name": "neighbours",
+      "why": "cleared at 0x2570 and built one bit per matching neighbour: 1 below, 4 above, 2 left, 8 right. Doubled at 0x25a2 to index a word table. This is the value RULES.wallsConnectUp changes - the hand edit drops the 4."
+    },
+    "d1": {
+      "name": "wantByte",
+      "why": "the owner bits with bit 0 forced on (0x256c), and the byte every neighbour is compared against."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x2576's move.b (a0),d0 is the first thing done with it, and every later use assigns it first."
+    }
+  },
+  "0x25c2": {
+    "stack4": {
+      "name": "cellAt",
+      "why": "pushed last of three at 0x25da and so becomes wallCellSet's own first argument, the cell address."
+    }
+  },
+  "0x7870": {
+    "d3": {
+      "name": "rowStride",
+      "why": "the constant 0x20 at 0x7898 - the board's 32-byte row stride, the same step wallCellSet uses to reach the cell above and below."
+    },
+    "d4": {
+      "name": "rightCell",
+      "why": "the board base in a3 plus one (0x789e), so the cell to the right of where the walk starts."
+    },
+    "d5": {
+      "name": "belowCell",
+      "why": "the board base in a3 plus 0x20 (0x78a2), so the cell one row down."
+    },
+    "d6": {
+      "name": "unused",
+      "why": "0x787c assigns it the word at 0xe(a6) - the second argument's low half - before anything reads it."
+    }
+  },
+  "0xafda": {
+    "stack4": {
+      "name": "out",
+      "why": "movea.l 0xc(a7),a2 at 0xafde, and every byte the routine produces is stored with move.b d0,(a2)+ at 0xb022. The buffer written into."
+    },
+    "stack8": {
+      "name": "base",
+      "why": "its low word becomes d2 at 0xafe2 and is both added to and and-ed with each table byte at 0xb01c and 0xb020."
+    },
+    "a1": {
+      "name": "unused",
+      "why": "0xaff6, 0xb002 and 0xb00a each assign it one of three byte tables, picked by the three-way draw at 0x11e58; nothing reads what arrived."
+    },
+    "d0": {
+      "name": "unused2",
+      "why": "0xaff0 assigns it the draw's result."
+    },
+    "d2": {
+      "name": "unused3",
+      "why": "0xafe2 assigns it the second argument's low word."
+    }
+  },
+  "0x200a": {
+    "a4": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    }
+  },
+  "0x545a": {
+    "d0": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    }
+  },
+  "0x6680": {
+    "d4": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    }
+  },
+  "0xab58": {
+    "a0": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    }
+  },
+  "0x1b06e": {
+    "d1": {
+      "name": "unused",
+      "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
     }
   }
 }
