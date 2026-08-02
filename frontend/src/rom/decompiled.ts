@@ -41533,20 +41533,20 @@ export function setFlagBit4Every(index_: number): void {
   setReg('d3', count);
 }
 
-export function helperShotRecordAccess(limit: number, index: number, arg0: number, arg1: number): void {
+export function helperShotRecordAccess(limit: number, index: number, record: number, value: number): void {
   if (tick(94, 0x05cb0)) { setReg('d0', limit); setReg('d1', index); takeIrq(); }
-  const t0 = (arg1 & 0xffff);
+  const t0 = (value & 0xffff);
   const t1 = ((limit & 0xffff0000) | (t0 & 0xffff));
-  const t2 = load16(arg0 + 0xc);
+  const t2 = load16(record + 0xc);
   const t3 = ((index & 0xffff0000) | (t2 & 0xffff));
   const t4 = ((t3 & 0xffff) & 0xfff0);
   const t5 = ((t3 & 0xffff0000) | (t4 & 0xffff));
   const t6 = ((t5 & 0xffff) + (t1 & 0xffff));
   const t7 = ((t5 & 0xffff0000) | (t6 & 0xffff));
-  store16(arg0 + 0xc, (t7 & 0xffff));
-  const t8 = (load8(arg0 + 0x2) | 0x20);
-  store8(arg0 + 0x2, t8);
-  setReg('a0', arg0);
+  store16(record + 0xc, (t7 & 0xffff));
+  const t8 = (load8(record + 0x2) | 0x20);
+  store8(record + 0x2, t8);
+  setReg('a0', record);
   setReg('d0', t1);
   setReg('d1', t7);
 }
@@ -118230,14 +118230,14 @@ export function followHeaderSSelfRelative(count_: number, d2_: number, kind_: nu
   setReg('d6', d6);
 }
 
-export function helperPaletteUpdate(dst2: number, dst22: number, dst222: number): void {
+export function helperPaletteUpdate(dst2: number, value: number, dest: number): void {
   if (tick(122, 0x11ce2)) { setReg('a0', dst2); takeIrq(); }
   push(dst2, 4);
-  store16(dst222, (dst22 & 0xffff));
-  store8((dst222 + 2), (dst22 & 0xff));
+  store16(dest, (value & 0xffff));
+  store8((dest + 2), (value & 0xff));
   drop(4);
   setReg('a0', dst2);
-  setReg('d0', dst22);
+  setReg('d0', value);
 }
 
 export function aimingDirection(limit4_: number, limit5_: number, dx: number, dy: number): void {

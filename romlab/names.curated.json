@@ -1687,5 +1687,20 @@
     "name": "follow two levels of the 0x1f7f0 offset table",
     "ident": "followTwoOffsetLevels",
     "why": "adds the word at the pointer it is given to 0x1f7f0 to get a second address, then adds the word THERE to 0x1f7f0 again and answers that. Both levels are 16-bit offsets from the same base, which is how this ROM stores a table of tables inside the first 128 KiB - the offsets stay words rather than longs."
+  },
+  "0x5cb0": {
+    "name": "set the low four bits of a record's 0xc field and mark it for redraw",
+    "ident": "setLowNibbleAndMarkRedraw",
+    "why": "reads the word at 0xc of the record, clears its low four bits with andi.w #$fff0, adds the word argument, and writes it back - so the argument is a 0..15 field packed into the bottom of that word and everything above it is preserved. It then ors 0x20 into the byte at offset 2, which is the same redraw bit 0xaf72 sets on a display entry after it moves one."
+  },
+  "0x11ce2": {
+    "name": "write a three-byte entry as a word then its low byte again",
+    "ident": "writeWordThenLowByte",
+    "why": "three bytes out of one longword argument: move.w writes the low WORD and the pointer advances two, then move.b writes the low BYTE again at the third position. So the entry reads [byte 2][byte 3][byte 3] - the last component is a repeat of the one before it, not a third value out of the argument, and a caller packing three separate things into that longword would be wrong."
+  },
+  "0x130ee": {
+    "name": "re-enter the self test with the power-on flag clear",
+    "ident": "reenterSelfTestNotPowerOn",
+    "why": "three instructions: mask every interrupt with sr = 0x2700, clear d3, and branch to 0x135ba, which is INSIDE 0x1357c - one instruction past the moveq #$1,d3 that the power-on path runs. So d3 is what tells the self test apart from itself: 1 when the board just came up, 0 when the operator asked for it from the menu, and 0x1378e reads it to decide whether to run the long RAM passes."
   }
 }

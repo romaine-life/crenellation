@@ -202,5 +202,25 @@
       "name": "entry",
       "why": "the longword at 0xc(a7), dereferenced for a WORD which is an offset from 0x1f7f0 - not a pointer to follow directly. The result is dereferenced the same way a second time."
     }
+  },
+  "0x5cb0": {
+    "stack4": {
+      "name": "record",
+      "why": "the longword at 4(a7). Its word at 0xc holds the packed field and its byte at 2 the flags, which are the only two things this routine touches."
+    },
+    "stack8": {
+      "name": "value",
+      "why": "only its low word is read, at 0xa(a7), and only four bits of that survive - the field is masked to 0xfff0 before it is added, so anything above 15 corrupts the bits above it."
+    }
+  },
+  "0x11ce2": {
+    "stack4": {
+      "name": "value",
+      "why": "the longword at 8(a7), of which only the low word is used - and its low byte twice."
+    },
+    "stack8": {
+      "name": "dest",
+      "why": "the longword at 0xc(a7), written three bytes forward from and not advanced past."
+    }
   }
 }
