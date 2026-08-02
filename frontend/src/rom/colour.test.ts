@@ -152,9 +152,13 @@ describe('colour base', () => {
         // which successor each side chose - that needs the predecessor too.
         // With both, the first differing (from -> to) pair IS the mis-lifted
         // branch, named rather than inferred.
+        // The FRAME and the PORT VALUE alongside the registers. The entry
+        // registers already match, so what differs must be when the routine
+        // runs or what the port hands it - and those are different faults with
+        // different owners: a scheduling difference is the dispatchers, a port
+        // difference at the same frame is the harness.
         const M2 = sys.m;
-        a0seq.push(M2.a0 | 0, M2.a1 | 0, M2.a2 | 0, M2.a3 | 0, M2.a4 | 0, M2.a6 | 0,
-                   M2.d0 | 0, M2.d1 | 0, M2.d2 | 0, M2.d5 | 0, M2.d6 | 0, M2.d7 | 0);
+        a0seq.push(n | 0, M2.byte(0x640002) | 0, M2.a0 | 0, M2.d0 | 0);
       }
       if (pc === 0x11efe && regsAt.size < 40) {
         const m2 = sys.m;
