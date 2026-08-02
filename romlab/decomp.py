@@ -719,10 +719,22 @@ class Lifter:
             return
         if b == "ext":
             # Sign-extend in place: byte to word, or word to long.
+            #
+            # And it SETS N AND Z from the result, which this dropped until
+            # 2026-08-01 - the sixth instruction in this file found writing its
+            # value and leaving the condition codes to whatever ran before, after
+            # bclr/bset/bchg, the shifts, the logic group and tst on memory. It
+            # was found at 0x0F932, where `ext.l d0` is the last instruction of a
+            # routine, so the caller's branch read the flags of something several
+            # instructions earlier. Naming the result first is what makes it
+            # available to the branch reconstruction, exactly as the shifts do.
             src_bits = 8 if bits == 16 else 16
             v = self.read(ops[0], src_bits)
             shift = 32 - src_bits
-            self.write(ops[0], Expr(f"((({v.text}) << {shift}) >> {shift})"), bits)
+            res = self.temp(Expr(f"((({v.text}) << {shift}) >> {shift})"))
+            self.write(ops[0], res, bits)
+            self.flags = ("cmp", res.text, "0", bits)
+            self.flags_certain = True
             return
         if b in ("asl", "lsl", "asr", "lsr"):
             if len(ops) == 1:
