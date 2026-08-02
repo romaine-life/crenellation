@@ -64,6 +64,15 @@ would be wrong, and a signature that lies is what this pass exists to stop.
 Making it safe means teaching the graph about indirect targets, which is a
 bigger piece of work than 92 parameters justifies.
 
+THE OTHER CONSERVATIVE LIMIT WAS MEASURED TOO. The depth guard - an overwrite
+deeper than the routine's own brace level is called `input`, because it only
+happens on some paths - holds back 91 parameters of the 1,093 unnamed registers
+left. Loosening it needs real dominance information rather than brace counting,
+and 91 does not pay for that either. The remaining 1,002 are read before they
+are written, or written at the routine's own level and read after: genuine
+inputs and genuine locals, and both want a name from reading rather than a
+pass.
+
 Run after `handedits.py` and before `paramnames.py`, which reads the table.
 Idempotent: a routine with nothing left to drop reports nothing.
 

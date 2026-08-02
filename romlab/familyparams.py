@@ -25,7 +25,11 @@ is reported rather than silently dropped.
     python3 familyparams.py 0xe4e a3=leftCell "the cell address less one, ..."
 
 More usefully it is imported, and `apply(host, {reg: {name, why}})` returns the
-number of entries it reached.
+number of entries it reached. USE IT EVEN FOR A SINGLE ROUTINE rather than
+editing params.curated.json by hand: hand-editing writes slots the lifter does
+not bind, and curatedparams.py then refuses the whole file - correctly, but the
+whole file, so one wrong slot costs the batch. `apply` places what it can and
+reports what it cannot, which is the same discipline with a better failure.
 """
 import json
 import pathlib

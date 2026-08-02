@@ -921,6 +921,22 @@
     "stack16": {
       "name": "scale",
       "why": "only its low word, at 0x26(a7), and the second argument of 0x160f8 - so it modifies the conversion rather than being converted."
+    },
+    "d5": {
+      "name": "line",
+      "why": "starts at 3 and rises by THREE - `addq.w #$3,d5` - so it touches every third row, not consecutive ones."
+    },
+    "d6": {
+      "name": "startRow",
+      "why": "0x18 or 0x12 depending on the byte at 0x372, which is inside the exception vector table and so a build-time constant: two fixed layouts chosen once."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "its low word at 0x22(a7), passed to every 0x16148 call unchanged."
+    },
+    "d4": {
+      "name": "amount",
+      "why": "its low word at 0x1e(a7), passed alongside kind and likewise unchanged."
     }
   },
   "0x13d1e": {
