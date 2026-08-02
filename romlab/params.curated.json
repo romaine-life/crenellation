@@ -520,5 +520,23 @@
       "name": "attrBase",
       "why": "its low word at 0x1e(a6), added to every per-cell attribute after that cell's byte has been shifted left four. The byte stream itself is the argument at off 20, which is missing from the table because the routine advances it in place."
     }
+  },
+  "0x19054": {
+    "stack4": {
+      "name": "attrHigh",
+      "why": "only its low byte, at 0xb(a6), written over the high byte of the word pushed from the next argument. The pair makes one attribute word for the draw."
+    },
+    "stack8": {
+      "name": "attrLow",
+      "why": "only its low word, at 0xe(a6), pushed whole and then half-overwritten by attrHigh."
+    },
+    "stack12": {
+      "name": "value",
+      "why": "the longword at 0x10(a6), pushed as the first argument of the converter at 0x1946e - the number being printed."
+    },
+    "stack20": {
+      "name": "flags",
+      "why": "only bit 1 is looked at: `moveq #$2,d0; and.l $18(a6),d0` and a ZERO there sets a second bit in the caller's flags byte. The whole longword is then passed on to the converter as its fourth argument."
+    }
   }
 }

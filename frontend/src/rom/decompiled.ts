@@ -168929,7 +168929,7 @@ export function drawGlyphRunAlongRow(d0: number, d1: number, arg0: number, arg1:
   return;
 }
 
-export function formatOneConversionIntoLocal(arg0: number, arg1: number, arg2: number, arg3: number, arg4: number): void {
+export function formatOneConversionIntoLocal(attrHigh: number, attrLow: number, value: number, arg3: number, flags: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a6');
@@ -168961,7 +168961,7 @@ export function formatOneConversionIntoLocal(arg0: number, arg1: number, arg2: n
   t2 = (((t1) |(1 << ((0x1) & 7))) >>> 0);
   store8(dst + 0x1e, t2);
   count = (2) >>> 0;
-  t3 = (count & arg4);
+  t3 = (count & flags);
   count = (t3) >>> 0;
   setFlagsCmp(count, 0, 32);
   if (count !== 0) {
@@ -168977,7 +168977,7 @@ export function formatOneConversionIntoLocal(arg0: number, arg1: number, arg2: n
   push(t6, 4);
   push(0x64, 4);
   push((dst + -0x10), 4);
-  t7 = arg2;
+  t7 = value;
   push(t7, 4);
   setFlagsCmp(t7, 0, 32);
   setReg('a6', dst);
@@ -168994,10 +168994,10 @@ export function formatOneConversionIntoLocal(arg0: number, arg1: number, arg2: n
   t10 = 0;
   push(t10, 2);
   push((dst + -0x10), 4);
-  t11 = (arg1 & 0xffff);
+  t11 = (attrLow & 0xffff);
   t12 = t11;
   push(t12, 2);
-  t13 = (arg0 & 0xff);
+  t13 = (attrHigh & 0xff);
   t14 = t13;
   store8(stackPointer() + 0, t14);
   t15 = load32(dst + 0x1c);
@@ -169832,7 +169832,7 @@ export function replaceHighNibbleEightRows(d1_: number, d3_: number, arg0: numbe
   setReg('d3', d3);
 }
 
-export function formatOneConversionLetter(src_: number, count_: number, kind_: number, kind2_: number, d3_: number, d4_: number, d5_: number, arg0: number, arg1: number, count2: number, arg3: number, dst2: number): void {
+export function formatOneConversionLetter(src_: number, count_: number, kind_: number, kind2_: number, d3_: number, d4_: number, d5_: number, value: number, arg1: number, count2: number, arg3: number, dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -169899,7 +169899,7 @@ export function formatOneConversionLetter(src_: number, count_: number, kind_: n
   kind = ((kind & 0xffffff00) | (t0 & 255));
   if ((((kind & 255)) & 255) === ((0x64) & 255)) {
     const _t11 = tick(14, 0x194d0) ? 1 : 0; if (_t11 || SPILL_ALL) { setFlagsCmp((kind & 255), 0x64, 8); setReg('a0', dst); setReg('a1', src); setReg('d0', count); setReg('d1', kind); setReg('d2', kind2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t11) takeIrq(); }
-    count = (arg0) >>> 0;
+    count = (value) >>> 0;
     setFlagsCmp(count, 0, 32);
     const _t12 = tick(42, 0x194d4) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('d0', count); setReg('d1', kind); setReg('d2', kind2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t12) takeIrq(); }
     t7 = (dst2 & 0xffff);
@@ -170128,7 +170128,7 @@ export function formatOneConversionLetter(src_: number, count_: number, kind_: n
     if ((((kind & 255)) & 255) === ((0x73) & 255)) {
       const _t8 = tick(28, 0x194c0) ? 1 : 0; if (_t8 || SPILL_ALL) { setFlagsCmp((kind & 255), 0x73, 8); setReg('a0', dst); setReg('a1', src); setReg('d0', count); setReg('d1', kind); setReg('d2', kind2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t8) takeIrq(); }
       kind = (43) >>> 0;
-      count = (arg0) >>> 0;
+      count = (value) >>> 0;
       setFlagsCmp(count, 0, 32);
       if ((((count - 0) | 0) | 0) >= 0) {
       } else {
@@ -170404,7 +170404,7 @@ export function formatOneConversionLetter(src_: number, count_: number, kind_: n
         }
       }
       const _t7 = tick(54, 0x194ae) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('d0', count); setReg('d1', kind); setReg('d2', kind2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); if (_t7) takeIrq(); }
-      kind = (arg0) >>> 0;
+      kind = (value) >>> 0;
       count = (0) >>> 0;
       t5 = (dst2 & 0xffff);
       count = ((count & 0xffff0000) | (t5 & 65535));

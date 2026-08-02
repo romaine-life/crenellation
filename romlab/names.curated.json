@@ -1207,8 +1207,9 @@
     "why": "masks the colour word with 0x30F0, translates the character through the table at 0x192E6, and calls 0x18F10 with a0 = 0x00800002 - a step of two bytes to the next cell and a paired write 0x80 further on. 0x19010 is the same call with the strides the other way round."
   },
   "0x19054": {
-    "name": "format one conversion into a local buffer and plot it",
-    "why": "`link a6,#-16` for a sixteen-byte buffer, sets bit 1 - and bit 2 unless bit 1 of the caller's flags is set - calls 0x1946E to format into it, and plots the result with 0x18E66."
+    "name": "format a value through the scaled converter and draw it",
+    "ident": "formatScaledAndDraw",
+    "why": "formats into a 16-byte buffer on its own frame and falls THROUGH into the shared tail at 0x190a2, which 0x1908a also enters - so the two are one routine with two heads. This head uses the converter at 0x1946e with a scale of 0x64, a hundred, where 0x1908a's head uses the plain formatter at 0x19614. Before converting it sets bit 1 of the byte at 0x1e(a6) always and bit 2 of it when bit 1 of the argument at 0x18(a6) is clear, so it modifies a flags byte IN the caller's frame - which is why that argument is absent from the params table. The tail draws through 0x18e66 where 0x18b26 draws through 0x18a5e."
   },
   "0x1908a": {
     "name": "format a number with separators into a local buffer and plot it",
