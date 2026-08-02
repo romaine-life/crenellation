@@ -113,9 +113,11 @@ Measured 2026-08-02 in `frontend/src/rom/names.txt`:
 `names.test.ts` **enforces** the first — `expect(byAddress).toEqual([])`, not a
 ratchet, because at the bar a `<=` would quietly accept a regeneration that
 lost a name, and losing one is exactly what a regeneration does when a curated
-name stops applying. It also asserts the second half of the bar: every object
-entry in `names.curated.json` carries a `why`. Parameters are a ratchet against
-`baseline.json` — **on the remainder**, `unnamedParams`, which may only fall.
+name stops applying. It asserts the second half of the bar too, and now in
+both of its forms: every object entry in `names.curated.json` carries a `why`,
+**and no entry is a bare string without evidence elsewhere**. Parameters are a
+ratchet against `baseline.json` — **on the remainder**, `unnamedParams`, which
+may only fall.
 
 Two things about that table changed on 2026-08-02 and both moved the number
 down, so read it as a smaller honest count rather than a regression:
@@ -130,8 +132,8 @@ down, so read it as a smaller honest count rather than a regression:
   every one described a value the routine never reads.
 - **`argN` counts as unnamed.** It says a value arrived in the fourth stack
   slot, which the reader can already see. Counting it as a name made
-  `stackargnames.py` invisible — it moved 95 slots to real words and the old
-  count did not change by one.
+  `stackargnames.py` invisible — it has moved 186 slots to real words and the
+  old count would not have changed by one.
 
 Under the same honest definition the count was 2,501 of 6,279 before the day
 and is 2,334 of 4,419 after it: 3,778 parameters said nothing, 2,085 do.
@@ -197,9 +199,10 @@ and is 2,334 of 4,419 after it: 3,778 parameters said nothing, 2,085 do.
   `flag` is 22 and not 149: `counterStep` replaces the low word of its `d2` and
   *then* asks whether it is zero, so the test is about a value the routine
   computed, and 127 of the 149 were that shape.
-- **The mechanical levers are now measured out.** Of the 1,748 parameters left
-  that are not repointed, 649 are *only* spilled to the machine and 162 more
-  only spilled and pushed: values passed along and nothing else, which no rule
+- **The mechanical levers are now measured out.** 2,085 are left: 450 `argN`
+  stack slots and 1,635 registers, of which 144 are refused as repointed. Of
+  the other 1,491, **669 are *only* spilled to the machine** and 147 more only
+  spilled and pushed — values passed along and nothing else, which no rule
   about the routine can name because the routine does nothing with them. The
   call graph is at a fixed point in both directions with unanimity required.
   Naming the struct fields was the obvious next lever and it is **measured
