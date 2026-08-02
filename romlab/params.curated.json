@@ -3780,15 +3780,23 @@
   "0xf630": {
     "d7": {
       "name": "bucket",
-      "why": "counted down from 7, so there are eight; it doubles to index the word table at 0x3e02b4 and shifts left three more to index 0x3e3f40 in sixteen-byte steps."
+      "why": "counted down from 7 - eight buckets - doubling to index the word table at 0x3e02b4 and shifting three further for 0x3e3f40's sixteen-byte entries."
     },
     "a1": {
       "name": "bucketHead",
-      "why": "0x3e02b4 plus the bucket doubled - a word per bucket, and a zero there is what makes the whole bucket skipped."
+      "why": "0x3e02b4 plus the bucket doubled; a zero word there skips the whole bucket."
     },
     "a5": {
       "name": "motionObjects",
       "why": "0x3e02d8, the sixteen-byte-stride array the entity allocator at 0x5b40 hands entries out of."
+    },
+    "a4": {
+      "name": "displayList",
+      "why": "0x3e0000, the array the rebuild writes into - eight bytes an entry, indexed by the same counter the entity allocator uses."
+    },
+    "d5": {
+      "name": "firstEntry",
+      "why": "the word out of the bucket head, and the emptiness test: `tst.w d5; beq` skips the bucket before anything else is read."
     }
   },
   "0x7262": {
@@ -3911,6 +3919,34 @@
     "d5": {
       "name": "wallByte",
       "why": "the player's byte from 0x1000a indexed by its byte at 2, or zero when the player is the current one - the value the search matches cells against."
+    }
+  },
+  "0xf79e": {
+    "d7": {
+      "name": "bucket",
+      "why": "counted down from 7 - eight buckets - doubling to index the word table at 0x3e02b4 and shifting three further for 0x3e3f40's sixteen-byte entries."
+    },
+    "a1": {
+      "name": "bucketHead",
+      "why": "0x3e02b4 plus the bucket doubled; a zero word there skips the whole bucket."
+    },
+    "d5": {
+      "name": "firstEntry",
+      "why": "the word out of the bucket head, and the emptiness test: `tst.w d5; beq` skips the bucket before anything else is read."
+    }
+  },
+  "0xf936": {
+    "a1": {
+      "name": "bucketHead",
+      "why": "0x3e02b4 plus the bucket doubled; a zero word there skips the whole bucket."
+    },
+    "a4": {
+      "name": "displayList",
+      "why": "0x3e0000, the array the rebuild writes into - eight bytes an entry, indexed by the same counter the entity allocator uses."
+    },
+    "d5": {
+      "name": "firstEntry",
+      "why": "the word out of the bucket head, and the emptiness test: `tst.w d5; beq` skips the bucket before anything else is read."
     }
   }
 }
