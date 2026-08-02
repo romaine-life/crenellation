@@ -3267,24 +3267,64 @@
     "d3": {
       "name": "shifted",
       "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "d4": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f - the kind field, with the 0xc0 owner bits discarded - compared against 8, 4 and 0x1a on the various paths."
+    },
+    "d5": {
+      "name": "cellByte",
+      "why": "the byte as read, before the mask, so the owner bits are still on it where d4 has had them taken off."
+    },
+    "d6": {
+      "name": "stepped",
+      "why": "set to 1 on the path that moves a1 a whole row, and left at zero otherwise - so it records whether the walk moved rather than counting anything."
     }
   },
   "0x27da": {
     "d3": {
       "name": "shifted",
       "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "d4": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f - the kind field, with the 0xc0 owner bits discarded - compared against 8, 4 and 0x1a on the various paths."
+    },
+    "d5": {
+      "name": "cellByte",
+      "why": "the byte as read, before the mask, so the owner bits are still on it where d4 has had them taken off."
+    },
+    "d6": {
+      "name": "stepped",
+      "why": "set to 1 on the path that moves a1 a whole row, and left at zero otherwise - so it records whether the walk moved rather than counting anything."
     }
   },
   "0x27f2": {
     "d3": {
       "name": "shifted",
       "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "a1": {
+      "name": "cellAt",
+      "why": "a cell address stepped by 0x20 for a row and 1 for a column, and read with (a1) for the byte - the walk this whole block does, entered at different points depending on which direction the caller wants."
+    },
+    "d4": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f - the kind field, with the 0xc0 owner bits discarded - compared against 8, 4 and 0x1a on the various paths."
     }
   },
   "0x2818": {
     "d3": {
       "name": "shifted",
       "why": "tested against zero after every address computation and, when non-zero, moves the answer on by two - so it selects between a pair of adjacent things rather than being a value in its own right."
+    },
+    "a1": {
+      "name": "cellAt",
+      "why": "a cell address stepped by 0x20 for a row and 1 for a column, and read with (a1) for the byte - the walk this whole block does, entered at different points depending on which direction the caller wants."
+    },
+    "d4": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f - the kind field, with the 0xc0 owner bits discarded - compared against 8, 4 and 0x1a on the various paths."
     }
   },
   "0x2840": {
@@ -3295,6 +3335,22 @@
     "a0": {
       "name": "at",
       "why": "the address whichever helper just computed, adjusted by d3 and then used by the common path at 0x2978."
+    },
+    "a1": {
+      "name": "cellAt",
+      "why": "a cell address stepped by 0x20 for a row and 1 for a column, and read with (a1) for the byte - the walk this whole block does, entered at different points depending on which direction the caller wants."
+    },
+    "d4": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f - the kind field, with the 0xc0 owner bits discarded - compared against 8, 4 and 0x1a on the various paths."
+    },
+    "d5": {
+      "name": "cellByte",
+      "why": "the byte as read, before the mask, so the owner bits are still on it where d4 has had them taken off."
+    },
+    "d6": {
+      "name": "stepped",
+      "why": "set to 1 on the path that moves a1 a whole row, and left at zero otherwise - so it records whether the walk moved rather than counting anything."
     }
   },
   "0x285e": {
@@ -3305,6 +3361,22 @@
     "a0": {
       "name": "at",
       "why": "the address whichever helper just computed, adjusted by d3 and then used by the common path at 0x2978."
+    },
+    "a1": {
+      "name": "cellAt",
+      "why": "a cell address stepped by 0x20 for a row and 1 for a column, and read with (a1) for the byte - the walk this whole block does, entered at different points depending on which direction the caller wants."
+    },
+    "d4": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f - the kind field, with the 0xc0 owner bits discarded - compared against 8, 4 and 0x1a on the various paths."
+    },
+    "d5": {
+      "name": "cellByte",
+      "why": "the byte as read, before the mask, so the owner bits are still on it where d4 has had them taken off."
+    },
+    "d6": {
+      "name": "stepped",
+      "why": "set to 1 on the path that moves a1 a whole row, and left at zero otherwise - so it records whether the walk moved rather than counting anything."
     }
   },
   "0x28c4": {
@@ -3315,6 +3387,10 @@
     "a0": {
       "name": "at",
       "why": "the address whichever helper just computed, adjusted by d3 and then used by the common path at 0x2978."
+    },
+    "d5": {
+      "name": "cellByte",
+      "why": "the byte as read, before the mask, so the owner bits are still on it where d4 has had them taken off."
     }
   },
   "0x28e8": {
@@ -3337,6 +3413,18 @@
     "a0": {
       "name": "at",
       "why": "the address whichever helper just computed, adjusted by d3 and then used by the common path at 0x2978."
+    },
+    "d4": {
+      "name": "kind",
+      "why": "the cell byte masked to 0x3f - the kind field, with the 0xc0 owner bits discarded - compared against 8, 4 and 0x1a on the various paths."
+    },
+    "d5": {
+      "name": "cellByte",
+      "why": "the byte as read, before the mask, so the owner bits are still on it where d4 has had them taken off."
+    },
+    "d6": {
+      "name": "stepped",
+      "why": "set to 1 on the path that moves a1 a whole row, and left at zero otherwise - so it records whether the walk moved rather than counting anything."
     }
   },
   "0x61c2": {
