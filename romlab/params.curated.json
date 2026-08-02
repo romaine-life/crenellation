@@ -4196,5 +4196,23 @@
       "name": "wasNonZero",
       "why": "`tst.w` then `sne.b` then `neg.b` - the standard way this compiler makes 0 or -1 out of a test, so it is a boolean and not the value it was made from."
     }
+  },
+  "0xe020": {
+    "a4": {
+      "name": "tableA",
+      "why": "0x11960, the first of three tables 0x50 apart - 0x11960, 0x119b0, 0x11a00 - held in three registers at once so the routine can read across them without reloading."
+    },
+    "a3": {
+      "name": "tableB",
+      "why": "0x119b0, the second of the three."
+    },
+    "d5": {
+      "name": "half",
+      "why": "0 or 4 and then shifted left three, so it offsets a table by 0 or 0x20 - it selects which half of an entry is read rather than counting anything."
+    },
+    "d1": {
+      "name": "flagBits",
+      "why": "the word at 0x3e0de0 masked to one bit at a time - 0x8000 for a pending request and 0x4000 for the enable - rather than a value."
+    }
   }
 }
