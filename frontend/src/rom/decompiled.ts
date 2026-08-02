@@ -141512,7 +141512,7 @@ export function clearRebuildAllTwelveSound(count_: number, limit_: number, kind_
   setReg('d4', kind);
 }
 
-export function readSixTwentyTable(ptr2_: number, kind_: number, index_: number, arg0: number, arg1: number): void {
+export function readSixTwentyTable(ptr2_: number, kind_: number, index_: number, row: number, column: number): void {
   let _guard = 0;
   void _guard;
   let ptr2 = ptr2_;
@@ -141521,9 +141521,9 @@ export function readSixTwentyTable(ptr2_: number, kind_: number, index_: number,
   let t0 = 0;
   let t1 = 0;
   const _t0 = tick(42, 0x14eca) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr2); setReg('d0', kind); setReg('d1', index); if (_t0) takeIrq(); }
-  t0 = (arg0 & 0xffff);
+  t0 = (row & 0xffff);
   kind = ((kind & 0xffff0000) | (t0 & 65535));
-  t1 = (arg1 & 0xffff);
+  t1 = (column & 0xffff);
   index = ((index & 0xffff0000) | (t1 & 65535));
   setFlagsCmp((kind & 65535), 0x6, 16);
   if ((((kind & 65535)) & 65535) >= ((0x6) & 65535)) {
@@ -141998,7 +141998,7 @@ export function soundChannelBound(dst_: number, ptr_: number, count_: number, d1
   setReg('d2', limit);
 }
 
-export function soundParameterScaler(index_: number, index3_: number, kind2_: number, limit2_: number, limit_: number, first: number, second: number, third: number, arg3: number): void {
+export function soundParameterScaler(index_: number, index3_: number, kind2_: number, limit2_: number, limit_: number, row: number, column: number, held: number, arg3: number): void {
   let _guard = 0;
   void _guard;
   let kind = getReg('d0');
@@ -142047,11 +142047,11 @@ export function soundParameterScaler(index_: number, index3_: number, kind2_: nu
   save_d3_1 = kind2;
   save_d4_2 = limit2;
   save_d5_3 = limit;
-  t4 = (first & 0xffff);
+  t4 = (row & 0xffff);
   index3 = ((index3 & 0xffff0000) | (t4 & 65535));
-  t5 = (second & 0xffff);
+  t5 = (column & 0xffff);
   kind2 = ((kind2 & 0xffff0000) | (t5 & 65535));
-  t6 = (third & 0xffff);
+  t6 = (held & 0xffff);
   limit2 = ((limit2 & 0xffff0000) | (t6 & 65535));
   kind = (0) >>> 0;
   kind = ((kind & 0xffff0000) | ((kind2 & 65535) & 65535));

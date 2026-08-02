@@ -2103,5 +2103,10 @@
     "name": "save the register file and the return address, and answer zero",
     "ident": "saveRegistersAnswerZero",
     "why": "five instructions and it is a setjmp. `movem.l d1-d7/a2-a7,(a0)` writes the whole register file into the caller's buffer, but d1 has first been replaced by the longword at (a7) - the RETURN ADDRESS - so the buffer holds where to come back to as well as what to come back with. It then answers 0, which is the other half of the convention: whatever restores this buffer answers something else, and the caller tells the two apart by the answer."
+  },
+  "0x14eca": {
+    "name": "look one byte out of the six-by-twenty table at 0x3e3454",
+    "ident": "lookUpSixByTwenty",
+    "why": "refuses a first argument of 6 or more and a second of 0x14 or more, answering 0xff - so the table is six rows of twenty and 0xff means out of range rather than a value. The first is multiplied by 0x14 and the second indexes within that row, which is what makes it row-major."
   }
 }
