@@ -4084,5 +4084,55 @@
       "name": "column",
       "why": "refused at 0x14 or more and used as the index within the row - twenty to a row."
     }
+  },
+  "0x2b88": {
+    "stack4": {
+      "name": "coord",
+      "why": "the low word of the first argument, pushed straight to 0x11bd8 - so it is a packed row-then-column pair and not a cell address, and passing an address here would index the board by its own value."
+    },
+    "d1": {
+      "name": "owner",
+      "why": "the cell byte shifted right six, so the 0xc0 field brought down to 0..3."
+    }
+  },
+  "0x3ba4": {
+    "stack4": {
+      "name": "coord",
+      "why": "the low word of the first argument, pushed straight to 0x11bd8 - so it is a packed row-then-column pair and not a cell address, and passing an address here would index the board by its own value."
+    },
+    "a3": {
+      "name": "cell",
+      "why": "what 0x11bd8 made of the coordinate - the board address it names."
+    },
+    "d2": {
+      "name": "cellByte",
+      "why": "the byte at that cell, kept whole; d3 and d4 are masked copies of it."
+    },
+    "d3": {
+      "name": "ownerBits",
+      "why": "the cell byte masked to 0xc0 - the owner field on its own."
+    },
+    "d4": {
+      "name": "wallByte",
+      "why": "the owner bits or'd with 3, which is the form the enclosure test at 0xbc2 also builds and compares cells against."
+    }
+  },
+  "0x3cee": {
+    "stack4": {
+      "name": "coord",
+      "why": "the low word of the first argument, pushed straight to 0x11bd8 - so it is a packed row-then-column pair and not a cell address, and passing an address here would index the board by its own value."
+    },
+    "a2": {
+      "name": "cell",
+      "why": "the board address 0x11bd8 made of the coordinate."
+    },
+    "d2": {
+      "name": "cellByte",
+      "why": "the byte at that cell, before masking."
+    },
+    "d3": {
+      "name": "ownerBits",
+      "why": "the same byte masked to 0xc0, compared against the cell 0x20 further on - one board row down."
+    }
   }
 }
