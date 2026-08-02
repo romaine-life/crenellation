@@ -4046,5 +4046,33 @@
       "name": "count",
       "why": "the longword at 0x14(a7), compared against a counter that starts at zero, so exactly this many entries are written."
     }
+  },
+  "0x14c3c": {
+    "stack4": {
+      "name": "slot",
+      "why": "its low word, at 0xa(a6), pushed as 0x14b2c's FIRST argument - the entry within a channel, 0 to 10."
+    },
+    "stack8": {
+      "name": "out",
+      "why": "the longword at 0xc(a6), taken into a2 and written through rather than read - where the routine leaves what it worked out."
+    },
+    "stack12": {
+      "name": "channel",
+      "why": "its low word, at 0x12(a6), pushed as 0x14b2c's second argument - one of three."
+    }
+  },
+  "0x15064": {
+    "stack4": {
+      "name": "first",
+      "why": "its low word at 0x16(a7), pushed as the first argument of 0x14eca; the answer coming back negative is what makes this routine take its short path."
+    },
+    "stack8": {
+      "name": "second",
+      "why": "its low word at 0x1a(a7), the second argument of the same call. Named for its position because that call is what decides its meaning and 0x14eca has not been read."
+    },
+    "stack12": {
+      "name": "third",
+      "why": "its low word at 0x1e(a7), held back until after that call rather than passed to it."
+    }
   }
 }

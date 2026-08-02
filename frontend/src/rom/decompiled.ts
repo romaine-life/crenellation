@@ -140507,7 +140507,7 @@ export function helperSoundEnvelopeStepFrom1(ptr2_: number, d1_: number, limit2_
   setReg('d5', d5);
 }
 
-export function soundEnvelopeStep(count_: number, limit2_: number, limit_: number, kind_: number, d5_: number, d6_: number, arg0: number, arg1: number, arg2: number): void {
+export function soundEnvelopeStep(count_: number, limit2_: number, limit_: number, kind_: number, d5_: number, d6_: number, slot: number, out: number, channel: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -140603,10 +140603,10 @@ export function soundEnvelopeStep(count_: number, limit2_: number, limit_: numbe
   save_d6_4 = d6;
   save_a2_5 = ptr;
   save_a3_6 = dst2;
-  t7 = (arg0 & 0xffff);
+  t7 = (slot & 0xffff);
   limit2 = ((limit2 & 0xffff0000) | (t7 & 65535));
-  ptr = (arg1) >>> 0;
-  t8 = (arg2 & 0xffff);
+  ptr = (out) >>> 0;
+  t8 = (channel & 0xffff);
   limit = ((limit & 0xffff0000) | (t8 & 65535));
   push((ptr2 + -0x4), 4);
   index = (0) >>> 0;
@@ -141998,7 +141998,7 @@ export function soundChannelBound(dst_: number, ptr_: number, count_: number, d1
   setReg('d2', limit);
 }
 
-export function soundParameterScaler(index_: number, index3_: number, kind2_: number, limit2_: number, limit_: number, index2: number, arg1: number, arg2: number, arg3: number): void {
+export function soundParameterScaler(index_: number, index3_: number, kind2_: number, limit2_: number, limit_: number, first: number, second: number, third: number, arg3: number): void {
   let _guard = 0;
   void _guard;
   let kind = getReg('d0');
@@ -142047,11 +142047,11 @@ export function soundParameterScaler(index_: number, index3_: number, kind2_: nu
   save_d3_1 = kind2;
   save_d4_2 = limit2;
   save_d5_3 = limit;
-  t4 = (index2 & 0xffff);
+  t4 = (first & 0xffff);
   index3 = ((index3 & 0xffff0000) | (t4 & 65535));
-  t5 = (arg1 & 0xffff);
+  t5 = (second & 0xffff);
   kind2 = ((kind2 & 0xffff0000) | (t5 & 65535));
-  t6 = (arg2 & 0xffff);
+  t6 = (third & 0xffff);
   limit2 = ((limit2 & 0xffff0000) | (t6 & 65535));
   kind = (0) >>> 0;
   kind = ((kind & 0xffff0000) | ((kind2 & 65535) & 65535));
