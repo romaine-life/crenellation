@@ -158553,7 +158553,7 @@ export function recordWhetherVectorHoldsStubWrapper(): void {
   setReg('a0', a0);
 }
 
-export function selfTestStringDraw(d0_: number, d1_: number, arg0: number, arg1: number, arg2: number): void {
+export function selfTestStringDraw(d0_: number, d1_: number, dest: number, firstValue: number, count: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -158574,10 +158574,10 @@ export function selfTestStringDraw(d0_: number, d1_: number, arg0: number, arg1:
   push(d2, 4);
   save_d2_0 = d2;
   save_d3_1 = limit;
-  dst = (arg0) >>> 0;
-  t2 = (arg1 & 0xffff);
+  dst = (dest) >>> 0;
+  t2 = (firstValue & 0xffff);
   d0 = ((d0 & 0xffff0000) | (t2 & 65535));
-  d2 = (arg2) >>> 0;
+  d2 = (count) >>> 0;
   limit = (0) >>> 0;
   setFlagsCmp((limit & 65535), 0, 16);
   l2: for (;;) {
@@ -167340,13 +167340,13 @@ export function decompressTileIdWrapper(src_: number, kind_: number, kind2_: num
   setReg('d4', count2);
 }
 
-export function takePointerWidthCountThen(d0: number, d1: number, arg0: number, arg1: number, arg2: number): void {
+export function takePointerWidthCountThen(d0: number, d1: number, at: number, width: number, count: number): void {
   if (tick(38, 0x18c3c)) { setReg('d0', d0); setReg('d1', d1); takeIrq(); }
-  const t0 = (arg1 & 0xffff);
+  const t0 = (width & 0xffff);
   const t1 = ((d1 & 0xffff0000) | (t0 & 0xffff));
-  const t2 = (arg2 & 0xffff);
+  const t2 = (count & 0xffff);
   const t3 = ((d0 & 0xffff0000) | (t2 & 0xffff));
-  setReg('a0', arg0);
+  setReg('a0', at);
   setReg('d0', t3);
   setReg('d1', t1);
   jumpRom(0x18c48);

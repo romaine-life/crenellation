@@ -4018,5 +4018,33 @@
       "name": "cellValue",
       "why": "the byte written into every cell of the column as it goes."
     }
+  },
+  "0x18c3c": {
+    "stack4": {
+      "name": "at",
+      "why": "the longword at 4(a7) taken into a0. This routine is three instructions and no rts - it loads three arguments into the registers the routine after it expects and falls straight through, so the names are that routine's contract as much as its own."
+    },
+    "stack8": {
+      "name": "width",
+      "why": "only its low word, at 0xa(a7), into d1."
+    },
+    "stack12": {
+      "name": "count",
+      "why": "only its low word, at 0xe(a7), into d0."
+    }
+  },
+  "0x1753c": {
+    "stack4": {
+      "name": "dest",
+      "why": "the longword at 0xc(a7), written a WORD at a time and advanced by 0x80 between writes - so it fills one column of a 0x80-stride structure, not a run."
+    },
+    "stack8": {
+      "name": "firstValue",
+      "why": "only its low word, at 0x12(a7), written as the first entry and then incremented for each one after - so the column is filled with consecutive numbers rather than a repeated value."
+    },
+    "stack12": {
+      "name": "count",
+      "why": "the longword at 0x14(a7), compared against a counter that starts at zero, so exactly this many entries are written."
+    }
   }
 }
