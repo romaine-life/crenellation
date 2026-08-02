@@ -2098,5 +2098,10 @@
     "name": "compare a cell's owner with the two vertically adjacent ones",
     "ident": "compareOwnerVertical",
     "why": "masks the cell byte with 0xc0 - the owner field the whole board code reserves - and compares it against the same field of the cell 0x20 further on and the one 0x20 back, which is one board row either way. So it asks whether a cell has the same owner above and below it, where 0x3de8 next door asks whether the neighbours carry either of two whole values. Two different questions about the same two cells."
+  },
+  "0x1865e": {
+    "name": "save the register file and the return address, and answer zero",
+    "ident": "saveRegistersAnswerZero",
+    "why": "five instructions and it is a setjmp. `movem.l d1-d7/a2-a7,(a0)` writes the whole register file into the caller's buffer, but d1 has first been replaced by the longword at (a7) - the RETURN ADDRESS - so the buffer holds where to come back to as well as what to come back with. It then answers 0, which is the other half of the convention: whatever restores this buffer answers something else, and the caller tells the two apart by the answer."
   }
 }

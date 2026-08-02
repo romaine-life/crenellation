@@ -3848,5 +3848,41 @@
       "name": "result",
       "why": "what the test left: zero on a pass, and on a failure the eor of what was written against what came back."
     }
+  },
+  "0x1865e": {
+    "a4": {
+      "name": "savedA4",
+      "why": "written into the caller's buffer by the single `movem.l d1-d7/a2-a7,(a0)` and not otherwise touched. It is in the signature because the whole point of the routine is to preserve it."
+    },
+    "a5": {
+      "name": "savedA5",
+      "why": "written into the caller's buffer by the single `movem.l d1-d7/a2-a7,(a0)` and not otherwise touched. It is in the signature because the whole point of the routine is to preserve it."
+    },
+    "a6": {
+      "name": "savedA6",
+      "why": "written into the caller's buffer by the single `movem.l d1-d7/a2-a7,(a0)` and not otherwise touched. It is in the signature because the whole point of the routine is to preserve it."
+    },
+    "d4": {
+      "name": "savedD4",
+      "why": "written into the caller's buffer by the single `movem.l d1-d7/a2-a7,(a0)` and not otherwise touched. It is in the signature because the whole point of the routine is to preserve it."
+    },
+    "d5": {
+      "name": "savedD5",
+      "why": "written into the caller's buffer by the single `movem.l d1-d7/a2-a7,(a0)` and not otherwise touched. It is in the signature because the whole point of the routine is to preserve it."
+    },
+    "d6": {
+      "name": "savedD6",
+      "why": "written into the caller's buffer by the single `movem.l d1-d7/a2-a7,(a0)` and not otherwise touched. It is in the signature because the whole point of the routine is to preserve it."
+    },
+    "d7": {
+      "name": "savedD7",
+      "why": "written into the caller's buffer by the single `movem.l d1-d7/a2-a7,(a0)` and not otherwise touched. It is in the signature because the whole point of the routine is to preserve it."
+    }
+  },
+  "0x9208": {
+    "d2": {
+      "name": "state",
+      "why": "the word at 0x3e1948, refused above 0x17 and then doubled to index the PC-relative table - so there are 24 game states and anything higher leaves at once."
+    }
   }
 }

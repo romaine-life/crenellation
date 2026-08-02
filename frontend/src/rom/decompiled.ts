@@ -69573,7 +69573,7 @@ export function mainLoop(): void {
   }
 }
 
-export function dispatchGameStateThroughTwenty(a2_: number, a3_: number, index_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
+export function dispatchGameStateThroughTwenty(a2_: number, a3_: number, index_: number, state_: number, d3_: number, d4_: number, d5_: number, d6_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = a2_;
@@ -69581,7 +69581,7 @@ export function dispatchGameStateThroughTwenty(a2_: number, a3_: number, index_:
   let a4 = getReg('a4');
   let dst = getReg('a6');
   let index = index_;
-  let d2 = d2_;
+  let state = state_;
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
@@ -69597,7 +69597,7 @@ export function dispatchGameStateThroughTwenty(a2_: number, a3_: number, index_:
   let t8 = 0;
   let t9 = 0;
   let t10 = 0;
-  const _t0 = tick(142, 0x09208) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
+  const _t0 = tick(142, 0x09208) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', state); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t0) takeIrq(); }
   push(dst, 4);
   dst = stackPointer();
   drop(-8);
@@ -69608,8 +69608,8 @@ export function dispatchGameStateThroughTwenty(a2_: number, a3_: number, index_:
   push(d5, 4);
   push(d4, 4);
   push(d3, 4);
-  push(d2, 4);
-  save_d2_0 = d2;
+  push(state, 4);
+  save_d2_0 = state;
   save_d3_1 = d3;
   save_d4_2 = d4;
   save_d5_3 = d5;
@@ -69628,15 +69628,15 @@ export function dispatchGameStateThroughTwenty(a2_: number, a3_: number, index_:
     setReg('a4', a4);
     setReg('a6', dst);
     setReg('d0', index);
-    setReg('d2', d2);
+    setReg('d2', state);
     setReg('d3', d3);
     setReg('d4', d4);
     setReg('d5', d5);
     setReg('d6', d6);
-    setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0a7da);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
+    setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', state); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom(0x0a7da);
+  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', state); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6);   return;
   }
-  const _t1 = tick(36, 0x0922c) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((index & 65535), 0x17, 16); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
+  const _t1 = tick(36, 0x0922c) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((index & 65535), 0x17, 16); setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', state); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); if (_t1) takeIrq(); }
   t9 = (index & 65535);
   t10 = (index & 65535);
   index = ((index & 0xffff0000) | (((index & 65535) + (index & 65535)) & 65535));
@@ -69648,30 +69648,30 @@ export function dispatchGameStateThroughTwenty(a2_: number, a3_: number, index_:
   setReg('a4', a4);
   setReg('a6', dst);
   setReg('d0', index);
-  setReg('d2', d2);
+  setReg('d2', state);
   setReg('d3', d3);
   setReg('d4', d4);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom((0x9236 + ((index << 16) >> 16)));
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', state); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); jumpRom((0x9236 + ((index << 16) >> 16)));
+  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', state); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
   setReg('a2', a2);
   setReg('a3', a3);
   setReg('a4', a4);
   setReg('a6', dst);
   setReg('d0', index);
-  setReg('d2', d2);
+  setReg('d2', state);
   setReg('d3', d3);
   setReg('d4', d4);
   setReg('d5', d5);
   setReg('d6', d6);
-  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
+  setReg('a2', a2); setReg('a3', a3); setReg('a4', a4); setReg('a6', dst); setReg('d0', index); setReg('d2', state); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); return;
   setReg('a2', a2);
   setReg('a3', a3);
   setReg('a4', a4);
   setReg('a6', dst);
   setReg('d0', index);
-  setReg('d2', d2);
+  setReg('d2', state);
   setReg('d3', d3);
   setReg('d4', d4);
   setReg('d5', d5);
@@ -142359,7 +142359,7 @@ export function arithmeticHelper(d1_: number, arg0: number): void {
   setReg('d1', d1);
 }
 
-export function titleScreenRenderer(dst2_: number, src_: number, index_: number, kind_: number, kind2_: number, d4_: number, d5_: number): void {
+export function titleScreenRenderer(dst2_: number, src_: number, index_: number, kind_: number, kind2_: number, savedD4_: number, savedD5_: number): void {
   let _guard = 0;
   void _guard;
   let dst2 = dst2_;
@@ -142367,8 +142367,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
   let index = index_;
   let kind = kind_;
   let kind2 = kind2_;
-  let d4 = d4_;
-  let d5 = d5_;
+  let savedD4 = savedD4_;
+  let savedD5 = savedD5_;
   let save_d2_0 = 0;
   let save_d3_1 = 0;
   let save_d4_2 = 0;
@@ -142476,17 +142476,17 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
     if (++_guard > 4000000) throw new Error('dispatch did not end');
     switch (_at) {
       case 0: {
-        _t0 = tick(124, 0x1520e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t0) takeIrq(); }
+        _t0 = tick(124, 0x1520e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t0) takeIrq(); }
         push(src, 4);
         push(dst2, 4);
-        push(d5, 4);
-        push(d4, 4);
+        push(savedD5, 4);
+        push(savedD4, 4);
         push(kind2, 4);
         push(kind, 4);
         save_d2_0 = kind;
         save_d3_1 = kind2;
-        save_d4_2 = d4;
-        save_d5_3 = d5;
+        save_d4_2 = savedD4;
+        save_d5_3 = savedD5;
         save_a2_4 = dst2;
         save_a3_5 = src;
         src = (0x3e361e) >>> 0;
@@ -142496,8 +142496,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x17500, 0x15224);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142505,12 +142505,12 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 1; continue dispatch;
       }
       case 1: {
-        _t1 = tick(80, 0x15224) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t1) takeIrq(); }
+        _t1 = tick(80, 0x15224) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t1) takeIrq(); }
         push(0x30, 4);
         push(0x1d6a0, 4);
         setReg('a2', dst2);
@@ -142518,8 +142518,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x18e66, 0x15234);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142527,19 +142527,19 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 2; continue dispatch;
       }
       case 2: {
-        _t2 = tick(28, 0x15234) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t2) takeIrq(); }
+        _t2 = tick(28, 0x15234) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t2) takeIrq(); }
         setReg('a2', dst2);
         setReg('a3', src);
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x174a2, 0x1523a);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142547,12 +142547,12 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 3; continue dispatch;
       }
       case 3: {
-        _t3 = tick(132, 0x1523a) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t3) takeIrq(); }
+        _t3 = tick(132, 0x1523a) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t3) takeIrq(); }
         push(0x2040, 4);
         push(0x1dfb2, 4);
         push(0x1b, 4);
@@ -142562,8 +142562,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x17fcc, 0x15252);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142571,12 +142571,12 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 4; continue dispatch;
       }
       case 4: {
-        _t4 = tick(132, 0x15252) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t4) takeIrq(); }
+        _t4 = tick(132, 0x15252) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t4) takeIrq(); }
         push(0x2040, 4);
         push(0x1d672, 4);
         push(0x1c, 4);
@@ -142586,8 +142586,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x17fcc, 0x1526a);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142595,20 +142595,20 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 5; continue dispatch;
       }
       case 5: {
-        _t5 = tick(54, 0x1526a) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t5) takeIrq(); }
+        _t5 = tick(54, 0x1526a) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t5) takeIrq(); }
         push(0x3e35ea, 4);
         setReg('a2', dst2);
         setReg('a3', src);
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x1865e, 0x15276);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142616,26 +142616,26 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 6; continue dispatch;
       }
       case 6: {
-        _t6 = tick(28, 0x15276) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t6) takeIrq(); }
+        _t6 = tick(28, 0x15276) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t6) takeIrq(); }
         index = ((index & 0xffff0000) | ((index & 65535) & 65535));
         drop(44);
         _at = ((((index & 65535)) & 65535) !== ((0) & 65535)) ? 54 : 7; continue dispatch;
       }
       case 7: {
-        _t7 = tick(30, 0x15280) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t7) takeIrq(); }
+        _t7 = tick(30, 0x15280) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t7) takeIrq(); }
         setFlagsCmp((index & 65535), 0, 16);
         setReg('a2', dst2);
         setReg('a3', src);
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x1540a, 0x15284);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142643,19 +142643,19 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 8; continue dispatch;
       }
       case 8: {
-        _t8 = tick(28, 0x15284) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t8) takeIrq(); }
+        _t8 = tick(28, 0x15284) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t8) takeIrq(); }
         setReg('a2', dst2);
         setReg('a3', src);
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x17ede, 0x1528a);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142663,12 +142663,12 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 9; continue dispatch;
       }
       case 9: {
-        _t9 = tick(66, 0x1528a) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t9) takeIrq(); }
+        _t9 = tick(66, 0x1528a) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t9) takeIrq(); }
         t6 = 0;
         push(t6, 4);
         push(0x1d700, 4);
@@ -142678,8 +142678,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x18a5e, 0x15298);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142687,12 +142687,12 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 10; continue dispatch;
       }
       case 10: {
-        _t10 = tick(132, 0x15298) ? 1 : 0; if (_t10 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t10) takeIrq(); }
+        _t10 = tick(132, 0x15298) ? 1 : 0; if (_t10 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t10) takeIrq(); }
         push(0x40, 4);
         push(0x1d684, 4);
         push(0x16, 4);
@@ -142702,8 +142702,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x18b76, 0x152b0);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142711,12 +142711,12 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 11; continue dispatch;
       }
       case 11: {
-        _t11 = tick(132, 0x152b0) ? 1 : 0; if (_t11 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t11) takeIrq(); }
+        _t11 = tick(132, 0x152b0) ? 1 : 0; if (_t11 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t11) takeIrq(); }
         push(0x40, 4);
         push(0x1d696, 4);
         push(0x19, 4);
@@ -142726,8 +142726,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x18b76, 0x152c8);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142735,28 +142735,28 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 12; continue dispatch;
       }
       case 12: {
-        _t12 = tick(26, 0x152c8) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t12) takeIrq(); }
+        _t12 = tick(26, 0x152c8) ? 1 : 0; if (_t12 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t12) takeIrq(); }
         kind2 = (20) >>> 0;
-        d4 = (1) >>> 0;
+        savedD4 = (1) >>> 0;
         kind = (3) >>> 0;
         drop(40);
         setFlagsCmp((kind & 65535), 0, 16);
         _at = 13; continue dispatch;
       }
       case 13: {
-        _t13 = tick(28, 0x152d2) ? 1 : 0; if (_t13 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t13) takeIrq(); }
+        _t13 = tick(28, 0x152d2) ? 1 : 0; if (_t13 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t13) takeIrq(); }
         setReg('a2', dst2);
         setReg('a3', src);
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x17ede, 0x152d8);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142764,20 +142764,20 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 14; continue dispatch;
       }
       case 14: {
-        _t14 = tick(54, 0x152d8) ? 1 : 0; if (_t14 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t14) takeIrq(); }
+        _t14 = tick(54, 0x152d8) ? 1 : 0; if (_t14 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t14) takeIrq(); }
         push(0x1000000, 4);
         setReg('a2', dst2);
         setReg('a3', src);
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x1851c, 0x152e4);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142785,12 +142785,12 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 15; continue dispatch;
       }
       case 15: {
-        _t15 = tick(26, 0x152e4) ? 1 : 0; if (_t15 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t15) takeIrq(); }
+        _t15 = tick(26, 0x152e4) ? 1 : 0; if (_t15 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t15) takeIrq(); }
         t7 = (index & 0x1000000);
         index = (t7) >>> 0;
         drop(4);
@@ -142798,7 +142798,7 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = (index === 0) ? 19 : 16; continue dispatch;
       }
       case 16: {
-        _t16 = tick(40, 0x152ee) ? 1 : 0; if (_t16 || SPILL_ALL) { setFlagsCmp(index, 0, 32); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t16) takeIrq(); }
+        _t16 = tick(40, 0x152ee) ? 1 : 0; if (_t16 || SPILL_ALL) { setFlagsCmp(index, 0, 32); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t16) takeIrq(); }
         t8 = 0;
         push(t8, 4);
         setFlagsCmp(0, 0, 32);
@@ -142807,8 +142807,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x1a0cc, 0x152f6);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142816,12 +142816,12 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 17; continue dispatch;
       }
       case 17: {
-        _t17 = tick(80, 0x152f6) ? 1 : 0; if (_t17 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t17) takeIrq(); }
+        _t17 = tick(80, 0x152f6) ? 1 : 0; if (_t17 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t17) takeIrq(); }
         push(0xfffffffd, 4);
         push(0x3e35ea, 4);
         setReg('a2', dst2);
@@ -142829,8 +142829,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x1866c, 0x15306);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142838,25 +142838,25 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 18; continue dispatch;
       }
       case 18: {
-        _t18 = tick(14, 0x15306) ? 1 : 0; if (_t18 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t18) takeIrq(); }
+        _t18 = tick(14, 0x15306) ? 1 : 0; if (_t18 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t18) takeIrq(); }
         drop(12);
         _at = 19; continue dispatch;
       }
       case 19: {
-        _t19 = tick(54, 0x1530a) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t19) takeIrq(); }
+        _t19 = tick(54, 0x1530a) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t19) takeIrq(); }
         push(0x2000000, 4);
         setReg('a2', dst2);
         setReg('a3', src);
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x1851c, 0x15316);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142864,13 +142864,13 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 20; continue dispatch;
       }
       case 20: {
-        _t20 = tick(30, 0x15316) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t20) takeIrq(); }
-        d5 = ((d5 & 0xffff0000) | ((index & 65535) & 65535));
+        _t20 = tick(30, 0x15316) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t20) takeIrq(); }
+        savedD5 = ((savedD5 & 0xffff0000) | ((index & 65535) & 65535));
         t9 = (index & 0x2000000);
         index = (t9) >>> 0;
         drop(4);
@@ -142878,7 +142878,7 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = (index === 0) ? 23 : 21; continue dispatch;
       }
       case 21: {
-        _t21 = tick(46, 0x15322) ? 1 : 0; if (_t21 || SPILL_ALL) { setFlagsCmp(index, 0, 32); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t21) takeIrq(); }
+        _t21 = tick(46, 0x15322) ? 1 : 0; if (_t21 || SPILL_ALL) { setFlagsCmp(index, 0, 32); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t21) takeIrq(); }
         t10 = ((((kind & 65535)) << 16) >> 16);
         kind = (t10) >>> 0;
         t11 = kind;
@@ -142889,8 +142889,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x1a0cc, 0x1532c);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142898,46 +142898,46 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 22; continue dispatch;
       }
       case 22: {
-        _t22 = tick(6, 0x1532c) ? 1 : 0; if (_t22 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t22) takeIrq(); }
+        _t22 = tick(6, 0x1532c) ? 1 : 0; if (_t22 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t22) takeIrq(); }
         drop(4);
         _at = 23; continue dispatch;
       }
       case 23: {
-        _t23 = tick(22, 0x1532e) ? 1 : 0; if (_t23 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t23) takeIrq(); }
-        index = ((index & 0xffff0000) | ((d5 & 65535) & 65535));
+        _t23 = tick(22, 0x1532e) ? 1 : 0; if (_t23 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t23) takeIrq(); }
+        index = ((index & 0xffff0000) | ((savedD5 & 65535) & 65535));
         t12 = ((index & 65535) & 0x4f0);
         index = ((index & 0xffff0000) | (t12 & 65535));
         _at = ((((index & 65535)) & 65535) === ((0) & 65535)) ? 25 : 24; continue dispatch;
       }
       case 24: {
-        _t24 = tick(14, 0x15336) ? 1 : 0; if (_t24 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t24) takeIrq(); }
-        t13 = (d4 & 65535);
+        _t24 = tick(14, 0x15336) ? 1 : 0; if (_t24 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t24) takeIrq(); }
+        t13 = (savedD4 & 65535);
         t14 = 0x1;
-        d4 = ((d4 & 0xffff0000) | (((d4 & 65535) - 0x1) & 65535));
+        savedD4 = ((savedD4 & 0xffff0000) | (((savedD4 & 65535) - 0x1) & 65535));
         setXSub(t13, t14, 16);
         setFlagsSub(t13, t14, 16);
         _at = 26; continue dispatch;
       }
       case 25: {
-        _t25 = tick(8, 0x1533a) ? 1 : 0; if (_t25 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t25) takeIrq(); }
-        d4 = (1) >>> 0;
+        _t25 = tick(8, 0x1533a) ? 1 : 0; if (_t25 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t25) takeIrq(); }
+        savedD4 = (1) >>> 0;
         kind2 = (20) >>> 0;
         setFlagsCmp((kind2 & 65535), 0, 16);
         _at = 26; continue dispatch;
       }
       case 26: {
-        _t26 = tick(14, 0x1533e) ? 1 : 0; if (_t26 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t26) takeIrq(); }
-        setFlagsCmp((d4 & 65535), 0, 16);
-        _at = ((((d4 & 65535)) & 65535) !== ((0) & 65535)) ? 48 : 27; continue dispatch;
+        _t26 = tick(14, 0x1533e) ? 1 : 0; if (_t26 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t26) takeIrq(); }
+        setFlagsCmp((savedD4 & 65535), 0, 16);
+        _at = ((((savedD4 & 65535)) & 65535) !== ((0) & 65535)) ? 48 : 27; continue dispatch;
       }
       case 27: {
-        _t27 = tick(26, 0x15342) ? 1 : 0; if (_t27 || SPILL_ALL) { setFlagsCmp((d4 & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t27) takeIrq(); }
-        d4 = ((d4 & 0xffff0000) | ((kind2 & 65535) & 65535));
+        _t27 = tick(26, 0x15342) ? 1 : 0; if (_t27 || SPILL_ALL) { setFlagsCmp((savedD4 & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t27) takeIrq(); }
+        savedD4 = ((savedD4 & 0xffff0000) | ((kind2 & 65535) & 65535));
         t15 = (kind2 & 65535);
         t16 = 0x2;
         kind2 = ((kind2 & 0xffff0000) | (((kind2 & 65535) - 0x2) & 65535));
@@ -142946,15 +142946,15 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = (((((kind2 & 65535)) << 16) >> 16) >= (((0x4) << 16) >> 16)) ? 29 : 28; continue dispatch;
       }
       case 28: {
-        _t28 = tick(4, 0x1534c) ? 1 : 0; if (_t28 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsCmp((kind2 & 65535), 0x4, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t28) takeIrq(); }
+        _t28 = tick(4, 0x1534c) ? 1 : 0; if (_t28 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsCmp((kind2 & 65535), 0x4, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t28) takeIrq(); }
         kind2 = (4) >>> 0;
         setXSub(t15, t16, 16);
         setFlagsCmp((kind2 & 65535), 0, 16);
         _at = 29; continue dispatch;
       }
       case 29: {
-        _t29 = tick(22, 0x1534e) ? 1 : 0; if (_t29 || SPILL_ALL) { setXSub(t15, t16, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t29) takeIrq(); }
-        index = ((index & 0xffff0000) | ((d5 & 65535) & 65535));
+        _t29 = tick(22, 0x1534e) ? 1 : 0; if (_t29 || SPILL_ALL) { setXSub(t15, t16, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t29) takeIrq(); }
+        index = ((index & 0xffff0000) | ((savedD5 & 65535) & 65535));
         t17 = ((index & 65535) & 0x430);
         index = ((index & 0xffff0000) | (t17 & 65535));
         setXSub(t15, t16, 16);
@@ -142962,7 +142962,7 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = ((((index & 65535)) & 65535) === ((0) & 65535)) ? 32 : 30; continue dispatch;
       }
       case 30: {
-        _t30 = tick(40, 0x15356) ? 1 : 0; if (_t30 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t30) takeIrq(); }
+        _t30 = tick(40, 0x15356) ? 1 : 0; if (_t30 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t30) takeIrq(); }
         t18 = 0;
         push(t18, 4);
         setXSub(t15, t16, 16);
@@ -142972,8 +142972,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x1a0cc, 0x1535e);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -142981,22 +142981,22 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 31; continue dispatch;
       }
       case 31: {
-        _t31 = tick(6, 0x1535e) ? 1 : 0; if (_t31 || SPILL_ALL) { setXSub(t15, t16, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t31) takeIrq(); }
+        _t31 = tick(6, 0x1535e) ? 1 : 0; if (_t31 || SPILL_ALL) { setXSub(t15, t16, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t31) takeIrq(); }
         drop(4);
         setXSub(t15, t16, 16);
         _at = 32; continue dispatch;
       }
       case 32: {
-        _t32 = tick(14, 0x15360) ? 1 : 0; if (_t32 || SPILL_ALL) { setXSub(t15, t16, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t32) takeIrq(); }
-        _at = ((((d5) >>> ((0x7) & 31)) & 1) === 0) ? 39 : 33; continue dispatch;
+        _t32 = tick(14, 0x15360) ? 1 : 0; if (_t32 || SPILL_ALL) { setXSub(t15, t16, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t32) takeIrq(); }
+        _at = ((((savedD5) >>> ((0x7) & 31)) & 1) === 0) ? 39 : 33; continue dispatch;
       }
       case 33: {
-        _t33 = tick(26, 0x15366) ? 1 : 0; if (_t33 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsBit(d5, 0x7, 31); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t33) takeIrq(); }
+        _t33 = tick(26, 0x15366) ? 1 : 0; if (_t33 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsBit(savedD5, 0x7, 31); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t33) takeIrq(); }
         t19 = load16(src);
         index = ((index & 0xffff0000) | (t19 & 65535));
         t20 = (kind & 65535);
@@ -143007,14 +143007,14 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = (((((index & 65535)) << 16) >> 16) >= ((((kind & 65535)) << 16) >> 16)) ? 36 : 34; continue dispatch;
       }
       case 34: {
-        _t34 = tick(14, 0x1536e) ? 1 : 0; if (_t34 || SPILL_ALL) { setXAdd(t20, t21, 16); setFlagsCmp((index & 65535), (kind & 65535), 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t34) takeIrq(); }
+        _t34 = tick(14, 0x1536e) ? 1 : 0; if (_t34 || SPILL_ALL) { setXAdd(t20, t21, 16); setFlagsCmp((index & 65535), (kind & 65535), 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t34) takeIrq(); }
         kind = (1) >>> 0;
         setXAdd(t20, t21, 16);
         setFlagsCmp((kind & 65535), 0, 16);
         _at = 36; continue dispatch;
       }
       case 35: {
-        _t35 = tick(4, 0x15372) ? 1 : 0; if (_t35 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t35) takeIrq(); }
+        _t35 = tick(4, 0x15372) ? 1 : 0; if (_t35 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t35) takeIrq(); }
         t22 = (kind & 65535);
         t23 = 0x1;
         kind = ((kind & 0xffff0000) | (((kind & 65535) + 0x1) & 65535));
@@ -143023,12 +143023,12 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = 36; continue dispatch;
       }
       case 36: {
-        _t36 = tick(18, 0x15374) ? 1 : 0; if (_t36 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t36) takeIrq(); }
+        _t36 = tick(18, 0x15374) ? 1 : 0; if (_t36 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t36) takeIrq(); }
         setFlagsCmp((kind & 65535), 0x3, 16);
         _at = (((((kind & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) ? 48 : 37; continue dispatch;
       }
       case 37: {
-        _t37 = tick(36, 0x1537a) ? 1 : 0; if (_t37 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x3, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t37) takeIrq(); }
+        _t37 = tick(36, 0x1537a) ? 1 : 0; if (_t37 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x3, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t37) takeIrq(); }
         index = ((index & 0xffff0000) | ((kind & 65535) & 65535));
         t24 = (index & 65535);
         t25 = ((0x2) & 63);
@@ -143040,17 +143040,17 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = (t27 !== 0) ? 48 : 38; continue dispatch;
       }
       case 38: {
-        _t38 = tick(10, 0x15384) ? 1 : 0; if (_t38 || SPILL_ALL) { setXShift((((t24) >>> 14) & 1), 1); setFlagsCmp(t27, 0, 32); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t38) takeIrq(); }
+        _t38 = tick(10, 0x15384) ? 1 : 0; if (_t38 || SPILL_ALL) { setXShift((((t24) >>> 14) & 1), 1); setFlagsCmp(t27, 0, 32); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t38) takeIrq(); }
         _at = 35; continue dispatch;
       }
       case 39: {
-        _t39 = tick(14, 0x15386) ? 1 : 0; if (_t39 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsBit(d5, 0x7, 31); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t39) takeIrq(); }
+        _t39 = tick(14, 0x15386) ? 1 : 0; if (_t39 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsBit(savedD5, 0x7, 31); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t39) takeIrq(); }
         setXSub(t15, t16, 16);
-        setFlagsBit(d5, 0x6, 31);
-        _at = ((((d5) >>> ((0x6) & 31)) & 1) === 0) ? 48 : 40; continue dispatch;
+        setFlagsBit(savedD5, 0x6, 31);
+        _at = ((((savedD5) >>> ((0x6) & 31)) & 1) === 0) ? 48 : 40; continue dispatch;
       }
       case 40: {
-        _t40 = tick(22, 0x1538c) ? 1 : 0; if (_t40 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsBit(d5, 0x6, 31); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t40) takeIrq(); }
+        _t40 = tick(22, 0x1538c) ? 1 : 0; if (_t40 || SPILL_ALL) { setXSub(t15, t16, 16); setFlagsBit(savedD5, 0x6, 31); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t40) takeIrq(); }
         t28 = (kind & 65535);
         t29 = 0x1;
         kind = ((kind & 0xffff0000) | (((kind & 65535) - 0x1) & 65535));
@@ -143063,7 +143063,7 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = ((((t30) << 16) >> 16) >= (((t31) << 16) >> 16)) ? 43 : 41; continue dispatch;
       }
       case 41: {
-        _t41 = tick(18, 0x15394) ? 1 : 0; if (_t41 || SPILL_ALL) { setXSub(t30, t31, 16); setFlagsSub(t30, t31, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t41) takeIrq(); }
+        _t41 = tick(18, 0x15394) ? 1 : 0; if (_t41 || SPILL_ALL) { setXSub(t30, t31, 16); setFlagsSub(t30, t31, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t41) takeIrq(); }
         t32 = load16(src);
         kind = ((kind & 0xffff0000) | (t32 & 65535));
         setXSub(t30, t31, 16);
@@ -143071,7 +143071,7 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = 43; continue dispatch;
       }
       case 42: {
-        _t42 = tick(4, 0x15398) ? 1 : 0; if (_t42 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t42) takeIrq(); }
+        _t42 = tick(4, 0x15398) ? 1 : 0; if (_t42 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t42) takeIrq(); }
         t33 = (kind & 65535);
         t34 = 0x1;
         kind = ((kind & 0xffff0000) | (((kind & 65535) - 0x1) & 65535));
@@ -143080,17 +143080,17 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = 43; continue dispatch;
       }
       case 43: {
-        _t43 = tick(18, 0x1539a) ? 1 : 0; if (_t43 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t43) takeIrq(); }
+        _t43 = tick(18, 0x1539a) ? 1 : 0; if (_t43 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t43) takeIrq(); }
         setFlagsCmp((kind & 65535), 0x3, 16);
         _at = (((((kind & 65535)) << 16) >> 16) >= (((0x3) << 16) >> 16)) ? 46 : 44; continue dispatch;
       }
       case 44: {
-        _t44 = tick(14, 0x153a0) ? 1 : 0; if (_t44 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x3, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t44) takeIrq(); }
+        _t44 = tick(14, 0x153a0) ? 1 : 0; if (_t44 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x3, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t44) takeIrq(); }
         setFlagsCmp((kind & 65535), 0, 16);
         _at = (((((kind & 65535)) << 16) >> 16) <= (((0) << 16) >> 16)) ? 46 : 45; continue dispatch;
       }
       case 45: {
-        _t45 = tick(36, 0x153a4) ? 1 : 0; if (_t45 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t45) takeIrq(); }
+        _t45 = tick(36, 0x153a4) ? 1 : 0; if (_t45 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t45) takeIrq(); }
         index = ((index & 0xffff0000) | ((kind & 65535) & 65535));
         t35 = (index & 65535);
         t36 = ((0x2) & 63);
@@ -143102,19 +143102,19 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = (t38 === 0) ? 42 : 46; continue dispatch;
       }
       case 46: {
-        _t46 = tick(14, 0x153ae) ? 1 : 0; if (_t46 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t46) takeIrq(); }
+        _t46 = tick(14, 0x153ae) ? 1 : 0; if (_t46 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t46) takeIrq(); }
         setFlagsCmp((kind & 65535), 0, 16);
         _at = ((((kind & 65535)) & 65535) !== ((0) & 65535)) ? 48 : 47; continue dispatch;
       }
       case 47: {
-        _t47 = tick(8, 0x153b2) ? 1 : 0; if (_t47 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t47) takeIrq(); }
+        _t47 = tick(8, 0x153b2) ? 1 : 0; if (_t47 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t47) takeIrq(); }
         t39 = load16(src);
         kind = ((kind & 0xffff0000) | (t39 & 65535));
         setFlagsCmp((kind & 65535), 0, 16);
         _at = 48; continue dispatch;
       }
       case 48: {
-        _t48 = tick(176, 0x153b4) ? 1 : 0; if (_t48 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t48) takeIrq(); }
+        _t48 = tick(176, 0x153b4) ? 1 : 0; if (_t48 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t48) takeIrq(); }
         push(0x1020, 4);
         push(0x1, 4);
         push(0x3, 4);
@@ -143130,8 +143130,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x18b26, 0x153d2);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -143139,23 +143139,23 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 49; continue dispatch;
       }
       case 49: {
-        _t49 = tick(32, 0x153d2) ? 1 : 0; if (_t49 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t49) takeIrq(); }
+        _t49 = tick(32, 0x153d2) ? 1 : 0; if (_t49 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t49) takeIrq(); }
         drop(24);
         _at = (((((kind & 65535)) << 16) >> 16) < (((0x3) << 16) >> 16)) ? 51 : 50; continue dispatch;
       }
       case 50: {
-        _t50 = tick(16, 0x153dc) ? 1 : 0; if (_t50 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x3, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t50) takeIrq(); }
+        _t50 = tick(16, 0x153dc) ? 1 : 0; if (_t50 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x3, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t50) takeIrq(); }
         index = (0x1d748) >>> 0;
         setFlagsCmp(index, 0, 32);
         _at = 52; continue dispatch;
       }
       case 51: {
-        _t51 = tick(26, 0x153e4) ? 1 : 0; if (_t51 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x3, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t51) takeIrq(); }
+        _t51 = tick(26, 0x153e4) ? 1 : 0; if (_t51 || SPILL_ALL) { setFlagsCmp((kind & 65535), 0x3, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t51) takeIrq(); }
         index = ((index & 0xffff0000) | ((kind & 65535) & 65535));
         t42 = (index & 65535);
         t43 = ((0x2) & 63);
@@ -143167,7 +143167,7 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         _at = 52; continue dispatch;
       }
       case 52: {
-        _t52 = tick(66, 0x153ec) ? 1 : 0; if (_t52 || SPILL_ALL) { setFlagsCmp(index, 0, 32); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t52) takeIrq(); }
+        _t52 = tick(66, 0x153ec) ? 1 : 0; if (_t52 || SPILL_ALL) { setFlagsCmp(index, 0, 32); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t52) takeIrq(); }
         push(0x1020, 4);
         t45 = index;
         push(t45, 4);
@@ -143177,8 +143177,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x18a5e, 0x153f8);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -143186,25 +143186,25 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 53; continue dispatch;
       }
       case 53: {
-        _t53 = tick(16, 0x153f8) ? 1 : 0; if (_t53 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t53) takeIrq(); }
+        _t53 = tick(16, 0x153f8) ? 1 : 0; if (_t53 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t53) takeIrq(); }
         drop(8);
         _at = 13; continue dispatch;
       }
       case 54: {
-        _t54 = tick(28, 0x153fe) ? 1 : 0; if (_t54 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t54) takeIrq(); }
+        _t54 = tick(28, 0x153fe) ? 1 : 0; if (_t54 || SPILL_ALL) { setFlagsCmp((index & 65535), 0, 16); setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t54) takeIrq(); }
         setFlagsCmp((index & 65535), 0, 16);
         setReg('a2', dst2);
         setReg('a3', src);
         setReg('d0', index);
         setReg('d2', kind);
         setReg('d3', kind2);
-        setReg('d4', d4);
-        setReg('d5', d5);
+        setReg('d4', savedD4);
+        setReg('d5', savedD5);
         callRom(0x19366, 0x15404);
         if (halted()) return;
         dst2 = getReg('a2');
@@ -143212,16 +143212,16 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
         index = getReg('d0');
         kind = getReg('d2');
         kind2 = getReg('d3');
-        d4 = getReg('d4');
-        d5 = getReg('d5');
+        savedD4 = getReg('d4');
+        savedD5 = getReg('d5');
         _at = 55; continue dispatch;
       }
       case 55: {
-        _t55 = tick(66, 0x15404) ? 1 : 0; if (_t55 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); if (_t55) takeIrq(); }
+        _t55 = tick(66, 0x15404) ? 1 : 0; if (_t55 || SPILL_ALL) { setReg('a2', dst2); setReg('a3', src); setReg('d0', index); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); if (_t55) takeIrq(); }
         kind = load32(stackPointer());
         kind2 = load32(stackPointer() + 4);
-        d4 = load32(stackPointer() + 8);
-        d5 = load32(stackPointer() + 12);
+        savedD4 = load32(stackPointer() + 8);
+        savedD5 = load32(stackPointer() + 12);
         dst2 = load32(stackPointer() + 16);
         src = load32(stackPointer() + 20);
         drop(24);
@@ -143235,8 +143235,8 @@ export function titleScreenRenderer(dst2_: number, src_: number, index_: number,
   setReg('d0', index);
   setReg('d2', kind);
   setReg('d3', kind2);
-  setReg('d4', d4);
-  setReg('d5', d5);
+  setReg('d4', savedD4);
+  setReg('d5', savedD5);
 }
 
 export function drawTitleSVersionLine(d1_: number, kind_: number): void {
@@ -164832,72 +164832,72 @@ export function haltUnhandledVector(): void {
   return;
 }
 
-export function saveMachineStateLaterJump(dst2_: number, src_: number, a4_: number, a5_: number, a6_: number, kind_: number, kind2_: number, d4_: number, d5_: number, d6_: number, d7_: number, arg0: number): void {
+export function saveMachineStateLaterJump(dst2_: number, src_: number, savedA4_: number, savedA5_: number, savedA6_: number, kind_: number, kind2_: number, savedD4_: number, savedD5_: number, savedD6_: number, savedD7_: number, arg0: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
   let dst2 = dst2_;
   let src = src_;
-  let a4 = a4_;
-  let a5 = a5_;
-  let a6 = a6_;
+  let savedA4 = savedA4_;
+  let savedA5 = savedA5_;
+  let savedA6 = savedA6_;
   let d0 = getReg('d0');
   let d1 = getReg('d1');
   let kind = kind_;
   let kind2 = kind2_;
-  let d4 = d4_;
-  let d5 = d5_;
-  let d6 = d6_;
-  let d7 = d7_;
+  let savedD4 = savedD4_;
+  let savedD5 = savedD5_;
+  let savedD6 = savedD6_;
+  let savedD7 = savedD7_;
   let t0 = 0;
-  const _t0 = tick(96, 0x1865e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a2', dst2); setReg('a3', src); setReg('a4', a4); setReg('a5', a5); setReg('a6', a6); setReg('d0', d0); setReg('d1', d1); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); if (_t0) takeIrq(); }
+  const _t0 = tick(96, 0x1865e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a2', dst2); setReg('a3', src); setReg('a4', savedA4); setReg('a5', savedA5); setReg('a6', savedA6); setReg('d0', d0); setReg('d1', d1); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); setReg('d6', savedD6); setReg('d7', savedD7); if (_t0) takeIrq(); }
   dst = (arg0) >>> 0;
   t0 = load32(stackPointer() + 0);
   d1 = (t0) >>> 0;
   store32(dst + 0, d1);
   store32(dst + 4, kind);
   store32(dst + 8, kind2);
-  store32(dst + 12, d4);
-  store32(dst + 16, d5);
-  store32(dst + 20, d6);
-  store32(dst + 24, d7);
+  store32(dst + 12, savedD4);
+  store32(dst + 16, savedD5);
+  store32(dst + 20, savedD6);
+  store32(dst + 24, savedD7);
   store32(dst + 28, dst2);
   store32(dst + 32, src);
-  store32(dst + 36, a4);
-  store32(dst + 40, a5);
-  store32(dst + 44, a6);
+  store32(dst + 36, savedA4);
+  store32(dst + 40, savedA5);
+  store32(dst + 44, savedA6);
   store32(dst + 48, stackPointer());
   d0 = (0) >>> 0;
   setFlagsCmp(d0, 0, 32);
   setReg('a0', dst);
   setReg('a2', dst2);
   setReg('a3', src);
-  setReg('a4', a4);
-  setReg('a5', a5);
-  setReg('a6', a6);
+  setReg('a4', savedA4);
+  setReg('a5', savedA5);
+  setReg('a6', savedA6);
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', kind);
   setReg('d3', kind2);
-  setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('d7', d7);
-  setReg('a0', dst); setReg('a2', dst2); setReg('a3', src); setReg('a4', a4); setReg('a5', a5); setReg('a6', a6); setReg('d0', d0); setReg('d1', d1); setReg('d2', kind); setReg('d3', kind2); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); return;
+  setReg('d4', savedD4);
+  setReg('d5', savedD5);
+  setReg('d6', savedD6);
+  setReg('d7', savedD7);
+  setReg('a0', dst); setReg('a2', dst2); setReg('a3', src); setReg('a4', savedA4); setReg('a5', savedA5); setReg('a6', savedA6); setReg('d0', d0); setReg('d1', d1); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); setReg('d6', savedD6); setReg('d7', savedD7); return;
   setReg('a0', dst);
   setReg('a2', dst2);
   setReg('a3', src);
-  setReg('a4', a4);
-  setReg('a5', a5);
-  setReg('a6', a6);
+  setReg('a4', savedA4);
+  setReg('a5', savedA5);
+  setReg('a6', savedA6);
   setReg('d0', d0);
   setReg('d1', d1);
   setReg('d2', kind);
   setReg('d3', kind2);
-  setReg('d4', d4);
-  setReg('d5', d5);
-  setReg('d6', d6);
-  setReg('d7', d7);
+  setReg('d4', savedD4);
+  setReg('d5', savedD5);
+  setReg('d6', savedD6);
+  setReg('d7', savedD7);
 }
 
 export function restoreSavedStateJumpBack(arg0: number, arg1: number): void {
