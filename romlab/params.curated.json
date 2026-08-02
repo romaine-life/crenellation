@@ -4672,5 +4672,25 @@
       "name": "savedD7",
       "why": "preserved by the same movem and never read here."
     }
+  },
+  "0xce48": {
+    "stack4": {
+      "name": "perPlayerTable",
+      "why": "indexed by the player's byte at 2 times FOUR and dereferenced, so it is a table of longwords with one entry per player, and the entry is what gets passed to the gate at 0x90e6."
+    },
+    "d0": {
+      "name": "playerIndex",
+      "why": "the player's byte at 2, shifted left two to index the table - the same byte every player-keyed lookup in this ROM uses."
+    }
+  },
+  "0xcd0c": {
+    "stack4": {
+      "name": "arg",
+      "why": "passed straight to 0x41be as its first argument along with the player's index - this routine does nothing with it itself, so its meaning is 0x41be's."
+    },
+    "stack8": {
+      "name": "player",
+      "why": "its byte at 2 is the player index handed to 0x41be, and its byte at 0x1a is set to 2 afterwards; 0x3e1950 also takes 0x46, the same byte 0xce48 writes."
+    }
   }
 }

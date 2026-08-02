@@ -99359,7 +99359,7 @@ export function actRecordOnceOnlyEarly(arg0: number): void {
   setReg('a0', dst);
 }
 
-export function countdownSExpiryMarkRecord(dst_: number, table: number, arg1: number): void {
+export function countdownSExpiryMarkRecord(dst_: number, arg: number, player: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -99375,8 +99375,8 @@ export function countdownSExpiryMarkRecord(dst_: number, table: number, arg1: nu
   const _t0 = tick(186, 0x0cd0c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('d0', count); setReg('d1', limit); if (_t0) takeIrq(); }
   t0 = dst;
   push(t0, 4);
-  limit = (table) >>> 0;
-  dst = (arg1) >>> 0;
+  limit = (arg) >>> 0;
+  dst = (player) >>> 0;
   push(0x1, 4);
   push(0x8, 4);
   push(0xc, 4);
@@ -99709,11 +99709,11 @@ export function messageSelector(ptr_: number, index_: number, arg0: number): voi
   setReg('d0', index);
 }
 
-export function damageSkipCountRead(count_: number, arg0: number, record: number): void {
+export function damageSkipCountRead(playerIndex_: number, perPlayerTable: number, record: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
-  let count = count_;
+  let playerIndex = playerIndex_;
   let d1 = getReg('d1');
   let t0 = 0;
   let t1 = 0;
@@ -99723,24 +99723,24 @@ export function damageSkipCountRead(count_: number, arg0: number, record: number
   let t5 = 0;
   let t6 = 0;
   let t7 = 0;
-  const _t0 = tick(50, 0x0ce48) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('d0', count); setReg('d1', d1); if (_t0) takeIrq(); }
-  d1 = (arg0) >>> 0;
+  const _t0 = tick(50, 0x0ce48) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('d0', playerIndex); setReg('d1', d1); if (_t0) takeIrq(); }
+  d1 = (perPlayerTable) >>> 0;
   ptr = (record) >>> 0;
   t0 = load8(ptr + 0x1d);
   setFlagsCmp(t0, 0, 8);
   if (((t0) & 255) !== ((0) & 255)) {
   } else {
-    const _t1 = tick(100, 0x0ce56) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0, 8); setReg('a0', ptr); setReg('d0', count); setReg('d1', d1); if (_t1) takeIrq(); }
+    const _t1 = tick(100, 0x0ce56) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0, 8); setReg('a0', ptr); setReg('d0', playerIndex); setReg('d1', d1); if (_t1) takeIrq(); }
     t1 = 0x46;
     store8(0x3e1950, t1);
-    count = (0) >>> 0;
+    playerIndex = (0) >>> 0;
     t2 = load8(ptr + 0x2);
-    count = ((count & 0xffffff00) | (t2 & 255));
-    t3 = count;
+    playerIndex = ((playerIndex & 0xffffff00) | (t2 & 255));
+    t3 = playerIndex;
     t4 = ((0x2) & 63);
-    t5 = (t4 >= 32 ? 0 : ((count) << t4));
-    count = (t5) >>> 0;
-    ptr = (count) >>> 0;
+    t5 = (t4 >= 32 ? 0 : ((playerIndex) << t4));
+    playerIndex = (t5) >>> 0;
+    ptr = (playerIndex) >>> 0;
     ptr = ((ptr + d1)) >>> 0;
     t6 = load32(ptr);
     t7 = t6;
@@ -99748,24 +99748,24 @@ export function damageSkipCountRead(count_: number, arg0: number, record: number
     setXShift((((t3) >>> 30) & 1), 1);
     setFlagsCmp(t7, 0, 32);
     setReg('a0', ptr);
-    setReg('d0', count);
+    setReg('d0', playerIndex);
     setReg('d1', d1);
     callRom(0x090e6, 0x0ce72);
     if (halted()) return;
     ptr = getReg('a0');
-    count = getReg('d0');
+    playerIndex = getReg('d0');
     d1 = getReg('d1');
-    const _t2 = tick(6, 0x0ce72) ? 1 : 0; if (_t2 || SPILL_ALL) { setXShift((((t3) >>> 30) & 1), 1); setReg('a0', ptr); setReg('d0', count); setReg('d1', d1); if (_t2) takeIrq(); }
+    const _t2 = tick(6, 0x0ce72) ? 1 : 0; if (_t2 || SPILL_ALL) { setXShift((((t3) >>> 30) & 1), 1); setReg('a0', ptr); setReg('d0', playerIndex); setReg('d1', d1); if (_t2) takeIrq(); }
     drop(4);
     setXShift((((t3) >>> 30) & 1), 1);
   }
-  const _t3 = tick(16, 0x0ce74) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', ptr); setReg('d0', count); setReg('d1', d1); if (_t3) takeIrq(); }
+  const _t3 = tick(16, 0x0ce74) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', ptr); setReg('d0', playerIndex); setReg('d1', d1); if (_t3) takeIrq(); }
   setReg('a0', ptr);
-  setReg('d0', count);
+  setReg('d0', playerIndex);
   setReg('d1', d1);
-  setReg('a0', ptr); setReg('d0', count); setReg('d1', d1); return;
+  setReg('a0', ptr); setReg('d0', playerIndex); setReg('d1', d1); return;
   setReg('a0', ptr);
-  setReg('d0', count);
+  setReg('d0', playerIndex);
   setReg('d1', d1);
 }
 

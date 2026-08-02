@@ -34,6 +34,12 @@ with it is, which is the only question that decides whether it is an input:
                 than the routine's own brace level does not settle the
                 question, so it counts as an input and the parameter stays.
 
+AND THERE ARE NO PURELY LIVE-THROUGH ONES LEFT, measured 2026-08-02 after the
+last few were named by hand: of the unnamed register parameters, ZERO have
+every appearance be a spill. Every one is genuinely read, written or otherwise
+used, which closes the last question about whether a rule could still name them
+in bulk. It cannot. What is left is reading.
+
 `narrowed` is not "carries nothing": the bits the routine does not replace are
 still what the caller passed. It is reported separately for that reason, and
 `dropunread.py` leaves it alone.
