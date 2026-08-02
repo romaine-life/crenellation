@@ -1181,6 +1181,14 @@
     "a2": {
       "name": "target",
       "why": "the longword at 8 of the record being ticked, taken before the jump through the PC-relative table - so every case gets it already loaded and none of them fetches it again."
+    },
+    "a3": {
+      "name": "record",
+      "why": "the timer-list record being ticked, kept while the jump through the PC-relative table at 0x1261a runs so every case has it."
+    },
+    "d2": {
+      "name": "kind",
+      "why": "the byte at 0xc of the record, doubled to index that table - so it is the case selector and there are as many cases as the table has words."
     }
   },
   "0x1357c": {
@@ -3995,6 +4003,26 @@
     "d5": {
       "name": "digit",
       "why": "the value being printed, shifted a nibble at a time - the crash print is hexadecimal, which is why nothing here formats decimal."
+    },
+    "a4": {
+      "name": "regsCursor",
+      "why": "a copy of the saved-register block pointer, walked forwards as each register is printed - a3 keeps the start so it can be gone back to."
+    },
+    "a1": {
+      "name": "text",
+      "why": "a string read with (a1)+ until a zero byte, with 0x13 added to each character before it is drawn - so the font's codes are offset from ASCII by 0x13."
+    },
+    "a6": {
+      "name": "savedA6",
+      "why": "part of the register file this screen exists to print; it is in the signature because it was live when the crash happened."
+    },
+    "a2": {
+      "name": "savedA2",
+      "why": "the same - a register preserved for printing rather than used."
+    },
+    "d6": {
+      "name": "column",
+      "why": "the position across the line, advanced as each glyph goes down."
     }
   },
   "0x66d4": {

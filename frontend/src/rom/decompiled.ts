@@ -122967,15 +122967,15 @@ export function decompressorNibbleExpand(dst_: number, d0_: number, count_: numb
   setReg('d5', d5);
 }
 
-export function helperVblankGateTick(listHead_: number, dst_: number, target_: number, a3_: number, index_: number, d2_: number, d3_: number, d4_: number, d5_: number, d6_: number, d7_: number): void {
+export function helperVblankGateTick(listHead_: number, dst_: number, target_: number, record_: number, index_: number, kind_: number, d3_: number, d4_: number, d5_: number, d6_: number, d7_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
   let dst = dst_;
   let target = target_;
-  let a3 = a3_;
+  let record = record_;
   let index = index_;
-  let d2 = d2_;
+  let kind = kind_;
   let d3 = d3_;
   let d4 = d4_;
   let d5 = d5_;
@@ -123002,41 +123002,41 @@ export function helperVblankGateTick(listHead_: number, dst_: number, target_: n
   let t18 = 0;
   let t19 = 0;
   let t20 = 0;
-  const _t0 = tick(26, 0x125da) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); if (_t0) takeIrq(); }
+  const _t0 = tick(26, 0x125da) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); if (_t0) takeIrq(); }
   t0 = load8(0x3e2498);
   if (((t0) & 255) !== ((0) & 255)) {
     setFlagsCmp(t0, 0, 8);
     setReg('a0', listHead);
     setReg('a1', dst);
     setReg('a2', target);
-    setReg('a3', a3);
+    setReg('a3', record);
     setReg('d0', index);
-    setReg('d2', d2);
+    setReg('d2', kind);
     setReg('d3', d3);
     setReg('d4', d4);
     setReg('d5', d5);
     setReg('d6', d6);
     setReg('d7', d7);
-    setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); jumpRom(0x1288e);
-  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7);   return;
+    setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); jumpRom(0x1288e);
+  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7);   return;
   }
-  const _t1 = tick(110, 0x125e4) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0, 8); setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); if (_t1) takeIrq(); }
-  push(a3, 4);
+  const _t1 = tick(110, 0x125e4) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t0, 0, 8); setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); if (_t1) takeIrq(); }
+  push(record, 4);
   push(target, 4);
   push(d7, 4);
   push(d6, 4);
   push(d5, 4);
   push(d4, 4);
   push(d3, 4);
-  push(d2, 4);
-  save_d2_1 = d2;
+  push(kind, 4);
+  save_d2_1 = kind;
   save_d3_2 = d3;
   save_d4_3 = d4;
   save_d5_4 = d5;
   save_d6_5 = d6;
   save_d7_6 = d7;
   save_a2_7 = target;
-  save_a3_8 = a3;
+  save_a3_8 = record;
   listHead = (0x3e20a0) >>> 0;
   t9 = load32(listHead);
   dst = (t9) >>> 0;
@@ -123045,18 +123045,18 @@ export function helperVblankGateTick(listHead_: number, dst_: number, target_: n
     setReg('a0', listHead);
     setReg('a1', dst);
     setReg('a2', target);
-    setReg('a3', a3);
+    setReg('a3', record);
     setReg('d0', index);
-    setReg('d2', d2);
+    setReg('d2', kind);
     setReg('d3', d3);
     setReg('d4', d4);
     setReg('d5', d5);
     setReg('d6', d6);
     setReg('d7', d7);
-    setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); jumpRom(0x1288a);
-  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7);   return;
+    setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); jumpRom(0x1288a);
+  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7);   return;
   }
-  const _t2 = tick(22, 0x125f8) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(dst, listHead, 32); setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); if (_t2) takeIrq(); }
+  const _t2 = tick(22, 0x125f8) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(dst, listHead, 32); setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); if (_t2) takeIrq(); }
   t10 = load8(dst + 0xe);
   t11 = t10;
   t12 = 0x1;
@@ -123069,18 +123069,18 @@ export function helperVblankGateTick(listHead_: number, dst_: number, target_: n
     setReg('a0', listHead);
     setReg('a1', dst);
     setReg('a2', target);
-    setReg('a3', a3);
+    setReg('a3', record);
     setReg('d0', index);
-    setReg('d2', d2);
+    setReg('d2', kind);
     setReg('d3', d3);
     setReg('d4', d4);
     setReg('d5', d5);
     setReg('d6', d6);
     setReg('d7', d7);
-    setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); jumpRom(0x12880);
-  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7);   return;
+    setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); jumpRom(0x12880);
+  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7);   return;
   }
-  const _t3 = tick(86, 0x12600) ? 1 : 0; if (_t3 || SPILL_ALL) { setXSub(t11, t12, 8); setFlagsSub(t11, t12, 8); setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); if (_t3) takeIrq(); }
+  const _t3 = tick(86, 0x12600) ? 1 : 0; if (_t3 || SPILL_ALL) { setXSub(t11, t12, 8); setFlagsSub(t11, t12, 8); setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); if (_t3) takeIrq(); }
   t15 = load8(dst + 0xd);
   t16 = t15;
   store8(dst + 0xe, t16);
@@ -123098,34 +123098,34 @@ export function helperVblankGateTick(listHead_: number, dst_: number, target_: n
   setReg('a0', listHead);
   setReg('a1', dst);
   setReg('a2', target);
-  setReg('a3', a3);
+  setReg('a3', record);
   setReg('d0', index);
-  setReg('d2', d2);
+  setReg('d2', kind);
   setReg('d3', d3);
   setReg('d4', d4);
   setReg('d5', d5);
   setReg('d6', d6);
   setReg('d7', d7);
-  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); jumpRom((0x1261a + ((index << 16) >> 16)));
-  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); return;
+  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); jumpRom((0x1261a + ((index << 16) >> 16)));
+  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); return;
   setReg('a0', listHead);
   setReg('a1', dst);
   setReg('a2', target);
-  setReg('a3', a3);
+  setReg('a3', record);
   setReg('d0', index);
-  setReg('d2', d2);
+  setReg('d2', kind);
   setReg('d3', d3);
   setReg('d4', d4);
   setReg('d5', d5);
   setReg('d6', d6);
   setReg('d7', d7);
-  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', a3); setReg('d0', index); setReg('d2', d2); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); return;
+  setReg('a0', listHead); setReg('a1', dst); setReg('a2', target); setReg('a3', record); setReg('d0', index); setReg('d2', kind); setReg('d3', d3); setReg('d4', d4); setReg('d5', d5); setReg('d6', d6); setReg('d7', d7); return;
   setReg('a0', listHead);
   setReg('a1', dst);
   setReg('a2', target);
-  setReg('a3', a3);
+  setReg('a3', record);
   setReg('d0', index);
-  setReg('d2', d2);
+  setReg('d2', kind);
   setReg('d3', d3);
   setReg('d4', d4);
   setReg('d5', d5);
@@ -187182,16 +187182,16 @@ export function haltEveryInterruptMaskedUpper(): void {
   return;
 }
 
-export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: number, savedRegs_: number, a4_: number, screenAt_: number, a6_: number, a7_: number, count_: number, count4_: number, flag_: number, count2_: number, count22_: number, digit_: number, d6_: number, eight_: number): void {
+export function crashScreenFreezeMachinePrint(a0_: number, text_: number, savedA2_: number, savedRegs_: number, regsCursor_: number, screenAt_: number, savedA6_: number, a7_: number, count_: number, count4_: number, flag_: number, count2_: number, count22_: number, digit_: number, column_: number, eight_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = a0_;
-  let a1 = a1_;
-  let a2 = a2_;
+  let text = text_;
+  let savedA2 = savedA2_;
   let savedRegs = savedRegs_;
-  let a4 = a4_;
+  let regsCursor = regsCursor_;
   let screenAt = screenAt_;
-  let a6 = a6_;
+  let savedA6 = savedA6_;
   let a7 = a7_;
   let count = count_;
   let count4 = count4_;
@@ -187199,7 +187199,7 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   let count2 = count2_;
   let count22 = count22_;
   let digit = digit_;
-  let d6 = d6_;
+  let column = column_;
   let eight = eight_;
   let t0 = 0;
   let t1 = 0;
@@ -187242,23 +187242,23 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   let t38 = 0;
   let t39 = 0;
   let t40 = 0;
-  const _t0 = tick(4, 0x1e8d6) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t0) takeIrq(); }
+  const _t0 = tick(4, 0x1e8d6) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t0) takeIrq(); }
   t0 = 0x2700;
-  setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); setSr(t0, 0x1e8da);
-  const _t1 = tick(168, 0x1e8da) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t1) takeIrq(); }
+  setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); setSr(t0, 0x1e8da);
+  const _t1 = tick(168, 0x1e8da) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t1) takeIrq(); }
   t1 = 0;
   store16(0x72fffe, t1);
   t2 = load16(0x72fffe);
   push(a7, 4);
-  push(a6, 4);
+  push(savedA6, 4);
   push(screenAt, 4);
-  push(a4, 4);
+  push(regsCursor, 4);
   push(savedRegs, 4);
-  push(a2, 4);
-  push(a1, 4);
+  push(savedA2, 4);
+  push(text, 4);
   push(a0, 4);
   push(eight, 4);
-  push(d6, 4);
+  push(column, 4);
   push(digit, 4);
   push(count22, 4);
   push(count2, 4);
@@ -187271,42 +187271,42 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   save_d3_6 = count2;
   save_d4_7 = count22;
   save_d5_8 = digit;
-  save_d6_9 = d6;
+  save_d6_9 = column;
   save_d7_10 = eight;
   save_a0_11 = a0;
-  save_a1_12 = a1;
-  save_a2_13 = a2;
+  save_a1_12 = text;
+  save_a2_13 = savedA2;
   save_a3_14 = savedRegs;
-  save_a4_15 = a4;
+  save_a4_15 = regsCursor;
   save_a5_16 = screenAt;
-  save_a6_17 = a6;
+  save_a6_17 = savedA6;
   save_a7_18 = a7;
   savedRegs = (stackPointer()) >>> 0;
-  a1 = (0x3c03e0) >>> 0;
+  text = (0x3c03e0) >>> 0;
   a0 = (0x1e85a) >>> 0;
   t19 = load32(a0);
   a0 = (a0 + 4);
   t20 = t19;
-  store32(a1, t20);
-  a1 = (a1 + 4);
+  store32(text, t20);
+  text = (text + 4);
   t21 = load32(a0);
   a0 = (a0 + 4);
   t22 = t21;
-  store32(a1, t22);
-  a1 = (a1 + 4);
+  store32(text, t22);
+  text = (text + 4);
   a0 = (0x203030) >>> 0;
   eight = (7) >>> 0;
   setFlagsCmp((eight & 65535), 0, 16);
   l2: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 2 did not end');
-    const _t2 = tick(30, 0x1e8fe) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t2) takeIrq(); }
+    const _t2 = tick(30, 0x1e8fe) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t2) takeIrq(); }
     setReg('a0', a0);
-    setReg('a1', a1);
-    setReg('a2', a2);
+    setReg('a1', text);
+    setReg('a2', savedA2);
     setReg('a3', savedRegs);
-    setReg('a4', a4);
+    setReg('a4', regsCursor);
     setReg('a5', screenAt);
-    setReg('a6', a6);
+    setReg('a6', savedA6);
     setReg('a7', a7);
     setReg('d0', count);
     setReg('d1', count4);
@@ -187314,17 +187314,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     setReg('d3', count2);
     setReg('d4', count22);
     setReg('d5', digit);
-    setReg('d6', d6);
+    setReg('d6', column);
     setReg('d7', eight);
     callRom(0x1e8c8, 0x1e900);
     if (halted()) return;
     a0 = getReg('a0');
-    a1 = getReg('a1');
-    a2 = getReg('a2');
+    text = getReg('a1');
+    savedA2 = getReg('a2');
     savedRegs = getReg('a3');
-    a4 = getReg('a4');
+    regsCursor = getReg('a4');
     screenAt = getReg('a5');
-    a6 = getReg('a6');
+    savedA6 = getReg('a6');
     a7 = getReg('a7');
     count = getReg('d0');
     count4 = getReg('d1');
@@ -187332,29 +187332,29 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     count2 = getReg('d3');
     count22 = getReg('d4');
     digit = getReg('d5');
-    d6 = getReg('d6');
+    column = getReg('d6');
     eight = getReg('d7');
-    const _t3 = tick(10, 0x1e900) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t3) takeIrq(); }
+    const _t3 = tick(10, 0x1e900) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t3) takeIrq(); }
     eight = ((eight & 0xffff0000) | (((eight & 0xffff) - 1) & 0xffff));
     if ((eight & 0xffff) !== 0xffff) {
       continue l2;
     }
     break;
   }
-  const _t4 = tick(18, 0x1e904) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t4) takeIrq(); }
+  const _t4 = tick(18, 0x1e904) ? 1 : 0; if (_t4 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t4) takeIrq(); }
   a0 = ((a0 + 0x1000)) >>> 0;
   eight = (7) >>> 0;
   setFlagsCmp((eight & 65535), 0, 16);
   l5: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 5 did not end');
-    const _t5 = tick(30, 0x1e90a) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t5) takeIrq(); }
+    const _t5 = tick(30, 0x1e90a) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t5) takeIrq(); }
     setReg('a0', a0);
-    setReg('a1', a1);
-    setReg('a2', a2);
+    setReg('a1', text);
+    setReg('a2', savedA2);
     setReg('a3', savedRegs);
-    setReg('a4', a4);
+    setReg('a4', regsCursor);
     setReg('a5', screenAt);
-    setReg('a6', a6);
+    setReg('a6', savedA6);
     setReg('a7', a7);
     setReg('d0', count);
     setReg('d1', count4);
@@ -187362,17 +187362,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     setReg('d3', count2);
     setReg('d4', count22);
     setReg('d5', digit);
-    setReg('d6', d6);
+    setReg('d6', column);
     setReg('d7', eight);
     callRom(0x1e8c8, 0x1e90c);
     if (halted()) return;
     a0 = getReg('a0');
-    a1 = getReg('a1');
-    a2 = getReg('a2');
+    text = getReg('a1');
+    savedA2 = getReg('a2');
     savedRegs = getReg('a3');
-    a4 = getReg('a4');
+    regsCursor = getReg('a4');
     screenAt = getReg('a5');
-    a6 = getReg('a6');
+    savedA6 = getReg('a6');
     a7 = getReg('a7');
     count = getReg('d0');
     count4 = getReg('d1');
@@ -187380,24 +187380,24 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     count2 = getReg('d3');
     count22 = getReg('d4');
     digit = getReg('d5');
-    d6 = getReg('d6');
+    column = getReg('d6');
     eight = getReg('d7');
-    const _t6 = tick(10, 0x1e90c) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t6) takeIrq(); }
+    const _t6 = tick(10, 0x1e90c) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t6) takeIrq(); }
     eight = ((eight & 0xffff0000) | (((eight & 0xffff) - 1) & 0xffff));
     if ((eight & 0xffff) !== 0xffff) {
       continue l5;
     }
     break;
   }
-  const _t7 = tick(44, 0x1e910) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t7) takeIrq(); }
+  const _t7 = tick(44, 0x1e910) ? 1 : 0; if (_t7 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t7) takeIrq(); }
   a0 = ((a0 + 0x1000)) >>> 0;
   setReg('a0', a0);
-  setReg('a1', a1);
-  setReg('a2', a2);
+  setReg('a1', text);
+  setReg('a2', savedA2);
   setReg('a3', savedRegs);
-  setReg('a4', a4);
+  setReg('a4', regsCursor);
   setReg('a5', screenAt);
-  setReg('a6', a6);
+  setReg('a6', savedA6);
   setReg('a7', a7);
   setReg('d0', count);
   setReg('d1', count4);
@@ -187405,17 +187405,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   setReg('d3', count2);
   setReg('d4', count22);
   setReg('d5', digit);
-  setReg('d6', d6);
+  setReg('d6', column);
   setReg('d7', eight);
   callRom(0x1e8be, 0x1e916);
   if (halted()) return;
   a0 = getReg('a0');
-  a1 = getReg('a1');
-  a2 = getReg('a2');
+  text = getReg('a1');
+  savedA2 = getReg('a2');
   savedRegs = getReg('a3');
-  a4 = getReg('a4');
+  regsCursor = getReg('a4');
   screenAt = getReg('a5');
-  a6 = getReg('a6');
+  savedA6 = getReg('a6');
   a7 = getReg('a7');
   count = getReg('d0');
   count4 = getReg('d1');
@@ -187423,16 +187423,16 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   count2 = getReg('d3');
   count22 = getReg('d4');
   digit = getReg('d5');
-  d6 = getReg('d6');
+  column = getReg('d6');
   eight = getReg('d7');
-  const _t8 = tick(30, 0x1e916) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t8) takeIrq(); }
+  const _t8 = tick(30, 0x1e916) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t8) takeIrq(); }
   setReg('a0', a0);
-  setReg('a1', a1);
-  setReg('a2', a2);
+  setReg('a1', text);
+  setReg('a2', savedA2);
   setReg('a3', savedRegs);
-  setReg('a4', a4);
+  setReg('a4', regsCursor);
   setReg('a5', screenAt);
-  setReg('a6', a6);
+  setReg('a6', savedA6);
   setReg('a7', a7);
   setReg('d0', count);
   setReg('d1', count4);
@@ -187440,17 +187440,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   setReg('d3', count2);
   setReg('d4', count22);
   setReg('d5', digit);
-  setReg('d6', d6);
+  setReg('d6', column);
   setReg('d7', eight);
   callRom(0x1e8c8, 0x1e918);
   if (halted()) return;
   a0 = getReg('a0');
-  a1 = getReg('a1');
-  a2 = getReg('a2');
+  text = getReg('a1');
+  savedA2 = getReg('a2');
   savedRegs = getReg('a3');
-  a4 = getReg('a4');
+  regsCursor = getReg('a4');
   screenAt = getReg('a5');
-  a6 = getReg('a6');
+  savedA6 = getReg('a6');
   a7 = getReg('a7');
   count = getReg('d0');
   count4 = getReg('d1');
@@ -187458,17 +187458,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   count2 = getReg('d3');
   count22 = getReg('d4');
   digit = getReg('d5');
-  d6 = getReg('d6');
+  column = getReg('d6');
   eight = getReg('d7');
-  const _t9 = tick(36, 0x1e918) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t9) takeIrq(); }
-  a4 = (savedRegs) >>> 0;
+  const _t9 = tick(36, 0x1e918) ? 1 : 0; if (_t9 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t9) takeIrq(); }
+  regsCursor = (savedRegs) >>> 0;
   setReg('a0', a0);
-  setReg('a1', a1);
-  setReg('a2', a2);
+  setReg('a1', text);
+  setReg('a2', savedA2);
   setReg('a3', savedRegs);
-  setReg('a4', a4);
+  setReg('a4', regsCursor);
   setReg('a5', screenAt);
-  setReg('a6', a6);
+  setReg('a6', savedA6);
   setReg('a7', a7);
   setReg('d0', count);
   setReg('d1', count4);
@@ -187476,17 +187476,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   setReg('d3', count2);
   setReg('d4', count22);
   setReg('d5', digit);
-  setReg('d6', d6);
+  setReg('d6', column);
   setReg('d7', eight);
   callRom(0x1e8c8, 0x1e91c);
   if (halted()) return;
   a0 = getReg('a0');
-  a1 = getReg('a1');
-  a2 = getReg('a2');
+  text = getReg('a1');
+  savedA2 = getReg('a2');
   savedRegs = getReg('a3');
-  a4 = getReg('a4');
+  regsCursor = getReg('a4');
   screenAt = getReg('a5');
-  a6 = getReg('a6');
+  savedA6 = getReg('a6');
   a7 = getReg('a7');
   count = getReg('d0');
   count4 = getReg('d1');
@@ -187494,27 +187494,27 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   count2 = getReg('d3');
   count22 = getReg('d4');
   digit = getReg('d5');
-  d6 = getReg('d6');
+  column = getReg('d6');
   eight = getReg('d7');
-  const _t10 = tick(72, 0x1e91c) ? 1 : 0; if (_t10 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t10) takeIrq(); }
+  const _t10 = tick(72, 0x1e91c) ? 1 : 0; if (_t10 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t10) takeIrq(); }
   push(0x1b, 4);
   push(0x21b020, 4);
   drop(-4);
   t23 = load32(savedRegs);
-  a1 = (t23) >>> 0;
+  text = (t23) >>> 0;
   count2 = (39) >>> 0;
   setFlagsCmp((count2 & 65535), 0, 16);
   l11: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 11 did not end');
-    const _t11 = tick(22, 0x1e92c) ? 1 : 0; if (_t11 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t11) takeIrq(); }
+    const _t11 = tick(22, 0x1e92c) ? 1 : 0; if (_t11 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t11) takeIrq(); }
     count = (0) >>> 0;
-    t24 = load8(a1);
-    a1 = (a1 + 1);
+    t24 = load8(text);
+    text = (text + 1);
     count = ((count & 0xffffff00) | (t24 & 255));
     setFlagsCmp((count & 255), 0, 8);
     if ((((count & 255)) & 255) === ((0) & 255)) {
     } else {
-      const _t12 = tick(46, 0x1e932) ? 1 : 0; if (_t12 || SPILL_ALL) { setFlagsCmp((count & 255), 0, 8); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t12) takeIrq(); }
+      const _t12 = tick(46, 0x1e932) ? 1 : 0; if (_t12 || SPILL_ALL) { setFlagsCmp((count & 255), 0, 8); setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t12) takeIrq(); }
       t25 = (count & 65535);
       t26 = 0x13;
       count = ((count & 0xffff0000) | (((count & 65535) + 0x13) & 65535));
@@ -187523,12 +187523,12 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
       setXAdd(t25, t26, 16);
       setFlagsCmp(t27, 0, 32);
       setReg('a0', a0);
-      setReg('a1', a1);
-      setReg('a2', a2);
+      setReg('a1', text);
+      setReg('a2', savedA2);
       setReg('a3', savedRegs);
-      setReg('a4', a4);
+      setReg('a4', regsCursor);
       setReg('a5', screenAt);
-      setReg('a6', a6);
+      setReg('a6', savedA6);
       setReg('a7', a7);
       setReg('d0', count);
       setReg('d1', count4);
@@ -187536,17 +187536,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
       setReg('d3', count2);
       setReg('d4', count22);
       setReg('d5', digit);
-      setReg('d6', d6);
+      setReg('d6', column);
       setReg('d7', eight);
       callRom(0x1e6dc, 0x1e93e);
       if (halted()) return;
       a0 = getReg('a0');
-      a1 = getReg('a1');
-      a2 = getReg('a2');
+      text = getReg('a1');
+      savedA2 = getReg('a2');
       savedRegs = getReg('a3');
-      a4 = getReg('a4');
+      regsCursor = getReg('a4');
       screenAt = getReg('a5');
-      a6 = getReg('a6');
+      savedA6 = getReg('a6');
       a7 = getReg('a7');
       count = getReg('d0');
       count4 = getReg('d1');
@@ -187554,9 +187554,9 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
       count2 = getReg('d3');
       count22 = getReg('d4');
       digit = getReg('d5');
-      d6 = getReg('d6');
+      column = getReg('d6');
       eight = getReg('d7');
-      const _t13 = tick(24, 0x1e93e) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t25, t26, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t13) takeIrq(); }
+      const _t13 = tick(24, 0x1e93e) ? 1 : 0; if (_t13 || SPILL_ALL) { setXAdd(t25, t26, 16); setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t13) takeIrq(); }
       t28 = count;
       store32(stackPointer() + 4, t28);
       count2 = ((count2 & 0xffff0000) | (((count2 & 0xffff) - 1) & 0xffff));
@@ -187568,21 +187568,21 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     }
     break;
   }
-  const _t14 = tick(32, 0x1e946) ? 1 : 0; if (_t14 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t14) takeIrq(); }
+  const _t14 = tick(32, 0x1e946) ? 1 : 0; if (_t14 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t14) takeIrq(); }
   drop(12);
   a0 = (0x2030a0) >>> 0;
   eight = (23) >>> 0;
   setFlagsCmp((eight & 65535), 0, 16);
   l15: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 15 did not end');
-    const _t15 = tick(30, 0x1e954) ? 1 : 0; if (_t15 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t15) takeIrq(); }
+    const _t15 = tick(30, 0x1e954) ? 1 : 0; if (_t15 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t15) takeIrq(); }
     setReg('a0', a0);
-    setReg('a1', a1);
-    setReg('a2', a2);
+    setReg('a1', text);
+    setReg('a2', savedA2);
     setReg('a3', savedRegs);
-    setReg('a4', a4);
+    setReg('a4', regsCursor);
     setReg('a5', screenAt);
-    setReg('a6', a6);
+    setReg('a6', savedA6);
     setReg('a7', a7);
     setReg('d0', count);
     setReg('d1', count4);
@@ -187590,17 +187590,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     setReg('d3', count2);
     setReg('d4', count22);
     setReg('d5', digit);
-    setReg('d6', d6);
+    setReg('d6', column);
     setReg('d7', eight);
     callRom(0x1e8c8, 0x1e958);
     if (halted()) return;
     a0 = getReg('a0');
-    a1 = getReg('a1');
-    a2 = getReg('a2');
+    text = getReg('a1');
+    savedA2 = getReg('a2');
     savedRegs = getReg('a3');
-    a4 = getReg('a4');
+    regsCursor = getReg('a4');
     screenAt = getReg('a5');
-    a6 = getReg('a6');
+    savedA6 = getReg('a6');
     a7 = getReg('a7');
     count = getReg('d0');
     count4 = getReg('d1');
@@ -187608,29 +187608,29 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     count2 = getReg('d3');
     count22 = getReg('d4');
     digit = getReg('d5');
-    d6 = getReg('d6');
+    column = getReg('d6');
     eight = getReg('d7');
-    const _t16 = tick(10, 0x1e958) ? 1 : 0; if (_t16 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t16) takeIrq(); }
+    const _t16 = tick(10, 0x1e958) ? 1 : 0; if (_t16 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t16) takeIrq(); }
     eight = ((eight & 0xffff0000) | (((eight & 0xffff) - 1) & 0xffff));
     if ((eight & 0xffff) !== 0xffff) {
       continue l15;
     }
     break;
   }
-  const _t17 = tick(22, 0x1e95c) ? 1 : 0; if (_t17 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t17) takeIrq(); }
+  const _t17 = tick(22, 0x1e95c) ? 1 : 0; if (_t17 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t17) takeIrq(); }
   a0 = (0x203100) >>> 0;
   eight = (23) >>> 0;
   setFlagsCmp((eight & 65535), 0, 16);
   l18: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 18 did not end');
-    const _t18 = tick(30, 0x1e964) ? 1 : 0; if (_t18 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t18) takeIrq(); }
+    const _t18 = tick(30, 0x1e964) ? 1 : 0; if (_t18 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t18) takeIrq(); }
     setReg('a0', a0);
-    setReg('a1', a1);
-    setReg('a2', a2);
+    setReg('a1', text);
+    setReg('a2', savedA2);
     setReg('a3', savedRegs);
-    setReg('a4', a4);
+    setReg('a4', regsCursor);
     setReg('a5', screenAt);
-    setReg('a6', a6);
+    setReg('a6', savedA6);
     setReg('a7', a7);
     setReg('d0', count);
     setReg('d1', count4);
@@ -187638,17 +187638,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     setReg('d3', count2);
     setReg('d4', count22);
     setReg('d5', digit);
-    setReg('d6', d6);
+    setReg('d6', column);
     setReg('d7', eight);
     callRom(0x1e8c8, 0x1e968);
     if (halted()) return;
     a0 = getReg('a0');
-    a1 = getReg('a1');
-    a2 = getReg('a2');
+    text = getReg('a1');
+    savedA2 = getReg('a2');
     savedRegs = getReg('a3');
-    a4 = getReg('a4');
+    regsCursor = getReg('a4');
     screenAt = getReg('a5');
-    a6 = getReg('a6');
+    savedA6 = getReg('a6');
     a7 = getReg('a7');
     count = getReg('d0');
     count4 = getReg('d1');
@@ -187656,23 +187656,23 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     count2 = getReg('d3');
     count22 = getReg('d4');
     digit = getReg('d5');
-    d6 = getReg('d6');
+    column = getReg('d6');
     eight = getReg('d7');
-    const _t19 = tick(10, 0x1e968) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t19) takeIrq(); }
+    const _t19 = tick(10, 0x1e968) ? 1 : 0; if (_t19 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t19) takeIrq(); }
     eight = ((eight & 0xffff0000) | (((eight & 0xffff) - 1) & 0xffff));
     if ((eight & 0xffff) !== 0xffff) {
       continue l18;
     }
     break;
   }
-  const _t20 = tick(22, 0x1e96c) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t20) takeIrq(); }
-  a2 = (0x640000) >>> 0;
+  const _t20 = tick(22, 0x1e96c) ? 1 : 0; if (_t20 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t20) takeIrq(); }
+  savedA2 = (0x640000) >>> 0;
   count = (90) >>> 0;
   setFlagsCmp((count & 65535), 0, 16);
   l21: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 21 did not end');
-    const _t21 = tick(18, 0x1e974) ? 1 : 0; if (_t21 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t21) takeIrq(); }
-    t29 = load8(a2);
+    const _t21 = tick(18, 0x1e974) ? 1 : 0; if (_t21 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t21) takeIrq(); }
+    t29 = load8(savedA2);
     t30 = t29;
     setFlagsBit(t30, 0x3, 7);
     if ((((t30) >>> ((0x3) & 7)) & 1) === 0) {
@@ -187680,8 +187680,8 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     }
     l22: for (;;) {
       if (++_guard > 4000000) throw new Error('loop 22 did not end');
-      const _t22 = tick(18, 0x1e97a) ? 1 : 0; if (_t22 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t22) takeIrq(); }
-      t31 = load8(a2);
+      const _t22 = tick(18, 0x1e97a) ? 1 : 0; if (_t22 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t22) takeIrq(); }
+      t31 = load8(savedA2);
       t32 = t31;
       setFlagsBit(t32, 0x3, 7);
       if ((((t32) >>> ((0x3) & 7)) & 1) !== 0) {
@@ -187689,7 +187689,7 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
       }
       break;
     }
-    const _t23 = tick(26, 0x1e980) ? 1 : 0; if (_t23 || SPILL_ALL) { setFlagsBit(t32, 0x3, 7); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t23) takeIrq(); }
+    const _t23 = tick(26, 0x1e980) ? 1 : 0; if (_t23 || SPILL_ALL) { setFlagsBit(t32, 0x3, 7); setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t23) takeIrq(); }
     t33 = 0;
     store16(0x72fffe, t33);
     t34 = load16(0x72fffe);
@@ -187700,16 +187700,16 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     }
     break;
   }
-  const _t24 = tick(54, 0x1e98a) ? 1 : 0; if (_t24 || SPILL_ALL) { setFlagsCmp(t34, 0, 16); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t24) takeIrq(); }
+  const _t24 = tick(54, 0x1e98a) ? 1 : 0; if (_t24 || SPILL_ALL) { setFlagsCmp(t34, 0, 16); setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t24) takeIrq(); }
   push(0x0, 4);
   setFlagsCmp(t34, 0, 16);
   setReg('a0', a0);
-  setReg('a1', a1);
-  setReg('a2', a2);
+  setReg('a1', text);
+  setReg('a2', savedA2);
   setReg('a3', savedRegs);
-  setReg('a4', a4);
+  setReg('a4', regsCursor);
   setReg('a5', screenAt);
-  setReg('a6', a6);
+  setReg('a6', savedA6);
   setReg('a7', a7);
   setReg('d0', count);
   setReg('d1', count4);
@@ -187717,17 +187717,17 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   setReg('d3', count2);
   setReg('d4', count22);
   setReg('d5', digit);
-  setReg('d6', d6);
+  setReg('d6', column);
   setReg('d7', eight);
   callRom(0x183f2, 0x1e994);
   if (halted()) return;
   a0 = getReg('a0');
-  a1 = getReg('a1');
-  a2 = getReg('a2');
+  text = getReg('a1');
+  savedA2 = getReg('a2');
   savedRegs = getReg('a3');
-  a4 = getReg('a4');
+  regsCursor = getReg('a4');
   screenAt = getReg('a5');
-  a6 = getReg('a6');
+  savedA6 = getReg('a6');
   a7 = getReg('a7');
   count = getReg('d0');
   count4 = getReg('d1');
@@ -187735,22 +187735,22 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   count2 = getReg('d3');
   count22 = getReg('d4');
   digit = getReg('d5');
-  d6 = getReg('d6');
+  column = getReg('d6');
   eight = getReg('d7');
-  const _t25 = tick(4, 0x1e994) ? 1 : 0; if (_t25 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t25) takeIrq(); }
+  const _t25 = tick(4, 0x1e994) ? 1 : 0; if (_t25 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t25) takeIrq(); }
   count = (120) >>> 0;
   setFlagsCmp((count & 65535), 0, 16);
   l26: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 26 did not end');
-    const _t26 = tick(16, 0x1e996) ? 1 : 0; if (_t26 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t26) takeIrq(); }
+    const _t26 = tick(16, 0x1e996) ? 1 : 0; if (_t26 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t26) takeIrq(); }
     t35 = 0;
     store16(0x72fffe, t35);
     t36 = load16(0x72fffe);
     setFlagsCmp(t36, 0, 16);
     l27: for (;;) {
       if (++_guard > 4000000) throw new Error('loop 27 did not end');
-      const _t27 = tick(18, 0x1e99c) ? 1 : 0; if (_t27 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t27) takeIrq(); }
-      t37 = load8(a2);
+      const _t27 = tick(18, 0x1e99c) ? 1 : 0; if (_t27 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t27) takeIrq(); }
+      t37 = load8(savedA2);
       t38 = t37;
       setFlagsBit(t38, 0x3, 7);
       if ((((t38) >>> ((0x3) & 7)) & 1) === 0) {
@@ -187760,8 +187760,8 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     }
     l28: for (;;) {
       if (++_guard > 4000000) throw new Error('loop 28 did not end');
-      const _t28 = tick(18, 0x1e9a2) ? 1 : 0; if (_t28 || SPILL_ALL) { setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t28) takeIrq(); }
-      t39 = load8(a2);
+      const _t28 = tick(18, 0x1e9a2) ? 1 : 0; if (_t28 || SPILL_ALL) { setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t28) takeIrq(); }
+      t39 = load8(savedA2);
       t40 = t39;
       setFlagsBit(t40, 0x3, 7);
       if ((((t40) >>> ((0x3) & 7)) & 1) !== 0) {
@@ -187769,7 +187769,7 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
       }
       break;
     }
-    const _t29 = tick(10, 0x1e9a8) ? 1 : 0; if (_t29 || SPILL_ALL) { setFlagsBit(t40, 0x3, 7); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t29) takeIrq(); }
+    const _t29 = tick(10, 0x1e9a8) ? 1 : 0; if (_t29 || SPILL_ALL) { setFlagsBit(t40, 0x3, 7); setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t29) takeIrq(); }
     count = ((count & 0xffff0000) | (((count & 0xffff) - 1) & 0xffff));
     setFlagsBit(t40, 0x3, 7);
     if ((count & 0xffff) !== 0xffff) {
@@ -187777,32 +187777,32 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
     }
     break;
   }
-  const _t30 = tick(54, 0x1e9ac) ? 1 : 0; if (_t30 || SPILL_ALL) { setFlagsBit(t40, 0x3, 7); setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); if (_t30) takeIrq(); }
+  const _t30 = tick(54, 0x1e9ac) ? 1 : 0; if (_t30 || SPILL_ALL) { setFlagsBit(t40, 0x3, 7); setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); if (_t30) takeIrq(); }
   count = load32(stackPointer());
   count4 = load32(stackPointer() + 4);
   flag = load32(stackPointer() + 8);
   count2 = load32(stackPointer() + 12);
   count22 = load32(stackPointer() + 16);
   digit = load32(stackPointer() + 20);
-  d6 = load32(stackPointer() + 24);
+  column = load32(stackPointer() + 24);
   eight = load32(stackPointer() + 28);
   a0 = load32(stackPointer() + 32);
-  a1 = load32(stackPointer() + 36);
-  a2 = load32(stackPointer() + 40);
+  text = load32(stackPointer() + 36);
+  savedA2 = load32(stackPointer() + 40);
   savedRegs = load32(stackPointer() + 44);
-  a4 = load32(stackPointer() + 48);
+  regsCursor = load32(stackPointer() + 48);
   screenAt = load32(stackPointer() + 52);
-  a6 = load32(stackPointer() + 56);
+  savedA6 = load32(stackPointer() + 56);
   a7 = load32(stackPointer() + 60);
   drop(64);
   setFlagsBit(t40, 0x3, 7);
   setReg('a0', a0);
-  setReg('a1', a1);
-  setReg('a2', a2);
+  setReg('a1', text);
+  setReg('a2', savedA2);
   setReg('a3', savedRegs);
-  setReg('a4', a4);
+  setReg('a4', regsCursor);
   setReg('a5', screenAt);
-  setReg('a6', a6);
+  setReg('a6', savedA6);
   setReg('a7', a7);
   setReg('d0', count);
   setReg('d1', count4);
@@ -187810,19 +187810,19 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   setReg('d3', count2);
   setReg('d4', count22);
   setReg('d5', digit);
-  setReg('d6', d6);
+  setReg('d6', column);
   setReg('d7', eight);
-  setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); setSr(0x2700, 0x1e9b4);
+  setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); setSr(0x2700, 0x1e9b4);
   halt(0x1e9b4);
-  setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); return;
+  setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); return;
   setFlagsBit(t40, 0x3, 7);
   setReg('a0', a0);
-  setReg('a1', a1);
-  setReg('a2', a2);
+  setReg('a1', text);
+  setReg('a2', savedA2);
   setReg('a3', savedRegs);
-  setReg('a4', a4);
+  setReg('a4', regsCursor);
   setReg('a5', screenAt);
-  setReg('a6', a6);
+  setReg('a6', savedA6);
   setReg('a7', a7);
   setReg('d0', count);
   setReg('d1', count4);
@@ -187830,33 +187830,33 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   setReg('d3', count2);
   setReg('d4', count22);
   setReg('d5', digit);
-  setReg('d6', d6);
+  setReg('d6', column);
   setReg('d7', eight);
   jumpRom(0x1e9b4);
-  setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); return;
+  setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); return;
   setReg('a0', a0);
-  setReg('a1', a1);
-  setReg('a2', a2);
+  setReg('a1', text);
+  setReg('a2', savedA2);
   setReg('a3', savedRegs);
-  setReg('a4', a4);
+  setReg('a4', regsCursor);
   setReg('a5', screenAt);
-  setReg('a6', a6);
+  setReg('a6', savedA6);
   setReg('d0', count);
   setReg('d1', count4);
   setReg('d2', flag);
   setReg('d3', count2);
   setReg('d4', count22);
   setReg('d5', digit);
-  setReg('d6', d6);
+  setReg('d6', column);
   setReg('d7', eight);
-  setReg('a0', a0); setReg('a1', a1); setReg('a2', a2); setReg('a3', savedRegs); setReg('a4', a4); setReg('a5', screenAt); setReg('a6', a6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', d6); setReg('d7', eight); return;
+  setReg('a0', a0); setReg('a1', text); setReg('a2', savedA2); setReg('a3', savedRegs); setReg('a4', regsCursor); setReg('a5', screenAt); setReg('a6', savedA6); setReg('d0', count); setReg('d1', count4); setReg('d2', flag); setReg('d3', count2); setReg('d4', count22); setReg('d5', digit); setReg('d6', column); setReg('d7', eight); return;
   setReg('a0', a0);
-  setReg('a1', a1);
-  setReg('a2', a2);
+  setReg('a1', text);
+  setReg('a2', savedA2);
   setReg('a3', savedRegs);
-  setReg('a4', a4);
+  setReg('a4', regsCursor);
   setReg('a5', screenAt);
-  setReg('a6', a6);
+  setReg('a6', savedA6);
   setReg('a7', a7);
   setReg('d0', count);
   setReg('d1', count4);
@@ -187864,7 +187864,7 @@ export function crashScreenFreezeMachinePrint(a0_: number, a1_: number, a2_: num
   setReg('d3', count2);
   setReg('d4', count22);
   setReg('d5', digit);
-  setReg('d6', d6);
+  setReg('d6', column);
   setReg('d7', eight);
 }
 
