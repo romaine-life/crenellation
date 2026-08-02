@@ -150,7 +150,14 @@ function record(p: Pattern, entry: (addr: number, m: System['m']) => void,
     // reach 2,225,794 polls and 115 interrupts, and a fresh harness that
     // silently drives the machine differently is exactly how regdiff.test.ts
     // produced confident nonsense.
-    if (pcs && (sys.m.pollAt === null || sys.m.pollAt.has(pc))) {
+    // W_FROM_IRQ windows this the way it windows the writes, and for the same
+    // reason: the sequence is only useful if it reaches the divergence, and a
+    // run that polls nineteen million times overflows any cap long before. The
+    // clock is irqTaken because it is the one both dispatchers agree on, so
+    // both start recording at the same moment and index N means the same
+    // thing in each.
+    if (pcs && (!FROM_IRQ || (sys.m.irqTaken | 0) >= FROM_IRQ)
+        && (sys.m.pollAt === null || sys.m.pollAt.has(pc))) {
       if (pn < pcs.length) { pcs[pn] = pc | 0; if (cyc) cyc[pn] = sys.m.cycles | 0;
         if (srs) srs[pn] = ((sys.m.getSR ? sys.m.getSR() : sys.m.sr) | 0);
         if (frs) frs[pn] = sys.frames | 0;
