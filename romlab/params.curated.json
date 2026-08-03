@@ -6519,6 +6519,10 @@
     "a4": {
       "name": "preserved2",
       "why": "every appearance of it in the routine is inside a movem (the first at 0x121c4) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d7": {
+      "name": "unused",
+      "why": "0x121ec assigns it the word at 0x42(a7) before anything reads it, and 0x121f2 clears it again."
     }
   },
   "0x1228c": {
@@ -7273,6 +7277,10 @@
     "d6": {
       "name": "handled",
       "why": "cleared at the start of the walk, stepped once per item and moved into d0 at the end - the count the routine returns, not anything the caller passed."
+    },
+    "stack4": {
+      "name": "base",
+      "why": "loaded to d3 at 0x43ca and added to each word the table in a2 yields (0x43ec) - the base those offsets are from."
     }
   },
   "0x4f8c": {
@@ -7573,6 +7581,10 @@
     "stack4": {
       "name": "src",
       "why": "0x0ee94 is `movea.l $10(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "arg",
+      "why": "loaded to d2 at 0xee98 and compared against field 8 of each queue entry, as the pointer's contents are compared against field 4 - the second half of the pair that identifies an event."
     }
   },
   "0xfb74": {
@@ -8095,6 +8107,10 @@
     "d0": {
       "name": "index",
       "why": "0x05dc6 is `cmp.w (a0, d0.l), d1` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "stack4": {
+      "name": "level",
+      "why": "its low word at 6(a7) has 7 subtracted at 0x5d90 and the call is skipped unless it was above that - an interrupt level, and 7 is the highest the 68000 has."
     }
   },
   "0x6cae": {
@@ -8153,6 +8169,10 @@
     "d2": {
       "name": "unused",
       "why": "0x1b3ba assigns it the word at 0xe(a7) in the routine's second instruction."
+    },
+    "stack8": {
+      "name": "kind",
+      "why": "its low word at 0xe(a7) becomes d2, and the routine's whole body is a chain of comparisons on the record's own bytes that adds 8, 0x10 or more to an index before d2 joins it at 0xb3e8."
     }
   },
   "0xc3e8": {
@@ -8347,6 +8367,10 @@
     "stack32": {
       "name": "dst",
       "why": "movea.l 0x20(a7),a1 at 0x1e706, and 0x1e714 reads the same slot again and adds eight - the destination, stepped a tile at a time."
+    },
+    "stack36": {
+      "name": "flag",
+      "why": "its low word at 0x26(a7) becomes d2 at 0x1e70a, which the family already calls flag."
     }
   },
   "0x195d4": {
@@ -8361,6 +8385,10 @@
     "d1": {
       "name": "value",
       "why": "loaded from the first argument at 0x195b4 and shifted down a digit at a time at 0x195e0; the number being converted."
+    },
+    "d5": {
+      "name": "digitBias",
+      "why": "the constant 7 at 0x195d2, added to the digit at 0x195fa - the step from '9' to 'A' less two, which is what turns a value above nine into a letter."
     }
   },
   "0x8326": {
@@ -8467,8 +8495,8 @@
       "why": "pushed first at 0x18dd6 and so becomes the second argument of 0x18e06."
     },
     "stack4": {
-      "name": "arg2",
-      "why": "pushed second at 0x18dda - a7 has already moved four by then, which is why the same 8(a7) reads a different slot - and so becomes claimOneFourSlotsFill's first argument."
+      "name": "record",
+      "why": "pushed second at 0x18dda - a7 has already moved four by then - and so becomes claimOneFourSlotsFill's own first argument, which that routine binds as the record whose pointer goes into field 0x34."
     }
   },
   "0xb5b8": {
@@ -9231,6 +9259,10 @@
     "d4": {
       "name": "pointed",
       "why": "cleared at the start of the walk, stepped once per item and moved into d0 at the end - the count the routine returns, not anything the caller passed."
+    },
+    "stack4": {
+      "name": "also",
+      "why": "its low word at 0x16(a7) is tested at 0x1994 and turned into an all-or-nothing byte by sne/neg - a flag, and the only thing the routine does with it."
     }
   },
   "0x17ef4": {
@@ -9263,6 +9295,32 @@
     "d2": {
       "name": "playerIndex",
       "why": "0xed92 takes the word at 0xe(a7) and 0xed9e adds one before indexing 0xfe02 - the owner-to-colour table drawPanelPlayerNothingNegative indexes the same way, player plus one."
+    }
+  },
+  "0x15504": {
+    "stack8": {
+      "name": "column",
+      "why": "its low byte at 0xb(a6) becomes d2 - one of the two byte coordinates this draws at, the other being 0xf(a6)."
+    },
+    "stack12": {
+      "name": "row",
+      "why": "its low byte at 0xf(a6) becomes d3, the other of the two byte coordinates."
+    }
+  },
+  "0x174a2": {
+    "d2": {
+      "name": "fill",
+      "why": "0x174a4 loads 0x101 into it and every store the routine makes writes it - the word both frame borders are drawn with."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "0x174b0 assigns it 0xa8 before anything reads it, and 0x174de assigns it 4 for the second border."
+    }
+  },
+  "0xcbe8": {
+    "d2": {
+      "name": "which",
+      "why": "0xcbb6 assigns it the word at 0xa(a6) at the host and 0xcbfa moves it into d0 as the switch value - the case this dispatches on."
     }
   }
 }
