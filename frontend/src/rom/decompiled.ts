@@ -6776,7 +6776,7 @@ export function boardCellRunRendererFrom2(ptr_: number, dst_: number, unused_: n
   setReg('d3', kind);
 }
 
-export function extractsOwnerBitsCellByte(ptr2_: number, dst_: number, wantByte_: number, colour_: number): void {
+export function cellOwnerAndKindSplit(ptr2_: number, dst_: number, wantByte_: number, colour_: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -7059,7 +7059,7 @@ export function extractsOwnerBitsCellByte(ptr2_: number, dst_: number, wantByte_
   setReg('d5', colour);
 }
 
-export function extractsOwnerBitsCellByteFrom1(ptr_: number): void {
+export function cellSetKindFiveThenPushB0(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -7085,7 +7085,7 @@ export function extractsOwnerBitsCellByteFrom1(ptr_: number): void {
   setReg('a6', ptr);
 }
 
-export function extractsOwnerBitsCellByteFrom2(): void {
+export function cellPushB0(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(36, 0x0106c) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -7095,7 +7095,7 @@ export function extractsOwnerBitsCellByteFrom2(): void {
   return;
 }
 
-export function extractsOwnerBitsCellByteFrom3(): void {
+export function cellPushC0(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(36, 0x01074) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -7105,7 +7105,7 @@ export function extractsOwnerBitsCellByteFrom3(): void {
   return;
 }
 
-export function extractsOwnerBitsCellByteFrom4(dst_: number, ptr_: number, index_: number, flag_: number): void {
+export function cellClearThenDraw(dst_: number, ptr_: number, index_: number, flag_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -7238,7 +7238,7 @@ export function extractsOwnerBitsCellByteFrom4(dst_: number, ptr_: number, index
   setReg('d2', flag);
 }
 
-export function extractsOwnerBitsCellByteFrom5(dst_: number, ptr_: number, flag_: number): void {
+export function cellStripOwnerThenDraw(dst_: number, ptr_: number, flag_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -56847,7 +56847,7 @@ export function dispatchPieceSLowSix(unused_: number, kind_: number, preserved_:
   setReg('d3', preserved);
 }
 
-export function stampShotSCellSeveral(src_: number, kind_: number, index_: number, kind2_: number, unused2_: number, limit: number): void {
+export function stampShotPickKindByRecord(src_: number, kind_: number, index_: number, kind2_: number, unused2_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -56928,7 +56928,7 @@ export function stampShotSCellSeveral(src_: number, kind_: number, index_: numbe
   setReg('d3', unused2);
 }
 
-export function stampShotSCellSeveralFrom1(ptr_: number, dst_: number, unused2_: number, index_: number, kind_: number, unused_: number, limit: number): void {
+export function stampShotAskCellForKindEight(ptr_: number, dst_: number, unused2_: number, index_: number, kind_: number, unused_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -57118,7 +57118,7 @@ export function stampShotSCellSeveralFrom1(ptr_: number, dst_: number, unused2_:
   setReg('d3', unused);
 }
 
-export function stampShotSCellSeveralFrom2(ptr_: number, dst_: number, unused2_: number, index_: number, kind_: number, unused_: number, limit: number): void {
+export function stampShotWhenKindEightOwned(ptr_: number, dst_: number, unused2_: number, index_: number, kind_: number, unused_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -57287,7 +57287,7 @@ export function stampShotSCellSeveralFrom2(ptr_: number, dst_: number, unused2_:
   setReg('d3', unused);
 }
 
-export function stampShotSCellSeveralFrom3(dst2_: number, kind_: number, limit2_: number, index2_: number, limit: number): void {
+export function stampShotAskCellForKind11(dst2_: number, kind_: number, limit2_: number, index2_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let dst2 = dst2_;
@@ -57406,7 +57406,7 @@ export function stampShotSCellSeveralFrom3(dst2_: number, kind_: number, limit2_
   setReg('d3', index2);
 }
 
-export function stampShotSCellSeveralFrom4(dst2_: number, kind_: number, limit2_: number, index2_: number, limit: number): void {
+export function stampShotAgeUnitAndAnswer11(dst2_: number, kind_: number, limit2_: number, index2_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let dst2 = dst2_;
@@ -57467,7 +57467,7 @@ export function stampShotSCellSeveralFrom4(dst2_: number, kind_: number, limit2_
   setReg('d3', index2);
 }
 
-export function stampShotSCellSeveralFrom5(preserved_: number, count_: number, column_: number, index2_: number, limit: number): void {
+export function stampShotDrawCellAndAnswerEight(preserved_: number, count_: number, column_: number, index2_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let preserved = preserved_;
@@ -57513,7 +57513,7 @@ export function stampShotSCellSeveralFrom5(preserved_: number, count_: number, c
   setReg('d3', index2);
 }
 
-export function stampShotSCellSeveralFrom6(kind_: number): void {
+export function stampShotReturnAnswer(kind_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -180043,7 +180043,7 @@ export function sequencerAddOperandToField5D(voice_: number, operand_: number): 
   setReg('d4', operand);
 }
 
-export function copyField5DToField5E(dst_: number): void {
+export function copyField5DIntoField5E(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -180062,7 +180062,7 @@ export function copyField5DToField5E(dst_: number): void {
   setReg('a2', dst);
 }
 
-export function copyField5DToField5EFrom1(dst_: number, operand_: number): void {
+export function subtractOperandFromField5D(dst_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -180092,7 +180092,7 @@ export function copyField5DToField5EFrom1(dst_: number, operand_: number): void 
   setReg('d4', operand);
 }
 
-export function copyField5DToField5EFrom2(dst_: number, operand_: number): void {
+export function andOperandIntoField5D(dst_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -180119,7 +180119,7 @@ export function copyField5DToField5EFrom2(dst_: number, operand_: number): void 
   setReg('d4', operand);
 }
 
-export function copyField5DToField5EFrom3(dst_: number, operand_: number): void {
+export function orOperandIntoField5D(dst_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -180146,7 +180146,7 @@ export function copyField5DToField5EFrom3(dst_: number, operand_: number): void 
   setReg('d4', operand);
 }
 
-export function copyField5DToField5EFrom4(dst_: number, operand_: number): void {
+export function eorOperandIntoField5D(dst_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -180173,7 +180173,7 @@ export function copyField5DToField5EFrom4(dst_: number, operand_: number): void 
   setReg('d4', operand);
 }
 
-export function copyField5DToField5EFrom5(dst_: number): void {
+export function field5DTailToCopy(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -181565,7 +181565,7 @@ export function setField5EToField5DLessD4(dst: number, unused: number, amount: n
   return;
 }
 
-export function setChannelSPitchNote(ptr_: number, voice_: number, startedWith_: number, changedAt_: number, dst2_: number, index_: number, pitchAt_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
+export function setChannelOperandThenNote(ptr_: number, voice_: number, startedWith_: number, changedAt_: number, dst2_: number, index_: number, pitchAt_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -181667,7 +181667,7 @@ export function setChannelSPitchNote(ptr_: number, voice_: number, startedWith_:
   setReg('d6', chosenPtrAt);
 }
 
-export function setChannelSPitchNoteFrom1(ptr_: number, voice_: number, startedWith_: number, changedAt_: number, dst3_: number, index_: number, unused_: number, pitchAt_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
+export function channelNoteHandler(ptr_: number, voice_: number, startedWith_: number, changedAt_: number, dst3_: number, index_: number, unused_: number, pitchAt_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -182595,7 +182595,7 @@ export function setChannelSPitchNoteFrom1(ptr_: number, voice_: number, startedW
   setReg('d6', chosenPtrAt);
 }
 
-export function setChannelSPitchNoteFrom2(ptr_: number, voice_: number, startedWith_: number, changedAt_: number, dst_: number, unused_: number, preserved_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
+export function channelNoteDone(ptr_: number, voice_: number, startedWith_: number, changedAt_: number, dst_: number, unused_: number, preserved_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -182693,7 +182693,7 @@ export function setChannelSPitchNoteFrom2(ptr_: number, voice_: number, startedW
   setReg('d6', chosenPtrAt);
 }
 
-export function setChannelSPitchNoteFrom3(voice_: number, startedWith_: number, changedAt_: number, dst_: number, unused_: number, preserved_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
+export function channelNoteDoneAlt(voice_: number, startedWith_: number, changedAt_: number, dst_: number, unused_: number, preserved_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -182772,7 +182772,7 @@ export function setChannelSPitchNoteFrom3(voice_: number, startedWith_: number, 
   setReg('d6', chosenPtrAt);
 }
 
-export function setChannelSPitchNoteFrom4(startedWith_: number, changedAt_: number, ptr2_: number, unused_: number, preserved_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
+export function channelNoteDoneThird(startedWith_: number, changedAt_: number, ptr2_: number, unused_: number, preserved_: number, note_: number, operand_: number, sumAt_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -182847,7 +182847,7 @@ export function setChannelSPitchNoteFrom4(startedWith_: number, changedAt_: numb
   setReg('d6', chosenPtrAt);
 }
 
-export function setChannelSPitchNoteFrom5(voice_: number, ptr_: number): void {
+export function setChannelOperandThenNoteFrom5(voice_: number, ptr_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -189097,17 +189097,17 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x00efc, fn: boardCellRunRendererFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x00fb4, fn: extractsOwnerBitsCellByte as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x00fb4, fn: cellOwnerAndKindSplit as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x01064, fn: extractsOwnerBitsCellByteFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x01064, fn: cellSetKindFiveThenPushB0 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
-  { at: 0x0106c, fn: extractsOwnerBitsCellByteFrom2 as (...a: number[]) => void, params: [] },
+  { at: 0x0106c, fn: cellPushB0 as (...a: number[]) => void, params: [] },
 
-  { at: 0x01074, fn: extractsOwnerBitsCellByteFrom3 as (...a: number[]) => void, params: [] },
+  { at: 0x01074, fn: cellPushC0 as (...a: number[]) => void, params: [] },
 
-  { at: 0x0107c, fn: extractsOwnerBitsCellByteFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0107c, fn: cellClearThenDraw as (...a: number[]) => void, params: [{ from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x010c8, fn: extractsOwnerBitsCellByteFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x010c8, fn: cellStripOwnerThenDraw as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x010de, fn: cellDrawDropThreeAndStep as (...a: number[]) => void, params: [] },
 
@@ -189691,19 +189691,19 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x074fa, fn: dispatchPieceSLowSix as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 12 }] },
 
-  { at: 0x07578, fn: stampShotSCellSeveral as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
+  { at: 0x07578, fn: stampShotPickKindByRecord as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
 
-  { at: 0x0759e, fn: stampShotSCellSeveralFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
+  { at: 0x0759e, fn: stampShotAskCellForKindEight as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
 
-  { at: 0x075b2, fn: stampShotSCellSeveralFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
+  { at: 0x075b2, fn: stampShotWhenKindEightOwned as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
 
-  { at: 0x0760a, fn: stampShotSCellSeveralFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
+  { at: 0x0760a, fn: stampShotAskCellForKind11 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
 
-  { at: 0x0764c, fn: stampShotSCellSeveralFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
+  { at: 0x0764c, fn: stampShotAgeUnitAndAnswer11 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
 
-  { at: 0x07664, fn: stampShotSCellSeveralFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
+  { at: 0x07664, fn: stampShotDrawCellAndAnswerEight as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 16 }] },
 
-  { at: 0x07672, fn: stampShotSCellSeveralFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }] },
+  { at: 0x07672, fn: stampShotReturnAnswer as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }] },
 
   { at: 0x0767c, fn: walkBackwardsAlongRunUntil as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
@@ -191135,17 +191135,17 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1abc2, fn: sequencerAddOperandToField5D as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abc6, fn: copyField5DToField5E as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x1abc6, fn: copyField5DIntoField5E as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x1abd0, fn: copyField5DToField5EFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abd0, fn: subtractOperandFromField5D as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abd6, fn: copyField5DToField5EFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abd6, fn: andOperandIntoField5D as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abdc, fn: copyField5DToField5EFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abdc, fn: orOperandIntoField5D as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abe2, fn: copyField5DToField5EFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abe2, fn: eorOperandIntoField5D as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abe8, fn: copyField5DToField5EFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x1abe8, fn: field5DTailToCopy as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
   { at: 0x1abf6, fn: takeNextByteScriptStep as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
@@ -191207,17 +191207,17 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1ae2a, fn: setField5EToField5DLessD4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ae3c, fn: setChannelSPitchNote as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1ae3c, fn: setChannelOperandThenNote as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1ae44, fn: setChannelSPitchNoteFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1ae44, fn: channelNoteHandler as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1b048, fn: setChannelSPitchNoteFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1b048, fn: channelNoteDone as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1b050, fn: setChannelSPitchNoteFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1b050, fn: channelNoteDoneAlt as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1b054, fn: setChannelSPitchNoteFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1b054, fn: channelNoteDoneThird as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1b062, fn: setChannelSPitchNoteFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }] },
+  { at: 0x1b062, fn: setChannelOperandThenNoteFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }] },
 
   { at: 0x1b06e, fn: lookNoteUpTableTake as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 

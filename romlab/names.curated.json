@@ -1437,9 +1437,9 @@
     "why": "takes two bytes through the cursor at +4 of the record, stepping it each time, and jumps through the word table at 0x1A848 for a first byte between 0x80 and 0xBB; anything else goes to 0x1AE44. The second byte is left in d4, which is the operand every case there reads."
   },
   "0x1abc6": {
-    "name": "copy field 0x5D into 0x5E, and the arithmetic that precedes it",
-    "why": "the shared tail `move.b $5d(a2),$5e(a2); bra.w $1b048`, reached from four entries above it that first apply d4 to field 0x5D - subtract, and, or, eor - and from a fifth that advances the script cursor at +4 by four times the field less one.",
-    "ident": "copyField5DToField5E"
+    "name": "copy field 0x5d into field 0x5e",
+    "why": "one move and the jump back; the four entries above it all arrive here.",
+    "ident": "copyField5DIntoField5E"
   },
   "0x1abf6": {
     "name": "take the next byte of the script and step its pointer",
@@ -1539,8 +1539,9 @@
     "ident": "setField5EToField5DLessD4"
   },
   "0x1ae3c": {
-    "name": "set the channel's pitch from the note table, and the rest of the note opcodes",
-    "why": "the main entry biases the note byte by the record's field 0x19, indexes the word table 0x3E36DE points at, and subtracts that from field 8 into field 0x22 - the pitch offset. Around it: field 0x5F set from d4, a guard on bit 7 of the note, a portamento path taken when field 0x13 is set and the frame long is non-zero, and 0x3E36FC selecting a second table. All of them leave through 0x1B048."
+    "name": "store the operand in field 0x5f and run the note handler",
+    "why": "an entry into the channel's note handler, which the driver reaches by tail jump; they share the same voice record in a2 and the same note and operand registers. This one writes byte 0x5f first.",
+    "ident": "setChannelOperandThenNote"
   },
   "0x1b06e": {
     "name": "look the note up in the table at 0x1EA3C, or take the bend",
@@ -2946,5 +2947,115 @@
     "name": "step to the next player and stop after three",
     "why": "0x7e on the record pointer - the player array's stride - and the count in the frame bounded at three.",
     "ident": "computerParityNextPlayer"
+  },
+  "0x07578": {
+    "name": "choose the stamp kind from the record byte",
+    "why": "0x27 when the record's byte is 0x25 and 3 otherwise - the only thing this entry decides before the cell walk starts.",
+    "ident": "stampShotPickKindByRecord"
+  },
+  "0x0759e": {
+    "name": "ask the cell routine about kind eight",
+    "why": "pushes the two coordinates and an eight to the routine in a2 and keeps its answer, which is what the next entry branches on.",
+    "ident": "stampShotAskCellForKindEight"
+  },
+  "0x075b2": {
+    "name": "act when the answer was eight and the cell has an owner",
+    "why": "requires the answer to be 8 and the cell byte's 0xc0 bits to be non-zero, so an unowned cell falls straight through.",
+    "ident": "stampShotWhenKindEightOwned"
+  },
+  "0x0760a": {
+    "name": "ask the cell routine about kind 0x11",
+    "why": "the same three-argument call as the kind-eight case with 0x11 instead, and it compares the answer against 0x11.",
+    "ident": "stampShotAskCellForKind11"
+  },
+  "0x0764c": {
+    "name": "find the record, age its unit and answer 0x11",
+    "why": "looks the record up by key offset, ages it a round faster, and settles the answer at 0x11.",
+    "ident": "stampShotAgeUnitAndAnswer11"
+  },
+  "0x07664": {
+    "name": "draw the entity cell one step and answer eight",
+    "why": "one call to drawEntityCellOneStep and the answer set to 8.",
+    "ident": "stampShotDrawCellAndAnswerEight"
+  },
+  "0x07672": {
+    "name": "hand the answer back",
+    "why": "zero-extends the kind into d0, restores the saved registers and returns - the single exit every case reaches.",
+    "ident": "stampShotReturnAnswer"
+  },
+  "0x00fb4": {
+    "name": "split the cell byte into its owner and its kind",
+    "why": "the 0xc0 bits into d3 and those bits shifted down six into d1 - the two halves every walk in this ROM works from, done once at the top.",
+    "ident": "cellOwnerAndKindSplit"
+  },
+  "0x01064": {
+    "name": "write kind five into the cell and push 0xb0",
+    "why": "the only case that stores a kind before it pushes; 0xb0 is what the shared tail is called with.",
+    "ident": "cellSetKindFiveThenPushB0"
+  },
+  "0x0106c": {
+    "name": "push 0xb0 to the shared tail",
+    "why": "two instructions - the argument and the branch.",
+    "ident": "cellPushB0"
+  },
+  "0x01074": {
+    "name": "push 0xc0 to the shared tail",
+    "why": "the same two instructions with the other value.",
+    "ident": "cellPushC0"
+  },
+  "0x0107c": {
+    "name": "clear the cell byte outright, then draw",
+    "why": "guarded on the flag in d2; it zeroes the whole byte rather than masking off the owner, which is what separates it from the case below.",
+    "ident": "cellClearThenDraw"
+  },
+  "0x010c8": {
+    "name": "strip the owner off the cell, then draw",
+    "why": "the same guard, but an andi.b of 0x3f - the kind kept, the owner's two bits cleared.",
+    "ident": "cellStripOwnerThenDraw"
+  },
+  "0x1abd0": {
+    "name": "take the operand off field 0x5d",
+    "why": "the sound record's field 0x5d family: each entry applies one operation to it with the operand and then they all fall into the same copy of 0x5d into 0x5e. ",
+    "ident": "subtractOperandFromField5D"
+  },
+  "0x1abd6": {
+    "name": "and the operand into field 0x5d",
+    "why": "the sound record's field 0x5d family: each entry applies one operation to it with the operand and then they all fall into the same copy of 0x5d into 0x5e. ",
+    "ident": "andOperandIntoField5D"
+  },
+  "0x1abdc": {
+    "name": "or the operand into field 0x5d",
+    "why": "the sound record's field 0x5d family: each entry applies one operation to it with the operand and then they all fall into the same copy of 0x5d into 0x5e. ",
+    "ident": "orOperandIntoField5D"
+  },
+  "0x1abe2": {
+    "name": "eor the operand into field 0x5d",
+    "why": "the sound record's field 0x5d family: each entry applies one operation to it with the operand and then they all fall into the same copy of 0x5d into 0x5e. ",
+    "ident": "eorOperandIntoField5D"
+  },
+  "0x1abe8": {
+    "name": "fall into the copy",
+    "why": "a bare branch - the join the four operations share.",
+    "ident": "field5DTailToCopy"
+  },
+  "0x1ae44": {
+    "name": "work out the channel's pitch and envelope from the note",
+    "why": "the body of the family: it looks the note up in the table at 0x3e36de, adjusts the channel's accumulator at 0xa and 0xe, and branches on the driver's mode byte at 0x3e36fc.",
+    "ident": "channelNoteHandler"
+  },
+  "0x1b048": {
+    "name": "the note handler's exit",
+    "why": "an entry into the channel's note handler, which the driver reaches by tail jump; they share the same voice record in a2 and the same note and operand registers. Every path through the handler ends here.",
+    "ident": "channelNoteDone"
+  },
+  "0x1b050": {
+    "name": "a second exit into the same tail",
+    "why": "an entry into the channel's note handler, which the driver reaches by tail jump; they share the same voice record in a2 and the same note and operand registers. ",
+    "ident": "channelNoteDoneAlt"
+  },
+  "0x1b054": {
+    "name": "a third exit into the same tail",
+    "why": "an entry into the channel's note handler, which the driver reaches by tail jump; they share the same voice record in a2 and the same note and operand registers. ",
+    "ident": "channelNoteDoneThird"
   }
 }
