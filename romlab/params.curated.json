@@ -5459,6 +5459,10 @@
     "d4": {
       "name": "wallByte",
       "why": "the owner bits or'd with 3, which is the form the enclosure test at 0xbc2 also builds and compares cells against."
+    },
+    "d5": {
+      "name": "matches",
+      "why": "cleared at 0x3bc2 and counted up per neighbour that matches, the same shape neighboursAboveBelowMatch returns."
     }
   },
   "0x3cee": {
@@ -6651,6 +6655,10 @@
     "a1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18940 is `lea.l $200000.l, a1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "rowStep",
+      "why": "0x1895a loads 0xc0 into it and 0x18962 subtracts that from the screen pointer - one row back through the glyph being rotated."
     }
   },
   "0x189a0": {
@@ -9223,6 +9231,38 @@
     "d4": {
       "name": "pointed",
       "why": "cleared at the start of the walk, stepped once per item and moved into d0 at the end - the count the routine returns, not anything the caller passed."
+    }
+  },
+  "0x17ef4": {
+    "stack4": {
+      "name": "width",
+      "why": "its low word at 0x1a(a7) becomes d2 at 0x17ef8 - the first of the three words this reads off the stack before calling 0x17500."
+    },
+    "stack8": {
+      "name": "height",
+      "why": "its low word at 0x1e(a7) becomes d4 at 0x17efc."
+    },
+    "stack12": {
+      "name": "shape",
+      "why": "its low word at 0x22(a7) becomes d3 at 0x17f00, and d3 is the only one of the three pushed on to the calls that follow."
+    }
+  },
+  "0xcdf6": {
+    "stack4": {
+      "name": "which",
+      "why": "its low word at 0xa(a6) is tested at 0xcdfe and nothing else; zero takes the branch that builds the 0xf,0xb pair and the string at 0x1fb08."
+    }
+  },
+  "0x1aea": {
+    "d6": {
+      "name": "posted",
+      "why": "cleared at 0x1b02 and counted once per player the walk posts for - the routine's answer."
+    }
+  },
+  "0xed8e": {
+    "d2": {
+      "name": "playerIndex",
+      "why": "0xed92 takes the word at 0xe(a7) and 0xed9e adds one before indexing 0xfe02 - the owner-to-colour table drawPanelPlayerNothingNegative indexes the same way, player plus one."
     }
   }
 }
