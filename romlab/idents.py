@@ -199,6 +199,35 @@ def main():
               for f in facts["funcs"])}
     _starts = sorted(_ends)
 
+    # An INNER ENTRY can be named by hand too, and until now it could not be.
+    # `addrs` is the routine heads out of facts.json, so a curated entry for an
+    # address inside a routine was read, validated, and then never consulted -
+    # name_inner appended `From3` over the top of it. That is the whole reason
+    # 271 entries are still called after their host: not that nobody wrote a
+    # name, but that writing one had no effect. A hand-written name beats a
+    # derived one everywhere else in this file; now it does here.
+    #
+    # Collisions are refused the same way heads are - silently taking a name
+    # that is already in use is what the `lost` report above exists to stop.
+    _inner_named = 0
+    for e in _inner:
+        if e in unique or e not in curated:
+            continue
+        want = forced.get(e) or camel(curated[e])
+        if want and want not in set(unique.values()):
+            unique[e] = want
+            _inner_named += 1
+    if _inner_named:
+        print(f"  inner entries named by hand: {_inner_named}")
+    _inner_lost = [e for e in _inner if e in curated and unique.get(e)
+                   != (forced.get(e) or camel(curated[e]))]
+    if _inner_lost:
+        print(f"  HAND-WRITTEN INNER-ENTRY NAMES THAT DID NOT APPLY:"
+              f" {len(_inner_lost)}")
+        for e in sorted(_inner_lost):
+            print(f"    0x{e:05x}  wanted"
+                  f" {forced.get(e) or camel(curated[e])!r}")
+
     def name_inner():
         """Name entry points after the routine they sit inside. Returns how many.
 

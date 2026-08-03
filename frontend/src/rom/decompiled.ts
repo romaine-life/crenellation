@@ -452,7 +452,7 @@ export function claimSlotKindFourClearingStub(): void {
   return;
 }
 
-export function soundStateCopyFrom1Stub(): void {
+export function claimSlotBySignStub(): void {
   if (tick(20, 0x0013c)) { takeIrq(); }
   jumpRom(0x18db6);
   return;
@@ -464,7 +464,7 @@ export function claimSlotKindOneStub(): void {
   return;
 }
 
-export function claimSlotKindOneFrom1Stub(): void {
+export function claimSlotKindThreeStub(): void {
   if (tick(20, 0x00148)) { takeIrq(); }
   jumpRom(0x18e00);
   return;
@@ -500,7 +500,7 @@ export function clearGlyphLayerSStateStub(): void {
   return;
 }
 
-export function clearGlyphLayerSStateFrom2Stub(): void {
+export function waitCounterChangesStub(): void {
   if (tick(20, 0x0016c)) { takeIrq(); }
   jumpRom(0x193da);
   return;
@@ -536,7 +536,7 @@ export function writeBookkeepingCounterStub(): void {
   return;
 }
 
-export function addressSoundChannelSNthFrom1Stub(): void {
+export function unpackQueueEntryStub(): void {
   if (tick(20, 0x00190)) { takeIrq(); }
   jumpRom(0x14b8a);
   return;
@@ -548,7 +548,7 @@ export function soundEnvelopeStepStub(): void {
   return;
 }
 
-export function soundEnvelopeStepFrom1Stub(): void {
+export function writeQueueEntryValueStub(): void {
   if (tick(20, 0x0019c)) { takeIrq(); }
   jumpRom(0x14d48);
   return;
@@ -596,7 +596,7 @@ export function plotChainStringsReturnWidthStub(): void {
   return;
 }
 
-export function plotChainStringsCallerSFrom1Stub(): void {
+export function eraseChainGlyphRunsReturnStub(): void {
   if (tick(20, 0x001d0)) { takeIrq(); }
   jumpRom(0x190f6);
   return;
@@ -620,7 +620,7 @@ export function takeCellColourThenAddressStub(): void {
   return;
 }
 
-export function clearGlyphLayerSStateFrom1Stub(): void {
+export function writeWordByIndexStub(): void {
   if (tick(20, 0x001e8)) { takeIrq(); }
   jumpRom(0x193c6);
   return;
@@ -644,7 +644,7 @@ export function loadPackedOptionsWordStub(): void {
   return;
 }
 
-export function loadPackedOptionsWordFrom1Stub(): void {
+export function optionFieldElevenToThirteenStub(): void {
   if (tick(20, 0x00200)) { takeIrq(); }
   jumpRom(0x13f60);
   return;
@@ -656,7 +656,7 @@ export function tempoDivisorSoundRateWordStub(): void {
   return;
 }
 
-export function takeCountTicksAccumulatorIfFrom1Stub(): void {
+export function withinAllowanceStub(): void {
   if (tick(20, 0x0020c)) { takeIrq(); }
   jumpRom(0x1418a);
   return;
@@ -668,7 +668,7 @@ export function advanceTickAccumulatorPackWholeStub(): void {
   return;
 }
 
-export function advanceTickAccumulatorPackWholeFrom1Stub(): void {
+export function drawDownAllowanceStub(): void {
   if (tick(20, 0x00218)) { takeIrq(); }
   jumpRom(0x14104);
   return;
@@ -680,7 +680,7 @@ export function takeCountTicksAccumulatorIfStub(): void {
   return;
 }
 
-export function takeCountTicksAccumulatorIfFrom2Stub(): void {
+export function clearAllowanceBytesStub(): void {
   if (tick(20, 0x00224)) { takeIrq(); }
   jumpRom(0x141c4);
   return;
@@ -692,7 +692,7 @@ export function soundEnableCheckStub(): void {
   return;
 }
 
-export function soundEnableCheckFrom1Stub(): void {
+export function divideCounterByOptionStub(): void {
   if (tick(20, 0x00230)) { takeIrq(); }
   jumpRom(0x14230);
   return;
@@ -740,7 +740,7 @@ export function plotChainStringsCallerSStub(): void {
   return;
 }
 
-export function formatScaledAndDrawFrom1Stub(): void {
+export function formatNumberSeparatorsIntoLocalStub(): void {
   if (tick(20, 0x00260)) { takeIrq(); }
   jumpRom(0x1908a);
   return;
@@ -764,7 +764,7 @@ export function voiceIndexClampStub(): void {
   return;
 }
 
-export function voiceIndexClampFrom1Stub(): void {
+export function countOneOfCounterThirteenStub(): void {
   if (tick(20, 0x00278)) { takeIrq(); }
   jumpRom(0x15858);
   return;
@@ -869,7 +869,7 @@ export function kickWatchdogAndStampBlock(unused_: number): void {
   setReg('a0', unused);
 }
 
-export function accessorStateBlockFrom1Stub(): void {
+export function resetSequenceElevenCallsStub(): void {
   if (tick(20, 0x0042a)) { takeIrq(); }
   jumpRom(0x09188);
   return;
@@ -1415,7 +1415,7 @@ export function checkMovemThenSampleInputs(ptr_: number, dst_: number): void {
   setReg('d3', limit);
 }
 
-export function checkMovemThenSampleInputsFrom1(ptr_: number, dst_: number, kind_: number): void {
+export function checkMovemRoundTrip(ptr_: number, dst_: number, kind_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -69466,7 +69466,7 @@ export function accessorStateBlock(ptr_: number, ptr2_: number, count_: number, 
   setReg('d1', value);
 }
 
-export function accessorStateBlockFrom1(): void {
+export function resetSequenceElevenCalls(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(28, 0x09188) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -104501,7 +104501,7 @@ export function choosePieceRotationRing(entry_: number, dst_: number, index_: nu
   setReg('d1', index2);
 }
 
-export function choosePieceRotationRingFrom1(ptr_: number, wrapped_: number, player: number): void {
+export function stepRotationUnlessPending(ptr_: number, wrapped_: number, player: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -125668,7 +125668,7 @@ export function runTwoSelfTestPasses(unused_: number, count_: number, count2_: n
   setReg('d7', savedD7);
 }
 
-export function runTwoSelfTestPassesFrom1(result_: number, count_: number): void {
+export function clearAllRamKickingWatchdog(result_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -127242,7 +127242,7 @@ export function powerSelfTestFrom5(ptr_: number, result_: number): void {
   setReg('d0', result);
 }
 
-export function runTwoSelfTestPassesFrom1Stub(): void {
+export function clearAllRamKickingWatchdogStub(): void {
   if (tick(20, 0x1365c)) { takeIrq(); }
   jumpRom(0x1310c);
   return;
@@ -135026,7 +135026,7 @@ export function loadPackedOptionsWord(limit_: number): void {
   setReg('d0', limit);
 }
 
-export function loadPackedOptionsWordFrom1(unused_: number, unused2_: number): void {
+export function optionFieldElevenToThirteen(unused_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -135762,7 +135762,7 @@ export function advanceTickAccumulatorPackWhole(index_: number, limit_: number, 
   setReg('d4', byte);
 }
 
-export function advanceTickAccumulatorPackWholeFrom1(index_: number, scale_: number): void {
+export function drawDownAllowance(index_: number, scale_: number): void {
   let _guard = 0;
   void _guard;
   let index = index_;
@@ -135966,7 +135966,7 @@ export function takeCountTicksAccumulatorIf(index_: number, limit_: number, tick
   setReg('d2', d2);
 }
 
-export function takeCountTicksAccumulatorIfFrom1(index_: number, limit_: number, ticks_: number, count: number): void {
+export function withinAllowance(index_: number, limit_: number, ticks_: number, count: number): void {
   let _guard = 0;
   void _guard;
   let index = index_;
@@ -136040,7 +136040,7 @@ export function takeCountTicksAccumulatorIfFrom1(index_: number, limit_: number,
   setReg('d2', ticks);
 }
 
-export function takeCountTicksAccumulatorIfFrom2(unused_: number): void {
+export function clearAllowanceBytes(unused_: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -136197,7 +136197,7 @@ export function soundEnableCheck(index_: number, limit_: number, count_: number,
   setReg('d3', nibblesLeft);
 }
 
-export function soundEnableCheckFrom1(index_: number, limit_: number): void {
+export function divideCounterByOption(index_: number, limit_: number): void {
   let _guard = 0;
   void _guard;
   let index = index_;
@@ -140268,7 +140268,7 @@ export function addressSoundChannelSNth(unused_: number, scratch_: number, slot2
   setReg('d4', kind);
 }
 
-export function addressSoundChannelSNthFrom1(ptr2_: number, scratch_: number, slot2_: number, limit_: number, kind_: number, unused_: number, slot: number, channel: number): void {
+export function unpackQueueEntry(ptr2_: number, scratch_: number, slot2_: number, limit_: number, kind_: number, unused_: number, slot: number, channel: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -140937,7 +140937,7 @@ export function soundEnvelopeStep(scratch_: number, slot2_: number, limit_: numb
   setReg('d6', unused);
 }
 
-export function soundEnvelopeStepFrom1(ptr4_: number, scratch_: number, limit2_: number, kind_: number, value: number, channel: number): void {
+export function writeQueueEntryValue(ptr4_: number, scratch_: number, limit2_: number, kind_: number, value: number, channel: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -144712,7 +144712,7 @@ export function voiceIndexClamp(kind_: number, voice: number): void {
   setReg('d1', kind);
 }
 
-export function voiceIndexClampFrom1(): void {
+export function countOneOfCounterThirteen(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(80, 0x15858) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -167871,7 +167871,7 @@ export function soundStateCopy(src_: number, record: number): void {
   setReg('d0', count);
 }
 
-export function soundStateCopyFrom1(limit_: number, slot: number): void {
+export function claimSlotBySign(limit_: number, slot: number): void {
   let _guard = 0;
   void _guard;
   let d0 = getReg('d0');
@@ -167996,7 +167996,7 @@ export function claimSlotKindOne(unused_: number, claimValue: number): void {
   setReg('d1', unused);
 }
 
-export function claimSlotKindOneFrom1(unused_: number, claimValue: number): void {
+export function claimSlotKindThree(unused_: number, claimValue: number): void {
   let _guard = 0;
   void _guard;
   let d0 = getReg('d0');
@@ -169021,7 +169021,7 @@ export function formatScaledAndDraw(attrHigh: number, attrLow: number, value: nu
   setReg('d0', count);
 }
 
-export function formatScaledAndDrawFrom1(attrHigh: number, attrLow: number, value: number, width: number, padZeroes: number, dest: number): void {
+export function formatNumberSeparatorsIntoLocal(attrHigh: number, attrLow: number, value: number, width: number, padZeroes: number, dest: number): void {
   let _guard = 0;
   void _guard;
   let a6 = getReg('a6');
@@ -169182,7 +169182,7 @@ export function plotChainStringsCallerS(count_: number, attrHigh: number, value:
   setReg('d1', count);
 }
 
-export function plotChainStringsCallerSFrom1(unused_: number, dst_: number, src2_: number, index_: number, unused2_: number, index2_: number, src3: number): void {
+export function eraseChainGlyphRunsReturn(unused_: number, dst_: number, src2_: number, index_: number, unused2_: number, index2_: number, src3: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -169552,7 +169552,7 @@ export function clearGlyphLayerSState(): void {
   setReg('d1', count);
 }
 
-export function clearGlyphLayerSStateFrom1(wordIndex: number, value: number): void {
+export function writeWordByIndex(wordIndex: number, value: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -169575,7 +169575,7 @@ export function clearGlyphLayerSStateFrom1(wordIndex: number, value: number): vo
   setReg('d0', d0);
 }
 
-export function clearGlyphLayerSStateFrom2(count_: number, unused_: number, timesLessOne: number): void {
+export function waitCounterChanges(count_: number, unused_: number, timesLessOne: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -172827,7 +172827,7 @@ export function countStepDownAndAdvance(ptr_: number, dst_: number, dst2_: numbe
   setReg('d3', index2);
 }
 
-export function countStepDownAndAdvanceFrom1(ptr_: number, dst_: number, dst2_: number, ptr2_: number, index_: number, stride_: number, byte_: number, index2_: number): void {
+export function storeAndBranchOnSign(ptr_: number, dst_: number, dst2_: number, ptr2_: number, index_: number, stride_: number, byte_: number, index2_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -179559,7 +179559,7 @@ export function readTwoScriptBytesDispatch(dst_: number, index_: number, unused_
   setReg('d4', unused2);
 }
 
-export function sequencerOpcodeHandlers(voice_: number, operand_: number): void {
+export function sequencerSetSlideWord(voice_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -179630,7 +179630,7 @@ export function sequencerOpcodeHandlers(voice_: number, operand_: number): void 
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom1(voice_: number, index_: number, operand_: number): void {
+export function sequencerAddSlideWord(voice_: number, index_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -179696,7 +179696,7 @@ export function sequencerOpcodeHandlersFrom1(voice_: number, index_: number, ope
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom2(voice_: number, dst2_: number, dst3_: number, index_: number, operand_: number): void {
+export function sequencerSetLevel(voice_: number, dst2_: number, dst3_: number, index_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -179781,7 +179781,7 @@ export function sequencerOpcodeHandlersFrom2(voice_: number, dst2_: number, dst3
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom3(dst_: number): void {
+export function sequencerMarkLevelChanged(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -179804,7 +179804,7 @@ export function sequencerOpcodeHandlersFrom3(dst_: number): void {
   setReg('a4', dst);
 }
 
-export function sequencerOpcodeHandlersFrom4(voice_: number, dst2_: number, index_: number, operand_: number): void {
+export function sequencerAddLevelClamped(voice_: number, dst2_: number, index_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -179913,7 +179913,7 @@ export function sequencerOpcodeHandlersFrom4(voice_: number, dst2_: number, inde
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom5(voice_: number, operand_: number): void {
+export function sequencerSetField19(voice_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -179934,7 +179934,7 @@ export function sequencerOpcodeHandlersFrom5(voice_: number, operand_: number): 
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom6(): void {
+export function sequencerTailToAddField5D(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(10, 0x1a960) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -179943,7 +179943,7 @@ export function sequencerOpcodeHandlersFrom6(): void {
   return;
 }
 
-export function sequencerOpcodeHandlersFrom7(voice_: number, operand_: number): void {
+export function sequencerSetField1E(voice_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -179967,7 +179967,7 @@ export function sequencerOpcodeHandlersFrom7(voice_: number, operand_: number): 
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom8(index_: number, operand_: number): void {
+export function sequencerMergeDriverFlags(index_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let index = index_;
@@ -179998,7 +179998,7 @@ export function sequencerOpcodeHandlersFrom8(index_: number, operand_: number): 
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom9(voice_: number, operand_: number): void {
+export function sequencerSetField20(voice_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -180019,7 +180019,7 @@ export function sequencerOpcodeHandlersFrom9(voice_: number, operand_: number): 
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom10(ptr_: number, voice_: number, index_: number, index2_: number, scriptAt_: number, index22_: number, operand_: number): void {
+export function sequencerSetSlideWordFrom10(ptr_: number, voice_: number, index_: number, index2_: number, scriptAt_: number, index22_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -180190,7 +180190,7 @@ export function sequencerOpcodeHandlersFrom10(ptr_: number, voice_: number, inde
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom11(voice_: number, index_: number): void {
+export function sequencerSetSlideWordFrom11(voice_: number, index_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -180211,7 +180211,7 @@ export function sequencerOpcodeHandlersFrom11(voice_: number, index_: number): v
   setReg('d3', index);
 }
 
-export function sequencerOpcodeHandlersFrom12(voice_: number, index_: number, index2_: number, operand_: number): void {
+export function sequencerLoopPush(voice_: number, index_: number, index2_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -180282,7 +180282,7 @@ export function sequencerOpcodeHandlersFrom12(voice_: number, index_: number, in
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom13(voice_: number): void {
+export function sequencerLoopEnd(voice_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -180385,7 +180385,7 @@ export function sequencerOpcodeHandlersFrom13(voice_: number): void {
   setReg('d3', index);
 }
 
-export function sequencerOpcodeHandlersFrom14(voice_: number): void {
+export function sequencerEnterModeTwo(voice_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -180405,7 +180405,7 @@ export function sequencerOpcodeHandlersFrom14(voice_: number): void {
   setReg('a2', voice);
 }
 
-export function sequencerOpcodeHandlersFrom15(voice_: number): void {
+export function sequencerEnterModeOne(voice_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -180427,7 +180427,7 @@ export function sequencerOpcodeHandlersFrom15(voice_: number): void {
   setReg('a2', voice);
 }
 
-export function sequencerOpcodeHandlersFrom16(voice_: number, unused_: number, operand_: number, chosenPtrAt_: number): void {
+export function sequencerSetSlideWordFrom16(voice_: number, unused_: number, operand_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -180498,7 +180498,7 @@ export function sequencerOpcodeHandlersFrom16(voice_: number, unused_: number, o
   setReg('d6', chosenPtrAt);
 }
 
-export function sequencerOpcodeHandlersFrom17(voice_: number, operand_: number, chosenPtrAt_: number): void {
+export function sequencerSetSlideWordFrom17(voice_: number, operand_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -180558,7 +180558,7 @@ export function sequencerOpcodeHandlersFrom17(voice_: number, operand_: number, 
   setReg('d6', chosenPtrAt);
 }
 
-export function sequencerOpcodeHandlersFrom18(voice_: number, operand_: number, chosenPtrAt_: number): void {
+export function sequencerSetSlideWordFrom18(voice_: number, operand_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -180661,7 +180661,7 @@ export function sequencerOpcodeHandlersFrom18(voice_: number, operand_: number, 
   setReg('d6', chosenPtrAt);
 }
 
-export function sequencerOpcodeHandlersFrom19(operand_: number): void {
+export function sequencerSetSlideWordFrom19(operand_: number): void {
   let _guard = 0;
   void _guard;
   let unused = getReg('d1');
@@ -180693,7 +180693,7 @@ export function sequencerOpcodeHandlersFrom19(operand_: number): void {
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom20(operand_: number): void {
+export function sequencerSetSlideWordFrom20(operand_: number): void {
   let _guard = 0;
   void _guard;
   let d1 = getReg('d1');
@@ -180724,7 +180724,7 @@ export function sequencerOpcodeHandlersFrom20(operand_: number): void {
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom21(voice_: number): void {
+export function sequencerSetSlideWordFrom21(voice_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -180752,7 +180752,7 @@ export function sequencerOpcodeHandlersFrom21(voice_: number): void {
   setReg('a2', voice);
 }
 
-export function sequencerOpcodeHandlersFrom22(voice_: number, index_: number, operand_: number): void {
+export function sequencerSetSlideWordFrom22(voice_: number, index_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -180821,7 +180821,7 @@ export function sequencerOpcodeHandlersFrom22(voice_: number, index_: number, op
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom23(operand_: number): void {
+export function sequencerSetSlideWordFrom23(operand_: number): void {
   let _guard = 0;
   void _guard;
   let d3 = getReg('d3');
@@ -180841,7 +180841,7 @@ export function sequencerOpcodeHandlersFrom23(operand_: number): void {
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom24(voice_: number, operand_: number, chosenPtrAt_: number): void {
+export function sequencerSetSlideWordFrom24(voice_: number, operand_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -180911,7 +180911,7 @@ export function sequencerOpcodeHandlersFrom24(voice_: number, operand_: number, 
   setReg('d6', chosenPtrAt);
 }
 
-export function sequencerOpcodeHandlersFrom25(ptr_: number, voice_: number, unused_: number, index_: number, unused2_: number, operand_: number): void {
+export function sequencerSetSlideWordFrom25(ptr_: number, voice_: number, unused_: number, index_: number, unused2_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -181045,7 +181045,7 @@ export function sequencerOpcodeHandlersFrom25(ptr_: number, voice_: number, unus
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom26(unused_: number, operand_: number): void {
+export function sequencerSetSlideWordFrom26(unused_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -181064,7 +181064,7 @@ export function sequencerOpcodeHandlersFrom26(unused_: number, operand_: number)
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom27(unused_: number, operand_: number): void {
+export function sequencerSetSlideWordFrom27(unused_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -181083,7 +181083,7 @@ export function sequencerOpcodeHandlersFrom27(unused_: number, operand_: number)
   setReg('d4', operand);
 }
 
-export function sequencerOpcodeHandlersFrom28(voice_: number, operand_: number): void {
+export function sequencerSetSlideWordFrom28(voice_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -189997,11 +189997,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x00136, fn: claimSlotKindFourClearingStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x0013c, fn: soundStateCopyFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x0013c, fn: claimSlotBySignStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00142, fn: claimSlotKindOneStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00148, fn: claimSlotKindOneFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x00148, fn: claimSlotKindThreeStub as (...a: number[]) => void, params: [] },
 
   { at: 0x0014e, fn: soundVoiceSelectStub as (...a: number[]) => void, params: [] },
 
@@ -190013,7 +190013,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x00166, fn: clearGlyphLayerSStateStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x0016c, fn: clearGlyphLayerSStateFrom2Stub as (...a: number[]) => void, params: [] },
+  { at: 0x0016c, fn: waitCounterChangesStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00172, fn: creditCoinSlotsThatFiredStub as (...a: number[]) => void, params: [] },
 
@@ -190025,11 +190025,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0018a, fn: writeBookkeepingCounterStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00190, fn: addressSoundChannelSNthFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x00190, fn: unpackQueueEntryStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00196, fn: soundEnvelopeStepStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x0019c, fn: soundEnvelopeStepFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x0019c, fn: writeQueueEntryValueStub as (...a: number[]) => void, params: [] },
 
   { at: 0x001a2, fn: soundParameterScalerStub as (...a: number[]) => void, params: [] },
 
@@ -190045,7 +190045,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x001ca, fn: plotChainStringsReturnWidthStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x001d0, fn: plotChainStringsCallerSFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x001d0, fn: eraseChainGlyphRunsReturnStub as (...a: number[]) => void, params: [] },
 
   { at: 0x001d6, fn: drawGlyphRun800002Stub as (...a: number[]) => void, params: [] },
 
@@ -190053,7 +190053,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x001e2, fn: takeCellColourThenAddressStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x001e8, fn: clearGlyphLayerSStateFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x001e8, fn: writeWordByIndexStub as (...a: number[]) => void, params: [] },
 
   { at: 0x001ee, fn: soundGateStub as (...a: number[]) => void, params: [] },
 
@@ -190061,23 +190061,23 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x001fa, fn: loadPackedOptionsWordStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00200, fn: loadPackedOptionsWordFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x00200, fn: optionFieldElevenToThirteenStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00206, fn: tempoDivisorSoundRateWordStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x0020c, fn: takeCountTicksAccumulatorIfFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x0020c, fn: withinAllowanceStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00212, fn: advanceTickAccumulatorPackWholeStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00218, fn: advanceTickAccumulatorPackWholeFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x00218, fn: drawDownAllowanceStub as (...a: number[]) => void, params: [] },
 
   { at: 0x0021e, fn: takeCountTicksAccumulatorIfStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00224, fn: takeCountTicksAccumulatorIfFrom2Stub as (...a: number[]) => void, params: [] },
+  { at: 0x00224, fn: clearAllowanceBytesStub as (...a: number[]) => void, params: [] },
 
   { at: 0x0022a, fn: soundEnableCheckStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00230, fn: soundEnableCheckFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x00230, fn: divideCounterByOptionStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00236, fn: pushByteIntoSecondRingStub as (...a: number[]) => void, params: [] },
 
@@ -190093,7 +190093,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0025a, fn: plotChainStringsCallerSStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00260, fn: formatScaledAndDrawFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x00260, fn: formatNumberSeparatorsIntoLocalStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00266, fn: formatNumberPowerTwoBaseStub as (...a: number[]) => void, params: [] },
 
@@ -190101,7 +190101,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x00272, fn: voiceIndexClampStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00278, fn: voiceIndexClampFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x00278, fn: countOneOfCounterThirteenStub as (...a: number[]) => void, params: [] },
 
   { at: 0x0027e, fn: trapHaltStub as (...a: number[]) => void, params: [] },
 
@@ -190119,11 +190119,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x003ea, fn: kickWatchdogAndStampBlock as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }] },
 
-  { at: 0x0042a, fn: accessorStateBlockFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x0042a, fn: resetSequenceElevenCallsStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00430, fn: checkMovemThenSampleInputs as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }] },
 
-  { at: 0x0043a, fn: checkMovemThenSampleInputsFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0043a, fn: checkMovemRoundTrip as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x00512, fn: waitNextFrame as (...a: number[]) => void, params: [] },
 
@@ -190899,7 +190899,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x09150, fn: accessorStateBlock as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x09188, fn: accessorStateBlockFrom1 as (...a: number[]) => void, params: [] },
+  { at: 0x09188, fn: resetSequenceElevenCalls as (...a: number[]) => void, params: [] },
 
   { at: 0x091b2, fn: mainLoop as (...a: number[]) => void, params: [] },
 
@@ -191209,7 +191209,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0d916, fn: choosePieceRotationRing as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x0d9a2, fn: choosePieceRotationRingFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
+  { at: 0x0d9a2, fn: stepRotationUnlessPending as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
   { at: 0x0dabc, fn: copy1344BytesReturnCount as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -191513,7 +191513,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x130f8, fn: runTwoSelfTestPasses as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x1310c, fn: runTwoSelfTestPassesFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+  { at: 0x1310c, fn: clearAllRamKickingWatchdog as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x13134, fn: selfTestFailureReport as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
@@ -191541,7 +191541,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x135f0, fn: powerSelfTestFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x1365c, fn: runTwoSelfTestPassesFrom1Stub as (...a: number[]) => void, params: [] },
+  { at: 0x1365c, fn: clearAllRamKickingWatchdogStub as (...a: number[]) => void, params: [] },
 
   { at: 0x13662, fn: checksumEveryRomRegionAgainst as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
@@ -191615,7 +191615,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x13f40, fn: loadPackedOptionsWord as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
-  { at: 0x13f60, fn: loadPackedOptionsWordFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+  { at: 0x13f60, fn: optionFieldElevenToThirteen as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x13f98, fn: tempoDivisorSoundRateWord as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
@@ -191623,17 +191623,17 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x14044, fn: advanceTickAccumulatorPackWhole as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x14104, fn: advanceTickAccumulatorPackWholeFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x14104, fn: drawDownAllowance as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x14138, fn: takeCountTicksAccumulatorIf as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x1418a, fn: takeCountTicksAccumulatorIfFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
+  { at: 0x1418a, fn: withinAllowance as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x141c4, fn: takeCountTicksAccumulatorIfFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
+  { at: 0x141c4, fn: clearAllowanceBytes as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
   { at: 0x141d4, fn: soundEnableCheck as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x14230, fn: soundEnableCheckFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+  { at: 0x14230, fn: divideCounterByOption as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x1425c, fn: helperSoundDriverHelper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
 
@@ -191655,11 +191655,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x14b2c, fn: addressSoundChannelSNth as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
-  { at: 0x14b8a, fn: addressSoundChannelSNthFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+  { at: 0x14b8a, fn: unpackQueueEntry as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
   { at: 0x14c3c, fn: soundEnvelopeStep as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
-  { at: 0x14d48, fn: soundEnvelopeStepFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+  { at: 0x14d48, fn: writeQueueEntryValue as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
   { at: 0x14dd2, fn: stepAllEightSoundEnvelopes as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
@@ -191703,7 +191703,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x15830, fn: voiceIndexClamp as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x15858, fn: voiceIndexClampFrom1 as (...a: number[]) => void, params: [] },
+  { at: 0x15858, fn: countOneOfCounterThirteen as (...a: number[]) => void, params: [] },
 
   { at: 0x1586a, fn: runSelfTestEntryIndex as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }] },
 
@@ -191955,7 +191955,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x18d88, fn: soundStateCopy as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x18db6, fn: soundStateCopyFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
+  { at: 0x18db6, fn: claimSlotBySign as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
 
   { at: 0x18dc4, fn: soundVoiceSelect as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
@@ -191965,7 +191965,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x18dfc, fn: claimSlotKindOne as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
 
-  { at: 0x18e00, fn: claimSlotKindOneFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
+  { at: 0x18e00, fn: claimSlotKindThree as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
 
   { at: 0x18e02, fn: claimSlotKindOneFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
 
@@ -191981,7 +191981,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x19054, fn: formatScaledAndDraw as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
 
-  { at: 0x1908a, fn: formatScaledAndDrawFrom1 as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }, { from: 'stack', off: 24 }] },
+  { at: 0x1908a, fn: formatNumberSeparatorsIntoLocal as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }, { from: 'stack', off: 24 }] },
 
   { at: 0x190a2, fn: formatScaledAndDrawFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
@@ -191989,15 +191989,15 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x190da, fn: plotChainStringsCallerS as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 16 }] },
 
-  { at: 0x190f6, fn: plotChainStringsCallerSFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
+  { at: 0x190f6, fn: eraseChainGlyphRunsReturn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
 
   { at: 0x19366, fn: recordWhetherVectorHoldsStub as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x1939c, fn: clearGlyphLayerSState as (...a: number[]) => void, params: [] },
 
-  { at: 0x193c6, fn: clearGlyphLayerSStateFrom1 as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+  { at: 0x193c6, fn: writeWordByIndex as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
-  { at: 0x193da, fn: clearGlyphLayerSStateFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
+  { at: 0x193da, fn: waitCounterChanges as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
   { at: 0x193f2, fn: storeTwoBytesPointerClear as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
@@ -192051,7 +192051,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1997a, fn: countStepDownAndAdvance as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x1997c, fn: countStepDownAndAdvanceFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x1997c, fn: storeAndBranchOnSign as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x19a1e, fn: restoreD2D3A2A3 as (...a: number[]) => void, params: [] },
 
@@ -192157,63 +192157,63 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1a810, fn: readTwoScriptBytesDispatch as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a8c0, fn: sequencerOpcodeHandlers as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a8c0, fn: sequencerSetSlideWord as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a8e0, fn: sequencerOpcodeHandlersFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a8e0, fn: sequencerAddSlideWord as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a8fa, fn: sequencerOpcodeHandlersFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a8fa, fn: sequencerSetLevel as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a90e, fn: sequencerOpcodeHandlersFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }] },
+  { at: 0x1a90e, fn: sequencerMarkLevelChanged as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }] },
 
-  { at: 0x1a916, fn: sequencerOpcodeHandlersFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a916, fn: sequencerAddLevelClamped as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a958, fn: sequencerOpcodeHandlersFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a958, fn: sequencerSetField19 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a960, fn: sequencerOpcodeHandlersFrom6 as (...a: number[]) => void, params: [] },
+  { at: 0x1a960, fn: sequencerTailToAddField5D as (...a: number[]) => void, params: [] },
 
-  { at: 0x1a964, fn: sequencerOpcodeHandlersFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a964, fn: sequencerSetField1E as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a970, fn: sequencerOpcodeHandlersFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a970, fn: sequencerMergeDriverFlags as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a98a, fn: sequencerOpcodeHandlersFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a98a, fn: sequencerSetField20 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a992, fn: sequencerOpcodeHandlersFrom10 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a992, fn: sequencerSetSlideWordFrom10 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a9ea, fn: sequencerOpcodeHandlersFrom11 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x1a9ea, fn: sequencerSetSlideWordFrom11 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x1a9f2, fn: sequencerOpcodeHandlersFrom12 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a9f2, fn: sequencerLoopPush as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1aa28, fn: sequencerOpcodeHandlersFrom13 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x1aa28, fn: sequencerLoopEnd as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x1aa5e, fn: sequencerOpcodeHandlersFrom14 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x1aa5e, fn: sequencerEnterModeTwo as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x1aa70, fn: sequencerOpcodeHandlersFrom15 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x1aa70, fn: sequencerEnterModeOne as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x1aa80, fn: sequencerOpcodeHandlersFrom16 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1aa80, fn: sequencerSetSlideWordFrom16 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1aa9c, fn: sequencerOpcodeHandlersFrom17 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1aa9c, fn: sequencerSetSlideWordFrom17 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1aaba, fn: sequencerOpcodeHandlersFrom18 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1aaba, fn: sequencerSetSlideWordFrom18 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1aaf2, fn: sequencerOpcodeHandlersFrom19 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
+  { at: 0x1aaf2, fn: sequencerSetSlideWordFrom19 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ab00, fn: sequencerOpcodeHandlersFrom20 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
+  { at: 0x1ab00, fn: sequencerSetSlideWordFrom20 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ab10, fn: sequencerOpcodeHandlersFrom21 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x1ab10, fn: sequencerSetSlideWordFrom21 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x1ab2a, fn: sequencerOpcodeHandlersFrom22 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1ab2a, fn: sequencerSetSlideWordFrom22 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ab48, fn: sequencerOpcodeHandlersFrom23 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
+  { at: 0x1ab48, fn: sequencerSetSlideWordFrom23 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ab50, fn: sequencerOpcodeHandlersFrom24 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1ab50, fn: sequencerSetSlideWordFrom24 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1ab70, fn: sequencerOpcodeHandlersFrom25 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1ab70, fn: sequencerSetSlideWordFrom25 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abb6, fn: sequencerOpcodeHandlersFrom26 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abb6, fn: sequencerSetSlideWordFrom26 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abbc, fn: sequencerOpcodeHandlersFrom27 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abbc, fn: sequencerSetSlideWordFrom27 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abc2, fn: sequencerOpcodeHandlersFrom28 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abc2, fn: sequencerSetSlideWordFrom28 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x1abc6, fn: copyField5DToField5E as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 

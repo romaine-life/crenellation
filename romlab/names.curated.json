@@ -1990,9 +1990,9 @@
     "why": "an inner entry of 0x1997a that arrives with d3 and a2 already set: it writes the word and takes `bpl` on the flags THAT WRITE left, not on a separate test. A reader looking for the comparison will not find one - `move.w` sets N and Z from the value moved, which is the whole reason this is two instructions rather than three."
   },
   "0x1a8c0": {
-    "name": "the opcode handlers of the sequencer interpreter",
-    "ident": "sequencerOpcodeHandlers",
-    "why": "774 bytes that are not one routine but about thirty short ones side by side, which is why the map records twenty-eight inner entries into it. Each is one opcode's handler and every one of them ends `bra.w $1b048`, the shared tail. The state is a2: the byte at 4(a2) is a PROGRAM COUNTER into the sequence and handlers advance it with `addq.l #$1,$4(a2)` as they consume operands, d4 arrives holding the operand byte the dispatcher already fetched, and 0x1a(a2) is assembled from two bytes as a sixteen-bit value. 0x16(a2) is a level clamped to four bits - one handler SETS it and the next ADDS to it, with bit 7 meaning underflow and clearing it and anything above 0xf pinned to 0xf - and both refuse when 0x12(a2) is 0xfe, which is a mode that locks it. The tail at 0x1b048 either fetches the next opcode at 0x1a810 or, when a handler set the stop byte at -5(a6), follows `movea.l (a2),a2` to the next voice and starts again at 0x1a618, returning when that pointer is null. So the voices are a linked list and each carries its own program counter."
+    "name": "assemble the sixteen bit word at field 0x1a",
+    "why": "the operand is its low byte and 0x1a8d4 fetches the next script byte for the high one, advancing 4(a2) past it. setChannelSPitchNote subtracts that word from the channel's 32-bit accumulator at 0xa every tick, so it is a per-tick slide step.",
+    "ident": "sequencerSetSlideWord"
   },
   "0x1822c": {
     "name": "draw a block of text lines at consecutive rows",
@@ -2137,5 +2137,70 @@
     "name": "divide two packed numerators by one divisor",
     "ident": "divideTwoByOne",
     "why": "two `divu.w` against the SAME divisor at 0xa(a7), one on the word at 4(a7) and one on the word at 6(a7) - which are the high and low halves of a single longword argument. So the caller passes a pair packed into one long and gets both quotients back packed the same way. Neither divide is checked for overflow."
+  },
+  "0x1a8e0": {
+    "name": "add a sixteen bit script value to word 0x1a",
+    "why": "assembles the value exactly as sequencerSetSlideWord does - operand low, next script byte high - and then tails into 0x1ad66, which adds it to word 0x1a rather than replacing it.",
+    "ident": "sequencerAddSlideWord"
+  },
+  "0x1a8fa": {
+    "name": "store the operand in the channel's level",
+    "why": "0x1a902 writes it to field 0x16, which 0x1a916 clamps to 0..0xf - four bits, and the only field this block treats that way. Skipped when byte 0x12 is 0xfe, the finishing marker.",
+    "ident": "sequencerSetLevel"
+  },
+  "0x1a90e": {
+    "name": "set bit three of the driver's change byte",
+    "why": "`ori.b #8,(a4)` and nothing else; a4 is the byte at 0x3e36ec the driver clears each pass and reports through. Both level handlers fall into it.",
+    "ident": "sequencerMarkLevelChanged"
+  },
+  "0x1a916": {
+    "name": "add the operand to the level and clamp it",
+    "why": "0x1a91e adds it to field 0x16, then 0x1a922 clears the field if the result went negative and 0x1a938 pins it at 0xf otherwise - four bits, clamped at both ends.",
+    "ident": "sequencerAddLevelClamped"
+  },
+  "0x1a958": {
+    "name": "store the operand in field 0x19",
+    "why": "two instructions: `move.b d4,$19(a2)` and the jump back to the sequencer. Field 0x19 is what addField5DToField19 accumulates into.",
+    "ident": "sequencerSetField19"
+  },
+  "0x1a960": {
+    "name": "hand over to the field 0x5d adder",
+    "why": "a single `bra.w $1ad58` - the entry inside addField5DToField19 that skips its own load of field 0x5d, so this opcode adds whatever is already in the register.",
+    "ident": "sequencerTailToAddField5D"
+  },
+  "0x1a964": {
+    "name": "mask the operand to bits zero and three and store it in field 0x1e",
+    "why": "`andi.b #9,d4` keeps only those two bits before `move.b d4,$1e(a2)`.",
+    "ident": "sequencerSetField1E"
+  },
+  "0x1a970": {
+    "name": "merge two operand bits into the driver's flag byte",
+    "why": "the operand is masked to 9, the byte at 0x3e36ee is masked to 0xf6 - the complement - and the two are or'd back together, so this opcode owns exactly bits 0 and 3 of that byte.",
+    "ident": "sequencerMergeDriverFlags"
+  },
+  "0x1a98a": {
+    "name": "store the operand in field 0x20",
+    "why": "two instructions, like the field 0x19 opcode beside it.",
+    "ident": "sequencerSetField20"
+  },
+  "0x1a9f2": {
+    "name": "push a loop count and the script pointer",
+    "why": "refuses above five levels (0x1a9f2), then writes the operand as the count into word 0x3e and the current script pointer into long 0x3a, both indexed by depth times six, and bumps the depth at 0x25. Six bytes a level, five levels.",
+    "ident": "sequencerLoopPush"
+  },
+  "0x1aa28": {
+    "name": "count the innermost loop down or jump back to its start",
+    "why": "reads the top level's count at 0x3e, and if it is non-zero after decrementing restores the script pointer saved at 0x3a; when it reaches zero it drops the depth at 0x25 instead and falls through.",
+    "ident": "sequencerLoopEnd"
+  },
+  "0x1aa5e": {
+    "name": "put the channel in mode two and raise the driver's mode flag",
+    "why": "`0x14(a2) = 2` and `0x3e36fc = 1` - the byte setChannelSPitchNote tests to choose between its two pitch paths.",
+    "ident": "sequencerEnterModeTwo"
+  },
+  "0x1aa70": {
+    "name": "put the channel in mode one and clear the driver's mode flag",
+    "why": "`0x14(a2) = 1` and 0x3e36fc cleared: the exact counterpart of the mode two opcode above it.",
+    "ident": "sequencerEnterModeOne"
   }
 }
