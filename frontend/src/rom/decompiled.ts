@@ -32443,7 +32443,7 @@ export function conditionalDraw(at_: number, unused_: number, unused2_: number, 
   setReg('d1', unused2);
 }
 
-export function helperAttractModeController(kind_: number, limit_: number, handled_: number, base: number, src2: number): void {
+export function attractWalkOffsetTable(kind_: number, limit_: number, handled_: number, base: number, src2: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a2');
@@ -33271,7 +33271,7 @@ export function paletteFadeStepWrapper(): void {
   return;
 }
 
-export function helperDamageScriptSelectorVerified(): void {
+export function fadePaletteToTable1EE80(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(80, 0x046b0) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -40256,7 +40256,7 @@ export function pieceBagBuilder(dst_: number, src_: number, limit_: number, kind
   setReg('d4', d4);
 }
 
-export function helperPieceBagBuilderVerified(src_: number, unused_: number, count: number, src3: number, record: number): void {
+export function buildPieceBagByQuarters(src_: number, unused_: number, count: number, src3: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -40520,7 +40520,7 @@ export function pieceRotation(wrapped_: number, cursorRef: number): void {
   setReg('d0', wrapped);
 }
 
-export function helperAdvanceEveryActivePlayer(dst2: number): void {
+export function dropPlayerTimerOrSetDefault(dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -42590,7 +42590,7 @@ export function layPlayerWallFromTable11742(index_: number, unused6_: number, un
   setReg('d7', unused5);
 }
 
-export function layPlayerWallFromTable11742From1(dst_: number, unused_: number, cellAddr_: number): void {
+export function wallTallyCellFromTable(dst_: number, unused_: number, cellAddr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -45038,7 +45038,7 @@ export function layPlayerWallFromCounter3E1F18(index_: number, unused5_: number,
   setReg('d6', unused3);
 }
 
-export function layPlayerWallFromCounter3E1F18From1(dst_: number, unused_: number, cellAddr_: number): void {
+export function wallTallyCellFromCounter(dst_: number, unused_: number, cellAddr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -49955,7 +49955,7 @@ export function cellOwnerTest(dst_: number, unused_: number, unused2_: number, l
   setReg('d1', unused2);
 }
 
-export function shotRecordAccess(unused_: number): void {
+export function shotRecordFieldConstants(unused_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a2');
@@ -54195,7 +54195,7 @@ export function dispatchCursorCode11Or30(code_: number): void {
   setReg('d1', code);
 }
 
-export function dispatchCursorCode11Or30From1(code_: number): void {
+export function cursorCodeIsThirty(code_: number): void {
   let _guard = 0;
   void _guard;
   let code = code_;
@@ -68768,7 +68768,7 @@ export function passByteOnlyWhenGate(unused_: number, value_: number, cue: numbe
   setReg('d1', value);
 }
 
-export function helperTextLineDraw(value_: number, cue: number): void {
+export function queueCueFromByteArgument(value_: number, cue: number): void {
   let _guard = 0;
   void _guard;
   let unused = getReg('d0');
@@ -79941,7 +79941,7 @@ export function doNothingA7E4(): void {
   if (tick(16, 0x0a7e4)) { takeIrq(); }
 }
 
-export function helperUsedPlayerStateAccess(index_: number, preserved_: number, record: number, unused: number): void {
+export function playerStateByWordAndByte(index_: number, preserved_: number, record: number, unused: number): void {
   let _guard = 0;
   void _guard;
   let index2 = getReg('d0');
@@ -110544,7 +110544,7 @@ export function phaseAdvanceHelper(dst4_: number, dst_: number, index_: number, 
   setReg('d0', index);
 }
 
-export function helperMainGameStateMachine(): void {
+export function clampStationCountThenSetModeSix(): void {
   let _guard = 0;
   void _guard;
   let t0 = 0;
@@ -124003,7 +124003,7 @@ export function returnImmediately(): void {
   return;
 }
 
-export function helperStepsBoardDirection(dst_: number, unused_: number): void {
+export function randomOffsetInSixtyFourRange(dst_: number, unused_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -163567,7 +163567,7 @@ export function soundFlagClear(unused_: number, clear: number): void {
   setReg('d0', unused);
 }
 
-export function helperSoundSequencePlayer(index_: number): void {
+export function soundSequenceStartWithCounter(index_: number): void {
   let _guard = 0;
   void _guard;
   let index = index_;
@@ -172970,7 +172970,7 @@ export function resetBusRestartThroughReset(src_: number): void {
   setReg('a7', a7);
 }
 
-export function soundDriverHelper(preserved_: number, limit_: number): void {
+export function readBothTrackballAxes(preserved_: number, limit_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -180939,7 +180939,7 @@ export function addField5DToField19(dst_: number, field5D_: number): void {
   setReg('d4', field5D);
 }
 
-export function addField5DToField19From1(dst_: number, field5D_: number): void {
+export function addOperandToField19(dst_: number, field5D_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -181183,7 +181183,7 @@ export function shiftField5DLeftByD4(dst_: number, field5D_: number, shift_: num
   setReg('d4', shift);
 }
 
-export function shiftField5DLeftByD4From1(dst_: number, field5D_: number): void {
+export function storeShiftedIntoField5D(dst_: number, field5D_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -189377,7 +189377,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0435a, fn: conditionalDraw as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x043c2, fn: helperAttractModeController as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+  { at: 0x043c2, fn: attractWalkOffsetTable as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
   { at: 0x0441c, fn: drawTwoByTwoMarker as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
 
@@ -189397,7 +189397,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0469e, fn: paletteFadeStepWrapper as (...a: number[]) => void, params: [] },
 
-  { at: 0x046b0, fn: helperDamageScriptSelectorVerified as (...a: number[]) => void, params: [] },
+  { at: 0x046b0, fn: fadePaletteToTable1EE80 as (...a: number[]) => void, params: [] },
 
   { at: 0x046c2, fn: setOneFixedPaletteEntry as (...a: number[]) => void, params: [] },
 
@@ -189511,11 +189511,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x059ee, fn: pieceBagBuilder as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
-  { at: 0x05ab0, fn: helperPieceBagBuilderVerified as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
+  { at: 0x05ab0, fn: buildPieceBagByQuarters as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
   { at: 0x05afc, fn: pieceRotation as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x05b16, fn: helperAdvanceEveryActivePlayer as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
+  { at: 0x05b16, fn: dropPlayerTimerOrSetDefault as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
   { at: 0x05b40, fn: entityAllocator as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
@@ -189549,7 +189549,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x05fa6, fn: layPlayerWallFromTable11742 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x0603e, fn: layPlayerWallFromTable11742From1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x0603e, fn: wallTallyCellFromTable as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x060be, fn: chargeItemThenDecompressBackwards as (...a: number[]) => void, params: [{ from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
@@ -189575,7 +189575,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x062a6, fn: layPlayerWallFromCounter3E1F18 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0634a, fn: layPlayerWallFromCounter3E1F18From1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x0634a, fn: wallTallyCellFromCounter as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x063ca, fn: chargeItemThenDecompressForwards as (...a: number[]) => void, params: [{ from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
@@ -189637,7 +189637,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x06988, fn: cellOwnerTest as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x069ae, fn: shotRecordAccess as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
+  { at: 0x069ae, fn: shotRecordFieldConstants as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
   { at: 0x069e2, fn: stepBoardInDirectionFromField46 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -189661,7 +189661,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x071c4, fn: dispatchCursorCode11Or30 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }] },
 
-  { at: 0x071d0, fn: dispatchCursorCode11Or30From1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }] },
+  { at: 0x071d0, fn: cursorCodeIsThirty as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }] },
 
   { at: 0x071dc, fn: flierLandOnPlayerCell as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
@@ -189813,7 +189813,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x090e6, fn: passByteOnlyWhenGate as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x090fe, fn: helperTextLineDraw as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
+  { at: 0x090fe, fn: queueCueFromByteArgument as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
   { at: 0x0910e, fn: alternateBetweenTwoValuesFour as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -189907,7 +189907,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0a7e4, fn: doNothingA7E4 as (...a: number[]) => void, params: [] },
 
-  { at: 0x0a7e6, fn: helperUsedPlayerStateAccess as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
+  { at: 0x0a7e6, fn: playerStateByWordAndByte as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
   { at: 0x0a80c, fn: clearEntityMarkerUnitTables as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
@@ -190189,7 +190189,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0e98c, fn: phaseAdvanceHelper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x0ea46, fn: helperMainGameStateMachine as (...a: number[]) => void, params: [] },
+  { at: 0x0ea46, fn: clampStationCountThenSetModeSix as (...a: number[]) => void, params: [] },
 
   { at: 0x0ea68, fn: workOutStoreCarryOver as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
@@ -190419,7 +190419,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1288e, fn: returnImmediately as (...a: number[]) => void, params: [] },
 
-  { at: 0x128bc, fn: helperStepsBoardDirection as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x128bc, fn: randomOffsetInSixtyFourRange as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x13000, fn: clearPlayfieldWorkRamKicking as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
@@ -190765,7 +190765,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x183f2, fn: soundFlagClear as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x18418, fn: helperSoundSequencePlayer as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
+  { at: 0x18418, fn: soundSequenceStartWithCounter as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
   { at: 0x1851c, fn: mergeMaskedResultBits as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
 
@@ -190993,7 +190993,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x19c34, fn: resetBusRestartThroughReset as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }] },
 
-  { at: 0x19c3c, fn: soundDriverHelper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x19c3c, fn: readBothTrackballAxes as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x19c70, fn: trackTwoAxesRecordDirection as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }] },
 
@@ -191175,7 +191175,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1ad54, fn: addField5DToField19 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ad58, fn: addField5DToField19From1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1ad58, fn: addOperandToField19 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x1ad60, fn: addSignExtendedField5DToWord1A as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }] },
 
@@ -191189,7 +191189,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1ada2, fn: shiftField5DLeftByD4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ada8, fn: shiftField5DLeftByD4From1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x1ada8, fn: storeShiftedIntoField5D as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x1adb0, fn: scriptTestSkipLongIfZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 

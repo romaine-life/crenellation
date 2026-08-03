@@ -3615,5 +3615,85 @@
     "name": "resolve the owner through the record's field 0x42",
     "why": "follows 0x42 of the argument and hands it to the resolver with the table at 0x1fafe.",
     "ident": "resolveOwnerThroughField42"
+  },
+  "0x0603e": {
+    "name": "count this cell and read it, walking from the table",
+    "why": "bumps both tallies on the record - words 0x56 and 0x58 - before it reads the cell, which is how the walk counts what it covered. The address comes from d5, which this half of the family walks.",
+    "ident": "wallTallyCellFromTable"
+  },
+  "0x0634a": {
+    "name": "count this cell and read it, walking from the counter",
+    "why": "bumps both tallies on the record - words 0x56 and 0x58 - before it reads the cell, which is how the walk counts what it covered. The address comes from d4 here rather than d5 - the only difference between the two.",
+    "ident": "wallTallyCellFromCounter"
+  },
+  "0x071d0": {
+    "name": "take the 0x30 branch, or fall to the plain case",
+    "why": "one compare against 0x30 and two branches; the entry above it does the same for 0x11.",
+    "ident": "cursorCodeIsThirty"
+  },
+  "0x1ad58": {
+    "name": "add the operand to field 0x19",
+    "why": "the add and the jump back, without the load of field 0x5d the entry above it does first - so this one adds whatever is already in the register.",
+    "ident": "addOperandToField19"
+  },
+  "0x1ada8": {
+    "name": "store the shifted value back into field 0x5d",
+    "why": "the write and the jump back; the shift itself happened in the entry above.",
+    "ident": "storeShiftedIntoField5D"
+  },
+  "0x043c2": {
+    "name": "walk a table of offsets against a base",
+    "why": "0xeb0 and the screen base are the constants; each word the table yields is added to the base argument, and the count is what it answers.",
+    "ident": "attractWalkOffsetTable"
+  },
+  "0x05ab0": {
+    "name": "build the piece bag by halving and quartering the count",
+    "why": "the count is shifted right one and two straight away, so the bag is filled in those proportions from the two tables it is handed.",
+    "ident": "buildPieceBagByQuarters"
+  },
+  "0x069ae": {
+    "name": "walk the shot records with their field constants",
+    "why": "0x3e0f48 is the base, 0x1a the stride and 0x59 the field it reaches - the three numbers that are the whole routine.",
+    "ident": "shotRecordFieldConstants"
+  },
+  "0x19c3c": {
+    "name": "read both trackball axes and record their directions",
+    "why": "0x6c0000 and 0x6c0001 are the two latches, each handed to the direction tracker with its own record at 0x3e367c.",
+    "ident": "readBothTrackballAxes"
+  },
+  "0x05b16": {
+    "name": "drop the player's timer, or reset field 0x24 when it expires",
+    "why": "byte 0x15 is the countdown and 0xff88 is what field 0x24 takes when it reaches zero.",
+    "ident": "dropPlayerTimerOrSetDefault"
+  },
+  "0x0a7e6": {
+    "name": "read the player state a word and a byte name",
+    "why": "the word at 0xa(a7) and the byte at 0xf(a7) are its two arguments, both zero-extended before the call.",
+    "ident": "playerStateByWordAndByte"
+  },
+  "0x18418": {
+    "name": "bump the bookkeeping counter, then start the sequence",
+    "why": "writeBookkeepingCounter with 0x14 first, then the word at 0x284 - a vector-table slot - is what it works from.",
+    "ident": "soundSequenceStartWithCounter"
+  },
+  "0x0ea46": {
+    "name": "clamp the station count to four and set the mode byte to six",
+    "why": "0x3e195c is the station count, pinned at 4, and 0x3e0dd2 - the mode byte drawing and phases branch on - is set to 6.",
+    "ident": "clampStationCountThenSetModeSix"
+  },
+  "0x128bc": {
+    "name": "pick a random offset in a range of sixty-four",
+    "why": "0x40 is the range handed to rng and 0x60 the bias added to what comes back.",
+    "ident": "randomOffsetInSixtyFourRange"
+  },
+  "0x046b0": {
+    "name": "fade the palette toward the table at 0x1ee80",
+    "why": "one call with that table and a one; the whole routine is its argument list.",
+    "ident": "fadePaletteToTable1EE80"
+  },
+  "0x090fe": {
+    "name": "queue the cue byte the argument names",
+    "why": "the low byte at 7(a7), zero-extended into the ring push at 0x90be - the same ring passByteOnlyWhenGate feeds.",
+    "ident": "queueCueFromByteArgument"
   }
 }

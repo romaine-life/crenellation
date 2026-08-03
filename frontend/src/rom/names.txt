@@ -1,5 +1,5 @@
 functions: 1187, semantic 1187, still an address 0
 named only by a suffix on another routine's name: 147
-no stated purpose - the name was derived by rule: 85 of 1182, of which 0 are opaque (nothing their host or target points at has a purpose either)
+no stated purpose - the name was derived by rule: 69 of 1182, of which 0 are opaque (nothing their host or target points at has a purpose either)
 parameters: 4419, named 4419 (0 more are a stack slot with a number on it)
-remaining to the bar: 0 routines still an address, 0 opaque routines, 147 suffix-only names, 85 without a stated purpose, 0 parameters
+remaining to the bar: 0 routines still an address, 0 opaque routines, 147 suffix-only names, 69 without a stated purpose, 0 parameters
