@@ -40,7 +40,7 @@ difference between a sound answer and a plausible one:
 
   dead on arrival   the straight line from the entry, as above. Unconditional
                     branches are followed - one successor is not a fork.
-  killed everywhere both arms of every conditional branch to a depth of twelve.
+  killed everywhere both arms of every conditional branch to a depth of forty.
                     Every way of not knowing counts AGAINST: a call (the callee
                     might read it), a return, an unresolved target, a loop back
                     to a block already on the path, running off the end.
@@ -245,7 +245,7 @@ def killed_everywhere(md, image, at, lo, hi, reg, line, depth=0, seen=None):
     path is False too, not True: a register read on the second time round is
     read.
     """
-    if depth > 12:
+    if depth > 40:
         return False
     seen = set() if seen is None else seen
     pc = at
@@ -409,7 +409,7 @@ def main():
                    if mn else
                    f"dead on arrival: every path out of this entry destroys it"
                    f" before anything reads it - both arms of every conditional"
-                   f" branch, followed to a depth of twelve, and any path that"
+                   f" branch, followed to a depth of forty, and any path that"
                    f" reaches a call, a return or an unresolved target counts"
                    f" against rather than for.")
             names[reg] = {

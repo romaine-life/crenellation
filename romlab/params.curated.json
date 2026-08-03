@@ -969,6 +969,10 @@
     "stack8": {
       "name": "channel",
       "why": "its low word, at 0x1e(a7), pushed as 0x14b2c's second - one of three."
+    },
+    "d5": {
+      "name": "unused",
+      "why": "no instruction between this entry and 0x14bdc's `move.l a0,d5` mentions it, and that store is what every later use reads - the value the caller left is not read on any path through here."
     }
   },
   "0x14d48": {
@@ -4985,6 +4989,18 @@
     "d5": {
       "name": "firstEntry",
       "why": "the word out of the bucket head, and the emptiness test: `tst.w d5; beq` skips the bucket before anything else is read."
+    },
+    "a5": {
+      "name": "unused",
+      "why": "its only appearances are the movem that saves it at 0xf7a2, the movea that assigns it 0x3e0738 at 0xf822, and the movem that restores it - nothing reads what arrived."
+    },
+    "d2": {
+      "name": "unused2",
+      "why": "same shape: the movem at 0xf7a2, the assignment from d0 at 0xf85a, and the movem that restores it."
+    },
+    "d3": {
+      "name": "unused3",
+      "why": "0xf7d8's `move.w (a0,d0.w),d3` is the first instruction in the extent that mentions it, and it is a store."
     }
   },
   "0xf936": {
