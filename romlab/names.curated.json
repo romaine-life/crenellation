@@ -3555,5 +3555,65 @@
     "name": "look the tile id up in the table at 0x2161a",
     "why": "doubles the id, reads the word and writes it back over the argument's own low half - which is why that slot looks like two different things.",
     "ident": "tileIdThroughTable2161A"
+  },
+  "0x0b7fa": {
+    "name": "score the wall runs around a record for the computer player",
+    "why": "0x14 is the score step it works in, and it walks from field 0x38 of the record; the running total is built by adding and subtracting 0xc and 5 against a frame word before each candidate is compared.",
+    "ident": "scoreWallRunsForComputer"
+  },
+  "0x0b5e4": {
+    "name": "resolve an owner code against the current record",
+    "why": "keeps the current-record pointer at 0x3e1c84 in a3 and the record at 0x3e1cb0 as a constant, which is the pairing this routine is entirely about.",
+    "ident": "resolveOwnerFromCurrentRecord"
+  },
+  "0x1425c": {
+    "name": "move a sound record between the two driver lists",
+    "why": "0x3e352a and 0x3e3508 are the two list bases held in address registers, and 0x3e3536 is the bound the argument is compared against to decide which it belongs to.",
+    "ident": "soundRecordBetweenTwoLists"
+  },
+  "0x069e2": {
+    "name": "step across the board in the direction field 0x46 names",
+    "why": "the two bytes at 0x46 of the record are the direction, copied into the frame before the walk; the kind it lays comes from the word argument.",
+    "ident": "stepBoardInDirectionFromField46"
+  },
+  "0x15100": {
+    "name": "find the thirty-byte table entry the index names",
+    "why": "the index times fifteen, doubled, added to the pointer at 0x1d644 - thirty bytes an entry, and the whole routine.",
+    "ident": "thirtyByteTableEntry"
+  },
+  "0x0f306": {
+    "name": "allocate an entity from the mask of free slots",
+    "why": "the count is inverted and shifted down by the index to make a mask of what is still free; the table base is the constant 0x3e0000.",
+    "ident": "allocateEntityFromFreeMask"
+  },
+  "0x0ecfa": {
+    "name": "draw from the chain the record's field 0x4a points at",
+    "why": "0xc is the step it walks in, and 0x4a of the argument record is the chain head - the only field it reads before the loop.",
+    "ident": "drawFromRecordField4A"
+  },
+  "0x03e84": {
+    "name": "fill the claimed slot and draw its column",
+    "why": "keeps decompressOneColumnAdvancing's address in a3 and gates the whole thing on the byte at 0x3e0e78.",
+    "ident": "fillClaimedSlotAndDrawColumn"
+  },
+  "0x14ef8": {
+    "name": "scale a sound parameter, bounded at six slots",
+    "why": "the slot index is compared against 6 - the same bound soundChannelBound uses - before the value and the scale are applied.",
+    "ident": "scaleSoundParameterBySlot"
+  },
+  "0x04760": {
+    "name": "clear the framebuffer band the table at 0xfe0e names",
+    "why": "the word argument indexes 0xfe0e and what it finds is what the band clear is run with.",
+    "ident": "clearBandForTableEntry"
+  },
+  "0x0c568": {
+    "name": "reset the palette effect lists and raise the busy byte",
+    "why": "writes 0x3e20a0 - the active list head - into 0x3e20a4 so the list is empty, and sets the byte at 0x3e2498 that every effect tick tests first. 0x32 is the number of records it threads.",
+    "ident": "resetPaletteEffectLists"
+  },
+  "0x05346": {
+    "name": "resolve the owner through the record's field 0x42",
+    "why": "follows 0x42 of the argument and hands it to the resolver with the table at 0x1fafe.",
+    "ident": "resolveOwnerThroughField42"
   }
 }
