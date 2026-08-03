@@ -8060,5 +8060,37 @@
       "name": "dst",
       "why": "movea.l 0x20(a7),a1 at 0x1e706, and 0x1e714 reads the same slot again and adds eight - the destination, stepped a tile at a time."
     }
+  },
+  "0x195d4": {
+    "d3": {
+      "name": "bitsPerDigit",
+      "why": "the constant 4, and its only use is lsr.l d3,d1 at 0x195e0 - the value is shifted down four bits per digit, so this converts in hexadecimal."
+    },
+    "d4": {
+      "name": "digitMask",
+      "why": "the constant 0xf, the four bits one digit occupies."
+    },
+    "d1": {
+      "name": "value",
+      "why": "loaded from the first argument at 0x195b4 and shifted down a digit at a time at 0x195e0; the number being converted."
+    }
+  },
+  "0x8326": {
+    "d5": {
+      "name": "screenAt",
+      "why": "the address screenAddress returned at 0x18352 for the coordinate this routine assembled from field 0x30 of its argument with one added to the row."
+    },
+    "d6": {
+      "name": "playerIndex",
+      "why": "the byte at 2(a2) - the player index every player-keyed lookup in this ROM uses - and here it indexes the table at 0x1000a."
+    },
+    "d3": {
+      "name": "wallByte",
+      "why": "the table byte from 0x1000a with 0x1a or'd in at 0x18374."
+    },
+    "d4": {
+      "name": "wallByte2",
+      "why": "the same table byte with 2 or'd in instead, at 0x18370."
+    }
   }
 }
