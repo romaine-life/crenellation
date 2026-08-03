@@ -879,8 +879,9 @@
     "why": "packs 0x640000 and 0x640002 into one long, inverts it - the ports are active low - and masks off the bits that are not buttons, then steps the cursor at 0x3E368B by 5 or 4 depending on its sign."
   },
   "0x1357c": {
-    "name": "power on self test",
-    "why": "the entry the board comes up on. It masks all interrupts with sr = 0x2700, points a7 at 0x3e32fe, fills 0x3c0000 to 0x3c07fc with an incrementing word and kicks 0x72fffe in a loop. It then walks a table at 0x1325e in 14-byte entries - lea -$e(a5) steps back over one - each holding a flag long, a start and end pointer, and a word choosing between the RAM test at 0x1378e and 0x1397a. A failure is reported through 0x13134 and then the switches at 0x640000 decide what happens: bit 0 holds the failure on screen, bit 3 advances. When the table runs out it calls 0x13000 and jumps to 0x13350."
+    "name": "mask interrupts, rebuild the stack and clear the palette",
+    "why": "the chip's reset path: sr to 0x2700, a7 rebuilt from scratch at 0x3e32fe, and the whole palette from 0x3c0000 to 0x3c07fc written. This is the address the step-state harness treats as 'the routine crashed', because reaching it means the machine restarted.",
+    "ident": "powerOnResetEntry"
   },
   "0x13662": {
     "name": "checksum every ROM region against its stored sum",
@@ -2860,5 +2861,90 @@
     "name": "step every shot while waiting on 0x11b9c",
     "why": "the only phase here that does work and waits at the same time: it steps the shots each pass and keeps their count beside the event's answer.",
     "ident": "roundStepShotsWhileWaiting"
+  },
+  "0x0a4a0": {
+    "name": "drop the countdown and wait",
+    "why": "the word at -4(a6) less one and straight back to the dispatcher - the shortest phase here.",
+    "ident": "attractDropCountdownAndWait"
+  },
+  "0x0a4aa": {
+    "name": "step every shot, and the units too when the mode byte is set",
+    "why": "keeps what stepEveryShotFlightDraw answers and adds unitMovement's answer to it only when the byte at 0x3e1956 is non-zero, so the phase stays put while either is busy.",
+    "ident": "attractStepShotsAndMaybeUnits"
+  },
+  "0x0a548": {
+    "name": "post the round's outcome and set the gate word to 0x13",
+    "why": "hands a zero to endRoundPostOutcomeEvent, writes 0x13 to the queue gate at 0x3e1948 and jumps into the main machine's own phase.",
+    "ident": "attractPostOutcomeThenGameOver"
+  },
+  "0x0a55a": {
+    "name": "wait on 0x11b1e, then walk the list with the flag raised",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. ",
+    "ident": "attractWaitThenWalkList"
+  },
+  "0x0a586": {
+    "name": "wait on 0x11bc6, then post 0x11b06",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. ",
+    "ident": "attractWaitThenPost11B06"
+  },
+  "0x0a632": {
+    "name": "wait on 0x11b06, then look at the phase timer",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. and then tests the byte at 0x3e1870 rather than posting anything.",
+    "ident": "attractWaitThenCheckPhaseTimer"
+  },
+  "0x135ba": {
+    "name": "point the descriptor cursor back at the start of the table",
+    "why": "two identical `lea $1325e(pc),a5` - the entry and the fall-through both reset the cursor before the walk reads its first record.",
+    "ident": "selfTestTableRestart"
+  },
+  "0x135c2": {
+    "name": "read the next descriptor and stop at the terminator",
+    "why": "pulls a result long, a start and an end address and a flag word off the cursor, and a zero in the first stops the walk.",
+    "ident": "selfTestNextDescriptor"
+  },
+  "0x135d6": {
+    "name": "run the second RAM chain over this descriptor's range",
+    "why": "sets the continuation to 0x135e0 and branches into ramTestSPassSequence.",
+    "ident": "selfTestRunPassSequence"
+  },
+  "0x135e0": {
+    "name": "stop on a failure, otherwise run the block test",
+    "why": "a zero answer goes back for the next descriptor; anything else is a failure and it keeps the address before running the block test at 0x13134.",
+    "ident": "selfTestJudgeThenRunBlock"
+  },
+  "0x135f0": {
+    "name": "report the result according to the two switch bits",
+    "why": "bit 0 of 0x640000 decides whether the answer reaches the test port at 0x72fffe at all, and bit 3 whether the cursor steps back a record.",
+    "ident": "selfTestReportOnSwitches"
+  },
+  "0x0cc3a": {
+    "name": "switch on the state, keeping the low bit of the player's byte 0x19",
+    "why": "the parity that gives this routine its name is `andi.w #1` on the player's byte at 0x19, kept in the frame; the five-way jump table at 0xcc0e is what runs.",
+    "ident": "computerParityDispatch"
+  },
+  "0x0cc52": {
+    "name": "queue the cue unless bit 1 of byte 0x19 is set",
+    "why": "the only case that queues through passByteOnlyWhenGate, and it writes 0x46 to the marker at 0x3e1950 afterwards.",
+    "ident": "computerParityQueueCueWhenBitClear"
+  },
+  "0x0cc68": {
+    "name": "act only when the player's byte 0x14 is two",
+    "why": "passes the player and the first per-player table to the gated forwarder.",
+    "ident": "computerParityWhenStateTwo"
+  },
+  "0x0cc76": {
+    "name": "act only when the byte at the target is negative",
+    "why": "follows the pointer at 0x6a of the player record and tests the byte there, passing the second per-player table when it is.",
+    "ident": "computerParityWhenTargetNegative"
+  },
+  "0x0cc88": {
+    "name": "run the countdown check only on the even parity",
+    "why": "the word kept in the frame at the top decides it, which is what the parity was computed for.",
+    "ident": "computerParityWhenEven"
+  },
+  "0x0cc96": {
+    "name": "step to the next player and stop after three",
+    "why": "0x7e on the record pointer - the player array's stride - and the count in the frame bounded at three.",
+    "ident": "computerParityNextPlayer"
   }
 }

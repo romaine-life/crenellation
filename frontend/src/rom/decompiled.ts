@@ -78281,7 +78281,7 @@ export function gameSPhaseEntriesOneFrom4(ptr_: number, dst_: number, dst2_: num
   setReg('d3', preserved);
 }
 
-export function attractJoinPhasesOneEntry(ptr_: number): void {
+export function attractDropCountdownAndWait(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -78314,7 +78314,7 @@ export function attractJoinPhasesOneEntry(ptr_: number): void {
   setReg('a6', ptr);
 }
 
-export function attractJoinPhasesOneEntryFrom1(dst_: number, dst2_: number, ptr_: number, limit_: number, count_: number): void {
+export function attractStepShotsAndMaybeUnits(dst_: number, dst2_: number, ptr_: number, limit_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -78650,7 +78650,7 @@ export function attractJoinPhasesOneEntryFrom1(dst_: number, dst2_: number, ptr_
   setReg('d5', count);
 }
 
-export function attractJoinPhasesOneEntryFrom2(): void {
+export function attractPostOutcomeThenGameOver(): void {
   let _guard = 0;
   void _guard;
   let t0 = 0;
@@ -78670,7 +78670,7 @@ export function attractJoinPhasesOneEntryFrom2(): void {
   return;
 }
 
-export function attractJoinPhasesOneEntryFrom3(ptr_: number, phase_: number): void {
+export function attractWaitThenWalkList(ptr_: number, phase_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -78729,7 +78729,7 @@ export function attractJoinPhasesOneEntryFrom3(ptr_: number, phase_: number): vo
   setReg('d0', phase);
 }
 
-export function attractJoinPhasesOneEntryFrom4(ptr_: number, dst_: number, dst2_: number, ptr2_: number, index_: number): void {
+export function attractWaitThenPost11B06(ptr_: number, dst_: number, dst2_: number, ptr2_: number, index_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -78983,7 +78983,7 @@ export function attractJoinPhasesOneEntryFrom4(ptr_: number, dst_: number, dst2_
   setReg('d0', index);
 }
 
-export function attractJoinPhasesOneEntryFrom5(dst_: number, ptr_: number, ptr2_: number, index_: number, left_: number, limit_: number): void {
+export function attractWaitThenCheckPhaseTimer(dst_: number, ptr_: number, ptr2_: number, index_: number, left_: number, limit_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -97641,7 +97641,7 @@ export function passRecordSByteThroughFrom1(): void {
   return;
 }
 
-export function computerPlayerParity(markAt_: number, player_: number, dst_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
+export function computerParityDispatch(markAt_: number, player_: number, dst_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
@@ -97779,7 +97779,7 @@ export function computerPlayerParity(markAt_: number, player_: number, dst_: num
   setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom1(markAt_: number, player_: number, table_: number, dst2_: number, unused_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
+export function computerParityQueueCueWhenBitClear(markAt_: number, player_: number, table_: number, dst2_: number, unused_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
@@ -97962,7 +97962,7 @@ export function computerPlayerParityFrom1(markAt_: number, player_: number, tabl
   setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom2(markAt_: number, player_: number, table_: number, dst_: number, playerIndex_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
+export function computerParityWhenStateTwo(markAt_: number, player_: number, table_: number, dst_: number, playerIndex_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
@@ -98122,7 +98122,7 @@ export function computerPlayerParityFrom2(markAt_: number, player_: number, tabl
   setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom3(markAt_: number, player_: number, table_: number, dst_: number, playerIndex_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
+export function computerParityWhenTargetNegative(markAt_: number, player_: number, table_: number, dst_: number, playerIndex_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -98292,7 +98292,7 @@ export function computerPlayerParityFrom3(markAt_: number, player_: number, tabl
   setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom4(markAt_: number, player_: number, table_: number, dst_: number, count_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
+export function computerParityWhenEven(markAt_: number, player_: number, table_: number, dst_: number, count_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
@@ -98412,7 +98412,7 @@ export function computerPlayerParityFrom4(markAt_: number, player_: number, tabl
   setReg('d6', onFlagSet);
 }
 
-export function computerPlayerParityFrom5(markAt_: number, player_: number, table_: number, dst_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
+export function computerParityNextPlayer(markAt_: number, player_: number, table_: number, dst_: number, state_: number, queuedCue2_: number, queuedCue_: number, onFlagClear_: number, onFlagSet_: number): void {
   let _guard = 0;
   void _guard;
   let markAt = markAt_;
@@ -125751,7 +125751,7 @@ export function soundRegisterPreset(): void {
   setReg('a0', ((((t0 + 2) + 2) + 2) + 2));
 }
 
-export function powerSelfTest(message_: number, regionStart_: number, regionEnd_: number, returnTo_: number, tableCursor_: number, result_: number, count_: number, powerOn_: number): void {
+export function powerOnResetEntry(message_: number, regionStart_: number, regionEnd_: number, returnTo_: number, tableCursor_: number, result_: number, count_: number, powerOn_: number): void {
   let _guard = 0;
   void _guard;
   let message = message_;
@@ -125967,7 +125967,7 @@ export function powerSelfTest(message_: number, regionStart_: number, regionEnd_
   setReg('d3', powerOn);
 }
 
-export function powerSelfTestFrom1(regionStart_: number, unused_: number, unused2_: number): void {
+export function selfTestTableRestart(regionStart_: number, unused_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let regionStart = regionStart_;
@@ -126091,7 +126091,7 @@ export function powerSelfTestFrom1(regionStart_: number, unused_: number, unused
   setReg('d0', result);
 }
 
-export function powerSelfTestFrom2(regionStart_: number, unused_: number, unused2_: number, src_: number): void {
+export function selfTestNextDescriptor(regionStart_: number, unused_: number, unused2_: number, src_: number): void {
   let _guard = 0;
   void _guard;
   let regionStart = regionStart_;
@@ -126212,7 +126212,7 @@ export function powerSelfTestFrom2(regionStart_: number, unused_: number, unused
   setReg('d0', result);
 }
 
-export function powerSelfTestFrom3(message_: number, unused_: number, ptr_: number, result_: number, failed_: number): void {
+export function selfTestRunPassSequence(message_: number, unused_: number, ptr_: number, result_: number, failed_: number): void {
   let _guard = 0;
   void _guard;
   let message = message_;
@@ -126259,7 +126259,7 @@ export function powerSelfTestFrom3(message_: number, unused_: number, ptr_: numb
   setReg('d4', failed);
 }
 
-export function powerSelfTestFrom4(message_: number, unused_: number, ptr_: number, result_: number, failed_: number): void {
+export function selfTestJudgeThenRunBlock(message_: number, unused_: number, ptr_: number, result_: number, failed_: number): void {
   let _guard = 0;
   void _guard;
   let message = message_;
@@ -126305,7 +126305,7 @@ export function powerSelfTestFrom4(message_: number, unused_: number, ptr_: numb
   setReg('d4', failed);
 }
 
-export function powerSelfTestFrom5(ptr_: number, result_: number): void {
+export function selfTestReportOnSwitches(ptr_: number, result_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -189881,17 +189881,17 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0a392, fn: gameSPhaseEntriesOneFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0a4a0, fn: attractJoinPhasesOneEntry as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x0a4a0, fn: attractDropCountdownAndWait as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
-  { at: 0x0a4aa, fn: attractJoinPhasesOneEntryFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x0a4aa, fn: attractStepShotsAndMaybeUnits as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x0a548, fn: attractJoinPhasesOneEntryFrom2 as (...a: number[]) => void, params: [] },
+  { at: 0x0a548, fn: attractPostOutcomeThenGameOver as (...a: number[]) => void, params: [] },
 
-  { at: 0x0a55a, fn: attractJoinPhasesOneEntryFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0a55a, fn: attractWaitThenWalkList as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0a586, fn: attractJoinPhasesOneEntryFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0a586, fn: attractWaitThenPost11B06 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0a632, fn: attractJoinPhasesOneEntryFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x0a632, fn: attractWaitThenCheckPhaseTimer as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x0a74a, fn: dropTwentyBytesArgumentsContinue as (...a: number[]) => void, params: [] },
 
@@ -190035,17 +190035,17 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0cc36, fn: passRecordSByteThroughFrom1 as (...a: number[]) => void, params: [] },
 
-  { at: 0x0cc3a, fn: computerPlayerParity as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0cc3a, fn: computerParityDispatch as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0cc52, fn: computerPlayerParityFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0cc52, fn: computerParityQueueCueWhenBitClear as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0cc68, fn: computerPlayerParityFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0cc68, fn: computerParityWhenStateTwo as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0cc76, fn: computerPlayerParityFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0cc76, fn: computerParityWhenTargetNegative as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0cc88, fn: computerPlayerParityFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0cc88, fn: computerParityWhenEven as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0cc96, fn: computerPlayerParityFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0cc96, fn: computerParityNextPlayer as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x0ccb2, fn: tickRecordSCountdownFire as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
@@ -190449,17 +190449,17 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1354c, fn: soundRegisterPreset as (...a: number[]) => void, params: [] },
 
-  { at: 0x1357c, fn: powerSelfTest as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x1357c, fn: powerOnResetEntry as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x135ba, fn: powerSelfTestFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }] },
+  { at: 0x135ba, fn: selfTestTableRestart as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }] },
 
-  { at: 0x135c2, fn: powerSelfTestFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }] },
+  { at: 0x135c2, fn: selfTestNextDescriptor as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }] },
 
-  { at: 0x135d6, fn: powerSelfTestFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x135d6, fn: selfTestRunPassSequence as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x135e0, fn: powerSelfTestFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x135e0, fn: selfTestJudgeThenRunBlock as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x135f0, fn: powerSelfTestFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x135f0, fn: selfTestReportOnSwitches as (...a: number[]) => void, params: [{ from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x1365c, fn: clearAllRamKickingWatchdogStub as (...a: number[]) => void, params: [] },
 
