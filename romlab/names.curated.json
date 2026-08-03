@@ -48,8 +48,9 @@
     "why": "0xFCCA is the eight-way step table this ROM uses everywhere; this takes the current player's owner byte through 0x1000A, ors in 1 for a wall, and walks the neighbours of the cell cellAddress returns, with 0xFCEA as a second table for the diagonal cases."
   },
   "0x10de": {
-    "name": "draw the cell in whichever way its type and owner call for",
-    "why": "a jump table's worth of tails: the owner nibble at -0xD(a6) shifted right six selects a wall byte from 0x1000E and writes it through cellWriteHelper with 8; other entries call cellDraw, cellOverlayDrawSecondForm or cellStateDraw on the same cell word at -0x14(a6), or clear the top two bits of the byte at -4(a6). Every path ends at 0x11EA or 0x11DE."
+    "name": "drop three pushed words and step on",
+    "why": "`addq.l #6,a7` and a branch to the walk's step - the return path for the cases that pushed three arguments.",
+    "ident": "cellDrawDropThreeAndStep"
   },
   "0x11c6": {
     "name": "call the player's handler, then clear the top two bits of its byte",
@@ -2544,5 +2545,45 @@
     "name": "put five in the sprite's countdown byte",
     "why": "`moveq #5,d0` into byte 0xb of the sprite record, which every case falls through to.",
     "ident": "flierResetCountdown"
+  },
+  "0x10e4": {
+    "name": "draw the cell that belongs to a player",
+    "why": "the owner is the cell byte shifted down six, and both it and the flag in d2 must be non-zero. The owner less one indexes the per-player table at 0x1000e, and that byte goes to cellWriteHelper with a height of eight.",
+    "ident": "cellDrawOwnedByPlayer"
+  },
+  "0x1130": {
+    "name": "drop one pushed word and step on",
+    "why": "`addq.l #2,a7` and a branch to the step - the return path for the cases that pushed a single coordinate.",
+    "ident": "cellDrawDropOneAndStep"
+  },
+  "0x1136": {
+    "name": "hand the coordinate and a zero to 0x2c86",
+    "why": "two pushes and a call, then the three-word drop.",
+    "ident": "cellDrawVia2C86"
+  },
+  "0x1142": {
+    "name": "hand the coordinate to 0x2e28",
+    "why": "one push and a call, then a branch past the step to the walk's other tail.",
+    "ident": "cellDrawVia2E28"
+  },
+  "0x1150": {
+    "name": "strip the owner, then draw only if the kind matches the cell at a2",
+    "why": "when the flag in d2 is set it first strips the cell it is standing on down to its kind - `andi.b #$3f` through the pointer at -4(a6), which clears the owner's two bits. It then reads the byte at (a2), masks it to its low six bits and requires it to equal the owner already in d3 before it calls 0x2b88.",
+    "ident": "cellDrawWhenKindMatchesNeighbour"
+  },
+  "0x1180": {
+    "name": "strip the owner, then hand the coordinate on",
+    "why": "when the flag in d2 is set it first strips the cell it is standing on down to its kind - `andi.b #$3f` through the pointer at -4(a6), which clears the owner's two bits. Unlike the case above it makes the call unconditionally.",
+    "ident": "cellDrawStripThenVia2B88"
+  },
+  "0x1196": {
+    "name": "strip the owner and step on",
+    "why": "when the flag in d2 is set it first strips the cell it is standing on down to its kind - `andi.b #$3f` through the pointer at -4(a6), which clears the owner's two bits. and then nothing else.",
+    "ident": "cellDrawStripThenStep"
+  },
+  "0x11a0": {
+    "name": "take the colour out of the owner-to-colour table and draw",
+    "why": "the only case that reaches 0xfe02, the table that maps an owner to a colour, indexing it with the value already in d0.",
+    "ident": "cellDrawColourFromOwnerTable"
   }
 }

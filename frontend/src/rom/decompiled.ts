@@ -7295,7 +7295,7 @@ export function extractsOwnerBitsCellByteFrom5(dst_: number, ptr_: number, flag_
   setReg('d2', flag);
 }
 
-export function drawCellWhicheverWayType(): void {
+export function cellDrawDropThreeAndStep(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x010de) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -7305,7 +7305,7 @@ export function drawCellWhicheverWayType(): void {
   return;
 }
 
-export function drawCellWhicheverWayTypeFrom1(dst_: number, ptr_: number, owner_: number, flag_: number): void {
+export function cellDrawOwnedByPlayer(dst_: number, ptr_: number, owner_: number, flag_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -7435,7 +7435,7 @@ export function drawCellWhicheverWayTypeFrom1(dst_: number, ptr_: number, owner_
   setReg('d3', unused3);
 }
 
-export function drawCellWhicheverWayTypeFrom2(): void {
+export function cellDrawDropOneAndStep(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x01130) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -7445,7 +7445,7 @@ export function drawCellWhicheverWayTypeFrom2(): void {
   return;
 }
 
-export function drawCellWhicheverWayTypeFrom3(ptr_: number): void {
+export function cellDrawVia2C86(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -7472,7 +7472,7 @@ export function drawCellWhicheverWayTypeFrom3(ptr_: number): void {
   setReg('a6', ptr);
 }
 
-export function drawCellWhicheverWayTypeFrom4(ptr_: number): void {
+export function cellDrawVia2E28(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -7497,7 +7497,7 @@ export function drawCellWhicheverWayTypeFrom4(ptr_: number): void {
   setReg('a6', ptr);
 }
 
-export function drawCellWhicheverWayTypeFrom5(dst_: number, ptr_: number, dst2_: number, flag_: number, byte_: number): void {
+export function cellDrawWhenKindMatchesNeighbour(dst_: number, ptr_: number, dst2_: number, flag_: number, byte_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -7607,7 +7607,7 @@ export function drawCellWhicheverWayTypeFrom5(dst_: number, ptr_: number, dst2_:
   setReg('d3', byte);
 }
 
-export function drawCellWhicheverWayTypeFrom6(dst_: number, ptr_: number, flag_: number): void {
+export function cellDrawStripThenVia2B88(dst_: number, ptr_: number, flag_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -7662,7 +7662,7 @@ export function drawCellWhicheverWayTypeFrom6(dst_: number, ptr_: number, flag_:
   setReg('d2', flag);
 }
 
-export function drawCellWhicheverWayTypeFrom7(ptr_: number): void {
+export function cellDrawStripThenStep(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -7686,7 +7686,7 @@ export function drawCellWhicheverWayTypeFrom7(ptr_: number): void {
   setReg('a6', ptr);
 }
 
-export function drawCellWhicheverWayTypeFrom8(unused_: number, ptr_: number, unused2_: number, unused3_: number, flag_: number, unused4_: number): void {
+export function cellDrawColourFromOwnerTable(unused_: number, ptr_: number, unused2_: number, unused3_: number, flag_: number, unused4_: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -189109,23 +189109,23 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x010c8, fn: extractsOwnerBitsCellByteFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x010de, fn: drawCellWhicheverWayType as (...a: number[]) => void, params: [] },
+  { at: 0x010de, fn: cellDrawDropThreeAndStep as (...a: number[]) => void, params: [] },
 
-  { at: 0x010e4, fn: drawCellWhicheverWayTypeFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x010e4, fn: cellDrawOwnedByPlayer as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x01130, fn: drawCellWhicheverWayTypeFrom2 as (...a: number[]) => void, params: [] },
+  { at: 0x01130, fn: cellDrawDropOneAndStep as (...a: number[]) => void, params: [] },
 
-  { at: 0x01136, fn: drawCellWhicheverWayTypeFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x01136, fn: cellDrawVia2C86 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
-  { at: 0x01142, fn: drawCellWhicheverWayTypeFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x01142, fn: cellDrawVia2E28 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
-  { at: 0x01150, fn: drawCellWhicheverWayTypeFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x01150, fn: cellDrawWhenKindMatchesNeighbour as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x01180, fn: drawCellWhicheverWayTypeFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x01180, fn: cellDrawStripThenVia2B88 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x01196, fn: drawCellWhicheverWayTypeFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x01196, fn: cellDrawStripThenStep as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
-  { at: 0x011a0, fn: drawCellWhicheverWayTypeFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x011a0, fn: cellDrawColourFromOwnerTable as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x011c6, fn: callPlayerSHandlerThen as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
 
