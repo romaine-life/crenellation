@@ -4040,5 +4040,10 @@
     "name": "enter the board walk laying cell value five",
     "why": "two bytes, `moveq #$5,d4`, falling straight into the join at 0x66d4 that the nibble walk shares - so it is the entry that starts the walk with five as the cell value rather than a nibble off the stream. It was called doesNothing1 by the rule that treats a two-byte routine as a bare rts, which did not check: its first word is 0x7805, not 0x4E75.",
     "ident": "layBoardWalkFromFive"
+  },
+  "0x04fea": {
+    "name": "fade the palette bank at 0xfde2 five steps",
+    "why": "keeps the table at 0xfde2 in a2 and pushes it with a 5, so both of its arguments are constants - the bank and the step count are fixed here where paletteFadeStepFlag takes them from the caller. That is the whole difference between the two, and calling this one a wrapper of the other said only that it calls it.",
+    "ident": "fadeBankFDE2FiveSteps"
   }
 }

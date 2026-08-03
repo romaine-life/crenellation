@@ -35919,7 +35919,7 @@ export function attractTextSequence(record2_: number): void {
   setReg('a2', record2);
 }
 
-export function paletteFadeStepFlagWrapper(ptr_: number): void {
+export function fadeBankFDE2FiveSteps(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -189403,7 +189403,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x04f9e, fn: attractTextSequence as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x04fea, fn: paletteFadeStepFlagWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x04fea, fn: fadeBankFDE2FiveSteps as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
   { at: 0x05000, fn: fadeAllThreePaletteBanks as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'stack', off: 16 }] },
 

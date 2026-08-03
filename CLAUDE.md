@@ -149,16 +149,18 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
 
 ## Making it readable
 
-The equivalence half is done, and so is this one. `names.txt` reads **"0
-routines still an address, 0 opaque routines, 0 parameters"**, and all three are
-*assertions* in `names.test.ts`, not ratchets. Measured 2026-08-02:
+The equivalence half is done, and so is this one. `names.txt` reads **five
+zeros on one line** — no routine named for its address, none opaque, none named
+only by a suffix, none without a stated purpose, no unnamed parameter — and all
+five are *assertions* in `names.test.ts`, not ratchets. `baseline.json` has no
+naming floor left in it. Measured 2026-08-02:
 
 | | |
 |---|---|
 | Still named for their address | **0 of 1,187** |
 | Opaque — nothing it, its host or its target points at says what it is for | **0 of 1,187** |
-| Named only by a suffix on another routine's name | 500 |
-| No *stated* purpose — the name was derived by rule | 365 of 1,182 |
+| Named only by a suffix on another routine's name | **0** |
+| No *stated* purpose — the name was derived by rule | **0** |
 | Parameters that say what they are | **4,419 of 4,419** |
 
 **"1,187 of 1,187 carry a name that says what they do" was an overclaim and is

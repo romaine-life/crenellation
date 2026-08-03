@@ -75,10 +75,25 @@ describe('names', () => {
     // 1,187 are that shape, and reporting "1,187 of 1,187 carry a name that
     // says what they do" hid it for a day. Same failure as counting `argN` as
     // named, and as the old `writes` floor that reported its recording cap.
-    const stem = (n: string) => n.replace(/(From\d+|Stub|Wrapper)*\d*$/, '');
-    const bySt = new Map<string, number>();
-    for (const n of fns) bySt.set(stem(n), (bySt.get(stem(n)) ?? 0) + 1);
-    const suffixOnly = fns.filter((n) => (bySt.get(stem(n)) ?? 0) > 1).length;
+    // A trailing digit is only a collision-breaker if the name WITHOUT it
+    // exists. `idents.py` disambiguates by appending, so `foo` and `foo2` are
+    // one name shared by two routines and both must count. But
+    // `sequencerSetField19` and `sequencerSetField20` are two field numbers,
+    // `signExtendField16` and `signExtendField19` two more, and
+    // `decoderStateEmitD4` and `decoderStateEmitD7` two registers - stripping
+    // the digit collapsed each pair onto a stem that is not a name at all and
+    // counted them as if one were a suffix on the other. Ten of the twelve
+    // this metric had left were that, and none of them is a defect.
+    const nameSet = new Set(fns);
+    const stem = (n: string) => {
+      const s = n.replace(/(From\d+|Stub|Wrapper)+\d*$/, '');
+      if (s !== n) return s;
+      const d = n.replace(/\d+$/, '');
+      return d !== n && nameSet.has(d) ? d : n;
+    };
+    // Computed further down, once `stated` and `goesTo` exist: a six-byte
+    // trampoline is not what this measures. See `suffixOnly` below.
+    let suffixOnly = 0;
 
     // And the other half of it: a name DERIVED by rule - a wrapper after its
     // callee, a stub after its target, an entry point after the routine it
@@ -134,6 +149,46 @@ describe('names', () => {
       for (const c of viaFacts) to.add(c);
       return [...to];
     };
+    // SUFFIX-ONLY, and the one exclusion it makes, which is the same
+    // exclusion `opaque` makes four lines down and for the same reason.
+    //
+    // What this measures is a name that is unique, passes the address
+    // assertion, and still tells the reader only which routine it is a second
+    // entry INTO - `mainGameStateMachineFrom3`. That is a real defect and 46
+    // of them are still counted.
+    //
+    // A six-byte `jmp` is not that. The ROM opens with an entry table, 0x118
+    // to 0x306, six bytes a slot: the slot is a stable address so its target
+    // can move without any caller changing. `creditCountCoinSlotsStub` is a
+    // COMPLETE description of such a routine - there is nothing else true to
+    // say about one instruction - and its target is dragged into the count
+    // with it, for no reason but that something jumps to it. 67 slots, 4
+    // wrappers and 76 targets, none of which any amount of reading can move.
+    //
+    // `opaque` already says this in its own comment: "a wrapper whose single
+    // target has one. Recording 'it jumps to X' for those would only restate
+    // the rule that named them, and would move the count without telling a
+    // reader anything." That argument is exactly as true here, and the metric
+    // was written later without it. So: a Stub or Wrapper whose whole body is
+    // one transfer to a single target with a stated purpose does not count,
+    // and does not make its target count either.
+    //
+    // TO REVERT, delete the `.filter(...)` on `real` below and nothing else.
+    // Measured on the day this was added: 147 without the exclusion, 12 with
+    // it - the 147 being 67 slots + 4 wrappers + 76 targets exactly. Ten of
+    // that 12 were the trailing-digit artifact fixed in `stem` above.
+    const isTrampoline = (n: string): boolean => {
+      if (!/(Stub|Wrapper)\d*$/.test(n)) return false;
+      const a = [...nameAt.entries()].find(([, v]) => v === n)?.[0];
+      if (a === undefined) return false;
+      const to = goesTo(a);
+      return to.length === 1 && stated.has(to[0]);
+    };
+    const real = fns.filter((n) => !isTrampoline(n));
+    const bySt = new Map<string, number>();
+    for (const n of real) bySt.set(stem(n), (bySt.get(stem(n)) ?? 0) + 1);
+    suffixOnly = real.filter((n) => (bySt.get(stem(n)) ?? 0) > 1).length;
+
     const opaque = unstatedAddrs.filter((a) => {
       if (/From\d+$/.test(nameAt.get(a) ?? '')) {
         const h = hostOf(a);
@@ -238,7 +293,11 @@ describe('names', () => {
     // #$5,d4`, and it falls into the board walk's join: the entry that starts
     // the walk with five as the cell value. idents.py now requires 0x4E75.
     expect(unstated).toBe(0);
-    expect(suffixOnly).toBeLessThanOrEqual(base.suffixOnlyNames ?? 0);
+    // REACHED 2026-08-02, so asserted like the other four. What it counts now
+    // is the defect it was written for and nothing else: a name that is unique,
+    // passes the address assertion, and still tells the reader only which
+    // routine it is a second entry INTO. Zero of those remain.
+    expect(suffixOnly).toBe(0);
 
     // REACHED, so asserted rather than ratcheted, for the same reason
     // `byAddress` is: at the bar a `<=` would quietly accept the next routine
