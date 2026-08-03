@@ -303,6 +303,10 @@
     "stack4": {
       "name": "count",
       "why": "the longword at 8(a7), compared against the sum of the two allowance bytes at 0x3e3446 and 0x3e3448. The comparison is bcc, so equal still answers allowed and the argument is refused only once it is strictly greater."
+    },
+    "d2": {
+      "name": "ticks",
+      "why": "0x1413c at the host loads the long argument into it, 0x14168 compares it against the accumulator and 0x14170 counts it down - the ticks being taken."
     }
   },
   "0xc688": {
@@ -533,6 +537,10 @@
     "d3": {
       "name": "bankByte",
       "why": "shifted left four before the index is added, so sixteen entries to a bank."
+    },
+    "d4": {
+      "name": "period",
+      "why": "0xc5d6 reads the byte at 0x1f(a7) - the period argument - into it and 0xc5fc copies it into the entry being scheduled, the same shape schedulePaletteEffectOne uses."
     }
   },
   "0x357a": {
@@ -973,6 +981,10 @@
     "a2": {
       "name": "record",
       "why": "what 0xc504 handed back, and null when the pool is empty - `cmpa.w #$0` then a branch straight to the exit is the only failure path. Every field this routine sets is set through it."
+    },
+    "d4": {
+      "name": "period",
+      "why": "0xc83a reads the byte at 0x1b(a7) - the period argument - into it, and 0xc868 and 0xc884 copy it out into the entry the effect is scheduled with."
     }
   },
   "0x5e02": {
@@ -6551,6 +6563,14 @@
     "d3": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0f32a is `move.w d1, d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d4": {
+      "name": "freeMask",
+      "why": "0xf322 copies the count into it, 0xf324 inverts it and 0xf328 shifts it down by the index - a mask of which slots are still free."
+    },
+    "stack4": {
+      "name": "count",
+      "why": "loaded to d1 and turned into that mask at 0xf322 - how many slots there are."
     }
   },
   "0x1204c": {
@@ -7483,6 +7503,10 @@
     "stack4": {
       "name": "record",
       "why": "0x07f5e is `movea.l $14(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "d2": {
+      "name": "answer",
+      "why": "0x7f62 reads the word at 0x1c(a7) into it and 0x7fa2 moves it into d0 as the routine returns - what it hands back."
     }
   },
   "0x8200": {
@@ -8183,6 +8207,10 @@
     "a0": {
       "name": "ptr",
       "why": "0x02d92 is `move.b (a0), d3` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "0x2db0 is moveq #0,d1 and every path assigns it before reading."
     }
   },
   "0x3354": {
@@ -8241,6 +8269,14 @@
     "a0": {
       "name": "ptr",
       "why": "0x05d0e is `move.w d0, $6(a0)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d1": {
+      "name": "value",
+      "why": "0x5d0a loads 1 into it, 0x5d1a writes it into the counter and 0x5d20 steps it; 0x5d5c starts the second pass at 9 - the value each counter is reset to."
+    },
+    "d3": {
+      "name": "counter",
+      "why": "cleared at 0x5d08 and stepped at 0x5d1e - it numbers the counters this walks."
     }
   },
   "0x5d8c": {
@@ -8293,6 +8329,10 @@
     "a4": {
       "name": "ptr",
       "why": "0x0a946 is `move.w (a4), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d3": {
+      "name": "eventRecord",
+      "why": "loaded with the constant 0x11b48 at 0xa93a and again at 0xa97e, and pushed to the post at 0xa954 and 0xa988 - the record both posts use."
     }
   },
   "0xa9be": {
@@ -8387,6 +8427,10 @@
     "a4": {
       "name": "ptr2",
       "why": "0x16ed4 is `jsr (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a0": {
+      "name": "table",
+      "why": "0x16e3e points it at 0x1e454 to read a word and 0x16e5c at 0x1e434 to read a long - the two step tables this test walks, one after the other."
     }
   },
   "0x16eec": {
@@ -9697,6 +9741,24 @@
     "d3": {
       "name": "flag",
       "why": "0x18ba0 copies d1 into it and 0x18ba6 masks it to 0x30f0, then 0x18bec pushes it - the same masked flag takeCellColourThenAddress hands decompressTileId."
+    }
+  },
+  "0x1684c": {
+    "stack4": {
+      "name": "mode",
+      "why": "the only argument this reset takes, carried into the calls it makes and touched nowhere else."
+    }
+  },
+  "0xde1a": {
+    "d4": {
+      "name": "dealt",
+      "why": "cleared at 0xde26 and set from the kind plus one at 0xde80 - the count of what the walk has dealt out."
+    }
+  },
+  "0xf540": {
+    "d3": {
+      "name": "slot",
+      "why": "0xf54a takes the index into it, 0xf568 writes it into the bucket at (a1,d0) and 0xf56c tests it - the slot being linked."
     }
   }
 }
