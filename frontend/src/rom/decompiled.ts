@@ -127795,7 +127795,7 @@ export function ramTestAllPatterns(regionStart_: number, regionEnd_: number): vo
   setReg('d6', d6);
 }
 
-export function ramTestAllPatternsFrom1(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
+export function ramTestMarchUpFromZero(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -128111,7 +128111,7 @@ export function ramTestAllPatternsFrom1(regionStart_: number, regionEnd_: number
   setReg('d7', startBit);
 }
 
-export function ramTestAllPatternsFrom2(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
+export function ramTestMarchUpFromOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -128427,7 +128427,7 @@ export function ramTestAllPatternsFrom2(regionStart_: number, regionEnd_: number
   setReg('d7', startBit);
 }
 
-export function ramTestAllPatternsFrom3(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, nextStep_: number, expected_: number, actual_: number, walkingBit_: number, flag_: number, background_: number, passCount_: number, startBit_: number): void {
+export function ramTestGateThenMarchDown(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, nextStep_: number, expected_: number, actual_: number, walkingBit_: number, flag_: number, background_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let at = at_;
@@ -128826,7 +128826,7 @@ export function ramTestAllPatternsFrom3(at_: number, regionStart_: number, regio
   setReg('d7', startBit);
 }
 
-export function ramTestAllPatternsFrom4(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
+export function ramTestMarchDownFromOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -129134,7 +129134,7 @@ export function ramTestAllPatternsFrom4(regionStart_: number, regionEnd_: number
   setReg('d7', d7);
 }
 
-export function ramTestAllPatternsFrom5(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
+export function ramTestSecondMarchUpFromZero(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -129455,7 +129455,7 @@ export function ramTestAllPatternsFrom5(regionStart_: number, regionEnd_: number
   setReg('d7', startBit);
 }
 
-export function ramTestAllPatternsFrom6(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
+export function ramTestSecondMarchDownFromZero(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -129773,7 +129773,7 @@ export function ramTestAllPatternsFrom6(regionStart_: number, regionEnd_: number
   setReg('d7', d7);
 }
 
-export function ramTestAllPatternsFrom7(regionStart_: number, regionEnd_: number, watchdogPort_: number): void {
+export function ramTestFillOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -129829,7 +129829,7 @@ export function ramTestAllPatternsFrom7(regionStart_: number, regionEnd_: number
   setReg('d0', d0);
 }
 
-export function ramTestAllPatternsFrom8(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
+export function ramTestSecondMarchUpFromOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -130150,7 +130150,7 @@ export function ramTestAllPatternsFrom8(regionStart_: number, regionEnd_: number
   setReg('d7', startBit);
 }
 
-export function ramTestAllPatternsFrom9(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
+export function ramTestSecondMarchDownFromOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -130468,7 +130468,7 @@ export function ramTestAllPatternsFrom9(regionStart_: number, regionEnd_: number
   setReg('d7', d7);
 }
 
-export function ramTestAllPatternsFrom10(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, actual_: number, passCount_: number): void {
+export function ramTestInvertEachWordTwice(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, actual_: number, passCount_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -130623,7 +130623,7 @@ export function ramTestAllPatternsFrom10(regionStart_: number, regionEnd_: numbe
   setReg('d6', passCount);
 }
 
-export function ramTestAllPatternsFrom11(regionStart_: number, regionEnd_: number, watchdogPort_: number): void {
+export function ramTestFillZeroAgain(regionStart_: number, regionEnd_: number, watchdogPort_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -130679,7 +130679,7 @@ export function ramTestAllPatternsFrom11(regionStart_: number, regionEnd_: numbe
   setReg('d0', d0);
 }
 
-export function ramTestAllPatternsFrom12(watchdogPort_: number, failExit_: number, expected_: number): void {
+export function ramTestReportPattern(watchdogPort_: number, failExit_: number, expected_: number): void {
   let _guard = 0;
   void _guard;
   let watchdogPort = watchdogPort_;
@@ -191549,29 +191549,29 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1378e, fn: ramTestAllPatterns as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }] },
 
-  { at: 0x137a0, fn: ramTestAllPatternsFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x137a0, fn: ramTestMarchUpFromZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x137a8, fn: ramTestAllPatternsFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x137a8, fn: ramTestMarchUpFromOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x137b0, fn: ramTestAllPatternsFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x137b0, fn: ramTestGateThenMarchDown as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x137c6, fn: ramTestAllPatternsFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x137c6, fn: ramTestMarchDownFromOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x137ce, fn: ramTestAllPatternsFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x137ce, fn: ramTestSecondMarchUpFromZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x137d6, fn: ramTestAllPatternsFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x137d6, fn: ramTestSecondMarchDownFromZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x137de, fn: ramTestAllPatternsFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
+  { at: 0x137de, fn: ramTestFillOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
 
-  { at: 0x137e8, fn: ramTestAllPatternsFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x137e8, fn: ramTestSecondMarchUpFromOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x137f0, fn: ramTestAllPatternsFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x137f0, fn: ramTestSecondMarchDownFromOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x137f8, fn: ramTestAllPatternsFrom10 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x137f8, fn: ramTestInvertEachWordTwice as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x13800, fn: ramTestAllPatternsFrom11 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
+  { at: 0x13800, fn: ramTestFillZeroAgain as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
 
-  { at: 0x1380a, fn: ramTestAllPatternsFrom12 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x1380a, fn: ramTestReportPattern as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x1397a, fn: ramTestSPassSequence as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }] },
 

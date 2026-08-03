@@ -2297,5 +2297,65 @@
     "name": "shift the last block and hand back the coordinate",
     "why": "calls shiftEightTwoBlockS with the accumulated screen address, copies the two-byte coordinate out of the frame into the caller's record and returns it.",
     "ident": "placementFinish"
+  },
+  "0x137a0": {
+    "name": "start the upward march over a zero background",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. 0x1381e clears the background, walks a bit down from 0x8000 eoring one bit at a time into each word as it goes up, then verifies on the way back down.",
+    "ident": "ramTestMarchUpFromZero"
+  },
+  "0x137a8": {
+    "name": "start the upward march over an all-ones background",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. 0x13822 is the same march as the one before it with the background set to 0xff instead of zero.",
+    "ident": "ramTestMarchUpFromOnes"
+  },
+  "0x137b0": {
+    "name": "skip the rest when the service switch is set, otherwise march downward",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. It first tests bit 3 of 0x640002 and the word in d3, and jumps to the report if either says so - the only gate in the chain. Otherwise 0x13864 marches from the top of the range down, walking a bit up from 1.",
+    "ident": "ramTestGateThenMarchDown"
+  },
+  "0x137c6": {
+    "name": "march downward over an all-ones background",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. 0x13868 is the downward march with the background set to 0xff.",
+    "ident": "ramTestMarchDownFromOnes"
+  },
+  "0x137ce": {
+    "name": "repeat the upward march over a zero background",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. 0x138aa is a second upward march, bit walking down from 0x8000 again, over a cleared background.",
+    "ident": "ramTestSecondMarchUpFromZero"
+  },
+  "0x137d6": {
+    "name": "repeat the downward march over a zero background",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. 0x138f4 is a second downward march, bit walking up from 1, over a cleared background.",
+    "ident": "ramTestSecondMarchDownFromZero"
+  },
+  "0x137de": {
+    "name": "fill the range with all ones",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. It sets d0 to 0xff and re-enters the filler at 0x1380e, which writes the word up the range and mirrors each write to the test port at 0x72fffe.",
+    "ident": "ramTestFillOnes"
+  },
+  "0x137e8": {
+    "name": "repeat the upward march over an all-ones background",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. 0x138ae is 0x138aa with the background set to 0xff.",
+    "ident": "ramTestSecondMarchUpFromOnes"
+  },
+  "0x137f0": {
+    "name": "repeat the downward march over an all-ones background",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. 0x138f8 is 0x138f4 with the background set to 0xff.",
+    "ident": "ramTestSecondMarchDownFromOnes"
+  },
+  "0x137f8": {
+    "name": "invert every word, check it went to zero, then set it back",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. 0x13940 eors 0xffff into each word and requires the result to be zero, then ors 0xffff back in - a per-word stuck-bit check that needs no background.",
+    "ident": "ramTestInvertEachWordTwice"
+  },
+  "0x13800": {
+    "name": "fill the range with zero once more",
+    "why": "the RAM test is a continuation chain: each step loads a6 with the address of the next and branches into a march, which ends `jmp (a6)`. This entry is where that chain resumes, and it is named for the march it starts rather than for its place in the queue. d0 goes back to zero and the filler runs a last time, leaving the memory clear for whatever comes after the test.",
+    "ident": "ramTestFillZeroAgain"
+  },
+  "0x1380a": {
+    "name": "write the pattern to the test port and hand back",
+    "why": "the chain's single exit: `move.w d0,(a3)` puts the value on the test port at 0x72fffe and `jmp (a4)` returns to whoever started the test. Every failing march jumps here too, with the eor of expected and actual in d0.",
+    "ident": "ramTestReportPattern"
   }
 }
