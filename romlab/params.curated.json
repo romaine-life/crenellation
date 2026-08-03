@@ -173,6 +173,10 @@
     "a0": {
       "name": "descriptorTable",
       "why": "0x1d616, indexed by the counter number doubled - the same table 0x14772 reads, which is what proves the two are the same store."
+    },
+    "d6": {
+      "name": "counter",
+      "why": "0x14910 takes the packed word into it and 0x14914 shifts it down by the counter's own offset - one of the operator's bookkeeping counters unpacked."
     }
   },
   "0x14a36": {
@@ -269,6 +273,10 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1e6b8 is `moveq #$0, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d3": {
+      "name": "unused",
+      "why": "0x1e6b6 and 0x1e6b8 clear d0 and d1 and the routine's arguments all come off the stack; nothing reads d3 before it is assigned."
     }
   },
   "0x12026": {
@@ -1101,6 +1109,10 @@
     "stack4": {
       "name": "row",
       "why": "only its low word, at 0xa(a7). Used as it stands for the first line and plus one for the next, so it is the top row of a block rather than a single position."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x1822e assigns d2 the word at 0xa(a7) and every use of d0 assigns it first."
     }
   },
   "0xebc4": {
@@ -1651,6 +1663,10 @@
     "stack8": {
       "name": "arg",
       "why": "loaded to d2 at 0xef02 and compared against field 8 of each queue entry, as the pointer's contents are compared against field 4 - the same pair eventPost matches on."
+    },
+    "stack4": {
+      "name": "event",
+      "why": "movea.l 0x10(a7),a1 at 0xeefc and its contents are compared against field 4 of each queue entry - the first half of the pair that identifies an event."
     }
   },
   "0xeffa": {
@@ -2707,6 +2723,10 @@
     "d3": {
       "name": "index2",
       "why": "0x1aa34 is `tst.w $3e(a2, d3.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d2": {
+      "name": "scriptAt",
+      "why": "0x1a8c8 reads the channel's long at 4 into it and 0x1a8d2 points a0 there, then 0x1a8ee reads the opcode byte - where the script is."
     }
   },
   "0x1a9ea": {
@@ -4119,8 +4139,8 @@
       "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
     },
     "d2": {
-      "name": "preserved",
-      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1b064) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+      "name": "pitchAt",
+      "why": "0x1ae62 doubles the note into it and 0x1ae66 adds the pitch table pointer at 0x3e36de - the entry the note's pitch comes from."
     },
     "d0": {
       "name": "index",
@@ -4159,6 +4179,10 @@
     "a0": {
       "name": "ptr",
       "why": "0x1ae6e is `sub.w (a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d2": {
+      "name": "pitchAt",
+      "why": "0x1ae62 doubles the note into it and 0x1ae66 adds the pitch table pointer at 0x3e36de - the entry the note's pitch comes from."
     }
   },
   "0x1b048": {
@@ -4871,6 +4895,10 @@
     "d7": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x0629c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d3": {
+      "name": "unused",
+      "why": "no instruction in the 228-byte extent touches it but the movem that restores it."
     }
   },
   "0x61e2": {
@@ -5313,6 +5341,10 @@
     "a0": {
       "name": "ptr",
       "why": "0x15bf6 is `move.b d0, (a0)+` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d7": {
+      "name": "row",
+      "why": "0x15ae2 reads the row word out of the frame into it, and the routine's fixed strings at 0x1d7ba onward are drawn against it."
     }
   },
   "0x1e8d6": {
@@ -5667,6 +5699,10 @@
     "d7": {
       "name": "running",
       "why": "0x6ae2 and 0x6af6 read the two running totals out of the frame, add to them and write them back - the sums the walk keeps."
+    },
+    "stack8": {
+      "name": "kind",
+      "why": "its low word at 0xe(a6) becomes d2, which this routine already calls kind at the register it lands in."
     }
   },
   "0xe020": {
@@ -5861,6 +5897,10 @@
     "a0": {
       "name": "cell",
       "why": "what 0x11bd8 made of the coordinate, and stepped by one on the path where the owner is not zero."
+    },
+    "d3": {
+      "name": "unused",
+      "why": "0x2a60 loads 0x2065a into d2 and every later use of d3 assigns it first."
     }
   },
   "0x6bc0": {
@@ -5911,6 +5951,10 @@
     "stack4": {
       "name": "record",
       "why": "0x025f8 is `movea.l $14(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "d3": {
+      "name": "unused",
+      "why": "0x25fc points a3 at 0x11efe and 0x260c takes a call's answer into d2; nothing between the entry and d3's first assignment reads it."
     }
   },
   "0x18b76": {
@@ -6259,6 +6303,14 @@
     "d2": {
       "name": "remaining",
       "why": "the first thing done with it is subq.w #1,d2 at 0x16c4c - it is counted down, not assigned, so it arrives carrying the count."
+    },
+    "d4": {
+      "name": "bits",
+      "why": "0x16c38 takes the value into it and 0x16c3a masks it to 0x20000c0, then 0x16c50 ors the rest back in - the bits this keeps."
+    },
+    "a0": {
+      "name": "descriptorTable",
+      "why": "the table this entry reads its descriptors from, the same slot the host binds under that name."
     }
   },
   "0x1a318": {
@@ -7569,6 +7621,10 @@
     "stack4": {
       "name": "count",
       "why": "loaded to d2 at 0x5ab4 and immediately halved and quartered at 0x5ac2 and 0x5ac6 - the size the builder divides up."
+    },
+    "a2": {
+      "name": "unused",
+      "why": "no instruction between the entry and a2's first assignment reads it; the routine's own pointers are a3 and a4, loaded at 0x5abc and 0x5ab8."
     }
   },
   "0x5b16": {
@@ -7799,6 +7855,14 @@
     "d2": {
       "name": "row",
       "why": "set to 1 at 0xe25c, pushed to two of the drawing calls and incremented at 0xe31c - the line being written."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the routine's own working kind: nothing between the entry and its first use carries anything in, and every use assigns it first."
+    },
+    "stack12": {
+      "name": "count",
+      "why": "loaded to d6 at 0xe0fe - the third of the three arguments this reads off the frame."
     }
   },
   "0xe3b0": {
@@ -7811,6 +7875,10 @@
     "stack4": {
       "name": "src",
       "why": "0x0e5b2 is `movea.l $28(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "d3": {
+      "name": "rowStep",
+      "why": "the constant 0x20 at 0xe61c and again at 0xe656 - the board's 32-byte row stride - subtracted from and added to the coordinate at (a5)."
     }
   },
   "0xe824": {
@@ -8323,6 +8391,10 @@
     "a1": {
       "name": "ptr2",
       "why": "0x0162c is `move.b $3e0dd4.l, (a1)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d4": {
+      "name": "bits",
+      "why": "0x1748 loads 0x1800 into it and 0x177c ors it into the word at (a3) - the bits this sets, held in a register."
     }
   },
   "0x1836": {
@@ -8461,6 +8533,14 @@
     "a4": {
       "name": "ptr",
       "why": "0x06dda is `move.w d0, (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d5": {
+      "name": "scale",
+      "why": "0x6e3c reads a word out of the table 0x11d5c returned and 0x6e40, 0x6e4c and 0x6e56 multiply and divide by it - the scale the trajectory is worked out in."
+    },
+    "d6": {
+      "name": "column",
+      "why": "0x6ce0 reads the byte at (a3), 0x6ce4 adds one and 0x6ce6 shifts it left three - eight pixels a cell across."
     }
   },
   "0x7004": {
@@ -8511,6 +8591,10 @@
     "a3": {
       "name": "ptr",
       "why": "0x0aa5a is `move.w (a3), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d3": {
+      "name": "unused",
+      "why": "0xa9c2 points a2 at eventPost and the routine's work is all through fixed records; nothing reads d3 before it is assigned."
     }
   },
   "0xb3b4": {
@@ -8563,6 +8647,10 @@
     "d6": {
       "name": "best",
       "why": "0xf406 takes the current key into it and 0xf456 compares each later one against it - the smallest seen so far, which is what a depth sort keeps."
+    },
+    "a0": {
+      "name": "unused",
+      "why": "0xf3b6 and 0xf3bc set the routine's own pointers from the constant 0x3e0000; nothing reads a0 before it is assigned."
     }
   },
   "0x1232a": {
@@ -8815,6 +8903,14 @@
     "a3": {
       "name": "entry",
       "why": "0x15752 loads it from the packed array at (a0,d0) and everything after works through it - 0x15756 into d2, 0x15764 pushed, 0x15778 into d1."
+    },
+    "stack4": {
+      "name": "which",
+      "why": "its low word at 0x22(a7) becomes d3 and 0x156be compares it against 3 to choose the branch."
+    },
+    "stack8": {
+      "name": "value",
+      "why": "its low word at 0x26(a7) becomes d4, the value rolled into the accumulator."
     }
   },
   "0x19786": {
@@ -9425,6 +9521,10 @@
     "stack4": {
       "name": "entry",
       "why": "its low word at 0xa(a7) becomes d1, shifted left two at 0x182de and added to 0x3c0400 - a palette entry on the SECOND page, four bytes apart, where writeColourIntoFirstPalette uses 0x3c0000."
+    },
+    "stack8": {
+      "name": "colour",
+      "why": "its low word at 0xe(a7) becomes d2, and the routine writes its high byte at the entry's offset 0 and its low byte at offset 2 - one IRGB colour split across the byte-wide palette, as writeColourIntoFirstPalette does on the other page."
     }
   },
   "0x15830": {
@@ -9453,12 +9553,20 @@
     "stack4": {
       "name": "selector",
       "why": "its low byte at 7(a7) is compared against 6 at 0x1a592: below that it reads through the pointer argument, at or above it indexes 0x3e36ac by the excess. It chooses which table the value comes from."
+    },
+    "stack8": {
+      "name": "table",
+      "why": "movea.l 8(a7),a0 at 0x1a58e - the table the value is read through when the selector is below six."
     }
   },
   "0x512a": {
     "d0": {
       "name": "unused",
       "why": "0x5144 reads it as offsetRecordTableBase's answer; the value that arrived is never read."
+    },
+    "d4": {
+      "name": "offset",
+      "why": "0x5144 takes offsetRecordTableBase's answer into it - the record's offset from its table's base."
     }
   },
   "0x1259c": {
@@ -9681,6 +9789,10 @@
     "stack12": {
       "name": "row",
       "why": "its low byte at 0xf(a6) becomes d3, the other of the two byte coordinates."
+    },
+    "stack4": {
+      "name": "value",
+      "why": "the long at 0x10(a6), pushed to the converter at 0x15526 - the number this draws."
     }
   },
   "0x174a2": {
@@ -9713,6 +9825,10 @@
     "d4": {
       "name": "slot",
       "why": "0xf4fa reads the word at (a0) into it, tests it, uses it as an index at 0xf508 and writes it back to field 4 of the answer at 0xf522 - the slot this hands out."
+    },
+    "a0": {
+      "name": "unused",
+      "why": "0xf4ce sets a2 from the constant 0x3e0000; nothing reads a0 before it is assigned."
     }
   },
   "0x47c6": {
@@ -9985,6 +10101,10 @@
     "stack4": {
       "name": "wide",
       "why": "its low word at 0x1a(a7) becomes d2 and 0x16b10 tests it to choose between two sets of fixed strings - a flag."
+    },
+    "stack8": {
+      "name": "bound",
+      "why": "the long at 0x1c(a7) becomes d3 at 0x16b00, and 0x16b92 compares the row counter against it - how far down the frame goes."
     }
   },
   "0x5622": {
@@ -10147,6 +10267,100 @@
     "d3": {
       "name": "pageStep",
       "why": "0x48da loads the constant 0x1f240 into it and 0x4904, 0x4920 and 0x494c add it to the pointers - the step between the two attract palettes."
+    }
+  },
+  "0x8008": {
+    "stack4": {
+      "name": "difficulty",
+      "why": "its low word at 0xa(a6) becomes d2, and the routine's whole shape is to post one event per player chosen by it - the table at 0x214fa and the poster address 0xee90 are both fixed."
+    }
+  },
+  "0xb032": {
+    "d7": {
+      "name": "savedFlags",
+      "why": "0xb1be reads the status register into it and 0xb1c4 puts the condition codes straight back - the flags kept across the work between."
+    }
+  },
+  "0xd490": {
+    "stack4": {
+      "name": "station",
+      "why": "its low word at 0xa(a6) becomes d2, and 0xd4b0 writes 1 to the station count at 0x3e195c beside it - the station this reset is for."
+    }
+  },
+  "0xdc3a": {
+    "stack4": {
+      "name": "record",
+      "why": "loaded to d3 at 0xdc42 - the only argument, carried through while the routine works from its own constants 0xc, 0x1a and their product."
+    }
+  },
+  "0x16358": {
+    "stack12": {
+      "name": "value",
+      "why": "its low word at 0x12(a6) becomes d3, the second of the two words this row is drawn with."
+    }
+  },
+  "0x7672": {
+    "d2": {
+      "name": "kind",
+      "why": "the cell kind this stamp works with: 0x765e and 0x766e set it to 0x11 and 8 outright, and 0x75b2 in the host compares it against 8."
+    }
+  },
+  "0xa55a": {
+    "d0": {
+      "name": "phase",
+      "why": "0xa4ae doubles it into d5 as an index and 0xa4e0 tests it - which attract phase the entry is running."
+    }
+  },
+  "0xbfea": {
+    "d4": {
+      "name": "byte",
+      "why": "0xbdfc reads the byte at (a5) into it, sign-extends it and 0xbe02 and 0xbe10 take copies - the ring entry's byte."
+    }
+  },
+  "0x1f60": {
+    "stack4": {
+      "name": "record",
+      "why": "movea.l 4(a7),a0 in the routine's first instruction, and its byte at 0x1d is the delay counted down."
+    }
+  },
+  "0x1f82": {
+    "stack4": {
+      "name": "record",
+      "why": "movea.l 0xc(a7),a2 at 0x1f86 - 0xc after the movem pushed eight - and its byte at 2 is the player index the retire works from."
+    }
+  },
+  "0x4d90": {
+    "stack4": {
+      "name": "index",
+      "why": "loaded to d1 at 0x4d90, given the 5 bias, shifted left four and doubled at 0x4d9a to index the table at 0x1f040 - 0xa0 bytes an entry."
+    }
+  },
+  "0x9860": {
+    "d3": {
+      "name": "mask",
+      "why": "0x9862 loads 0xbfff into it - the status word's bits less the top two - and it is used for nothing else."
+    }
+  },
+  "0x1868c": {
+    "stack4": {
+      "name": "string",
+      "why": "movea.l 4(a7),a0 in the first instruction, and the routine walks it to the terminator at 0x18692 to measure it."
+    }
+  },
+  "0x19366": {
+    "a0": {
+      "name": "unused",
+      "why": "the routine reads only the fixed locations 0x372, 0x300 and 0x3e340e; nothing reads a0."
+    }
+  },
+  "0x195b4": {
+    "stack4": {
+      "name": "value",
+      "why": "loaded to d1 at 0x195b4 and shifted down a digit at a time - the number being converted."
+    },
+    "stack8": {
+      "name": "width",
+      "why": "its low word at 0xe(a7) becomes d0 at 0x195c2, which is where the terminator goes and what the fill counts down from."
     }
   }
 }

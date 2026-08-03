@@ -196,18 +196,26 @@ describe('names', () => {
       .map(([k]) => k);
     expect(bare).toEqual([]);
 
-    // Parameters are still a ratchet, and it is on the remainder: 2,401 of
-    // 4,415 do not say what they are, and the bar is none of them. Ratcheting
-    // the remainder rather than the total is what lets a pass that REMOVES a
-    // parameter count as progress, which is the right answer when the thing
-    // removed was never a parameter - and the guard against removing real ones
-    // is not this number, it is compose, writes and draws, which cannot pass
-    // if a value stopped reaching the routine that reads it.
-    // The total is deliberately NOT ratcheted alongside it. It would catch a
-    // pass that inflated the denominator, but nothing here reads a ratio, and
-    // a map that grows by a routine is a legitimate reason for the total to
-    // rise - a floor that goes red for a good reason is a floor nobody reads.
-    expect(params - named).toBeLessThanOrEqual(base.unnamedParams ?? 0);
+    // REACHED, so asserted rather than ratcheted, for the same reason
+    // `byAddress` and `opaque` are: all 4,419 parameters say what they are,
+    // and at the bar a `<=` would quietly accept a regeneration that lost a
+    // name - which is exactly what a regeneration does when a curated name
+    // stops applying. It was a ratchet from 2,401 down to 0.
+    //
+    // The ratchet was on the REMAINDER rather than on the total, and that is
+    // what let a pass which REMOVES a parameter count as progress - the right
+    // answer when the thing removed was never a parameter. 1,860 of them were
+    // not: the lifter makes every register live across a routine into one, and
+    // romlab/dropunread.py moves those into the body as `getReg`, which is
+    // exactly the expression the dispatcher would have built the argument
+    // with. The guard against removing a REAL one is not this number, it is
+    // compose, writes and draws, which cannot pass if a value stopped reaching
+    // the routine that reads it.
+    //
+    // The total is deliberately not asserted alongside it. A map that grows by
+    // a routine is a legitimate reason for it to rise, and nothing here reads
+    // a ratio.
+    expect(params - named).toBe(0);
 
     // Ratchets, both of them, and both may only fall. A routine reached only
     // by a jump table or a tail jump has no caller to be named after and no

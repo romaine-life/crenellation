@@ -110,7 +110,7 @@ Measured 2026-08-02 in `frontend/src/rom/names.txt`:
 | Opaque — nothing it, its host or its target points at says what it is for | **0 of 1,187** |
 | Named only by a suffix on another routine's name | 500 |
 | No *stated* purpose — the name was derived by rule | 365 of 1,182 |
-| Parameters that say what they are | 3,931 of 4,419 |
+| Parameters that say what they are | **4,419 of 4,419** |
 
 **"1,187 of 1,187 carry a name that says what they do" was an overclaim and is
 retracted.** `expect(byAddress).toEqual([])` says no routine is called
