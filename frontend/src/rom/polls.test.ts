@@ -352,31 +352,41 @@ describe('poll points', () => {
     // eslint-disable-next-line no-console
     console.log(report);
     // Ratcheted, not exact, and this is the one place in the equivalence suite
-    // that still is - everything else now asserts identity.
+    // RETIRED 2026-08-02, the way compose and writes were: every one of the
+    // 2,125 exception frames on attract now stacks the same return address and
+    // the same status register, X included, so this asserts identity and
+    // baseline.json has no `frames` key at all.
     //
-    // What is left, measured 2026-08-02: interrupts 0 to 1,219 of 2,125 stack
-    // the same address and the same status register in both runs; interrupt
-    // 1,220, at 0x444, differs in the X bit alone - 0x2314 against 0x2304.
-    // X is the one condition code that outlives the instruction after it, so
-    // it can have been set by arithmetic several routines back, and the lifted
-    // world computes its flags in JavaScript and writes them to the machine
-    // only at sync points. Running with SPILL_ALL=1 - a spill at every block
-    // head - does not change it, so this is not a missing sync point: the two
-    // sides genuinely disagree about the bit. The instruction the oracle last
-    // changed X at is 0x3B76, `addq.w #$1,-$a(a6)`, whose lift emits the
-    // matching `setXAdd` inline, so the disagreement is somewhere between
-    // there and 0x444 and is not yet located.
+    // Two faults, and both were about a flag being carried further than it is
+    // true for.
     //
-    // Why it is worth only a ratchet: the bit reaches memory in an exception
-    // frame and nowhere else, the handler pops that frame, and every write
-    // either dispatcher makes outside those six bytes is identical over
-    // sixty-two million of them (writes.test). compose compares whole memory
-    // every frame of every pattern and is identical, because the bytes are
-    // below the stack pointer by the time it looks. So this is real and it is
-    // small, and a number that can only go up is the honest way to hold it.
-    const floor: number = (JSON.parse(
-      readFileSync(join(here, 'baseline.json'), 'utf8')) as Record<string, number>)['frames'] ?? 0;
-    expect(k).toBeGreaterThanOrEqual(floor);
+    // X does not outlive a CALL. A `jsr` cleared `flags` and not `xstate`, so
+    // the block head after the call re-applied the caller's pre-call X over
+    // whatever the callee left. X outliving a move or a compare is the right
+    // rule and is what xstate is for; a callee can execute anything. That was
+    // interrupt 1,220, at 0x444, differing in X alone, with the two runs
+    // naming 0x3B76 and 0xEE7E as the last to set it - and 0xEE7E is the block
+    // head immediately after `jsr (a3)`.
+    //
+    // And UNCERTAINTY HAS TO PROPAGATE. A block whose predecessors disagree
+    // keeps whatever the previous block in memory left - deliberately, so a
+    // branch can still be answered - and marks itself uncertain so it syncs
+    // nothing. But it handed that fabricated state on as its `end_flags`, and
+    // a successor with one predecessor found a single known value, called
+    // itself certain, and wrote it to the machine. 0x1252A is the case: its
+    // predecessors end with a byte `move.b d0,(a1)+` and a sixteen-bit `sub.w
+    // d5,d4`, it correctly declines to sync, and its only successor then
+    // synced the subtract as fact. That was interrupt 1,300, at 0x124E4,
+    // differing in Z and N.
+    //
+    // Three things that were tried first and are recorded in blocks.py, since
+    // each looked right: re-running the block loop with end_flags kept, a
+    // third lift_once carrying it with a fresh lifter, and syncing before a
+    // tail jump out of the routine. The first broke control flow, the other
+    // two moved nothing. What finally located it was that SPILL_ALL=1 changed
+    // nothing - so the value written was wrong rather than missing - and that
+    // every path into the header did sync, so the machine was not stale.
+    expect(k).toBe(lim);
   }, 900000);
 
   it.skipIf(!process.env.POLL_FRAME)('agree on every poll within one frame', () => {

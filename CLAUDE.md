@@ -90,32 +90,32 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
   runs over a mirror kept current by hooking `setByte`, and the write
   comparison streams a hash and only pays for a full recording when something
   differs.
-- **What is left is the carried condition codes at a block head**, and it is
-  down to one cause with a known shape. 1,300 of 2,125 exception frames on
-  attract now stack an identical return address and status register, up from
-  1,219: **X does not outlive a call**, and it used to. A `jsr` cleared
-  `flags` and not `xstate`, so the block head after the call re-applied the
-  caller's pre-call X over whatever the callee left — interrupt 1220, same
-  address on both sides, differing in that one bit, with the two runs naming
-  0x3B76 and 0xEE7E as the last to set X and 0xEE7E being the block head
-  immediately after `jsr (a3)`. One line in `blocks.py`.
+- **Nothing is left.** All **2,125** exception frames on attract stack an
+  identical return address and status register, X included, on every input
+  pattern's own run — `polls.test` asserts identity and **`baseline.json` has
+  no floor at all**. The equivalence suite is now floor-free: compose, writes,
+  draws and frames all assert, and the only numbers left in that file are
+  capture floors and the deliberate `draws` count.
 
-  The 1,301st differs in **Z and N**, at 0x124E4, and is the same family one
-  field further on: that is a loop header whose latch comes later in address
-  order, so when the header is lifted the latch has no `end_flags` yet,
-  `flags_certain` is false and `sync_flags` correctly writes nothing — leaving
-  the machine holding a stale word. Fixing it means iterating the block lift to
-  a fixed point over `end_flags` rather than one pass in address order, which
-  is what `pushed` and `xstate` already needed and got by other means.
+  The last two faults were the same shape — a flag carried further than it is
+  true for. **X does not outlive a call**: a `jsr` cleared `flags` and not
+  `xstate`, so the block head after it re-applied the caller's pre-call X over
+  whatever the callee left (interrupt 1,220, at 0x444). And **uncertainty has
+  to propagate**: a block whose predecessors disagree keeps whatever the
+  previous block in memory left — deliberately, so a branch can still be
+  answered — and marks itself uncertain, but it handed that fabricated state on
+  as `end_flags`, so a successor with one predecessor called it certain and
+  wrote it to the machine. 0x1252A is the case, its two predecessors ending
+  with a byte `move.b` and a sixteen-bit `sub.w` (interrupt 1,300, at 0x124E4).
+  What a block hands on is now what it KNOWS.
 
-  The original note, still true of the mechanism: X outlives the instruction after it — a move or a compare leaves it
-  — so it can be set several routines back, and the lifted world computes
-  flags in JavaScript and writes them to the machine only at sync points. It is
-  not a missing sync point: `SPILL_ALL=1`, which spills at every block head,
-  does not change the number. It reaches memory only inside a frame the handler
-  immediately pops, which is why every other instrument reports identity, and
-  it is the `frames` floor in `baseline.json` — the only floor left in the
-  equivalence suite. `polls.test` is the instrument.
+  Three earlier attempts are recorded in `blocks.py` because each looked right
+  and none was: re-running the block loop, a third `lift_once` carrying the
+  flag state, and syncing before a tail jump out of the routine. What located
+  it was two negatives — `SPILL_ALL=1` changed nothing, so the value was wrong
+  rather than missing, and every path into the header did sync, so the machine
+  was not stale.
+
 - Four faults were fixed to get there, all the same shape — something one
   dispatcher did that the other did not:
   - `tick` charged an interrupted block's cycles **before** running the

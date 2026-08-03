@@ -1619,7 +1619,24 @@ def lift_once(lo, hi, names, seed=()):
                      f"{irq_flags + ' ' if irq_flags else ''}__IRQSPILL__"
                      f"if (_t{n}) takeIrq(); }}"] \
             + list(lifter.stmts) + tail_flags
-        end_flags[n] = lifter.flags
+        # UNCERTAINTY HAS TO PROPAGATE. A block whose predecessors disagree
+        # keeps whatever the previous block in memory left - deliberately, so
+        # a branch here can still be answered, which the oracle checks - and
+        # marks itself uncertain so it syncs nothing. But it used to pass that
+        # fabricated state on as `end_flags`, and a successor with ONE
+        # predecessor then found a single known value, called itself certain,
+        # and wrote it to the machine.
+        #
+        # 0x1252A is the case: its predecessors end with a byte `move.b
+        # d0,(a1)+` and a sixteen-bit `sub.w d5,d4`. It correctly declines to
+        # sync. Its only successor, the `bra` at 0x1252E, then synced the
+        # subtract as fact - and that is the status register interrupt 1300
+        # stacked, N against the chip's Z.
+        #
+        # What a block hands on is what it KNOWS, so an uncertain one hands on
+        # nothing. `lifter.flags` is left alone because branch answering still
+        # wants a guess.
+        end_flags[n] = lifter.flags if lifter.flags_certain else None
         end_pushed[n] = lifter.pushed
         end_xstate[n] = lifter.xstate
     for copy, orig in clone_of.items():
