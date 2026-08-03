@@ -5946,7 +5946,7 @@
     },
     "d0": {
       "name": "unused",
-      "why": "0x13104 assigns it d5, the second pass's answer, and that is what the routine returns; the value that arrived is never read."
+      "why": "0x13104 assigns it d5, the second pass's answer, and that is what the routine returns."
     }
   },
   "0xce48": {
@@ -7791,6 +7791,14 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x08a4a is `move.b (a0), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x8a42 reads it as the address a call returned, and every later use assigns it first."
+    },
+    "d4": {
+      "name": "cellIndex",
+      "why": "0x8a28 takes the word at 0x14(a7), shifts it left five at 0x8a32 - 32 cells to a board row - and adds the word at 0x18(a7), so it is a row and column folded into one index."
     }
   },
   "0x9080": {
@@ -8127,6 +8135,14 @@
     "d1": {
       "name": "limit",
       "why": "the routine writes it exactly once, with the constant 0x3, and every other instruction that touches it is a cmp - so it holds that constant throughout and is used only as a limit."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x1c408 is moveq #0,d0 before anything reads it."
+    },
+    "d2": {
+      "name": "kind",
+      "why": "0x1c3ec takes the word at 0xe(a7) and 0x1c3f0 bounds it at 0x1c, then 0x1c40c compares it against each table byte - the item kind being looked up."
     }
   },
   "0xedea": {
@@ -9101,6 +9117,54 @@
     "d0": {
       "name": "unused",
       "why": "0x1b134 clears it before anything reads it, and it is only ever written out to the shadow words afterwards."
+    }
+  },
+  "0x4a6a": {
+    "d0": {
+      "name": "unused",
+      "why": "0x4a82 assigns it the status word at (a2) before anything reads it."
+    }
+  },
+  "0x4dd2": {
+    "d0": {
+      "name": "unused",
+      "why": "0x4dec assigns it the status word at (a3) before anything reads it."
+    },
+    "d6": {
+      "name": "given",
+      "why": "cleared at the start of the walk and counted up once per step, then moved into d0 as the routine's answer - the count it returns, not anything the caller passed."
+    }
+  },
+  "0xd696": {
+    "d5": {
+      "name": "reset",
+      "why": "cleared at the start of the walk and counted up once per step, then moved into d0 as the routine's answer - the count it returns, not anything the caller passed."
+    }
+  },
+  "0x1e7e4": {
+    "d0": {
+      "name": "packed",
+      "why": "0x1e7e4 keeps its high nibble in d1 and 0x1e7e8 its low one, which is added to the base and stored - the byte being split across the row."
+    },
+    "d2": {
+      "name": "base",
+      "why": "added to each nibble before it is stored, at 0x1e7ec and again at 0x1e81c after 0x1e808 refreshes it from the stack."
+    }
+  },
+  "0x482e": {
+    "d2": {
+      "name": "found",
+      "why": "cleared at 0x4832 and stepped by two at 0x4860 once per station gathered - the routine's answer."
+    }
+  },
+  "0x53a6": {
+    "d5": {
+      "name": "offset",
+      "why": "cleared at 0x53be, written into field 8 of each entry at 0x53c6 and stepped by 0x40 at 0x53e2 - the entry's place in the list."
+    },
+    "d6": {
+      "name": "scanned",
+      "why": "cleared at the start of the walk and counted up once per step, then moved into d0 as the routine's answer - the count it returns, not anything the caller passed."
     }
   }
 }
