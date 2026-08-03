@@ -2585,5 +2585,135 @@
     "name": "take the colour out of the owner-to-colour table and draw",
     "why": "the only case that reaches 0xfe02, the table that maps an owner to a colour, indexing it with the value already in d0.",
     "ident": "cellDrawColourFromOwnerTable"
+  },
+  "0x1a992": {
+    "name": "push the return address and jump to a script address",
+    "why": "refuses above five levels at 0x24(a2), then assembles a 24-bit address out of the operand and the next three script bytes and takes the script there, keeping where it came from - a call, where the loop opcode keeps a count as well.",
+    "ident": "sequencerCallScript"
+  },
+  "0x1a9ea": {
+    "name": "set the script pointer outright",
+    "why": "one instruction of work: `move.l d3,$4(a2)` puts the assembled address in the channel's script pointer with nothing saved, which is what makes it a jump rather than the call above it.",
+    "ident": "sequencerJumpScript"
+  },
+  "0x1aa80": {
+    "name": "set the key byte from the operand and post code 0xd",
+    "why": "byte 0x5f takes 0x10 when the operand is non-zero and 0 when it is not - a flag, not a value. d6 holds the address of the driver variable at 0x3e36da, so `movea.l d6,a0; move.l (a0),d0` reaches the record it points at; byte 6 of that record takes a small code and byte 4 the operand. ",
+    "ident": "sequencerSetKeyStateAndCodeD"
+  },
+  "0x1aa9c": {
+    "name": "store the operand in field 0x18 and post code 6",
+    "why": "d6 holds the address of the driver variable at 0x3e36da, so `movea.l d6,a0; move.l (a0),d0` reaches the record it points at; byte 6 of that record takes a small code and byte 4 the operand. ",
+    "ident": "sequencerSetField18AndCode6"
+  },
+  "0x1aaba": {
+    "name": "post code 0xb with the operand",
+    "why": "d6 holds the address of the driver variable at 0x3e36da, so `movea.l d6,a0; move.l (a0),d0` reaches the record it points at; byte 6 of that record takes a small code and byte 4 the operand. ",
+    "ident": "sequencerPostCodeB"
+  },
+  "0x1aaf2": {
+    "name": "ask for the operand's sample to be started",
+    "why": "zero-extends the operand and calls startSampleIfPriority, which decides whether it displaces what is playing.",
+    "ident": "sequencerStartSample"
+  },
+  "0x1ab00": {
+    "name": "push the operand into the driver's stop ring",
+    "why": "the same one-argument shape as the start opcode above, into 0x1a19a - the ring at 0x3e3d66 whose cursor wraps at 0x3e3d61.",
+    "ident": "sequencerQueueSampleStop"
+  },
+  "0x1ab10": {
+    "name": "silence the channel this script is running on",
+    "why": "the same four writes the command drain uses on a matching channel - byte 0x5c cleared, word 0x5a to 0xd000, word 0x58 to 0x100 and byte 0x12 to 0xfe - but on a2 directly rather than by index.",
+    "ident": "sequencerSilenceThisChannel"
+  },
+  "0x1ab2a": {
+    "name": "assemble the sixteen bit word at field 0x22",
+    "why": "the operand is the low byte and the next script byte the high one, the same two-byte assembly the slide opcodes use, into field 0x22 instead.",
+    "ident": "sequencerSetWord22"
+  },
+  "0x1ab48": {
+    "name": "carry the operand in d3 into the routine at 0x1ac02",
+    "why": "two instructions and a branch; the work is all in what it hands over to.",
+    "ident": "sequencerTailWithOperandInD3"
+  },
+  "0x1ab50": {
+    "name": "add the operand to field 0x18 and post code 6",
+    "why": "the adding counterpart of the opcode that stores into field 0x18. d6 holds the address of the driver variable at 0x3e36da, so `movea.l d6,a0; move.l (a0),d0` reaches the record it points at; byte 6 of that record takes a small code and byte 4 the operand. ",
+    "ident": "sequencerAddField18AndCode6"
+  },
+  "0x1ab70": {
+    "name": "take the level from the operand's top bits and read one more byte",
+    "why": "shifts the operand left five and masks to 0x1f00 into word 0x58, then fetches a further script byte - so the operand carries two things at once. Skipped when byte 0x12 is 0xfe, the finishing marker.",
+    "ident": "sequencerSetLevelFromTopFiveBits"
+  },
+  "0x1abb6": {
+    "name": "put the operand in word 0x1c",
+    "why": "moves it to d1 and tails into the sign-extending store at 0x1ace4, which writes word 0x1c.",
+    "ident": "sequencerSetWord1CFromOperand"
+  },
+  "0x1abbc": {
+    "name": "take the operand off word 0x1c",
+    "why": "moves it to d1 and tails into 0x1ad46, the subtracting counterpart of the store above.",
+    "ident": "sequencerSubtractOperandFromWord1C"
+  },
+  "0x1abc2": {
+    "name": "add the operand to field 0x5d",
+    "why": "one instruction before it falls into the copy of 0x5d into 0x5e that ends this whole block.",
+    "ident": "sequencerAddOperandToField5D"
+  },
+  "0x1398c": {
+    "name": "start the upward march over a zero background",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. 0x139fc clears the background and walks a bit down from 0x8000.",
+    "ident": "ramPassMarchUpFromZero"
+  },
+  "0x13994": {
+    "name": "start the upward march over an all-ones background",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. 0x13a00 is the same march with the background set to 0xff.",
+    "ident": "ramPassMarchUpFromOnes"
+  },
+  "0x1399c": {
+    "name": "skip the rest when the service switch is set, otherwise march downward",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. It tests bit 3 of 0x640002 and jumps to the report if it is set - the only gate, and unlike the first chain's it has no second condition. 0x13a44 then marches from the top down.",
+    "ident": "ramPassGateThenMarchDown"
+  },
+  "0x139ae": {
+    "name": "march downward over an all-ones background",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. 0x13a48 is the downward march with the background set to 0xff.",
+    "ident": "ramPassMarchDownFromOnes"
+  },
+  "0x139b6": {
+    "name": "repeat the upward march over a zero background",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. 0x13a8a is a second upward march over a cleared background.",
+    "ident": "ramPassSecondMarchUpFromZero"
+  },
+  "0x139be": {
+    "name": "repeat the downward march over a zero background",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. 0x13ada is a second downward march over a cleared background.",
+    "ident": "ramPassSecondMarchDownFromZero"
+  },
+  "0x139c6": {
+    "name": "fill the range with all ones",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. d0 goes to 0xff and the filler at 0x139ec runs again, mirroring each write to the test port at 0x72fffe.",
+    "ident": "ramPassFillOnes"
+  },
+  "0x139d0": {
+    "name": "repeat the upward march over an all-ones background",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. 0x13a8e is the ones-background twin of 0x13a8a.",
+    "ident": "ramPassSecondMarchUpFromOnes"
+  },
+  "0x139d8": {
+    "name": "repeat the downward march over an all-ones background",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. 0x13ade is the ones-background twin of 0x13ada.",
+    "ident": "ramPassSecondMarchDownFromOnes"
+  },
+  "0x139e0": {
+    "name": "invert every word, check it went to zero, then set it back",
+    "why": "the second RAM test is the same continuation chain as ramTestAllPatterns and in the same order: each step loads a6 with the next and branches into a march that ends jmp (a6). This entry is named for the march it starts. 0x13b24 needs no background at all: it eors 0xffff into each word, requires zero, and ors it back.",
+    "ident": "ramPassInvertEachWordTwice"
+  },
+  "0x139e8": {
+    "name": "write the pattern to the test port and hand back",
+    "why": "the chain's single exit: the value goes to 0x72fffe and jmp (a4) returns to whoever started the test. Every failing march jumps here with the eor of expected and actual in d0.",
+    "ident": "ramPassReportPattern"
   }
 }

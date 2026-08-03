@@ -129899,7 +129899,7 @@ export function ramTestSPassSequence(regionStart_: number, regionEnd_: number): 
   setReg('d6', d6);
 }
 
-export function ramTestSPassSequenceFrom1(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
+export function ramPassMarchUpFromZero(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -130217,7 +130217,7 @@ export function ramTestSPassSequenceFrom1(regionStart_: number, regionEnd_: numb
   setReg('d7', startBit);
 }
 
-export function ramTestSPassSequenceFrom2(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
+export function ramPassMarchUpFromOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -130535,7 +130535,7 @@ export function ramTestSPassSequenceFrom2(regionStart_: number, regionEnd_: numb
   setReg('d7', startBit);
 }
 
-export function ramTestSPassSequenceFrom3(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, nextStep_: number, expected_: number, actual_: number, walkingBit_: number, background_: number, passCount_: number, startBit_: number): void {
+export function ramPassGateThenMarchDown(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, nextStep_: number, expected_: number, actual_: number, walkingBit_: number, background_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let at = at_;
@@ -130881,7 +130881,7 @@ export function ramTestSPassSequenceFrom3(at_: number, regionStart_: number, reg
   setReg('d7', startBit);
 }
 
-export function ramTestSPassSequenceFrom4(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
+export function ramPassMarchDownFromOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -131189,7 +131189,7 @@ export function ramTestSPassSequenceFrom4(regionStart_: number, regionEnd_: numb
   setReg('d7', d7);
 }
 
-export function ramTestSPassSequenceFrom5(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
+export function ramPassSecondMarchUpFromZero(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -131512,7 +131512,7 @@ export function ramTestSPassSequenceFrom5(regionStart_: number, regionEnd_: numb
   setReg('d7', startBit);
 }
 
-export function ramTestSPassSequenceFrom6(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
+export function ramPassSecondMarchDownFromZero(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -131823,7 +131823,7 @@ export function ramTestSPassSequenceFrom6(regionStart_: number, regionEnd_: numb
   setReg('d7', d7);
 }
 
-export function ramTestSPassSequenceFrom7(regionStart_: number, regionEnd_: number, watchdogPort_: number): void {
+export function ramPassFillOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -131879,7 +131879,7 @@ export function ramTestSPassSequenceFrom7(regionStart_: number, regionEnd_: numb
   setReg('d0', d0);
 }
 
-export function ramTestSPassSequenceFrom8(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
+export function ramPassSecondMarchUpFromOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -132202,7 +132202,7 @@ export function ramTestSPassSequenceFrom8(regionStart_: number, regionEnd_: numb
   setReg('d7', startBit);
 }
 
-export function ramTestSPassSequenceFrom9(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
+export function ramPassSecondMarchDownFromOnes(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, expected_: number, actual_: number, walkingBit_: number, passCount_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -132513,7 +132513,7 @@ export function ramTestSPassSequenceFrom9(regionStart_: number, regionEnd_: numb
   setReg('d7', d7);
 }
 
-export function ramTestSPassSequenceFrom10(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, actual_: number, passCount_: number): void {
+export function ramPassInvertEachWordTwice(regionStart_: number, regionEnd_: number, watchdogPort_: number, failExit_: number, actual_: number, passCount_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -132668,7 +132668,7 @@ export function ramTestSPassSequenceFrom10(regionStart_: number, regionEnd_: num
   setReg('d6', passCount);
 }
 
-export function ramTestSPassSequenceFrom11(watchdogPort_: number, failExit_: number, expected_: number): void {
+export function ramPassReportPattern(watchdogPort_: number, failExit_: number, expected_: number): void {
   let _guard = 0;
   void _guard;
   let watchdogPort = watchdogPort_;
@@ -178949,7 +178949,7 @@ export function sequencerSetField20(voice_: number, operand_: number): void {
   setReg('d4', operand);
 }
 
-export function sequencerSetSlideWordFrom10(ptr_: number, voice_: number, index_: number, index2_: number, scriptAt_: number, index22_: number, operand_: number): void {
+export function sequencerCallScript(ptr_: number, voice_: number, index_: number, index2_: number, scriptAt_: number, index22_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -179120,7 +179120,7 @@ export function sequencerSetSlideWordFrom10(ptr_: number, voice_: number, index_
   setReg('d4', operand);
 }
 
-export function sequencerSetSlideWordFrom11(voice_: number, index_: number): void {
+export function sequencerJumpScript(voice_: number, index_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -179357,7 +179357,7 @@ export function sequencerEnterModeOne(voice_: number): void {
   setReg('a2', voice);
 }
 
-export function sequencerSetSlideWordFrom16(voice_: number, unused_: number, operand_: number, chosenPtrAt_: number): void {
+export function sequencerSetKeyStateAndCodeD(voice_: number, unused_: number, operand_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -179428,7 +179428,7 @@ export function sequencerSetSlideWordFrom16(voice_: number, unused_: number, ope
   setReg('d6', chosenPtrAt);
 }
 
-export function sequencerSetSlideWordFrom17(voice_: number, operand_: number, chosenPtrAt_: number): void {
+export function sequencerSetField18AndCode6(voice_: number, operand_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -179488,7 +179488,7 @@ export function sequencerSetSlideWordFrom17(voice_: number, operand_: number, ch
   setReg('d6', chosenPtrAt);
 }
 
-export function sequencerSetSlideWordFrom18(voice_: number, operand_: number, chosenPtrAt_: number): void {
+export function sequencerPostCodeB(voice_: number, operand_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -179591,7 +179591,7 @@ export function sequencerSetSlideWordFrom18(voice_: number, operand_: number, ch
   setReg('d6', chosenPtrAt);
 }
 
-export function sequencerSetSlideWordFrom19(operand_: number): void {
+export function sequencerStartSample(operand_: number): void {
   let _guard = 0;
   void _guard;
   let unused = getReg('d1');
@@ -179623,7 +179623,7 @@ export function sequencerSetSlideWordFrom19(operand_: number): void {
   setReg('d4', operand);
 }
 
-export function sequencerSetSlideWordFrom20(operand_: number): void {
+export function sequencerQueueSampleStop(operand_: number): void {
   let _guard = 0;
   void _guard;
   let d1 = getReg('d1');
@@ -179654,7 +179654,7 @@ export function sequencerSetSlideWordFrom20(operand_: number): void {
   setReg('d4', operand);
 }
 
-export function sequencerSetSlideWordFrom21(voice_: number): void {
+export function sequencerSilenceThisChannel(voice_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -179682,7 +179682,7 @@ export function sequencerSetSlideWordFrom21(voice_: number): void {
   setReg('a2', voice);
 }
 
-export function sequencerSetSlideWordFrom22(voice_: number, index_: number, operand_: number): void {
+export function sequencerSetWord22(voice_: number, index_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -179751,7 +179751,7 @@ export function sequencerSetSlideWordFrom22(voice_: number, index_: number, oper
   setReg('d4', operand);
 }
 
-export function sequencerSetSlideWordFrom23(operand_: number): void {
+export function sequencerTailWithOperandInD3(operand_: number): void {
   let _guard = 0;
   void _guard;
   let d3 = getReg('d3');
@@ -179771,7 +179771,7 @@ export function sequencerSetSlideWordFrom23(operand_: number): void {
   setReg('d4', operand);
 }
 
-export function sequencerSetSlideWordFrom24(voice_: number, operand_: number, chosenPtrAt_: number): void {
+export function sequencerAddField18AndCode6(voice_: number, operand_: number, chosenPtrAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -179841,7 +179841,7 @@ export function sequencerSetSlideWordFrom24(voice_: number, operand_: number, ch
   setReg('d6', chosenPtrAt);
 }
 
-export function sequencerSetSlideWordFrom25(ptr_: number, voice_: number, unused_: number, index_: number, unused2_: number, operand_: number): void {
+export function sequencerSetLevelFromTopFiveBits(ptr_: number, voice_: number, unused_: number, index_: number, unused2_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -179975,7 +179975,7 @@ export function sequencerSetSlideWordFrom25(ptr_: number, voice_: number, unused
   setReg('d4', operand);
 }
 
-export function sequencerSetSlideWordFrom26(unused_: number, operand_: number): void {
+export function sequencerSetWord1CFromOperand(unused_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -179994,7 +179994,7 @@ export function sequencerSetSlideWordFrom26(unused_: number, operand_: number): 
   setReg('d4', operand);
 }
 
-export function sequencerSetSlideWordFrom27(unused_: number, operand_: number): void {
+export function sequencerSubtractOperandFromWord1C(unused_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -180013,7 +180013,7 @@ export function sequencerSetSlideWordFrom27(unused_: number, operand_: number): 
   setReg('d4', operand);
 }
 
-export function sequencerSetSlideWordFrom28(voice_: number, operand_: number): void {
+export function sequencerAddOperandToField5D(voice_: number, operand_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -190495,27 +190495,27 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1397a, fn: ramTestSPassSequence as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }] },
 
-  { at: 0x1398c, fn: ramTestSPassSequenceFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x1398c, fn: ramPassMarchUpFromZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x13994, fn: ramTestSPassSequenceFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x13994, fn: ramPassMarchUpFromOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x1399c, fn: ramTestSPassSequenceFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x1399c, fn: ramPassGateThenMarchDown as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x139ae, fn: ramTestSPassSequenceFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x139ae, fn: ramPassMarchDownFromOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x139b6, fn: ramTestSPassSequenceFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x139b6, fn: ramPassSecondMarchUpFromZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x139be, fn: ramTestSPassSequenceFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x139be, fn: ramPassSecondMarchDownFromZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x139c6, fn: ramTestSPassSequenceFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
+  { at: 0x139c6, fn: ramPassFillOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
 
-  { at: 0x139d0, fn: ramTestSPassSequenceFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x139d0, fn: ramPassSecondMarchUpFromOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x139d8, fn: ramTestSPassSequenceFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x139d8, fn: ramPassSecondMarchDownFromOnes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x139e0, fn: ramTestSPassSequenceFrom10 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x139e0, fn: ramPassInvertEachWordTwice as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x139e8, fn: ramTestSPassSequenceFrom11 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x139e8, fn: ramPassReportPattern as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x13b8c, fn: writeFourSoundRegistersChannel as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
@@ -191097,9 +191097,9 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1a98a, fn: sequencerSetField20 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a992, fn: sequencerSetSlideWordFrom10 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a992, fn: sequencerCallScript as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1a9ea, fn: sequencerSetSlideWordFrom11 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x1a9ea, fn: sequencerJumpScript as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x1a9f2, fn: sequencerLoopPush as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
 
@@ -191109,31 +191109,31 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1aa70, fn: sequencerEnterModeOne as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x1aa80, fn: sequencerSetSlideWordFrom16 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1aa80, fn: sequencerSetKeyStateAndCodeD as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1aa9c, fn: sequencerSetSlideWordFrom17 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1aa9c, fn: sequencerSetField18AndCode6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1aaba, fn: sequencerSetSlideWordFrom18 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1aaba, fn: sequencerPostCodeB as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1aaf2, fn: sequencerSetSlideWordFrom19 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
+  { at: 0x1aaf2, fn: sequencerStartSample as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ab00, fn: sequencerSetSlideWordFrom20 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
+  { at: 0x1ab00, fn: sequencerQueueSampleStop as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ab10, fn: sequencerSetSlideWordFrom21 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x1ab10, fn: sequencerSilenceThisChannel as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x1ab2a, fn: sequencerSetSlideWordFrom22 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1ab2a, fn: sequencerSetWord22 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ab48, fn: sequencerSetSlideWordFrom23 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
+  { at: 0x1ab48, fn: sequencerTailWithOperandInD3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ab50, fn: sequencerSetSlideWordFrom24 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x1ab50, fn: sequencerAddField18AndCode6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1ab70, fn: sequencerSetSlideWordFrom25 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1ab70, fn: sequencerSetLevelFromTopFiveBits as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abb6, fn: sequencerSetSlideWordFrom26 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abb6, fn: sequencerSetWord1CFromOperand as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abbc, fn: sequencerSetSlideWordFrom27 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abbc, fn: sequencerSubtractOperandFromWord1C as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1abc2, fn: sequencerSetSlideWordFrom28 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1abc2, fn: sequencerAddOperandToField5D as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x1abc6, fn: copyField5DToField5E as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
