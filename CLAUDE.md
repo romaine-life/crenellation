@@ -309,10 +309,14 @@ and is 2,334 of 4,419 after it: 3,778 parameters said nothing, 2,085 do.
   still worth naming for the routines, but it will not move this number.
   What is left is reading, one routine at a time, the same grind the 400
   hand-read routine names were.
-- **Dispatch loops are gone**, 228 to **0**: `blocks.py` reports 1,182 of 1,182
-  branching routines lifted, and no `while (true)` or `switch (_pc)` survives in
-  `decompiled.ts`. It is also *smaller* than before — 8.3 MB against 14 MB —
-  because most of what those loops cost was duplication. Three faults: `cfg.reducible()` collapsed the graph keeping
+- **Dispatch loops are down from 228 to 11**, and `decompiled.ts` is *smaller*
+  than before — 8.3 MB against 14 MB — because most of what those loops cost
+  was duplication. **Count them with `grep -c 'dispatch:'`**: this said "0" for
+  a day on the strength of grepping for `while (true)` and `switch (_pc)`,
+  which are not the tokens the form uses, and `blocks.py`'s "lifted: 1,182
+  (100%)" counts routines that lifted at all rather than routines that got
+  structured control flow. Both readings were wrong and agreed with each other,
+  which is how the claim survived. Three faults: `cfg.reducible()` collapsed the graph keeping
   only the predecessor map, so a merged block's successors went on naming it
   and the collapse stalled (159 routines read as irreducible where 3 were);
   the join of an `if` was a guess rather than the branch's immediate
