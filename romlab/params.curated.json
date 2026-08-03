@@ -6257,6 +6257,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x00626 is `move.w sr, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "statusRegister",
+      "why": "its low word at 6(a7) is written straight into sr at 0x628, after the old sr has been saved to d0 - it IS the status register value, interrupt mask and all."
     }
   },
   "0x14dc": {
@@ -6279,12 +6283,20 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01584 is `move.w $6(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "bits",
+      "why": "its low word at 6(a7) is inverted at 0x1588 and and-ed into the flag word at 0x3e0dc8 - the bits to clear."
     }
   },
   "0x1592": {
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01592 is `move.w $6(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "bits",
+      "why": "its low word at 6(a7) is inverted at 0x1596 and and-ed into the flag word at 0x3e0dc6 - the bits to clear."
     }
   },
   "0x18fa": {
@@ -6573,6 +6585,10 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18dec is `move.w $a(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack8": {
+      "name": "claimValue",
+      "why": "its low word at 0xa(a7) becomes d1 - which claimOneFourSlotsFill writes into field 0x1c - and the slot is then CLEARED at 0x18df0 before the jump, which is what this entry adds over 0x18dfc."
     }
   },
   "0x18e00": {
@@ -6717,8 +6733,8 @@
   },
   "0x1ad54": {
     "d4": {
-      "name": "unused",
-      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ad54 is `move.b $5d(a2), d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
     }
   },
   "0x1ad6e": {
@@ -6739,8 +6755,12 @@
   },
   "0x1ada2": {
     "d0": {
-      "name": "unused",
-      "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ada2 is `move.b $5d(a2), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    },
+    "d4": {
+      "name": "shift",
+      "why": "its only use is `asl.b d4,d0` at 0x1ada6 - how far field 0x5d is shifted left."
     }
   },
   "0x1ae0e": {
@@ -7431,6 +7451,10 @@
     "stack4": {
       "name": "src",
       "why": "0x1866c is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "resumeAt",
+      "why": "loaded to d0 at 0x18670 and written over the return address at 0x18678 after the movem has restored every register including a7 - the address the rts then goes to."
     }
   },
   "0x1867c": {
@@ -8393,6 +8417,80 @@
     "stack4": {
       "name": "recordAt",
       "why": "the whole routine subtracts 0x1f7f0 from it and returns the result, so it is an address inside the table that base sits at - the name says it turns a record address into an offset from the table."
+    }
+  },
+  "0x1ace0": {
+    "d1": {
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    }
+  },
+  "0x1ace4": {
+    "d1": {
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    }
+  },
+  "0x1acf6": {
+    "d1": {
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    }
+  },
+  "0x1ad60": {
+    "d1": {
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    }
+  },
+  "0x1ad66": {
+    "d1": {
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    }
+  },
+  "0x1ad58": {
+    "d4": {
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    }
+  },
+  "0x1ada8": {
+    "d0": {
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    }
+  },
+  "0x90fe": {
+    "stack4": {
+      "name": "cue",
+      "why": "its low byte at 7(a7) becomes d1 and is pushed to the ring push at 0x90be - a queued cue id, the same byte passByteOnlyWhenGate forwards."
+    }
+  },
+  "0x1229e": {
+    "d3": {
+      "name": "nibble",
+      "why": "masked to 0xf at 0x1229e, added to d2 and stored as one byte - the low four bits of the decoder's state."
+    },
+    "d2": {
+      "name": "base",
+      "why": "added to the nibble at 0x122a2 before the byte is stored, so it is what the nibble is an offset from."
+    }
+  },
+  "0x5dec": {
+    "stack12": {
+      "name": "value",
+      "why": "the whole routine is `move.l $c(a7),d0; rts` - it returns its third argument unchanged, as the two entries after it return the second and the first."
+    }
+  },
+  "0x18cce": {
+    "stack12": {
+      "name": "tileId",
+      "why": "zero-extended into d0 at 0x18cd0, given the 0x13 bias at 0x18ce0 and pushed to decompressTileId at 0x18d06 as its first argument, which that routine uses to index the word table at 0x2161a."
+    },
+    "stack16": {
+      "name": "flag",
+      "why": "masked to 0x30f0 at 0x18cda and pushed to decompressTileId as the argument that family already calls flag."
     }
   }
 }
