@@ -65,7 +65,27 @@ describe('a shape that puts code in the address registers', () => {
                                    0x3e0f48, 0x3e4000][k] ?? 0x3e4000;
     const asCode = (k: number) => DECODER_STATES[k % DECODER_STATES.length];
 
+    // ...and the epilogue fragments, which pop the harness's stack as
+    // registers and then `rts` into whatever is below it. A stack of sentinels
+    // is the only layout under which they can stop somewhere comparable.
+    const sentinelStack = (entry: number) => {
+      const m = new Machine(rom);
+      m.store(SENTINEL, 0x60fe, 16);
+      for (let k = 0; k < 6; k += 1) {
+        (m as never as Record<string, number>)[`a${k}`] = DECODER_STATES[k];
+      }
+      let sp = STACK;
+      for (let k = 0; k < 5; k += 1) { sp -= 4; m.store(sp, SENTINEL, 32); }
+      m.a7 = sp; m.a6 = STACK + 0x200; m.sr = 0x2700; m.stubMissing = true;
+      let where = 'ok';
+      try { call(entry, m); } catch (e) { where = String(e).slice(0, 40); }
+      return `pc=0x${(m.pc >>> 0).toString(16)} ${where}`;
+    };
+
     const lines: string[] = [];
+    for (const entry of [0x561c, 0x19a1e]) {
+      lines.push(`0x${entry.toString(16)}  sentinel-stack-> ${sentinelStack(entry)}`);
+    }
     for (const entry of [0x12222, 0x122c6, 0x561c, 0x19a1e]) {
       const d = run(entry, asData);
       const c = run(entry, asCode);
@@ -74,6 +94,6 @@ describe('a shape that puts code in the address registers', () => {
         + `  code-> missing=[${c.missing.join(' ')}]${c.threw ? ' threw' : ''}`);
     }
     writeFileSync(join(here, 'shape4probe.txt'), lines.join('\n') + '\n');
-    expect(lines.length).toBe(4);
+    expect(lines.length).toBe(6);
   });
 });

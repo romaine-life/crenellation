@@ -159,7 +159,7 @@ local function begin_case()
     local r = rnd()
     local v
     if SHAPE == 0 then v = r % 0x10000
-    elseif SHAPE == 1 or SHAPE == 3 or SHAPE == 4 then v = r % 32
+    elseif SHAPE == 1 or SHAPE == 3 or SHAPE == 4 or SHAPE == 5 then v = r % 32
     else v = r % 256 end
     cpu.state["D" .. k].value = v
   end
@@ -167,7 +167,7 @@ local function begin_case()
     local r = rnd()
     if SHAPE == 0 then
       cpu.state["A" .. k].value = SCRATCH + (r % (SCRATCH_LEN - 0x80))
-    elseif SHAPE == 4 then
+    elseif SHAPE == 4 or SHAPE == 5 then
       cpu.state["A" .. k].value = CODE[(r % #CODE) + 1]
     else
       cpu.state["A" .. k].value = STRUCTS[(r % #STRUCTS) + 1]
@@ -178,7 +178,16 @@ local function begin_case()
     sp = sp - 4
     local r = rnd()
     local v
-    if SHAPE == 3 or SHAPE == 4 then
+    if SHAPE == 5 then
+      -- Shape 5: the stack is nothing but the sentinel. An epilogue fragment
+      -- entered as a routine - `movem.l (a7)+,a2-a3; rts` - pops the harness's
+      -- stack as registers and then returns into whatever is below it, which
+      -- under every other shape is a structure pointer or a random number. The
+      -- chip vectors, the port does not model that, and the case is thrown
+      -- away. A stack it can actually return to lets it stop at the park
+      -- address, which is comparable. 0x561C and 0x19A1E are the two.
+      v = SENTINEL
+    elseif SHAPE == 3 or SHAPE == 4 then
       -- Most of the routines that fault take a structure pointer as a stack
       -- argument and were being handed a random number. The chip then walks
       -- off into nothing and lands in its own reset code, and the case is
