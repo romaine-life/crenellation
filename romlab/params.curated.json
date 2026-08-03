@@ -1121,6 +1121,18 @@
     "d4": {
       "name": "amount",
       "why": "its low word at 0x1e(a7), passed alongside kind and likewise unchanged."
+    },
+    "stack8": {
+      "name": "height",
+      "why": "its low word at 0x1e(a7) becomes d4 at 0x162de, the second of the three words read off the stack."
+    },
+    "stack12": {
+      "name": "width",
+      "why": "its low word at 0x22(a7) becomes d3 at 0x162e2, the third."
+    },
+    "stack20": {
+      "name": "row",
+      "why": "its low word at 0x26(a7) is zero-extended and pushed with the value to 0x160f8 at 0x162ec."
     }
   },
   "0x13d1e": {
@@ -5445,6 +5457,10 @@
     "stack12": {
       "name": "held",
       "why": "read at 0x1e(a7) but kept back until after the lookup, so it plays no part in choosing the byte."
+    },
+    "stack16": {
+      "name": "held",
+      "why": "its low word at 0x1e(a7) becomes d4, the third of the three words this reads off the stack before scaling."
     }
   },
   "0x14eca": {
@@ -7325,6 +7341,10 @@
     "stack4": {
       "name": "src",
       "why": "0x02f1c is `movea.l $14(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x2f3a is moveq #0,d0 and every path assigns it before reading."
     }
   },
   "0x2fb6": {
@@ -7379,6 +7399,10 @@
     "stack4": {
       "name": "record",
       "why": "0x0594c is `movea.l $20(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "d4": {
+      "name": "answer",
+      "why": "the routine's three exits each load it with 2, 1 or 0 (0x5958, 0x596a, 0x596e) and 0x5972 moves it into d0 - the flag it returns."
     }
   },
   "0x5ab0": {
@@ -7575,6 +7599,10 @@
     "d3": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0cf68 is `move.w $54(a2), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d4": {
+      "name": "aim",
+      "why": "0xcf64 reads the record's word at 0x52 into it, the routine adjusts it, and 0xcfa8 writes it back to the same field - the value the decision changes."
     }
   },
   "0xd7a0": {
@@ -7865,6 +7893,10 @@
     "d5": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0374e is `move.l #$200004, d5` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "phase",
+      "why": "its low word at 0x16(a7) becomes d2, the only argument this reads, and the rest of the routine clears two fixed bands at 0x200004 plus 0xf000."
     }
   },
   "0x3e84": {
@@ -9607,6 +9639,64 @@
     "d3": {
       "name": "byte",
       "why": "the source byte read at the entry: its high nibble goes to d0 and its own low nibble is masked out and added to the carried base before being stored - the same split every decoder in this ROM does."
+    }
+  },
+  "0x14138": {
+    "stack4": {
+      "name": "ticks",
+      "why": "loaded to d2 at 0x1413c and counted down against the accumulator at 0x3e3446 - how many ticks this asks for."
+    }
+  },
+  "0x122c": {
+    "d0": {
+      "name": "unused",
+      "why": "0x124e is moveq #0,d0 before anything reads it."
+    }
+  },
+  "0x1997a": {
+    "d1": {
+      "name": "stride",
+      "why": "0x199a6 reads the record's word at 4 into it, multiplies by the step at 0x199b2, doubles it and writes it back at 0x199b6 - the record's own stride, recomputed."
+    },
+    "d2": {
+      "name": "byte",
+      "why": "the byte this moves about: taken from -5(a0,d3) at 0x199d8 or 0x17(a2,d3) at 0x199e0, and stored to (a1,d0) at 0x199f6 and to 0x16(a2) at 0x199fc."
+    }
+  },
+  "0x1997c": {
+    "d1": {
+      "name": "stride",
+      "why": "0x199a6 reads the record's word at 4 into it, multiplies by the step at 0x199b2, doubles it and writes it back at 0x199b6 - the record's own stride, recomputed."
+    },
+    "d2": {
+      "name": "byte",
+      "why": "the byte this moves about: taken from -5(a0,d3) at 0x199d8 or 0x17(a2,d3) at 0x199e0, and stored to (a1,d0) at 0x199f6 and to 0x16(a2) at 0x199fc."
+    }
+  },
+  "0x144d0": {
+    "stack8": {
+      "name": "value",
+      "why": "loaded to d3 at 0x144dc and written to the channel's word at 0x10 at 0x14502."
+    },
+    "stack12": {
+      "name": "script",
+      "why": "loaded to d2 at 0x144e0 and written to the channel's long at 8 at 0x14506, which is the field the routine spins on at 0x144ea until it is clear."
+    }
+  },
+  "0x190da": {
+    "stack4": {
+      "name": "attrHigh",
+      "why": "0x190da copies its low byte three bytes further up the stack, into the slot the call at 0x18e66 reads - the high half of the attribute pair."
+    },
+    "stack16": {
+      "name": "value",
+      "why": "its low word at 0x12(a7) becomes d1 and is pushed to 0x18e66 at 0x190e8 - the number being plotted."
+    }
+  },
+  "0x18b92": {
+    "d3": {
+      "name": "flag",
+      "why": "0x18ba0 copies d1 into it and 0x18ba6 masks it to 0x30f0, then 0x18bec pushes it - the same masked flag takeCellColourThenAddress hands decompressTileId."
     }
   }
 }
