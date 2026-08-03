@@ -153,8 +153,12 @@ describe('names', () => {
       `parameters: ${params}, named ${named}`
       + ` (${slots} more are a stack slot with a number on it)`,
       // The point of the file, stated where it will be read: what is left.
+      // The whole bar on one line, so "is it done" is one string to read
+      // rather than four numbers to add up. Every one of these is asserted
+      // below once it reaches zero; until then it is a ratchet.
       `remaining to the bar: ${byAddress.length} routines still an address,`
-      + ` ${opaque} opaque routines, ${params - named} parameters`,
+      + ` ${opaque} opaque routines, ${suffixOnly} suffix-only names,`
+      + ` ${unstated} without a stated purpose, ${params - named} parameters`,
     ].join('\n');
     writeFileSync(join(here, 'names.txt'), report + '\n');
 

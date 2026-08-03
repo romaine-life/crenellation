@@ -77,6 +77,16 @@ const STACK = 0x3e5000;
 const SENTINEL = 0x3e6000;
 const NAMES = ['d0','d1','d2','d3','d4','d5','d6','d7','a0','a1','a2','a3','a4','a5','a6'];
 const STRUCTS = [0x3e0864, 0x3e1968, 0x3e1cf6, 0x3e1bc6, 0x3e0f48, 0x3e02d8, 0x3e4000];
+// Shape 4 puts CODE in the address registers. Shapes 0-3 seed every one of
+// them with a scratch pointer or a data structure, so a routine that
+// DISPATCHES through an address register - `jmp (a4)` - can only jump into
+// work RAM and run the random bytes the harness wrote there. That is not a
+// divergence and the harness rightly voids it, but it also means such a
+// routine can never be judged. These are the decompressor's own state
+// handlers, which is what this ROM legitimately puts in that register.
+// Mirrored exactly in romlab/step4.lua.
+const CODE = [0x1228c, 0x1229e, 0x122ae, 0x122b2, 0x122bc,
+              0x12340, 0x12350, 0x12354, 0x1235e];
 
 class Rand {
   s = 0x12345678;
@@ -114,7 +124,7 @@ describe('routines compared at the instruction the chip stopped on', () => {
     const fail = new Set<number>();
     const detail: Array<{ entry: string; what: string }> = [];
 
-    for (const SHAPE of [0, 1, 2, 3]) {
+    for (const SHAPE of [0, 1, 2, 3, 4]) {
     const rand = new Rand();   // each capture run started the generator afresh
     for (const entry of entries) {
       const m = new Machine(rom);
@@ -132,12 +142,14 @@ describe('routines compared at the instruction the chip stopped on', () => {
       const d: number[] = [];
       for (let k = 0; k < 8; k += 1) {
         const r = rand.next();
-        d.push(SHAPE === 0 ? r % 0x10000 : (SHAPE === 1 || SHAPE === 3) ? r % 32 : r % 256);
+        d.push(SHAPE === 0 ? r % 0x10000
+          : (SHAPE === 1 || SHAPE === 3 || SHAPE === 4) ? r % 32 : r % 256);
       }
       const a: number[] = [];
       for (let k = 0; k < 6; k += 1) {
         const r = rand.next();
         a.push(SHAPE === 0 ? SCRATCH + (r % (SCRATCH_LEN - 0x80))
+          : SHAPE === 4 ? CODE[r % CODE.length]
           : STRUCTS[r % STRUCTS.length]);
       }
       let sp = STACK;
@@ -147,7 +159,7 @@ describe('routines compared at the instruction the chip stopped on', () => {
         // shape 3 puts real structures on the stack too. Most routines that
         // faulted took a structure pointer as a stack argument and were being
         // handed a random number.
-        const v = SHAPE === 3 ? STRUCTS[r % STRUCTS.length]
+        const v = (SHAPE === 3 || SHAPE === 4) ? STRUCTS[r % STRUCTS.length]
           : k % 2 === 0 ? r % 0x100
           : SCRATCH + (r % (SCRATCH_LEN - 0x80));
         m.store(sp, v, 32);
