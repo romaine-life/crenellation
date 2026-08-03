@@ -5265,6 +5265,10 @@
     "a0": {
       "name": "ptr",
       "why": "0x0f7fc is `move.w (a0), d4` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d6": {
+      "name": "bucket",
+      "why": "0xf872 reads the word at (a4,d1) into it, 0xf87c compares it with the first entry and 0xf880 writes it back - the bucket head being relinked."
     }
   },
   "0xf936": {
@@ -5487,6 +5491,10 @@
     "d6": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x14cbe is `move.l d1, d6` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d5": {
+      "name": "step",
+      "why": "0x14cbc clears it, 0x14cdc counts it up and 0x14ce0 compares it against the bound - which step of the envelope this is."
     }
   },
   "0x15064": {
@@ -5885,6 +5893,10 @@
     "d0": {
       "name": "index",
       "why": "0x0237a is `move.b (a0, d0.l), d6` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "stack4": {
+      "name": "cellAt",
+      "why": "loaded to d4 at 0x2340, which this routine already calls cellAddr - the cell the sprite is drawn at."
     }
   },
   "0x25f4": {
@@ -7407,6 +7419,10 @@
     "a4": {
       "name": "unused",
       "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    },
+    "d6": {
+      "name": "found",
+      "why": "cleared at 0x202a and then set from the byte at (a0) or from 0x3e0dce - which player the scan settled on."
     }
   },
   "0x545a": {
@@ -8177,6 +8193,14 @@
     "d3": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x179bc is `moveq #$1, d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d5": {
+      "name": "colour",
+      "why": "0x17a60 subtracts the step from it and 0x17a62 masks it to 0x7c00 - one five-bit channel of an IRGB word - before 0x17a66 puts it back."
+    },
+    "d6": {
+      "name": "step",
+      "why": "0x17a56 reads the frame word, 0x17a5e shifts it up by the channel's shift and 0x17a60 subtracts it - how far this channel moves."
     }
   },
   "0x17b04": {
@@ -8455,6 +8479,10 @@
     "a5": {
       "name": "ptr",
       "why": "0x08906 is `jsr (a5)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d1": {
+      "name": "left",
+      "why": "0x89dc reads the frame's word and 0x89e4 counts it down to zero, and 0x89ec does the same from d6 - how many are left in the sweep."
     }
   },
   "0x8b0c": {
@@ -8613,6 +8641,14 @@
     "a0": {
       "name": "ptr",
       "why": "0x1a43c is `tst.l (a0)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d4": {
+      "name": "step",
+      "why": "0x1a400 clears it, 0x1a42a counts it up and 0x1a42e compares it against the bound - which pass this is."
+    },
+    "d5": {
+      "name": "answer",
+      "why": "0x1a516 takes a call's result into it and 0x1a56e moves it back into d0 as the routine returns."
     }
   },
   "0x1ac02": {
@@ -8775,6 +8811,10 @@
     "d6": {
       "name": "lowBit",
       "why": "0x156e6 copies d4 into it and 0x156e8 masks it to 1, and it is only ever read back whole (0x156f6, 0x1572e) or tested (0x157f6, 0x15804). The bottom bit of the new value, kept."
+    },
+    "a3": {
+      "name": "entry",
+      "why": "0x15752 loads it from the packed array at (a0,d0) and everything after works through it - 0x15756 into d2, 0x15764 pushed, 0x15778 into d1."
     }
   },
   "0x19786": {
@@ -10075,6 +10115,38 @@
     "stack4": {
       "name": "cellNumber",
       "why": "its low word at 0xa(a6) becomes d2 and 0xad68 masks it to 0x3f for the column while 0xad6e takes that off for the row - the split the routine is named for."
+    }
+  },
+  "0x17800": {
+    "d5": {
+      "name": "bits",
+      "why": "0x178aa reads the record's word at 4 into it and the routine shifts it down a bit at a time (0x178c4, 0x1790c), testing bit 0 each pass - the switch bits it walks."
+    },
+    "d6": {
+      "name": "row",
+      "why": "0x178b2 clears it, 0x178b4 loads the record's byte at 9 and 0x178e8 steps it - the row this pass is on."
+    }
+  },
+  "0x16148": {
+    "stack12": {
+      "name": "value",
+      "why": "its low word at 0x12(a6) becomes d3, the second of the two words this row is drawn with."
+    }
+  },
+  "0x67f6": {
+    "d5": {
+      "name": "wantByte",
+      "why": "0x6832 reads it out of the per-player table at (a0,d0) and 0x68d2 compares each cell along the wall against it."
+    },
+    "d6": {
+      "name": "odd",
+      "why": "0x6846 reads the frame byte and 0x684c masks it to 1 - the bottom bit, kept and read back at 0x68a2."
+    }
+  },
+  "0x48ae": {
+    "d3": {
+      "name": "pageStep",
+      "why": "0x48da loads the constant 0x1f240 into it and 0x4904, 0x4920 and 0x494c add it to the pointers - the step between the two attract palettes."
     }
   }
 }
