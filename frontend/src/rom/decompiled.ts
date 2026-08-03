@@ -98830,7 +98830,7 @@ export function formatCallerSLongAgainst(dst: number): void {
   setReg('d0', index);
 }
 
-export function helperUnitStepWrapper(dst_: number, dst2: number): void {
+export function unitStepWithArguments(dst_: number, dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -190057,7 +190057,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0cdae, fn: formatCallerSLongAgainst as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
-  { at: 0x0cdc0, fn: helperUnitStepWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'stack', off: 4 }] },
+  { at: 0x0cdc0, fn: unitStepWithArguments as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'stack', off: 4 }] },
 
   { at: 0x0cdf6, fn: messageSelector as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 

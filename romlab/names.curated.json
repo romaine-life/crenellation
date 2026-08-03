@@ -3695,5 +3695,10 @@
     "name": "queue the cue byte the argument names",
     "why": "the low byte at 7(a7), zero-extended into the ring push at 0x90be - the same ring passByteOnlyWhenGate feeds.",
     "ident": "queueCueFromByteArgument"
+  },
+  "0x0cdc0": {
+    "name": "step the unit and drop what it pushed",
+    "why": "the last routine in the image longer than six bytes without a stated purpose. It sets its arguments up, calls the unit step and cleans the stack - a wrapper whose work is entirely its argument list.",
+    "ident": "unitStepWithArguments"
   }
 }
