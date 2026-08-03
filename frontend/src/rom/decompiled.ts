@@ -43405,7 +43405,7 @@ export function claimCellAndPassOnWhenNeighbourIs1AFrom2(): void {
   return;
 }
 
-export function placementValidate(walkRecord_: number, dst3_: number, owner_: number, cellValue_: number, unused_: number, ownerBits_: number, cellAddr_: number, endMark_: number, preserved_: number): void {
+export function validateTakeRecordThenLay(walkRecord_: number, dst3_: number, owner_: number, cellValue_: number, unused_: number, ownerBits_: number, cellAddr_: number, endMark_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -43705,7 +43705,7 @@ export function placementValidate(walkRecord_: number, dst3_: number, owner_: nu
   setReg('d7', preserved);
 }
 
-export function placementValidateFrom1(ptr_: number, cellValue_: number, ownerBits_: number, cellAddr_: number): void {
+export function validateLayAndNotify33F4(ptr_: number, cellValue_: number, ownerBits_: number, cellAddr_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a5');
@@ -43769,7 +43769,7 @@ export function placementValidateFrom1(ptr_: number, cellValue_: number, ownerBi
   setReg('d5', cellAddr);
 }
 
-export function placementValidateFrom2(walkRecord_: number, ptr_: number, dst4_: number, cellValue_: number, preserved_: number, ownerBits_: number, cellAddr_: number, endMark_: number, preserved2_: number): void {
+export function validateRecordCoordinateThenLay(walkRecord_: number, ptr_: number, dst4_: number, cellValue_: number, preserved_: number, ownerBits_: number, cellAddr_: number, endMark_: number, preserved2_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -44057,7 +44057,7 @@ export function placementValidateFrom2(walkRecord_: number, ptr_: number, dst4_:
   setReg('d7', preserved2);
 }
 
-export function placementValidateFrom3(dst3_: number, cellValue_: number, count2_: number, ownerBits_: number, cellAddr_: number, endMark_: number, preserved_: number): void {
+export function validateLayOnly(dst3_: number, cellValue_: number, count2_: number, ownerBits_: number, cellAddr_: number, endMark_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -44321,7 +44321,7 @@ export function placementValidateFrom3(dst3_: number, cellValue_: number, count2
   setReg('d7', preserved);
 }
 
-export function placementValidateFrom4(src_: number, walkRecord_: number, preserved_: number, preserved2_: number, writeAt_: number, dst2_: number, unused_: number, cellValue_: number, preserved3_: number, ownerBits_: number, cellAddr_: number, endMark_: number, preserved4_: number): void {
+export function validatePreviousRow(src_: number, walkRecord_: number, preserved_: number, preserved2_: number, writeAt_: number, dst2_: number, unused_: number, cellValue_: number, preserved3_: number, ownerBits_: number, cellAddr_: number, endMark_: number, preserved4_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -48082,7 +48082,7 @@ export function layBoardFromNibbleStream(index_: number, unused_: number, ownerM
   setReg('d5', d5);
 }
 
-export function layBoardFromNibbleStreamFrom1(dst_: number): void {
+export function layBoardConstantsAndFirstRow(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -48116,7 +48116,7 @@ export function layBoardFromNibbleStreamFrom1(dst_: number): void {
   setReg('d3', d3);
 }
 
-export function layBoardFromNibbleStreamFrom2(src_: number, ptr_: number, unused_: number, index_: number, unused2_: number): void {
+export function layBoardEdgeCheck(src_: number, ptr_: number, unused_: number, index_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let src = src_;
@@ -48265,7 +48265,7 @@ export function layBoardFromNibbleStreamFrom2(src_: number, ptr_: number, unused
   setReg('d4', unused2);
 }
 
-export function layBoardFromNibbleStreamFrom3(seven_: number, unused_: number): void {
+export function layBoardTakeNibble(seven_: number, unused_: number): void {
   let _guard = 0;
   void _guard;
   let seven = seven_;
@@ -75751,7 +75751,7 @@ export function pointHandlerSlotPlayerBlock(dst_: number): void {
   setReg('a4', dst);
 }
 
-export function gameSPhaseEntriesOne(): void {
+export function gamePhaseSetGateSix(): void {
   let _guard = 0;
   void _guard;
   let t0 = 0;
@@ -75764,7 +75764,7 @@ export function gameSPhaseEntriesOne(): void {
   return;
 }
 
-export function gameSPhaseEntriesOneFrom1(dst_: number, ptr_: number, index_: number): void {
+export function gamePhaseWaitThenScanBoard(dst_: number, ptr_: number, index_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -75932,7 +75932,7 @@ export function gameSPhaseEntriesOneFrom1(dst_: number, ptr_: number, index_: nu
   setReg('d0', index);
 }
 
-export function gameSPhaseEntriesOneFrom2(dst22_: number, dst4_: number, dst2_: number, dst3_: number, count_: number, wantArg_: number, count2_: number, pointed_: number): void {
+export function gamePhaseCountdownThenWait(dst22_: number, dst4_: number, dst2_: number, dst3_: number, count_: number, wantArg_: number, count2_: number, pointed_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -77454,7 +77454,7 @@ export function gameSPhaseEntriesOneFrom2(dst22_: number, dst4_: number, dst2_: 
   setReg('d4', pointed);
 }
 
-export function gameSPhaseEntriesOneFrom3(dst_: number, dst3_: number, dst2_: number, ptr_: number, limit_: number, count_: number): void {
+export function gamePhaseWaitThenClearHandlers(dst_: number, dst3_: number, dst2_: number, ptr_: number, limit_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -77797,7 +77797,7 @@ export function gameSPhaseEntriesOneFrom3(dst_: number, dst3_: number, dst2_: nu
   setReg('d2', count);
 }
 
-export function gameSPhaseEntriesOneFrom4(ptr_: number, dst_: number, dst2_: number, count_: number): void {
+export function gamePhaseWalkPlayersPosting11B06(ptr_: number, dst_: number, dst2_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -79432,7 +79432,7 @@ export function dropTwentyBytesArgumentsContinue(): void {
   return;
 }
 
-export function advanceOperatorMenuRunOut(dst_: number, ptr_: number): void {
+export function operatorNextPlayerRow(dst_: number, ptr_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -79501,7 +79501,7 @@ export function advanceOperatorMenuRunOut(dst_: number, ptr_: number): void {
   setReg('d6', d6);
 }
 
-export function advanceOperatorMenuRunOutFrom1(dst2_: number, ptr_: number, preserved_: number, preserved2_: number, preserved22_: number, preserved3_: number, preserved23_: number): void {
+export function operatorMenuForCurrentRow(dst2_: number, ptr_: number, preserved_: number, preserved2_: number, preserved22_: number, preserved3_: number, preserved23_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -79630,7 +79630,7 @@ export function advanceOperatorMenuRunOutFrom1(dst2_: number, ptr_: number, pres
   setReg('d6', preserved23);
 }
 
-export function advanceOperatorMenuRunOutFrom2(ptr_: number, index_: number, unused_: number, lastColumn_: number, rowsLeft_: number, screenAt_: number, preserved_: number): void {
+export function operatorWaitEvent11BA2(ptr_: number, index_: number, unused_: number, lastColumn_: number, rowsLeft_: number, screenAt_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -79847,7 +79847,7 @@ export function advanceOperatorMenuRunOutFrom2(ptr_: number, index_: number, unu
   setReg('d6', preserved);
 }
 
-export function advanceOperatorMenuRunOutFrom3(ptr_: number): void {
+export function operatorDropTwelveAndReturn(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -79893,7 +79893,7 @@ export function advanceOperatorMenuRunOutFrom3(ptr_: number): void {
   setReg('d6', d6);
 }
 
-export function advanceOperatorMenuRunOutFrom4(ptr_: number): void {
+export function operatorReturn(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -189563,15 +189563,15 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x061bc, fn: claimCellAndPassOnWhenNeighbourIs1AFrom2 as (...a: number[]) => void, params: [] },
 
-  { at: 0x061c2, fn: placementValidate as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x061c2, fn: validateTakeRecordThenLay as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x061e2, fn: placementValidateFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x061e2, fn: validateLayAndNotify33F4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x061f8, fn: placementValidateFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x061f8, fn: validateRecordCoordinateThenLay as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x06232, fn: placementValidateFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x06232, fn: validateLayOnly as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x06252, fn: placementValidateFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x06252, fn: validatePreviousRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
   { at: 0x062a6, fn: layPlayerWallFromCounter3E1F18 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
@@ -189609,11 +189609,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x06648, fn: layBoardFromNibbleStream as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
-  { at: 0x0666c, fn: layBoardFromNibbleStreamFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x0666c, fn: layBoardConstantsAndFirstRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
-  { at: 0x06680, fn: layBoardFromNibbleStreamFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x06680, fn: layBoardEdgeCheck as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x0669c, fn: layBoardFromNibbleStreamFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x0669c, fn: layBoardTakeNibble as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x066c8, fn: scanScreenCellsTakingValue as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd4' }] },
 
@@ -189871,15 +189871,15 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0a000, fn: pointHandlerSlotPlayerBlock as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }] },
 
-  { at: 0x0a016, fn: gameSPhaseEntriesOne as (...a: number[]) => void, params: [] },
+  { at: 0x0a016, fn: gamePhaseSetGateSix as (...a: number[]) => void, params: [] },
 
-  { at: 0x0a022, fn: gameSPhaseEntriesOneFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0a022, fn: gamePhaseWaitThenScanBoard as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0a0a0, fn: gameSPhaseEntriesOneFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x0a0a0, fn: gamePhaseCountdownThenWait as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x0a2e6, fn: gameSPhaseEntriesOneFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0a2e6, fn: gamePhaseWaitThenClearHandlers as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x0a392, fn: gameSPhaseEntriesOneFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0a392, fn: gamePhaseWalkPlayersPosting11B06 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x0a4a0, fn: attractDropCountdownAndWait as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
@@ -189895,15 +189895,15 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0a74a, fn: dropTwentyBytesArgumentsContinue as (...a: number[]) => void, params: [] },
 
-  { at: 0x0a752, fn: advanceOperatorMenuRunOut as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }] },
+  { at: 0x0a752, fn: operatorNextPlayerRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }] },
 
-  { at: 0x0a75e, fn: advanceOperatorMenuRunOutFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0a75e, fn: operatorMenuForCurrentRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0a794, fn: advanceOperatorMenuRunOutFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0a794, fn: operatorWaitEvent11BA2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0a7d6, fn: advanceOperatorMenuRunOutFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x0a7d6, fn: operatorDropTwelveAndReturn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
-  { at: 0x0a7da, fn: advanceOperatorMenuRunOutFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x0a7da, fn: operatorReturn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
   { at: 0x0a7e4, fn: doNothingA7E4 as (...a: number[]) => void, params: [] },
 

@@ -3057,5 +3057,95 @@
     "name": "a third exit into the same tail",
     "why": "an entry into the channel's note handler, which the driver reaches by tail jump; they share the same voice record in a2 and the same note and operand registers. ",
     "ident": "channelNoteDoneThird"
+  },
+  "0x061c2": {
+    "name": "take a free entry record, then lay the cell",
+    "why": "the only case that calls takeNextFreeEntryRecord first. lays the cell - the value masked to its low six bits with the owner's 0xc0 or'd in - and steps the walk one cell BACK, which is the direction that separates this routine from placementCommit. ",
+    "ident": "validateTakeRecordThenLay"
+  },
+  "0x061e2": {
+    "name": "lay the cell and hand the argument to 0x33f4",
+    "why": "lays the cell - the value masked to its low six bits with the owner's 0xc0 or'd in - and steps the walk one cell BACK, which is the direction that separates this routine from placementCommit. ",
+    "ident": "validateLayAndNotify33F4"
+  },
+  "0x061f8": {
+    "name": "record the coordinate on the record, then lay the cell",
+    "why": "copies the word argument into field 0x3c of the record before laying, the same thing placementCommit's drawing case does. lays the cell - the value masked to its low six bits with the owner's 0xc0 or'd in - and steps the walk one cell BACK, which is the direction that separates this routine from placementCommit. ",
+    "ident": "validateRecordCoordinateThenLay"
+  },
+  "0x06232": {
+    "name": "lay the cell and nothing else",
+    "why": "lays the cell - the value masked to its low six bits with the owner's 0xc0 or'd in - and steps the walk one cell BACK, which is the direction that separates this routine from placementCommit. ",
+    "ident": "validateLayOnly"
+  },
+  "0x06252": {
+    "name": "step the walk back one row",
+    "why": "0x1000 off the screen pointer, one off the row byte, and the 0/1 toggle flipped - the backwards twin of placementCommit's row step.",
+    "ident": "validatePreviousRow"
+  },
+  "0x0a016": {
+    "name": "put six in the queue gate and wait",
+    "why": "one write of 6 to 0x3e1948, the word that decides whether queued cues are taken at all.",
+    "ident": "gamePhaseSetGateSix"
+  },
+  "0x0a022": {
+    "name": "wait on 0x11b06, then count the board by cell type",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. ",
+    "ident": "gamePhaseWaitThenScanBoard"
+  },
+  "0x0a0a0": {
+    "name": "let the countdown run out before waiting on 0x11b1e",
+    "why": "tests the word at -4(a6) rather than decrementing it, and only then blocks.",
+    "ident": "gamePhaseCountdownThenWait"
+  },
+  "0x0a2e6": {
+    "name": "wait on 0x11b1e, then clear all eight registered handlers",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. ",
+    "ident": "gamePhaseWaitThenClearHandlers"
+  },
+  "0x0a392": {
+    "name": "walk the player array posting 0x11b06",
+    "why": "d2 set to 3, the array at 0x3e1968 in a4, the station byte cleared, and the record to post kept in d3.",
+    "ident": "gamePhaseWalkPlayersPosting11B06"
+  },
+  "0x0a752": {
+    "name": "step to the next player's row of the operator menu",
+    "why": "0x7e on the record pointer - the player array's stride - and one on the station byte at 0x3e1958.",
+    "ident": "operatorNextPlayerRow"
+  },
+  "0x0a75e": {
+    "name": "run the operator menu for the row the station byte names",
+    "why": "the byte at 0x3e1954 less one and the current record are what it hands to operatorMenu.",
+    "ident": "operatorMenuForCurrentRow"
+  },
+  "0x0a794": {
+    "name": "wait on the event at 0x11ba2",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. ",
+    "ident": "operatorWaitEvent11BA2"
+  },
+  "0x0a7d6": {
+    "name": "drop twelve pushed bytes and return",
+    "why": "the exit for the paths that pushed three arguments; it falls into the shared restore.",
+    "ident": "operatorDropTwelveAndReturn"
+  },
+  "0x0a7da": {
+    "name": "restore the saved registers and return",
+    "why": "the single epilogue this whole block shares: movem.l of d2-d6 and a2-a4, unlk, rts.",
+    "ident": "operatorReturn"
+  },
+  "0x0666c": {
+    "name": "load the walk's constants and start the first row",
+    "why": "0xb0 and 0xc0 into d2 and d3 - the two cell values this lays - seven into the nibble counter and the row byte cleared.",
+    "ident": "layBoardConstantsAndFirstRow"
+  },
+  "0x06680": {
+    "name": "decide whether this cell is on the board's edge",
+    "why": "row and column both non-zero and the column not 0x29 - the board's 42 columns less one - which is what keeps the border out of the fill.",
+    "ident": "layBoardEdgeCheck"
+  },
+  "0x0669c": {
+    "name": "take the next nibble out of the stream",
+    "why": "masks the source byte to 0xf and uses it as the cell's value, which is what makes this a nibble stream rather than a byte one.",
+    "ident": "layBoardTakeNibble"
   }
 }
