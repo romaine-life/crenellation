@@ -7327,6 +7327,14 @@
     "d0": {
       "name": "index",
       "why": "0x0e180 is `move.l (a0, d0.l), -(a7)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d4": {
+      "name": "colour",
+      "why": "the constant 0xf0 loaded at 0xe23e and pushed unchanged to six drawing calls - the same value drawPanelPlayerNothingNegative uses as the colour when there is no player."
+    },
+    "d2": {
+      "name": "row",
+      "why": "set to 1 at 0xe25c, pushed to two of the drawing calls and incremented at 0xe31c - the line being written."
     }
   },
   "0xe3b0": {
@@ -8129,6 +8137,12 @@
     "d2": {
       "name": "limit",
       "why": "the routine writes it exactly once, with the constant 0x3, and every other instruction that touches it is a cmp - so it holds that constant throughout and is used only as a limit."
+    }
+  },
+  "0x156ac": {
+    "d6": {
+      "name": "lowBit",
+      "why": "0x156e6 copies d4 into it and 0x156e8 masks it to 1, and it is only ever read back whole (0x156f6, 0x1572e) or tested (0x157f6, 0x15804). The bottom bit of the new value, kept."
     }
   }
 }
