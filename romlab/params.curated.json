@@ -205,6 +205,10 @@
     "a0": {
       "name": "ptr",
       "why": "0x143f0 is `move.w (a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d1": {
+      "name": "scratch",
+      "why": "used twice for unrelated things - 0xff to compare the slot index against at 0x143f6, then the record's word at 2 from 0x1440e - and never carries anything in."
     }
   },
   "0x17fcc": {
@@ -6501,12 +6505,20 @@
     "d2": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x06040 is `move.b (a0), d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d5": {
+      "name": "cellAddr",
+      "why": "0x5fee takes the address a call returned into it and 0x603e points a0 at it - the cell this entry writes through."
     }
   },
   "0x634a": {
     "d2": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0634c is `move.b (a0), d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d4": {
+      "name": "cellAddr",
+      "why": "0x62e2 takes the address a call returned into it and 0x6302 and 0x634a point address registers at it - the cell this entry writes through."
     }
   },
   "0x669c": {
@@ -7295,6 +7307,10 @@
     "d6": {
       "name": "unused",
       "why": "0x787c assigns it the word at 0xe(a6) - the second argument's low half - before anything reads it."
+    },
+    "stack8": {
+      "name": "wantKind",
+      "why": "its low word at 0xe(a6) becomes d6 and is pushed with the cell address to cellSWallRunUnbroken at 0x78b8 - the kind the run must be made of."
     }
   },
   "0xafda": {
@@ -7895,6 +7911,18 @@
     "stack8": {
       "name": "out",
       "why": "movea.l 0xc(a6),a1 at 0x11c22 and immediately copied to a2, which is where the routine's output is written."
+    },
+    "d2": {
+      "name": "done",
+      "why": "cleared at 0x11c5c, set to 1 at 0x11c6e and tested at 0x11c70 - a flag the loop sets when it is finished."
+    },
+    "d6": {
+      "name": "high",
+      "why": "0x11c2c reads the word at 0x1a(a6) and 0x11c30 shifts it down eight, then 0x11c64 ors that byte into d0 - the high half of the last argument."
+    },
+    "stack20": {
+      "name": "attr",
+      "why": "its low word at 0x1a(a6) is read at 0x11c2c and only its high byte is used - the attribute pair this carries."
     }
   },
   "0x3ea": {
@@ -8083,6 +8111,10 @@
     "d5": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x17b10 is `move.l d0, d5` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d4": {
+      "name": "table",
+      "why": "0x17b1e takes the address a call returned into it and 0x17b34 and 0x17b96 point a0 at it twice - the table both halves of the decision read."
     }
   },
   "0x17d9c": {
@@ -9845,6 +9877,58 @@
     "stack4": {
       "name": "tempo",
       "why": "loaded to d2 at 0x155a4 and the only argument the update takes; everything else it reads comes from the fixed words at 0x3e365a onward."
+    }
+  },
+  "0x120a2": {
+    "d5": {
+      "name": "rowGap",
+      "why": "added to the destination at 0x120c0 and 0x120e4 and subtracted from the fresh counter at 0x120c6 and 0x120ea - the gap from the end of one row to the start of the next, as in every decoder beside it."
+    }
+  },
+  "0x1830c": {
+    "stack4": {
+      "name": "state",
+      "why": "loaded to d3 at 0x18310 - the switch state this draws."
+    },
+    "stack8": {
+      "name": "index",
+      "why": "loaded to d2 at 0x18314 and used at 0x18328 to index the byte table at 0x3e367c."
+    }
+  },
+  "0x12ca": {
+    "stack4": {
+      "name": "quiet",
+      "why": "its low word at 0xa(a6) becomes d5, and every use is a test: with the station count at 0x3e195c it chooses 2 or 1 at 0x12e4, then again at 0x12ec. A flag."
+    }
+  },
+  "0x40d2": {
+    "d2": {
+      "name": "column",
+      "why": "0x40da reads the word at 0xc(a6) into it, 0x411c moves it into d0 and 0x413a keeps it in a local - one of the two coordinates."
+    },
+    "d6": {
+      "name": "fromRight",
+      "why": "0x411a loads 0x28 - forty columns - 0x4120 subtracts the column and 0x4122 doubles the difference."
+    }
+  },
+  "0x15e50": {
+    "stack4": {
+      "name": "first",
+      "why": "its low word at 0x16(a7) becomes d3, the first of the two words this reads off the stack before scaling."
+    },
+    "stack8": {
+      "name": "second",
+      "why": "its low word at 0x1a(a7) becomes d2, the second."
+    }
+  },
+  "0x14044": {
+    "d2": {
+      "name": "scale",
+      "why": "0x14066 takes it from d0 and 0x1407e divides by it - the divisor this packs whole units with."
+    },
+    "d4": {
+      "name": "byte",
+      "why": "0x140ae clears it and 0x140b0 reads the accumulator byte at (a2) into it."
     }
   }
 }
