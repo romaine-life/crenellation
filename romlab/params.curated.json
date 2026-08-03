@@ -197,6 +197,10 @@
     "d0": {
       "name": "slotIndex",
       "why": "the ring's write cursor plus one masked to 3 - four entries - and what the read cursor is compared against to find the queue full."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x143f0 is `move.w (a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x17fcc": {
@@ -1003,6 +1007,10 @@
     "stack8": {
       "name": "channel",
       "why": "its low word at 0xe(a6), pushed as 0x14b2c's second argument. The slot is hard-wired to zero here, so this always writes the head of the queue."
+    },
+    "a2": {
+      "name": "ptr",
+      "why": "0x14c9a is `move.l (a2), d1` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x13e94": {
@@ -1097,6 +1105,18 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1b1d6 is `move.b $1b(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x1b23e is `move.b $2(a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a2": {
+      "name": "ptr2",
+      "why": "0x1b25c is `move.b (a0, d3.w), (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a3": {
+      "name": "ptr3",
+      "why": "0x1b218 is `and.b (a3), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0xd916": {
@@ -1345,6 +1365,10 @@
     "d2": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x07954) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x07980 is `move.w (a0), d1` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x767c": {
@@ -2489,6 +2513,10 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d0": {
+      "name": "index",
+      "why": "0x1a9e4 is `move.l $4(a2), $26(a2, d0.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1a8fa": {
@@ -2499,6 +2527,10 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d0": {
+      "name": "index",
+      "why": "0x1a9e4 is `move.l $4(a2), $26(a2, d0.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1a916": {
@@ -2509,6 +2541,10 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d0": {
+      "name": "index",
+      "why": "0x1a9e4 is `move.l $4(a2), $26(a2, d0.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1a958": {
@@ -2535,6 +2571,10 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d0": {
+      "name": "index",
+      "why": "0x1a9e4 is `move.l $4(a2), $26(a2, d0.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1a98a": {
@@ -2555,12 +2595,24 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d1": {
+      "name": "index",
+      "why": "0x1aa0a is `move.w d0, $3e(a2, d1.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d3": {
+      "name": "index2",
+      "why": "0x1aa34 is `tst.w $3e(a2, d3.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1a9ea": {
     "a2": {
       "name": "voice",
       "why": "the voice being interpreted: 0x4 is the sequence's program counter, 0x12 a mode that locks the level at 0xfe, 0x16 a four-bit level, and 0x1a a sixteen-bit value assembled from two operand bytes."
+    },
+    "d3": {
+      "name": "index",
+      "why": "0x1aa34 is `tst.w $3e(a2, d3.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1a9f2": {
@@ -2663,6 +2715,10 @@
     "d4": {
       "name": "operand",
       "why": "the byte the dispatcher fetched from the sequence before jumping to this handler, so no handler reads it again."
+    },
+    "d0": {
+      "name": "index",
+      "why": "0x1a9e4 is `move.l $4(a2), $26(a2, d0.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1ab48": {
@@ -2701,6 +2757,10 @@
     "d2": {
       "name": "unused2",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ab8e is `moveq #$0, d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "index",
+      "why": "0x1aa0a is `move.w d0, $3e(a2, d1.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1abb6": {
@@ -3191,6 +3251,10 @@
     "d2": {
       "name": "plainCueSet",
       "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
+    },
+    "a5": {
+      "name": "ptr",
+      "why": "0x0725c is `addq.b #$1, $17(a5)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x72ec": {
@@ -3221,6 +3285,10 @@
     "d2": {
       "name": "plainCueSet",
       "why": "the constant 0x128ac, four cue ids (23 31 4e 61) that startCue picks between round-robin - a set, not one cue. It goes with the branches that bump no counter; the other sets are 0x128a8 and 0x128b0 pea'd inline and 0x12890 indexed by player."
+    },
+    "d1": {
+      "name": "index",
+      "why": "0x07312 is `addq.b #$1, $17(a0, d1.l)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x7318": {
@@ -3949,6 +4017,10 @@
     "d2": {
       "name": "preserved",
       "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x1b064) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d0": {
+      "name": "index",
+      "why": "0x1aef2 is `move.l (a0, d0.w), d3` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1ae44": {
@@ -3979,6 +4051,10 @@
     "d6": {
       "name": "chosenPtrAt",
       "why": "the constant 0x3e36da, the driver variable that holds the pointer picked out of the table at 0x19ce4 by two indices and read back as a base. Loaded here and carried across the tail jumps without ever being dereferenced on this path."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x1ae6e is `sub.w (a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1b048": {
@@ -4829,6 +4905,10 @@
     "d2": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0f6e0 is `move.l d0, d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x0f67a is `move.w $0(a0), d6` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x7262": {
@@ -4907,6 +4987,10 @@
     "d0": {
       "name": "result",
       "why": "what the test left: zero on a pass, and on a failure the eor of what was written against what came back."
+    },
+    "a5": {
+      "name": "ptr",
+      "why": "0x135c2 is `move.l (a5)+, d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1865e": {
@@ -5049,6 +5133,10 @@
     "d3": {
       "name": "unused3",
       "why": "0xf7d8's `move.w (a0,d0.w),d3` is the first instruction in the extent that mentions it, and it is a store."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x0f7fc is `move.w (a0), d4` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0xf936": {
@@ -5063,6 +5151,14 @@
     "d5": {
       "name": "firstEntry",
       "why": "the word out of the bucket head, and the emptiness test: `tst.w d5; beq` skips the bucket before anything else is read."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x0fb16 is `move.w $6(a2), $6(a0)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a5": {
+      "name": "ptr2",
+      "why": "0x0fab2 is `cmp.b $3(a5), d3` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1594c": {
@@ -5081,6 +5177,10 @@
     "a5": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x15950) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x15bf6 is `move.b d0, (a0)+` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1e8d6": {
@@ -5119,6 +5219,14 @@
     "d6": {
       "name": "column",
       "why": "the position across the line, advanced as each glyph goes down."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x1e8f2 is `move.l (a0)+, (a1)+` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a7": {
+      "name": "ptr2",
+      "why": "0x1e936 is `move.l d0, (a7)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x66d4": {
@@ -5289,6 +5397,10 @@
     "d2": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x02c06 is `move.l d0, d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d0": {
+      "name": "index",
+      "why": "0x02bdc is `move.b (a0, d0.l), d3` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x3ba4": {
@@ -5329,6 +5441,10 @@
     "d3": {
       "name": "ownerBits",
       "why": "the same byte masked to 0xc0, compared against the cell 0x20 further on - one board row down."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x03d0a is `move.b (a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x11eda": {
@@ -5395,6 +5511,10 @@
     "d1": {
       "name": "wasNonZero",
       "why": "`tst.w` then `sne.b` then `neg.b` - the standard way this compiler makes 0 or -1 out of a test, so it is a boolean and not the value it was made from."
+    },
+    "d5": {
+      "name": "index",
+      "why": "0x06adc is `move.b (a2, d5.l), d0` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0xe020": {
@@ -5589,6 +5709,10 @@
     "d3": {
       "name": "kind",
       "why": "the word at 0x14(a6), carried unchanged through to the calls."
+    },
+    "d0": {
+      "name": "index",
+      "why": "0x0237a is `move.b (a0, d0.l), d6` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x25f4": {
@@ -6179,6 +6303,10 @@
     "stack4": {
       "name": "src",
       "why": "0x05b44 is `movea.l $24(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "a4": {
+      "name": "ptr",
+      "why": "0x05bd8 is `move.w $4(a0), $2(a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x603e": {
@@ -6309,6 +6437,10 @@
     "d3": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1238c is `clr.l d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a2": {
+      "name": "ptr",
+      "why": "0x124a8 is `move.b (a2)+, (a1)+` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x124e2": {
@@ -6339,6 +6471,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x13134 is `move.w (a0)+, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a4": {
+      "name": "ptr",
+      "why": "0x13174 is `jmp (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x13662": {
@@ -6471,6 +6607,10 @@
     "a1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19f9c is `movea.l a2, a1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x1a048 is `ori.w #$2e, (a0)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1a19a": {
@@ -6873,6 +7013,10 @@
     "a0": {
       "name": "unused",
       "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    },
+    "a2": {
+      "name": "ptr",
+      "why": "0x0ab82 is `move.l a1, (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x1b06e": {
@@ -7093,6 +7237,10 @@
     "stack8": {
       "name": "dst",
       "why": "0x0c4d0 is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    },
+    "a2": {
+      "name": "ptr",
+      "why": "0x0c4e2 is `move.l a0, (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0xc4e8": {
@@ -7155,6 +7303,10 @@
     "stack8": {
       "name": "record",
       "why": "0x0e0fa is `movea.l $c(a6), a3`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a3 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "d0": {
+      "name": "index",
+      "why": "0x0e180 is `move.l (a0, d0.l), -(a7)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0xe3b0": {
@@ -7327,6 +7479,10 @@
     "d3": {
       "name": "unused4",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x011a6 is `moveq #$0, d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d2": {
+      "name": "flag",
+      "why": "the only thing any instruction in the extent does with it is tst.l - it is never written and never used in arithmetic, only tested, each test choosing a branch. It arrives as a condition and is used only as one."
     }
   },
   "0x219a": {
@@ -7337,6 +7493,10 @@
     "d1": {
       "name": "unused2",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x021dc is `moveq #$c, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a2": {
+      "name": "ptr",
+      "why": "0x021aa is `move.w d0, (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x33f4": {
@@ -7409,6 +7569,10 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0909c is `moveq #$0, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a2": {
+      "name": "ptr",
+      "why": "0x09088 is `move.b (a2), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0xe000": {
@@ -7461,6 +7625,10 @@
     "d4": {
       "name": "unused2",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x17e10 is `moveq #$0, d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a4": {
+      "name": "ptr",
+      "why": "0x17db2 is `jsr (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   },
   "0x18040": {
@@ -7495,6 +7663,318 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1acbc is `moveq #$0, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a0": {
+      "name": "ptr",
+      "why": "0x1ac0c is `move.b (a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x107c": {
+    "d2": {
+      "name": "flag",
+      "why": "the only thing any instruction in the extent does with it is tst.l - it is never written and never used in arithmetic, only tested, each test choosing a branch. It arrives as a condition and is used only as one."
+    }
+  },
+  "0x10c8": {
+    "d2": {
+      "name": "flag",
+      "why": "the only thing any instruction in the extent does with it is tst.l - it is never written and never used in arithmetic, only tested, each test choosing a branch. It arrives as a condition and is used only as one."
+    }
+  },
+  "0x10e4": {
+    "d2": {
+      "name": "flag",
+      "why": "the only thing any instruction in the extent does with it is tst.l - it is never written and never used in arithmetic, only tested, each test choosing a branch. It arrives as a condition and is used only as one."
+    }
+  },
+  "0x1150": {
+    "d2": {
+      "name": "flag",
+      "why": "the only thing any instruction in the extent does with it is tst.l - it is never written and never used in arithmetic, only tested, each test choosing a branch. It arrives as a condition and is used only as one."
+    }
+  },
+  "0x1180": {
+    "d2": {
+      "name": "flag",
+      "why": "the only thing any instruction in the extent does with it is tst.l - it is never written and never used in arithmetic, only tested, each test choosing a branch. It arrives as a condition and is used only as one."
+    }
+  },
+  "0x15fe": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x01778 is `move.b (a0)+, (a1)+` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a1": {
+      "name": "ptr2",
+      "why": "0x0162c is `move.b $3e0dd4.l, (a1)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x1836": {
+    "a3": {
+      "name": "ptr",
+      "why": "0x0185e is `cmpa.l (a3), a4` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a4": {
+      "name": "ptr2",
+      "why": "0x01862 is `move.l d3, $6a(a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x19ee": {
+    "a3": {
+      "name": "ptr",
+      "why": "0x01a0a is `move.w (a3), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x1b46": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x01b54 is `jsr (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x2988": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x02994 is `move.b (a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d1": {
+      "name": "index",
+      "why": "0x02a50 is `move.b (a0, d1.l), d0` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x2aae": {
+    "d1": {
+      "name": "index",
+      "why": "0x02b50 is `move.b (a0, d1.l), d0` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x2d78": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x02d92 is `move.b (a0), d3` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x3354": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x0336e is `move.b (a0), d2` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x45fa": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x0460a is `jsr (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x463c": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x0464c is `jsr (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x46e0": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x046f0 is `jsr (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x4fea": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x04ff6 is `pea.l (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x5000": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x05008 is `pea.l (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x5558": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x05570 is `jsr (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x55c4": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x055f4 is `jsr (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x5cce": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x05d0e is `move.w d0, $6(a0)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x5d8c": {
+    "d0": {
+      "name": "index",
+      "why": "0x05dc6 is `cmp.w (a0, d0.l), d1` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x6cae": {
+    "a4": {
+      "name": "ptr",
+      "why": "0x06dda is `move.w d0, (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x7004": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x07142 is `move.b (a0), d1` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x86ae": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x086ba is `movea.l (a2), a1` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x88b0": {
+    "a5": {
+      "name": "ptr",
+      "why": "0x08906 is `jsr (a5)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x8b0c": {
+    "d1": {
+      "name": "index",
+      "why": "0x08b88 is `move.b (a4, d1.l), d0` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x8d0e": {
+    "a1": {
+      "name": "ptr",
+      "why": "0x08d50 is `move.l (a1), d6` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0xa90e": {
+    "a4": {
+      "name": "ptr",
+      "why": "0x0a946 is `move.w (a4), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0xa9be": {
+    "a3": {
+      "name": "ptr",
+      "why": "0x0aa5a is `move.w (a3), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0xb3b4": {
+    "d1": {
+      "name": "index",
+      "why": "0x0b3f4 is `pea.l (a0, d1.l)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0xc3e8": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x0c40a is `move.b (a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0xedea": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x0edfc is `move.b $3e0de4.l, (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0xf3b2": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x0f414 is `move.w (a2), d4` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a5": {
+      "name": "ptr2",
+      "why": "0x0f442 is `move.b $2(a5), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x1232a": {
+    "a4": {
+      "name": "ptr",
+      "why": "0x1232a is `jmp (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x14ef8": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x14f3a is `move.b d0, (a0)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x16d88": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x16dee is `jsr (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a3": {
+      "name": "ptr2",
+      "why": "0x16da6 is `jsr (a3)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a4": {
+      "name": "ptr3",
+      "why": "0x16de6 is `jsr (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x16e2c": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x16e80 is `jsr (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a4": {
+      "name": "ptr2",
+      "why": "0x16ed4 is `jsr (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x16eec": {
+    "a3": {
+      "name": "ptr",
+      "why": "0x16f26 is `jsr (a3)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a4": {
+      "name": "ptr2",
+      "why": "0x16f7a is `jsr (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x175de": {
+    "a1": {
+      "name": "ptr",
+      "why": "0x17614 is `lea.l $6ec3(a1), a1` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x1815a": {
+    "a2": {
+      "name": "ptr",
+      "why": "0x18166 is `jsr (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x1884a": {
+    "d0": {
+      "name": "index",
+      "why": "0x18850 is `movea.l $34(a2, d0.w), a0` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x1a3e6": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x1a43c is `tst.l (a0)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x1ac02": {
+    "d3": {
+      "name": "index",
+      "why": "0x1acb2 is `move.b $5d(a2), (a0, d3.w)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x1e9b4": {
+    "a0": {
+      "name": "ptr",
+      "why": "0x1e9b6 is `movea.l (a0)+, a7` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x1400e4": {
+    "a1": {
+      "name": "ptr",
+      "why": "0x140108 is `cmpm.w (a0)+, (a1)+` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
     }
   }
 }
