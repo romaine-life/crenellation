@@ -48305,7 +48305,7 @@ export function scanScreenCellsValueSix(): void {
   return;
 }
 
-export function doesNothing1(): void {
+export function layBoardWalkFromFive(): void {
   if (tick(4, 0x066d2)) { takeIrq(); }
   setReg('d4', 5);
   jumpRom(0x066d4);
@@ -189583,7 +189583,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x066ce, fn: scanScreenCellsValueSix as (...a: number[]) => void, params: [] },
 
-  { at: 0x066d2, fn: doesNothing1 as (...a: number[]) => void, params: [] },
+  { at: 0x066d2, fn: layBoardWalkFromFive as (...a: number[]) => void, params: [] },
 
   { at: 0x066d4, fn: tailFullScreenCellScan as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 

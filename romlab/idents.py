@@ -104,6 +104,7 @@ def load():
 def main():
     described, curated, forced = load()
     facts = json.loads((HERE / "out" / "facts.json").read_text())
+    image = (HERE / "prog_ext.bin").read_bytes()
     addrs = sorted((f["at"] if isinstance(f, dict) else f[0]) for f in facts["funcs"])
 
     # A description that only says how a routine is reached says nothing about
@@ -343,7 +344,14 @@ def main():
     # has an address to call, and does nothing when called. Worth saying so.
     extent = {(f["at"] if isinstance(f, dict) else f[0]):
               (f["end"] if isinstance(f, dict) else f[1]) for f in facts["funcs"]}
-    blank = [a for a in addrs if extent.get(a, a) - a == 2 and a not in unique]
+    # ...and it has to BE an rts. Two bytes was taken as proof, and it is not:
+    # 0x66D2 is two bytes of `moveq #$5,d4` that falls into the cell walk at
+    # 0x66D4, and it was called doesNothing1 - a name that is not merely
+    # unhelpful but false. The first word must read 0x4E75.
+    def _is_rts(a):
+        return image[a:a + 2] == b"Nu" if a + 2 <= len(image) else False
+    blank = [a for a in addrs if extent.get(a, a) - a == 2 and a not in unique
+             and _is_rts(a)]
     for k, a in enumerate(sorted(blank), start=1):
         unique[a] = f"doesNothing{k}"
     print(f"  routines that are a bare rts: {len(blank)}")

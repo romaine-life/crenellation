@@ -3700,5 +3700,345 @@
     "name": "step the unit and drop what it pushed",
     "why": "the last routine in the image longer than six bytes without a stated purpose. It sets its arguments up, calls the unit step and cleans the stack - a wrapper whose work is entirely its argument list.",
     "ident": "unitStepWithArguments"
+  },
+  "0x00118": {
+    "name": "jump slot 0 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 0, and it reaches claimSlotKindTwo at 0x18df6.",
+    "ident": "claimSlotKindTwoStub"
+  },
+  "0x0011e": {
+    "name": "jump slot 1 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 1, and it reaches formatNumberPaddingSeparators at 0x19614.",
+    "ident": "formatNumberPaddingSeparatorsStub"
+  },
+  "0x00124": {
+    "name": "jump slot 2 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 2, and it reaches convertLongDigitsPowerTwo at 0x195b4.",
+    "ident": "convertLongDigitsPowerTwoStub"
+  },
+  "0x0012a": {
+    "name": "jump slot 3 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 3, and it reaches convertOnePrintfLetter at 0x1946e.",
+    "ident": "convertOnePrintfLetterStub"
+  },
+  "0x00130": {
+    "name": "jump slot 4 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 4, and it reaches soundStateCopy at 0x18d88.",
+    "ident": "soundStateCopyStub"
+  },
+  "0x00136": {
+    "name": "jump slot 5 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 5, and it reaches claimSlotKindFourClearing at 0x18dea.",
+    "ident": "claimSlotKindFourClearingStub"
+  },
+  "0x0013c": {
+    "name": "jump slot 6 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 6, and it reaches claimSlotBySign at 0x18db6.",
+    "ident": "claimSlotBySignStub"
+  },
+  "0x00142": {
+    "name": "jump slot 7 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 7, and it reaches claimSlotKindOne at 0x18dfc.",
+    "ident": "claimSlotKindOneStub"
+  },
+  "0x00148": {
+    "name": "jump slot 8 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 8, and it reaches claimSlotKindThree at 0x18e00.",
+    "ident": "claimSlotKindThreeStub"
+  },
+  "0x0014e": {
+    "name": "jump slot 9 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 9, and it reaches soundVoiceSelect at 0x18dc4.",
+    "ident": "soundVoiceSelectStub"
+  },
+  "0x00154": {
+    "name": "jump slot 10 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 10, and it reaches takePointerWidthThenPlot at 0x18a5e.",
+    "ident": "takePointerWidthThenPlotStub"
+  },
+  "0x0015a": {
+    "name": "jump slot 11 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 11, and it reaches stepGlyphLayerCounters at 0x18764.",
+    "ident": "stepGlyphLayerCountersStub"
+  },
+  "0x00160": {
+    "name": "jump slot 12 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 12, and it reaches recordWhetherVectorHoldsStub at 0x19366.",
+    "ident": "recordWhetherVectorHoldsStubStub"
+  },
+  "0x00166": {
+    "name": "jump slot 13 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 13, and it reaches clearGlyphLayerSState at 0x1939c.",
+    "ident": "clearGlyphLayerSStateStub"
+  },
+  "0x0016c": {
+    "name": "jump slot 14 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 14, and it reaches waitCounterChanges at 0x193da.",
+    "ident": "waitCounterChangesStub"
+  },
+  "0x00172": {
+    "name": "jump slot 15 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 15, and it reaches creditCountCoinSlots at 0x13e94.",
+    "ident": "creditCountCoinSlotsStub"
+  },
+  "0x00178": {
+    "name": "jump slot 16 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 16, and it reaches addToBookkeepingCounter at 0x14a36.",
+    "ident": "addToBookkeepingCounterStub"
+  },
+  "0x0017e": {
+    "name": "jump slot 17 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 17, and it reaches soundSequencePlayer at 0x14578.",
+    "ident": "soundSequencePlayerStub"
+  },
+  "0x00184": {
+    "name": "jump slot 18 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 18, and it reaches readBookkeepingCounter at 0x14772.",
+    "ident": "readBookkeepingCounterStub"
+  },
+  "0x0018a": {
+    "name": "jump slot 19 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 19, and it reaches writeBookkeepingCounter at 0x1485c.",
+    "ident": "writeBookkeepingCounterStub"
+  },
+  "0x00190": {
+    "name": "jump slot 20 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 20, and it reaches unpackQueueEntry at 0x14b8a.",
+    "ident": "unpackQueueEntryStub"
+  },
+  "0x00196": {
+    "name": "jump slot 21 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 21, and it reaches soundEnvelopeStep at 0x14c3c.",
+    "ident": "soundEnvelopeStepStub"
+  },
+  "0x0019c": {
+    "name": "jump slot 22 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 22, and it reaches writeQueueEntryValue at 0x14d48.",
+    "ident": "writeQueueEntryValueStub"
+  },
+  "0x001a2": {
+    "name": "jump slot 23 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 23, and it reaches soundParameterScaler at 0x15064.",
+    "ident": "soundParameterScalerStub"
+  },
+  "0x001a8": {
+    "name": "jump slot 24 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 24, and it reaches soundTempoUpdate at 0x155a0.",
+    "ident": "soundTempoUpdateStub"
+  },
+  "0x001ae": {
+    "name": "jump slot 25 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 25, and it reaches bitSetHelper at 0x15672.",
+    "ident": "bitSetHelperStub"
+  },
+  "0x001b4": {
+    "name": "jump slot 26 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 26, and it reaches bitClearHelper at 0x1568e.",
+    "ident": "bitClearHelperStub"
+  },
+  "0x001ba": {
+    "name": "jump slot 27 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 27, and it reaches rollPlayTimeAccumulatorInto at 0x156ac.",
+    "ident": "rollPlayTimeAccumulatorIntoStub"
+  },
+  "0x001c0": {
+    "name": "jump slot 28 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 28, and it reaches audioResetWrapper at 0x160ba.",
+    "ident": "audioResetWrapperStub"
+  },
+  "0x001ca": {
+    "name": "jump slot 29 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 29, and it reaches plotChainStringsReturnWidth at 0x18e66.",
+    "ident": "plotChainStringsReturnWidthStub"
+  },
+  "0x001d0": {
+    "name": "jump slot 30 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 30, and it reaches eraseChainGlyphRunsReturn at 0x190f6.",
+    "ident": "eraseChainGlyphRunsReturnStub"
+  },
+  "0x001d6": {
+    "name": "jump slot 31 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 31, and it reaches drawGlyphRun800002 at 0x19032.",
+    "ident": "drawGlyphRun800002Stub"
+  },
+  "0x001dc": {
+    "name": "jump slot 32 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 32, and it reaches drawGlyphRunDownColumn at 0x19010.",
+    "ident": "drawGlyphRunDownColumnStub"
+  },
+  "0x001e2": {
+    "name": "jump slot 33 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 33, and it reaches takeCellColourThenAddress at 0x18cce.",
+    "ident": "takeCellColourThenAddressStub"
+  },
+  "0x001e8": {
+    "name": "jump slot 34 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 34, and it reaches writeWordByIndex at 0x193c6.",
+    "ident": "writeWordByIndexStub"
+  },
+  "0x001ee": {
+    "name": "jump slot 35 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 35, and it reaches soundGate at 0x1890c.",
+    "ident": "soundGateStub"
+  },
+  "0x001f4": {
+    "name": "jump slot 36 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 36, and it reaches soundReadyWait at 0x16bc8.",
+    "ident": "soundReadyWaitStub"
+  },
+  "0x001fa": {
+    "name": "jump slot 37 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 37, and it reaches loadPackedOptionsWord at 0x13f40.",
+    "ident": "loadPackedOptionsWordStub"
+  },
+  "0x00200": {
+    "name": "jump slot 38 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 38, and it reaches optionFieldElevenToThirteen at 0x13f60.",
+    "ident": "optionFieldElevenToThirteenStub"
+  },
+  "0x00206": {
+    "name": "jump slot 39 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 39, and it reaches tempoDivisorSoundRateWord at 0x13f98.",
+    "ident": "tempoDivisorSoundRateWordStub"
+  },
+  "0x0020c": {
+    "name": "jump slot 40 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 40, and it reaches withinAllowance at 0x1418a.",
+    "ident": "withinAllowanceStub"
+  },
+  "0x00212": {
+    "name": "jump slot 41 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 41, and it reaches advanceTickAccumulatorPackWhole at 0x14044.",
+    "ident": "advanceTickAccumulatorPackWholeStub"
+  },
+  "0x00218": {
+    "name": "jump slot 42 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 42, and it reaches drawDownAllowance at 0x14104.",
+    "ident": "drawDownAllowanceStub"
+  },
+  "0x0021e": {
+    "name": "jump slot 43 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 43, and it reaches takeCountTicksAccumulatorIf at 0x14138.",
+    "ident": "takeCountTicksAccumulatorIfStub"
+  },
+  "0x00224": {
+    "name": "jump slot 44 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 44, and it reaches clearAllowanceBytes at 0x141c4.",
+    "ident": "clearAllowanceBytesStub"
+  },
+  "0x0022a": {
+    "name": "jump slot 45 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 45, and it reaches soundEnableCheck at 0x141d4.",
+    "ident": "soundEnableCheckStub"
+  },
+  "0x00230": {
+    "name": "jump slot 46 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 46, and it reaches divideCounterByOption at 0x14230.",
+    "ident": "divideCounterByOptionStub"
+  },
+  "0x00236": {
+    "name": "jump slot 47 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 47, and it reaches pushByteIntoSecondRing at 0x1a0cc.",
+    "ident": "pushByteIntoSecondRingStub"
+  },
+  "0x0023c": {
+    "name": "jump slot 48 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 48, and it reaches initialiseSixteenRecordsTheirRings at 0x19f3e.",
+    "ident": "initialiseSixteenRecordsTheirRingsStub"
+  },
+  "0x00242": {
+    "name": "jump slot 49 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 49, and it reaches audioVideoReset at 0x1684c.",
+    "ident": "audioVideoResetStub"
+  },
+  "0x00248": {
+    "name": "jump slot 50 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 50, and it reaches drawTextAtCellCoordinates at 0x18b76.",
+    "ident": "drawTextAtCellCoordinatesStub"
+  },
+  "0x0024e": {
+    "name": "jump slot 51 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 51, and it reaches formatNumberThenDraw at 0x18b26.",
+    "ident": "formatNumberThenDrawStub"
+  },
+  "0x00254": {
+    "name": "jump slot 52 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 52, and it reaches soundCallThreeLongArgs at 0x18b5c.",
+    "ident": "soundCallThreeLongArgsStub"
+  },
+  "0x0025a": {
+    "name": "jump slot 53 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 53, and it reaches plotChainStringsCallerS at 0x190da.",
+    "ident": "plotChainStringsCallerSStub"
+  },
+  "0x00260": {
+    "name": "jump slot 54 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 54, and it reaches formatNumberSeparatorsIntoLocal at 0x1908a.",
+    "ident": "formatNumberSeparatorsIntoLocalStub"
+  },
+  "0x00266": {
+    "name": "jump slot 55 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 55, and it reaches formatNumberPowerTwoBase at 0x190c0.",
+    "ident": "formatNumberPowerTwoBaseStub"
+  },
+  "0x0026c": {
+    "name": "jump slot 56 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 56, and it reaches soundFlagClear at 0x183f2.",
+    "ident": "soundFlagClearStub"
+  },
+  "0x00272": {
+    "name": "jump slot 57 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 57, and it reaches voiceIndexClamp at 0x15830.",
+    "ident": "voiceIndexClampStub"
+  },
+  "0x00278": {
+    "name": "jump slot 58 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 58, and it reaches countOneOfCounterThirteen at 0x15858.",
+    "ident": "countOneOfCounterThirteenStub"
+  },
+  "0x0027e": {
+    "name": "jump slot 59 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 59, and it reaches trapHalt at 0x19c2e.",
+    "ident": "trapHaltStub"
+  },
+  "0x00286": {
+    "name": "jump slot 61 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 61, and it reaches soundCallTwoLongArgs at 0x18afe.",
+    "ident": "soundCallTwoLongArgsStub"
+  },
+  "0x0028c": {
+    "name": "jump slot 62 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 62, and it reaches formatScaledAndDraw at 0x19054.",
+    "ident": "formatScaledAndDrawStub"
+  },
+  "0x00292": {
+    "name": "jump slot 63 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 63, and it reaches coinCounterPulse at 0x13cda.",
+    "ident": "coinCounterPulseStub"
+  },
+  "0x00300": {
+    "name": "jump slot 81 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 81, and it reaches kickWatchdogAndStampBlock at 0x003ea.",
+    "ident": "kickWatchdogAndStampBlockStub"
+  },
+  "0x00306": {
+    "name": "jump slot 82 of the entry table",
+    "why": "The ROM opens with a table of six-byte jump slots, 0x118 to 0x306, one instruction each. A slot is a STABLE ADDRESS: callers reach the routine through the fixed slot, so the target can be moved or relinked without any caller changing, which is what a table like this is for. The slot's position is therefore part of the interface and not an accident of layout. This is slot 82, and it reaches vblankGateTick at 0x00580.",
+    "ident": "vblankGateTickStub"
+  },
+  "0x0042a": {
+    "name": "trampoline to resetSequenceElevenCalls",
+    "why": "a lone six-byte trampoline outside the entry table at 0x118-0x306, reaching resetSequenceElevenCalls at 0x09188. Kept apart from the table because its address carries no slot index.",
+    "ident": "resetSequenceElevenCallsStub"
+  },
+  "0x1365c": {
+    "name": "trampoline to clearAllRamKickingWatchdog",
+    "why": "a lone six-byte trampoline outside the entry table at 0x118-0x306, reaching clearAllRamKickingWatchdog at 0x1310c. Kept apart from the table because its address carries no slot index.",
+    "ident": "clearAllRamKickingWatchdogStub"
+  },
+  "0x066d2": {
+    "name": "enter the board walk laying cell value five",
+    "why": "two bytes, `moveq #$5,d4`, falling straight into the join at 0x66d4 that the nibble walk shares - so it is the entry that starts the walk with five as the cell value rather than a nibble off the stream. It was called doesNothing1 by the rule that treats a two-byte routine as a bare rts, which did not check: its first word is 0x7805, not 0x4E75.",
+    "ident": "layBoardWalkFromFive"
   }
 }

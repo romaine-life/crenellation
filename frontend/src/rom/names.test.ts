@@ -225,7 +225,19 @@ describe('names', () => {
     // by a jump table or a tail jump has no caller to be named after and no
     // purpose anyone has read, so these move by reading - which is why they
     // are floors rather than assertions.
-    expect(unstated).toBeLessThanOrEqual(base.unstatedPurpose ?? 0);
+    // REACHED 2026-08-02, so asserted. Every routine in the image has a
+    // purpose written down in names.curated.json or manual_names.json - the
+    // 1,187 include the ROM's own entry table, where a slot's `why` records
+    // what a table of six-byte jump slots is FOR: the slot is a stable address
+    // so its target can move without any caller changing, which makes the
+    // slot's position part of the interface rather than an accident.
+    //
+    // The last one was a lie rather than a gap. 0x66D2 was called
+    // `doesNothing1` by the rule that treats a two-byte routine as a bare
+    // rts - which did not check the bytes. Its first word is 0x7805, `moveq
+    // #$5,d4`, and it falls into the board walk's join: the entry that starts
+    // the walk with five as the cell value. idents.py now requires 0x4E75.
+    expect(unstated).toBe(0);
     expect(suffixOnly).toBeLessThanOrEqual(base.suffixOnlyNames ?? 0);
 
     // REACHED, so asserted rather than ratcheted, for the same reason
