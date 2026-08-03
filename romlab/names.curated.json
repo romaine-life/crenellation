@@ -3245,5 +3245,115 @@
     "name": "find a free slot among four and fill it",
     "why": "walks down from 0x19(a2)+3 in the state block at 0x3e3400 looking for a clear byte, and the kind the caller chose is what goes in.",
     "ident": "claimSlotSharedBody"
+  },
+  "0x061a8": {
+    "name": "lay the cell and step back",
+    "why": "the value masked to its low six bits with the owner's 0xc0 or'd in, then one cell back - the same lay every walk of this shape does, with nothing else.",
+    "ident": "claimCellLayOnly"
+  },
+  "0x066e0": {
+    "name": "wrap to the next column when the row reaches thirty",
+    "why": "0x1e is the board's 30 rows; when the row byte hits it the screen pointer is wound back 0x1e000 and eight forward, which is one column across.",
+    "ident": "cellScanRowEnd"
+  },
+  "0x0d440": {
+    "name": "drop the countdown, and step shots and units in phase four",
+    "why": "the countdown at (a3) always drops; the two calls happen only when the phase byte at (a2) is 4.",
+    "ident": "battleTickShotsWhenPhaseFour"
+  },
+  "0x130d2": {
+    "name": "run the second RAM chain and judge its answer",
+    "why": "sets the continuation and branches into ramTestSPassSequence, then tests what comes back.",
+    "ident": "memoryTestRunPassChain"
+  },
+  "0x18902": {
+    "name": "finish the slot loop and return",
+    "why": "the dbra that closes the four-slot walk, then the restore and rts.",
+    "ident": "glyphSlotLoopEnd"
+  },
+  "0x1ac3c": {
+    "name": "advance the script pointer by field 0x5d times four less one",
+    "why": "shifts the byte at 0x5d left two and takes one off before adding it to the pointer at 4(a2) - a relative jump whose distance is a field.",
+    "ident": "advanceScriptByFieldTimesFour"
+  },
+  "0x011de": {
+    "name": "strip the owner off the cell, then step",
+    "why": "guarded on the flag in d2; an andi.b of 0x3f through the pointer at -4(a6) keeps the kind and clears the owner's two bits.",
+    "ident": "callPlayerHandlerStripOwner"
+  },
+  "0x01aea": {
+    "name": "post one event for every player whose status word says it is live",
+    "why": "walks the array at 0x3e1968 with the record at 0x11aee, the 0x30c stride between the two pointers it writes into fields 0x6e and 0x72, and counts what it posted.",
+    "ident": "postEventToEveryLivePlayer"
+  },
+  "0x022ba": {
+    "name": "spawn an entity for each of the three players",
+    "why": "the array at 0x3e1968 in a3 with a count of three, a kind of one, and the table at 0x3e02d8 in a2; the answer is how many it spawned.",
+    "ident": "spawnEntityForEachPlayer"
+  },
+  "0x025c2": {
+    "name": "work out the wall's neighbours and draw its column",
+    "why": "reads its three arguments off the stack, hands the cell address to wallCellSet, and passes what comes back to decompressOneColumnAdvancing as the graphic.",
+    "ident": "wallCellSetAndDrawColumn"
+  },
+  "0x037e8": {
+    "name": "run the cell walk over the whole board",
+    "why": "pushes the board's own limits - 0x1d rows and 0x29 columns, both the last index rather than the count - with zeros for the rest, so this is the walk applied to everything.",
+    "ident": "redrawWholeBoard"
+  },
+  "0x039c2": {
+    "name": "take the unit's colour from the owner-to-colour table",
+    "why": "splits the cell byte into its kind and its owner and uses the owner to index 0xfe02, the same table drawPanelPlayerNothingNegative reads.",
+    "ident": "spawnLookUpColourByOwner"
+  },
+  "0x04c80": {
+    "name": "schedule the palette effect with three, three and one",
+    "why": "keeps schedulePaletteEffectOne's address in a2 and pushes a fixed argument set - 3, 3, 1 - so what it is is entirely in those constants. Given an explicit ident because 0x0c95e's prose camelises to the same five words, and a collision there costs BOTH names: idents.py drops them and the other routine fell all the way back to fn_0c95e.",
+    "ident": "schedulePaletteEffectThreeThreeOne"
+  },
+  "0x04e82": {
+    "name": "walk the player state with a table and a handler",
+    "why": "the table at 0x1f5f0 and the routine at 0xc8de, with the record at 0x3e0e7e - a pairing this file uses nowhere else.",
+    "ident": "playerStateWalkWithTwoTables"
+  },
+  "0x0522e": {
+    "name": "turn the current player's record into a table offset",
+    "why": "follows 0x3e1960 to the current player, takes the pointer at 0x42 and hands it to offsetRecordTableBase with the table at 0x1fae4.",
+    "ident": "currentPlayerRecordOffset"
+  },
+  "0x05d8c": {
+    "name": "halt the machine unless the level argument is above seven",
+    "why": "subtracts seven and returns without doing anything if the result is not positive; the 68000's interrupt levels stop at seven, so this is the guard on an out-of-range one.",
+    "ident": "haltUnlessLevelAboveSeven"
+  },
+  "0x06154": {
+    "name": "draw the cell's owner, then step to the previous row",
+    "why": "one call to cellOwnerDraw with a one, then the backwards row step - the only case in this walk that draws.",
+    "ident": "claimCellDrawOwnerThenRow"
+  },
+  "0x064c8": {
+    "name": "drop the pushed word and step to the next row",
+    "why": "the return path for the cases that pushed a single coordinate.",
+    "ident": "placementDropTwoAndNextRow"
+  },
+  "0x0704e": {
+    "name": "step the flier's position and age it",
+    "why": "gives up when the sprite pointer at 0x16(a2) is null; otherwise it counts the frame and adds the velocity words at 6 and 0xa into the 16.6 fixed-point position.",
+    "ident": "flierStepPositionAndAge"
+  },
+  "0x09d8c": {
+    "name": "set the timer to fifteen and draw two lines",
+    "why": "phaseTimerSet with 0xf and two calls to textLineDraw - the pair that holds an award on screen.",
+    "ident": "awardTimerAndTwoLines"
+  },
+  "0x18b92": {
+    "name": "decompress a tile straight to a screen address",
+    "why": "adds the offset to 0x200004 itself rather than taking a coordinate, which is what separates it from the entry that builds the address from a row and a column.",
+    "ident": "decompressTileAtScreenAddress"
+  },
+  "0x1ad46": {
+    "name": "take the sign-extended value off word 0x1c and mark it changed",
+    "why": "the arithmetic and then `ori.b #1,(a4)` - the driver's change byte - where the entry above it does the same without the mark.",
+    "ident": "subtractExtendedFromWord1CAndMark"
   }
 }

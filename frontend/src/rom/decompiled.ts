@@ -7842,7 +7842,7 @@ export function callPlayerSHandlerThen(dst_: number, ptr2_: number, unused_: num
   setReg('d2', unused);
 }
 
-export function callPlayerSHandlerThenFrom1(dst_: number, ptr_: number, unused_: number): void {
+export function callPlayerHandlerStripOwner(dst_: number, ptr_: number, unused_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -11853,7 +11853,7 @@ export function averageOverActivePlayers(index_: number, kind_: number, player_:
   setReg('d4', player);
 }
 
-export function eventPostWrapper(count_: number, posted_: number): void {
+export function postEventToEveryLivePlayer(count_: number, posted_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -16448,7 +16448,7 @@ export function initialisePlayerStructs(index2_: number, zero_: number): void {
   setReg('d5', zero);
 }
 
-export function entitySpawnWrapper(ptr_: number, index_: number, found_: number): void {
+export function spawnEntityForEachPlayer(ptr_: number, index_: number, found_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -17695,7 +17695,7 @@ export function wallCellSet(unused_: number, wantByte_: number, ownerBits_: numb
   setReg('d3', neighbours);
 }
 
-export function wallCellSetFrom1(wantByte_: number, cellAt: number, at: number, paletteBase: number): void {
+export function wallCellSetAndDrawColumn(wantByte_: number, cellAt: number, at: number, paletteBase: number): void {
   let _guard = 0;
   void _guard;
   let unused = getReg('d0');
@@ -25132,7 +25132,7 @@ export function blitOneFixedGraphicPlayfield(): void {
   return;
 }
 
-export function boardCellRunRendererWrapper(): void {
+export function redrawWholeBoard(): void {
   let _guard = 0;
   void _guard;
   let t0 = 0;
@@ -25926,7 +25926,7 @@ export function unitSpawnPlacement(unused2_: number, dst_: number, ptr_: number,
   setReg('d6', cellAddr);
 }
 
-export function unitSpawnPlacementFrom1(dst_: number, unused_: number, ownerColours_: number, unused2_: number, unused3_: number): void {
+export function spawnLookUpColourByOwner(dst_: number, unused_: number, ownerColours_: number, unused2_: number, unused3_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a1');
@@ -34965,7 +34965,7 @@ export function levelIntroSequence(record_: number): void {
   setReg('a2', record);
 }
 
-export function runPaletteSequenceTableWrapper(dst2_: number): void {
+export function schedulePaletteEffectThreeThreeOne(dst2_: number): void {
   let _guard = 0;
   void _guard;
   let dst2 = dst2_;
@@ -35496,7 +35496,7 @@ export function fadeBankEightLevelS(record_: number, unused_: number): void {
   setReg('d0', unused);
 }
 
-export function copySixteenWordsWrapper(src_: number, preserved_: number, index_: number, value_: number, index2_: number, index3: number): void {
+export function playerStateWalkWithTwoTables(src_: number, preserved_: number, index_: number, value_: number, index2_: number, index3: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -36799,7 +36799,7 @@ export function chooseCursorSShapeWhat(shape_: number, left_: number): void {
   setReg('d1', left);
 }
 
-export function offsetRecordTableBaseWrapper(count_: number, unused_: number, unused2_: number): void {
+export function currentPlayerRecordOffset(count_: number, unused_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -41419,7 +41419,7 @@ export function resetDisplayListCountersNew(ptr_: number, index_: number, value_
   setReg('d3', counter);
 }
 
-export function haltEveryInterruptMaskedWrapper(index_: number, level: number): void {
+export function haltUnlessLevelAboveSeven(index_: number, level: number): void {
   let _guard = 0;
   void _guard;
   let index = index_;
@@ -43150,7 +43150,7 @@ export function claimCellPlayerRedrawNeighbour(dst2_: number, ptr_: number, dst3
   setReg('d5', cellAddr);
 }
 
-export function claimCellPlayerRedrawNeighbourFrom1(ptr_: number): void {
+export function claimCellDrawOwnerThenRow(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -43330,7 +43330,7 @@ export function claimCellAndPassOnWhenNeighbourIs1A(dst2_: number, ptr_: number,
   setReg('d5', cellAddr);
 }
 
-export function claimCellAndPassOnWhenNeighbourIs1AFrom1(ptr_: number, cellValue_: number, ownerBits_: number, cellAddr_: number): void {
+export function claimCellLayOnly(ptr_: number, cellValue_: number, ownerBits_: number, cellAddr_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a5');
@@ -46361,7 +46361,7 @@ export function placementLayAndNotify2B74(dst3_: number, unused_: number, preser
   setReg('d6', endMark);
 }
 
-export function placementNotifyOneFrom3(src_: number, record_: number, eventRef_: number, altGraphics_: number, writeAt_: number, dst2_: number, unused_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementDropTwoAndNextRow(src_: number, record_: number, eventRef_: number, altGraphics_: number, writeAt_: number, dst2_: number, unused_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -48427,7 +48427,7 @@ export function tailFullScreenCellScan(cellAt_: number, dst2_: number, unused_: 
   setReg('d5', screenAt);
 }
 
-export function tailFullScreenCellScanFrom1(cellAt_: number, dst_: number, unused_: number, unused2_: number, unused3_: number, cellValue_: number, screenAt_: number): void {
+export function cellScanRowEnd(cellAt_: number, dst_: number, unused_: number, unused2_: number, unused3_: number, cellValue_: number, screenAt_: number): void {
   let _guard = 0;
   void _guard;
   let cellAt = cellAt_;
@@ -53511,7 +53511,7 @@ export function stepEveryShotFlightDraw(ptr2_: number, ptr_: number, index_: num
   setReg('d6', d6);
 }
 
-export function stepEveryShotFlightDrawFrom1(ptr2_: number, dst_: number, startCue_: number, ptr_: number, dst3_: number, limit_: number, index_: number): void {
+export function flierStepPositionAndAge(ptr2_: number, dst_: number, startCue_: number, ptr_: number, dst3_: number, limit_: number, index_: number): void {
   let _guard = 0;
   void _guard;
   let ptr2 = ptr2_;
@@ -74473,7 +74473,7 @@ export function setGameStateThenTimer(): void {
   return;
 }
 
-export function setGameStateThenTimerFrom1(): void {
+export function awardTimerAndTwoLines(): void {
   let _guard = 0;
   void _guard;
   let t0 = 0;
@@ -101409,7 +101409,7 @@ export function runBattlePhaseSTick(dst_: number, preserved_: number, unused_: n
   setReg('d2', unused2);
 }
 
-export function runBattlePhaseSTickFrom1(ptr_: number, dst_: number, limit_: number, unused_: number): void {
+export function battleTickShotsWhenPhaseFour(ptr_: number, dst_: number, limit_: number, unused_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -110544,7 +110544,7 @@ export function phaseAdvanceHelper(dst4_: number, dst_: number, index_: number, 
   setReg('d0', index);
 }
 
-export function optionBitTestWrapper(): void {
+export function helperMainGameStateMachine(): void {
   let _guard = 0;
   void _guard;
   let t0 = 0;
@@ -111545,7 +111545,7 @@ export function twoPlayerDrawGate(width2_: number, lastColumn_: number, limit: n
   setReg('d3', lastColumn);
 }
 
-export function walkRectWith11EE6Wrapper(kind_: number, unused_: number, dst3: number): void {
+export function framebufferDraw(kind_: number, unused_: number, dst3: number): void {
   let _guard = 0;
   void _guard;
   let dst2 = getReg('a0');
@@ -124463,7 +124463,7 @@ export function runOneMemoryTestInterrupts(at_: number, regionStart_: number, re
   setReg('d7', startBit);
 }
 
-export function runOneMemoryTestInterruptsFrom1(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, returnTo_: number, tableCursor_: number, nextStep_: number, expected_: number, walkingBit_: number, failed_: number, preserved_: number, background_: number, passCount_: number, startBit_: number): void {
+export function memoryTestRunPassChain(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, returnTo_: number, tableCursor_: number, nextStep_: number, expected_: number, walkingBit_: number, failed_: number, preserved_: number, background_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let at = at_;
@@ -165073,7 +165073,7 @@ export function runSlotSRecordHandler(ptr_: number, index_: number, count_: numb
   setReg('d3', preserved);
 }
 
-export function runSlotSRecordHandlerFrom1(preserved_: number, count_: number, preserved2_: number): void {
+export function glyphSlotLoopEnd(preserved_: number, count_: number, preserved2_: number): void {
   let _guard = 0;
   void _guard;
   let preserved = preserved_;
@@ -166056,7 +166056,7 @@ export function drawTextAtCellCoordinates(column: number, row: number, record: n
   return;
 }
 
-export function decompressTileIdWrapper(src_: number, kind_: number, kind2_: number, flag2_: number, flag_: number): void {
+export function decompressTileAtScreenAddress(src_: number, kind_: number, kind2_: number, flag2_: number, flag_: number): void {
   let _guard = 0;
   void _guard;
   let src = src_;
@@ -180349,7 +180349,7 @@ export function readThreeByteBigEndian(dst_: number, index_: number): void {
   setReg('d3', index);
 }
 
-export function readThreeByteBigEndianFrom1(dst_: number): void {
+export function advanceScriptByFieldTimesFour(dst_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -180835,7 +180835,7 @@ export function subtractSignExtendedField5DFromWord1C(dst_: number, dst2_: numbe
   setReg('d1', field5D);
 }
 
-export function subtractSignExtendedField5DFromWord1CFrom1(dst_: number, dst2_: number, field5D_: number): void {
+export function subtractExtendedFromWord1CAndMark(dst_: number, dst2_: number, field5D_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -189129,7 +189129,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x011c6, fn: callPlayerSHandlerThen as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x011de, fn: callPlayerSHandlerThenFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x011de, fn: callPlayerHandlerStripOwner as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x011ea, fn: boardRunNextRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
@@ -189183,7 +189183,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x01a70, fn: averageOverActivePlayers as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x01aea, fn: eventPostWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x01aea, fn: postEventToEveryLivePlayer as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x01b46, fn: clearAllEightRegisteredHandlers as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
@@ -189213,7 +189213,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x02248, fn: initialisePlayerStructs as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x022ba, fn: entitySpawnWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x022ba, fn: spawnEntityForEachPlayer as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x02300, fn: clearPlayfieldFirstPaletteEntry as (...a: number[]) => void, params: [] },
 
@@ -189223,7 +189223,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0255c, fn: wallCellSet as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x025c2, fn: wallCellSetFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
+  { at: 0x025c2, fn: wallCellSetAndDrawColumn as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
   { at: 0x025f4, fn: cellPairDraw as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -189305,13 +189305,13 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x037d2, fn: blitOneFixedGraphicPlayfield as (...a: number[]) => void, params: [] },
 
-  { at: 0x037e8, fn: boardCellRunRendererWrapper as (...a: number[]) => void, params: [] },
+  { at: 0x037e8, fn: redrawWholeBoard as (...a: number[]) => void, params: [] },
 
   { at: 0x03802, fn: levelDataLoad as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x038b0, fn: unitSpawnPlacement as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x039c2, fn: unitSpawnPlacementFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x039c2, fn: spawnLookUpColourByOwner as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x03a08, fn: eventIdDispatch as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
@@ -189423,7 +189423,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x04bfa, fn: levelIntroSequence as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x04c80, fn: runPaletteSequenceTableWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x04c80, fn: schedulePaletteEffectThreeThreeOne as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
   { at: 0x04d44, fn: runPaletteSequenceTable as (...a: number[]) => void, params: [] },
 
@@ -189435,7 +189435,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x04e20, fn: fadeBankEightLevelS as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x04e82, fn: copySixteenWordsWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
+  { at: 0x04e82, fn: playerStateWalkWithTwoTables as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
 
   { at: 0x04f8c, fn: copySixteenWords as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -189457,7 +189457,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x05192, fn: chooseCursorSShapeWhat as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
-  { at: 0x0522e, fn: offsetRecordTableBaseWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0522e, fn: currentPlayerRecordOffset as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x05280, fn: currentPlayerLookup as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
@@ -189527,7 +189527,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x05cce, fn: resetDisplayListCountersNew as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x05d8c, fn: haltEveryInterruptMaskedWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
+  { at: 0x05d8c, fn: haltUnlessLevelAboveSeven as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
   { at: 0x05dea, fn: doNothing5DEA as (...a: number[]) => void, params: [] },
 
@@ -189555,11 +189555,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x06114, fn: claimCellPlayerRedrawNeighbour as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x06154, fn: claimCellPlayerRedrawNeighbourFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x06154, fn: claimCellDrawOwnerThenRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
   { at: 0x06166, fn: claimCellAndPassOnWhenNeighbourIs1A as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x061a8, fn: claimCellAndPassOnWhenNeighbourIs1AFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x061a8, fn: claimCellLayOnly as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x061bc, fn: claimCellAndPassOnWhenNeighbourIs1AFrom2 as (...a: number[]) => void, params: [] },
 
@@ -189587,7 +189587,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x064b4, fn: placementLayAndNotify2B74 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x064c8, fn: placementNotifyOneFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x064c8, fn: placementDropTwoAndNextRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x064ce, fn: placementCheckThenLayAndNotify2A5C as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
@@ -189625,7 +189625,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x066d4, fn: tailFullScreenCellScan as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x066e0, fn: tailFullScreenCellScanFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x066e0, fn: cellScanRowEnd as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x066fa, fn: tailFullScreenCellScanFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
@@ -189657,7 +189657,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x07004, fn: stepEveryShotFlightDraw as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd1' }] },
 
-  { at: 0x0704e, fn: stepEveryShotFlightDrawFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+  { at: 0x0704e, fn: flierStepPositionAndAge as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x071c4, fn: dispatchCursorCode11Or30 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }] },
 
@@ -189855,7 +189855,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x09d80, fn: setGameStateThenTimer as (...a: number[]) => void, params: [] },
 
-  { at: 0x09d8c, fn: setGameStateThenTimerFrom1 as (...a: number[]) => void, params: [] },
+  { at: 0x09d8c, fn: awardTimerAndTwoLines as (...a: number[]) => void, params: [] },
 
   { at: 0x09db2, fn: awardDropTwentyAndContinue as (...a: number[]) => void, params: [] },
 
@@ -190111,7 +190111,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0d43a, fn: runBattlePhaseSTick as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x0d440, fn: runBattlePhaseSTickFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0d440, fn: battleTickShotsWhenPhaseFour as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x0d45c, fn: runBattlePhaseSTickFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
@@ -190189,7 +190189,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0e98c, fn: phaseAdvanceHelper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x0ea46, fn: optionBitTestWrapper as (...a: number[]) => void, params: [] },
+  { at: 0x0ea46, fn: helperMainGameStateMachine as (...a: number[]) => void, params: [] },
 
   { at: 0x0ea68, fn: workOutStoreCarryOver as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
@@ -190211,7 +190211,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0ecb0, fn: twoPlayerDrawGate as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x0ecfa, fn: walkRectWith11EE6Wrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
+  { at: 0x0ecfa, fn: framebufferDraw as (...a: number[]) => void, params: [{ from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
 
   { at: 0x0ed8e, fn: drawPanelGraphicSlotFixed as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -190425,7 +190425,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x130b0, fn: runOneMemoryTestInterrupts as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x130d2, fn: runOneMemoryTestInterruptsFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x130d2, fn: memoryTestRunPassChain as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
   { at: 0x130dc, fn: runOneMemoryTestInterruptsFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
@@ -190833,7 +190833,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x188f8, fn: runSlotSRecordHandler as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x18902, fn: runSlotSRecordHandlerFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x18902, fn: glyphSlotLoopEnd as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x18906, fn: runSlotSRecordHandlerFrom2 as (...a: number[]) => void, params: [] },
 
@@ -190859,7 +190859,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x18b76, fn: drawTextAtCellCoordinates as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
-  { at: 0x18b92, fn: decompressTileIdWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x18b92, fn: decompressTileAtScreenAddress as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x18c3c, fn: takePointerWidthCountThen as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
@@ -191151,7 +191151,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1ac02, fn: readThreeByteBigEndian as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x1ac3c, fn: readThreeByteBigEndianFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x1ac3c, fn: advanceScriptByFieldTimesFour as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
   { at: 0x1ac98, fn: readThreeByteBigEndianFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
@@ -191169,7 +191169,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1ad42, fn: subtractSignExtendedField5DFromWord1C as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd1' }] },
 
-  { at: 0x1ad46, fn: subtractSignExtendedField5DFromWord1CFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd1' }] },
+  { at: 0x1ad46, fn: subtractExtendedFromWord1CAndMark as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x1ad4c, fn: subtractSignExtendedField5DFromWord1CFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }] },
 
