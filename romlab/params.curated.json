@@ -989,6 +989,10 @@
     "stack4": {
       "name": "timesLessOne",
       "why": "only its low word, at 6(a7), used as a dbra counter - so the wait happens one MORE time than the number says, and a zero still waits once."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "0x193e6 assigns it the word at (a0) before anything reads it - the routine reads that word back to check the write landed."
     }
   },
   "0x193c6": {
@@ -6329,6 +6333,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01526 is `move.w d4, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d4": {
+      "name": "flags",
+      "why": "0x1518 assigns it the flag word at 0x3e0dc8, which the routine then walks bit by bit - the caller's value is never read."
     }
   },
   "0x1584": {
@@ -7253,6 +7261,10 @@
     "d2": {
       "name": "limit",
       "why": "the routine writes it exactly once, with the constant 0x2a, and every other instruction that touches it is a cmp - so it holds that constant throughout and is used only as a limit."
+    },
+    "d6": {
+      "name": "handled",
+      "why": "cleared at the start of the walk, stepped once per item and moved into d0 at the end - the count the routine returns, not anything the caller passed."
     }
   },
   "0x4f8c": {
@@ -7827,6 +7839,10 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x13f84 is `moveq #$b, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x13f68 is moveq #0xff,d0 before anything reads it."
     }
   },
   "0x14ff2": {
@@ -8125,6 +8141,10 @@
     "d1": {
       "name": "index",
       "why": "0x0b3f4 is `pea.l (a0, d1.l)` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d2": {
+      "name": "unused",
+      "why": "0x1b3ba assigns it the word at 0xe(a7) in the routine's second instruction."
     }
   },
   "0xc3e8": {
@@ -9165,6 +9185,44 @@
     "d6": {
       "name": "scanned",
       "why": "cleared at the start of the walk and counted up once per step, then moved into d0 as the routine's answer - the count it returns, not anything the caller passed."
+    }
+  },
+  "0x6114": {
+    "d4": {
+      "name": "ownerBits",
+      "why": "the only thing done with it is `or.b d4,d2` at 0x612a, after d2 has been masked to its low six bits - so it supplies the cell's 0xc0 owner bits, as in every other walk of this shape."
+    },
+    "d5": {
+      "name": "cellAddr",
+      "why": "movea.l d5,a0 then subq.l #1,d5 at 0x6122 - the backwards board walk placementValidate runs."
+    }
+  },
+  "0xd74e": {
+    "d3": {
+      "name": "player",
+      "why": "cleared at 0xd75e, stepped at 0xd78c and bounded at 3 at 0xd790 - it numbers the three players the routine walks."
+    }
+  },
+  "0x60be": {
+    "d5": {
+      "name": "cellAddr",
+      "why": "movea.l d5,a5 then subq.l #1,d5 at 0x60e4 - the backwards walk, as its forwards twin at 0x63ca writes through the same register."
+    }
+  },
+  "0x63ca": {
+    "d5": {
+      "name": "cellValue",
+      "why": "0x63f2 stores it through (a5)+ - the byte this forwards twin lays down, where the backwards one at 0x60be carries an address in the same register."
+    }
+  },
+  "0x1980": {
+    "d0": {
+      "name": "unused",
+      "why": "0x1984 assigns it the word at 0x16(a7) in the routine's second instruction."
+    },
+    "d4": {
+      "name": "pointed",
+      "why": "cleared at the start of the walk, stepped once per item and moved into d0 at the end - the count the routine returns, not anything the caller passed."
     }
   }
 }
