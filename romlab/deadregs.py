@@ -35,7 +35,7 @@ the first 111 when it was found. `movea` is the exception both ways: it
 sign-extends into the whole address register, so `movea.w` IS a full kill.
 `add`, `or`, `and`, `sub` and the rest read the destination and never count.
 
-Three questions in the end, each with its own scope, and the scope is the whole
+Four questions in the end, each with its own scope, and the scope is the whole
 difference between a sound answer and a plausible one:
 
   dead on arrival   the straight line from the entry, as above. Unconditional
@@ -44,6 +44,13 @@ difference between a sound answer and a plausible one:
                     Every way of not knowing counts AGAINST: a call (the callee
                     might read it), a return, an unresolved target, a loop back
                     to a block already on the path, running off the end.
+  no branch skips it  the first thing in the routine that mentions the register
+                    is a kill, and no branch target in the extent lands between
+                    that kill and the register's last mention. Reaching a read
+                    without passing the kill would mean branching over it, and
+                    nothing does. No path walking at all, and it reaches the
+                    cases the walk above gives up on because they run through a
+                    call - 59 of them.
   preserved         every appearance of the register in what this entry can
                     REACH is inside a movem. Not the whole extent - a handler
                     block reached through a jump table is one routine among ten
@@ -363,6 +370,31 @@ def main():
         for reg in sorted(want - set(dead)):
             if killed_everywhere(md, image, a, lo, hi, reg, line):
                 dead[reg] = (a, None, None)
+
+        # ...and once more without walking paths at all. If the FIRST thing in
+        # the routine that mentions the register is a kill, the only way to
+        # reach a read without passing it is to branch over it - so collect
+        # every branch target in the extent and check that none lands between
+        # the kill and the last mention. Cheap, and it reaches the cases the
+        # path walk gives up on because they run through a call.
+        targets = set()
+        for i in line:
+            if transfers(i.mnemonic):
+                mt = BRANCH.search(i.op_str.strip())
+                targets.add(int(mt.group(1), 16) if mt else -1)
+        for reg in sorted(want - set(dead)):
+            uses = [i for i in line if mentions(i, reg) and i.address >= a
+                    and not i.mnemonic.startswith("movem")]
+            if not uses:
+                continue
+            k = uses[0]
+            size = kills(k, reg)
+            if not (size == "l" or (size in ("w", "b")
+                                    and narrow(line, reg, size))):
+                continue
+            if any(k.address < t <= uses[-1].address for t in targets):
+                continue
+            dead[reg] = (k.address, k.mnemonic, k.op_str)
 
         near, blind = reachable(md, image, a, lo, hi)
         for reg in sorted(want - set(dead)):
