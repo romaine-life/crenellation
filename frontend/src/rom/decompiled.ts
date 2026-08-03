@@ -45949,7 +45949,7 @@ export function writeCellAndNotifyOnTwo(dst2_: number, ptr_: number, dst3_: numb
   setReg('d5', ownerBits);
 }
 
-export function placementCommit(dst2_: number, index_: number, owner_: number, cellValue_: number, byte_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementNotifyOne(dst2_: number, index_: number, owner_: number, cellValue_: number, byte_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -46177,7 +46177,7 @@ export function placementCommit(dst2_: number, index_: number, owner_: number, c
   setReg('d6', endMark);
 }
 
-export function placementCommitFrom1(src_: number, record_: number, eventRef_: number, altGraphics_: number, writeAt_: number, dst3_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementLayAndCueOnKind1A(src_: number, record_: number, eventRef_: number, altGraphics_: number, writeAt_: number, dst3_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -46505,7 +46505,7 @@ export function placementCommitFrom1(src_: number, record_: number, eventRef_: n
   setReg('d6', endMark);
 }
 
-export function placementCommitFrom2(dst3_: number, unused_: number, preserved_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementLayAndNotify2B74(dst3_: number, unused_: number, preserved_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -46748,7 +46748,7 @@ export function placementCommitFrom2(dst3_: number, unused_: number, preserved_:
   setReg('d6', endMark);
 }
 
-export function placementCommitFrom3(src_: number, record_: number, eventRef_: number, altGraphics_: number, writeAt_: number, dst2_: number, unused_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementNotifyOneFrom3(src_: number, record_: number, eventRef_: number, altGraphics_: number, writeAt_: number, dst2_: number, unused_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -46938,7 +46938,7 @@ export function placementCommitFrom3(src_: number, record_: number, eventRef_: n
   setReg('d6', endMark);
 }
 
-export function placementCommitFrom4(record_: number, dst3_: number, unused_: number, owner_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementCheckThenLayAndNotify2A5C(record_: number, dst3_: number, unused_: number, owner_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -47222,7 +47222,7 @@ export function placementCommitFrom4(record_: number, dst3_: number, unused_: nu
   setReg('d6', endMark);
 }
 
-export function placementCommitFrom5(ptr_: number, cellValue_: number, cellAddr_: number, ownerBits_: number): void {
+export function placementLayAndNotify33F4(ptr_: number, cellValue_: number, cellAddr_: number, ownerBits_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a5');
@@ -47287,7 +47287,7 @@ export function placementCommitFrom5(ptr_: number, cellValue_: number, cellAddr_
   setReg('d5', ownerBits);
 }
 
-export function placementCommitFrom6(record_: number, altGraphics_: number, dst4_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementLayAndDrawColumn(record_: number, altGraphics_: number, dst4_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -47558,7 +47558,7 @@ export function placementCommitFrom6(record_: number, altGraphics_: number, dst4
   setReg('d6', endMark);
 }
 
-export function placementCommitFrom7(dst3_: number, unused_: number, cellValue_: number, count2_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementLayOnly(dst3_: number, unused_: number, cellValue_: number, count2_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -47808,7 +47808,7 @@ export function placementCommitFrom7(dst3_: number, unused_: number, cellValue_:
   setReg('d6', endMark);
 }
 
-export function placementCommitFrom8(src_: number, record_: number, eventRef_: number, altGraphics_: number, writeAt_: number, dst2_: number, unused_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementNextRow(src_: number, record_: number, eventRef_: number, altGraphics_: number, writeAt_: number, dst2_: number, unused_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -47996,7 +47996,7 @@ export function placementCommitFrom8(src_: number, record_: number, eventRef_: n
   setReg('d6', endMark);
 }
 
-export function placementCommitFrom9(ptr_: number, unused_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
+export function placementFinish(ptr_: number, unused_: number, cellValue_: number, kind_: number, cellAddr_: number, ownerBits_: number, endMark_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -190661,25 +190661,25 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x06420, fn: writeCellAndNotifyOnTwo as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x06460, fn: placementCommit as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x06460, fn: placementNotifyOne as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x06472, fn: placementCommitFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x06472, fn: placementLayAndCueOnKind1A as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x064b4, fn: placementCommitFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x064b4, fn: placementLayAndNotify2B74 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x064c8, fn: placementCommitFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x064c8, fn: placementNotifyOneFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x064ce, fn: placementCommitFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x064ce, fn: placementCheckThenLayAndNotify2A5C as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x064ee, fn: placementCommitFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x064ee, fn: placementLayAndNotify33F4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x06504, fn: placementCommitFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x06504, fn: placementLayAndDrawColumn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0653e, fn: placementCommitFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0653e, fn: placementLayOnly as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0655e, fn: placementCommitFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0655e, fn: placementNextRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0657c, fn: placementCommitFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0657c, fn: placementFinish as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x065aa, fn: spanScanner as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 

@@ -2252,5 +2252,50 @@
     "name": "restore the saved registers and return",
     "why": "the block's single epilogue: movem.l (a7)+ of d2-d7 and a2-a3, then rts.",
     "ident": "paletteEffectTickDone"
+  },
+  "0x6460": {
+    "name": "tell 0x2b88 about the cell, with a one",
+    "why": "pushes 1 and the routine's own word argument to 0x2b88 and goes straight to the row tail - the only case that lays no cell of its own.",
+    "ident": "placementNotifyOne"
+  },
+  "0x6472": {
+    "name": "lay the cell, and queue a cue the first time the one below is kind 0x1a",
+    "why": "lays the cell - the value masked to its low six bits with the owner's 0xc0 or'd in - and steps the walk one cell on, which every case in this block does before whatever else it is for. Then it reads the cell one row down and one across - the +0x21 the board's 32-byte rows make - and if that cell's kind is 0x1a it queues a cue through the gate, but only while byte 0x14 of the record is still zero, which it then bumps by two so the cue happens once.",
+    "ident": "placementLayAndCueOnKind1A"
+  },
+  "0x64b4": {
+    "name": "lay the cell and hand the argument to 0x2b74",
+    "why": "lays the cell - the value masked to its low six bits with the owner's 0xc0 or'd in - and steps the walk one cell on, which every case in this block does before whatever else it is for.",
+    "ident": "placementLayAndNotify2B74"
+  },
+  "0x64ce": {
+    "name": "ask 0x6bc0 first, then lay the cell and hand the argument to 0x2a5c",
+    "why": "the only case that calls before it lays: 0x6bc0 gets the record and the word argument, and 0x2a5c gets the argument afterwards. lays the cell - the value masked to its low six bits with the owner's 0xc0 or'd in - and steps the walk one cell on, which every case in this block does before whatever else it is for.",
+    "ident": "placementCheckThenLayAndNotify2A5C"
+  },
+  "0x64ee": {
+    "name": "lay the cell and hand the argument to 0x33f4",
+    "why": "lays the cell - the value masked to its low six bits with the owner's 0xc0 or'd in - and steps the walk one cell on, which every case in this block does before whatever else it is for.",
+    "ident": "placementLayAndNotify33F4"
+  },
+  "0x6504": {
+    "name": "record the coordinate on the record, lay the cell and draw its column",
+    "why": "copies the routine's two-byte word argument into field 0x3c of the record, writes the owner byte straight through with (a5)+, and then calls decompressOneColumnAdvancing with the graphic the 0/1 toggle picks out of the two-word table - the only case that draws.",
+    "ident": "placementLayAndDrawColumn"
+  },
+  "0x653e": {
+    "name": "lay the cell and nothing else",
+    "why": "lays the cell - the value masked to its low six bits with the owner's 0xc0 or'd in - and steps the walk one cell on, which every case in this block does before whatever else it is for.",
+    "ident": "placementLayOnly"
+  },
+  "0x655e": {
+    "name": "step the walk to the next row",
+    "why": "adds 0x1000 to the screen pointer - one cell-row - flips the 0/1 toggle that chooses the graphic, and stops when the cell now under the walk equals the terminator byte.",
+    "ident": "placementNextRow"
+  },
+  "0x657c": {
+    "name": "shift the last block and hand back the coordinate",
+    "why": "calls shiftEightTwoBlockS with the accumulated screen address, copies the two-byte coordinate out of the frame into the caller's record and returns it.",
+    "ident": "placementFinish"
   }
 }
