@@ -6331,7 +6331,7 @@ export function boardCellRunRenderer(belowRightCell_: number, leftCell_: number,
   setReg('d6', lastColumn);
 }
 
-export function boardCellRunRendererFrom1(leftCell_: number, rightCell_: number, dst_: number, limit_: number, column_: number, firstColumn_: number, screenAt_: number): void {
+export function boardRunRowStart(leftCell_: number, rightCell_: number, dst_: number, limit_: number, column_: number, firstColumn_: number, screenAt_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -6546,7 +6546,7 @@ export function boardCellRunRendererFrom1(leftCell_: number, rightCell_: number,
   setReg('d5', screenAt);
 }
 
-export function boardCellRunRendererFrom2(ptr_: number, dst_: number, unused_: number, index_: number, kind_: number): void {
+export function boardRunSkipBorder(ptr_: number, dst_: number, unused_: number, index_: number, kind_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -7885,7 +7885,7 @@ export function callPlayerSHandlerThenFrom1(dst_: number, ptr_: number, unused_:
   setReg('d2', unused);
 }
 
-export function rowStepCellWalk(belowRightCell_: number, leftCell_: number, rightCell_: number, unused_: number, dst_: number, limit_: number, argWasZero_: number, kind_: number, firstColumn_: number, screenAt_: number, lastColumn_: number): void {
+export function boardRunNextRow(belowRightCell_: number, leftCell_: number, rightCell_: number, unused_: number, dst_: number, limit_: number, argWasZero_: number, kind_: number, firstColumn_: number, screenAt_: number, lastColumn_: number): void {
   let _guard = 0;
   void _guard;
   let belowRightCell = belowRightCell_;
@@ -8059,7 +8059,7 @@ export function rowStepCellWalk(belowRightCell_: number, leftCell_: number, righ
   setReg('d6', lastColumn);
 }
 
-export function rowStepCellWalkFrom1(belowRightCell_: number, leftCell_: number, rightCell_: number, unused_: number, dst_: number, limit_: number, argWasZero_: number, kind_: number, firstColumn_: number, screenAt_: number, lastColumn_: number): void {
+export function boardRunColumnDone(belowRightCell_: number, leftCell_: number, rightCell_: number, unused_: number, dst_: number, limit_: number, argWasZero_: number, kind_: number, firstColumn_: number, screenAt_: number, lastColumn_: number): void {
   let _guard = 0;
   void _guard;
   let belowRightCell = belowRightCell_;
@@ -8173,7 +8173,7 @@ export function rowStepCellWalkFrom1(belowRightCell_: number, leftCell_: number,
   setReg('d6', lastColumn);
 }
 
-export function rowStepCellWalkFrom2(belowRightCell_: number, leftCell_: number, rightCell_: number, unused_: number, ptr_: number, limit_: number, argWasZero_: number, kind_: number, firstColumn_: number, screenAt_: number, lastColumn_: number): void {
+export function boardRunRowDone(belowRightCell_: number, leftCell_: number, rightCell_: number, unused_: number, ptr_: number, limit_: number, argWasZero_: number, kind_: number, firstColumn_: number, screenAt_: number, lastColumn_: number): void {
   let _guard = 0;
   void _guard;
   let belowRightCell = belowRightCell_;
@@ -8250,7 +8250,7 @@ export function rowStepCellWalkFrom2(belowRightCell_: number, leftCell_: number,
   setReg('d6', lastColumn);
 }
 
-export function rowStepCellWalkFrom3(ptr_: number): void {
+export function boardRunReturn(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -74508,7 +74508,7 @@ export function setGameStateThenTimerFrom1(): void {
   return;
 }
 
-export function awardRoundCurrentPlayerSet(): void {
+export function awardDropTwentyAndContinue(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(24, 0x09db2) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -74518,7 +74518,7 @@ export function awardRoundCurrentPlayerSet(): void {
   return;
 }
 
-export function awardRoundCurrentPlayerSetFrom1(dst_: number, dst2_: number, ptr_: number, index_: number): void {
+export function awardUnlessThirdRound(dst_: number, dst2_: number, ptr_: number, index_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -74688,7 +74688,7 @@ export function awardRoundCurrentPlayerSetFrom1(dst_: number, dst2_: number, ptr
   setReg('d0', index);
 }
 
-export function awardRoundCurrentPlayerSetFrom2(): void {
+export function awardSetTimerAndDrawLine(): void {
   let _guard = 0;
   void _guard;
   let t0 = 0;
@@ -74721,7 +74721,7 @@ export function awardRoundCurrentPlayerSetFrom2(): void {
   return;
 }
 
-export function awardRoundCurrentPlayerSetFrom3(): void {
+export function awardDealAgainAndClearPosts(): void {
   let _guard = 0;
   void _guard;
   let t0 = 0;
@@ -90633,7 +90633,7 @@ export function allocateTwoByteSlotStamp(src_: number, dst_: number, dst2_: numb
   setReg('d3', byte);
 }
 
-export function walkCurrentRecordSRing(dst3_: number, index2_: number, kind_: number): void {
+export function ringWalkFromField2C(dst3_: number, index2_: number, kind_: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -91463,7 +91463,7 @@ export function walkCurrentRecordSRing(dst3_: number, index2_: number, kind_: nu
   setReg('d2', kind);
 }
 
-export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, rightCell_: number, ptr_: number, kind_: number, firstColumn_: number, screenAt_: number): void {
+export function ringWalkFromField34(dst22_: number, dst3_: number, rightCell_: number, ptr_: number, kind_: number, firstColumn_: number, screenAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -92555,7 +92555,7 @@ export function walkCurrentRecordSRingFrom1(dst22_: number, dst3_: number, right
   setReg('d5', screenAt);
 }
 
-export function walkCurrentRecordSRingFrom2(entry_: number, src_: number, dst2_: number, ptr_: number, ptr2_: number, count_: number, wantArg_: number): void {
+export function ringPostUnlessCounterPositive(entry_: number, src_: number, dst2_: number, ptr_: number, ptr2_: number, count_: number, wantArg_: number): void {
   let _guard = 0;
   void _guard;
   let entry = entry_;
@@ -92930,7 +92930,7 @@ export function walkCurrentRecordSRingFrom2(entry_: number, src_: number, dst2_:
   setReg('d2', wantArg);
 }
 
-export function walkCurrentRecordSRingFrom3(dst_: number, ptr_: number, control_: number, kind_: number, byte_: number): void {
+export function ringWalkAgainstTableFCCA(dst_: number, ptr_: number, control_: number, kind_: number, byte_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -169730,7 +169730,7 @@ export function convertLongDigitsPowerTwo(value: number, width: number, padZeroe
   setReg('d5', d5);
 }
 
-export function convertLongDigitsPowerTwoFrom1(dst_: number, count_: number, value_: number, bitsPerDigit_: number, digitMask_: number, digitBias_: number): void {
+export function hexDigitsFillBackwards(dst_: number, count_: number, value_: number, bitsPerDigit_: number, digitMask_: number, digitBias_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -169852,7 +169852,7 @@ export function convertLongDigitsPowerTwoFrom1(dst_: number, count_: number, val
   setReg('d5', digitBias);
 }
 
-export function convertLongDigitsPowerTwoFrom2(): void {
+export function hexDigitsReturn(): void {
   let _guard = 0;
   void _guard;
   let d2 = getReg('d2');
@@ -189093,9 +189093,9 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x00e4e, fn: boardCellRunRenderer as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 20 }] },
 
-  { at: 0x00e82, fn: boardCellRunRendererFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x00e82, fn: boardRunRowStart as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x00efc, fn: boardCellRunRendererFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x00efc, fn: boardRunSkipBorder as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x00fb4, fn: cellOwnerAndKindSplit as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd5' }] },
 
@@ -189131,13 +189131,13 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x011de, fn: callPlayerSHandlerThenFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x011ea, fn: rowStepCellWalk as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x011ea, fn: boardRunNextRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x01204, fn: rowStepCellWalkFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x01204, fn: boardRunColumnDone as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x01214, fn: rowStepCellWalkFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x01214, fn: boardRunRowDone as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x01222, fn: rowStepCellWalkFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x01222, fn: boardRunReturn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
   { at: 0x0122c, fn: scanWholeBoardCellsType as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
@@ -189857,13 +189857,13 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x09d8c, fn: setGameStateThenTimerFrom1 as (...a: number[]) => void, params: [] },
 
-  { at: 0x09db2, fn: awardRoundCurrentPlayerSet as (...a: number[]) => void, params: [] },
+  { at: 0x09db2, fn: awardDropTwentyAndContinue as (...a: number[]) => void, params: [] },
 
-  { at: 0x09dba, fn: awardRoundCurrentPlayerSetFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x09dba, fn: awardUnlessThirdRound as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x09e48, fn: awardRoundCurrentPlayerSetFrom2 as (...a: number[]) => void, params: [] },
+  { at: 0x09e48, fn: awardSetTimerAndDrawLine as (...a: number[]) => void, params: [] },
 
-  { at: 0x09e74, fn: awardRoundCurrentPlayerSetFrom3 as (...a: number[]) => void, params: [] },
+  { at: 0x09e74, fn: awardDealAgainAndClearPosts as (...a: number[]) => void, params: [] },
 
   { at: 0x09e80, fn: drawStateSMessageLine as (...a: number[]) => void, params: [{ from: 'reg', name: 'd5' }] },
 
@@ -189967,13 +189967,13 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0bb7c, fn: allocateTwoByteSlotStamp as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
-  { at: 0x0bbd2, fn: walkCurrentRecordSRing as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0bbd2, fn: ringWalkFromField2C as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x0bd84, fn: walkCurrentRecordSRingFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x0bd84, fn: ringWalkFromField34 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x0bf00, fn: walkCurrentRecordSRingFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0bf00, fn: ringPostUnlessCounterPositive as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x0bfea, fn: walkCurrentRecordSRingFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x0bfea, fn: ringWalkAgainstTableFCCA as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x0c150, fn: computerPlayerTargeting as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }] },
 
@@ -190939,9 +190939,9 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x195b4, fn: convertLongDigitsPowerTwo as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
-  { at: 0x195d4, fn: convertLongDigitsPowerTwoFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x195d4, fn: hexDigitsFillBackwards as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x19604, fn: convertLongDigitsPowerTwoFrom2 as (...a: number[]) => void, params: [] },
+  { at: 0x19604, fn: hexDigitsReturn as (...a: number[]) => void, params: [] },
 
   { at: 0x1960a, fn: padFieldSpacesReturn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }] },
 

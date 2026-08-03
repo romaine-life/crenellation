@@ -3147,5 +3147,85 @@
     "name": "take the next nibble out of the stream",
     "why": "masks the source byte to 0xf and uses it as the cell's value, which is what makes this a nibble stream rather than a byte one.",
     "ident": "layBoardTakeNibble"
+  },
+  "0x195d4": {
+    "name": "write the digits backwards from the end of the buffer",
+    "why": "puts the terminator at the far end and then walks back, shifting the value down four bits a digit and adding 0x30 - ASCII zero - to each nibble.",
+    "ident": "hexDigitsFillBackwards"
+  },
+  "0x19604": {
+    "name": "restore the saved registers and return",
+    "why": "the converter's exit; the pad loop below it falls in here too.",
+    "ident": "hexDigitsReturn"
+  },
+  "0x00e82": {
+    "name": "turn the row and column into a cell address and a screen address",
+    "why": "the head of each row: the packed coordinate goes to cellAddress for the board pointer and to screenAddress for where it draws.",
+    "ident": "boardRunRowStart"
+  },
+  "0x00efc": {
+    "name": "skip the cells on the board's border",
+    "why": "row and column both non-zero, the row not 0x1d and the column not its own limit - the four tests that keep the edge out of the run.",
+    "ident": "boardRunSkipBorder"
+  },
+  "0x011ea": {
+    "name": "step every pointer to the next row",
+    "why": "0x20 on the board pointer and the three cell pointers - the board's 32-byte row stride - and two on the screen offset.",
+    "ident": "boardRunNextRow"
+  },
+  "0x01204": {
+    "name": "the column reached its limit, so start the next row",
+    "why": "compares the column byte against lastColumn and goes back for another cell while it is under it.",
+    "ident": "boardRunColumnDone"
+  },
+  "0x01214": {
+    "name": "the row reached its limit, so the walk is over",
+    "why": "compares the row byte against the last row in the frame and falls into the epilogue when it is past.",
+    "ident": "boardRunRowDone"
+  },
+  "0x01222": {
+    "name": "restore the saved registers and return",
+    "why": "the walk's single exit.",
+    "ident": "boardRunReturn"
+  },
+  "0x09db2": {
+    "name": "drop twenty pushed bytes and carry on",
+    "why": "the return path for the case above it, which pushed five arguments.",
+    "ident": "awardDropTwentyAndContinue"
+  },
+  "0x09dba": {
+    "name": "award unless the round byte is already three",
+    "why": "the byte at 0x3e1ae2 is the round, and a three skips the whole award.",
+    "ident": "awardUnlessThirdRound"
+  },
+  "0x09e48": {
+    "name": "set the phase timer to fifteen and draw the award line",
+    "why": "phaseTimerSet with 0xf and then textLineDraw - the pair that puts an award on screen for a fixed time.",
+    "ident": "awardSetTimerAndDrawLine"
+  },
+  "0x09e74": {
+    "name": "give every player their own play and clear the posting routines",
+    "why": "sets the queue gate at 0x3e1948 to eight, and when d5 says so removes every routine posting the record at 0x11b3c.",
+    "ident": "awardDealAgainAndClearPosts"
+  },
+  "0x0bbd2": {
+    "name": "walk the ring the current record's field 0x2c names",
+    "why": "the current record is the pointer at 0x3e1c84, which every entry here starts from. This one follows the pointer at 0x2c and starts two bytes in.",
+    "ident": "ringWalkFromField2C"
+  },
+  "0x0bd84": {
+    "name": "walk from the current record's field 0x34 over fourteen entries",
+    "why": "the current record is the pointer at 0x3e1c84, which every entry here starts from. It takes the long at 0x34 and works against the table at 0x3e1bc6 with a count of fourteen.",
+    "ident": "ringWalkFromField34"
+  },
+  "0x0bf00": {
+    "name": "post 0x11b6c unless the counter at 0x3e1cac is positive",
+    "why": "the only entry here that starts with a test of that byte rather than with the current record.",
+    "ident": "ringPostUnlessCounterPositive"
+  },
+  "0x0bfea": {
+    "name": "walk the ring against the table at 0xfcca",
+    "why": "the current record is the pointer at 0x3e1c84, which every entry here starts from. It keeps that table in a3 and the current-record pointer itself in a4, following 0x2c as the first entry does.",
+    "ident": "ringWalkAgainstTableFCCA"
   }
 }
