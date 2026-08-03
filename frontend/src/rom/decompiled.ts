@@ -482,7 +482,7 @@ export function takePointerWidthThenPlotStub(): void {
   return;
 }
 
-export function stepGlyphLayerOneFrameStub(): void {
+export function stepGlyphLayerCountersStub(): void {
   if (tick(20, 0x0015a)) { takeIrq(); }
   jumpRom(0x18764);
   return;
@@ -506,7 +506,7 @@ export function waitCounterChangesStub(): void {
   return;
 }
 
-export function creditCoinSlotsThatFiredStub(): void {
+export function creditCountCoinSlotsStub(): void {
   if (tick(20, 0x00172)) { takeIrq(); }
   jumpRom(0x13e94);
   return;
@@ -716,13 +716,13 @@ export function audioVideoResetStub(): void {
   return;
 }
 
-export function drawTextAtCellStub(): void {
+export function drawTextAtCellCoordinatesStub(): void {
   if (tick(20, 0x00248)) { takeIrq(); }
   jumpRom(0x18b76);
   return;
 }
 
-export function formatNumberIntoLocalBufferStub(): void {
+export function formatNumberThenDrawStub(): void {
   if (tick(20, 0x0024e)) { takeIrq(); }
   jumpRom(0x18b26);
   return;
@@ -133815,7 +133815,7 @@ export function soundCallMarshaller(attrHigh: number, attrLow: number, packed: n
   setReg('a6', a6);
 }
 
-export function creditCoinSlotsThatFired(index_: number, oldValue_: number, slotBits_: number, coinValue_: number, counterIndex_: number, slotMask: number): void {
+export function creditCountCoinSlots(index_: number, oldValue_: number, slotBits_: number, coinValue_: number, counterIndex_: number, slotMask: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a2');
@@ -142541,7 +142541,7 @@ export function centreTwoStringsFortyTwo(index_: number, row: number, first: num
   setReg('d3', preserved);
 }
 
-export function drawTextAtCellWrapper(preserved: number): void {
+export function drawTextAtCellCoordinatesWrapper(preserved: number): void {
   let _guard = 0;
   void _guard;
   let index = getReg('d0');
@@ -164018,7 +164018,7 @@ export function divideTwoByOne(pair: number, divisor: number): void {
   setReg('d1', t6);
 }
 
-export function stepGlyphLayerOneFrame(dst_: number, src_: number, index_: number, index2_: number, count_: number, kind2_: number): void {
+export function stepGlyphLayerCounters(dst_: number, src_: number, index_: number, index2_: number, count_: number, kind2_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -164445,7 +164445,7 @@ export function stepGlyphLayerOneFrame(dst_: number, src_: number, index_: numbe
   setReg('d3', kind2);
 }
 
-export function stepGlyphLayerOneFrameFrom1(ptr_: number, index_: number, index2_: number, index3_: number): void {
+export function stepGlyphSlotIfActive(ptr_: number, index_: number, index2_: number, index3_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -165910,7 +165910,7 @@ export function soundCallTwoLongArgs(value: number, width: number, flags: number
   setReg('d0', count);
 }
 
-export function formatNumberIntoLocalBuffer(attrHigh: number, attrLow: number, value: number, width: number, padZeroes: number, dest: number): void {
+export function formatNumberThenDraw(attrHigh: number, attrLow: number, value: number, width: number, padZeroes: number, dest: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a6');
@@ -165965,7 +165965,7 @@ export function formatNumberIntoLocalBuffer(attrHigh: number, attrLow: number, v
   setReg('a6', dst);
 }
 
-export function formatNumberIntoLocalBufferFrom1(ptr_: number): void {
+export function drawFormattedBuffer(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -166035,7 +166035,7 @@ export function soundCallThreeLongArgs(value: number, width: number, padZeroes: 
   setReg('a6', a6);
 }
 
-export function drawTextAtCell(column: number, row: number, record: number, colour: number): void {
+export function drawTextAtCellCoordinates(column: number, row: number, record: number, colour: number): void {
   if (tick(84, 0x18b76)) { takeIrq(); }
   const t0 = (row & 0xff);
   const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
@@ -166961,7 +166961,7 @@ export function claimSlotKindThree(unused_: number, claimValue: number): void {
   setReg('d1', unused);
 }
 
-export function claimSlotKindOneFrom2(unused_: number, claimValue: number): void {
+export function claimSlotSharedBody(unused_: number, claimValue: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -170208,7 +170208,7 @@ export function formatNumberPaddingSeparators(dst_: number, dst2_: number, count
   setReg('d2', kind2);
 }
 
-export function creditCoinSlotsThatFiredWrapper(count_: number, count2_: number): void {
+export function creditCountCoinSlotsWrapper(count_: number, count2_: number): void {
   let _guard = 0;
   void _guard;
   let preserved = getReg('a0');
@@ -188927,7 +188927,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x00154, fn: takePointerWidthThenPlotStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x0015a, fn: stepGlyphLayerOneFrameStub as (...a: number[]) => void, params: [] },
+  { at: 0x0015a, fn: stepGlyphLayerCountersStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00160, fn: recordWhetherVectorHoldsStubStub as (...a: number[]) => void, params: [] },
 
@@ -188935,7 +188935,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0016c, fn: waitCounterChangesStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00172, fn: creditCoinSlotsThatFiredStub as (...a: number[]) => void, params: [] },
+  { at: 0x00172, fn: creditCountCoinSlotsStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00178, fn: addToBookkeepingCounterStub as (...a: number[]) => void, params: [] },
 
@@ -189005,9 +189005,9 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x00242, fn: audioVideoResetStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x00248, fn: drawTextAtCellStub as (...a: number[]) => void, params: [] },
+  { at: 0x00248, fn: drawTextAtCellCoordinatesStub as (...a: number[]) => void, params: [] },
 
-  { at: 0x0024e, fn: formatNumberIntoLocalBufferStub as (...a: number[]) => void, params: [] },
+  { at: 0x0024e, fn: formatNumberThenDrawStub as (...a: number[]) => void, params: [] },
 
   { at: 0x00254, fn: soundCallThreeLongArgsStub as (...a: number[]) => void, params: [] },
 
@@ -190531,7 +190531,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x13e6a, fn: soundCallMarshaller as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
-  { at: 0x13e94, fn: creditCoinSlotsThatFired as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
+  { at: 0x13e94, fn: creditCountCoinSlots as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
 
   { at: 0x13f40, fn: loadPackedOptionsWord as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
@@ -190603,7 +190603,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1545c, fn: centreTwoStringsFortyTwo as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
-  { at: 0x154a8, fn: drawTextAtCellWrapper as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
+  { at: 0x154a8, fn: drawTextAtCellCoordinatesWrapper as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
   { at: 0x154de, fn: callThroughSignedPair as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
@@ -190813,9 +190813,9 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1869e, fn: divideTwoByOne as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
-  { at: 0x18764, fn: stepGlyphLayerOneFrame as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x18764, fn: stepGlyphLayerCounters as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x18806, fn: stepGlyphLayerOneFrameFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x18806, fn: stepGlyphSlotIfActive as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x1884a, fn: releaseSlotTakeRecord as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
@@ -190851,13 +190851,13 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x18afe, fn: soundCallTwoLongArgs as (...a: number[]) => void, params: [{ from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
 
-  { at: 0x18b26, fn: formatNumberIntoLocalBuffer as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }, { from: 'stack', off: 24 }] },
+  { at: 0x18b26, fn: formatNumberThenDraw as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }, { from: 'stack', off: 24 }] },
 
-  { at: 0x18b3e, fn: formatNumberIntoLocalBufferFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x18b3e, fn: drawFormattedBuffer as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
   { at: 0x18b5c, fn: soundCallThreeLongArgs as (...a: number[]) => void, params: [{ from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }] },
 
-  { at: 0x18b76, fn: drawTextAtCell as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
+  { at: 0x18b76, fn: drawTextAtCellCoordinates as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
   { at: 0x18b92, fn: decompressTileIdWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
@@ -190887,7 +190887,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x18e00, fn: claimSlotKindThree as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
 
-  { at: 0x18e02, fn: claimSlotKindOneFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
+  { at: 0x18e02, fn: claimSlotSharedBody as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'stack', off: 12 }] },
 
   { at: 0x18e06, fn: claimOneFourSlotsFill as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -190947,7 +190947,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x19614, fn: formatNumberPaddingSeparators as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
-  { at: 0x196ac, fn: creditCoinSlotsThatFiredWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x196ac, fn: creditCountCoinSlotsWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x19786, fn: startDivideHelperZeroHigh as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }] },
 
