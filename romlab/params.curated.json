@@ -5651,6 +5651,10 @@
     "a0": {
       "name": "wordThere",
       "why": "the word at (a2) taken into an address register purely to be compared with cmpa.l against the index plus one - a comparison, not a pointer."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x17d82 is moveq #0,d0 on the only path that reaches it; the value that arrived is never read."
     }
   },
   "0x18000": {
@@ -6399,6 +6403,10 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0dc10 is `move.w $6(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "the routine assigns it on every path - from the call at 0xdc18, from d1 at 0xdc22, or from the call at 0xdc26 - before returning it."
     }
   },
   "0xdec8": {
@@ -6525,6 +6533,10 @@
     "d3": {
       "name": "unused2",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x12576 is `move.b (a0)+, d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d5": {
+      "name": "rowGap",
+      "why": "added to the destination at 0x1257e and 0x1258c each time the 0x1ff counter wraps, and subtracted from the fresh counter at 0x12584 - the gap from the end of one row to the start of the next."
     }
   },
   "0x13134": {
@@ -6575,6 +6587,10 @@
     "d2": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x17d4a is `move.w d6, d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "every path assigns it before reading - from d6 at 0x17d36 or at 0x17d42 - and the routine has nothing else to say about what arrived."
     }
   },
   "0x181b6": {
@@ -6845,6 +6861,10 @@
     "stack4": {
       "name": "dst",
       "why": "0x1e83c is `movea.l $10(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards writes through it and none reads. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "fill",
+      "why": "its low word at 0x16(a7) becomes d0 and is the byte written four at a time along each row at 0x1e844, the rows 0x1fc apart."
     }
   },
   "0x875e": {
@@ -7481,6 +7501,14 @@
     "stack32": {
       "name": "record",
       "why": "0x11f10 is `movea.l $20(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "stack28": {
+      "name": "offset",
+      "why": "0x11f0a reads its low word and adds it to the tile data base 0xd2608 - the same slot decompressOneColumnAdvancing's own first argument occupies once the movem has pushed six registers."
+    },
+    "stack36": {
+      "name": "paletteBase",
+      "why": "its low word at 0x26(a7) becomes d2 at 0x11f14, which the family already calls paletteBase."
     }
   },
   "0x12078": {
@@ -8237,6 +8265,10 @@
     "d2": {
       "name": "mask",
       "why": "the routine writes it exactly once, with the constant 0x6bff, and every other instruction that touches it is a and - so it holds that constant throughout and is used only as a mask."
+    },
+    "d3": {
+      "name": "player",
+      "why": "cleared at 0x15e6 and counted up as a0 steps 0x7e - the player array's stride - so it numbers the player whose status word is being masked."
     }
   },
   "0x1fd6": {
@@ -8316,7 +8348,7 @@
     },
     "stack4": {
       "name": "arg2",
-      "why": "pushed second at 0x18dda - a7 has already moved four by then, which is why the same 8(a7) reads a different slot - and so becomes 0x18e06's first argument."
+      "why": "pushed second at 0x18dda - a7 has already moved four by then, which is why the same 8(a7) reads a different slot - and so becomes claimOneFourSlotsFill's first argument."
     }
   },
   "0xb5b8": {
@@ -8807,6 +8839,30 @@
     "d4": {
       "name": "subOpcode",
       "why": "zero-extended at 0x1ad22, bounded to 4 at 0x1ad26 and used to index the pc-relative jump table at 0x1ad38 - a five-way switch and nothing else."
+    }
+  },
+  "0x5168": {
+    "d0": {
+      "name": "unused",
+      "why": "0x5180 reads it as offsetRecordTableBase's answer; the value that arrived is never read."
+    }
+  },
+  "0xdbe6": {
+    "d0": {
+      "name": "unused",
+      "why": "the routine assigns it on every path - from the call at 0xdbee, from d1 at 0xdbf8, or from the call at 0xdbfc - before returning it."
+    }
+  },
+  "0xfc9c": {
+    "d1": {
+      "name": "unused",
+      "why": "0xfc9c, this routine's first instruction, assigns it the byte at 0x3e0de6."
+    }
+  },
+  "0x1235e": {
+    "d7": {
+      "name": "byte",
+      "why": "0x1235e stores it through a1 and the routine's only other act is to point a4 at the next decoder state."
     }
   }
 }
