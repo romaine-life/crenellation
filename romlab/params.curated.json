@@ -69,6 +69,10 @@
     "stack4": {
       "name": "range",
       "why": "the new 16-bit state is multiplied by this longword and the high half of the product taken, which scales the result into 0..range-1 rather than masking it."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x11e62 assigns it the seed word at 0x3e0842 - the value that arrived is never read. The routine is the generator: multiply by 0x3619, add 0x5d35, keep it back."
     }
   },
   "0x01f3a": {
@@ -7667,6 +7671,10 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x06994 is `move.b (a0), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x6992 reads it as the address 0x11bd8 returned, and 0x69a2 overwrites it with 0x1f; the value that arrived is never read."
     }
   },
   "0x759e": {
@@ -8729,6 +8737,76 @@
     "stack4": {
       "name": "player",
       "why": "loaded to d2 at 0x5908 and passed both to 0x5948 and to eventPost at 0x5916 with the record at 0x11ad6 - the clear counterpart of playerFlagSet's 0x11ad0."
+    }
+  },
+  "0x450c": {
+    "stack4": {
+      "name": "target",
+      "why": "pushed first at 0x4514 and so becomes 0xc7bc's third argument, alongside the bank byte and the 0 this entry supplies - paletteFadeStepFlag is the same call with 1 instead."
+    }
+  },
+  "0xcc18": {
+    "d3": {
+      "name": "cue",
+      "why": "pushed to passByteOnlyWhenGate at 0xcc2e, which drops it in the ring at 0x3e1922 - a queued cue id."
+    }
+  },
+  "0x144ae": {
+    "d0": {
+      "name": "unused",
+      "why": "0x144b0 assigns it the word at 0x3e352a before anything reads it; the routine returns its answer through d0 either way."
+    }
+  },
+  "0x160ba": {
+    "stack4": {
+      "name": "record",
+      "why": "loaded to d2 at 0x160bc and pushed to both 0x15f3e and 0x1594c - the one thing this wrapper carries through all three calls."
+    }
+  },
+  "0x11c6": {
+    "d2": {
+      "name": "unused",
+      "why": "no instruction in either entry reads it before the routine's own frame is unwound; it is carried across the indirect call at 0x11d8 and nothing here looks at it."
+    }
+  },
+  "0x11de": {
+    "d2": {
+      "name": "unused",
+      "why": "no instruction in either entry reads it before the routine's own frame is unwound; it is carried across the indirect call at 0x11d8 and nothing here looks at it."
+    }
+  },
+  "0x452e": {
+    "stack8": {
+      "name": "bankByte",
+      "why": "pushed second at 0x4538 and so becomes 0xc7bc's second argument, the same slot paletteFadeStep binds as bankByte."
+    }
+  },
+  "0xa7e6": {
+    "stack4": {
+      "name": "record",
+      "why": "its low word at 0xa(a7) becomes d2 and is pushed to 0x5b4 as the second of two arguments, the other being a byte out of the next slot."
+    }
+  },
+  "0x154de": {
+    "stack4": {
+      "name": "target",
+      "why": "pushed first at 0x154e2 and so becomes the last argument of the call this makes, after the two sign-extended bytes at 0x3e3d7a and 0x3e3d7b."
+    }
+  },
+  "0x183f2": {
+    "stack4": {
+      "name": "clear",
+      "why": "its low word at 6(a7) decides the bit: zero puts 0x8000 back into the word at 0x3e3d8e, anything else leaves it cleared. The word is then written to the hardware at 0x640000."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x183f2 assigns it that word in the routine's first instruction."
+    }
+  },
+  "0x1ad20": {
+    "d4": {
+      "name": "subOpcode",
+      "why": "zero-extended at 0x1ad22, bounded to 4 at 0x1ad26 and used to index the pc-relative jump table at 0x1ad38 - a five-way switch and nothing else."
     }
   }
 }
