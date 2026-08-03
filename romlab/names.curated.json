@@ -2448,5 +2448,55 @@
     "name": "index by owner when there is one, otherwise build from the coordinate",
     "why": "shifts the cell byte down six to the owner and, when that is non-zero, indexes the longword table at 0x20672 with it. When it is zero the graphic comes from the row and column instead - row less one times 0x28, column less one doubled, added to the base at 0x3e0e7a.",
     "ident": "redrawGraphicByOwnerOrCoordinate"
+  },
+  "0x3a4a": {
+    "name": "draw the cell from the owner's own graphic table",
+    "why": "shifts the cell byte down six to the owner and does nothing when there is none; otherwise the owner times four indexes the table of tables in d3, and the word at the head of the entry it names is what gets drawn.",
+    "ident": "drawCellByOwnerTable"
+  },
+  "0x3a7e": {
+    "name": "draw two graphics from the pair the lookup returns",
+    "why": "calls 0x3cee and then boardCellAddressLookupWrapper, and draws the word at the address it answers and the word two on from it - the only case that draws twice.",
+    "ident": "drawCellPairFromLookup"
+  },
+  "0x3ac6": {
+    "name": "draw only when the cell's kind is the one being looked for",
+    "why": "reads the cell byte through a4 and compares its low six bits against the kind carried in d6; a mismatch skips the whole case.",
+    "ident": "drawCellWhenKindMatches"
+  },
+  "0x3b06": {
+    "name": "hand the coordinate to 0x2aae",
+    "why": "one push of the coordinate at (a2) and one call, then the shared step.",
+    "ident": "cellCase2AAE"
+  },
+  "0x3b0e": {
+    "name": "look the record up, then pass its byte at 1 with the coordinate",
+    "why": "calls 0xbb38 with the coordinate, takes the byte at 1 of the record it answers, and hands that byte and the coordinate to cellNeighbourRead - the only case that passes two arguments.",
+    "ident": "cellCaseByRecordByte"
+  },
+  "0x3b2c": {
+    "name": "hand the coordinate to 0x2eb8",
+    "why": "one push and one call, then the shared step.",
+    "ident": "cellCase2EB8"
+  },
+  "0x3b34": {
+    "name": "hand the coordinate to 0x34b2",
+    "why": "one push and one call, then the shared step.",
+    "ident": "cellCase34B2"
+  },
+  "0x3b3c": {
+    "name": "advance every pointer one cell and stop at the row's end",
+    "why": "eight bytes on the screen pointer and d4, 0x20 on the board pointer and a4 - the board's row stride - and one on the column byte at (a2), looping back while it is under 0x2a, the board's 42 columns.",
+    "ident": "cellStepToNextColumn"
+  },
+  "0x3b4c": {
+    "name": "the column counter reached 0x2a, so decide whether another row follows",
+    "why": "the compare that ends the row walk, falling through to the row bookkeeping when it does.",
+    "ident": "cellRowDoneCheckColumn"
+  },
+  "0x3b54": {
+    "name": "queue one of two cues when the row count reaches 0xc or 0x16",
+    "why": "compares the row counter at -0xa(a6) against 0xc and 0x16 and queues cue 0x34 or 0x35 through the gate, then steps that counter and stops the whole walk at 0x20 rows.",
+    "ident": "cellRowDoneQueueCue"
   }
 }

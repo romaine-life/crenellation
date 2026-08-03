@@ -26055,7 +26055,7 @@ export function eventIdDispatch(index_: number): void {
   setReg('d0', index);
 }
 
-export function cellOwnerBranch(ptr_: number, coordRef_: number, dst2_: number, byteStream_: number, ownerTable_: number, dst3_: number, count_: number, paletteBase_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function drawCellByOwnerTable(ptr_: number, coordRef_: number, dst2_: number, byteStream_: number, ownerTable_: number, dst3_: number, count_: number, paletteBase_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -26388,7 +26388,7 @@ export function cellOwnerBranch(ptr_: number, coordRef_: number, dst2_: number, 
   setReg('d6', wantKind);
 }
 
-export function cellOwnerBranchFrom1(coordRef_: number, count_: number, index_: number, cellByte_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function drawCellPairFromLookup(coordRef_: number, count_: number, index_: number, cellByte_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let coordRef = coordRef_;
@@ -26816,7 +26816,7 @@ export function cellOwnerBranchFrom1(coordRef_: number, count_: number, index_: 
   setReg('d6', wantKind);
 }
 
-export function cellOwnerBranchFrom2(coordRef_: number, dst2_: number, byteStream_: number, ownerTable_: number, dst3_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function drawCellWhenKindMatches(coordRef_: number, dst2_: number, byteStream_: number, ownerTable_: number, dst3_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -27199,7 +27199,7 @@ export function cellOwnerBranchFrom2(coordRef_: number, dst2_: number, byteStrea
   setReg('d6', wantKind);
 }
 
-export function cellOwnerBranchFrom3(coordRef_: number, dst3_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function cellCase2AAE(coordRef_: number, dst3_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let coordRef = coordRef_;
@@ -27482,7 +27482,7 @@ export function cellOwnerBranchFrom3(coordRef_: number, dst3_: number, count_: n
   setReg('d6', wantKind);
 }
 
-export function cellOwnerBranchFrom4(coordRef_: number, dst3_: number, kind_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function cellCaseByRecordByte(coordRef_: number, dst3_: number, kind_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -27818,7 +27818,7 @@ export function cellOwnerBranchFrom4(coordRef_: number, dst3_: number, kind_: nu
   setReg('d6', wantKind);
 }
 
-export function cellOwnerBranchFrom5(coordRef_: number, dst3_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function cellCase2EB8(coordRef_: number, dst3_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let coordRef = coordRef_;
@@ -28101,7 +28101,7 @@ export function cellOwnerBranchFrom5(coordRef_: number, dst3_: number, count_: n
   setReg('d6', wantKind);
 }
 
-export function cellOwnerBranchFrom6(coordRef_: number, dst3_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function cellCase34B2(coordRef_: number, dst3_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let coordRef = coordRef_;
@@ -28383,7 +28383,7 @@ export function cellOwnerBranchFrom6(coordRef_: number, dst3_: number, count_: n
   setReg('d6', wantKind);
 }
 
-export function cellOwnerBranchFrom7(coordRef_: number, dst2_: number, byteStream_: number, ownerTable_: number, dst3_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function cellStepToNextColumn(coordRef_: number, dst2_: number, byteStream_: number, ownerTable_: number, dst3_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let coordRef = coordRef_;
@@ -28632,7 +28632,7 @@ export function cellOwnerBranchFrom7(coordRef_: number, dst2_: number, byteStrea
   setReg('d6', wantKind);
 }
 
-export function cellOwnerBranchFrom8(coordRef_: number, dst_: number, byteStream_: number, ownerTable_: number, dst2_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function cellRowDoneCheckColumn(coordRef_: number, dst_: number, byteStream_: number, ownerTable_: number, dst2_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let coordRef = coordRef_;
@@ -28834,7 +28834,7 @@ export function cellOwnerBranchFrom8(coordRef_: number, dst_: number, byteStream
   setReg('d6', wantKind);
 }
 
-export function cellOwnerBranchFrom9(coordRef_: number, dst_: number, byteStream_: number, ownerTable_: number, dst2_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
+export function cellRowDoneQueueCue(coordRef_: number, dst_: number, byteStream_: number, ownerTable_: number, dst2_: number, count_: number, wantArg_: number, tableBase_: number, at_: number, tileList_: number, wantKind_: number): void {
   let _guard = 0;
   void _guard;
   let coordRef = coordRef_;
@@ -189315,25 +189315,25 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x03a08, fn: eventIdDispatch as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
-  { at: 0x03a4a, fn: cellOwnerBranch as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03a4a, fn: drawCellByOwnerTable as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x03a7e, fn: cellOwnerBranchFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03a7e, fn: drawCellPairFromLookup as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x03ac6, fn: cellOwnerBranchFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03ac6, fn: drawCellWhenKindMatches as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x03b06, fn: cellOwnerBranchFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03b06, fn: cellCase2AAE as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x03b0e, fn: cellOwnerBranchFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03b0e, fn: cellCaseByRecordByte as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x03b2c, fn: cellOwnerBranchFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03b2c, fn: cellCase2EB8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x03b34, fn: cellOwnerBranchFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03b34, fn: cellCase34B2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x03b3c, fn: cellOwnerBranchFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03b3c, fn: cellStepToNextColumn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x03b4c, fn: cellOwnerBranchFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03b4c, fn: cellRowDoneCheckColumn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x03b54, fn: cellOwnerBranchFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x03b54, fn: cellRowDoneQueueCue as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x03ba4, fn: boardCellAddressLookupWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }] },
 
