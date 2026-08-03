@@ -69324,7 +69324,7 @@ export function mainGameStateMachine(dst_: number, ptr_: number, index_: number,
   setReg('d5', reset);
 }
 
-export function mainGameStateMachineFrom1(ptr_: number): void {
+export function gamePhaseDissolveThenSpawn(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -69453,7 +69453,7 @@ export function mainGameStateMachineFrom1(ptr_: number): void {
   setReg('a6', ptr);
 }
 
-export function mainGameStateMachineFrom2(dst_: number, dst2_: number, dst3_: number, ptr_: number, index_: number, screenAt_: number): void {
+export function gamePhaseDealHands(dst_: number, dst2_: number, dst3_: number, ptr_: number, index_: number, screenAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -70199,7 +70199,7 @@ export function mainGameStateMachineFrom2(dst_: number, dst2_: number, dst3_: nu
   setReg('d5', screenAt);
 }
 
-export function mainGameStateMachineFrom3(dst2_: number, dst3_: number, ptr_: number, index_: number, screenAt_: number): void {
+export function gamePhaseWalkListThenAdvance(dst2_: number, dst3_: number, ptr_: number, index_: number, screenAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -70552,7 +70552,7 @@ export function mainGameStateMachineFrom3(dst2_: number, dst3_: number, ptr_: nu
   setReg('d5', screenAt);
 }
 
-export function mainGameStateMachineFrom4(): void {
+export function gamePhaseNextPlayerToThree(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x094be) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -70562,7 +70562,7 @@ export function mainGameStateMachineFrom4(): void {
   return;
 }
 
-export function mainGameStateMachineFrom5(): void {
+export function gamePhaseDropEightAndWait(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x0952c) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -70572,7 +70572,7 @@ export function mainGameStateMachineFrom5(): void {
   return;
 }
 
-export function mainGameStateMachineFrom6(ptr_: number, dst_: number, dst2_: number, dst3_: number, kind_: number, left_: number): void {
+export function gamePhaseCursorUnlessSix(ptr_: number, dst_: number, dst2_: number, dst3_: number, kind_: number, left_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -71068,7 +71068,7 @@ export function mainGameStateMachineFrom6(ptr_: number, dst_: number, dst2_: num
   setReg('d1', left);
 }
 
-export function mainGameStateMachineFrom7(unused_: number): void {
+export function gamePhaseWaitEvent11AE8(unused_: number): void {
   let _guard = 0;
   void _guard;
   let unused = unused_;
@@ -71121,7 +71121,7 @@ export function mainGameStateMachineFrom7(unused_: number): void {
   setReg('d0', unused);
 }
 
-export function mainGameStateMachineFrom8(ptr_: number, dst_: number, ptr2_: number, index_: number): void {
+export function gamePhaseWaitEvent11B7E(ptr_: number, dst_: number, ptr2_: number, index_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -71315,7 +71315,7 @@ export function mainGameStateMachineFrom8(ptr_: number, dst_: number, ptr2_: num
   setReg('d0', index);
 }
 
-export function mainGameStateMachineFrom9(dst_: number, dst2_: number, dst3_: number, kind_: number): void {
+export function gamePhaseWalkPlayersWithFourteen(dst_: number, dst2_: number, dst3_: number, kind_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -71945,7 +71945,7 @@ export function mainGameStateMachineFrom9(dst_: number, dst2_: number, dst3_: nu
   setReg('d3', limit2);
 }
 
-export function mainGameStateMachineFrom10(dst_: number, dst2_: number, dst3_: number, count_: number, mask_: number): void {
+export function gamePhaseWalkPlayersMaskedBFFF(dst_: number, dst2_: number, dst3_: number, count_: number, mask_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -72244,7 +72244,7 @@ export function mainGameStateMachineFrom10(dst_: number, dst2_: number, dst3_: n
   setReg('d3', mask);
 }
 
-export function mainGameStateMachineFrom11(src_: number, dst_: number, ptr_: number, index_: number, left_: number): void {
+export function gamePhaseWaitEvent11B06(src_: number, dst_: number, ptr_: number, index_: number, left_: number): void {
   let _guard = 0;
   void _guard;
   let src = src_;
@@ -72488,7 +72488,7 @@ export function mainGameStateMachineFrom11(src_: number, dst_: number, ptr_: num
   setReg('d1', left);
 }
 
-export function mainGameStateMachineFrom12(left_: number, wantArg_: number, unused_: number, answer_: number, screenAt_: number, eventRecord_: number): void {
+export function gamePhaseTableDrivenByByte3E0DDA(left_: number, wantArg_: number, unused_: number, answer_: number, screenAt_: number, eventRecord_: number): void {
   let _guard = 0;
   void _guard;
   let entry = getReg('a0');
@@ -73702,7 +73702,7 @@ export function mainGameStateMachineFrom12(left_: number, wantArg_: number, unus
   setReg('d6', eventRecord);
 }
 
-export function mainGameStateMachineFrom13(dst2_: number, ptr_: number, index_: number, screenAt_: number): void {
+export function gamePhaseWaitCountdownThenEvent(dst2_: number, ptr_: number, index_: number, screenAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -189827,31 +189827,31 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x09266, fn: mainGameStateMachine as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x092b0, fn: mainGameStateMachineFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x092b0, fn: gamePhaseDissolveThenSpawn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
-  { at: 0x09312, fn: mainGameStateMachineFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x09312, fn: gamePhaseDealHands as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x09466, fn: mainGameStateMachineFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x09466, fn: gamePhaseWalkListThenAdvance as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x094be, fn: mainGameStateMachineFrom4 as (...a: number[]) => void, params: [] },
+  { at: 0x094be, fn: gamePhaseNextPlayerToThree as (...a: number[]) => void, params: [] },
 
-  { at: 0x0952c, fn: mainGameStateMachineFrom5 as (...a: number[]) => void, params: [] },
+  { at: 0x0952c, fn: gamePhaseDropEightAndWait as (...a: number[]) => void, params: [] },
 
-  { at: 0x09532, fn: mainGameStateMachineFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+  { at: 0x09532, fn: gamePhaseCursorUnlessSix as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
-  { at: 0x09670, fn: mainGameStateMachineFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
+  { at: 0x09670, fn: gamePhaseWaitEvent11AE8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
-  { at: 0x096a4, fn: mainGameStateMachineFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x096a4, fn: gamePhaseWaitEvent11B7E as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x09722, fn: mainGameStateMachineFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x09722, fn: gamePhaseWalkPlayersWithFourteen as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x09860, fn: mainGameStateMachineFrom10 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x09860, fn: gamePhaseWalkPlayersMaskedBFFF as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x098f0, fn: mainGameStateMachineFrom11 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
+  { at: 0x098f0, fn: gamePhaseWaitEvent11B06 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }] },
 
-  { at: 0x0999a, fn: mainGameStateMachineFrom12 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0999a, fn: gamePhaseTableDrivenByByte3E0DDA as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x09bd2, fn: mainGameStateMachineFrom13 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x09bd2, fn: gamePhaseWaitCountdownThenEvent as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x09d80, fn: setGameStateThenTimer as (...a: number[]) => void, params: [] },
 

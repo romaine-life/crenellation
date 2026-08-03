@@ -2715,5 +2715,70 @@
     "name": "write the pattern to the test port and hand back",
     "why": "the chain's single exit: the value goes to 0x72fffe and jmp (a4) returns to whoever started the test. Every failing march jumps here with the eor of expected and actual in d0.",
     "ident": "ramPassReportPattern"
+  },
+  "0x92b0": {
+    "name": "count down, then dissolve the screen and spawn the round",
+    "why": "the phase's own countdown is the word at -4(a6): it drops it and leaves the machine alone until it reaches zero, which is how a phase holds the screen for a while. When it does it dissolves the screen, clears the sound flag and calls entitySpawnWrapper.",
+    "ident": "gamePhaseDissolveThenSpawn"
+  },
+  "0x9312": {
+    "name": "deal every player a starting hand and draw the prompt",
+    "why": "calls giveEachPlayerStartingHand first thing and draws a line of text with the count it answered.",
+    "ident": "gamePhaseDealHands"
+  },
+  "0x9466": {
+    "name": "count down, then walk the list with the flag raised",
+    "why": "the phase's own countdown is the word at -4(a6): it drops it and leaves the machine alone until it reaches zero, which is how a phase holds the screen for a while. Then it puts the record at 0x3e1964 in place and hands it to walkWholeListFlagRaised.",
+    "ident": "gamePhaseWalkListThenAdvance"
+  },
+  "0x94be": {
+    "name": "move to the next active player and set the phase byte to three",
+    "why": "calls advanceNextActivePlayerWrap and writes 3 to the station byte at 0x3e1958.",
+    "ident": "gamePhaseNextPlayerToThree"
+  },
+  "0x952c": {
+    "name": "drop eight pushed bytes and wait",
+    "why": "the return path for the case above it, which pushed two longs before its call.",
+    "ident": "gamePhaseDropEightAndWait"
+  },
+  "0x9532": {
+    "name": "read the cursor unless the mode byte is six",
+    "why": "checks the byte at 0x3e0dd2 for 6 and skips the whole phase if it is; otherwise it reads the cursor coordinate and works from the record at 0x3e1cec.",
+    "ident": "gamePhaseCursorUnlessSix"
+  },
+  "0x9670": {
+    "name": "wait for the event at 0x11ae8",
+    "why": "waits on an event: it asks eventTest for a record and does nothing until the answer is zero, which is this state machine's way of blocking on something the rest of the game posts. ",
+    "ident": "gamePhaseWaitEvent11AE8"
+  },
+  "0x96a4": {
+    "name": "wait for the event at 0x11b7e",
+    "why": "waits on an event: it asks eventTest for a record and does nothing until the answer is zero, which is this state machine's way of blocking on something the rest of the game posts. Then it drops its own countdown.",
+    "ident": "gamePhaseWaitEvent11B7E"
+  },
+  "0x9722": {
+    "name": "walk the player array with the phase timer in hand",
+    "why": "sets d2 to 2 and d3 to 0xe, points a4 at the player array at 0x3e1968 and a3 at the phase timer byte at 0x3e1870, clearing the station byte first.",
+    "ident": "gamePhaseWalkPlayersWithFourteen"
+  },
+  "0x9860": {
+    "name": "walk the player array testing the status word against 0xbfff",
+    "why": "the same array walk as the phase above with d2 set to 1 and 0xbfff in d3 - the status bits less the top two - and a2 pointed at the station byte.",
+    "ident": "gamePhaseWalkPlayersMaskedBFFF"
+  },
+  "0x98f0": {
+    "name": "wait for the event at 0x11b06, then the one at 0x11b1e",
+    "why": "waits on an event: it asks eventTest for a record and does nothing until the answer is zero, which is this state machine's way of blocking on something the rest of the game posts. ",
+    "ident": "gamePhaseWaitEvent11B06"
+  },
+  "0x999a": {
+    "name": "take the phase's number out of a table indexed by 0x3e0dda",
+    "why": "the byte at 0x3e0dda indexes the table at 0x117f6 and the byte it finds is what the phase runs on - the only phase whose behaviour is a table lookup rather than a fixed sequence.",
+    "ident": "gamePhaseTableDrivenByByte3E0DDA"
+  },
+  "0x9bd2": {
+    "name": "wait for the countdown, then for the event at 0x11b06",
+    "why": "tests the countdown at -4(a6) rather than decrementing it, and only when it has run out does it wait on the event.",
+    "ident": "gamePhaseWaitCountdownThenEvent"
   }
 }
