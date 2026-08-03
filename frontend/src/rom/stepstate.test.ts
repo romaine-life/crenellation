@@ -300,8 +300,19 @@ describe('routines compared at the instruction the chip stopped on', () => {
       }
 
       m.trackOffMap = false;
-      // A skipped call means the port did not run what the chip ran.
-      if (m.missingCalls.length) { stubbed += 1; compared -= 1; skip(entry, 'the port skipped a call the chip made'); continue; }
+      // A skipped call means the port did not run what the chip ran. WHICH
+      // call is the whole question - an address in hardware space is a call
+      // through a pointer the harness invented and says nothing, where one
+      // inside the image is a routine that failed to lift and is a real gap.
+      // Recording only "a call was skipped" left that unanswerable from the
+      // ledger, which is the one place it gets read.
+      if (m.missingCalls.length) {
+        stubbed += 1; compared -= 1;
+        const to = [...new Set(m.missingCalls)].sort((x, y) => x - y)
+          .slice(0, 4).map((x) => '0x' + x.toString(16)).join(' ');
+        skip(entry, `the port skipped a call the chip made, to ${to}`);
+        continue;
+      }
 
       // The routine dereferenced something the port does not model - the
       // playfield is modelled, the input ports and sound chips are not, and a

@@ -36,10 +36,19 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
   frozen 68000** (24,097
   step-state snapshots; two capture sessions hours apart froze byte-identical
   machines, which is the determinism claim that makes the rest mean
-  anything). Of the six: four have every silicon trial voided because the
-  port skipped a call the chip made, and two are incomparable with the reason
-  on record — both halves of the protection probe at 0x140010/0x1400E4, where
-  that window is served by a state machine and fetching differs from reading.
+  anything). Of the seven not verified, **none is a translation gap**, and the
+  harness now says so per routine rather than in aggregate. Two are
+  incomparable with the reason on record — both halves of the protection probe
+  at 0x140010/0x1400E4, where that window is served by a state machine and
+  fetching differs from reading. The other five are capture artifacts: 0x438 is
+  no longer a routine head at all (the map merged it into 0x430); 0x561C and
+  0x19A1E have every recorded stopping point inside an exception stub, so the
+  chip had vectored and left the routine; and 0x12222, 0x122C6 and 0x1A256
+  "skipped a call the chip made" to **0x3E42B2, 0x3E42EF and 0x4AAEDF8A** —
+  work RAM and one uninitialised pointer. The chip followed a harness-invented
+  pointer into scratch and executed whatever bytes were there. Recording only
+  "a call was skipped" made that unanswerable from the ledger, which is the one
+  place it gets read; `stepstate.test` now names the address.
   The classes sum to 907 with nothing unaccounted; `romlab/ledger.py` builds
   them and `original593.py` reports the same for the original 593.
 - **Capture data is not derived data.** `entries.txt` is the fuzz and
