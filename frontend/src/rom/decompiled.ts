@@ -9494,11 +9494,11 @@ export function walkEightNeighboursCellScreen(control_: number, runLength_: numb
   setReg('d6', cellAddr);
 }
 
-export function doesBoardCellBelongPlayer(d0_: number, src2: number, limit: number): void {
+export function doesBoardCellBelongPlayer(unused_: number, src2: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
-  let d0 = d0_;
+  let unused = unused_;
   let d1 = getReg('d1');
   let kind = getReg('d2');
   let d3 = getReg('d3');
@@ -9509,7 +9509,7 @@ export function doesBoardCellBelongPlayer(d0_: number, src2: number, limit: numb
   let t4 = 0;
   let t5 = 0;
   let t6 = 0;
-  const _t0 = tick(160, 0x0149a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', src); setReg('d0', d0); setReg('d1', d1); setReg('d2', kind); setReg('d3', d3); if (_t0) takeIrq(); }
+  const _t0 = tick(160, 0x0149a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', src); setReg('d0', unused); setReg('d1', d1); setReg('d2', kind); setReg('d3', d3); if (_t0) takeIrq(); }
   push(d3, 4);
   push(kind, 4);
   save_d2_0 = kind;
@@ -9527,40 +9527,40 @@ export function doesBoardCellBelongPlayer(d0_: number, src2: number, limit: numb
   push(t4, 2);
   setFlagsCmp(t4, 0, 16);
   setReg('a0', src);
-  setReg('d0', d0);
+  setReg('d0', unused);
   setReg('d1', d1);
   setReg('d2', kind);
   setReg('d3', d3);
   callRom(0x11bd8, 0x014c0);
   if (halted()) return;
   src = getReg('a0');
-  d0 = getReg('d0');
+  unused = getReg('d0');
   d1 = getReg('d1');
   kind = getReg('d2');
   d3 = getReg('d3');
-  const _t1 = tick(108, 0x014c0) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', src); setReg('d0', d0); setReg('d1', d1); setReg('d2', kind); setReg('d3', d3); if (_t1) takeIrq(); }
-  src = (d0) >>> 0;
-  d0 = (0) >>> 0;
+  const _t1 = tick(108, 0x014c0) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', src); setReg('d0', unused); setReg('d1', d1); setReg('d2', kind); setReg('d3', d3); if (_t1) takeIrq(); }
+  src = (unused) >>> 0;
+  unused = (0) >>> 0;
   t5 = load8(src);
-  d0 = ((d0 & 0xffffff00) | (t5 & 255));
-  t6 = (d0 & 0xc0);
-  d0 = (t6) >>> 0;
-  kind = ((kind & 0xffffff00) | (((d3 === d0) ? 0xff : 0) & 255));
+  unused = ((unused & 0xffffff00) | (t5 & 255));
+  t6 = (unused & 0xc0);
+  unused = (t6) >>> 0;
+  kind = ((kind & 0xffffff00) | (((d3 === unused) ? 0xff : 0) & 255));
   kind = ((kind & 0xffffff00) | ((0 - ((kind & 255))) & 255));
   drop(2);
-  d0 = (kind) >>> 0;
+  unused = (kind) >>> 0;
   kind = load32(stackPointer());
   d3 = load32(stackPointer() + 4);
   drop(8);
-  setFlagsCmp(d0, 0, 32);
+  setFlagsCmp(unused, 0, 32);
   setReg('a0', src);
-  setReg('d0', d0);
+  setReg('d0', unused);
   setReg('d1', d1);
   setReg('d2', kind);
   setReg('d3', d3);
-  setReg('a0', src); setReg('d0', d0); setReg('d1', d1); setReg('d2', kind); setReg('d3', d3); return;
+  setReg('a0', src); setReg('d0', unused); setReg('d1', d1); setReg('d2', kind); setReg('d3', d3); return;
   setReg('a0', src);
-  setReg('d0', d0);
+  setReg('d0', unused);
   setReg('d1', d1);
   setReg('d2', kind);
   setReg('d3', d3);
@@ -16618,7 +16618,7 @@ export function initialisePlayerStructs(index2_: number, d5_: number): void {
   setReg('d5', d5);
 }
 
-export function entitySpawnWrapper(ptr_: number, index_: number, d4_: number): void {
+export function entitySpawnWrapper(ptr_: number, index_: number, found_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -16627,7 +16627,7 @@ export function entitySpawnWrapper(ptr_: number, index_: number, d4_: number): v
   let index = index_;
   let limit = getReg('d2');
   let d3 = getReg('d3');
-  let d4 = d4_;
+  let found = found_;
   let save_d2_0 = 0;
   let save_d3_1 = 0;
   let save_d4_2 = 0;
@@ -16645,26 +16645,26 @@ export function entitySpawnWrapper(ptr_: number, index_: number, d4_: number): v
   let t14 = 0;
   let t15 = 0;
   let t16 = 0;
-  const _t0 = tick(108, 0x022ba) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', d4); if (_t0) takeIrq(); }
+  const _t0 = tick(108, 0x022ba) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', found); if (_t0) takeIrq(); }
   push(a3, 4);
   push(a2, 4);
-  push(d4, 4);
+  push(found, 4);
   push(d3, 4);
   push(limit, 4);
   save_d2_0 = limit;
   save_d3_1 = d3;
-  save_d4_2 = d4;
+  save_d4_2 = found;
   save_a2_3 = a2;
   save_a3_4 = a3;
   d3 = (3) >>> 0;
   a3 = (0x3e1968) >>> 0;
-  d4 = ((d4 & 0xffff0000) | (0 & 65535));
+  found = ((found & 0xffff0000) | (0 & 65535));
   limit = (1) >>> 0;
   a2 = (0x3e02d8) >>> 0;
   setFlagsCmp((limit & 65535), 0, 16);
   l1: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
-    const _t1 = tick(76, 0x022d0) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', d4); if (_t1) takeIrq(); }
+    const _t1 = tick(76, 0x022d0) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', found); if (_t1) takeIrq(); }
     t5 = limit;
     push(t5, 4);
     t6 = 0;
@@ -16680,7 +16680,7 @@ export function entitySpawnWrapper(ptr_: number, index_: number, d4_: number): v
     setReg('d0', index);
     setReg('d2', limit);
     setReg('d3', d3);
-    setReg('d4', d4);
+    setReg('d4', found);
     callRom(0x0220c, 0x022dc);
     if (halted()) return;
     ptr = getReg('a0');
@@ -16689,8 +16689,8 @@ export function entitySpawnWrapper(ptr_: number, index_: number, d4_: number): v
     index = getReg('d0');
     limit = getReg('d2');
     d3 = getReg('d3');
-    d4 = getReg('d4');
-    const _t2 = tick(100, 0x022dc) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', d4); if (_t2) takeIrq(); }
+    found = getReg('d4');
+    const _t2 = tick(100, 0x022dc) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', found); if (_t2) takeIrq(); }
     t9 = index;
     t10 = ((0x4) & 63);
     t11 = (t10 >= 32 ? 0 : ((index) << t10));
@@ -16701,14 +16701,14 @@ export function entitySpawnWrapper(ptr_: number, index_: number, d4_: number): v
     store32(a3 + 0x42, t12);
     a3 = ((a3 + 0x7e)) >>> 0;
     drop(16);
-    t13 = (d4 & 65535);
+    t13 = (found & 65535);
     t14 = 0x1;
-    d4 = ((d4 & 0xffff0000) | (((d4 & 65535) + 0x1) & 65535));
+    found = ((found & 0xffff0000) | (((found & 65535) + 0x1) & 65535));
     t15 = limit;
     t16 = 0x1;
     limit = ((limit + 0x1)) >>> 0;
     index = (0) >>> 0;
-    index = ((index & 0xffff0000) | ((d4 & 65535) & 65535));
+    index = ((index & 0xffff0000) | ((found & 65535) & 65535));
     setXAdd(t15, t16, 32);
     setFlagsCmp(index, d3, 32);
     if (index < d3) {
@@ -16716,10 +16716,10 @@ export function entitySpawnWrapper(ptr_: number, index_: number, d4_: number): v
     }
     break;
   }
-  const _t3 = tick(66, 0x022fa) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t15, t16, 32); setFlagsCmp(index, d3, 32); setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', d4); if (_t3) takeIrq(); }
+  const _t3 = tick(66, 0x022fa) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t15, t16, 32); setFlagsCmp(index, d3, 32); setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', found); if (_t3) takeIrq(); }
   limit = load32(stackPointer());
   d3 = load32(stackPointer() + 4);
-  d4 = load32(stackPointer() + 8);
+  found = load32(stackPointer() + 8);
   a2 = load32(stackPointer() + 12);
   a3 = load32(stackPointer() + 16);
   drop(20);
@@ -16731,15 +16731,15 @@ export function entitySpawnWrapper(ptr_: number, index_: number, d4_: number): v
   setReg('d0', index);
   setReg('d2', limit);
   setReg('d3', d3);
-  setReg('d4', d4);
-  setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', d4); return;
+  setReg('d4', found);
+  setReg('a0', ptr); setReg('a2', a2); setReg('a3', a3); setReg('d0', index); setReg('d2', limit); setReg('d3', d3); setReg('d4', found); return;
   setReg('a0', ptr);
   setReg('a2', a2);
   setReg('a3', a3);
   setReg('d0', index);
   setReg('d2', limit);
   setReg('d3', d3);
-  setReg('d4', d4);
+  setReg('d4', found);
 }
 
 export function clearPlayfieldFirstPaletteEntry(): void {
@@ -29515,15 +29515,15 @@ export function boardCellAddressLookupWrapper(cell_: number, count_: number, ind
   setReg('d5', d5);
 }
 
-export function scoreCellBothNeighbourWeightings(ptr_: number, a3_: number, alsoWanted_: number, index_: number, neighbourByte_: number, d4_: number, index2_: number): void {
+export function scoreCellBothNeighbourWeightings(ptr_: number, record_: number, alsoWanted_: number, index_: number, neighbourByte_: number, unused_: number, index2_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
-  let a3 = a3_;
+  let record = record_;
   let alsoWanted = alsoWanted_;
   let index = index_;
   let neighbourByte = neighbourByte_;
-  let d4 = d4_;
+  let unused = unused_;
   let index2 = index2_;
   let t0 = 0;
   let t1 = 0;
@@ -29535,27 +29535,27 @@ export function scoreCellBothNeighbourWeightings(ptr_: number, a3_: number, also
   let t7 = 0;
   let t8 = 0;
   let t9 = 0;
-  const _t0 = tick(40, 0x03c00) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a3', a3); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', d4); setReg('d5', index2); if (_t0) takeIrq(); }
-  t0 = a3;
+  const _t0 = tick(40, 0x03c00) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a3', record); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', unused); setReg('d5', index2); if (_t0) takeIrq(); }
+  t0 = record;
   push(t0, 4);
   setFlagsCmp(t0, 0, 32);
   setReg('a0', ptr);
-  setReg('a3', a3);
+  setReg('a3', record);
   setReg('d0', alsoWanted);
   setReg('d1', index);
   setReg('d2', neighbourByte);
-  setReg('d4', d4);
+  setReg('d4', unused);
   setReg('d5', index2);
   callRom(0x03de8, 0x03c06);
   if (halted()) return;
   ptr = getReg('a0');
-  a3 = getReg('a3');
+  record = getReg('a3');
   alsoWanted = getReg('d0');
   index = getReg('d1');
   neighbourByte = getReg('d2');
-  d4 = getReg('d4');
+  unused = getReg('d4');
   index2 = getReg('d5');
-  const _t1 = tick(124, 0x03c06) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a3', a3); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', d4); setReg('d5', index2); if (_t1) takeIrq(); }
+  const _t1 = tick(124, 0x03c06) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', ptr); setReg('a3', record); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', unused); setReg('d5', index2); if (_t1) takeIrq(); }
   t1 = (index2 & 65535);
   t2 = (alsoWanted & 65535);
   index2 = ((index2 & 0xffff0000) | (((index2 & 65535) + (alsoWanted & 65535)) & 65535));
@@ -29564,34 +29564,34 @@ export function scoreCellBothNeighbourWeightings(ptr_: number, a3_: number, also
   alsoWanted = ((alsoWanted & 0xffffff00) | (load8((ptr + ((index2 << 16) >> 16))) & 255));
   index2 = ((index2 & 0xffff0000) | ((alsoWanted & 65535) & 65535));
   alsoWanted = (0) >>> 0;
-  alsoWanted = ((alsoWanted & 0xffffff00) | ((d4 & 255) & 255));
+  alsoWanted = ((alsoWanted & 0xffffff00) | ((unused & 255) & 255));
   t3 = alsoWanted;
   push(t3, 4);
   index = (0) >>> 0;
   index = ((index & 0xffffff00) | ((neighbourByte & 255) & 255));
   t4 = index;
   push(t4, 4);
-  t5 = a3;
+  t5 = record;
   push(t5, 4);
   setXAdd(t1, t2, 16);
   setFlagsCmp(t5, 0, 32);
   setReg('a0', ptr);
-  setReg('a3', a3);
+  setReg('a3', record);
   setReg('d0', alsoWanted);
   setReg('d1', index);
   setReg('d2', neighbourByte);
-  setReg('d4', d4);
+  setReg('d4', unused);
   setReg('d5', index2);
   callRom(0x03da0, 0x03c28);
   if (halted()) return;
   ptr = getReg('a0');
-  a3 = getReg('a3');
+  record = getReg('a3');
   alsoWanted = getReg('d0');
   index = getReg('d1');
   neighbourByte = getReg('d2');
-  d4 = getReg('d4');
+  unused = getReg('d4');
   index2 = getReg('d5');
-  const _t2 = tick(76, 0x03c28) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t1, t2, 16); setReg('a0', ptr); setReg('a3', a3); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', d4); setReg('d5', index2); if (_t2) takeIrq(); }
+  const _t2 = tick(76, 0x03c28) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t1, t2, 16); setReg('a0', ptr); setReg('a3', record); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', unused); setReg('d5', index2); if (_t2) takeIrq(); }
   index = ((index & 0xffff0000) | ((alsoWanted & 65535) & 65535));
   ptr = (0xfd9c) >>> 0;
   alsoWanted = (0) >>> 0;
@@ -29606,28 +29606,28 @@ export function scoreCellBothNeighbourWeightings(ptr_: number, a3_: number, also
   setXAdd(t8, t9, 16);
   setFlagsAdd(t8, t9, 16);
   setReg('a0', ptr);
-  setReg('a3', a3);
+  setReg('a3', record);
   setReg('d0', alsoWanted);
   setReg('d1', index);
   setReg('d2', neighbourByte);
-  setReg('d4', d4);
+  setReg('d4', unused);
   setReg('d5', index2);
-  setReg('a0', ptr); setReg('a3', a3); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', d4); setReg('d5', index2); jumpRom(0x03ccc);
-  setReg('a0', ptr); setReg('a3', a3); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', d4); setReg('d5', index2); return;
+  setReg('a0', ptr); setReg('a3', record); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', unused); setReg('d5', index2); jumpRom(0x03ccc);
+  setReg('a0', ptr); setReg('a3', record); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', unused); setReg('d5', index2); return;
   setReg('a0', ptr);
-  setReg('a3', a3);
+  setReg('a3', record);
   setReg('d0', alsoWanted);
   setReg('d1', index);
   setReg('d2', neighbourByte);
-  setReg('d4', d4);
+  setReg('d4', unused);
   setReg('d5', index2);
-  setReg('a0', ptr); setReg('a3', a3); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', d4); setReg('d5', index2); return;
+  setReg('a0', ptr); setReg('a3', record); setReg('d0', alsoWanted); setReg('d1', index); setReg('d2', neighbourByte); setReg('d4', unused); setReg('d5', index2); return;
   setReg('a0', ptr);
-  setReg('a3', a3);
+  setReg('a3', record);
   setReg('d0', alsoWanted);
   setReg('d1', index);
   setReg('d2', neighbourByte);
-  setReg('d4', d4);
+  setReg('d4', unused);
   setReg('d5', index2);
 }
 
@@ -30442,7 +30442,7 @@ export function clearSixteenSlotTableFlag(): void {
   setReg('d0', count);
 }
 
-export function claimSlotFill(dst2_: number, count_: number, arg0: number, limit: number): void {
+export function claimSlotFill(dst2_: number, count_: number, value: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -30465,7 +30465,7 @@ export function claimSlotFill(dst2_: number, count_: number, arg0: number, limit
   const _t0 = tick(66, 0x03e3e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('a2', dst2); setReg('d0', count); setReg('d1', wantRoutine); if (_t0) takeIrq(); }
   t0 = dst2;
   push(t0, 4);
-  wantRoutine = (arg0) >>> 0;
+  wantRoutine = (value) >>> 0;
   t1 = ((limit >>> 16) & 0xffff);
   count = ((count & 0xffff0000) | (t1 & 65535));
   dst2 = (0x3e0df6) >>> 0;
@@ -40613,7 +40613,7 @@ export function pieceBagBuilder(dst_: number, src_: number, limit_: number, kind
   setReg('d4', d4);
 }
 
-export function helperPieceBagBuilderVerified(src_: number, dst2_: number, arg0: number, src3: number, record: number): void {
+export function helperPieceBagBuilderVerified(src_: number, dst2_: number, count: number, src3: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -40659,7 +40659,7 @@ export function helperPieceBagBuilderVerified(src_: number, dst2_: number, arg0:
   save_a2_2 = dst2;
   save_a3_3 = a3;
   save_a4_4 = src2;
-  d2 = (arg0) >>> 0;
+  d2 = (count) >>> 0;
   src2 = (src3) >>> 0;
   a3 = (record) >>> 0;
   limit2 = (d2) >>> 0;
@@ -69293,11 +69293,11 @@ export function helperTextLineDraw(value_: number, cue: number): void {
   setReg('d1', value);
 }
 
-export function alternateBetweenTwoValuesFour(d0_: number, value_: number, saved_: number, index: number, index2: number): void {
+export function alternateBetweenTwoValuesFour(unused_: number, value_: number, saved_: number, index: number, index2: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
-  let d0 = d0_;
+  let unused = unused_;
   let value = value_;
   let saved = saved_;
   let save_d2_0 = 0;
@@ -69313,7 +69313,7 @@ export function alternateBetweenTwoValuesFour(d0_: number, value_: number, saved
   let t10 = 0;
   let t11 = 0;
   let t12 = 0;
-  const _t0 = tick(112, 0x0910e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('d0', d0); setReg('d1', value); setReg('d2', saved); if (_t0) takeIrq(); }
+  const _t0 = tick(112, 0x0910e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', a2); setReg('d0', unused); setReg('d1', value); setReg('d2', saved); if (_t0) takeIrq(); }
   push(a2, 4);
   push(saved, 4);
   save_d2_0 = saved;
@@ -69327,61 +69327,61 @@ export function alternateBetweenTwoValuesFour(d0_: number, value_: number, saved
   setFlagsCmp(t4, 0, 16);
   if (((t4) & 65535) === ((0) & 65535)) {
   } else {
-    const _t1 = tick(18, 0x09128) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t4, 0, 16); setReg('a2', a2); setReg('d0', d0); setReg('d1', value); setReg('d2', saved); if (_t1) takeIrq(); }
+    const _t1 = tick(18, 0x09128) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(t4, 0, 16); setReg('a2', a2); setReg('d0', unused); setReg('d1', value); setReg('d2', saved); if (_t1) takeIrq(); }
     t5 = load8(a2);
     t6 = t5;
     if ((((t6) >>> ((0x0) & 7)) & 1) === 0) {
-      const _t3 = tick(8, 0x09134) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsBit(t6, 0x0, 7); setReg('a2', a2); setReg('d0', d0); setReg('d1', value); setReg('d2', saved); if (_t3) takeIrq(); }
-      d0 = (0) >>> 0;
-      d0 = ((d0 & 0xffffff00) | ((saved & 255) & 255));
-      setFlagsCmp((d0 & 255), 0, 8);
+      const _t3 = tick(8, 0x09134) ? 1 : 0; if (_t3 || SPILL_ALL) { setFlagsBit(t6, 0x0, 7); setReg('a2', a2); setReg('d0', unused); setReg('d1', value); setReg('d2', saved); if (_t3) takeIrq(); }
+      unused = (0) >>> 0;
+      unused = ((unused & 0xffffff00) | ((saved & 255) & 255));
+      setFlagsCmp((unused & 255), 0, 8);
     } else {
-      const _t2 = tick(18, 0x0912e) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsBit(t6, 0x0, 7); setReg('a2', a2); setReg('d0', d0); setReg('d1', value); setReg('d2', saved); if (_t2) takeIrq(); }
-      d0 = (0) >>> 0;
-      d0 = ((d0 & 0xffffff00) | ((value & 255) & 255));
-      setFlagsCmp((d0 & 255), 0, 8);
+      const _t2 = tick(18, 0x0912e) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsBit(t6, 0x0, 7); setReg('a2', a2); setReg('d0', unused); setReg('d1', value); setReg('d2', saved); if (_t2) takeIrq(); }
+      unused = (0) >>> 0;
+      unused = ((unused & 0xffffff00) | ((value & 255) & 255));
+      setFlagsCmp((unused & 255), 0, 8);
     }
-    const _t4 = tick(42, 0x09138) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp((d0 & 255), 0, 8); setReg('a2', a2); setReg('d0', d0); setReg('d1', value); setReg('d2', saved); if (_t4) takeIrq(); }
-    t7 = d0;
+    const _t4 = tick(42, 0x09138) ? 1 : 0; if (_t4 || SPILL_ALL) { setFlagsCmp((unused & 255), 0, 8); setReg('a2', a2); setReg('d0', unused); setReg('d1', value); setReg('d2', saved); if (_t4) takeIrq(); }
+    t7 = unused;
     push(t7, 4);
     setFlagsCmp(t7, 0, 32);
     setReg('a2', a2);
-    setReg('d0', d0);
+    setReg('d0', unused);
     setReg('d1', value);
     setReg('d2', saved);
     callRom(0x090be, 0x0913c);
     if (halted()) return;
     a2 = getReg('a2');
-    d0 = getReg('d0');
+    unused = getReg('d0');
     value = getReg('d1');
     saved = getReg('d2');
-    const _t5 = tick(42, 0x0913c) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('d0', d0); setReg('d1', value); setReg('d2', saved); if (_t5) takeIrq(); }
+    const _t5 = tick(42, 0x0913c) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a2', a2); setReg('d0', unused); setReg('d1', value); setReg('d2', saved); if (_t5) takeIrq(); }
     drop(4);
-    d0 = (0) >>> 0;
+    unused = (0) >>> 0;
     t8 = load8(a2);
-    d0 = ((d0 & 0xffffff00) | (t8 & 255));
-    t9 = d0;
+    unused = ((unused & 0xffffff00) | (t8 & 255));
+    t9 = unused;
     t10 = 0x1;
-    d0 = ((d0 + 0x1)) >>> 0;
+    unused = ((unused + 0x1)) >>> 0;
     value = (3) >>> 0;
-    t11 = (d0 & value);
-    d0 = (t11) >>> 0;
-    t12 = (d0 & 255);
+    t11 = (unused & value);
+    unused = (t11) >>> 0;
+    t12 = (unused & 255);
     store8(a2, t12);
     setXAdd(t9, t10, 32);
     setFlagsCmp(t12, 0, 8);
   }
-  const _t6 = tick(50, 0x0914a) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', a2); setReg('d0', d0); setReg('d1', value); setReg('d2', saved); if (_t6) takeIrq(); }
+  const _t6 = tick(50, 0x0914a) ? 1 : 0; if (_t6 || SPILL_ALL) { setReg('a2', a2); setReg('d0', unused); setReg('d1', value); setReg('d2', saved); if (_t6) takeIrq(); }
   saved = load32(stackPointer());
   a2 = load32(stackPointer() + 4);
   drop(8);
   setReg('a2', a2);
-  setReg('d0', d0);
+  setReg('d0', unused);
   setReg('d1', value);
   setReg('d2', saved);
-  setReg('a2', a2); setReg('d0', d0); setReg('d1', value); setReg('d2', saved); return;
+  setReg('a2', a2); setReg('d0', unused); setReg('d1', value); setReg('d2', saved); return;
   setReg('a2', a2);
-  setReg('d0', d0);
+  setReg('d0', unused);
   setReg('d1', value);
   setReg('d2', saved);
 }
@@ -118879,12 +118879,12 @@ export function scalingBlitter(rowSource_: number, rowStart_: number, index_: nu
   setReg('d6', written);
 }
 
-export function screenDissolve(dst_: number, index_: number, d1_: number, count_: number): void {
+export function screenDissolve(dst_: number, index_: number, unused_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
   let index = index_;
-  let d1 = d1_;
+  let unused = unused_;
   let count = count_;
   let save_d1_0 = 0;
   let save_d2_1 = 0;
@@ -118904,36 +118904,36 @@ export function screenDissolve(dst_: number, index_: number, d1_: number, count_
   let t15 = 0;
   let t16 = 0;
   let t17 = 0;
-  const _t0 = tick(72, 0x11e10) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); if (_t0) takeIrq(); }
+  const _t0 = tick(72, 0x11e10) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); if (_t0) takeIrq(); }
   push(count, 4);
-  push(d1, 4);
-  save_d1_0 = d1;
+  push(unused, 4);
+  save_d1_0 = unused;
   save_d2_1 = count;
   setReg('a0', dst);
   setReg('d0', index);
-  setReg('d1', d1);
+  setReg('d1', unused);
   setReg('d2', count);
   callRom(0x00512, 0x11e1a);
   if (halted()) return;
   dst = getReg('a0');
   index = getReg('d0');
-  d1 = getReg('d1');
+  unused = getReg('d1');
   count = getReg('d2');
-  const _t1 = tick(60, 0x11e1a) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); if (_t1) takeIrq(); }
+  const _t1 = tick(60, 0x11e1a) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); if (_t1) takeIrq(); }
   t2 = 0;
   store32(0x3c0000, t2);
   t3 = load32(0x3c0000);
   dst = (0x200004) >>> 0;
   count = ((count & 0xffff0000) | (0xf000 & 65535));
-  d1 = (0xb400) >>> 0;
-  index = (d1) >>> 0;
+  unused = (0xb400) >>> 0;
+  index = (unused) >>> 0;
   t4 = 0;
   store16(dst, t4);
   t5 = load16(dst);
   setFlagsCmp(t5, 0, 16);
   l2: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 2 did not end');
-    const _t2 = tick(18, 0x11e34) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); if (_t2) takeIrq(); }
+    const _t2 = tick(18, 0x11e34) ? 1 : 0; if (_t2 || SPILL_ALL) { setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); if (_t2) takeIrq(); }
     t6 = index;
     t7 = ((0x1) & 63);
     t8 = (t7 >= 32 ? 0 : ((index) >>> t7));
@@ -118942,19 +118942,19 @@ export function screenDissolve(dst_: number, index_: number, d1_: number, count_
     setFlagsShift(index, (((t6) >>> 0) & 1), 0, 32);
     if ((((t6) >>> 0) & 1) === 0) {
     } else {
-      const _t3 = tick(6, 0x11e38) ? 1 : 0; if (_t3 || SPILL_ALL) { setXShift((((t6) >>> 0) & 1), 1); setFlagsShift(index, (((t6) >>> 0) & 1), 0, 32); setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); if (_t3) takeIrq(); }
-      t9 = (index ^ d1);
+      const _t3 = tick(6, 0x11e38) ? 1 : 0; if (_t3 || SPILL_ALL) { setXShift((((t6) >>> 0) & 1), 1); setFlagsShift(index, (((t6) >>> 0) & 1), 0, 32); setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); if (_t3) takeIrq(); }
+      t9 = (index ^ unused);
       index = (t9) >>> 0;
       setXShift((((t6) >>> 0) & 1), 1);
       setFlagsCmp(index, 0, 32);
     }
-    const _t4 = tick(20, 0x11e3a) ? 1 : 0; if (_t4 || SPILL_ALL) { setXShift((((t6) >>> 0) & 1), 1); setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); if (_t4) takeIrq(); }
+    const _t4 = tick(20, 0x11e3a) ? 1 : 0; if (_t4 || SPILL_ALL) { setXShift((((t6) >>> 0) & 1), 1); setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); if (_t4) takeIrq(); }
     setXShift((((t6) >>> 0) & 1), 1);
     setFlagsCmp(index, 0xf000, 32);
     if (index >= 0xf000) {
       continue l2;
     }
-    const _t5 = tick(40, 0x11e42) ? 1 : 0; if (_t5 || SPILL_ALL) { setXShift((((t6) >>> 0) & 1), 1); setFlagsCmp(index, 0xf000, 32); setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); if (_t5) takeIrq(); }
+    const _t5 = tick(40, 0x11e42) ? 1 : 0; if (_t5 || SPILL_ALL) { setXShift((((t6) >>> 0) & 1), 1); setFlagsCmp(index, 0xf000, 32); setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); if (_t5) takeIrq(); }
     t10 = index;
     t11 = ((0x1) & 63);
     t12 = (t11 >= 32 ? 0 : ((index) << t11));
@@ -118974,26 +118974,26 @@ export function screenDissolve(dst_: number, index_: number, d1_: number, count_
     }
     break;
   }
-  const _t6 = tick(54, 0x11e4e) ? 1 : 0; if (_t6 || SPILL_ALL) { setXShift((((t15) >>> 0) & 1), 1); setFlagsShift(index, (((t15) >>> 0) & 1), 0, 32); setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); if (_t6) takeIrq(); }
-  d1 = load32(stackPointer());
+  const _t6 = tick(54, 0x11e4e) ? 1 : 0; if (_t6 || SPILL_ALL) { setXShift((((t15) >>> 0) & 1), 1); setFlagsShift(index, (((t15) >>> 0) & 1), 0, 32); setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); if (_t6) takeIrq(); }
+  unused = load32(stackPointer());
   count = load32(stackPointer() + 4);
   drop(8);
   setXShift((((t15) >>> 0) & 1), 1);
   setFlagsShift(index, (((t15) >>> 0) & 1), 0, 32);
   setReg('a0', dst);
   setReg('d0', index);
-  setReg('d1', d1);
+  setReg('d1', unused);
   setReg('d2', count);
-  setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); jumpRom(0x0052a);
-  setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); return;
+  setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); jumpRom(0x0052a);
+  setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); return;
   setReg('a0', dst);
   setReg('d0', index);
-  setReg('d1', d1);
+  setReg('d1', unused);
   setReg('d2', count);
-  setReg('a0', dst); setReg('d0', index); setReg('d1', d1); setReg('d2', count); return;
+  setReg('a0', dst); setReg('d0', index); setReg('d1', unused); setReg('d2', count); return;
   setReg('a0', dst);
   setReg('d0', index);
-  setReg('d1', d1);
+  setReg('d1', unused);
   setReg('d2', count);
 }
 
@@ -121054,12 +121054,12 @@ export function decoderStateEmitD3Then(dst: number, byte: number): void {
   setReg('a2', t0);
 }
 
-export function decompressorInnerLoop(src_: number, preserved2_: number, a5_: number, kind_: number, count_: number): void {
+export function decompressorInnerLoop(src_: number, preserved2_: number, base_: number, kind_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let src = src_;
   let preserved2 = preserved2_;
-  let a5 = a5_;
+  let base = base_;
   let kind = kind_;
   let count = count_;
   let t0 = 0;
@@ -121076,18 +121076,18 @@ export function decompressorInnerLoop(src_: number, preserved2_: number, a5_: nu
   let t11 = 0;
   let t12 = 0;
   let t13 = 0;
-  const _t0 = tick(10, 0x122c6) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t0) takeIrq(); }
+  const _t0 = tick(10, 0x122c6) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t0) takeIrq(); }
   count = ((count & 0xffff0000) | (((count & 0xffff) - 1) & 0xffff));
   if ((count & 0xffff) !== 0xffff) {
     setReg('a3', src);
     setReg('a4', preserved2);
-    setReg('a5', a5);
+    setReg('a5', base);
     setReg('d4', kind);
     setReg('d5', count);
-    setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); jumpRom(0x1232a);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);   return;
+    setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); jumpRom(0x1232a);
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);   return;
   }
-  const _t1 = tick(24, 0x122ca) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t1) takeIrq(); }
+  const _t1 = tick(24, 0x122ca) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t1) takeIrq(); }
   kind = (0) >>> 0;
   t0 = load8(src);
   src = (src + 1);
@@ -121096,13 +121096,13 @@ export function decompressorInnerLoop(src_: number, preserved2_: number, a5_: nu
     setFlagsCmp((kind & 255), 0, 8);
     setReg('a3', src);
     setReg('a4', preserved2);
-    setReg('a5', a5);
+    setReg('a5', base);
     setReg('d4', kind);
     setReg('d5', count);
-    setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); jumpRom(0x1231a);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);   return;
+    setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); jumpRom(0x1231a);
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);   return;
   }
-  const _t2 = tick(28, 0x122d0) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((kind & 255), 0, 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t2) takeIrq(); }
+  const _t2 = tick(28, 0x122d0) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((kind & 255), 0, 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t2) takeIrq(); }
   count = ((count & 0xffff0000) | ((kind & 65535) & 65535));
   t1 = ((count & 65535) & 0x1f);
   count = ((count & 0xffff0000) | (t1 & 65535));
@@ -121111,105 +121111,105 @@ export function decompressorInnerLoop(src_: number, preserved2_: number, a5_: nu
   t4 = (t3 >= 8 ? 0 : (((kind & 255)) << t3));
   kind = ((kind & 0xffffff00) | (t4 & 255));
   if (((((((((kind & 255)) & 255) - ((0) & 255)) & 255)) << 24) >> 24) < 0) {
-    const _t6 = tick(16, 0x122ee) ? 1 : 0; if (_t6 || SPILL_ALL) { setXShift((((t2) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t2) >>> 7) & 1), ((((t2) >>> 6) & 3) === 0 || ((((t2) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t6) takeIrq(); }
+    const _t6 = tick(16, 0x122ee) ? 1 : 0; if (_t6 || SPILL_ALL) { setXShift((((t2) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t2) >>> 7) & 1), ((((t2) >>> 6) & 3) === 0 || ((((t2) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t6) takeIrq(); }
     t8 = (kind & 255);
     t9 = ((0x1) & 63);
     t10 = (t9 >= 8 ? 0 : (((kind & 255)) << t9));
     kind = ((kind & 0xffffff00) | (t10 & 255));
     if (((((((((kind & 255)) & 255) - ((0) & 255)) & 255)) << 24) >> 24) < 0) {
-      const _t8 = tick(18, 0x122fe) ? 1 : 0; if (_t8 || SPILL_ALL) { setXShift((((t8) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t8) >>> 7) & 1), ((((t8) >>> 6) & 3) === 0 || ((((t8) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t8) takeIrq(); }
+      const _t8 = tick(18, 0x122fe) ? 1 : 0; if (_t8 || SPILL_ALL) { setXShift((((t8) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t8) >>> 7) & 1), ((((t8) >>> 6) & 3) === 0 || ((((t8) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t8) takeIrq(); }
       if ((((kind & 255)) & 255) !== ((0xfc) & 255)) {
         setXShift((((t8) >>> 7) & 1), 1);
         setFlagsCmp((kind & 255), 0xfc, 8);
         setReg('a3', src);
         setReg('a4', preserved2);
-        setReg('a5', a5);
+        setReg('a5', base);
         setReg('d4', kind);
         setReg('d5', count);
-        setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); jumpRom(0x12306);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);       return;
+        setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); jumpRom(0x12306);
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);       return;
       }
-      const _t9 = tick(16, 0x12304) ? 1 : 0; if (_t9 || SPILL_ALL) { setXShift((((t8) >>> 7) & 1), 1); setFlagsCmp((kind & 255), 0xfc, 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t9) takeIrq(); }
+      const _t9 = tick(16, 0x12304) ? 1 : 0; if (_t9 || SPILL_ALL) { setXShift((((t8) >>> 7) & 1), 1); setFlagsCmp((kind & 255), 0xfc, 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t9) takeIrq(); }
       setXShift((((t8) >>> 7) & 1), 1);
       setFlagsCmp((kind & 255), 0xfc, 8);
       setReg('a3', src);
       setReg('a4', preserved2);
-      setReg('a5', a5);
+      setReg('a5', base);
       setReg('d4', kind);
       setReg('d5', count);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);     return;
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);     return;
     } else {
-      const _t7 = tick(40, 0x122f2) ? 1 : 0; if (_t7 || SPILL_ALL) { setXShift((((t8) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t8) >>> 7) & 1), ((((t8) >>> 6) & 3) === 0 || ((((t8) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t7) takeIrq(); }
+      const _t7 = tick(40, 0x122f2) ? 1 : 0; if (_t7 || SPILL_ALL) { setXShift((((t8) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t8) >>> 7) & 1), ((((t8) >>> 6) & 3) === 0 || ((((t8) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t7) takeIrq(); }
       preserved2 = (0x12350) >>> 0;
       t11 = load8(src);
       src = (src + 1);
       kind = ((kind & 0xffffff00) | (t11 & 255));
       t12 = (kind & 65535);
-      t13 = (a5 & 65535);
-      kind = ((kind & 0xffff0000) | (((kind & 65535) + (a5 & 65535)) & 65535));
+      t13 = (base & 65535);
+      kind = ((kind & 0xffff0000) | (((kind & 65535) + (base & 65535)) & 65535));
       setXAdd(t12, t13, 16);
       setFlagsAdd(t12, t13, 16);
       setReg('a3', src);
       setReg('a4', preserved2);
-      setReg('a5', a5);
+      setReg('a5', base);
       setReg('d4', kind);
       setReg('d5', count);
-      setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); jumpRom(0x1232a);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);     return;
+      setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); jumpRom(0x1232a);
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);     return;
       setReg('a3', src);
       setReg('a4', preserved2);
-      setReg('a5', a5);
+      setReg('a5', base);
       setReg('d4', kind);
       setReg('d5', count);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);     return;
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);     return;
     }
   } else {
-    const _t3 = tick(16, 0x122da) ? 1 : 0; if (_t3 || SPILL_ALL) { setXShift((((t2) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t2) >>> 7) & 1), ((((t2) >>> 6) & 3) === 0 || ((((t2) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t3) takeIrq(); }
+    const _t3 = tick(16, 0x122da) ? 1 : 0; if (_t3 || SPILL_ALL) { setXShift((((t2) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t2) >>> 7) & 1), ((((t2) >>> 6) & 3) === 0 || ((((t2) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t3) takeIrq(); }
     t5 = (kind & 255);
     t6 = ((0x1) & 63);
     t7 = (t6 >= 8 ? 0 : (((kind & 255)) << t6));
     kind = ((kind & 0xffffff00) | (t7 & 255));
     if (((((((((kind & 255)) & 255) - ((0) & 255)) & 255)) << 24) >> 24) < 0) {
-      const _t5 = tick(28, 0x122e6) ? 1 : 0; if (_t5 || SPILL_ALL) { setXShift((((t5) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t5) >>> 7) & 1), ((((t5) >>> 6) & 3) === 0 || ((((t5) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t5) takeIrq(); }
+      const _t5 = tick(28, 0x122e6) ? 1 : 0; if (_t5 || SPILL_ALL) { setXShift((((t5) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t5) >>> 7) & 1), ((((t5) >>> 6) & 3) === 0 || ((((t5) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t5) takeIrq(); }
       preserved2 = (0x1232e) >>> 0;
       setXShift((((t5) >>> 7) & 1), 1);
       setFlagsShift((kind & 255), (((t5) >>> 7) & 1), ((((t5) >>> 6) & 3) === 0 || ((((t5) >>> 6) & 3) === 3) ? 0 : 1), 8);
       setReg('a3', src);
       setReg('a4', preserved2);
-      setReg('a5', a5);
+      setReg('a5', base);
       setReg('d4', kind);
       setReg('d5', count);
-      setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); jumpRom(0x1232a);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);     return;
+      setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); jumpRom(0x1232a);
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);     return;
       setReg('a3', src);
       setReg('a4', preserved2);
-      setReg('a5', a5);
+      setReg('a5', base);
       setReg('d4', kind);
       setReg('d5', count);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);     return;
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);     return;
     } else {
-      const _t4 = tick(28, 0x122de) ? 1 : 0; if (_t4 || SPILL_ALL) { setXShift((((t5) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t5) >>> 7) & 1), ((((t5) >>> 6) & 3) === 0 || ((((t5) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); if (_t4) takeIrq(); }
+      const _t4 = tick(28, 0x122de) ? 1 : 0; if (_t4 || SPILL_ALL) { setXShift((((t5) >>> 7) & 1), 1); setFlagsShift((kind & 255), (((t5) >>> 7) & 1), ((((t5) >>> 6) & 3) === 0 || ((((t5) >>> 6) & 3) === 3) ? 0 : 1), 8); setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); if (_t4) takeIrq(); }
       preserved2 = (0x1232c) >>> 0;
       setXShift((((t5) >>> 7) & 1), 1);
       setFlagsShift((kind & 255), (((t5) >>> 7) & 1), ((((t5) >>> 6) & 3) === 0 || ((((t5) >>> 6) & 3) === 3) ? 0 : 1), 8);
       setReg('a3', src);
       setReg('a4', preserved2);
-      setReg('a5', a5);
+      setReg('a5', base);
       setReg('d4', kind);
       setReg('d5', count);
-      setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count); jumpRom(0x1232a);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);     return;
+      setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count); jumpRom(0x1232a);
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);     return;
       setReg('a3', src);
       setReg('a4', preserved2);
-      setReg('a5', a5);
+      setReg('a5', base);
       setReg('d4', kind);
       setReg('d5', count);
-  setReg('a3', src); setReg('a4', preserved2); setReg('a5', a5); setReg('d4', kind); setReg('d5', count);     return;
+  setReg('a3', src); setReg('a4', preserved2); setReg('a5', base); setReg('d4', kind); setReg('d5', count);     return;
     }
   }
   setReg('a3', src);
   setReg('a4', preserved2);
-  setReg('a5', a5);
+  setReg('a5', base);
   setReg('d4', kind);
   setReg('d5', count);
 }
@@ -169743,12 +169743,12 @@ export function clearEightKilobyteBandPlayfieldFrom1(count_: number, row: number
   setReg('d1', d1);
 }
 
-export function replaceHighNibbleEightRows(d1_: number, unused_: number, arg0: number, arg1: number): void {
+export function replaceHighNibbleEightRows(unused2_: number, unused_: number, nibble: number, row: number): void {
   let _guard = 0;
   void _guard;
   let a1 = getReg('a1');
   let count = getReg('d0');
-  let d1 = d1_;
+  let unused2 = unused2_;
   let d2 = getReg('d2');
   let unused = unused_;
   let save_d2_0 = 0;
@@ -169765,24 +169765,24 @@ export function replaceHighNibbleEightRows(d1_: number, unused_: number, arg0: n
   let t11 = 0;
   let t12 = 0;
   let t13 = 0;
-  const _t0 = tick(162, 0x1942a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a1', a1); setReg('d0', count); setReg('d1', d1); setReg('d2', d2); setReg('d3', unused); if (_t0) takeIrq(); }
+  const _t0 = tick(162, 0x1942a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a1', a1); setReg('d0', count); setReg('d1', unused2); setReg('d2', d2); setReg('d3', unused); if (_t0) takeIrq(); }
   push(unused, 4);
   push(d2, 4);
   save_d2_0 = d2;
   save_d3_1 = unused;
-  t2 = (arg1 & 0xff);
-  d1 = ((d1 & 0xffffff00) | (t2 & 255));
-  t3 = (d1 & 255);
+  t2 = (row & 0xff);
+  unused2 = ((unused2 & 0xffffff00) | (t2 & 255));
+  t3 = (unused2 & 255);
   store8(stackPointer() + 18, t3);
   t4 = load16(stackPointer() + 18);
-  d1 = ((d1 & 0xffff0000) | (t4 & 65535));
-  d1 = (((((d1) >>> 16) & 0xffff) | (((d1) & 0xffff) << 16))) >>> 0;
+  unused2 = ((unused2 & 0xffff0000) | (t4 & 65535));
+  unused2 = (((((unused2) >>> 16) & 0xffff) | (((unused2) & 0xffff) << 16))) >>> 0;
   t5 = load16(stackPointer() + 18);
-  d1 = ((d1 & 0xffff0000) | (t5 & 65535));
+  unused2 = ((unused2 & 0xffff0000) | (t5 & 65535));
   d2 = (0xf0f0f0f) >>> 0;
   a1 = (0x200004) >>> 0;
   count = (0) >>> 0;
-  t6 = (arg0 & 0xff);
+  t6 = (nibble & 0xff);
   count = ((count & 0xffffff00) | (t6 & 255));
   count = (((((count) >>> 16) & 0xffff) | (((count) & 0xffff) << 16))) >>> 0;
   t7 = count;
@@ -169795,12 +169795,12 @@ export function replaceHighNibbleEightRows(d1_: number, unused_: number, arg0: n
   setFlagsCmp((count & 65535), 0, 16);
   l1: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
-    const _t1 = tick(42, 0x1945c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXShift((((t7) >>> 3) & 1), 1); setReg('a1', a1); setReg('d0', count); setReg('d1', d1); setReg('d2', d2); setReg('d3', unused); if (_t1) takeIrq(); }
+    const _t1 = tick(42, 0x1945c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXShift((((t7) >>> 3) & 1), 1); setReg('a1', a1); setReg('d0', count); setReg('d1', unused2); setReg('d2', d2); setReg('d3', unused); if (_t1) takeIrq(); }
     t10 = load32(a1);
     unused = (t10) >>> 0;
     t11 = (unused & d2);
     unused = (t11) >>> 0;
-    t12 = (unused | d1);
+    t12 = (unused | unused2);
     unused = (t12) >>> 0;
     t13 = unused;
     store32(a1, t13);
@@ -169813,7 +169813,7 @@ export function replaceHighNibbleEightRows(d1_: number, unused_: number, arg0: n
     }
     break;
   }
-  const _t2 = tick(50, 0x19468) ? 1 : 0; if (_t2 || SPILL_ALL) { setXShift((((t7) >>> 3) & 1), 1); setFlagsCmp(t13, 0, 32); setReg('a1', a1); setReg('d0', count); setReg('d1', d1); setReg('d2', d2); setReg('d3', unused); if (_t2) takeIrq(); }
+  const _t2 = tick(50, 0x19468) ? 1 : 0; if (_t2 || SPILL_ALL) { setXShift((((t7) >>> 3) & 1), 1); setFlagsCmp(t13, 0, 32); setReg('a1', a1); setReg('d0', count); setReg('d1', unused2); setReg('d2', d2); setReg('d3', unused); if (_t2) takeIrq(); }
   d2 = load32(stackPointer());
   unused = load32(stackPointer() + 4);
   drop(8);
@@ -169821,13 +169821,13 @@ export function replaceHighNibbleEightRows(d1_: number, unused_: number, arg0: n
   setFlagsCmp(t13, 0, 32);
   setReg('a1', a1);
   setReg('d0', count);
-  setReg('d1', d1);
+  setReg('d1', unused2);
   setReg('d2', d2);
   setReg('d3', unused);
-  setReg('a1', a1); setReg('d0', count); setReg('d1', d1); setReg('d2', d2); setReg('d3', unused); return;
+  setReg('a1', a1); setReg('d0', count); setReg('d1', unused2); setReg('d2', d2); setReg('d3', unused); return;
   setReg('a1', a1);
   setReg('d0', count);
-  setReg('d1', d1);
+  setReg('d1', unused2);
   setReg('d2', d2);
   setReg('d3', unused);
 }
@@ -171746,14 +171746,14 @@ export function signedLongDivision(index_: number, limit_: number, count_: numbe
   setReg('d3', nibblesLeft);
 }
 
-export function signedLongDivisionFrom1(a0_: number, d0_: number, limit_: number, count_: number, d3_: number): void {
+export function signedLongDivisionFrom1(unused2_: number, unused_: number, limit_: number, count_: number, magnitude_: number): void {
   let _guard = 0;
   void _guard;
-  let a0 = a0_;
-  let d0 = d0_;
+  let unused2 = unused2_;
+  let unused = unused_;
   let limit = limit_;
   let count = count_;
-  let d3 = d3_;
+  let magnitude = magnitude_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -171761,87 +171761,87 @@ export function signedLongDivisionFrom1(a0_: number, d0_: number, limit_: number
   let t4 = 0;
   let t5 = 0;
   let t6 = 0;
-  const _t0 = tick(20, 0x197a0) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); if (_t0) takeIrq(); }
+  const _t0 = tick(20, 0x197a0) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); if (_t0) takeIrq(); }
   if (limit < 0x10000) {
     setFlagsCmp(limit, 0x10000, 32);
-    setReg('a0', a0);
-    setReg('d0', d0);
+    setReg('a0', unused2);
+    setReg('d0', unused);
     setReg('d1', limit);
     setReg('d2', count);
-    setReg('d3', d3);
-    setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); jumpRom(0x197d8);
-  setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3);   return;
+    setReg('d3', magnitude);
+    setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); jumpRom(0x197d8);
+  setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude);   return;
   }
-  const _t1 = tick(46, 0x197a8) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(limit, 0x10000, 32); setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); if (_t1) takeIrq(); }
+  const _t1 = tick(46, 0x197a8) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp(limit, 0x10000, 32); setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); if (_t1) takeIrq(); }
   t0 = count;
   push(t0, 4);
   count = (15) >>> 0;
-  d0 = (0) >>> 0;
-  d0 = ((d0 & 0xffff0000) | ((d3 & 65535) & 65535));
-  d0 = (((((d0) >>> 16) & 0xffff) | (((d0) & 0xffff) << 16))) >>> 0;
-  d3 = ((d3 & 0xffff0000) | (0 & 65535));
-  d3 = (((((d3) >>> 16) & 0xffff) | (((d3) & 0xffff) << 16))) >>> 0;
-  setFlagsCmp((d3 & 65535), 0, 16);
-  if ((((d3 & 65535)) & 65535) !== ((0) & 65535)) {
+  unused = (0) >>> 0;
+  unused = ((unused & 0xffff0000) | ((magnitude & 65535) & 65535));
+  unused = (((((unused) >>> 16) & 0xffff) | (((unused) & 0xffff) << 16))) >>> 0;
+  magnitude = ((magnitude & 0xffff0000) | (0 & 65535));
+  magnitude = (((((magnitude) >>> 16) & 0xffff) | (((magnitude) & 0xffff) << 16))) >>> 0;
+  setFlagsCmp((magnitude & 65535), 0, 16);
+  if ((((magnitude & 65535)) & 65535) !== ((0) & 65535)) {
     l3: for (;;) {
       if (++_guard > 4000000) throw new Error('loop 3 did not end');
-      const _t3 = tick(28, 0x197bc) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); if (_t3) takeIrq(); }
-      t1 = d0;
-      t2 = d0;
-      d0 = ((d0 + d0)) >>> 0;
+      const _t3 = tick(28, 0x197bc) ? 1 : 0; if (_t3 || SPILL_ALL) { setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); if (_t3) takeIrq(); }
+      t1 = unused;
+      t2 = unused;
+      unused = ((unused + unused)) >>> 0;
       setXAdd(t1, t2, 32);
       setFlagsAdd(t1, t2, 32);
-      d3 = (((d3) + (d3) + extend())) >>> 0;
+      magnitude = (((magnitude) + (magnitude) + extend())) >>> 0;
       setXAdd(t1, t2, 32);
-      setFlagsCmp(d3, limit, 32);
-      if (d3 < limit) {
+      setFlagsCmp(magnitude, limit, 32);
+      if (magnitude < limit) {
       } else {
-        const _t4 = tick(10, 0x197c4) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t1, t2, 32); setFlagsCmp(d3, limit, 32); setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); if (_t4) takeIrq(); }
-        t3 = d3;
+        const _t4 = tick(10, 0x197c4) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t1, t2, 32); setFlagsCmp(magnitude, limit, 32); setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); if (_t4) takeIrq(); }
+        t3 = magnitude;
         t4 = limit;
-        d3 = ((d3 - limit)) >>> 0;
-        t5 = (d0 & 65535);
+        magnitude = ((magnitude - limit)) >>> 0;
+        t5 = (unused & 65535);
         t6 = 0x1;
-        d0 = ((d0 & 0xffff0000) | (((d0 & 65535) + 0x1) & 65535));
+        unused = ((unused & 0xffff0000) | (((unused & 65535) + 0x1) & 65535));
         setXAdd(t5, t6, 16);
         setFlagsAdd(t5, t6, 16);
       }
-      const _t5 = tick(10, 0x197c8) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); if (_t5) takeIrq(); }
+      const _t5 = tick(10, 0x197c8) ? 1 : 0; if (_t5 || SPILL_ALL) { setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); if (_t5) takeIrq(); }
       count = ((count & 0xffff0000) | (((count & 0xffff) - 1) & 0xffff));
       if ((count & 0xffff) !== 0xffff) {
         continue l3;
       }
       break;
     }
-    const _t6 = tick(16, 0x197cc) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsAdd(t5, t6, 16); setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); if (_t6) takeIrq(); }
-    limit = (a0) >>> 0;
+    const _t6 = tick(16, 0x197cc) ? 1 : 0; if (_t6 || SPILL_ALL) { setFlagsAdd(t5, t6, 16); setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); if (_t6) takeIrq(); }
+    limit = (unused2) >>> 0;
     setFlagsCmp(limit, 0, 32);
     if ((((limit - 0) | 0) | 0) >= 0) {
     } else {
-      const _t7 = tick(6, 0x197d0) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp(limit, 0, 32); setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); if (_t7) takeIrq(); }
-      d0 = ((0 - (d0))) >>> 0;
-      setFlagsCmp(d0, 0, 32);
+      const _t7 = tick(6, 0x197d0) ? 1 : 0; if (_t7 || SPILL_ALL) { setFlagsCmp(limit, 0, 32); setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); if (_t7) takeIrq(); }
+      unused = ((0 - (unused))) >>> 0;
+      setFlagsCmp(unused, 0, 32);
     }
   } else {
-    const _t2 = tick(14, 0x197b8) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((d3 & 65535), 0, 16); setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); if (_t2) takeIrq(); }
-    d0 = (0) >>> 0;
-    setFlagsCmp((d0 & 65535), 0, 16);
+    const _t2 = tick(14, 0x197b8) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp((magnitude & 65535), 0, 16); setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); if (_t2) takeIrq(); }
+    unused = (0) >>> 0;
+    setFlagsCmp((unused & 65535), 0, 16);
   }
-  const _t8 = tick(50, 0x197d2) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); if (_t8) takeIrq(); }
+  const _t8 = tick(50, 0x197d2) ? 1 : 0; if (_t8 || SPILL_ALL) { setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); if (_t8) takeIrq(); }
   count = load32(stackPointer());
-  d3 = load32(stackPointer() + 4);
+  magnitude = load32(stackPointer() + 4);
   drop(8);
-  setReg('a0', a0);
-  setReg('d0', d0);
+  setReg('a0', unused2);
+  setReg('d0', unused);
   setReg('d1', limit);
   setReg('d2', count);
-  setReg('d3', d3);
-  setReg('a0', a0); setReg('d0', d0); setReg('d1', limit); setReg('d2', count); setReg('d3', d3); return;
-  setReg('a0', a0);
-  setReg('d0', d0);
+  setReg('d3', magnitude);
+  setReg('a0', unused2); setReg('d0', unused); setReg('d1', limit); setReg('d2', count); setReg('d3', magnitude); return;
+  setReg('a0', unused2);
+  setReg('d0', unused);
   setReg('d1', limit);
   setReg('d2', count);
-  setReg('d3', d3);
+  setReg('d3', magnitude);
 }
 
 export function divideLongWord(limit_: number, dividend_: number): void {
@@ -175282,7 +175282,7 @@ export function markRecordsMatchingCommandByte(ptr_: number, ptr2_: number, inde
   setReg('d3', d3);
 }
 
-export function markRecordsMatchingField12WhenKindEight(ptr_: number, ptr2_: number, ptr3_: number, d2_: number, d3_: number): void {
+export function markRecordsMatchingField12WhenKindEight(ptr_: number, ptr2_: number, ptr3_: number, unused_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -175290,8 +175290,8 @@ export function markRecordsMatchingField12WhenKindEight(ptr_: number, ptr2_: num
   let ptr3 = ptr3_;
   let index = getReg('d0');
   let index2 = getReg('d1');
-  let d2 = d2_;
-  let d3 = d3_;
+  let unused = unused_;
+  let unused2 = unused2_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
@@ -175305,7 +175305,7 @@ export function markRecordsMatchingField12WhenKindEight(ptr_: number, ptr2_: num
   let t10 = 0;
   let t11 = 0;
   let t12 = 0;
-  const _t0 = tick(74, 0x1a284) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); if (_t0) takeIrq(); }
+  const _t0 = tick(74, 0x1a284) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); if (_t0) takeIrq(); }
   index = (0) >>> 0;
   t0 = load8(ptr + 0x1);
   index = ((index & 0xffffff00) | (t0 & 255));
@@ -175330,76 +175330,76 @@ export function markRecordsMatchingField12WhenKindEight(ptr_: number, ptr2_: num
     setReg('a3', ptr3);
     setReg('d0', index);
     setReg('d1', index2);
-    setReg('d2', d2);
-    setReg('d3', d3);
-    setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); jumpRom(0x1a3e0);
-  setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3);   return;
+    setReg('d2', unused);
+    setReg('d3', unused2);
+    setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); jumpRom(0x1a3e0);
+  setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2);   return;
   }
-  const _t1 = tick(16, 0x1a29c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp(t8, 0x8, 8); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); if (_t1) takeIrq(); }
+  const _t1 = tick(16, 0x1a29c) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp(t8, 0x8, 8); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); if (_t1) takeIrq(); }
   t9 = load8(ptr3 + 0x2);
-  d2 = ((d2 & 0xffffff00) | (t9 & 255));
-  d3 = (0) >>> 0;
+  unused = ((unused & 0xffffff00) | (t9 & 255));
+  unused2 = (0) >>> 0;
   setXAdd(t6, t7, 32);
-  setFlagsCmp((d3 & 65535), 0, 16);
+  setFlagsCmp((unused2 & 65535), 0, 16);
   l2: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 2 did not end');
-    const _t2 = tick(98, 0x1a2a2) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); if (_t2) takeIrq(); }
-    index2 = ((index2 & 0xffff0000) | ((d3 & 65535) & 65535));
+    const _t2 = tick(98, 0x1a2a2) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); if (_t2) takeIrq(); }
+    index2 = ((index2 & 0xffff0000) | ((unused2 & 65535) & 65535));
     index2 = (Math.imul((index2 & 65535), 0x60)) >>> 0;
     setXAdd(t6, t7, 32);
-    setFlagsCmp((d2 & 255), load8((ptr2 + ((index2 << 16) >> 16) + 0x12)), 8);
-    if ((((d2 & 255)) & 255) !== ((load8((ptr2 + ((index2 << 16) >> 16) + 0x12))) & 255)) {
-      const _t4 = tick(26, 0x1a2ba) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); if (_t4) takeIrq(); }
-      t11 = d3;
+    setFlagsCmp((unused & 255), load8((ptr2 + ((index2 << 16) >> 16) + 0x12)), 8);
+    if ((((unused & 255)) & 255) !== ((load8((ptr2 + ((index2 << 16) >> 16) + 0x12))) & 255)) {
+      const _t4 = tick(26, 0x1a2ba) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); if (_t4) takeIrq(); }
+      t11 = unused2;
       t12 = 0x1;
-      d3 = ((d3 + 0x1)) >>> 0;
+      unused2 = ((unused2 + 0x1)) >>> 0;
       index = (16) >>> 0;
-      if ((index | 0) <= (d3 | 0)) {
+      if ((index | 0) <= (unused2 | 0)) {
         setXAdd(t11, t12, 32);
-        setFlagsCmp(index, d3, 32);
+        setFlagsCmp(index, unused2, 32);
         setReg('a1', ptr);
         setReg('a2', ptr2);
         setReg('a3', ptr3);
         setReg('d0', index);
         setReg('d1', index2);
-        setReg('d2', d2);
-        setReg('d3', d3);
-        setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); jumpRom(0x1a3e0);
-  setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3);       return;
+        setReg('d2', unused);
+        setReg('d3', unused2);
+        setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); jumpRom(0x1a3e0);
+  setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2);       return;
       }
-      const _t5 = tick(10, 0x1a2c4) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t11, t12, 32); setFlagsCmp(index, d3, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); if (_t5) takeIrq(); }
+      const _t5 = tick(10, 0x1a2c4) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t11, t12, 32); setFlagsCmp(index, unused2, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); if (_t5) takeIrq(); }
       setXAdd(t11, t12, 32);
-      setFlagsCmp(index, d3, 32);
+      setFlagsCmp(index, unused2, 32);
       continue l2;
     } else {
-      const _t3 = tick(88, 0x1a2ae) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp((d2 & 255), load8((ptr2 + ((index2 << 16) >> 16) + 0x12)), 8); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); if (_t3) takeIrq(); }
-      index = ((index & 0xffff0000) | ((d3 & 65535) & 65535));
+      const _t3 = tick(88, 0x1a2ae) ? 1 : 0; if (_t3 || SPILL_ALL) { setXAdd(t6, t7, 32); setFlagsCmp((unused & 255), load8((ptr2 + ((index2 << 16) >> 16) + 0x12)), 8); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); if (_t3) takeIrq(); }
+      index = ((index & 0xffff0000) | ((unused2 & 65535) & 65535));
       index = (Math.imul((index & 65535), 0x60)) >>> 0;
       t10 = 0xff;
       store8((ptr2 + ((index << 16) >> 16) + 0x12), t10);
       setXAdd(t6, t7, 32);
       setFlagsCmp(t10, 0, 8);
-      const _t4 = tick(26, 0x1a2ba) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); if (_t4) takeIrq(); }
-      t11 = d3;
+      const _t4 = tick(26, 0x1a2ba) ? 1 : 0; if (_t4 || SPILL_ALL) { setXAdd(t6, t7, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); if (_t4) takeIrq(); }
+      t11 = unused2;
       t12 = 0x1;
-      d3 = ((d3 + 0x1)) >>> 0;
+      unused2 = ((unused2 + 0x1)) >>> 0;
       index = (16) >>> 0;
-      if ((index | 0) <= (d3 | 0)) {
+      if ((index | 0) <= (unused2 | 0)) {
         setXAdd(t11, t12, 32);
-        setFlagsCmp(index, d3, 32);
+        setFlagsCmp(index, unused2, 32);
         setReg('a1', ptr);
         setReg('a2', ptr2);
         setReg('a3', ptr3);
         setReg('d0', index);
         setReg('d1', index2);
-        setReg('d2', d2);
-        setReg('d3', d3);
-        setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); jumpRom(0x1a3e0);
-  setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3);       return;
+        setReg('d2', unused);
+        setReg('d3', unused2);
+        setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); jumpRom(0x1a3e0);
+  setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2);       return;
       }
-      const _t5 = tick(10, 0x1a2c4) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t11, t12, 32); setFlagsCmp(index, d3, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', d2); setReg('d3', d3); if (_t5) takeIrq(); }
+      const _t5 = tick(10, 0x1a2c4) ? 1 : 0; if (_t5 || SPILL_ALL) { setXAdd(t11, t12, 32); setFlagsCmp(index, unused2, 32); setReg('a1', ptr); setReg('a2', ptr2); setReg('a3', ptr3); setReg('d0', index); setReg('d1', index2); setReg('d2', unused); setReg('d3', unused2); if (_t5) takeIrq(); }
       setXAdd(t11, t12, 32);
-      setFlagsCmp(index, d3, 32);
+      setFlagsCmp(index, unused2, 32);
       continue l2;
     }
     break;
@@ -175409,8 +175409,8 @@ export function markRecordsMatchingField12WhenKindEight(ptr_: number, ptr2_: num
   setReg('a3', ptr3);
   setReg('d0', index);
   setReg('d1', index2);
-  setReg('d2', d2);
-  setReg('d3', d3);
+  setReg('d2', unused);
+  setReg('d3', unused2);
 }
 
 export function markEveryRecordListCommand(ptr_: number, unused_: number, unused2_: number): void {
@@ -184191,12 +184191,12 @@ export function lookNoteUpTableTake(index_: number, unused_: number, note_: numb
   setReg('d3', note);
 }
 
-export function strobeControlRegisterThroughShadow(d0: number, preserved: number): void {
-  if (tick(208, 0x1b11c)) { setReg('d0', d0); takeIrq(); }
+export function strobeControlRegisterThroughShadow(unused: number, preserved: number): void {
+  if (tick(208, 0x1b11c)) { setReg('d0', unused); takeIrq(); }
   const t0 = 0x3e3d8e;
   const t1 = (preserved + 0x1e0000);
   store8(0x3e3d6c, 0x7);
-  const t2 = ((d0 & 0xffff0000) | (0 & 0xffff));
+  const t2 = ((unused & 0xffff0000) | (0 & 0xffff));
   store16(0x3e3d78, (t2 & 0xffff));
   store16(0x3e3d76, (t2 & 0xffff));
   store16(0x3e3d74, (t2 & 0xffff));

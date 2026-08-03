@@ -7197,6 +7197,10 @@
     "stack4": {
       "name": "src",
       "why": "0x0149e is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x14b2 assigns it a byte out of the table at 0x1000a before anything reads it, and every later use assigns it first."
     }
   },
   "0x15be": {
@@ -7277,6 +7281,10 @@
     "stack8": {
       "name": "src",
       "why": "0x05ab8 is `movea.l $1c(a7), a4`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a4 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "stack4": {
+      "name": "count",
+      "why": "loaded to d2 at 0x5ab4 and immediately halved and quartered at 0x5ac2 and 0x5ac6 - the size the builder divides up."
     }
   },
   "0x5b16": {
@@ -7867,6 +7875,18 @@
     "d3": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1945c is `move.l (a1), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "nibble",
+      "why": "its low byte at 0x13(a7) is copied one byte lower at 0x19432 and then read back as a word and swapped into both halves of d1 - one nibble spread across a longword, which 0xf0f0f0f then masks."
+    },
+    "stack8": {
+      "name": "row",
+      "why": "the word this builds from at 0x12(a7), which is where the byte above was written; the screen base 0x200004 is stepped by it."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "0x1942e assigns it the byte at 0x13(a7) in the routine's second instruction."
     }
   },
   "0x1a71a": {
@@ -9011,6 +9031,76 @@
     "stack8": {
       "name": "field",
       "why": "its low word at 0xe(a7) becomes d2 and is pushed first, so it names which field."
+    }
+  },
+  "0x122c6": {
+    "a5": {
+      "name": "base",
+      "why": "the base every one of this decompressor's states adds its nibble to before storing the byte; nothing in this loop touches it."
+    }
+  },
+  "0x910e": {
+    "d0": {
+      "name": "unused",
+      "why": "the routine assigns it on every path before reading, from one of the two values it alternates between."
+    }
+  },
+  "0x1a284": {
+    "d2": {
+      "name": "unused",
+      "why": "0x1a284 is moveq #0,d0 and nothing in the routine reads d2 before it is assigned; the record's field 0x12 is what it compares."
+    },
+    "d3": {
+      "name": "unused2",
+      "why": "same shape - nothing reads it before it is assigned."
+    }
+  },
+  "0x3c00": {
+    "a3": {
+      "name": "record",
+      "why": "pushed at 0x3c00 as neighboursAboveBelowMatch's argument, which that routine binds as the cell."
+    },
+    "d4": {
+      "name": "unused",
+      "why": "nothing in the routine reads it before it is assigned; the weightings it accumulates go through d5."
+    }
+  },
+  "0x22ba": {
+    "d4": {
+      "name": "found",
+      "why": "cleared at 0x22c6 and the routine's answer - counted as the walk over the four players spawns."
+    }
+  },
+  "0x3e3e": {
+    "stack4": {
+      "name": "value",
+      "why": "loaded to d1 at 0x3e40 and written into the free slot the scan at 0x3e52 finds, eight bytes apart in the table at 0x3e0df6."
+    }
+  },
+  "0x11e10": {
+    "d1": {
+      "name": "unused",
+      "why": "0x11e2a assigns it 0xb400 - the playfield's size in longwords - before anything reads it."
+    }
+  },
+  "0x197a0": {
+    "d0": {
+      "name": "unused",
+      "why": "0x19790 has already moved it into d3 at the entry above; nothing from this entry reads what arrived."
+    },
+    "d3": {
+      "name": "magnitude",
+      "why": "the dividend with its sign taken off at 0x19794, which is what the unsigned divide runs on."
+    },
+    "a0": {
+      "name": "unused2",
+      "why": "nothing between this entry and the divide reads it."
+    }
+  },
+  "0x1b11c": {
+    "d0": {
+      "name": "unused",
+      "why": "0x1b134 clears it before anything reads it, and it is only ever written out to the shadow words afterwards."
     }
   }
 }
