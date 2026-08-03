@@ -156,6 +156,29 @@ def straight(md, image, at, lo, hi):
     return run
 
 
+def mentions(insn, reg):
+    """Does this instruction name `reg`, counting movem's ranges?
+
+    capstone prints `movem.l d2-d7/a2-a3, -(a7)`, and a plain search for `d3`
+    finds nothing in it. That is not a detail: it meant the preserved check saw
+    ZERO appearances of d3 through d6 in tickTimerListHead - a routine whose
+    only mention of them is exactly that movem - and a register with no
+    appearances at all failed the `uses and all(...)` test rather than passing
+    it. The range has to be expanded before the question can be asked.
+    """
+    if re.search(r"\b" + reg + r"\b", insn.op_str):
+        return True
+    if not insn.mnemonic.startswith("movem"):
+        return False
+    for part in re.findall(r"[ad]\d(?:-[ad]\d)?", insn.op_str):
+        if "-" not in part:
+            continue
+        f, t = part.split("-")
+        if f[0] == reg[0] and int(f[1]) <= int(reg[1]) <= int(t[1]):
+            return True
+    return False
+
+
 BRANCH = re.compile(r"\$([0-9a-f]+)(?:\.[wl])?$")
 
 
@@ -343,15 +366,13 @@ def main():
 
         near, blind = reachable(md, image, a, lo, hi)
         for reg in sorted(want - set(dead)):
-            uses = [i for i in line
-                    if re.search(r"\b" + reg + r"\b", i.op_str)]
+            uses = [i for i in line if mentions(i, reg)]
             if uses and all(i.mnemonic.startswith("movem") for i in uses):
                 kept.setdefault(a, {})[reg] = (uses[0].address, "the routine")
                 continue
             if blind:
                 continue
-            here = [i for i in near
-                    if re.search(r"\b" + reg + r"\b", i.op_str)]
+            here = [i for i in near if mentions(i, reg)]
             if here and all(i.mnemonic.startswith("movem") for i in here):
                 kept.setdefault(a, {})[reg] = (here[0].address,
                                                "everything this entry reaches")

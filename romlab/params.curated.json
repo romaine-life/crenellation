@@ -215,6 +215,10 @@
     "d4": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x17fd4 is `move.b $1b(a7), d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x17fcc) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x1e6b2": {
@@ -559,6 +563,10 @@
     "d6": {
       "name": "columnsLeft",
       "why": "the inner counter, refilled from lastColumn at the head of every row."
+    },
+    "d4": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x0357e) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x18b26": {
@@ -1345,6 +1353,22 @@
     "d7": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x125e4) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x125e4) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "preserved2",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x125e4) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d5": {
+      "name": "preserved3",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x125e4) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d6": {
+      "name": "preserved4",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x125e4) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x1357c": {
@@ -3383,6 +3407,10 @@
     "a4": {
       "name": "altGraphics",
       "why": "a table of two words indexed by the 0/1 toggle kept at -4(a6) (0x6522), and the word read out is the third argument to decompressOneEightPixelColumn at 0x11efe - so it alternates between two graphic ids as the walk steps."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the same register at the host 0x06460, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
     }
   },
   "0x64b4": {
@@ -3401,6 +3429,10 @@
     "d6": {
       "name": "endMark",
       "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the same register at the host 0x06460, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
     }
   },
   "0x64c8": {
@@ -3435,6 +3467,10 @@
     "a4": {
       "name": "altGraphics",
       "why": "a table of two words indexed by the 0/1 toggle kept at -4(a6) (0x6522), and the word read out is the third argument to decompressOneEightPixelColumn at 0x11efe - so it alternates between two graphic ids as the walk steps."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the same register at the host 0x06460, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
     }
   },
   "0x64ce": {
@@ -3457,6 +3493,10 @@
     "d6": {
       "name": "endMark",
       "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the same register at the host 0x06460, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
     }
   },
   "0x64ee": {
@@ -3497,6 +3537,10 @@
     "a4": {
       "name": "altGraphics",
       "why": "a table of two words indexed by the 0/1 toggle kept at -4(a6) (0x6522), and the word read out is the third argument to decompressOneEightPixelColumn at 0x11efe - so it alternates between two graphic ids as the walk steps."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the same register at the host 0x06460, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
     }
   },
   "0x653e": {
@@ -3549,6 +3593,10 @@
     "a4": {
       "name": "altGraphics",
       "why": "a table of two words indexed by the 0/1 toggle kept at -4(a6) (0x6522), and the word read out is the third argument to decompressOneEightPixelColumn at 0x11efe - so it alternates between two graphic ids as the walk steps."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the same register at the host 0x06460, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
     }
   },
   "0x657c": {
@@ -3567,6 +3615,10 @@
     "d6": {
       "name": "endMark",
       "why": "the walk stops when the RAW cell byte at the address in d4 equals it (0x6576) - the whole byte, not the low six bits the dispatch at 0x635a masks off. Every entry of the family carries it."
+    },
+    "d3": {
+      "name": "kind",
+      "why": "the same register at the host 0x06460, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
     }
   },
   "0x3a4a": {
@@ -4307,6 +4359,10 @@
     "d2": {
       "name": "walkingBit",
       "why": "the bit the last pass had reached, mid-walk when a failure cut it short."
+    },
+    "d4": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x130b0) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x130dc": {
@@ -4361,6 +4417,10 @@
     "d2": {
       "name": "walkingBit",
       "why": "the bit the last pass had reached, mid-walk when a failure cut it short."
+    },
+    "d4": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x130b0) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x27c2": {
@@ -4623,6 +4683,10 @@
     "d7": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x0629c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x0629c) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x6232": {
@@ -4675,6 +4739,18 @@
     "d7": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x0629c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a3": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x0629c) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a4": {
+      "name": "preserved2",
+      "why": "every appearance of it in everything this entry reaches is inside a movem (the first at 0x0629c) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d3": {
+      "name": "preserved3",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x0629c) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0xf630": {
@@ -5221,6 +5297,10 @@
     "d4": {
       "name": "rowsLeft",
       "why": "seven on entry - the eight rows of a column, counted with dbra."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x11ee6) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x69e2": {
@@ -5279,6 +5359,10 @@
     "d4": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x11ef2) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x11ef2) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x3da0": {
@@ -5369,6 +5453,10 @@
     "d0": {
       "name": "width",
       "why": "the word at 0x22(a7) on the way in; after the call it holds what the draw answered, and that answer is what advances the cursor."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x1803a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x18006": {
@@ -5383,6 +5471,10 @@
     "d5": {
       "name": "text",
       "why": "the string, passed through to 0x18b76 untouched."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x1803a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x2a5c": {
@@ -5689,6 +5781,22 @@
     "d4": {
       "name": "firstColumn",
       "why": "the word at 0xa(a6), written to the column counter at -0x14(a6) each time a row restarts (0xe82). The counter is then compared against lastColumn at 0x120a, so this is the other end."
+    },
+    "a3": {
+      "name": "leftCell",
+      "why": "the same register at the host 0x00e4e, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
+    },
+    "a4": {
+      "name": "rightCell",
+      "why": "the same register at the host 0x00e4e, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
+    },
+    "d0": {
+      "name": "limit",
+      "why": "the same register at the host 0x00e4e, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
+    },
+    "d5": {
+      "name": "screenAt",
+      "why": "the same register at the host 0x00e4e, which is one piece of logic - a single walk - so this entry is a point inside it holding the same value. Not applied where the host's name is `unused` or `preserved`: those are claims about the host's own entry point."
     }
   },
   "0xefc": {
@@ -6091,6 +6199,14 @@
     "d2": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x121d6 is `move.w $3a(a7), d2` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a2": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x121c4) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "a4": {
+      "name": "preserved2",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x121c4) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0x1228c": {
@@ -6115,6 +6231,14 @@
     "d3": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x124e2 is `clr.l d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d5": {
+      "name": "rowGap",
+      "why": "added to the destination pointer at 0x124fe and 0x12522 each time the 0x1ff counter wraps - the gap from the end of one row to the start of the next."
+    },
+    "d2": {
+      "name": "highNibble",
+      "why": "0x1250a takes the last source byte and 0x1250e masks it to 0xf0; 0x1251a then adds it to the nibble unpacked from the next byte. The high half carried between bytes."
     }
   },
   "0x12574": {
@@ -6431,6 +6555,18 @@
     "d6": {
       "name": "preserved2",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x0a7da) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d3": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x0a7da) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d4": {
+      "name": "preserved2",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x0a7da) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "d5": {
+      "name": "preserved3",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x0a7da) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
     }
   },
   "0xa794": {
@@ -7025,6 +7161,32 @@
     "stack4": {
       "name": "record",
       "why": "0x1b16a is `movea.l $14(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x13b8c": {
+    "a1": {
+      "name": "preserved",
+      "why": "every appearance of it in the routine is inside a movem (the first at 0x13b8c) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    }
+  },
+  "0x124e4": {
+    "d5": {
+      "name": "rowGap",
+      "why": "added to the destination pointer at 0x124fe and 0x12522 each time the 0x1ff counter wraps - the gap from the end of one row to the start of the next."
+    },
+    "d2": {
+      "name": "highNibble",
+      "why": "0x1250a takes the last source byte and 0x1250e masks it to 0xf0; 0x1251a then adds it to the nibble unpacked from the next byte. The high half carried between bytes."
+    }
+  },
+  "0x11c04": {
+    "stack4": {
+      "name": "header",
+      "why": "0x11c04 loads it, reads the word AT it, adds that word to it and writes the result back to the same slot at 0x11c10 - a self-relative header followed in place, which is what this routine is named for."
+    },
+    "stack8": {
+      "name": "out",
+      "why": "movea.l 0xc(a6),a1 at 0x11c22 and immediately copied to a2, which is where the routine's output is written."
     }
   }
 }
