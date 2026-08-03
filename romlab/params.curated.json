@@ -6563,6 +6563,10 @@
     "stack4": {
       "name": "record",
       "why": "0x18a62 is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "width",
+      "why": "its low word at 0xa(a7) becomes d1, which is the width this plots with - the routine takes a pointer at 4(a7) and that width."
     }
   },
   "0x18dea": {
@@ -6727,6 +6731,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ad9a is `move.b $5d(a2), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d4": {
+      "name": "shift",
+      "why": "its only use is `asr.b d4,d0` at 0x1ad9e - how far field 0x5d is shifted right."
     }
   },
   "0x1ada2": {
@@ -8303,6 +8311,88 @@
     "d3": {
       "name": "unused",
       "why": "0x1cae6 assigns it the word at 0xe(a7)."
+    }
+  },
+  "0x122ae": {
+    "d0": {
+      "name": "byte",
+      "why": "the routine is two instructions and this is the byte the first of them stores through a1."
+    }
+  },
+  "0x122b2": {
+    "d0": {
+      "name": "byte",
+      "why": "0x122b2 stores it through a1 and the routine's only other act is to point a2 at the next decoder state."
+    }
+  },
+  "0x122bc": {
+    "d3": {
+      "name": "byte",
+      "why": "0x122bc stores it through a1 and the routine's only other act is to point a2 at the next decoder state."
+    }
+  },
+  "0x12354": {
+    "d4": {
+      "name": "byte",
+      "why": "0x12354 stores it through a1 and the routine's only other act is to point a4 at the next decoder state."
+    }
+  },
+  "0xdb6c": {
+    "stack4": {
+      "name": "value",
+      "why": "the whole routine is `move.l $4(a7),d0; rts` - it returns its argument unchanged."
+    }
+  },
+  "0xdb72": {
+    "stack4": {
+      "name": "value",
+      "why": "the whole routine is `move.l $4(a7),d0; rts` - it returns its argument unchanged."
+    }
+  },
+  "0x1a5ea": {
+    "d0": {
+      "name": "value",
+      "why": "the whole routine is ext.w then ext.l - it sign-extends the byte it arrives holding to a longword."
+    }
+  },
+  "0xfc32": {
+    "d0": {
+      "name": "count",
+      "why": "0xfc38 adds one to it, and the routine's other act is to touch the protection word at 0x1460bc."
+    }
+  },
+  "0x19572": {
+    "d0": {
+      "name": "byte",
+      "why": "stored through (a0)+ at 0x19576 and again at 0x19578 - once or twice depending on the carry."
+    },
+    "d1": {
+      "name": "bits",
+      "why": "0x19572 doubles it and the carry out decides whether the byte is emitted once or twice; nothing else reads it."
+    }
+  },
+  "0xfc3a": {
+    "d0": {
+      "name": "value",
+      "why": "masked to its low two bits at 0xfc3a and stored to 0x3e0de2 - only those two bits survive."
+    }
+  },
+  "0x156c": {
+    "stack4": {
+      "name": "bits",
+      "why": "its low word at 6(a7) is or'd into the flag word at 0x3e0dc8 - the bits to set."
+    }
+  },
+  "0x1578": {
+    "stack4": {
+      "name": "bits",
+      "why": "its low word at 6(a7) is or'd into the flag word at 0x3e0dc6 - the bits to set."
+    }
+  },
+  "0xf2fa": {
+    "stack4": {
+      "name": "recordAt",
+      "why": "the whole routine subtracts 0x1f7f0 from it and returns the result, so it is an address inside the table that base sits at - the name says it turns a record address into an offset from the table."
     }
   }
 }

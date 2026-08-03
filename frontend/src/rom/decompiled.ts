@@ -9820,18 +9820,18 @@ export function callRoutinePerSetFlagBit(dst_: number, unused_: number, d4_: num
   setReg('d4', d4);
 }
 
-export function setBitsSecondFlagWord(index: number, arg0: number): void {
+export function setBitsSecondFlagWord(index: number, bits: number): void {
   if (tick(44, 0x0156c)) { setReg('d0', index); takeIrq(); }
-  const t0 = (arg0 & 0xffff);
+  const t0 = (bits & 0xffff);
   const t1 = ((index & 0xffff0000) | (t0 & 0xffff));
   const t2 = (load16(0x3e0dc8) | (t1 & 0xffff));
   store16(0x3e0dc8, t2);
   setReg('d0', t1);
 }
 
-export function setBitsFlagWord(index: number, arg0: number): void {
+export function setBitsFlagWord(index: number, bits: number): void {
   if (tick(44, 0x01578)) { setReg('d0', index); takeIrq(); }
-  const t0 = (arg0 & 0xffff);
+  const t0 = (bits & 0xffff);
   const t1 = ((index & 0xffff0000) | (t0 & 0xffff));
   const t2 = (load16(0x3e0dc6) | (t1 & 0xffff));
   store16(0x3e0dc6, t2);
@@ -104926,14 +104926,14 @@ export function identityArgDB66(value: number): void {
   setReg('d0', value);
 }
 
-export function returnFirstStackArgument(arg0: number): void {
+export function returnFirstStackArgument(value: number): void {
   if (tick(30, 0x0db6c)) { takeIrq(); }
-  setReg('d0', arg0);
+  setReg('d0', value);
 }
 
-export function returnFirstStackArgumentSecond(arg0: number): void {
+export function returnFirstStackArgumentSecond(value: number): void {
   if (tick(30, 0x0db72)) { takeIrq(); }
-  setReg('d0', arg0);
+  setReg('d0', value);
 }
 
 export function identityArgDB78(value: number): void {
@@ -114252,9 +114252,9 @@ export function pointerOffsetIntoRecordTable(index: number): void {
   setReg('d0', t0);
 }
 
-export function offsetRecordTableBase(arg0: number): void {
+export function offsetRecordTableBase(recordAt: number): void {
   if (tick(40, 0x0f2fa)) { takeIrq(); }
-  const t0 = (arg0 - 0x1f7f0);
+  const t0 = (recordAt - 0x1f7f0);
   setReg('d0', t0);
 }
 
@@ -117767,20 +117767,20 @@ export function protectionCounterParityCheck(limit_: number, d1_: number): void 
   setReg('d1', d1);
 }
 
-export function readFirstProtectionWordThen(d0: number): void {
-  if (tick(20, 0x0fc32)) { setReg('d0', d0); takeIrq(); }
+export function readFirstProtectionWordThen(count: number): void {
+  if (tick(20, 0x0fc32)) { setReg('d0', count); takeIrq(); }
   const t0 = load16(0x1460bc);
-  const t1 = ((d0 & 0xffff) + 0x1);
-  const t2 = ((d0 & 0xffff0000) | (t1 & 0xffff));
+  const t1 = ((count & 0xffff) + 0x1);
+  const t2 = ((count & 0xffff0000) | (t1 & 0xffff));
   setReg('d0', t2);
   jumpRom(0x0fc3a);
   return;
 }
 
-export function keepLowTwoBitsCounter(d0: number): void {
-  if (tick(24, 0x0fc3a)) { setReg('d0', d0); takeIrq(); }
-  const t0 = ((d0 & 0xffff) & 0x3);
-  const t1 = ((d0 & 0xffff0000) | (t0 & 0xffff));
+export function keepLowTwoBitsCounter(value: number): void {
+  if (tick(24, 0x0fc3a)) { setReg('d0', value); takeIrq(); }
+  const t0 = ((value & 0xffff) & 0x3);
+  const t1 = ((value & 0xffff0000) | (t0 & 0xffff));
   store8(0x3e0de2, (t1 & 0xff));
   setReg('d0', t1);
   jumpRom(0x0fc44);
@@ -121035,21 +121035,21 @@ export function decoderStateEmitLowNibble(dst: number, d2: number, d3: number): 
   setReg('d3', t3);
 }
 
-export function storeByteD0ThroughA1(dst: number, d0: number): void {
-  if (tick(24, 0x122ae)) { setReg('a1', dst); setReg('d0', d0); takeIrq(); }
-  store8(dst, (d0 & 0xff));
+export function storeByteD0ThroughA1(dst: number, byte: number): void {
+  if (tick(24, 0x122ae)) { setReg('a1', dst); setReg('d0', byte); takeIrq(); }
+  store8(dst, (byte & 0xff));
 }
 
-export function decoderStateEmitD0Then(dst: number, d0: number): void {
-  if (tick(42, 0x122b2)) { setReg('a1', dst); setReg('d0', d0); takeIrq(); }
-  store8(dst, (d0 & 0xff));
+export function decoderStateEmitD0Then(dst: number, byte: number): void {
+  if (tick(42, 0x122b2)) { setReg('a1', dst); setReg('d0', byte); takeIrq(); }
+  store8(dst, (byte & 0xff));
   const t0 = 0x122bc;
   setReg('a2', t0);
 }
 
-export function decoderStateEmitD3Then(dst: number, d3: number): void {
-  if (tick(42, 0x122bc)) { setReg('a1', dst); setReg('d3', d3); takeIrq(); }
-  store8(dst, (d3 & 0xff));
+export function decoderStateEmitD3Then(dst: number, byte: number): void {
+  if (tick(42, 0x122bc)) { setReg('a1', dst); setReg('d3', byte); takeIrq(); }
+  store8(dst, (byte & 0xff));
   const t0 = 0x122b2;
   setReg('a2', t0);
 }
@@ -121369,9 +121369,9 @@ export function secondDecoderStateEmitLowFrom1(dst_: number, byte_: number): voi
   setReg('d4', byte);
 }
 
-export function decoderStateEmitD4(dst: number, d4: number): void {
-  if (tick(42, 0x12354)) { setReg('a1', dst); setReg('d4', d4); takeIrq(); }
-  store8(dst, (d4 & 0xff));
+export function decoderStateEmitD4(dst: number, byte: number): void {
+  if (tick(42, 0x12354)) { setReg('a1', dst); setReg('d4', byte); takeIrq(); }
+  store8(dst, (byte & 0xff));
   const t0 = 0x1235e;
   setReg('a4', t0);
 }
@@ -166674,9 +166674,9 @@ export function scrollWholeGlyphGridOne(dst_: number, count_: number, count2_: n
   setReg('d2', count3);
 }
 
-export function takePointerWidthThenPlot(unused: number, record: number, arg1: number): void {
+export function takePointerWidthThenPlot(unused: number, record: number, width: number): void {
   if (tick(26, 0x18a5e)) { setReg('d1', unused); takeIrq(); }
-  const t0 = (arg1 & 0xffff);
+  const t0 = (width & 0xffff);
   const t1 = ((unused & 0xffff0000) | (t0 & 0xffff));
   setReg('a0', record);
   setReg('d1', t1);
@@ -170497,49 +170497,49 @@ export function chooseSignCharacterGroupMask(dst_: number, index_: number, unuse
   setReg('d1', unused);
 }
 
-export function emitOneCopyByteTwo(dst_: number, d0_: number, d1_: number): void {
+export function emitOneCopyByteTwo(dst_: number, byte_: number, bits_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
-  let d0 = d0_;
-  let d1 = d1_;
+  let byte = byte_;
+  let bits = bits_;
   let t0 = 0;
   let t1 = 0;
   let t2 = 0;
   let t3 = 0;
-  const _t0 = tick(14, 0x19572) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('d0', d0); setReg('d1', d1); if (_t0) takeIrq(); }
-  t0 = (d1 & 65535);
-  t1 = (d1 & 65535);
-  d1 = ((d1 & 0xffff0000) | (((d1 & 65535) + (d1 & 65535)) & 65535));
+  const _t0 = tick(14, 0x19572) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('d0', byte); setReg('d1', bits); if (_t0) takeIrq(); }
+  t0 = (bits & 65535);
+  t1 = (bits & 65535);
+  bits = ((bits & 0xffff0000) | (((bits & 65535) + (bits & 65535)) & 65535));
   setXAdd(t0, t1, 16);
   setFlagsAdd(t0, t1, 16);
   if ((((t0) & 65535) + ((t1) & 65535)) <= 65535) {
   } else {
-    const _t1 = tick(8, 0x19576) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t0, t1, 16); setFlagsAdd(t0, t1, 16); setReg('a0', dst); setReg('d0', d0); setReg('d1', d1); if (_t1) takeIrq(); }
-    t2 = (d0 & 255);
+    const _t1 = tick(8, 0x19576) ? 1 : 0; if (_t1 || SPILL_ALL) { setXAdd(t0, t1, 16); setFlagsAdd(t0, t1, 16); setReg('a0', dst); setReg('d0', byte); setReg('d1', bits); if (_t1) takeIrq(); }
+    t2 = (byte & 255);
     store8(dst, t2);
     dst = (dst + 1);
     setXAdd(t0, t1, 16);
     setFlagsCmp(t2, 0, 8);
   }
-  const _t2 = tick(8, 0x19578) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t0, t1, 16); setReg('a0', dst); setReg('d0', d0); setReg('d1', d1); if (_t2) takeIrq(); }
-  t3 = (d0 & 255);
+  const _t2 = tick(8, 0x19578) ? 1 : 0; if (_t2 || SPILL_ALL) { setXAdd(t0, t1, 16); setReg('a0', dst); setReg('d0', byte); setReg('d1', bits); if (_t2) takeIrq(); }
+  t3 = (byte & 255);
   store8(dst, t3);
   dst = (dst + 1);
   setXAdd(t0, t1, 16);
   setFlagsCmp(t3, 0, 8);
   setReg('a0', dst);
-  setReg('d0', d0);
-  setReg('d1', d1);
+  setReg('d0', byte);
+  setReg('d1', bits);
   jumpRom(0x1957a);
-  setReg('a0', dst); setReg('d0', d0); setReg('d1', d1); return;
+  setReg('a0', dst); setReg('d0', byte); setReg('d1', bits); return;
   setReg('a0', dst);
-  setReg('d0', d0);
-  setReg('d1', d1);
-  setReg('a0', dst); setReg('d0', d0); setReg('d1', d1); return;
+  setReg('d0', byte);
+  setReg('d1', bits);
+  setReg('a0', dst); setReg('d0', byte); setReg('d1', bits); return;
   setReg('a0', dst);
-  setReg('d0', d0);
-  setReg('d1', d1);
+  setReg('d0', byte);
+  setReg('d1', bits);
 }
 
 export function copyDigitsOutInsertingSeparator(dst_: number, src_: number, d0_: number, d1_: number): void {
@@ -178493,10 +178493,10 @@ export function signExtendField5E(ptr: number, unused: number): void {
   return;
 }
 
-export function signExtendByteLong(d0: number): void {
-  if (tick(26, 0x1a5ea)) { setReg('d0', d0); takeIrq(); }
-  const t0 = ((((d0 & 0xff)) << 24) >> 24);
-  const t1 = ((d0 & 0xffff0000) | (t0 & 0xffff));
+export function signExtendByteLong(value: number): void {
+  if (tick(26, 0x1a5ea)) { setReg('d0', value); takeIrq(); }
+  const t0 = ((((value & 0xff)) << 24) >> 24);
+  const t1 = ((value & 0xffff0000) | (t0 & 0xffff));
   const t2 = ((((t1 & 0xffff)) << 16) >> 16);
   setReg('d0', t2);
 }
@@ -182207,11 +182207,11 @@ export function scriptTestIntoFields5D5E(dst_: number, index_: number, d4_: numb
   setReg('d4', d4);
 }
 
-export function shiftField5DRightByD4(ptr: number, unused: number, d4: number): void {
-  if (tick(28, 0x1ad9a)) { setReg('a2', ptr); setReg('d0', unused); setReg('d4', d4); takeIrq(); }
+export function shiftField5DRightByD4(ptr: number, unused: number, shift: number): void {
+  if (tick(28, 0x1ad9a)) { setReg('a2', ptr); setReg('d0', unused); setReg('d4', shift); takeIrq(); }
   const t0 = load8(ptr + 0x5d);
   const t1 = ((unused & 0xffffff00) | (t0 & 0xff));
-  const t2 = ((d4) & 63);
+  const t2 = ((shift) & 63);
   const t3 = (t2 >= 8 ? (((((((t1 & 0xff)) << 24) >> 24)) < 0) ? -1 : 0) : ((((((t1 & 0xff)) << 24) >> 24)) >> t2));
   const t4 = ((t1 & 0xffffff00) | (t3 & 0xff));
   setReg('d0', t4);
