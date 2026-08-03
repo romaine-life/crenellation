@@ -43395,7 +43395,7 @@ export function claimCellLayOnly(ptr_: number, cellValue_: number, ownerBits_: n
   setReg('d5', cellAddr);
 }
 
-export function claimCellAndPassOnWhenNeighbourIs1AFrom2(): void {
+export function claimCellDropTwoAndPreviousRow(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x061bc) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -48519,7 +48519,7 @@ export function cellScanRowEnd(cellAt_: number, dst_: number, unused_: number, u
   setReg('d5', screenAt);
 }
 
-export function tailFullScreenCellScanFrom2(ptr_: number, unused2_: number, unused3_: number, cellValue_: number, screenAt_: number): void {
+export function cellScanColumnDone(ptr_: number, unused2_: number, unused3_: number, cellValue_: number, screenAt_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -74764,7 +74764,7 @@ export function drawStateSMessageLine(flag_: number): void {
   setReg('d5', flag);
 }
 
-export function drawStateSMessageLineFrom1(dst_: number, dst2_: number, dst3_: number, value_: number, screenAt_: number): void {
+export function drawQueueGateAsText(dst_: number, dst2_: number, dst3_: number, value_: number, screenAt_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -81523,7 +81523,7 @@ export function raiseEntrySCounterPhase(index_: number, index2_: number, kind: n
   setReg('d1', index2);
 }
 
-export function rngWrapper(index_: number, limit_: number, eventRecord_: number, index3_: number): void {
+export function randomPickForCurrentStation(index_: number, limit_: number, eventRecord_: number, index3_: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -97498,7 +97498,7 @@ export function dispatchEachActivePlayerS(preserved_: number, index_: number, wa
   setReg('d6', d6);
 }
 
-export function dispatchEachActivePlayerSFrom1(ptr_: number, index_: number, which_: number): void {
+export function dispatchSkipDeadPlayer(ptr_: number, index_: number, which_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -97631,7 +97631,7 @@ export function passRecordSByteThrough(ptr_: number, dst_: number, cue_: number)
   setReg('d3', cue);
 }
 
-export function passRecordSByteThroughFrom1(): void {
+export function parityDropFourAndCheckEven(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x0cc36) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -99711,7 +99711,7 @@ export function enterPhaseStateTwo(dst_: number): void {
   setReg('a2', dst);
 }
 
-export function enterPhaseStateTwoFrom1(): void {
+export function battleDropEightAndWait(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x0d048) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -101550,7 +101550,7 @@ export function battleTickShotsWhenPhaseFour(ptr_: number, dst_: number, limit_:
   setReg('d2', unused);
 }
 
-export function runBattlePhaseSTickFrom2(preserved_: number, preserved2_: number, unused_: number, unused2_: number): void {
+export function battleTickWaitOn11B1E(preserved_: number, preserved2_: number, unused_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let preserved = preserved_;
@@ -103869,7 +103869,7 @@ export function copy1344BytesReturnCount(index_: number, count_: number, src2: n
   setReg('d1', count);
 }
 
-export function walkRectWith11EDAWrapper(): void {
+export function drawRectAtFixedPlace(): void {
   let _guard = 0;
   void _guard;
   let unused = getReg('d0');
@@ -118290,7 +118290,7 @@ export function decompressOneColumnAdvancing(runLength_: number, paletteBase2_: 
   setReg('d4', rowsLeft);
 }
 
-export function decompressOneColumnAdvancingFrom1(src_: number, count_: number, paletteBase2_: number, offset: number, record: number, paletteBase: number): void {
+export function decompressColumnFromOffset(src_: number, count_: number, paletteBase2_: number, offset: number, record: number, paletteBase: number): void {
   let _guard = 0;
   void _guard;
   let src = src_;
@@ -120419,7 +120419,7 @@ export function decompressorNibbleSplit(base_: number, packed_: number, limit_: 
   setReg('d5', limit);
 }
 
-export function decompressorNibbleSplitFrom1(ptr_: number): void {
+export function decompressorJumpToState(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -121576,7 +121576,7 @@ export function rleDecoderVariantB(src_: number, dst_: number, kind_: number, co
   setReg('d5', rowGap);
 }
 
-export function rleDecoderVariantBFrom1(src_: number, dst_: number, kind_: number, count_: number, highNibble_: number, byte_: number, count2_: number, rowGap_: number): void {
+export function rleReadControlByte(src_: number, dst_: number, kind_: number, count_: number, highNibble_: number, byte_: number, count2_: number, rowGap_: number): void {
   let _guard = 0;
   void _guard;
   let src = src_;
@@ -122268,7 +122268,7 @@ export function tickTimerListHead(listHead_: number, dst_: number, target_: numb
   setReg('d7', preserved5);
 }
 
-export function tickTimerListHeadFrom1(dst_: number, unused_: number, index_: number): void {
+export function tickTimerOneEntry(dst_: number, unused_: number, index_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -189561,7 +189561,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x061a8, fn: claimCellLayOnly as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x061bc, fn: claimCellAndPassOnWhenNeighbourIs1AFrom2 as (...a: number[]) => void, params: [] },
+  { at: 0x061bc, fn: claimCellDropTwoAndPreviousRow as (...a: number[]) => void, params: [] },
 
   { at: 0x061c2, fn: validateTakeRecordThenLay as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
@@ -189627,7 +189627,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x066e0, fn: cellScanRowEnd as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x066fa, fn: tailFullScreenCellScanFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x066fa, fn: cellScanColumnDone as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x0670e, fn: clearPlayerPairRunScript as (...a: number[]) => void, params: [] },
 
@@ -189867,7 +189867,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x09e80, fn: drawStateSMessageLine as (...a: number[]) => void, params: [{ from: 'reg', name: 'd5' }] },
 
-  { at: 0x09e96, fn: drawStateSMessageLineFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x09e96, fn: drawQueueGateAsText as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x0a000, fn: pointHandlerSlotPlayerBlock as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }] },
 
@@ -189923,7 +189923,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0ac1c, fn: raiseEntrySCounterPhase as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x0ac4c, fn: rngWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x0ac4c, fn: randomPickForCurrentStation as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x0ad5a, fn: splitCellNumberIntoRow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
 
@@ -190029,11 +190029,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0cbae, fn: dispatchEachActivePlayerS as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x0cbe8, fn: dispatchEachActivePlayerSFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0cbe8, fn: dispatchSkipDeadPlayer as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x0cc18, fn: passRecordSByteThrough as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x0cc36, fn: passRecordSByteThroughFrom1 as (...a: number[]) => void, params: [] },
+  { at: 0x0cc36, fn: parityDropFourAndCheckEven as (...a: number[]) => void, params: [] },
 
   { at: 0x0cc3a, fn: computerParityDispatch as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
@@ -190073,7 +190073,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0d030, fn: enterPhaseStateTwo as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x0d048, fn: enterPhaseStateTwoFrom1 as (...a: number[]) => void, params: [] },
+  { at: 0x0d048, fn: battleDropEightAndWait as (...a: number[]) => void, params: [] },
 
   { at: 0x0d04e, fn: battlePhaseController as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
 
@@ -190113,7 +190113,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0d440, fn: battleTickShotsWhenPhaseFour as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x0d45c, fn: runBattlePhaseSTickFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0d45c, fn: battleTickWaitOn11B1E as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x0d490, fn: resetRoundClearQueueHand as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }] },
 
@@ -190133,7 +190133,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0dabc, fn: copy1344BytesReturnCount as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
-  { at: 0x0dad6, fn: walkRectWith11EDAWrapper as (...a: number[]) => void, params: [] },
+  { at: 0x0dad6, fn: drawRectAtFixedPlace as (...a: number[]) => void, params: [] },
 
   { at: 0x0db04, fn: checksumFiveTablesStartCue as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
@@ -190325,7 +190325,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x11efe, fn: decompressOneColumnAdvancing as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
-  { at: 0x11f08, fn: decompressOneColumnAdvancingFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 28 }, { from: 'stack', off: 32 }, { from: 'stack', off: 36 }] },
+  { at: 0x11f08, fn: decompressColumnFromOffset as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 28 }, { from: 'stack', off: 32 }, { from: 'stack', off: 36 }] },
 
   { at: 0x11f2a, fn: graphicsDecompressor as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
@@ -190365,7 +190365,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1231a, fn: decompressorNibbleSplit as (...a: number[]) => void, params: [{ from: 'reg', name: 'a5' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x1232a, fn: decompressorNibbleSplitFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }] },
+  { at: 0x1232a, fn: decompressorJumpToState as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }] },
 
   { at: 0x1232c, fn: doNothing1232C as (...a: number[]) => void, params: [] },
 
@@ -190385,7 +190385,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x124e2, fn: rleDecoderVariantB as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x124e4, fn: rleDecoderVariantBFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x124e4, fn: rleReadControlByte as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
   { at: 0x12574, fn: emitTwoDecodedBytesWithStride as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
@@ -190393,7 +190393,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x125da, fn: tickTimerListHead as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x125f8, fn: tickTimerListHeadFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x125f8, fn: tickTimerOneEntry as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
   { at: 0x1262a, fn: paletteAddPerChannelDelta as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 

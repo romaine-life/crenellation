@@ -3355,5 +3355,70 @@
     "name": "take the sign-extended value off word 0x1c and mark it changed",
     "why": "the arithmetic and then `ori.b #1,(a4)` - the driver's change byte - where the entry above it does the same without the mark.",
     "ident": "subtractExtendedFromWord1CAndMark"
+  },
+  "0x061bc": {
+    "name": "drop the pushed word and step to the previous row",
+    "why": "the return path for the cases here that pushed a single coordinate.",
+    "ident": "claimCellDropTwoAndPreviousRow"
+  },
+  "0x066fa": {
+    "name": "stop when the column reaches forty-two",
+    "why": "0x2a is the board's 42 columns; reaching it falls into the restore and rts.",
+    "ident": "cellScanColumnDone"
+  },
+  "0x09e96": {
+    "name": "draw the queue gate word as a line of text",
+    "why": "reads the word at 0x3e1948 - the gate the cue queue is switched by - and hands it to textLineDraw, which is the only thing this entry does.",
+    "ident": "drawQueueGateAsText"
+  },
+  "0x0ac4c": {
+    "name": "pick a random value for the station the byte at 0x3e195c names",
+    "why": "keeps two records, 0x3e1caa and 0x3e1cb2, and indexes with the station byte before drawing on the generator.",
+    "ident": "randomPickForCurrentStation"
+  },
+  "0x0cbe8": {
+    "name": "skip a player whose status bit is clear or whose byte 0x1d is set",
+    "why": "the two guards every walk over the player array uses: the top bit of the status word at (a3), and the byte at 0x1d.",
+    "ident": "dispatchSkipDeadPlayer"
+  },
+  "0x0cc36": {
+    "name": "drop the pushed argument and go on to the parity check",
+    "why": "the return path for the case that queued a cue; it rejoins at the even-parity branch.",
+    "ident": "parityDropFourAndCheckEven"
+  },
+  "0x0d048": {
+    "name": "drop eight pushed bytes and wait",
+    "why": "the return path for the case above it, which pushed two longs.",
+    "ident": "battleDropEightAndWait"
+  },
+  "0x0d45c": {
+    "name": "wait on the event at 0x11b1e",
+    "why": "the tail every battle phase reaches: it asks eventTest for that record and branches on whether the answer is zero.",
+    "ident": "battleTickWaitOn11B1E"
+  },
+  "0x0dad6": {
+    "name": "draw the rectangle at a fixed screen place",
+    "why": "0xf0, 2 and 0x12 pushed as the constants, and the screen base 0x200004 with 0x60 added - so where it draws is not an argument at all.",
+    "ident": "drawRectAtFixedPlace"
+  },
+  "0x11f08": {
+    "name": "start from an offset already in hand rather than a tile id",
+    "why": "reads its offset straight out of the frame and adds it to the tile base, where the entry above looks the id up in a table first.",
+    "ident": "decompressColumnFromOffset"
+  },
+  "0x1232a": {
+    "name": "jump to whichever decoder state a4 holds",
+    "why": "one instruction: `jmp (a4)`. The state machine's whole dispatch, which is why the address registers had to hold code before it could be judged against silicon.",
+    "ident": "decompressorJumpToState"
+  },
+  "0x124e4": {
+    "name": "read the next control byte and branch on its top bit",
+    "why": "a negative byte takes the run path with the low five bits as its length; a positive one is a literal.",
+    "ident": "rleReadControlByte"
+  },
+  "0x125f8": {
+    "name": "drop this entry's countdown and run it when it reaches zero",
+    "why": "byte 0xe is the countdown and byte 0xd the reload; when it expires the record's pointer at 8 becomes the palette RAM address the handler works on.",
+    "ident": "tickTimerOneEntry"
   }
 }
