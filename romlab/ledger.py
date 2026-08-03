@@ -60,13 +60,24 @@ def main():
     mapped = sorted(a for a, _ in facts["funcs"])
     uncaptured = [a for a in mapped if a not in set(entries)]
 
-    # Captured, but every trial voided: the port skipped a call the chip made,
-    # so there was nothing comparable to judge. stepstate.test records the
-    # reason per routine; carrying it here means an unverified routine can say
-    # which kind of unverified it is instead of landing in "unknown".
-    voided = sorted({int(r["entry"], 16) for r in result.get("skipped", [])
-                     if int(r["entry"], 16) in set(entries)}
-                    - passed - failed - set(incomparable))
+    # Captured, but every trial voided, and WHY matters. stepstate.test records
+    # a reason per routine; carrying it here means an unverified routine can
+    # say which kind of unverified it is instead of landing in "unknown".
+    #
+    # One of those reasons is not about the port at all: the map no longer
+    # starts a routine at that address. 0x438 is the case - the capture session
+    # recorded it, and reachability has since merged it into 0x430, which
+    # starts six bytes earlier. No capture can ever verify it, because there is
+    # nothing there to verify; a decompiled function has one entry and this is
+    # not one. Counting it as "voided" reads as a gap in the translation, which
+    # it is not, so it gets its own class and leaves the denominator.
+    skipped = {int(r["entry"], 16): r.get("why", "")
+               for r in result.get("skipped", [])}
+    merged = sorted(e for e, why in skipped.items()
+                    if e in set(entries)
+                    and "no longer starts a routine" in why)
+    voided = sorted({e for e in skipped if e in set(entries)}
+                    - passed - failed - set(incomparable) - set(merged))
 
     out = {
         "total": len(mapped),
@@ -79,6 +90,7 @@ def main():
         "incomparable": incomparable,
         "oracleOnlyUncaptured": uncaptured,
         "siliconVoided": voided,
+        "mapMerged": merged,
         "neverJudged": sorted(never),
         "midRunOnly": [],
     }
@@ -88,7 +100,7 @@ def main():
           f"outstanding {len(out['outstanding'])}  "
           f"incomparable {len(incomparable)}  "
           f"oracle-only {len(uncaptured)}  voided {len(voided)}  "
-          f"neverJudged {len(never)}")
+          f"mapMerged {len(merged)}  neverJudged {len(never)}")
 
 
 if __name__ == "__main__":

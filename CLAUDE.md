@@ -36,8 +36,28 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
   frozen 68000** (24,097
   step-state snapshots; two capture sessions hours apart froze byte-identical
   machines, which is the determinism claim that makes the rest mean
-  anything). Of the seven not verified, **none is a translation gap**, and the
-  harness now says so per routine rather than in aggregate. Two are
+  anything). **904 of 907 are verified and none of the other three is a
+  translation gap** — `ledger.py` reads `verified 904 · incomparable 2 ·
+  mapMerged 1 · voided 0`, and the classes sum with nothing unaccounted.
+
+  Two capture top-ups did that, both measured in the port before any MAME time
+  was spent on them. **Shape 4** puts CODE in the address registers: shapes 0–3
+  seed every one with a scratch pointer or a data structure, so a routine that
+  *dispatches* through a register could only ever jump into work RAM and run
+  the random bytes the harness wrote there — which is why neither RLE decoder
+  could be judged. **Shape 5** fills the stack with the sentinel, because a
+  bare epilogue (`movem.l (a7)+,a2-a3; rts`) entered as a routine pops the
+  harness's stack as registers and then returns into whatever is below it.
+  Both runs froze a machine byte-identical to the committed ram/pf/io
+  baselines, which is the only thing that makes their snapshots comparable, and
+  the new lines were **appended** to `stepstate.log`, never regenerated.
+
+  The last one is not fixable and should not be: `0x438` is no longer a routine
+  head — reachability merged it into `0x430`, six bytes earlier — so there is
+  nothing there to verify. It has its own class rather than sitting in
+  `voided`, which would read as a gap in the translation.
+
+  The earlier finding stands and is what made all this tractable: Two are
   incomparable with the reason on record — both halves of the protection probe
   at 0x140010/0x1400E4, where that window is served by a state machine and
   fetching differs from reading. The other five are capture artifacts: 0x438 is
