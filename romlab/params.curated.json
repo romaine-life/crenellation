@@ -1563,6 +1563,10 @@
     "d4": {
       "name": "rowsLeft",
       "why": "counts the eight bytes of a column; when the dbra runs out the destination jumps by 0x1f8 and it is reloaded with 7."
+    },
+    "d3": {
+      "name": "byte",
+      "why": "the source byte read at 0x11f52: its high nibble goes to d0 and its own low nibble is masked out at 0x11f6e and added to the palette base before being stored - the split every decoder in this ROM does."
     }
   },
   "0xbc2": {
@@ -5637,6 +5641,18 @@
     "d1": {
       "name": "flagBits",
       "why": "the word at 0x3e0de0 masked to one bit at a time - 0x8000 for a pending request and 0x4000 for the enable - rather than a value."
+    },
+    "d2": {
+      "name": "two",
+      "why": "0xe0a4 loads 2 into it and 0xe0c8 pushes it - a constant argument, held in a register."
+    },
+    "d3": {
+      "name": "one",
+      "why": "0xe0a2 loads 1 into it and 0xe0ba pushes it - the other constant argument."
+    },
+    "d4": {
+      "name": "left",
+      "why": "0xe0a6 loads 0xa and 0xe0a8 subtracts the half, then 0xe0e2 counts it down to zero - how many rows are left."
     }
   },
   "0x11ef2": {
@@ -6441,6 +6457,14 @@
     "d3": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01e78 is `move.w $2a(a7), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d6": {
+      "name": "found",
+      "why": "cleared at 0x1e8a and moved into d5 and then d0 as the walk's answer - which player it settled on."
+    },
+    "stack4": {
+      "name": "wrap",
+      "why": "its low word at 0x2a(a7) becomes d3 and 0x1e8e turns it into an all-or-nothing byte with sne/neg - a flag, and the only thing done with it."
     }
   },
   "0x5280": {
@@ -6855,6 +6879,10 @@
     "d5": {
       "name": "unused2",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19a3c is `move.b $10(a1), d5` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d6": {
+      "name": "mask",
+      "why": "0x19a38 reads the byte at (a1) into it, 0x19a3a inverts it and 0x19a40 eors the carried value in - the mask this expands the row through."
     }
   },
   "0x19c70": {
@@ -7321,6 +7349,10 @@
     "a2": {
       "name": "ptr",
       "why": "0x0ab82 is `move.l a1, (a2)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d2": {
+      "name": "message",
+      "why": "0xab94 reads a long out of the table at 6(a0,d0) into it, or 0xab9a loads the fixed 0x11834 instead, and 0xabcc points a5 at whichever it is - the string this ends up with."
     }
   },
   "0x1b06e": {
@@ -9759,6 +9791,60 @@
     "d3": {
       "name": "slot",
       "why": "0xf54a takes the index into it, 0xf568 writes it into the bucket at (a1,d0) and 0xf56c tests it - the slot being linked."
+    }
+  },
+  "0x59ee": {
+    "d2": {
+      "name": "kind",
+      "why": "0x59f2 reads the word at 0x16(a7) into it and the routine branches on it twice - tested for zero at 0x5a02 and compared with 1 at 0x5a24 - and does nothing else with it."
+    }
+  },
+  "0x8bb2": {
+    "stack8": {
+      "name": "forward",
+      "why": "its low word at 0xe(a6) becomes d0 and 0x8bd8 tests it to choose the direction the path is walked - a flag."
+    }
+  },
+  "0xeaee": {
+    "d2": {
+      "name": "one",
+      "why": "0xeb0c loads 1 into it and 0xeb48 writes it into the byte at (a4,d0) - the value the reload writes, held in a register."
+    },
+    "d4": {
+      "name": "entry",
+      "why": "0xeb1e reads a long out of the table at (a0,d0) into it and 0xeb36 and 0xeb42 point two address registers at it - the entry this pass works on."
+    }
+  },
+  "0x197f4": {
+    "stack8": {
+      "name": "divisor",
+      "why": "its low word at 0xa(a7) becomes d1 and 0x197fa halves it, then the half is added to the dividend at 0x1980a with its sign matched - rounding by adding half the divisor before dividing."
+    }
+  },
+  "0x16af8": {
+    "d5": {
+      "name": "row",
+      "why": "cleared at 0x16b8c and compared against the bound in d3 at 0x16b92 - the row the frame is being drawn on."
+    },
+    "stack4": {
+      "name": "wide",
+      "why": "its low word at 0x1a(a7) becomes d2 and 0x16b10 tests it to choose between two sets of fixed strings - a flag."
+    }
+  },
+  "0x5622": {
+    "d6": {
+      "name": "kind",
+      "why": "0x5634 reads the word at 0x14(a6) into it and 0x56d0 tests it, and nothing else touches it."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "loaded to d5 at 0x562a - the record this queues, carried untouched through the routine."
+    }
+  },
+  "0x155a0": {
+    "stack4": {
+      "name": "tempo",
+      "why": "loaded to d2 at 0x155a4 and the only argument the update takes; everything else it reads comes from the fixed words at 0x3e365a onward."
     }
   }
 }
