@@ -848,9 +848,9 @@
     "ident": "emitTwoDecodedBytesWithStride"
   },
   "0x1262a": {
-    "name": "the palette effect tick handlers",
-    "ident": "paletteEffectTickHandlers",
-    "why": "the other half of the eight schedulers at 0xc5ca and its neighbours: 612 bytes of per-kind handlers reached from the ticker at 0x125da's jump table, with the record in a1 and its palette entry address in a2. The first one settles what the four component words are for. It reads the entry with `movep.w`, adds 0x10(a1) and masks to 0x8000, adds 0x12(a1) and masks to 0x7c00, adds 0x14(a1) and masks to 0x3e0, adds 0x16(a1) and masks to 0x1f, ors the four together and writes back with `movep.w`. That is IRGB 1-5-5-5 stepped one channel at a time, which is why the scheduler at 0xc5ca keeps the components as four separate words rather than one packed colour - and it is the same layout system.ts reassembles when it renders. `movep` is the instruction that moves alternate bytes, which is what the palette RAM needs because it is byte-wide on a 16-bit bus and every odd byte reads back zero. It is also the instruction this port once stubbed as a no-op: every routine still verified clean and the game drew every frame perfectly in black for hours. This is the routine that was doing the drawing."
+    "name": "add a signed step to each of an entry's four colour channels",
+    "why": "reads the entry with movep.w, then adds the record's words at 0x10, 0x12, 0x14 and 0x16 to four copies of it and masks each to one field - 0x8000, 0x7c00, 0x3e0, 0x1f - before or-ing them back together. One delta per IRGB channel, so a channel can be stepped without disturbing its neighbours.",
+    "ident": "paletteAddPerChannelDelta"
   },
   "0x1288e": {
     "name": "return immediately",
@@ -2202,5 +2202,55 @@
     "name": "put the channel in mode one and clear the driver's mode flag",
     "why": "`0x14(a2) = 1` and 0x3e36fc cleared: the exact counterpart of the mode two opcode above it.",
     "ident": "sequencerEnterModeOne"
+  },
+  "0x12664": {
+    "name": "rotate a block of entries by one, either way",
+    "why": "byte 0xf(a1) less two is the count and the sign of byte 0x10(a1) picks the direction: forwards it saves the first entry, shifts every later one down and drops the saved one at the end; backwards it does the same walking down. A colour cycle.",
+    "ident": "paletteRotateBlock"
+  },
+  "0x126b6": {
+    "name": "move each channel one step toward the target entry",
+    "why": "masks 0x7bde7bde and 0x84218421 split an IRGB pair into the bits that may carry and the bits that may not, so all four channels can be compared and stepped in one longword. Equal channels are written straight through; the rest move by one.",
+    "ident": "paletteStepTowardTarget"
+  },
+  "0x1271e": {
+    "name": "blank the block once, then step only the channels that differ",
+    "why": "the first pass through - byte 0xf(a1) still set - writes sixteen longwords of zero and clears that byte. Every pass after eors the entry with the record's target and moves only the channels the eor says are unequal.",
+    "ident": "paletteClearOrDiffuse"
+  },
+  "0x12782": {
+    "name": "take one step off every non-zero channel of sixteen entries",
+    "why": "each of the sixteen entries has its red, green and blue fields tested and 0x400, 0x20 or 1 subtracted only where the field is not already zero, so no channel wraps. d2 stays zero if nothing moved, and the effect retires itself when it does.",
+    "ident": "paletteDarkenOneStep"
+  },
+  "0x127ca": {
+    "name": "take this effect off the active list and put it on the free one",
+    "why": "the standard doubly-linked unlink through fields 0 and 4, then a push onto the list headed at 0x3e20a8. Every handler that finishes jumps here.",
+    "ident": "paletteEffectUnlink"
+  },
+  "0x127fe": {
+    "name": "write one row of entries from the table and step to the next",
+    "why": "byte 0xf(a1) entries are copied out of the table at 0x10(a1) with movep.w, then that pointer is advanced by twice the count and the countdown at 0x14(a1) is dropped.",
+    "ident": "paletteWriteRowThenAdvance"
+  },
+  "0x12836": {
+    "name": "write a row, and when the countdown ends start the table again",
+    "why": "the same row write as the handler above, but it advances the table pointer by two and, when byte 0x14(a1) reaches zero, restores both the pointer and the count from the record's saved copies at 0x16 and 0x15 - so this one loops for ever where that one runs out.",
+    "ident": "paletteWriteRowThenRewind"
+  },
+  "0x12864": {
+    "name": "write one row and then unlink the effect",
+    "why": "identical row write to the two handlers above, and then a straight jump into the unlink - a one-shot.",
+    "ident": "paletteWriteRowThenRetire"
+  },
+  "0x12880": {
+    "name": "step to the next effect, or fall out when the list wraps",
+    "why": "follows field 0 to the next record and compares it against the list head; every handler in the block ends here.",
+    "ident": "paletteEffectNextInList"
+  },
+  "0x1288a": {
+    "name": "restore the saved registers and return",
+    "why": "the block's single epilogue: movem.l (a7)+ of d2-d7 and a2-a3, then rts.",
+    "ident": "paletteEffectTickDone"
   }
 }

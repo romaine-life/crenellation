@@ -123195,7 +123195,7 @@ export function tickTimerListHeadFrom1(dst_: number, unused_: number, index_: nu
   setReg('d0', index);
 }
 
-export function paletteEffectTickHandlers(listHead_: number, record_: number, entryAddr_: number, writeBack_: number, current_: number, assembled_: number, channel_: number, count_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
+export function paletteAddPerChannelDelta(listHead_: number, record_: number, entryAddr_: number, writeBack_: number, current_: number, assembled_: number, channel_: number, count_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
@@ -123350,7 +123350,7 @@ export function paletteEffectTickHandlers(listHead_: number, record_: number, en
   setReg('d7', preserved);
 }
 
-export function paletteEffectTickHandlersFrom1(listHead_: number, record_: number, entryAddr_: number, current_: number, channel_: number, count2_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
+export function paletteRotateBlock(listHead_: number, record_: number, entryAddr_: number, current_: number, channel_: number, count2_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
@@ -123517,7 +123517,7 @@ export function paletteEffectTickHandlersFrom1(listHead_: number, record_: numbe
   setReg('d7', preserved);
 }
 
-export function paletteEffectTickHandlersFrom2(listHead_: number, record_: number, entryAddr_: number, current_: number, fromRecord_: number, inRam_: number, step_: number, unused2_: number): void {
+export function paletteStepTowardTarget(listHead_: number, record_: number, entryAddr_: number, current_: number, fromRecord_: number, inRam_: number, step_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
@@ -123769,7 +123769,7 @@ export function paletteEffectTickHandlersFrom2(listHead_: number, record_: numbe
   setReg('d7', unused2);
 }
 
-export function paletteEffectTickHandlersFrom3(listHead_: number, record_: number, entryAddr_: number, writeBack_: number, current_: number, assembled_: number, channel_: number, count_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
+export function paletteClearOrDiffuse(listHead_: number, record_: number, entryAddr_: number, writeBack_: number, current_: number, assembled_: number, channel_: number, count_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
@@ -124020,7 +124020,7 @@ export function paletteEffectTickHandlersFrom3(listHead_: number, record_: numbe
   setReg('d7', preserved);
 }
 
-export function paletteEffectTickHandlersFrom4(listHead_: number, record_: number, entryAddr_: number, writeBack_: number, count2_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
+export function paletteDarkenOneStep(listHead_: number, record_: number, entryAddr_: number, writeBack_: number, count2_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
@@ -124227,7 +124227,7 @@ export function paletteEffectTickHandlersFrom4(listHead_: number, record_: numbe
   setReg('d7', preserved);
 }
 
-export function paletteEffectTickHandlersFrom5(listHead_: number, record_: number, channel_: number, count_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
+export function paletteEffectUnlink(listHead_: number, record_: number, channel_: number, count_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
@@ -124337,7 +124337,7 @@ export function paletteEffectTickHandlersFrom5(listHead_: number, record_: numbe
   setReg('d7', preserved);
 }
 
-export function paletteEffectTickHandlersFrom6(listHead_: number, record_: number, entryAddr_: number, current_: number, channel_: number, count2_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
+export function paletteWriteRowThenAdvance(listHead_: number, record_: number, entryAddr_: number, current_: number, channel_: number, count2_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
@@ -124511,7 +124511,7 @@ export function paletteEffectTickHandlersFrom6(listHead_: number, record_: numbe
   setReg('d7', preserved);
 }
 
-export function paletteEffectTickHandlersFrom7(listHead_: number, record_: number, entryAddr_: number, current_: number, channel_: number, count2_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
+export function paletteWriteRowThenRewind(listHead_: number, record_: number, entryAddr_: number, current_: number, channel_: number, count2_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
@@ -124669,7 +124669,7 @@ export function paletteEffectTickHandlersFrom7(listHead_: number, record_: numbe
   setReg('d7', preserved);
 }
 
-export function paletteEffectTickHandlersFrom8(record_: number, entryAddr_: number, current_: number): void {
+export function paletteWriteRowThenRetire(record_: number, entryAddr_: number, current_: number): void {
   let _guard = 0;
   void _guard;
   let record = record_;
@@ -124733,7 +124733,7 @@ export function paletteEffectTickHandlersFrom8(record_: number, entryAddr_: numb
   setReg('d1', count);
 }
 
-export function paletteEffectTickHandlersFrom9(listHead_: number, record_: number, entryAddr_: number, writeBack_: number, channel_: number, count_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
+export function paletteEffectNextInList(listHead_: number, record_: number, entryAddr_: number, writeBack_: number, channel_: number, count_: number, fromRecord_: number, inRam_: number, step_: number, preserved_: number): void {
   let _guard = 0;
   void _guard;
   let listHead = listHead_;
@@ -124811,7 +124811,7 @@ export function paletteEffectTickHandlersFrom9(listHead_: number, record_: numbe
   setReg('d7', preserved);
 }
 
-export function paletteEffectTickHandlersFrom10(): void {
+export function paletteEffectTickDone(): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -191475,27 +191475,27 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x125f8, fn: tickTimerListHeadFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x1262a, fn: paletteEffectTickHandlers as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x1262a, fn: paletteAddPerChannelDelta as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x12664, fn: paletteEffectTickHandlersFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x12664, fn: paletteRotateBlock as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x126b6, fn: paletteEffectTickHandlersFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x126b6, fn: paletteStepTowardTarget as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x1271e, fn: paletteEffectTickHandlersFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x1271e, fn: paletteClearOrDiffuse as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x12782, fn: paletteEffectTickHandlersFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x12782, fn: paletteDarkenOneStep as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x127ca, fn: paletteEffectTickHandlersFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x127ca, fn: paletteEffectUnlink as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x127fe, fn: paletteEffectTickHandlersFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x127fe, fn: paletteWriteRowThenAdvance as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x12836, fn: paletteEffectTickHandlersFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x12836, fn: paletteWriteRowThenRewind as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x12864, fn: paletteEffectTickHandlersFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x12864, fn: paletteWriteRowThenRetire as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x12880, fn: paletteEffectTickHandlersFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x12880, fn: paletteEffectNextInList as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x1288a, fn: paletteEffectTickHandlersFrom10 as (...a: number[]) => void, params: [] },
+  { at: 0x1288a, fn: paletteEffectTickDone as (...a: number[]) => void, params: [] },
 
   { at: 0x1288e, fn: returnImmediately as (...a: number[]) => void, params: [] },
 
