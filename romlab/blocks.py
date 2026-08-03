@@ -1321,8 +1321,33 @@ def lift_once(lo, hi, names, seed=()):
     # that interrupt pushed carried a status register of 0x2304 where the
     # oracle's was 0x2319.
     end_xstate = {}
-    # A SECOND PASS OVER THIS LOOP WAS TRIED AND REVERTED, 2026-08-02, and the
-    # reason is worth keeping because the idea will occur again.
+    # THREE ATTEMPTS AT THE REMAINING `frames` DIFFERENCE, ALL REVERTED, and
+    # between them they say where it is NOT, which is worth more than any of
+    # them. The difference is interrupt 1300 of 2,125 on attract, taken at
+    # 0x124E4 on both sides, differing in Z and N.
+    #
+    # The third: a block that ends in a tail jump OUT of the routine was made
+    # to sync its flags, on the argument that the target is an entry point
+    # lifted as its own function and so can never name its own flags. Zero
+    # movement, and the reason is that 0x124E4 is not out of the routine at
+    # all - it sits inside 0x124E2's extent, so the `bra.b` reaching it is an
+    # ordinary intra-routine edge that `edges` already has. The address being
+    # both an inner block AND a separate decompiled function is what makes it
+    # confusing, and neither fact is the fault.
+    #
+    # The second is the sharper: `lift()` was made to run a third pass carrying
+    # the flag state each block ENDED with, so a loop header could be certain
+    # about a latch that sits later in address order. Fresh lifter per pass, so
+    # none of the first attempt's corruption. It moved the number by ZERO -
+    # still interrupt 1300, still Z and N, still 0x124E4 - and cost a third of
+    # the lift time, so it went. The reason it cannot work: 0x124E4 is an ENTRY
+    # POINT, lifted as its own function with lo at that address, so its first
+    # block has no predecessors inside the lift at all. No amount of
+    # intra-routine dataflow reaches it. Whatever fixes this has to be about
+    # what the machine's flags are when a function is ENTERED, not about what
+    # its predecessors left.
+    #
+    # The first attempt, and the reason it will occur again:
     #
     # The remaining `frames` difference is a loop header: its latch sits later
     # in address order, so on one pass the latch has no end_flags yet,
