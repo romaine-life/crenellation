@@ -101,8 +101,9 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
 
 ## Making it readable
 
-The equivalence half is done, and so is the function half of this one.
-Measured 2026-08-02 in `frontend/src/rom/names.txt`:
+The equivalence half is done, and so is this one. `names.txt` reads **"0
+routines still an address, 0 opaque routines, 0 parameters"**, and all three are
+*assertions* in `names.test.ts`, not ratchets. Measured 2026-08-02:
 
 | | |
 |---|---|
@@ -117,12 +118,20 @@ retracted.** `expect(byAddress).toEqual([])` says no routine is called
 `fn_0ccb2`. It does not say the name is *useful*, and `idents.py` breaks a
 collision by appending — `mainGameStateMachineFrom3` — so a name can be unique,
 pass the assertion, and tell the reader only which routine it is a second entry
-into. The two new rows are the numbers that were hiding behind it, and both are
-ratchets in `baseline.json`. The literal collisions *are* gone: the forty-six
-routines all called `playerStateAccess` were broken apart by the `d(An)` field
-offset, which is what `distinguish.py` is for. Of the 544, 274 are
-`Wrapper`/`Stub` variants of one target and 270 are `FromN` entries into one
-routine — both say something true, just not what the entry *does*.
+into. The two rows below it are the numbers that were hiding behind it. The
+literal collisions *are* gone: the forty-six routines all called
+`playerStateAccess` were broken apart by the `d(An)` field offset, which is
+what `distinguish.py` is for. Of the 500, most are `Wrapper`/`Stub` variants of
+one target or `FromN` entries into one routine — both say something true, just
+not what the entry *does*. Those two remain ratchets, and they are what is left.
+
+**A bar that only holds in the tree it was reached in is not a bar.** The
+parameter assertion went red at 24 the first time a full regeneration ran under
+it, and every one of the 24 was a name some pass had DERIVED from a body that
+`dropunread.py` then rewrote — present in the working tree and nowhere a
+regeneration could find it again. All 24 were read and written into
+`params.curated.json`, and a second regeneration reproduces the three zeros
+exactly. That is the whole reason to assert rather than ratchet at the bar.
 
 `names.test.ts` **enforces** the first — `expect(byAddress).toEqual([])`, not a
 ratchet, because at the bar a `<=` would quietly accept a regeneration that
@@ -195,6 +204,34 @@ and is 2,334 of 4,419 after it: 3,778 parameters said nothing, 2,085 do.
   is neither, and picking the commoner would be a guess dressed as a
   measurement. Strict runs first so a name all callers agree on is never
   displaced by one only some of them state.
+- **`deadregs.py` asks four questions of the disassembly**, and the scope of
+  each is the whole difference between a sound answer and a plausible one.
+  *Dead on arrival*: walk the straight line from the entry and stop at the
+  first instruction that can fork — up to there the order is the order of
+  execution, so a register written is written before anything could read it.
+  *Killed everywhere*: both arms of every conditional branch, with a call, a
+  return, an unresolved target or a loop back to a visited block all counting
+  AGAINST. *No branch skips it*: the first mention in the routine is a kill and
+  no branch target lands between it and the register's last mention. *Preserved*:
+  every appearance in what this entry can REACH is inside a `movem` — not dead,
+  because a spill before a call still hands the value on, which is a different
+  name for a different fact. It learned three things the hard way: `move.w`
+  writes only the low word and leaves the caller's upper half (111 fell to 88);
+  `movea` sign-extends so `movea.w` IS a full kill; and capstone prints
+  `movem.l d2-d7`, so searching for `d3` in it finds nothing.
+- **`stackroles.py` and `regroles.py`** name a slot after the one thing the
+  routine does with it — `src`, `dst`, `record`, `ptr`, `index` — decided from
+  every use rather than the first, because the first use of a pointer is
+  usually the load that puts it somewhere else. Finding the stack slot is the
+  hard half: with a frame pointer it is exactly `(N+4)(a6)`, and without one
+  `by_sp` walks the prologue carrying a7's displacement and gives up entirely
+  the moment a7 moves in a way it cannot account for. A wrong displacement does
+  not fail; it silently names the wrong slot.
+- **`readfamily.py` is what the last 450 were read with.** It takes the extent
+  from `facts.json` — getting that wrong is the mistake that costs most, since
+  a truncated dump makes capstone report a different instruction entirely —
+  prints the disassembly elided to the lines touching an unnamed register, and
+  follows it with a per-register digest.
 - **The diagnostics are the point, not the passes.** `whyunnamed.py` bins every
   unnamed parameter by what the routine does with it, `whyrole.py` replays
   `roles.py`'s decision and says which test came out empty, `whypassed.py` says
