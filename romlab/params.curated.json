@@ -5077,6 +5077,18 @@
     "d6": {
       "name": "limit",
       "why": "0xb4 - 180 - loaded as a constant and compared against, so it is a fixed bound of the routine rather than anything the caller chose."
+    },
+    "stack4": {
+      "name": "column",
+      "why": "its low word at 0xa(a6) becomes d2 at 0x16960, which is pushed to 0x1e6b2 as the column."
+    },
+    "stack8": {
+      "name": "firstRow",
+      "why": "its low word at 0xe(a6) becomes d4 at 0x16964 and seeds the row counter d5 at 0x16974."
+    },
+    "stack12": {
+      "name": "count",
+      "why": "its low word at 0x12(a6) becomes d3 at 0x16968, the number of rows the loop covers."
     }
   },
   "0xb738": {
@@ -7985,6 +7997,68 @@
     "stack4": {
       "name": "record",
       "why": "0x18e3c is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x1abd0": {
+    "d4": {
+      "name": "operand",
+      "why": "the four entries differ only in the operation they apply to field 0x5d with it - sub.b at 0x1abd0, and.b at 0x1abd6, or.b at 0x1abdc, eor.b at 0x1abe2 - and then all fall into the same copy of 0x5d into 0x5e."
+    }
+  },
+  "0x1abd6": {
+    "d4": {
+      "name": "operand",
+      "why": "the four entries differ only in the operation they apply to field 0x5d with it - sub.b at 0x1abd0, and.b at 0x1abd6, or.b at 0x1abdc, eor.b at 0x1abe2 - and then all fall into the same copy of 0x5d into 0x5e."
+    }
+  },
+  "0x1abdc": {
+    "d4": {
+      "name": "operand",
+      "why": "the four entries differ only in the operation they apply to field 0x5d with it - sub.b at 0x1abd0, and.b at 0x1abd6, or.b at 0x1abdc, eor.b at 0x1abe2 - and then all fall into the same copy of 0x5d into 0x5e."
+    }
+  },
+  "0x1abe2": {
+    "d4": {
+      "name": "operand",
+      "why": "the four entries differ only in the operation they apply to field 0x5d with it - sub.b at 0x1abd0, and.b at 0x1abd6, or.b at 0x1abdc, eor.b at 0x1abe2 - and then all fall into the same copy of 0x5d into 0x5e."
+    }
+  },
+  "0xcee8": {
+    "d3": {
+      "name": "threshold",
+      "why": "the constant 0x18, and the only thing done with it is cmp.l d3,d0 at 0x1cf1c against the player's byte at 0x20 - players at or below it are skipped."
+    },
+    "d4": {
+      "name": "playerStride",
+      "why": "the constant 0x7e, the stride of the player array at 0x3e1968 that a2 walks."
+    },
+    "d5": {
+      "name": "eventRecord",
+      "why": "the constant 0x11bc0, pushed with the player to eventPost at 0x1cf24."
+    },
+    "d6": {
+      "name": "sent",
+      "why": "cleared at 0x1cf02 and counted as the walk posts, the routine's answer."
+    }
+  },
+  "0x1e6dc": {
+    "stack4": {
+      "name": "tileId",
+      "why": "0x1e6e0 reads it, doubles it and indexes the word table at 0x2161a; the word that comes back is written straight back over its own low half at 0x1e6ec, and 0x1e700 reads it again from there as the offset into the tile data at 0xd2608."
+    },
+    "stack12": {
+      "name": "flag",
+      "why": "its low word at 0x26(a7) becomes d2 at 0x1e70a, which the family already calls flag."
+    }
+  },
+  "0x1e6e0": {
+    "stack28": {
+      "name": "tileId",
+      "why": "read, doubled and used to index the word table at 0x2161a at 0x1e6e6 - the same slot decompressTileId's own first argument occupies once the movem has pushed six registers."
+    },
+    "stack32": {
+      "name": "dst",
+      "why": "movea.l 0x20(a7),a1 at 0x1e706, and 0x1e714 reads the same slot again and adds eight - the destination, stepped a tile at a time."
     }
   }
 }
