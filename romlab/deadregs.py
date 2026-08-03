@@ -105,6 +105,13 @@ def kills(insn, reg):
     """Does this instruction destroy `reg` outright, reading nothing of it?"""
     mn, ops = insn.mnemonic, insn.op_str
     base = mn.split(".")[0]
+    # The self-clear idioms. `suba.l a0,a0` is how this ROM nulls an address
+    # register and `sub.l d0,d0` how it zeroes a data one - both READ the
+    # destination in the letter of the instruction and destroy it in fact, so
+    # the general rule below (source must not mention the register) throws
+    # them away. startDivideHelperZeroHigh's whole first instruction is one.
+    if base in ("sub", "suba", "eor") and ops.strip() == f"{reg}, {reg}":
+        return "l" if mn.endswith(".l") or "." not in mn else mn.split(".")[1]
     if base not in WHOLE:
         return None
     parts = [p.strip() for p in ops.split(",")]
