@@ -31,6 +31,14 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "scratch",
+      "why": "used for several unrelated intermediate values in the address arithmetic - 0x14b4c, 0x14b58, 0x14b5c - and never carries anything in."
+    },
+    "d2": {
+      "name": "slot",
+      "why": "0x14b30 reads the word at 0x12(a7) into it and 0x14b66 multiplies it by five - the slot this addresses."
     }
   },
   "0x11bd8": {
@@ -5005,6 +5013,14 @@
     "a0": {
       "name": "ptr",
       "why": "0x0f67a is `move.w $0(a0), d6` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d3": {
+      "name": "entry",
+      "why": "0xf67e takes an address into it and 0xf72e points a0 back at it - the entry kept while a0 moves on."
+    },
+    "d6": {
+      "name": "key",
+      "why": "0xf67a reads the word at (a0) into it and 0xf680 compares it against the best so far, then 0xf6f6 checks it against 0x46 - the sort key."
     }
   },
   "0x7262": {
@@ -5635,6 +5651,14 @@
     "d5": {
       "name": "index",
       "why": "0x06adc is `move.b (a2, d5.l), d0` - the register appears inside another register's indexed addressing and is never dereferenced itself, so it holds an index. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d2": {
+      "name": "kind",
+      "why": "0x69ee reads the word at 0xe(a6) into it and 0x6a58 tests it, then 0x6a5e rebuilds it from d6 with 0xb or'd in - the cell kind this direction step lays."
+    },
+    "d7": {
+      "name": "running",
+      "why": "0x6ae2 and 0x6af6 read the two running totals out of the frame, add to them and write them back - the sums the walk keeps."
     }
   },
   "0xe020": {
@@ -6189,6 +6213,10 @@
     "d6": {
       "name": "unused2",
       "why": "0x16c12 is moveq #0,d6 - the first thing the host does with it is destroy it. Preserved by the movem, not taken."
+    },
+    "d4": {
+      "name": "bits",
+      "why": "0x16c38 takes the value into it and 0x16c3a masks it to 0x20000c0, then 0x16c50 ors the rest back in - the bits this keeps."
     }
   },
   "0x16c18": {
@@ -6597,6 +6625,10 @@
     "d6": {
       "name": "unused2",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x0dedc is `move.w #$8000, d6` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack12": {
+      "name": "column",
+      "why": "its low word at 0x12(a6) becomes d5, which this family already calls screenAt at the register it lands in - the third of the three words the routine reads off the stack."
     }
   },
   "0xecfa": {
@@ -6701,6 +6733,14 @@
     "a2": {
       "name": "ptr",
       "why": "0x124a8 is `move.b (a2)+, (a1)+` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d2": {
+      "name": "highNibble",
+      "why": "0x123be takes the last source byte and 0x123c2 masks it to 0xf0, then it is added to the next nibble at 0x123ce and 0x123f0 - the high half carried between bytes."
+    },
+    "d5": {
+      "name": "rowGap",
+      "why": "added to the destination at 0x123b2, 0x123de and 0x12400 and subtracted from the fresh counter each time - the gap from the end of one row to the start of the next."
     }
   },
   "0x124e2": {
@@ -8161,6 +8201,14 @@
     "a4": {
       "name": "ptr",
       "why": "0x17db2 is `jsr (a4)` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "a0": {
+      "name": "label",
+      "why": "0x17de4 and 0x17dec point it at one of two fixed strings, 0x1df3a or 0x1df3c, and 0x17df6 pushes it - the label this row draws."
+    },
+    "d3": {
+      "name": "value",
+      "why": "sign-extended at 0x17da6 and pushed at 0x17da8 as the first thing the row is drawn with."
     }
   },
   "0x18040": {
@@ -9993,6 +10041,40 @@
     "d5": {
       "name": "colour",
       "why": "0x1034 pushes it as shiftEightTwoBlockS's second argument, which that routine binds as colour."
+    }
+  },
+  "0x7578": {
+    "d2": {
+      "name": "kind",
+      "why": "the cell kind this stamp works with: 0x75ac takes it from d0 and 0x75b2 compares it against 8, and the later entries set it to 0x11 or 8 outright."
+    }
+  },
+  "0x13408": {
+    "a7": {
+      "name": "stackTop",
+      "why": "0x13524 loads it from (a0)+ - the routine resets the stack pointer itself as part of the input test, which is why the lifter made a parameter of it."
+    }
+  },
+  "0x1425c": {
+    "d4": {
+      "name": "taken",
+      "why": "0x142e8 and 0x142f8 take a call's answer into it and 0x142fc subtracts it from the count - how much was taken."
+    }
+  },
+  "0xb7fa": {
+    "a3": {
+      "name": "scratch",
+      "why": "0xb8e8 points it at the routine's own two-word local and 0xb8ec copies it to a0 - a pointer to the frame, not anything the caller passed."
+    },
+    "d5": {
+      "name": "score",
+      "why": "0xb85e clears it and 0xb890, 0xb89a and 0xb8c4 adjust it by 0xc, 5 and the frame word before 0xb8dc compares against it - the running score."
+    }
+  },
+  "0xad5a": {
+    "stack4": {
+      "name": "cellNumber",
+      "why": "its low word at 0xa(a6) becomes d2 and 0xad68 masks it to 0x3f for the column while 0xad6e takes that off for the row - the split the routine is named for."
     }
   }
 }
