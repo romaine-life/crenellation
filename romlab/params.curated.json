@@ -653,6 +653,10 @@
     "stack20": {
       "name": "extra",
       "why": "only its low word, read by the FIRST `move.w $1e(a7),d0` while a7 is still where it started. It is zero-extended and becomes the constant 0x357a hands to every per-cell call without looking at it."
+    },
+    "d1": {
+      "name": "width2",
+      "why": "0x3672 reads the word at 0x16(a7), which is the low half of the same width slot the routine already binds - the two are one argument read twice, as in its two siblings at 0x35ee and 0x362a."
     }
   },
   "0x220c": {
@@ -1273,6 +1277,10 @@
     "stack12": {
       "name": "alsoWanted",
       "why": "only its low byte, at 0x17(a7), the second acceptable value. Passing the same byte twice makes the test a single comparison."
+    },
+    "d3": {
+      "name": "matches",
+      "why": "cleared at 0x3df8 and counted up once per neighbour that matches, which is the routine's answer."
     }
   },
   "0x24c8": {
@@ -5685,6 +5693,10 @@
     "d3": {
       "name": "preserved",
       "why": "every appearance of it in the routine is inside a movem (the first at 0x1803a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "stack36": {
+      "name": "colour",
+      "why": "its low word at 0x22(a7) is read at 0x1800e, after the attribute byte has gone to 0x3e3d7b - the pair of signed bytes this tail stores."
     }
   },
   "0x18006": {
@@ -5703,6 +5715,10 @@
     "d3": {
       "name": "preserved",
       "why": "every appearance of it in the routine is inside a movem (the first at 0x1803a) - saved and restored and never touched. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "stack32": {
+      "name": "colour",
+      "why": "its low word at 0x22(a7) is read at 0x1800e - the same slot the entry above binds, four further on because that one has already popped an argument."
     }
   },
   "0x2a5c": {
@@ -5895,6 +5911,10 @@
     "d1": {
       "name": "wantRoutine",
       "why": "the descriptor's first longword, one half of the match."
+    },
+    "d2": {
+      "name": "unused",
+      "why": "0xefce assigns it the long at 0x14(a7) before anything reads it."
     }
   },
   "0x5afc": {
@@ -5923,6 +5943,10 @@
     "d7": {
       "name": "savedD7",
       "why": "preserved by the same movem and never read here."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x13104 assigns it d5, the second pass's answer, and that is what the routine returns; the value that arrived is never read."
     }
   },
   "0xce48": {
@@ -7293,6 +7317,10 @@
     "stack4": {
       "name": "record",
       "why": "0x0778c is `movea.l $8(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "d1": {
+      "name": "wallByte",
+      "why": "0x779c reads it out of the table at 0x1000a indexed by the player's byte at 2 - the same per-player table redrawCellOneRowBelow takes its two wall bytes from."
     }
   },
   "0x77c8": {
@@ -7497,6 +7525,14 @@
     "stack4": {
       "name": "src",
       "why": "0x0ea82 is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0xea92 assigns it a pointer to the routine's own two-byte local before anything reads it."
+    },
+    "d2": {
+      "name": "unused2",
+      "why": "0xea8c clears it before anything reads it."
     }
   },
   "0xec3a": {
@@ -8937,6 +8973,44 @@
     "d1": {
       "name": "separator",
       "why": "its two halves are swapped around each test: the low byte of the far half is emitted before the digit at 0x19588 when it is not zero. The separator this inserts."
+    }
+  },
+  "0x18db6": {
+    "stack12": {
+      "name": "slot",
+      "why": "compared against the four entries walked down from 0x44(a2) at 0x18d9a - which of the sound state's four slots this is."
+    }
+  },
+  "0x1a58a": {
+    "stack4": {
+      "name": "selector",
+      "why": "its low byte at 7(a7) is compared against 6 at 0x1a592: below that it reads through the pointer argument, at or above it indexes 0x3e36ac by the excess. It chooses which table the value comes from."
+    }
+  },
+  "0x512a": {
+    "d0": {
+      "name": "unused",
+      "why": "0x5144 reads it as offsetRecordTableBase's answer; the value that arrived is never read."
+    }
+  },
+  "0x1259c": {
+    "d0": {
+      "name": "packed",
+      "why": "0x1259c takes its high nibble into d1 and 0x125a0 keeps its low one, shifted left seven and added to 0x3e0e76 - the byte being split."
+    },
+    "d5": {
+      "name": "rowGap",
+      "why": "the gap added to the destination whenever the row counter wraps, as in the two emitters beside it."
+    }
+  },
+  "0x7cb0": {
+    "stack4": {
+      "name": "player",
+      "why": "its low word at 0xa(a7) becomes d1 and is passed with 9 and 0xc to the field reader - the record the field is read from."
+    },
+    "stack8": {
+      "name": "field",
+      "why": "its low word at 0xe(a7) becomes d2 and is pushed first, so it names which field."
     }
   }
 }
