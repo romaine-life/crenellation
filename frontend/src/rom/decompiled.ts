@@ -18454,7 +18454,7 @@ export function dispatchCellTypeBetweenThrough(index_: number): void {
   setReg('d1', limit);
 }
 
-export function boardRegionRedraw(count_: number, index_: number, cellByte2_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number, limit: number): void {
+export function redrawGraphicFromCellLookup(count_: number, index_: number, cellByte2_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -18539,7 +18539,7 @@ export function boardRegionRedraw(count_: number, index_: number, cellByte2_: nu
   setReg('d6', stepped);
 }
 
-export function boardRegionRedrawFrom1(kind22_: number, index_: number, kind2_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number, limit: number): void {
+export function redrawGraphicFrom3354(kind22_: number, index_: number, kind2_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -18624,7 +18624,7 @@ export function boardRegionRedrawFrom1(kind22_: number, index_: number, kind2_: 
   setReg('d6', stepped);
 }
 
-export function boardRegionRedrawFrom2(cellAt_: number, shifted_: number, kind_: number): void {
+export function redrawGraphicFromTable211D2(cellAt_: number, shifted_: number, kind_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -18714,7 +18714,7 @@ export function boardRegionRedrawFrom2(cellAt_: number, shifted_: number, kind_:
   setReg('d6', d6);
 }
 
-export function boardRegionRedrawFrom3(cellAt_: number, shifted_: number, kind_: number): void {
+export function redrawGraphicFromTable211DA(cellAt_: number, shifted_: number, kind_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -18799,7 +18799,7 @@ export function boardRegionRedrawFrom3(cellAt_: number, shifted_: number, kind_:
   setReg('d6', d6);
 }
 
-export function boardRegionRedrawFrom4(at_: number, cellAt_: number, ptr2_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number): void {
+export function redrawGraphicSteppingBackOverWall(at_: number, cellAt_: number, ptr2_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number): void {
   let _guard = 0;
   void _guard;
   let at = at_;
@@ -18995,7 +18995,7 @@ export function boardRegionRedrawFrom4(at_: number, cellAt_: number, ptr2_: numb
   setReg('d6', stepped);
 }
 
-export function boardRegionRedrawFrom5(at_: number, cellAt_: number, ptr_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number): void {
+export function redrawGraphicForKindEight(at_: number, cellAt_: number, ptr_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number): void {
   let _guard = 0;
   void _guard;
   let at = at_;
@@ -19152,7 +19152,7 @@ export function boardRegionRedrawFrom5(at_: number, cellAt_: number, ptr_: numbe
   setReg('d6', stepped);
 }
 
-export function boardRegionRedrawFrom6(at_: number, unused_: number, unused2_: number, shifted_: number, cellByte_: number): void {
+export function redrawGraphicFromKindTable21466(at_: number, unused_: number, unused2_: number, shifted_: number, cellByte_: number): void {
   let _guard = 0;
   void _guard;
   let at = at_;
@@ -19234,7 +19234,7 @@ export function boardRegionRedrawFrom6(at_: number, unused_: number, unused2_: n
   setReg('d6', d6);
 }
 
-export function boardRegionRedrawFrom7(unused_: number, shifted_: number): void {
+export function redrawGraphicFromTable2133E(unused_: number, shifted_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -19291,7 +19291,7 @@ export function boardRegionRedrawFrom7(unused_: number, shifted_: number): void 
   setReg('d6', d6);
 }
 
-export function boardRegionRedrawFrom8(unused_: number, shifted_: number): void {
+export function redrawGraphicFromTable21342(unused_: number, shifted_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -19348,7 +19348,7 @@ export function boardRegionRedrawFrom8(unused_: number, shifted_: number): void 
   setReg('d6', d6);
 }
 
-export function boardRegionRedrawFrom9(at_: number, unused4_: number, unused_: number, unused2_: number, unused3_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number, limit: number): void {
+export function redrawGraphicByOwnerOrCoordinate(at_: number, unused4_: number, unused_: number, unused2_: number, unused3_: number, shifted_: number, kind_: number, cellByte_: number, stepped_: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let at = at_;
@@ -174457,7 +174457,7 @@ export function markEveryRecordListCommand(ptr_: number, unused_: number, unused
   setReg('d3', unused2);
 }
 
-export function silenceRecordsCommandNamesDrain(ptr_: number, ptr2_: number, ptr3_: number, unused_: number, unused2_: number): void {
+export function silenceChannelsMatchingScript(ptr_: number, ptr2_: number, ptr3_: number, unused_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -174575,7 +174575,7 @@ export function silenceRecordsCommandNamesDrain(ptr_: number, ptr2_: number, ptr
   setReg('d3', unused2);
 }
 
-export function silenceRecordsCommandNamesDrainFrom1(ptr_: number, ptr2_: number, index_: number, unused_: number): void {
+export function silenceChannelsMatchingGroup(ptr_: number, ptr2_: number, index_: number, unused_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -174654,7 +174654,7 @@ export function silenceRecordsCommandNamesDrainFrom1(ptr_: number, ptr2_: number
   setReg('d3', d3);
 }
 
-export function silenceRecordsCommandNamesDrainFrom2(ptr_: number, unused3_: number, unused4_: number, unused_: number, unused2_: number): void {
+export function drainStopSample(ptr_: number, unused3_: number, unused4_: number, unused_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -174709,7 +174709,7 @@ export function silenceRecordsCommandNamesDrainFrom2(ptr_: number, unused3_: num
   setReg('d3', unused2);
 }
 
-export function silenceRecordsCommandNamesDrainFrom3(): void {
+export function drainDropArgumentAndReturn(): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -174735,7 +174735,7 @@ export function silenceRecordsCommandNamesDrainFrom3(): void {
   setReg('d3', d3);
 }
 
-export function silenceRecordsCommandNamesDrainFrom4(dst_: number): void {
+export function drainCallWithCommand(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -174757,7 +174757,7 @@ export function silenceRecordsCommandNamesDrainFrom4(dst_: number): void {
   setReg('a1', dst);
 }
 
-export function silenceRecordsCommandNamesDrainFrom5(sample_: number): void {
+export function drainStartSample(sample_: number): void {
   let _guard = 0;
   void _guard;
   let unused = getReg('d1');
@@ -174787,7 +174787,7 @@ export function silenceRecordsCommandNamesDrainFrom5(sample_: number): void {
   setReg('d2', sample);
 }
 
-export function silenceRecordsCommandNamesDrainFrom6(ptr_: number): void {
+export function drainSetTempo(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -174819,7 +174819,7 @@ export function silenceRecordsCommandNamesDrainFrom6(ptr_: number): void {
   setReg('d1', unused2);
 }
 
-export function silenceRecordsCommandNamesDrainFrom7(ptr_: number, unused_: number): void {
+export function drainMergeDriverFlags(ptr_: number, unused_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -174868,7 +174868,7 @@ export function silenceRecordsCommandNamesDrainFrom7(ptr_: number, unused_: numb
   setReg('d3', d3);
 }
 
-export function silenceRecordsCommandNamesDrainFrom8(): void {
+export function drainDone(): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -189233,25 +189233,25 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x02788, fn: dispatchCellTypeBetweenThrough as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
-  { at: 0x027c2, fn: boardRegionRedraw as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 28 }] },
+  { at: 0x027c2, fn: redrawGraphicFromCellLookup as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 28 }] },
 
-  { at: 0x027da, fn: boardRegionRedrawFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 28 }] },
+  { at: 0x027da, fn: redrawGraphicFrom3354 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 28 }] },
 
-  { at: 0x027f2, fn: boardRegionRedrawFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x027f2, fn: redrawGraphicFromTable211D2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x02818, fn: boardRegionRedrawFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x02818, fn: redrawGraphicFromTable211DA as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x02840, fn: boardRegionRedrawFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x02840, fn: redrawGraphicSteppingBackOverWall as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0285e, fn: boardRegionRedrawFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0285e, fn: redrawGraphicForKindEight as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x028c4, fn: boardRegionRedrawFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd5' }] },
+  { at: 0x028c4, fn: redrawGraphicFromKindTable21466 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x028e8, fn: boardRegionRedrawFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x028e8, fn: redrawGraphicFromTable2133E as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x028fa, fn: boardRegionRedrawFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x028fa, fn: redrawGraphicFromTable21342 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x02908, fn: boardRegionRedrawFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 28 }] },
+  { at: 0x02908, fn: redrawGraphicByOwnerOrCoordinate as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 28 }] },
 
   { at: 0x02988, fn: cellTypeTest as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }] },
 
@@ -191029,23 +191029,23 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1a2c6, fn: markEveryRecordListCommand as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x1a318, fn: silenceRecordsCommandNamesDrain as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x1a318, fn: silenceChannelsMatchingScript as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x1a368, fn: silenceRecordsCommandNamesDrainFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x1a368, fn: silenceChannelsMatchingGroup as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x1a39a, fn: silenceRecordsCommandNamesDrainFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x1a39a, fn: drainStopSample as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x1a3a6, fn: silenceRecordsCommandNamesDrainFrom3 as (...a: number[]) => void, params: [] },
+  { at: 0x1a3a6, fn: drainDropArgumentAndReturn as (...a: number[]) => void, params: [] },
 
-  { at: 0x1a3aa, fn: silenceRecordsCommandNamesDrainFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }] },
+  { at: 0x1a3aa, fn: drainCallWithCommand as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }] },
 
-  { at: 0x1a3b0, fn: silenceRecordsCommandNamesDrainFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }] },
+  { at: 0x1a3b0, fn: drainStartSample as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }] },
 
-  { at: 0x1a3be, fn: silenceRecordsCommandNamesDrainFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }] },
+  { at: 0x1a3be, fn: drainSetTempo as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }] },
 
-  { at: 0x1a3ce, fn: silenceRecordsCommandNamesDrainFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x1a3ce, fn: drainMergeDriverFlags as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x1a3e0, fn: silenceRecordsCommandNamesDrainFrom8 as (...a: number[]) => void, params: [] },
+  { at: 0x1a3e0, fn: drainDone as (...a: number[]) => void, params: [] },
 
   { at: 0x1a3e6, fn: setStatusRegisterReturnOldWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }] },
 

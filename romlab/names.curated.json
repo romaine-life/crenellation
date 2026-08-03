@@ -1372,8 +1372,9 @@
     "why": "splits the byte at +1 into two nibbles: the high one indexes the six-byte records at 0x19CE4 and its field +5 is added to the low one, and that sum indexes the thirteen list heads at 0x3E3D12. It then walks the list, writing 0xFF into each record's field 0x12 and following the link at offset zero."
   },
   "0x1a318": {
-    "name": "silence the records the command names, and drain the ring",
-    "why": "two nearly identical walks over the sixteen 0x60-byte records: one matches field 0x12 against the byte at +2 of the ten-byte command record the byte at +1 selects, the other matches field 0x15 against that byte directly. A match clears +0x5C, sets +0x58 to 0x100 and +0x5A to 0xD000, and writes 0xFE into +0x12. A third entry pushes the byte into the ring at 0x1A19A."
+    "name": "silence every channel running this script",
+    "why": "the command's byte at 1 times ten indexes the record table in a3, and the entry must be kind 8. Its byte at 2 is then compared against byte 0x12 of each of the sixteen channels, and silencing a channel here is always the same four writes: byte 0x5c cleared, word 0x58 set to 0x100, word 0x5a to 0xd000 and byte 0x12 to 0xfe, the finishing marker - at 0x60 bytes a channel across sixteen of them.",
+    "ident": "silenceChannelsMatchingScript"
   },
   "0x1a58a": {
     "name": "read the channel's value, from the table above six or the jump table below",
@@ -2357,5 +2358,95 @@
     "name": "write the pattern to the test port and hand back",
     "why": "the chain's single exit: `move.w d0,(a3)` puts the value on the test port at 0x72fffe and `jmp (a4)` returns to whoever started the test. Every failing march jumps here too, with the eor of expected and actual in d0.",
     "ident": "ramTestReportPattern"
+  },
+  "0x1a368": {
+    "name": "silence every channel in this group",
+    "why": "the same sixteen-channel sweep as the handler above, matching the command's byte at 1 against byte 0x15 of each channel rather than byte 0x12 - the group field rather than the script one. silencing a channel here is always the same four writes: byte 0x5c cleared, word 0x58 set to 0x100, word 0x5a to 0xd000 and byte 0x12 to 0xfe, the finishing marker - at 0x60 bytes a channel across sixteen of them.",
+    "ident": "silenceChannelsMatchingGroup"
+  },
+  "0x1a39a": {
+    "name": "stop the sample the command names",
+    "why": "zero-extends the command's byte at 1 and hands it to 0x1a19a, which pushes it into the ring at 0x3e3d66 and wraps the cursor - the driver's own way of queueing a stop.",
+    "ident": "drainStopSample"
+  },
+  "0x1a3a6": {
+    "name": "drop the pushed argument and fall into the epilogue",
+    "why": "`addq.l #4,a7` and a branch to the shared restore - the return path every handler that pushed one argument takes.",
+    "ident": "drainDropArgumentAndReturn"
+  },
+  "0x1a3aa": {
+    "name": "hand the whole command record to the routine at 0x1a3e6",
+    "why": "pushes a1 itself rather than a byte out of it, which is what distinguishes this case from the ones either side.",
+    "ident": "drainCallWithCommand"
+  },
+  "0x1a3b0": {
+    "name": "ask for the sample in d2 to be started",
+    "why": "zero-extends the carried sample number and calls startSampleIfPriority, which decides whether it displaces what is already playing.",
+    "ident": "drainStartSample"
+  },
+  "0x1a3be": {
+    "name": "hand the command's byte to 0x1b2b2",
+    "why": "the same shape as the stop-sample case - byte at 1, zero-extended, one argument - but into the routine at 0x1b2b2 instead.",
+    "ident": "drainSetTempo"
+  },
+  "0x1a3ce": {
+    "name": "merge the command's low bits into the driver's flag byte",
+    "why": "clears bits 0 and 3 of the byte at 0x3e36ee with an andi of 0xf6 and ors the command's byte at 1 back in - the same two bits the sequencer's own flag opcode owns.",
+    "ident": "drainMergeDriverFlags"
+  },
+  "0x1a3e0": {
+    "name": "restore the saved registers and return",
+    "why": "the block's single epilogue: movem.l (a7)+ of d2-d3 and a2-a3, then rts. Every case that finds no match branches straight here.",
+    "ident": "drainDone"
+  },
+  "0x27c2": {
+    "name": "take the graphic from the cell address lookup",
+    "why": "calls boardCellAddressLookupWrapper with the coordinate and uses its answer as the table. every case here ends at the same tail, which reads the word at (a0) as the graphic to draw, so a case's whole job is choosing where a0 points. d3 decides between two entries of whatever table it picked.",
+    "ident": "redrawGraphicFromCellLookup"
+  },
+  "0x27da": {
+    "name": "take the graphic from the table 0x3354 returns",
+    "why": "the same shape as the case above it with a different lookup. every case here ends at the same tail, which reads the word at (a0) as the graphic to draw, so a case's whole job is choosing where a0 points. d3 decides between two entries of whatever table it picked.",
+    "ident": "redrawGraphicFrom3354"
+  },
+  "0x27f2": {
+    "name": "take the graphic from the table at 0x211d2, stepped by the cell below",
+    "why": "d3 offsets the table by eight rather than two here, and the cell one row down - a1 plus the board's 0x20 stride - is masked to its kind and must not be 2 for the extra step. every case here ends at the same tail, which reads the word at (a0) as the graphic to draw, so a case's whole job is choosing where a0 points. d3 decides between two entries of whatever table it picked.",
+    "ident": "redrawGraphicFromTable211D2"
+  },
+  "0x2818": {
+    "name": "take the graphic from the table at 0x211da",
+    "why": "the same shape as the case above with the other table. every case here ends at the same tail, which reads the word at (a0) as the graphic to draw, so a case's whole job is choosing where a0 points. d3 decides between two entries of whatever table it picked.",
+    "ident": "redrawGraphicFromTable211DA"
+  },
+  "0x2840": {
+    "name": "back up over the wall run before choosing the graphic",
+    "why": "d3 takes one off the cell pointer, and if the kind there is neither 8 nor 4 it steps a whole row back - a1 less 0x20 - and raises d6. It is looking for the start of the run rather than a table.",
+    "ident": "redrawGraphicSteppingBackOverWall"
+  },
+  "0x285e": {
+    "name": "choose the graphic for a kind-eight cell from its neighbour and owner",
+    "why": "masks the cell to its kind and only proceeds when it is 8; then it reads the cell one row down and one across - the +0x21 the 32-byte rows make - takes nine off that kind and shifts the owner down six to index with.",
+    "ident": "redrawGraphicForKindEight"
+  },
+  "0x28c4": {
+    "name": "index the table at 0x21466 by the cell's kind",
+    "why": "masks the cell to its low six bits, takes 0x1c off, adds eight and shifts left two - four bytes an entry - into the longword table at 0x21466.",
+    "ident": "redrawGraphicFromKindTable21466"
+  },
+  "0x28e8": {
+    "name": "take the graphic from the pointer at 0x2133e",
+    "why": "every case here ends at the same tail, which reads the word at (a0) as the graphic to draw, so a case's whole job is choosing where a0 points. d3 decides between two entries of whatever table it picked.",
+    "ident": "redrawGraphicFromTable2133E"
+  },
+  "0x28fa": {
+    "name": "take the graphic from the pointer at 0x21342",
+    "why": "every case here ends at the same tail, which reads the word at (a0) as the graphic to draw, so a case's whole job is choosing where a0 points. d3 decides between two entries of whatever table it picked.",
+    "ident": "redrawGraphicFromTable21342"
+  },
+  "0x2908": {
+    "name": "index by owner when there is one, otherwise build from the coordinate",
+    "why": "shifts the cell byte down six to the owner and, when that is non-zero, indexes the longword table at 0x20672 with it. When it is zero the graphic comes from the row and column instead - row less one times 0x28, column less one doubled, added to the base at 0x3e0e7a.",
+    "ident": "redrawGraphicByOwnerOrCoordinate"
   }
 }
