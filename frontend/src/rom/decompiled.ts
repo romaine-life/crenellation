@@ -151845,7 +151845,7 @@ export function audioVideoResetVariant(count_: number): void {
   setReg('d0', count);
 }
 
-export function cellToScreenAddressInPlaceWrapper(unused_: number, column2_: number, count2_: number, firstRow2_: number, row_: number, limit_: number, column: number, firstRow: number, count: number): void {
+export function drawCellRowRepeatedly(unused_: number, column2_: number, count2_: number, firstRow2_: number, row_: number, limit_: number, column: number, firstRow: number, count: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a6');
@@ -153404,7 +153404,7 @@ export function highScoreTableRenderer(index_: number, oldValue_: number, nibble
   setReg('d6', unused2);
 }
 
-export function highScoreTableRendererFrom1(descriptorTable_: number, mergeBits_: number, setAttributes_: number, waitFrame_: number, index_: number, unused_: number, remaining_: number, kind_: number, bits_: number, unused2_: number, unused22_: number): void {
+export function highScoreRowLoop(descriptorTable_: number, mergeBits_: number, setAttributes_: number, waitFrame_: number, index_: number, unused_: number, remaining_: number, kind_: number, bits_: number, unused2_: number, unused22_: number): void {
   let _guard = 0;
   void _guard;
   let descriptorTable = descriptorTable_;
@@ -155189,7 +155189,7 @@ export function runSixteenStepSwitchTest(ptr3_: number, ptr_: number, ptr2_: num
   setReg('d5', kind2);
 }
 
-export function runSixteenStepSwitchTestFrom1(step_: number): void {
+export function switchTestDrawFrame(step_: number): void {
   let _guard = 0;
   void _guard;
   let step = step_;
@@ -162184,7 +162184,7 @@ export function tailStoresSignedPair(width_: number, column_: number, preserved_
   setReg('d5', text);
 }
 
-export function tailStoresSignedPairFrom1(column_: number, preserved_: number, attr_: number, text_: number, colour: number): void {
+export function tailStoreAttributeThenColour(column_: number, preserved_: number, attr_: number, text_: number, colour: number): void {
   let _guard = 0;
   void _guard;
   let d0 = getReg('d0');
@@ -168015,7 +168015,7 @@ export function formatNumberSeparatorsIntoLocal(attrHigh: number, attrLow: numbe
   setReg('a6', a6);
 }
 
-export function formatScaledAndDrawFrom2(ptr_: number): void {
+export function formatScaledDrawFromBuffer(ptr_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -168631,7 +168631,7 @@ export function clearEightKilobyteBandPlayfield(count_: number, count2: number):
   setReg('d1', d1);
 }
 
-export function clearEightKilobyteBandPlayfieldFrom1(count_: number, row: number): void {
+export function clearBandFromRowByte(count_: number, row: number): void {
   let _guard = 0;
   void _guard;
   let a1 = getReg('a1');
@@ -170685,7 +170685,7 @@ export function signedLongDivision(index_: number, limit_: number, count_: numbe
   setReg('d3', nibblesLeft);
 }
 
-export function signedLongDivisionFrom1(unused2_: number, unused_: number, limit_: number, count_: number, magnitude_: number): void {
+export function divideLongByLongWhenBig(unused2_: number, unused_: number, limit_: number, count_: number, magnitude_: number): void {
   let _guard = 0;
   void _guard;
   let unused2 = unused2_;
@@ -172970,7 +172970,7 @@ export function resetBusRestartThroughReset(src_: number): void {
   setReg('a7', a7);
 }
 
-export function waitUntilLongChangesInner(preserved_: number, limit_: number): void {
+export function soundDriverHelper(preserved_: number, limit_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -174892,7 +174892,7 @@ export function drainDone(): void {
   setReg('d3', d3);
 }
 
-export function setStatusRegisterReturnOldWrapper(ptr4_: number, dst_: number, dst2_: number, ptr2_: number, ptr3_: number, index_: number, index2_: number, step_: number, answer_: number, dst3: number): void {
+export function channelListWalkWithTwoHeads(ptr4_: number, dst_: number, dst2_: number, ptr2_: number, ptr3_: number, index_: number, index2_: number, step_: number, answer_: number, dst3: number): void {
   let _guard = 0;
   void _guard;
   let ptr4 = ptr4_;
@@ -177516,7 +177516,7 @@ export function runOneChannelSScript(channel_: number, unused_: number, unused3_
   setReg('d6', d6);
 }
 
-export function runOneChannelSScriptFrom1(dst_: number, dst2_: number, startedWith_: number, changedAt_: number, dst4_: number, unused_: number, same_: number, unused3_: number, unused2_: number): void {
+export function channelScriptStartedOrNot(dst_: number, dst2_: number, startedWith_: number, changedAt_: number, dst4_: number, unused_: number, same_: number, unused3_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -180882,7 +180882,7 @@ export function subtractExtendedFromWord1CAndMark(dst_: number, dst2_: number, f
   setReg('d1', field5D);
 }
 
-export function subtractSignExtendedField5DFromWord1CFrom2(dst_: number): void {
+export function markChangedAndReturn(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -181006,7 +181006,7 @@ export function addSignExtendedField5DToWord1A(dst_: number, field5D_: number): 
   setReg('d1', field5D);
 }
 
-export function addSignExtendedField5DToWord1AFrom1(dst_: number, field5D_: number): void {
+export function addToWord1AAndReturn(dst_: number, field5D_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -182847,7 +182847,7 @@ export function channelNoteDoneThird(startedWith_: number, changedAt_: number, p
   setReg('d6', chosenPtrAt);
 }
 
-export function setChannelOperandThenNoteFrom5(voice_: number, ptr_: number): void {
+export function channelNoteReturnRecord(voice_: number, ptr_: number): void {
   let _guard = 0;
   void _guard;
   let voice = voice_;
@@ -185269,7 +185269,7 @@ export function decompressTileId(count_: number, flag2_: number, tileId: number,
   setReg('d4', count2);
 }
 
-export function decompressTileIdFrom1(count_: number, flag2_: number, tileId: number, dst: number, flag: number): void {
+export function tileIdThroughTable2161A(count_: number, flag2_: number, tileId: number, dst: number, flag: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -190653,7 +190653,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x168f8, fn: audioVideoResetVariant as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }] },
 
-  { at: 0x16958, fn: cellToScreenAddressInPlaceWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
+  { at: 0x16958, fn: drawCellRowRepeatedly as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
   { at: 0x169c8, fn: drawScreenTestPattern as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
@@ -190663,7 +190663,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x16bda, fn: highScoreTableRenderer as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x16c18, fn: highScoreTableRendererFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x16c18, fn: highScoreRowLoop as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x16d3e, fn: resetWithOneThenTail as (...a: number[]) => void, params: [] },
 
@@ -190691,7 +190691,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x16eec, fn: runSixteenStepSwitchTest as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }] },
 
-  { at: 0x16fe0, fn: runSixteenStepSwitchTestFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd3' }] },
+  { at: 0x16fe0, fn: switchTestDrawFrame as (...a: number[]) => void, params: [{ from: 'reg', name: 'd3' }] },
 
   { at: 0x16ff0, fn: serviceMenuSMainLoop as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
@@ -190745,7 +190745,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x18000, fn: tailStoresSignedPair as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 36 }] },
 
-  { at: 0x18006, fn: tailStoresSignedPairFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 32 }] },
+  { at: 0x18006, fn: tailStoreAttributeThenColour as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 32 }] },
 
   { at: 0x18040, fn: writeLongTwoPaletteEntries as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -190903,7 +190903,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1908a, fn: formatNumberSeparatorsIntoLocal as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }, { from: 'stack', off: 20 }, { from: 'stack', off: 24 }] },
 
-  { at: 0x190a2, fn: formatScaledAndDrawFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
+  { at: 0x190a2, fn: formatScaledDrawFromBuffer as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }] },
 
   { at: 0x190c0, fn: formatNumberPowerTwoBase as (...a: number[]) => void, params: [{ from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
@@ -190925,7 +190925,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1940a, fn: clearEightKilobyteBandPlayfield as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x1940e, fn: clearEightKilobyteBandPlayfieldFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
+  { at: 0x1940e, fn: clearBandFromRowByte as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }] },
 
   { at: 0x1942a, fn: replaceHighNibbleEightRows as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -190953,7 +190953,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1978e, fn: signedLongDivision as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x197a0, fn: signedLongDivisionFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x197a0, fn: divideLongByLongWhenBig as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x197d8, fn: divideLongWord as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }] },
 
@@ -190993,7 +190993,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x19c34, fn: resetBusRestartThroughReset as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }] },
 
-  { at: 0x19c3c, fn: waitUntilLongChangesInner as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
+  { at: 0x19c3c, fn: soundDriverHelper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
   { at: 0x19c70, fn: trackTwoAxesRecordDirection as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }] },
 
@@ -191047,7 +191047,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1a3e0, fn: drainDone as (...a: number[]) => void, params: [] },
 
-  { at: 0x1a3e6, fn: setStatusRegisterReturnOldWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }] },
+  { at: 0x1a3e6, fn: channelListWalkWithTwoHeads as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }] },
 
   { at: 0x1a58a, fn: readChannelSValueTable as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -191065,7 +191065,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1a5f0, fn: runOneChannelSScript as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'stack', off: 4 }] },
 
-  { at: 0x1a618, fn: runOneChannelSScriptFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1a618, fn: channelScriptStartedOrNot as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x1a704, fn: raiseFlagBitOneClear as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'd1' }] },
 
@@ -191171,7 +191171,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1ad46, fn: subtractExtendedFromWord1CAndMark as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'd1' }] },
 
-  { at: 0x1ad4c, fn: subtractSignExtendedField5DFromWord1CFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }] },
+  { at: 0x1ad4c, fn: markChangedAndReturn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }] },
 
   { at: 0x1ad54, fn: addField5DToField19 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd4' }] },
 
@@ -191179,7 +191179,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1ad60, fn: addSignExtendedField5DToWord1A as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }] },
 
-  { at: 0x1ad66, fn: addSignExtendedField5DToWord1AFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }] },
+  { at: 0x1ad66, fn: addToWord1AAndReturn as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x1ad6e, fn: addField5DToField16ThenMaybe as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd4' }] },
 
@@ -191217,7 +191217,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1b054, fn: channelNoteDoneThird as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x1b062, fn: setChannelOperandThenNoteFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }] },
+  { at: 0x1b062, fn: channelNoteReturnRecord as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }] },
 
   { at: 0x1b06e, fn: lookNoteUpTableTake as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -191243,7 +191243,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1e6dc, fn: decompressTileId as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
-  { at: 0x1e6e0, fn: decompressTileIdFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 28 }, { from: 'stack', off: 32 }, { from: 'stack', off: 36 }] },
+  { at: 0x1e6e0, fn: tileIdThroughTable2161A as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 28 }, { from: 'stack', off: 32 }, { from: 'stack', off: 36 }] },
 
   { at: 0x1e720, fn: rleDecoderVariantC as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 

@@ -3490,5 +3490,70 @@
     "name": "drop eight pushed bytes and go back to the sequencer",
     "why": "the return path for the cases that pushed the record and an operand.",
     "ident": "scriptDropEightAndReturn"
+  },
+  "0x16958": {
+    "name": "draw the same cell down a run of rows",
+    "why": "column, first row and count come off the frame and the row counter is seeded from the first - a run down the screen rather than one cell.",
+    "ident": "drawCellRowRepeatedly"
+  },
+  "0x16c18": {
+    "name": "wait a frame, then read the two values a row needs",
+    "why": "one call through the wait, then mergeMaskedResultBits twice - with 0x30000f0 and with zero - which is what supplies each row.",
+    "ident": "highScoreRowLoop"
+  },
+  "0x16fe0": {
+    "name": "draw the service frame for this step",
+    "why": "sign-extends the step number and hands it to drawServiceScreenSFrame with a zero.",
+    "ident": "switchTestDrawFrame"
+  },
+  "0x18006": {
+    "name": "store the attribute byte, then the colour word",
+    "why": "byte 0x3e3d7b takes the attribute and the word at 0x22(a7) the colour - the signed pair this tail is named for.",
+    "ident": "tailStoreAttributeThenColour"
+  },
+  "0x190a2": {
+    "name": "draw what the sixteen-byte buffer already holds",
+    "why": "pushes the buffer at -0x10(a6) with a coordinate assembled out of two of its own argument bytes; the formatting happened in the entry above.",
+    "ident": "formatScaledDrawFromBuffer"
+  },
+  "0x1940e": {
+    "name": "clear the band starting at the row the byte names",
+    "why": "the row byte is swapped and shifted down four - the 0x1000 a cell-row takes - and added to the screen base.",
+    "ident": "clearBandFromRowByte"
+  },
+  "0x197a0": {
+    "name": "take the long path when the divisor will not fit in a word",
+    "why": "0x10000 is the test; below it the word divide is enough, at or above it this does the fifteen-step shift-and-subtract.",
+    "ident": "divideLongByLongWhenBig"
+  },
+  "0x1a3e6": {
+    "name": "walk the channel list keeping both list heads",
+    "why": "0x3e3d12 and 0x3e3d0e in registers - the two heads the driver moves records between - and the record's byte at 1 decides which.",
+    "ident": "channelListWalkWithTwoHeads"
+  },
+  "0x1a618": {
+    "name": "note whether this channel already had a script",
+    "why": "one test of the long at (a2), and the 0 or 1 it leaves in the frame at -0xa(a6) is what every later branch in the routine reads.",
+    "ident": "channelScriptStartedOrNot"
+  },
+  "0x1ad4c": {
+    "name": "mark the driver's change byte and go back",
+    "why": "`ori.b #1,(a4)` and the jump - the tail several of the field writers share.",
+    "ident": "markChangedAndReturn"
+  },
+  "0x1ad66": {
+    "name": "add the value to word 0x1a and go back",
+    "why": "the add and the jump, with no sign extension of its own - the caller has already done it.",
+    "ident": "addToWord1AAndReturn"
+  },
+  "0x1b062": {
+    "name": "hand the channel record back and return",
+    "why": "`move.l a2,d0` before the restore, so the routine answers with the record it worked on.",
+    "ident": "channelNoteReturnRecord"
+  },
+  "0x1e6e0": {
+    "name": "look the tile id up in the table at 0x2161a",
+    "why": "doubles the id, reads the word and writes it back over the argument's own low half - which is why that slot looks like two different things.",
+    "ident": "tileIdThroughTable2161A"
   }
 }
