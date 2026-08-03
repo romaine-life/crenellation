@@ -99954,7 +99954,7 @@ export function battlePhaseController(dst_: number, dst2_: number, unused_: numb
   setReg('d0', unused);
 }
 
-export function battlePhaseControllerFrom1(dst_: number, dst2_: number, left_: number): void {
+export function battleLoadLevelOnce(dst_: number, dst2_: number, left_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100061,7 +100061,7 @@ export function battlePhaseControllerFrom1(dst_: number, dst2_: number, left_: n
   setReg('d0', left);
 }
 
-export function battlePhaseControllerFrom2(dst_: number, dst2_: number, limit_: number, unused2_: number): void {
+export function battleStepShotsAndUnits(dst_: number, dst2_: number, limit_: number, unused2_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100134,7 +100134,7 @@ export function battlePhaseControllerFrom2(dst_: number, dst2_: number, limit_: 
   setReg('d2', unused2);
 }
 
-export function battlePhaseControllerFrom3(dst_: number, dst2_: number): void {
+export function battleDissolveAndRebuild(dst_: number, dst2_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100209,7 +100209,7 @@ export function battlePhaseControllerFrom3(dst_: number, dst2_: number): void {
   setReg('a3', dst2);
 }
 
-export function battlePhaseControllerFrom4(dst_: number, dst2_: number): void {
+export function battleDissolveThenPhaseSeven(dst_: number, dst2_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100240,7 +100240,7 @@ export function battlePhaseControllerFrom4(dst_: number, dst2_: number): void {
   setReg('a3', dst2);
 }
 
-export function battlePhaseControllerFrom5(dst_: number, dst2_: number, index_: number): void {
+export function battleFadeUsingLevelByte(dst_: number, dst2_: number, index_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100311,7 +100311,7 @@ export function battlePhaseControllerFrom5(dst_: number, dst2_: number, index_: 
   setReg('d0', index);
 }
 
-export function battlePhaseControllerFrom6(dst_: number, dst2_: number): void {
+export function battleClearBandThenPhaseNine(dst_: number, dst2_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100346,7 +100346,7 @@ export function battlePhaseControllerFrom6(dst_: number, dst2_: number): void {
   setReg('a3', dst2);
 }
 
-export function roundSPhaseSequenceOne(): void {
+export function roundDropAndWait(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x0d1ec) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -100356,7 +100356,7 @@ export function roundSPhaseSequenceOne(): void {
   return;
 }
 
-export function roundSPhaseSequenceOneFrom1(dst_: number): void {
+export function roundFadeAndDealAgain(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100392,7 +100392,7 @@ export function roundSPhaseSequenceOneFrom1(dst_: number): void {
   setReg('a2', dst);
 }
 
-export function roundSPhaseSequenceOneFrom2(dst_: number, dst2_: number, count_: number): void {
+export function roundWaitThenPost11B8A(dst_: number, dst2_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100652,7 +100652,7 @@ export function roundSPhaseSequenceOneFrom2(dst_: number, dst2_: number, count_:
   setReg('d0', count);
 }
 
-export function roundSPhaseSequenceOneFrom3(dst_: number): void {
+export function roundScanBoardThenPostOutcome(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100695,7 +100695,7 @@ export function roundSPhaseSequenceOneFrom3(dst_: number): void {
   setReg('a2', dst);
 }
 
-export function roundSPhaseSequenceOneFrom4(dst_: number, count_: number): void {
+export function roundWaitThenClearSlotFlags(dst_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100758,7 +100758,7 @@ export function roundSPhaseSequenceOneFrom4(dst_: number, count_: number): void 
   setReg('d0', count);
 }
 
-export function roundSPhaseSequenceOneFrom5(dst_: number, unused_: number): void {
+export function roundWaitThenClearPlayerIndexes(dst_: number, unused_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -100811,7 +100811,7 @@ export function roundSPhaseSequenceOneFrom5(dst_: number, unused_: number): void
   setReg('d0', unused);
 }
 
-export function roundSPhaseSequenceOneFrom6(dst_: number, dst2_: number, count_: number): void {
+export function roundWaitThenPost11B90(dst_: number, dst2_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -101006,7 +101006,7 @@ export function roundSPhaseSequenceOneFrom6(dst_: number, dst2_: number, count_:
   setReg('d0', count);
 }
 
-export function roundSPhaseSequenceOneFrom7(dst_: number): void {
+export function roundLoadPalettesAndLevel(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -101038,7 +101038,7 @@ export function roundSPhaseSequenceOneFrom7(dst_: number): void {
   setReg('a2', dst);
 }
 
-export function roundSPhaseSequenceOneFrom8(dst_: number, count_: number): void {
+export function roundWaitThenClearHandlers(dst_: number, count_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -101130,7 +101130,7 @@ export function roundSPhaseSequenceOneFrom8(dst_: number, count_: number): void 
   setReg('d0', count);
 }
 
-export function roundSPhaseSequenceOneFrom9(ptr2_: number, dst_: number, limit_: number, unused_: number): void {
+export function roundStepShotsWhileWaiting(ptr2_: number, dst_: number, limit_: number, unused_: number): void {
   let _guard = 0;
   void _guard;
   let ptr2 = ptr2_;
@@ -190077,37 +190077,37 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x0d04e, fn: battlePhaseController as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0d0fa, fn: battlePhaseControllerFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0d0fa, fn: battleLoadLevelOnce as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0d140, fn: battlePhaseControllerFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0d140, fn: battleStepShotsAndUnits as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x0d15e, fn: battlePhaseControllerFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
+  { at: 0x0d15e, fn: battleDissolveAndRebuild as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
 
-  { at: 0x0d192, fn: battlePhaseControllerFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
+  { at: 0x0d192, fn: battleDissolveThenPhaseSeven as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
 
-  { at: 0x0d1a4, fn: battlePhaseControllerFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0d1a4, fn: battleFadeUsingLevelByte as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0d1de, fn: battlePhaseControllerFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
+  { at: 0x0d1de, fn: battleClearBandThenPhaseNine as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }] },
 
-  { at: 0x0d1ec, fn: roundSPhaseSequenceOne as (...a: number[]) => void, params: [] },
+  { at: 0x0d1ec, fn: roundDropAndWait as (...a: number[]) => void, params: [] },
 
-  { at: 0x0d1f2, fn: roundSPhaseSequenceOneFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x0d1f2, fn: roundFadeAndDealAgain as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x0d206, fn: roundSPhaseSequenceOneFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0d206, fn: roundWaitThenPost11B8A as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0d28c, fn: roundSPhaseSequenceOneFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x0d28c, fn: roundScanBoardThenPostOutcome as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x0d2b6, fn: roundSPhaseSequenceOneFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0d2b6, fn: roundWaitThenClearSlotFlags as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0d2e8, fn: roundSPhaseSequenceOneFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0d2e8, fn: roundWaitThenClearPlayerIndexes as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0d30c, fn: roundSPhaseSequenceOneFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0d30c, fn: roundWaitThenPost11B90 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0d37e, fn: roundSPhaseSequenceOneFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x0d37e, fn: roundLoadPalettesAndLevel as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x0d392, fn: roundSPhaseSequenceOneFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
+  { at: 0x0d392, fn: roundWaitThenClearHandlers as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
-  { at: 0x0d3d6, fn: roundSPhaseSequenceOneFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x0d3d6, fn: roundStepShotsWhileWaiting as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x0d43a, fn: runBattlePhaseSTick as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 

@@ -2780,5 +2780,85 @@
     "name": "wait for the countdown, then for the event at 0x11b06",
     "why": "tests the countdown at -4(a6) rather than decrementing it, and only when it has run out does it wait on the event.",
     "ident": "gamePhaseWaitCountdownThenEvent"
+  },
+  "0x0d0fa": {
+    "name": "load the level once, the first time through",
+    "why": "guarded on the phase timer byte at 0x3e1870 being zero, so it runs once: start the palette sequence, set every active player up, load the level data, and then write 1 to that byte so it cannot run again.",
+    "ident": "battleLoadLevelOnce"
+  },
+  "0x0d140": {
+    "name": "step every shot and every unit, and wait while either is busy",
+    "why": "adds what stepEveryShotFlightDraw and unitMovement answer and stays in the phase while the sum is non-zero; when both are idle it sets the countdown to ten.",
+    "ident": "battleStepShotsAndUnits"
+  },
+  "0x0d15e": {
+    "name": "dissolve the screen and rebuild the playfield",
+    "why": "dissolves, walks the list with the flag raised, clears the palette, and blits the fixed image unless the byte at 0x3e194e says otherwise.",
+    "ident": "battleDissolveAndRebuild"
+  },
+  "0x0d192": {
+    "name": "dissolve and hand on to phase seven with a twenty-tick wait",
+    "why": "one dissolve, 0x14 into the countdown and 7 into the phase byte.",
+    "ident": "battleDissolveThenPhaseSeven"
+  },
+  "0x0d1a4": {
+    "name": "fade the palette with the level byte as its argument",
+    "why": "steps the fade and passes the byte at 0x3e194e - the same byte the rebuild above tests - along with 0xffff.",
+    "ident": "battleFadeUsingLevelByte"
+  },
+  "0x0d1de": {
+    "name": "clear the framebuffer band and hand on to phase nine",
+    "why": "0x168 into the countdown - a full second at sixty ticks - and 9 into the phase byte.",
+    "ident": "battleClearBandThenPhaseNine"
+  },
+  "0x0d1ec": {
+    "name": "drop the pushed argument and wait",
+    "why": "the return path for the phase above, which pushed one long before its call.",
+    "ident": "roundDropAndWait"
+  },
+  "0x0d1f2": {
+    "name": "fade every bank, reset the round and deal again",
+    "why": "fades all seven banks, resets the round and its queue, gives every player their own play, and sets the phase byte to 0xa.",
+    "ident": "roundFadeAndDealAgain"
+  },
+  "0x0d206": {
+    "name": "wait on the event at 0x11b1e, then post 0x11b8a",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. The phase byte at (a2) and the countdown word at (a3) are how it hands on when it does. ",
+    "ident": "roundWaitThenPost11B8A"
+  },
+  "0x0d28c": {
+    "name": "scan the whole board and post the round's outcome",
+    "why": "counts the board's cells by type and hands the answer to endRoundPostOutcomeEvent with a one, then posts the record at 0x11b2a.",
+    "ident": "roundScanBoardThenPostOutcome"
+  },
+  "0x0d2b6": {
+    "name": "wait on 0x11b1e, then clear the sixteen-slot table flag",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. The phase byte at (a2) and the countdown word at (a3) are how it hands on when it does. ",
+    "ident": "roundWaitThenClearSlotFlags"
+  },
+  "0x0d2e8": {
+    "name": "wait on 0x11b36, then clear every player's index",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. The phase byte at (a2) and the countdown word at (a3) are how it hands on when it does. ",
+    "ident": "roundWaitThenClearPlayerIndexes"
+  },
+  "0x0d30c": {
+    "name": "wait on 0x11b8a, then post 0x11b90",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. The phase byte at (a2) and the countdown word at (a3) are how it hands on when it does. ",
+    "ident": "roundWaitThenPost11B90"
+  },
+  "0x0d37e": {
+    "name": "load the level's palettes and data, then hand on to phase sixteen",
+    "why": "starts the eight level palettes, clears the slot flag, loads the level data and writes 0x10 to the phase byte.",
+    "ident": "roundLoadPalettesAndLevel"
+  },
+  "0x0d392": {
+    "name": "wait on 0x11b1e, then clear all eight registered handlers",
+    "why": "blocks on an event: it asks eventTest for a record and does nothing until the answer is zero. The phase byte at (a2) and the countdown word at (a3) are how it hands on when it does. ",
+    "ident": "roundWaitThenClearHandlers"
+  },
+  "0x0d3d6": {
+    "name": "step every shot while waiting on 0x11b9c",
+    "why": "the only phase here that does work and waits at the same time: it steps the shots each pass and keeps their count beside the event's answer.",
+    "ident": "roundStepShotsWhileWaiting"
   }
 }
