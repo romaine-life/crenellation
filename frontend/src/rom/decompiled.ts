@@ -54216,7 +54216,7 @@ export function dispatchCursorCode11Or30From1(code_: number): void {
   setReg('d1', code);
 }
 
-export function placeCursorSpritePlayerSeveral(flier_: number, startCue_: number, dst2_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierLandOnPlayerCell(flier_: number, startCue_: number, dst2_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -54496,7 +54496,7 @@ export function placeCursorSpritePlayerSeveral(flier_: number, startCue_: number
   setReg('d6', framesPlain);
 }
 
-export function placeCursorSpritePlayerSeveralFrom1(flier_: number, startCue_: number, dst3_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierLandAndScore(flier_: number, startCue_: number, dst3_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -54717,7 +54717,7 @@ export function placeCursorSpritePlayerSeveralFrom1(flier_: number, startCue_: n
   setReg('d6', framesPlain);
 }
 
-export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierStoreGraphicAndFinish(dst2_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -54847,7 +54847,7 @@ export function placeCursorSpritePlayerSeveralFrom2(dst2_: number, coord_: numbe
   setReg('d6', framesPlain);
 }
 
-export function placeCursorSpritePlayerSeveralFrom3(player_: number, flier_: number, displayEntry_: number, startCue_: number, ptr_: number, dst2_: number, coord_: number, index_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierProbeThenCueOrPlain(player_: number, flier_: number, displayEntry_: number, startCue_: number, ptr_: number, dst2_: number, coord_: number, index_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let player = player_;
@@ -55281,7 +55281,7 @@ export function placeCursorSpritePlayerSeveralFrom3(player_: number, flier_: num
   setReg('d6', framesPlain);
 }
 
-export function placeCursorSpritePlayerSeveralFrom4(startCue_: number, coord_: number, index_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierCueThenScoreByIndex(startCue_: number, coord_: number, index_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -55487,7 +55487,7 @@ export function placeCursorSpritePlayerSeveralFrom4(startCue_: number, coord_: n
   setReg('d6', framesPlain);
 }
 
-export function placeCursorSpritePlayerSeveralFrom5(startCue_: number, dst2_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierCueThenNudgeSpriteUp(startCue_: number, dst2_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -55774,7 +55774,7 @@ export function placeCursorSpritePlayerSeveralFrom5(startCue_: number, dst2_: nu
   setReg('d6', framesPlain);
 }
 
-export function placeCursorSpritePlayerSeveralFrom6(startCue_: number, dst2_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierCueThenMarkDirty(startCue_: number, dst2_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -55944,7 +55944,7 @@ export function placeCursorSpritePlayerSeveralFrom6(startCue_: number, dst2_: nu
   setReg('d6', framesPlain);
 }
 
-export function placeCursorSpritePlayerSeveralFrom7(flier_: number, dst2_: number, kind_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierPickFrameByStage(flier_: number, dst2_: number, kind_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -56140,7 +56140,7 @@ export function placeCursorSpritePlayerSeveralFrom7(flier_: number, dst2_: numbe
   setReg('d6', framesPlain);
 }
 
-export function placeCursorSpritePlayerSeveralFrom8(flier_: number, displayEntry_: number, startCue_: number, preserved_: number, dst_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierNothingToDo(flier_: number, displayEntry_: number, startCue_: number, preserved_: number, dst_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let flier = flier_;
@@ -56230,7 +56230,7 @@ export function placeCursorSpritePlayerSeveralFrom8(flier_: number, displayEntry
   setReg('d6', framesPlain);
 }
 
-export function placeCursorSpritePlayerSeveralFrom9(flier_: number, displayEntry_: number, startCue_: number, preserved_: number, dst_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
+export function flierResetCountdown(flier_: number, displayEntry_: number, startCue_: number, preserved_: number, dst_: number, coord_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, framesPlain_: number): void {
   let _guard = 0;
   void _guard;
   let flier = flier_;
@@ -189663,25 +189663,25 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x071d0, fn: dispatchCursorCode11Or30From1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }] },
 
-  { at: 0x071dc, fn: placeCursorSpritePlayerSeveral as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x071dc, fn: flierLandOnPlayerCell as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x07236, fn: placeCursorSpritePlayerSeveralFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x07236, fn: flierLandAndScore as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x07262, fn: placeCursorSpritePlayerSeveralFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x07262, fn: flierStoreGraphicAndFinish as (...a: number[]) => void, params: [{ from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0726e, fn: placeCursorSpritePlayerSeveralFrom3 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0726e, fn: flierProbeThenCueOrPlain as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x072ec, fn: placeCursorSpritePlayerSeveralFrom4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x072ec, fn: flierCueThenScoreByIndex as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x07318, fn: placeCursorSpritePlayerSeveralFrom5 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x07318, fn: flierCueThenNudgeSpriteUp as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0735c, fn: placeCursorSpritePlayerSeveralFrom6 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0735c, fn: flierCueThenMarkDirty as (...a: number[]) => void, params: [{ from: 'reg', name: 'a4' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x0737e, fn: placeCursorSpritePlayerSeveralFrom7 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x0737e, fn: flierPickFrameByStage as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x073c0, fn: placeCursorSpritePlayerSeveralFrom8 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x073c0, fn: flierNothingToDo as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
-  { at: 0x073c4, fn: placeCursorSpritePlayerSeveralFrom9 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
+  { at: 0x073c4, fn: flierResetCountdown as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }] },
 
   { at: 0x073dc, fn: walkNeighboursWallRecordS as (...a: number[]) => void, params: [{ from: 'reg', name: 'a3' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 

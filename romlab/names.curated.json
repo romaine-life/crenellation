@@ -331,8 +331,9 @@
     "ident": "dispatchCursorCode11Or30"
   },
   "0x71dc": {
-    "name": "place the cursor sprite for a player, several ways",
-    "why": "each entry multiplies the record's byte at +2 by 0x7E to reach that player's struct at 0x3E1968, calls through a4 with 0x128B0, and then some combination of 0x73DC and 0x6EF8 before writing the sprite's words: +8 from the byte at -0x18(a6) scaled by eight plus four, +6 from the byte at -0x17 scaled by eight. The entries differ in which of the two helpers they run and what they do with the answer."
+    "name": "cue the landing and place the sprite on the player's own cell",
+    "why": "the player index times 0x7e finds the record in the array at 0x3e1968, and the sprite's x and y come out of the two bytes at -0x18 and -0x17 of the frame, shifted left three - eight pixels a cell. the block's shape is always the same: cue a sound through the call in a4, then ask the routine at -6(a6) for a graphic and store it in the sprite's word at (a3). What differs is which cue set and which frame list. ",
+    "ident": "flierLandOnPlayerCell"
   },
   "0x73dc": {
     "name": "walk the neighbours for a wall the record's owner does not hold",
@@ -2498,5 +2499,50 @@
     "name": "queue one of two cues when the row count reaches 0xc or 0x16",
     "why": "compares the row counter at -0xa(a6) against 0xc and 0x16 and queues cue 0x34 or 0x35 through the gate, then steps that counter and stops the whole walk at 0x20 rows.",
     "ident": "cellRowDoneQueueCue"
+  },
+  "0x7236": {
+    "name": "cue the landing, bump the player's counter and place the sprite",
+    "why": "the same landing as the case above, except that it bumps the byte at 0x17 of the player record before it asks for the graphic - the only difference between scoring and not.",
+    "ident": "flierLandAndScore"
+  },
+  "0x7262": {
+    "name": "store the graphic the call answered and fall to the tail",
+    "why": "the join every cueing case reaches: `move.w d0,(a3)` and then the shared reset of the sprite's countdown.",
+    "ident": "flierStoreGraphicAndFinish"
+  },
+  "0x726e": {
+    "name": "probe the landing square and pick the cue set from the answer",
+    "why": "only runs the probe at 0xb958 when the mode byte at 0x3e1956 is set; a zero answer or a clear mode both fall to the plain cue set, and anything else takes the scoring one.",
+    "ident": "flierProbeThenCueOrPlain"
+  },
+  "0x72ec": {
+    "name": "cue, draw, then bump the player's counter by index",
+    "why": "the counter this bumps is reached by recomputing the player record from the byte at 2 rather than from the pointer the other scoring case kept, which is the only thing that separates the two.",
+    "ident": "flierCueThenScoreByIndex"
+  },
+  "0x7318": {
+    "name": "cue, draw, and pull the sprite up and left",
+    "why": "marks the sprite dirty with bit 5 of byte 2, calls 0x404a when the code at -1(a6) is zero or 0x30, and then takes six off the sprite's y and two off its x.",
+    "ident": "flierCueThenNudgeSpriteUp"
+  },
+  "0x735c": {
+    "name": "cue, draw and mark the sprite dirty",
+    "why": "the same as the case above without the nudge or the 0x404a call - just the ori of bit 5 into byte 2.",
+    "ident": "flierCueThenMarkDirty"
+  },
+  "0x737e": {
+    "name": "choose the frame from a stage index, bounded at two",
+    "why": "clamps the index to 2, doubles it into the word table at 0x1f84c and asks for that graphic; a record kind of 0x25 adds ten to the answer.",
+    "ident": "flierPickFrameByStage"
+  },
+  "0x73c0": {
+    "name": "leave the sprite alone",
+    "why": "a bare branch to the tail - the case for a flier with no sprite of its own.",
+    "ident": "flierNothingToDo"
+  },
+  "0x73c4": {
+    "name": "put five in the sprite's countdown byte",
+    "why": "`moveq #5,d0` into byte 0xb of the sprite record, which every case falls through to.",
+    "ident": "flierResetCountdown"
   }
 }
