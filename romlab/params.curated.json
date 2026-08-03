@@ -6453,12 +6453,28 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1228e is `move.w d3, d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d3": {
+      "name": "byte",
+      "why": "0x1228c reads the source byte into it and 0x12290 takes its high nibble."
+    },
+    "d2": {
+      "name": "base",
+      "why": "added to the high nibble at 0x12292 before the byte is stored, so it is what the nibble is an offset from."
     }
   },
   "0x1232e": {
     "d4": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x12330 is `move.w d7, d4` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d7": {
+      "name": "byte",
+      "why": "0x1232e reads the source byte into it and 0x12332 takes its high nibble."
+    },
+    "a5": {
+      "name": "base",
+      "why": "added to the high nibble at 0x12334 before the byte is stored."
     }
   },
   "0x1238c": {
@@ -6629,6 +6645,14 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x19954 is `move.w sr, d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "a1": {
+      "name": "port",
+      "why": "the base of the store at 0x19960, done with interrupts masked to level seven and the old status register written to 0x5affff either side."
+    },
+    "d2": {
+      "name": "byte",
+      "why": "the value stored at 0x19960 - the one thing this routine writes."
     }
   },
   "0x19a24": {
@@ -6773,6 +6797,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1ae2a is `move.b $5d(a2), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d4": {
+      "name": "amount",
+      "why": "0x1ae30 copies it into d2 and 0x1ae32 subtracts that from field 0x5d, the answer going to field 0x5e."
     }
   },
   "0x1b2b2": {
@@ -7477,6 +7505,14 @@
     "stack4": {
       "name": "dst",
       "why": "0x193f2 is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "first",
+      "why": "its low byte at 0xb(a7) is the first byte stored through the destination pointer at 0x193f6."
+    },
+    "stack12": {
+      "name": "second",
+      "why": "its low byte at 0xf(a7) is the second byte stored, at 0x193fa, before the byte four further on is cleared."
     }
   },
   "0x19614": {
@@ -8491,6 +8527,62 @@
     "stack16": {
       "name": "flag",
       "why": "masked to 0x30f0 at 0x18cda and pushed to decompressTileId as the argument that family already calls flag."
+    }
+  },
+  "0xea68": {
+    "stack4": {
+      "name": "value",
+      "why": "the whole routine passes it to 0xea7a and puts that answer in the byte at 0x3e1956 - it does nothing with it itself."
+    }
+  },
+  "0xfc88": {
+    "d0": {
+      "name": "counter",
+      "why": "0xfc8e adds one, 0xfc90 keeps the low two bits and 0xfc94 stores it to 0x3e0de2 - the same two-bit counter keepLowTwoBitsCounter maintains, stepped after the protection word at 0x1461bc is touched."
+    }
+  },
+  "0x1231a": {
+    "d4": {
+      "name": "packed",
+      "why": "0x12320 takes its high nibble into d5 and 0x12324 keeps its low one - the byte being split."
+    },
+    "a5": {
+      "name": "base",
+      "why": "added to the low nibble at 0x12328, the same base the other decoder states add."
+    }
+  },
+  "0x1ad42": {
+    "d1": {
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    }
+  },
+  "0x1ad46": {
+    "d1": {
+      "name": "field5D",
+      "why": "the byte at field 0x5d of the record in a2, read into it in the entry's first instruction; the caller's value is never read."
+    }
+  },
+  "0xfc1e": {
+    "d1": {
+      "name": "unused",
+      "why": "0xfc1e, this routine's first instruction, assigns it the byte at 0x3e0de6."
+    }
+  },
+  "0xfc74": {
+    "d1": {
+      "name": "unused",
+      "why": "0xfc74, this routine's first instruction, assigns it the byte at 0x3e0de6."
+    }
+  },
+  "0x19cd0": {
+    "stack8": {
+      "name": "first",
+      "why": "its low byte at 0xb(a7) is stored at offset 0 of the record at 0x19cd4."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x19cd8 rotates it and 0x19cda immediately replaces its low byte, which is the only part ever stored."
     }
   }
 }
