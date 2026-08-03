@@ -6575,12 +6575,20 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18e02 is `move.w $e(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack12": {
+      "name": "claimValue",
+      "why": "its low word at 0xe(a7) becomes d1, and d1 is what claimOneFourSlotsFill at 0x18e06 writes into field 0x1c of the slot it claims. The three entries differ only in the kind they put in d0 - 1, 3, or whatever arrived."
     }
   },
   "0x18e02": {
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18e02 is `move.w $e(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack12": {
+      "name": "claimValue",
+      "why": "its low word at 0xe(a7) becomes d1, and d1 is what claimOneFourSlotsFill at 0x18e06 writes into field 0x1c of the slot it claims. The three entries differ only in the kind they put in d0 - 1, 3, or whatever arrived."
     }
   },
   "0x190f6": {
@@ -6773,6 +6781,10 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18e02 is `move.w $e(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack12": {
+      "name": "claimValue",
+      "why": "its low word at 0xe(a7) becomes d1, and d1 is what claimOneFourSlotsFill at 0x18e06 writes into field 0x1c of the slot it claims. The three entries differ only in the kind they put in d0 - 1, 3, or whatever arrived."
     }
   },
   "0x31ba": {
@@ -8021,6 +8033,10 @@
     "stack4": {
       "name": "record",
       "why": "0x18e3c is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "slotWord",
+      "why": "its low word at 0x12(a7) is written into field 0x10 of the slot this claims (0x18e36), beside d1 into 0x1c and the record pointer into 0x34. One of the three things a claimed slot is filled with."
     }
   },
   "0x1abd0": {
@@ -8143,6 +8159,90 @@
     "d6": {
       "name": "lowBit",
       "why": "0x156e6 copies d4 into it and 0x156e8 masks it to 1, and it is only ever read back whole (0x156f6, 0x1572e) or tested (0x157f6, 0x15804). The bottom bit of the new value, kept."
+    }
+  },
+  "0x19786": {
+    "a0": {
+      "name": "unused",
+      "why": "0x19786 is `suba.l a0,a0` - the standard way of nulling an address register, and it destroys what arrived in the routine's first instruction."
+    },
+    "d0": {
+      "name": "value",
+      "why": "0x1978a moves it into d3, which is what the routine continues into 0x197a0 carrying - the only thing it does with it."
+    },
+    "d3": {
+      "name": "saved",
+      "why": "0x19788 pushes it and 0x1978a immediately overwrites it. It is preserved for the caller and never read."
+    }
+  },
+  "0x12340": {
+    "d7": {
+      "name": "nibble",
+      "why": "masked to 0xf at 0x12340, added to a5 and stored as one byte at 0x12346 - the low four bits of the decoder's state."
+    },
+    "a5": {
+      "name": "base",
+      "why": "added to the nibble at 0x12344 before the byte is stored, so it is what the nibble is an offset from."
+    }
+  },
+  "0x12350": {
+    "d4": {
+      "name": "byte",
+      "why": "0x12350 stores it straight to (a1) - this entry emits it without decoding."
+    }
+  },
+  "0x19552": {
+    "stack12": {
+      "name": "conversion",
+      "why": "its low byte at 0xf(a7) is compared against 0x64 at 0x19562 - ASCII 'd' - so it is a printf conversion letter, as 0x1946e's 's' is."
+    },
+    "stack20": {
+      "name": "groupIndex",
+      "why": "its low word at 0x16(a7) is doubled and indexes the pc-relative word table at 0x1959c."
+    },
+    "d1": {
+      "name": "unused",
+      "why": "0x19558 assigns it a word out of that table before anything reads it."
+    }
+  },
+  "0x18dc4": {
+    "stack12": {
+      "name": "voice",
+      "why": "its low word at 0xe(a7) is written to 0x3e340a at 0x18dca, and 0x3e3406 is cleared beside it."
+    },
+    "stack8": {
+      "name": "arg",
+      "why": "pushed first at 0x18dd6 and so becomes the second argument of 0x18e06."
+    },
+    "stack4": {
+      "name": "arg2",
+      "why": "pushed second at 0x18dda - a7 has already moved four by then, which is why the same 8(a7) reads a different slot - and so becomes 0x18e06's first argument."
+    }
+  },
+  "0xb5b8": {
+    "stack4": {
+      "name": "at",
+      "why": "the word at 0xc(a7) - 4(a7) before the movem pushed eight - handed to 0x11bd8, whose answer is the address the bytes go to. It was called limit, which claimed a bound nothing applies."
+    },
+    "stack8": {
+      "name": "first",
+      "why": "its low byte at 0x11(a7) becomes d3 and is the first byte written, at 0x1b5d0. It was called limit2."
+    },
+    "stack12": {
+      "name": "rest",
+      "why": "its low byte at 0x15(a7) becomes d2 and is written three times - once beside the first byte and twice a row lower, 0x1f further on. It was called limit3."
+    },
+    "d0": {
+      "name": "unused",
+      "why": "0x1b5ce reads it as 0x11bd8's answer; the value that arrived is never read."
+    },
+    "d2": {
+      "name": "unused2",
+      "why": "0x1b5c0 assigns it the byte at 0x15(a7)."
+    },
+    "d3": {
+      "name": "unused3",
+      "why": "0x1b5bc assigns it the byte at 0x11(a7)."
     }
   }
 }
