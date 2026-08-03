@@ -90,9 +90,25 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
   runs over a mirror kept current by hooking `setByte`, and the write
   comparison streams a hash and only pays for a full recording when something
   differs.
-- **What is left is one bit.** 1,219 of 2,125 exception frames on attract stack
-  an identical return address and status register, and the 1,220th differs in
-  X alone. X outlives the instruction after it — a move or a compare leaves it
+- **What is left is the carried condition codes at a block head**, and it is
+  down to one cause with a known shape. 1,300 of 2,125 exception frames on
+  attract now stack an identical return address and status register, up from
+  1,219: **X does not outlive a call**, and it used to. A `jsr` cleared
+  `flags` and not `xstate`, so the block head after the call re-applied the
+  caller's pre-call X over whatever the callee left — interrupt 1220, same
+  address on both sides, differing in that one bit, with the two runs naming
+  0x3B76 and 0xEE7E as the last to set X and 0xEE7E being the block head
+  immediately after `jsr (a3)`. One line in `blocks.py`.
+
+  The 1,301st differs in **Z and N**, at 0x124E4, and is the same family one
+  field further on: that is a loop header whose latch comes later in address
+  order, so when the header is lifted the latch has no `end_flags` yet,
+  `flags_certain` is false and `sync_flags` correctly writes nothing — leaving
+  the machine holding a stale word. Fixing it means iterating the block lift to
+  a fixed point over `end_flags` rather than one pass in address order, which
+  is what `pushed` and `xstate` already needed and got by other means.
+
+  The original note, still true of the mechanism: X outlives the instruction after it — a move or a compare leaves it
   — so it can be set several routines back, and the lifted world computes
   flags in JavaScript and writes them to the machine only at sync points. It is
   not a missing sync point: `SPILL_ALL=1`, which spills at every block head,
