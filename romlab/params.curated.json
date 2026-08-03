@@ -1449,6 +1449,10 @@
     "a3": {
       "name": "stackSlot",
       "why": "the slot 0x663c reserved, written through only on the path that pushes the 0xff empty marker back before the fill stops."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "0x05eaa is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0xeeee": {
@@ -1535,6 +1539,10 @@
     "d2": {
       "name": "wantDirection",
       "why": "the direction 0x11cf8 answered for the current target, compared against the cannon's own byte at 0x4 - the difference masked to 7 less 4 is what picks the shorter way round."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "0x06c24 is `movea.l $10(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0x1a8c0": {
@@ -4241,6 +4249,10 @@
     "d2": {
       "name": "walkingBit",
       "why": "the bit the last pass had reached, mid-walk when a failure cut it short."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "0x130b8 is `movea.l $38(a7), a5`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a5 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0x130d2": {
@@ -4797,6 +4809,10 @@
     "d7": {
       "name": "savedD7",
       "why": "written into the caller's buffer by the single `movem.l d1-d7/a2-a7,(a0)` and not otherwise touched. It is in the signature because the whole point of the routine is to preserve it."
+    },
+    "stack4": {
+      "name": "dst",
+      "why": "0x1865e is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
     }
   },
   "0x9208": {
@@ -5281,6 +5297,10 @@
     "d2": {
       "name": "neighbourByte",
       "why": "the byte read from whichever neighbour is being tested, compared against both wanted values in turn."
+    },
+    "stack4": {
+      "name": "src",
+      "why": "0x03da4 is `movea.l $c(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards reads through it and none writes. Found by stackroles.py."
     }
   },
   "0xf000": {
@@ -5379,6 +5399,10 @@
     "a3": {
       "name": "cannon",
       "why": "cleared to zero first with `suba.l a3,a3` so a failure answers null, then walked along the cannon list in 0x1a steps until an entry with a non-negative first byte is found."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "0x06bc4 is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0x2338": {
@@ -5403,6 +5427,10 @@
     "d2": {
       "name": "screenAt",
       "why": "what 0x11bec made of the coordinate, kept while the cell address is worked out separately."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "0x025f8 is `movea.l $14(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0x18b76": {
@@ -5413,6 +5441,10 @@
     "stack8": {
       "name": "row",
       "why": "its low byte at 0xb(a7), swapped and shifted right four, which is left twelve - 0x1000 to a cell row."
+    },
+    "stack12": {
+      "name": "record",
+      "why": "0x18b8e is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0x1851c": {
@@ -5887,6 +5919,10 @@
     "d3": {
       "name": "unused3",
       "why": "0x1a6b0's seq.b writes its low byte and only that byte is used - negated and stored to 0x3e36fc - so the incoming value reaches nothing. Saved and restored by the movem, not taken."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "0x1a5f8 is `movea.l $8(a6), a3`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a3 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0x626": {
@@ -5947,6 +5983,10 @@
     "d3": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x05b48 is `move.w $2a(a7), d3` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "src",
+      "why": "0x05b44 is `movea.l $24(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
     }
   },
   "0x603e": {
@@ -6041,6 +6081,10 @@
     "d1": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x1204c) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "0x12050 is `movea.l $10(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0x121c4": {
@@ -6147,6 +6191,10 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x18a5e is `move.w $a(a7), d1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "0x18a62 is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0x18dea": {
@@ -6175,6 +6223,10 @@
     "a0": {
       "name": "unused",
       "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "src",
+      "why": "0x190fa is `movea.l $14(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
     }
   },
   "0x19954": {
@@ -6329,6 +6381,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1e838 is `move.w $16(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "dst",
+      "why": "0x1e83c is `movea.l $10(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards writes through it and none reads. Found by stackroles.py."
     }
   },
   "0x875e": {
@@ -6399,6 +6455,14 @@
     "a2": {
       "name": "preserved",
       "why": "every appearance of it in this routine is inside a movem (the first at 0x124be) - the routine saves and restores it and never touches it. Not dead: a spill before a call still hands it on. Found by deadregs.py."
+    },
+    "stack4": {
+      "name": "record",
+      "why": "0x124c2 is `movea.l $20(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "record2",
+      "why": "0x124c6 is `movea.l $24(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
     }
   },
   "0x133b2": {
@@ -6575,6 +6639,392 @@
     "d1": {
       "name": "unused",
       "why": "dead on arrival: every path out of this entry destroys it before anything reads it - both arms of every conditional branch, followed to a depth of twelve, and any path that reaches a call, a return or an unresolved target counts against rather than for. Proved by deadregs.py."
+    }
+  },
+  "0x149a": {
+    "stack4": {
+      "name": "src",
+      "why": "0x0149e is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x15be": {
+    "stack4": {
+      "name": "dst",
+      "why": "0x015be is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0x19d8": {
+    "stack4": {
+      "name": "src",
+      "why": "0x019d8 is `movea.l $4(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x1f70": {
+    "stack4": {
+      "name": "dst",
+      "why": "0x01f70 is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0x2f18": {
+    "stack4": {
+      "name": "src",
+      "why": "0x02f1c is `movea.l $14(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x2fb6": {
+    "stack4": {
+      "name": "src",
+      "why": "0x02fba is `movea.l $1c(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x3f94": {
+    "stack4": {
+      "name": "record",
+      "why": "0x03f9c is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x427e": {
+    "stack4": {
+      "name": "src",
+      "why": "0x04284 is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x43c2": {
+    "stack8": {
+      "name": "src",
+      "why": "0x043ce is `movea.l $c(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x4f8c": {
+    "stack8": {
+      "name": "dst",
+      "why": "0x04f90 is `movea.l $8(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0x551c": {
+    "stack4": {
+      "name": "record",
+      "why": "0x05520 is `movea.l $c(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x5948": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0594c is `movea.l $20(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x5ab0": {
+    "stack12": {
+      "name": "record",
+      "why": "0x05abc is `movea.l $20(a7), a3`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a3 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "src",
+      "why": "0x05ab8 is `movea.l $1c(a7), a4`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a4 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x5b16": {
+    "stack4": {
+      "name": "dst",
+      "why": "0x05b16 is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0x5c60": {
+    "stack4": {
+      "name": "dst",
+      "why": "0x05c62 is `movea.l $8(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0x6ef8": {
+    "stack4": {
+      "name": "src",
+      "why": "0x06efa is `movea.l $8(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x73dc": {
+    "stack4": {
+      "name": "src",
+      "why": "0x073e0 is `movea.l $1c(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "record",
+      "why": "0x073e4 is `movea.l $20(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x744e": {
+    "stack4": {
+      "name": "src",
+      "why": "0x0744e is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x778a": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0778c is `movea.l $8(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x77c8": {
+    "stack4": {
+      "name": "dst",
+      "why": "0x077d0 is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0x7ea4": {
+    "stack4": {
+      "name": "record",
+      "why": "0x07ea8 is `movea.l $14(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x7f5a": {
+    "stack4": {
+      "name": "record",
+      "why": "0x07f5e is `movea.l $14(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x8200": {
+    "stack4": {
+      "name": "src",
+      "why": "0x08206 is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x84da": {
+    "stack4": {
+      "name": "src",
+      "why": "0x084dc is `movea.l $8(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x8606": {
+    "stack4": {
+      "name": "record",
+      "why": "0x08608 is `movea.l $8(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x8a9c": {
+    "stack4": {
+      "name": "src",
+      "why": "0x08aa4 is `movea.l $8(a6), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x8c7a": {
+    "stack4": {
+      "name": "record",
+      "why": "0x08c82 is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xb2e8": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0b2ec is `movea.l $c(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xb40a": {
+    "stack8": {
+      "name": "dst",
+      "why": "0x0b416 is `movea.l $c(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0xb5e4": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0b5ec is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xc2bc": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0c2be is `movea.l $8(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xc4ae": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0c4b0 is `movea.l $8(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xc4ca": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0c4cc is `movea.l $8(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "dst",
+      "why": "0x0c4d0 is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0xc4e8": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0c4e8 is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xccb2": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0ccb4 is `movea.l $8(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xcce6": {
+    "stack4": {
+      "name": "dst",
+      "why": "0x0cce6 is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0xcd4a": {
+    "stack8": {
+      "name": "record",
+      "why": "0x0cd54 is `movea.l $c(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xcf40": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0cf44 is `movea.l $14(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xd7a0": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0d7a4 is `movea.l $c(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xd854": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0d85c is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xdabc": {
+    "stack4": {
+      "name": "src",
+      "why": "0x0dabc is `movea.l $4(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "dst",
+      "why": "0x0dac0 is `movea.l $8(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0xe0ee": {
+    "stack8": {
+      "name": "record",
+      "why": "0x0e0fa is `movea.l $c(a6), a3`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a3 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xe3b0": {
+    "stack4": {
+      "name": "src",
+      "why": "0x0e3b8 is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0xe5ae": {
+    "stack4": {
+      "name": "src",
+      "why": "0x0e5b2 is `movea.l $28(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0xe824": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0e828 is `movea.l $10(a7), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xe98c": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0e994 is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0xea7a": {
+    "stack4": {
+      "name": "src",
+      "why": "0x0ea82 is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0xec3a": {
+    "stack4": {
+      "name": "src",
+      "why": "0x0ec42 is `movea.l $8(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0xee90": {
+    "stack4": {
+      "name": "src",
+      "why": "0x0ee94 is `movea.l $10(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0xfb74": {
+    "stack4": {
+      "name": "record",
+      "why": "0x0fb74 is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x11f08": {
+    "stack32": {
+      "name": "record",
+      "why": "0x11f10 is `movea.l $20(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x12078": {
+    "stack4": {
+      "name": "src",
+      "why": "0x1207c is `movea.l $1c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "record",
+      "why": "0x12080 is `movea.l $20(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x160dc": {
+    "stack4": {
+      "name": "src",
+      "why": "0x160de is `movea.l $8(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x1866c": {
+    "stack4": {
+      "name": "src",
+      "why": "0x1866c is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards reads through it and none writes. Found by stackroles.py."
+    }
+  },
+  "0x1867c": {
+    "stack4": {
+      "name": "dst",
+      "why": "0x1867c is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0x18d88": {
+    "stack4": {
+      "name": "record",
+      "why": "0x18d94 is `movea.l $8(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x193f2": {
+    "stack4": {
+      "name": "dst",
+      "why": "0x193f2 is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0x19614": {
+    "stack8": {
+      "name": "record",
+      "why": "0x1961a is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x19bb8": {
+    "stack8": {
+      "name": "record",
+      "why": "0x19bbe is `movea.l $8(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
+    }
+  },
+  "0x1a05a": {
+    "stack4": {
+      "name": "dst",
+      "why": "0x1a05a is `movea.l $4(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards writes through it and none reads. Found by stackroles.py."
+    }
+  },
+  "0x1b166": {
+    "stack4": {
+      "name": "record",
+      "why": "0x1b16a is `movea.l $14(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
     }
   }
 }

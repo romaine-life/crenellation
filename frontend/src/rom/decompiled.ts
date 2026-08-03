@@ -9494,7 +9494,7 @@ export function walkEightNeighboursCellScreen(control_: number, runLength_: numb
   setReg('d6', cellAddr);
 }
 
-export function doesBoardCellBelongPlayer(d0_: number, arg0: number, limit: number): void {
+export function doesBoardCellBelongPlayer(d0_: number, src2: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -9514,7 +9514,7 @@ export function doesBoardCellBelongPlayer(d0_: number, arg0: number, limit: numb
   push(kind, 4);
   save_d2_0 = kind;
   save_d3_1 = d3;
-  src = (arg0) >>> 0;
+  src = (src2) >>> 0;
   kind = (0) >>> 0;
   d1 = (0) >>> 0;
   t2 = load8(src + 0x2);
@@ -9881,13 +9881,13 @@ export function setFlagAfterPlayerArray(): void {
   store8(0x3e1ae2, 0xff);
 }
 
-export function resetRecordArmFive(arg0: number): void {
+export function resetRecordArmFive(dst: number): void {
   if (tick(80, 0x015be)) { takeIrq(); }
-  store32(arg0 + 0x4, 0);
-  store8(arg0 + 0x1d, 0);
-  store8(arg0 + 0x19, 0);
-  store8(arg0 + 0x21, 0x5);
-  setReg('a0', arg0);
+  store32(dst + 0x4, 0);
+  store8(dst + 0x1d, 0);
+  store8(dst + 0x19, 0);
+  store8(dst + 0x21, 0x5);
+  setReg('a0', dst);
 }
 
 export function clearStatusBitsEveryPlayer(index_: number, d2_: number, d3_: number): void {
@@ -11575,14 +11575,14 @@ export function pointEachPlayerSTwo(dst_: number, d0_: number, d4_: number, arg0
   setReg('d4', d4);
 }
 
-export function resetPlayerPairForty(arg0: number): void {
+export function resetPlayerPairForty(src: number): void {
   if (tick(74, 0x019d8)) { takeIrq(); }
-  const t0 = load32(arg0 + 0x5e);
+  const t0 = load32(src + 0x5e);
   store16(t0, 0x28);
-  const t1 = load32(arg0 + 0x62);
+  const t1 = load32(src + 0x62);
   store16(t1, 0x28);
   setReg('a0', t1);
-  setReg('a1', arg0);
+  setReg('a1', src);
 }
 
 export function advanceEveryActivePlayerNext(dst_: number, a3_: number, index_: number, d1_: number, d2_: number, kind_: number): void {
@@ -15395,7 +15395,7 @@ export function countDownRecordSDelay(dst2: number): void {
   setReg('a0', dst);
 }
 
-export function stepRecordSStateDown(arg0: number): void {
+export function stepRecordSStateDown(dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -15406,7 +15406,7 @@ export function stepRecordSStateDown(arg0: number): void {
   let t4 = 0;
   let t5 = 0;
   const _t0 = tick(40, 0x01f70) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); if (_t0) takeIrq(); }
-  dst = (arg0) >>> 0;
+  dst = (dst2) >>> 0;
   t0 = load8(dst + 0x1e);
   setFlagsCmp(t0, 0x4, 8);
   if (((t0) & 255) !== ((0x4) & 255)) {
@@ -17951,7 +17951,7 @@ export function wallCellSetFrom1(runLength_: number, cellAt: number, arg1: numbe
   setReg('d3', d3);
 }
 
-export function cellPairDraw(cell_: number, unused_: number, owner_: number, screenAt_: number, d3_: number, arg0: number, limit: number): void {
+export function cellPairDraw(cell_: number, unused_: number, owner_: number, screenAt_: number, d3_: number, record: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let cell = cell_;
@@ -18001,7 +18001,7 @@ export function cellPairDraw(cell_: number, unused_: number, owner_: number, scr
   save_d3_1 = d3;
   save_a2_2 = src;
   save_a3_3 = a3;
-  src = (arg0) >>> 0;
+  src = (record) >>> 0;
   a3 = (0x11efe) >>> 0;
   t4 = ((limit >>> 16) & 0xffff);
   t5 = t4;
@@ -21812,7 +21812,7 @@ export function cellAddressPair(bank_: number, ptr_: number, count_: number, run
   setReg('d2', paletteBase);
 }
 
-export function cellOverlayDraw(d0_: number, wantArg_: number, tableBase_: number, arg0: number, limit: number, limit2: number): void {
+export function cellOverlayDraw(d0_: number, wantArg_: number, tableBase_: number, src2: number, limit: number, limit2: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a2');
@@ -21869,7 +21869,7 @@ export function cellOverlayDraw(d0_: number, wantArg_: number, tableBase_: numbe
   save_d3_1 = tableBase;
   save_a2_2 = src;
   save_a3_3 = dst;
-  src = (arg0) >>> 0;
+  src = (src2) >>> 0;
   t4 = ((limit2 >>> 16) & 0xffff);
   wantArg = ((wantArg & 0xffff0000) | (t4 & 65535));
   dst = (0x11ef2) >>> 0;
@@ -22088,7 +22088,7 @@ export function cellOverlayDraw(d0_: number, wantArg_: number, tableBase_: numbe
   setReg('d3', tableBase);
 }
 
-export function cellBlockDraw(kind_: number, count_: number, unused_: number, unused2_: number, count2_: number, arg0: number, limit: number, limit2: number): void {
+export function cellBlockDraw(kind_: number, count_: number, unused_: number, unused2_: number, count2_: number, src3: number, limit: number, limit2: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a2');
@@ -22228,7 +22228,7 @@ export function cellBlockDraw(kind_: number, count_: number, unused_: number, un
   save_a2_3 = src;
   save_a3_4 = src2;
   save_a4_5 = a4;
-  src = (arg0) >>> 0;
+  src = (src3) >>> 0;
   t6 = ((limit2 >>> 16) & 0xffff);
   unused = ((unused & 0xffff0000) | (t6 & 65535));
   a4 = (0x272e) >>> 0;
@@ -30123,7 +30123,7 @@ export function cellValueDraw(a0_: number, cell_: number, count_: number, index_
   setReg('d3', ownerBits);
 }
 
-export function countNeighboursEitherValue(ptr_: number, alsoWanted_: number, wanted_: number, neighbourByte_: number, matches_: number, arg0: number, index: number, alsoWanted2: number): void {
+export function countNeighboursEitherValue(ptr_: number, alsoWanted_: number, wanted_: number, neighbourByte_: number, matches_: number, src: number, index: number, alsoWanted2: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -30151,7 +30151,7 @@ export function countNeighboursEitherValue(ptr_: number, alsoWanted_: number, wa
   push(neighbourByte, 4);
   save_d2_0 = neighbourByte;
   save_d3_1 = matches;
-  ptr2 = (arg0) >>> 0;
+  ptr2 = (src) >>> 0;
   t2 = (index & 0xff);
   wanted = ((wanted & 0xffffff00) | (t2 & 255));
   t3 = (alsoWanted2 & 0xff);
@@ -30982,7 +30982,7 @@ export function slotTableWalk(count_: number, value_: number, arg0: number, limi
   setReg('d2', wantArg);
 }
 
-export function cellOwnerTypeRead(kind_: number, limit_: number, unused_: number, d3_: number, arg0: number): void {
+export function cellOwnerTypeRead(kind_: number, limit_: number, unused_: number, d3_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -31060,7 +31060,7 @@ export function cellOwnerTypeRead(kind_: number, limit_: number, unused_: number
   save_d3_1 = d3;
   save_a2_2 = dst2;
   save_a3_3 = src2;
-  dst2 = (arg0) >>> 0;
+  dst2 = (record) >>> 0;
   src = ((dst2 + 0x4)) >>> 0;
   dst = ((dst3 + -0x2)) >>> 0;
   t4 = load8(src);
@@ -32342,7 +32342,7 @@ export function drawPanelPlayerNothingNegative(unused4_: number, dst_: number, d
   setReg('d4', unused3);
 }
 
-export function entityDrawDispatch(dst_: number, dst2_: number, ptr_: number, arg0: number): void {
+export function entityDrawDispatch(dst_: number, dst2_: number, ptr_: number, src: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -32400,7 +32400,7 @@ export function entityDrawDispatch(dst_: number, dst2_: number, ptr_: number, ar
   drop(-4);
   t0 = ptr;
   push(t0, 4);
-  ptr = (arg0) >>> 0;
+  ptr = (src) >>> 0;
   limit = (ptr) >>> 0;
   if (limit === 0) {
     const _t2 = tick(70, 0x042aa) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(limit, 0, 32); setReg('a0', dst); setReg('a1', dst2); setReg('a2', ptr); setReg('a6', ptr2); setReg('d0', limit); setReg('d1', wantRoutine); if (_t2) takeIrq(); }
@@ -32755,7 +32755,7 @@ export function conditionalDraw(at_: number, unused_: number, unused2_: number, 
   setReg('d1', unused2);
 }
 
-export function helperAttractModeController(kind_: number, d2_: number, d6_: number, arg0: number, arg1: number): void {
+export function helperAttractModeController(kind_: number, d2_: number, d6_: number, arg0: number, src2: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a2');
@@ -32809,7 +32809,7 @@ export function helperAttractModeController(kind_: number, d2_: number, d6_: num
   save_d6_4 = d6;
   save_a2_5 = src;
   unused = (arg0) >>> 0;
-  src = (arg1) >>> 0;
+  src = (src2) >>> 0;
   count2 = (0xeb0) >>> 0;
   d5 = (0x200004) >>> 0;
   t6 = 0;
@@ -36145,7 +36145,7 @@ export function copySixteenWordsWrapper(src_: number, preserved_: number, index_
   setReg('d2', index2);
 }
 
-export function copySixteenWords(ptr: number, arg1: number): void {
+export function copySixteenWords(ptr: number, dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -36155,7 +36155,7 @@ export function copySixteenWords(ptr: number, arg1: number): void {
   let t1 = 0;
   const _t0 = tick(32, 0x04f8c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('d0', count); if (_t0) takeIrq(); }
   src = (ptr) >>> 0;
-  dst = (arg1) >>> 0;
+  dst = (dst2) >>> 0;
   count = (15) >>> 0;
   setFlagsCmp((count & 65535), 0, 16);
   l1: for (;;) {
@@ -38219,7 +38219,7 @@ export function spawnRoundSBannerSprite(ptr_: number, ptr2_: number, index_: num
   setReg('d1', count);
 }
 
-export function pauseSoundGate(arg0: number): void {
+export function pauseSoundGate(record: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -38236,7 +38236,7 @@ export function pauseSoundGate(arg0: number): void {
   push(a2, 4);
   save_a2_0 = a2;
   save_a3_1 = a3;
-  a1 = (arg0) >>> 0;
+  a1 = (record) >>> 0;
   a2 = (0x90e6) >>> 0;
   a3 = (0x3e1950) >>> 0;
   a0 = (load32(0x3e0ec2)) >>> 0;
@@ -40049,7 +40049,7 @@ export function seedRecordRotationTable(dst2: number): void {
   setReg('a0', dst);
 }
 
-export function playerFlagHandler(ptr_: number, ptr2_: number, ptr3_: number, count_: number, d4_: number, arg0: number): void {
+export function playerFlagHandler(ptr_: number, ptr2_: number, ptr3_: number, count_: number, d4_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -40115,7 +40115,7 @@ export function playerFlagHandler(ptr_: number, ptr2_: number, ptr3_: number, co
   save_a3_4 = a3;
   save_a4_5 = a4;
   save_a5_6 = ptr3;
-  dst = (arg0) >>> 0;
+  dst = (record) >>> 0;
   t7 = load16(dst);
   count = ((count & 0xffff0000) | (t7 & 65535));
   t8 = ((count & 65535) & 0x4000);
@@ -40613,7 +40613,7 @@ export function pieceBagBuilder(dst_: number, src_: number, limit_: number, kind
   setReg('d4', d4);
 }
 
-export function helperPieceBagBuilderVerified(src_: number, dst2_: number, arg0: number, arg1: number, arg2: number): void {
+export function helperPieceBagBuilderVerified(src_: number, dst2_: number, arg0: number, src3: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -40660,8 +40660,8 @@ export function helperPieceBagBuilderVerified(src_: number, dst2_: number, arg0:
   save_a3_3 = a3;
   save_a4_4 = src2;
   d2 = (arg0) >>> 0;
-  src2 = (arg1) >>> 0;
-  a3 = (arg2) >>> 0;
+  src2 = (src3) >>> 0;
+  a3 = (record) >>> 0;
   limit2 = (d2) >>> 0;
   t5 = limit2;
   t6 = ((0x2) & 63);
@@ -40877,7 +40877,7 @@ export function pieceRotation(wrapped_: number, cursorRef: number): void {
   setReg('d0', wrapped);
 }
 
-export function helperAdvanceEveryActivePlayer(arg0: number): void {
+export function helperAdvanceEveryActivePlayer(dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -40891,7 +40891,7 @@ export function helperAdvanceEveryActivePlayer(arg0: number): void {
   let t7 = 0;
   let t8 = 0;
   const _t0 = tick(36, 0x05b16) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); if (_t0) takeIrq(); }
-  dst = (arg0) >>> 0;
+  dst = (dst2) >>> 0;
   t0 = load8(dst + 0x15);
   t1 = t0;
   t2 = 0x1;
@@ -40930,7 +40930,7 @@ export function helperAdvanceEveryActivePlayer(arg0: number): void {
   setReg('a0', dst);
 }
 
-export function entityAllocator(ptr_: number, dst2_: number, a4_: number, ptr3_: number, index_: number, count_: number, limit_: number, unused_: number, d4_: number, d5_: number, arg0: number, index2: number, count2: number, limit2: number): void {
+export function entityAllocator(ptr_: number, dst2_: number, a4_: number, ptr3_: number, index_: number, count_: number, limit_: number, unused_: number, d4_: number, d5_: number, src: number, index2: number, count2: number, limit2: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -41050,7 +41050,7 @@ export function entityAllocator(ptr_: number, dst2_: number, a4_: number, ptr3_:
   save_a3_5 = dst2;
   save_a4_6 = a4;
   save_a5_7 = ptr3;
-  ptr2 = (arg0) >>> 0;
+  ptr2 = (src) >>> 0;
   t8 = (index2 & 0xffff);
   unused = ((unused & 0xffff0000) | (t8 & 65535));
   t9 = (count2 & 0xffff);
@@ -41392,7 +41392,7 @@ export function entityAllocator(ptr_: number, dst2_: number, a4_: number, ptr3_:
   setReg('d5', d5);
 }
 
-export function entityRedrawFlagSet(dst_: number, arg0: number): void {
+export function entityRedrawFlagSet(dst_: number, dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -41407,7 +41407,7 @@ export function entityRedrawFlagSet(dst_: number, arg0: number): void {
   const _t0 = tick(54, 0x05c60) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); if (_t0) takeIrq(); }
   t0 = dst;
   push(t0, 4);
-  dst = (arg0) >>> 0;
+  dst = (dst2) >>> 0;
   setFlagsCmp(t0, 0, 32);
   setReg('a2', dst);
   callRom(0x0064a, 0x05c6a);
@@ -42014,7 +42014,7 @@ export function sealEventPost(dst2_: number, src_: number, arg0: number): void {
   setReg('d1', left);
 }
 
-export function territoryFill(dst_: number, stackSlot_: number, index2_: number, wallByte_: number, arg0: number): void {
+export function territoryFill(dst_: number, stackSlot_: number, index2_: number, wallByte_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -42101,7 +42101,7 @@ export function territoryFill(dst_: number, stackSlot_: number, index2_: number,
   save_d2_0 = wallByte;
   save_a2_1 = dst2;
   save_a3_2 = stackSlot;
-  dst2 = (arg0) >>> 0;
+  dst2 = (record) >>> 0;
   index = (0) >>> 0;
   t3 = load8(dst2 + 0x2);
   index = ((index & 0xffffff00) | (t3 & 255));
@@ -51134,7 +51134,7 @@ export function unitStepWrapper(dst_: number, dst2_: number, count_: number, ptr
   setReg('d0', count);
 }
 
-export function takeNextFreeEntryRecord(dst2_: number, src_: number, cannon_: number, d0_: number, arg0: number): void {
+export function takeNextFreeEntryRecord(dst2_: number, src_: number, cannon_: number, d0_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -51169,7 +51169,7 @@ export function takeNextFreeEntryRecord(dst2_: number, src_: number, cannon_: nu
   push(src, 4);
   save_a2_0 = src;
   save_a3_1 = cannon;
-  dst = (arg0) >>> 0;
+  dst = (record) >>> 0;
   cannon = ((cannon - cannon)) >>> 0;
   t2 = load8(dst + 0x16);
   setFlagsCmp(t2, 0x1d, 8);
@@ -51296,7 +51296,7 @@ export function takeNextFreeEntryRecord(dst2_: number, src_: number, cannon_: nu
   setReg('d0', d0);
 }
 
-export function cannonAiming(kind2_: number, limit_: number, wantDirection_: number, arg0: number): void {
+export function cannonAiming(kind2_: number, limit_: number, wantDirection_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a2');
@@ -51364,7 +51364,7 @@ export function cannonAiming(kind2_: number, limit_: number, wantDirection_: num
   save_d2_0 = wantDirection;
   save_a2_1 = dst;
   save_a3_2 = dst2;
-  dst = (arg0) >>> 0;
+  dst = (record) >>> 0;
   t3 = load32(dst + 0x6e);
   dst2 = (t3) >>> 0;
   t4 = load8(dst2);
@@ -52707,7 +52707,7 @@ export function fireTrigger(ptr_: number, a4_: number, dst32_: number, index_: n
   setReg('d6', d6);
 }
 
-export function whichFourNeighboursCellAre(index_: number, kind_: number, arg0: number): void {
+export function whichFourNeighboursCellAre(index_: number, kind_: number, src: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -52738,7 +52738,7 @@ export function whichFourNeighboursCellAre(index_: number, kind_: number, arg0: 
   const _t0 = tick(74, 0x06ef8) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); setReg('a1', ptr); setReg('d0', d0); setReg('d1', index); setReg('d2', kind); if (_t0) takeIrq(); }
   t0 = kind;
   push(t0, 4);
-  ptr = (arg0) >>> 0;
+  ptr = (src) >>> 0;
   index = ((index & 0xffff0000) | (0 & 65535));
   a0 = ((ptr + 0x20)) >>> 0;
   d0 = (0) >>> 0;
@@ -56745,7 +56745,7 @@ export function placeCursorSpritePlayerSeveralFrom9(flier_: number, displayEntry
   setReg('d6', framesPlain);
 }
 
-export function walkNeighboursWallRecordS(ptr2_: number, index_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, arg0: number, arg1: number): void {
+export function walkNeighboursWallRecordS(ptr2_: number, index_: number, plainCueSet_: number, framesPlain2_: number, framesScored2_: number, framesScored_: number, src: number, record: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -56799,8 +56799,8 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, plainCu
   save_d5_3 = framesScored;
   save_a2_4 = ptr;
   save_a3_5 = ptr2;
-  ptr = (arg0) >>> 0;
-  dst = (arg1) >>> 0;
+  ptr = (src) >>> 0;
+  dst = (record) >>> 0;
   d0 = (0) >>> 0;
   t6 = load8(dst + 0x2);
   d0 = ((d0 & 0xffffff00) | (t6 & 255));
@@ -56923,7 +56923,7 @@ export function walkNeighboursWallRecordS(ptr2_: number, index_: number, plainCu
   setReg('d5', framesScored);
 }
 
-export function findPlayerSShotCell(kind2_: number, arg0: number): void {
+export function findPlayerSShotCell(kind2_: number, src: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -56936,7 +56936,7 @@ export function findPlayerSShotCell(kind2_: number, arg0: number): void {
   let t4 = 0;
   let t5 = 0;
   const _t0 = tick(52, 0x0744e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a1', ptr2); setReg('d0', kind2); if (_t0) takeIrq(); }
-  ptr = (arg0) >>> 0;
+  ptr = (src) >>> 0;
   t0 = load32(ptr + 0x6a);
   ptr2 = (t0) >>> 0;
   ptr = ((stackPointer() + 0x8)) >>> 0;
@@ -58349,7 +58349,7 @@ export function playerPairSetup(dst3_: number, limit_: number): void {
   setReg('d0', limit);
 }
 
-export function playerSCellClear(d1_: number, wantArg_: number, arg0: number): void {
+export function playerSCellClear(d1_: number, wantArg_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -58367,7 +58367,7 @@ export function playerSCellClear(d1_: number, wantArg_: number, arg0: number): v
   const _t0 = tick(96, 0x0778a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', ptr); setReg('d0', count); setReg('d1', d1); setReg('d2', wantArg); if (_t0) takeIrq(); }
   t0 = wantArg;
   push(t0, 4);
-  ptr = (arg0) >>> 0;
+  ptr = (record) >>> 0;
   count = (0) >>> 0;
   t1 = load8(ptr + 0x2);
   count = ((count & 0xffffff00) | (t1 & 255));
@@ -58427,7 +58427,7 @@ export function playerSCellClear(d1_: number, wantArg_: number, arg0: number): v
   setReg('d2', wantArg);
 }
 
-export function testsFlagPassedStruct(count_: number, wantArg_: number, arg0: number): void {
+export function testsFlagPassedStruct(count_: number, wantArg_: number, dst: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a2');
@@ -58448,7 +58448,7 @@ export function testsFlagPassedStruct(count_: number, wantArg_: number, arg0: nu
   push(wantArg, 4);
   save_d2_0 = wantArg;
   save_a2_1 = ptr;
-  ptr = (arg0) >>> 0;
+  ptr = (dst) >>> 0;
   t2 = load8(ptr + 0x15);
   setFlagsCmp(t2, 0, 8);
   if (((t2) & 255) !== ((0) & 255)) {
@@ -61140,7 +61140,7 @@ export function awardThousandCurrentPlayer(index: number, index2: number): void 
   setReg('d1', t4);
 }
 
-export function moveScoreTowardsTargetMost(entry_: number, d4_: number, arg0: number): void {
+export function moveScoreTowardsTargetMost(entry_: number, d4_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let entry = entry_;
@@ -61180,7 +61180,7 @@ export function moveScoreTowardsTargetMost(entry_: number, d4_: number, arg0: nu
   save_d3_1 = d3;
   save_d4_2 = d4;
   save_a2_3 = dst;
-  dst = (arg0) >>> 0;
+  dst = (record) >>> 0;
   t4 = load32(dst + 0x4);
   d3 = (t4) >>> 0;
   t5 = load32(dst + 0xc);
@@ -61343,7 +61343,7 @@ export function moveScoreTowardsTargetMost(entry_: number, d4_: number, arg0: nu
   setReg('d4', d4);
 }
 
-export function entityFieldUpdate(unused_: number, d2_: number, arg0: number, limit2: number, limit3: number): void {
+export function entityFieldUpdate(unused_: number, d2_: number, record: number, limit2: number, limit3: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a2');
@@ -61388,7 +61388,7 @@ export function entityFieldUpdate(unused_: number, d2_: number, arg0: number, li
   save_d3_1 = limit;
   save_d4_2 = d4;
   save_a2_3 = dst;
-  dst = (arg0) >>> 0;
+  dst = (record) >>> 0;
   t4 = ((limit3 >>> 16) & 0xffff);
   d2 = ((d2 & 0xffff0000) | (t4 & 65535));
   t5 = load32(dst + 0xc);
@@ -62885,7 +62885,7 @@ export function postEachPlayersPhaseEventByDifficulty(dst_: number, unused_: num
   setReg('d6', lastColumn);
 }
 
-export function levelTeardown(ptr_: number, arg0: number): void {
+export function levelTeardown(ptr_: number, src2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -62912,7 +62912,7 @@ export function levelTeardown(ptr_: number, arg0: number): void {
   drop(-4);
   t0 = ptr;
   push(t0, 4);
-  ptr = (arg0) >>> 0;
+  ptr = (src2) >>> 0;
   dst = (load32(0x3e0dca)) >>> 0;
   count = (0) >>> 0;
   t1 = load8(ptr + 0x3);
@@ -63847,7 +63847,7 @@ export function clearEachActivePlayerS(count_: number, d4_: number): void {
   setReg('d4', d4);
 }
 
-export function dissolveNextScreenWhenRecord(ptr_: number, arg0: number): void {
+export function dissolveNextScreenWhenRecord(ptr_: number, src: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -63862,7 +63862,7 @@ export function dissolveNextScreenWhenRecord(ptr_: number, arg0: number): void {
   const _t0 = tick(58, 0x084da) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', ptr); setReg('d0', index); if (_t0) takeIrq(); }
   t0 = ptr;
   push(t0, 4);
-  ptr = (arg0) >>> 0;
+  ptr = (src) >>> 0;
   index = (0) >>> 0;
   t1 = load16(ptr);
   index = ((index & 0xffff0000) | (t1 & 65535));
@@ -64190,7 +64190,7 @@ export function damageSelector(ptr_: number, index_: number, d1_: number, kind_:
   setReg('d2', kind);
 }
 
-export function damageHandler(dst2_: number, count_: number, arg0: number): void {
+export function damageHandler(dst2_: number, count_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -64220,7 +64220,7 @@ export function damageHandler(dst2_: number, count_: number, arg0: number): void
   const _t0 = tick(82, 0x08606) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a2', dst2); setReg('d0', count); if (_t0) takeIrq(); }
   t0 = dst2;
   push(t0, 4);
-  dst2 = (arg0) >>> 0;
+  dst2 = (record) >>> 0;
   t1 = load32(dst2 + 0x3e);
   dst = (t1) >>> 0;
   t2 = load16(dst);
@@ -66258,7 +66258,7 @@ export function takeRecordOutPlay(dst_: number, limit: number): void {
   setReg('a2', dst);
 }
 
-export function walkPathUntilReachesTarget(src_: number, kind_: number, cellByte_: number, kind2_: number, arg0: number, limit: number): void {
+export function walkPathUntilReachesTarget(src_: number, kind_: number, cellByte_: number, kind2_: number, src3: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let src = src_;
@@ -66318,7 +66318,7 @@ export function walkPathUntilReachesTarget(src_: number, kind_: number, cellByte
   save_a2_2 = dst2;
   save_a3_3 = src2;
   save_a4_4 = dst22;
-  dst = (arg0) >>> 0;
+  dst = (src3) >>> 0;
   kind2 = ((kind2 & 0xffff0000) | (0 & 65535));
   t5 = load8(dst);
   dst = (dst + 1);
@@ -67283,7 +67283,7 @@ export function walkRecordSWholePath(ptr_: number, kind_: number, dst5: number, 
   setReg('d6', cellAddr);
 }
 
-export function followRecordSSecondPath(kind_: number, arg0: number): void {
+export function followRecordSSecondPath(kind_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -67351,7 +67351,7 @@ export function followRecordSSecondPath(kind_: number, arg0: number): void {
   save_a2_2 = dst2;
   save_a3_3 = dst3;
   save_a4_4 = a4;
-  dst2 = (arg0) >>> 0;
+  dst2 = (record) >>> 0;
   src = ((dst2 + 0x46)) >>> 0;
   dst = ((ptr + -0x2)) >>> 0;
   t5 = load8(src);
@@ -85407,7 +85407,7 @@ export function findFreeSlotMovingUnit(kind_: number): void {
   setReg('d1', count);
 }
 
-export function releaseSlotDropCount(dst_: number, arg0: number): void {
+export function releaseSlotDropCount(dst_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -85434,7 +85434,7 @@ export function releaseSlotDropCount(dst_: number, arg0: number): void {
   push(dst2, 4);
   save_a2_0 = dst2;
   save_a3_1 = dst3;
-  dst2 = (arg0) >>> 0;
+  dst2 = (record) >>> 0;
   t2 = load32(dst2 + 0x4);
   dst3 = (t2) >>> 0;
   setFlagsCmp(dst3, 0x0, 32);
@@ -87884,7 +87884,7 @@ export function indexShapeTableKindFlip(d1_: number, d2_: number, dst2: number, 
   setReg('d2', d2);
 }
 
-export function linkTwoRecordsTogetherPlace(ptr_: number, index4_: number, index_: number, index2_: number, index3_: number, count2_: number, index32: number, arg1: number, index5: number, count: number, kind: number): void {
+export function linkTwoRecordsTogetherPlace(ptr_: number, index4_: number, index_: number, index2_: number, index3_: number, count2_: number, index32: number, dst6: number, index5: number, count: number, kind: number): void {
   let _guard = 0;
   void _guard;
   let dst4 = getReg('a0');
@@ -87990,7 +87990,7 @@ export function linkTwoRecordsTogetherPlace(ptr_: number, index4_: number, index
   save_a3_4 = dst2;
   save_a4_5 = ptr;
   dst2 = (index32) >>> 0;
-  dst = (arg1) >>> 0;
+  dst = (dst6) >>> 0;
   t6 = (index5 & 0xffff);
   index2 = ((index2 & 0xffff0000) | (t6 & 65535));
   t7 = dst;
@@ -88573,7 +88573,7 @@ export function cellWriteHelper(dst_: number, d0_: number, d2_: number, d3_: num
   setReg('d3', d3);
 }
 
-export function resolvesPlayerSOwnerCode(ptr2_: number, dst_: number, dst3_: number, index_: number, limit2_: number, arg0: number): void {
+export function resolvesPlayerSOwnerCode(ptr2_: number, dst_: number, dst3_: number, index_: number, limit2_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let ptr2 = ptr2_;
@@ -88697,7 +88697,7 @@ export function resolvesPlayerSOwnerCode(ptr2_: number, dst_: number, dst3_: num
   save_a3_3 = dst22;
   save_a4_4 = a4;
   save_a5_5 = dst3;
-  dst2 = (arg0) >>> 0;
+  dst2 = (record) >>> 0;
   dst22 = (0x3e1c84) >>> 0;
   d3 = (0x3e1cb0) >>> 0;
   t6 = load32(dst2 + 0x34);
@@ -94886,7 +94886,7 @@ export function drawEntityCellOneStep(dst_: number, count_: number, limit2_: num
   setReg('d3', index);
 }
 
-export function cellSignTest(dst_: number, dst2_: number, d0_: number, arg0: number): void {
+export function cellSignTest(dst_: number, dst2_: number, d0_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -94903,7 +94903,7 @@ export function cellSignTest(dst_: number, dst2_: number, d0_: number, arg0: num
   const _t0 = tick(44, 0x0c2bc) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a2', dst2); setReg('d0', d0); if (_t0) takeIrq(); }
   t0 = dst2;
   push(t0, 4);
-  dst2 = (arg0) >>> 0;
+  dst2 = (record) >>> 0;
   t1 = load8(dst2);
   setFlagsCmp(t1, 0, 8);
   if ((((t1) << 24) >> 24) < (((0) << 24) >> 24)) {
@@ -95650,45 +95650,45 @@ export function howMuchClaimedAreaLeft(limit_: number, limit2_: number, d3_: num
   setReg('d3', d3);
 }
 
-export function listNodeInsert(record: number, arg0: number, record2: number): void {
+export function listNodeInsert(record: number, record3: number, record2: number): void {
   if (tick(124, 0x0c4ae)) { setReg('a2', record); takeIrq(); }
   push(record, 4);
-  const t0 = load32(arg0);
-  store32(arg0, record2);
+  const t0 = load32(record3);
+  store32(record3, record2);
   store32(record2, t0);
-  store32(record2 + 0x4, arg0);
+  store32(record2 + 0x4, record3);
   store32(t0 + 0x4, record2);
   const t1 = load32(stackPointer() + 0);
   drop(4);
   setReg('a0', record2);
-  setReg('a1', arg0);
+  setReg('a1', record3);
   setReg('a2', t1);
 }
 
-export function linkNodeIntoListAfter(a2: number, arg0: number, arg1: number): void {
+export function linkNodeIntoListAfter(a2: number, record: number, dst: number): void {
   if (tick(128, 0x0c4ca)) { setReg('a2', a2); takeIrq(); }
   push(a2, 4);
-  const t0 = load32(arg0 + 0x4);
-  store32(arg0 + 0x4, arg1);
-  store32(arg1, arg0);
-  store32(arg1 + 0x4, t0);
-  store32(t0, arg1);
+  const t0 = load32(record + 0x4);
+  store32(record + 0x4, dst);
+  store32(dst, record);
+  store32(dst + 0x4, t0);
+  store32(t0, dst);
   const t1 = load32(stackPointer() + 0);
   drop(4);
-  setReg('a0', arg1);
-  setReg('a1', arg0);
+  setReg('a0', dst);
+  setReg('a1', record);
   setReg('a2', t1);
 }
 
-export function listNodeUnlink(arg0: number): void {
+export function listNodeUnlink(record: number): void {
   if (tick(118, 0x0c4e8)) { takeIrq(); }
-  const t0 = load32(arg0);
-  store32(t0 + 0x4, load32(arg0 + 0x4));
-  const t1 = load32(arg0 + 0x4);
-  store32(t1, load32(arg0));
-  store32(arg0 + 0x4, 0);
-  store32(arg0, 0);
-  setReg('a0', arg0);
+  const t0 = load32(record);
+  store32(t0 + 0x4, load32(record + 0x4));
+  const t1 = load32(record + 0x4);
+  store32(t1, load32(record));
+  store32(record + 0x4, 0);
+  store32(record, 0);
+  setReg('a0', record);
   setReg('a1', t1);
   setReg('d0', 0);
 }
@@ -99235,7 +99235,7 @@ export function computerPlayerParityFrom5(markAt_: number, player_: number, tabl
   setReg('d6', onFlagSet);
 }
 
-export function tickRecordSCountdownFire(dst_: number, unused_: number, arg0: number): void {
+export function tickRecordSCountdownFire(dst_: number, unused_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -99255,7 +99255,7 @@ export function tickRecordSCountdownFire(dst_: number, unused_: number, arg0: nu
   const _t0 = tick(80, 0x0ccb2) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a2', dst); setReg('d0', unused); if (_t0) takeIrq(); }
   t0 = dst;
   push(t0, 4);
-  dst = (arg0) >>> 0;
+  dst = (record) >>> 0;
   push(0x64, 4);
   setFlagsCmp(t0, 0, 32);
   setReg('a2', dst);
@@ -99314,7 +99314,7 @@ export function tickRecordSCountdownFire(dst_: number, unused_: number, arg0: nu
   setReg('d0', unused);
 }
 
-export function actRecordOnceOnlyEarly(arg0: number): void {
+export function actRecordOnceOnlyEarly(dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -99326,7 +99326,7 @@ export function actRecordOnceOnlyEarly(arg0: number): void {
   let t5 = 0;
   let t6 = 0;
   const _t0 = tick(44, 0x0cce6) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); if (_t0) takeIrq(); }
-  dst = (arg0) >>> 0;
+  dst = (dst2) >>> 0;
   setFlagsCmp(load8(0x3e195c), 0x1, 8);
   if (((load8(0x3e195c)) & 255) > ((0x1) & 255)) {
   } else {
@@ -99424,7 +99424,7 @@ export function countdownSExpiryMarkRecord(dst_: number, arg: number, player: nu
   setReg('d1', limit);
 }
 
-export function queueEntityRecordSScript(dst2_: number, arg0: number, arg1: number): void {
+export function queueEntityRecordSScript(dst2_: number, arg0: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -99458,7 +99458,7 @@ export function queueEntityRecordSScript(dst2_: number, arg0: number, arg1: numb
   t0 = dst2;
   push(t0, 4);
   d1 = (arg0) >>> 0;
-  dst2 = (arg1) >>> 0;
+  dst2 = (record) >>> 0;
   dst = (load32(0x3e0dca)) >>> 0;
   index = (0) >>> 0;
   t1 = load8(dst2 + 0x3);
@@ -100087,7 +100087,7 @@ export function postEventEachPlayerWhose(count_: number, count2_: number, d3_: n
   setReg('d6', d6);
 }
 
-export function computerPlayerFireDecision(index_: number, count_: number, wantArg_: number, d3_: number, d4_: number, arg0: number): void {
+export function computerPlayerFireDecision(index_: number, count_: number, wantArg_: number, d3_: number, d4_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a2');
@@ -100138,7 +100138,7 @@ export function computerPlayerFireDecision(index_: number, count_: number, wantA
   save_d3_1 = d3;
   save_d4_2 = d4;
   save_a2_3 = dst;
-  dst = (arg0) >>> 0;
+  dst = (record) >>> 0;
   t4 = load8(dst + 0x22);
   setFlagsCmp(t4, 0, 8);
   if ((((t4) << 24) >> 24) <= (((0) << 24) >> 24)) {
@@ -103709,7 +103709,7 @@ export function takeEachPlayersNextCoordinateAndPost11B9C(ptr_: number, count_: 
   setReg('d3', d3);
 }
 
-export function roundEventWait(dst_: number, kind_: number, left_: number, wantArg_: number, arg0: number): void {
+export function roundEventWait(dst_: number, kind_: number, left_: number, wantArg_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -103766,7 +103766,7 @@ export function roundEventWait(dst_: number, kind_: number, left_: number, wantA
   push(wantArg, 4);
   save_d2_0 = wantArg;
   save_a2_1 = ptr;
-  ptr = (arg0) >>> 0;
+  ptr = (record) >>> 0;
   push(0x11b1e, 4);
   setReg('a0', dst);
   setReg('a2', ptr);
@@ -104071,7 +104071,7 @@ export function roundEventWait(dst_: number, kind_: number, left_: number, wantA
   setReg('d2', wantArg);
 }
 
-export function makeRecordCurrentRemoveEvent(dst3_: number, dst_: number, index_: number, arg0: number): void {
+export function makeRecordCurrentRemoveEvent(dst3_: number, dst_: number, index_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst3 = dst3_;
@@ -104118,7 +104118,7 @@ export function makeRecordCurrentRemoveEvent(dst3_: number, dst_: number, index_
   push(wantArg, 4);
   save_d2_0 = wantArg;
   save_a2_1 = dst2;
-  dst2 = (arg0) >>> 0;
+  dst2 = (record) >>> 0;
   t2 = dst2;
   store32(0x3e1960, t2);
   wantArg = (0) >>> 0;
@@ -104593,7 +104593,7 @@ export function choosePieceRotationRingFrom1(ptr_: number, wrapped_: number, pla
   setReg('d0', wrapped);
 }
 
-export function copy1344BytesReturnCount(index_: number, count_: number, arg0: number, arg1: number): void {
+export function copy1344BytesReturnCount(index_: number, count_: number, src2: number, dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -104606,8 +104606,8 @@ export function copy1344BytesReturnCount(index_: number, count_: number, arg0: n
   let t3 = 0;
   let t4 = 0;
   const _t0 = tick(36, 0x0dabc) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a1', src); setReg('d0', index); setReg('d1', count); if (_t0) takeIrq(); }
-  src = (arg0) >>> 0;
-  dst = (arg1) >>> 0;
+  src = (src2) >>> 0;
+  dst = (dst2) >>> 0;
   index = ((index & 0xffff0000) | (0 & 65535));
   count = ((count & 0xffff0000) | (0x53f & 65535));
   setFlagsCmp((count & 65535), 0, 16);
@@ -107755,7 +107755,7 @@ export function flagTestWord(ptr_: number, tableB_: number, tableA_: number, lim
   setReg('d5', half);
 }
 
-export function drawHighScoreEntryScreen(d0_: number, left_: number, d2_: number, d3_: number, d4_: number, limit3: number, arg1: number, arg2: number, limit: number): void {
+export function drawHighScoreEntryScreen(d0_: number, left_: number, d2_: number, d3_: number, d4_: number, limit3: number, record: number, arg2: number, limit: number): void {
   let _guard = 0;
   void _guard;
   let dst2 = getReg('a0');
@@ -107908,7 +107908,7 @@ export function drawHighScoreEntryScreen(d0_: number, left_: number, d2_: number
   save_a4_7 = ptr2;
   save_a5_8 = ptr;
   limit2 = (limit3) >>> 0;
-  dst22 = (arg1) >>> 0;
+  dst22 = (record) >>> 0;
   d6 = (arg2) >>> 0;
   dst3 = (0x35ee) >>> 0;
   setFlagsCmp(d6, 0, 32);
@@ -108777,7 +108777,7 @@ export function setUpHighScoreEntry(dst_: number, index_: number, left_: number)
   setReg('d3', d3);
 }
 
-export function operatorMenu(preserved_: number, d4_: number, d5_: number, preserved2_: number, arg0: number, index3: number): void {
+export function operatorMenu(preserved_: number, d4_: number, d5_: number, preserved2_: number, src: number, index3: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -108882,7 +108882,7 @@ export function operatorMenu(preserved_: number, d4_: number, d5_: number, prese
   save_d6_4 = preserved2;
   save_a2_5 = a2;
   save_a3_6 = a3;
-  a2 = (arg0) >>> 0;
+  a2 = (src) >>> 0;
   d3 = (index3) >>> 0;
   a3 = (0x3e1cd4) >>> 0;
   index2 = (0) >>> 0;
@@ -109678,7 +109678,7 @@ export function clampCueEighteenTwoHundred(limit_: number): void {
   setReg('d0', limit);
 }
 
-export function seedThreePlayersStartingPositions(index2_: number, preserved_: number, d3_: number, d5_: number, preserved2_: number, arg0: number, index3: number): void {
+export function seedThreePlayersStartingPositions(index2_: number, preserved_: number, d3_: number, d5_: number, preserved2_: number, src: number, index3: number): void {
   let _guard = 0;
   void _guard;
   let dst3 = getReg('a0');
@@ -109843,7 +109843,7 @@ export function seedThreePlayersStartingPositions(index2_: number, preserved_: n
   save_a3_6 = a3;
   save_a4_7 = a4;
   save_a5_8 = dst2;
-  a2 = (arg0) >>> 0;
+  a2 = (src) >>> 0;
   t9 = (index3 & 0xffff);
   index2 = ((index2 & 0xffff0000) | (t9 & 65535));
   a4 = (0x3e1cd4) >>> 0;
@@ -110628,7 +110628,7 @@ export function anyPlayerStillGame(index_: number, d2_: number): void {
   setReg('d2', d2);
 }
 
-export function attractModeController(dst2_: number, dst22_: number, index_: number, arg0: number): void {
+export function attractModeController(dst2_: number, dst22_: number, index_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst2 = dst2_;
@@ -110706,7 +110706,7 @@ export function attractModeController(dst2_: number, dst22_: number, index_: num
   save_a2_0 = dst;
   save_a3_1 = ptr2;
   save_a4_2 = ptr;
-  dst = (arg0) >>> 0;
+  dst = (record) >>> 0;
   ptr2 = (0x3e1cb4) >>> 0;
   ptr = (0x3e0dd4) >>> 0;
   if (((load8(0x3e1954)) & 255) !== ((0x1) & 255)) {
@@ -111111,7 +111111,7 @@ export function attractModeController(dst2_: number, dst22_: number, index_: num
   setReg('d0', index);
 }
 
-export function phaseAdvanceHelper(dst4_: number, dst_: number, index_: number, arg0: number): void {
+export function phaseAdvanceHelper(dst4_: number, dst_: number, index_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let dst4 = dst4_;
@@ -111164,7 +111164,7 @@ export function phaseAdvanceHelper(dst4_: number, dst_: number, index_: number, 
   save_a2_0 = dst2;
   save_a3_1 = ptr2;
   save_a4_2 = dst22;
-  dst2 = (arg0) >>> 0;
+  dst2 = (record) >>> 0;
   ptr2 = (0x3e195c) >>> 0;
   dst22 = (0x3e0dd2) >>> 0;
   setReg('a0', dst4);
@@ -111409,7 +111409,7 @@ export function workOutStoreCarryOver(arg0: number): void {
   setReg('d0', kind);
 }
 
-export function whichSevenCandidatesRecordS(dst_: number, src_: number, d0_: number, d2_: number, arg0: number): void {
+export function whichSevenCandidatesRecordS(dst_: number, src_: number, d0_: number, d2_: number, src2: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -111444,7 +111444,7 @@ export function whichSevenCandidatesRecordS(dst_: number, src_: number, d0_: num
   save_d2_0 = d2;
   save_a2_1 = ptr;
   save_a3_2 = ptr2;
-  ptr = (arg0) >>> 0;
+  ptr = (src2) >>> 0;
   d1 = (6) >>> 0;
   t3 = load32(ptr + 0x4a);
   ptr2 = (t3) >>> 0;
@@ -112106,7 +112106,7 @@ export function redrawBoardAndPanel(ptr2_: number, player: number): void {
   setReg('d0', count);
 }
 
-export function hasRecordReachedTargetWhat(kind_: number, arg0: number): void {
+export function hasRecordReachedTargetWhat(kind_: number, src2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -112145,7 +112145,7 @@ export function hasRecordReachedTargetWhat(kind_: number, arg0: number): void {
   push(ptr, 4);
   save_a2_0 = ptr;
   save_a3_1 = a3;
-  ptr = (arg0) >>> 0;
+  ptr = (src2) >>> 0;
   a3 = (0xecb0) >>> 0;
   src = ((ptr + 0x48)) >>> 0;
   dst = ((ptr2 + -0x2)) >>> 0;
@@ -112906,7 +112906,7 @@ export function phaseDispatcher(entry_: number, handler_: number, left_: number)
   setReg('d2', count);
 }
 
-export function eventPost(arg0: number, arg1: number): void {
+export function eventPost(src: number, arg1: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
@@ -112938,7 +112938,7 @@ export function eventPost(arg0: number, arg1: number): void {
   save_d1_0 = d1;
   save_d2_1 = d2;
   save_a1_2 = ptr;
-  ptr = (arg0) >>> 0;
+  ptr = (src) >>> 0;
   d2 = (arg1) >>> 0;
   t3 = load32(ptr);
   d1 = (t3) >>> 0;
@@ -117563,12 +117563,12 @@ export function rebuildDisplayListFirstBucket(a0_: number, bucketHead_: number, 
   setReg('d7', kind2);
 }
 
-export function returnArgumentPointer(arg0: number): void {
+export function returnArgumentPointer(record: number): void {
   let _guard = 0;
   void _guard;
   let a0 = getReg('a0');
   const _t0 = tick(30, 0x0fb74) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', a0); if (_t0) takeIrq(); }
-  a0 = (arg0) >>> 0;
+  a0 = (record) >>> 0;
   setReg('a0', a0);
   setReg('a0', a0); return;
   setReg('a0', a0);
@@ -119153,7 +119153,7 @@ export function decompressOneColumnAdvancing(runLength_: number, paletteBase2_: 
   setReg('d4', rowsLeft);
 }
 
-export function decompressOneColumnAdvancingFrom1(src_: number, count_: number, paletteBase_: number, arg6: number, arg7: number, arg8: number): void {
+export function decompressOneColumnAdvancingFrom1(src_: number, count_: number, paletteBase_: number, arg6: number, record: number, arg8: number): void {
   let _guard = 0;
   void _guard;
   let src = src_;
@@ -119172,7 +119172,7 @@ export function decompressOneColumnAdvancingFrom1(src_: number, count_: number, 
   t0 = (arg6 & 0xffff);
   control = ((control & 0xffff0000) | (t0 & 65535));
   src = ((src + control)) >>> 0;
-  dst = (arg7) >>> 0;
+  dst = (record) >>> 0;
   t1 = (arg8 & 0xffff);
   paletteBase = ((paletteBase & 0xffff0000) | (t1 & 65535));
   rowsLeft = (7) >>> 0;
@@ -119195,7 +119195,7 @@ export function decompressOneColumnAdvancingFrom1(src_: number, count_: number, 
   d3 = getReg('d3');
   rowsLeft = getReg('d4');
   const _t1 = tick(86, 0x11f1e) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', src); setReg('a1', dst); setReg('d0', control); setReg('d1', count); setReg('d2', paletteBase); setReg('d3', d3); setReg('d4', rowsLeft); if (_t1) takeIrq(); }
-  control = (arg7) >>> 0;
+  control = (record) >>> 0;
   t2 = control;
   t3 = 0x8;
   control = ((control + 0x8)) >>> 0;
@@ -119777,7 +119777,7 @@ export function fillFourWideEightTall(count3_: number, pixels: number, value: nu
   setReg('d2', count2);
 }
 
-export function shiftEightTwoBlockS(unused_: number, preserved_: number, count_: number, arg0: number, arg1: number): void {
+export function shiftEightTwoBlockS(unused_: number, preserved_: number, count_: number, record: number, arg1: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a1');
@@ -119795,7 +119795,7 @@ export function shiftEightTwoBlockS(unused_: number, preserved_: number, count_:
   save_d1_0 = preserved;
   save_d2_1 = count;
   save_a1_2 = dst;
-  dst = (arg0) >>> 0;
+  dst = (record) >>> 0;
   t3 = (arg1 & 0xffff);
   unused = ((unused & 0xffff0000) | (t3 & 65535));
   setFlagsCmp((unused & 65535), 0, 16);
@@ -119887,7 +119887,7 @@ export function shiftEightPixelsColourDelta(dst_: number, unused_: number, prese
   setReg('d2', count);
 }
 
-export function blitImageWhoseFirstWord(kind_: number, count_: number, count22_: number, arg0: number, arg1: number): void {
+export function blitImageWhoseFirstWord(kind_: number, count_: number, count22_: number, src2: number, record: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -119926,8 +119926,8 @@ export function blitImageWhoseFirstWord(kind_: number, count_: number, count22_:
   save_d4_3 = count2;
   save_d5_4 = d5;
   save_a1_5 = dst;
-  src = (arg0) >>> 0;
-  dst = (arg1) >>> 0;
+  src = (src2) >>> 0;
+  dst = (record) >>> 0;
   kind2 = (0) >>> 0;
   count2 = (0) >>> 0;
   t6 = load8(src);
@@ -122010,7 +122010,7 @@ export function rleDecoderVariantD(src_: number, dst_: number, a2_: number, kind
   setReg('d5', d5);
 }
 
-export function terrainPainter(preserved_: number, kind_: number, count_: number, unused_: number, arg0: number, arg1: number): void {
+export function terrainPainter(preserved_: number, kind_: number, count_: number, unused_: number, record: number, record2: number): void {
   let _guard = 0;
   void _guard;
   let src = getReg('a0');
@@ -122048,8 +122048,8 @@ export function terrainPainter(preserved_: number, kind_: number, count_: number
   save_d5_4 = d5;
   save_a1_5 = dst;
   save_a2_6 = preserved;
-  src = (arg0) >>> 0;
-  dst = (arg1) >>> 0;
+  src = (record) >>> 0;
+  dst = (record2) >>> 0;
   d2 = (0) >>> 0;
   count2 = (8) >>> 0;
   d5 = (0x200) >>> 0;
@@ -125124,7 +125124,7 @@ export function clearPlayfieldWorkRamKicking(result_: number, count_: number): v
   setReg('d1', count);
 }
 
-export function runOneMemoryTestInterrupts(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, returnTo_: number, tableCursor_: number, nextStep_: number, expected_: number, walkingBit_: number, failed_: number, unused_: number, background_: number, passCount_: number, startBit_: number, arg0: number): void {
+export function runOneMemoryTestInterrupts(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, returnTo_: number, tableCursor_: number, nextStep_: number, expected_: number, walkingBit_: number, failed_: number, unused_: number, background_: number, passCount_: number, startBit_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let at = at_;
@@ -125190,7 +125190,7 @@ export function runOneMemoryTestInterrupts(at_: number, regionStart_: number, re
   t13 = 0x2700;
   setReg('a0', at); setReg('a1', regionStart); setReg('a2', regionEnd); setReg('a3', watchdogPort); setReg('a4', returnTo); setReg('a5', tableCursor); setReg('a6', nextStep); setReg('d0', expected); setReg('d2', walkingBit); setReg('d3', failed); setReg('d4', unused); setReg('d5', background); setReg('d6', passCount); setReg('d7', startBit); setSr(t13, 0x130b8);
   const _t1 = tick(34, 0x130b8) ? 1 : 0; if (_t1 || SPILL_ALL) { setReg('a0', at); setReg('a1', regionStart); setReg('a2', regionEnd); setReg('a3', watchdogPort); setReg('a4', returnTo); setReg('a5', tableCursor); setReg('a6', nextStep); setReg('d0', expected); setReg('d2', walkingBit); setReg('d3', failed); setReg('d4', unused); setReg('d5', background); setReg('d6', passCount); setReg('d7', startBit); if (_t1) takeIrq(); }
-  tableCursor = (arg0) >>> 0;
+  tableCursor = (record) >>> 0;
   t14 = load32(tableCursor);
   tableCursor = (tableCursor + 4);
   expected = (t14) >>> 0;
@@ -148983,15 +148983,15 @@ export function audioResetWrapper(index3_: number, arg0: number): void {
   setReg('d2', index3);
 }
 
-export function threeConsecutiveBytesTogether(unused: number, diffBits: number, arg0: number): void {
+export function threeConsecutiveBytesTogether(unused: number, diffBits: number, src: number): void {
   if (tick(106, 0x160dc)) { setReg('d1', unused); setReg('d2', diffBits); takeIrq(); }
   push(diffBits, 4);
-  const t0 = load8(arg0);
+  const t0 = load8(src);
   const t1 = ((unused & 0xffffff00) | (t0 & 0xff));
-  const t2 = (arg0 + 0x1);
+  const t2 = (src + 0x1);
   const t3 = load8(t2);
   const t4 = ((diffBits & 0xffffff00) | (t3 & 0xff));
-  const t5 = (arg0 + 0x2);
+  const t5 = (src + 0x2);
   const t6 = ((t4 & 0xff) | load8(t5));
   const t7 = ((t4 & 0xffffff00) | (t6 & 0xff));
   const t8 = ((t1 & 0xff) | (t7 & 0xff));
@@ -164832,7 +164832,7 @@ export function haltUnhandledVector(): void {
   return;
 }
 
-export function saveRegistersAnswerZero(dst2_: number, src_: number, savedA4_: number, savedA5_: number, savedA6_: number, kind_: number, kind2_: number, savedD4_: number, savedD5_: number, savedD6_: number, savedD7_: number, arg0: number): void {
+export function saveRegistersAnswerZero(dst2_: number, src_: number, savedA4_: number, savedA5_: number, savedA6_: number, kind_: number, kind2_: number, savedD4_: number, savedD5_: number, savedD6_: number, savedD7_: number, dst3: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -164851,7 +164851,7 @@ export function saveRegistersAnswerZero(dst2_: number, src_: number, savedA4_: n
   let savedD7 = savedD7_;
   let t0 = 0;
   const _t0 = tick(96, 0x1865e) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); setReg('a2', dst2); setReg('a3', src); setReg('a4', savedA4); setReg('a5', savedA5); setReg('a6', savedA6); setReg('d0', index); setReg('d1', d1); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); setReg('d6', savedD6); setReg('d7', savedD7); if (_t0) takeIrq(); }
-  dst = (arg0) >>> 0;
+  dst = (dst3) >>> 0;
   t0 = load32(stackPointer() + 0);
   d1 = (t0) >>> 0;
   store32(dst + 0, d1);
@@ -164900,7 +164900,7 @@ export function saveRegistersAnswerZero(dst2_: number, src_: number, savedA4_: n
   setReg('d7', savedD7);
 }
 
-export function restoreSavedStateJumpBack(arg0: number, arg1: number): void {
+export function restoreSavedStateJumpBack(src2: number, arg1: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -164919,7 +164919,7 @@ export function restoreSavedStateJumpBack(arg0: number, arg1: number): void {
   let d7 = getReg('d7');
   let t0 = 0;
   const _t0 = tick(104, 0x1866c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('a2', dst2); setReg('a3', src); setReg('a4', a4); setReg('a5', a5); setReg('a6', a6); setReg('d0', index); setReg('d1', d1); setReg('d2', kind); setReg('d3', kind2); setReg('d4', savedD4); setReg('d5', savedD5); setReg('d6', d6); setReg('d7', d7); if (_t0) takeIrq(); }
-  ptr = (arg0) >>> 0;
+  ptr = (src2) >>> 0;
   index = (arg1) >>> 0;
   d1 = load32(ptr + 0);
   kind = load32(ptr + 4);
@@ -164968,14 +164968,14 @@ export function restoreSavedStateJumpBack(arg0: number, arg1: number): void {
   setReg('d7', d7);
 }
 
-export function jumpThroughSlotOnlyIf(d0_: number, arg0: number): void {
+export function jumpThroughSlotOnlyIf(d0_: number, dst: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
   let d0 = d0_;
   let t0 = 0;
   const _t0 = tick(36, 0x1867c) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', ptr); setReg('d0', d0); if (_t0) takeIrq(); }
-  ptr = (arg0) >>> 0;
+  ptr = (dst) >>> 0;
   t0 = load16(ptr);
   if (((t0) & 65535) !== ((0x4ef9) & 65535)) {
     const _t2 = tick(20, 0x18688) ? 1 : 0; if (_t2 || SPILL_ALL) { setFlagsCmp(t0, 0x4ef9, 16); setReg('a0', ptr); setReg('d0', d0); if (_t2) takeIrq(); }
@@ -166674,11 +166674,11 @@ export function scrollWholeGlyphGridOne(dst_: number, count_: number, count2_: n
   setReg('d2', count3);
 }
 
-export function takePointerWidthThenPlot(unused: number, arg0: number, arg1: number): void {
+export function takePointerWidthThenPlot(unused: number, record: number, arg1: number): void {
   if (tick(26, 0x18a5e)) { setReg('d1', unused); takeIrq(); }
   const t0 = (arg1 & 0xffff);
   const t1 = ((unused & 0xffff0000) | (t0 & 0xffff));
-  setReg('a0', arg0);
+  setReg('a0', record);
   setReg('d1', t1);
   jumpRom(0x18a66);
   return;
@@ -167091,7 +167091,7 @@ export function soundCallThreeLongArgs(value: number, width: number, padZeroes: 
   setReg('a6', a6);
 }
 
-export function drawTextAtCell(column: number, row: number, arg2: number, arg3: number): void {
+export function drawTextAtCell(column: number, row: number, record: number, arg3: number): void {
   if (tick(84, 0x18b76)) { takeIrq(); }
   const t0 = (row & 0xff);
   const t1 = ((0 & 0xffffff00) | (t0 & 0xff));
@@ -167105,7 +167105,7 @@ export function drawTextAtCell(column: number, row: number, arg2: number, arg3: 
   const t9 = (t8 + t6);
   const t10 = (arg3 & 0xffff);
   const t11 = ((t6 & 0xffff0000) | (t10 & 0xffff));
-  setReg('a0', arg2);
+  setReg('a0', record);
   setReg('d0', t9);
   setReg('d1', t11);
   jumpRom(0x18b92);
@@ -167760,7 +167760,7 @@ export function decompressChainSTilesInto(ptr_: number, dst_: number, src_: numb
   setReg('d1', count);
 }
 
-export function soundStateCopy(src_: number, arg0: number): void {
+export function soundStateCopy(src_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let ptr = getReg('a0');
@@ -167781,7 +167781,7 @@ export function soundStateCopy(src_: number, arg0: number): void {
   push(t0, 4);
   src = (0x3e3400) >>> 0;
   dst = ((src + 0x44)) >>> 0;
-  ptr = (arg0) >>> 0;
+  ptr = (record) >>> 0;
   count = (3) >>> 0;
   setFlagsCmp((count & 65535), 0, 16);
   l1: for (;;) {
@@ -169182,7 +169182,7 @@ export function plotChainStringsCallerS(count_: number, arg0: number, arg3: numb
   setReg('d1', count);
 }
 
-export function plotChainStringsCallerSFrom1(unused2_: number, dst_: number, src2_: number, index_: number, unused_: number, index2_: number, arg0: number): void {
+export function plotChainStringsCallerSFrom1(unused2_: number, dst_: number, src2_: number, index_: number, unused_: number, index2_: number, src3: number): void {
   let _guard = 0;
   void _guard;
   let unused2 = unused2_;
@@ -169240,7 +169240,7 @@ export function plotChainStringsCallerSFrom1(unused2_: number, dst_: number, src
   save_a2_1 = src;
   save_a3_2 = src2;
   save_a4_3 = a4;
-  src = (arg0) >>> 0;
+  src = (src3) >>> 0;
   a4 = (0x192e6) >>> 0;
   l1: for (;;) {
     if (++_guard > 4000000) throw new Error('loop 1 did not end');
@@ -169623,12 +169623,12 @@ export function clearGlyphLayerSStateFrom2(count_: number, d1_: number, timesLes
   setReg('d1', d1);
 }
 
-export function storeTwoBytesPointerClear(arg0: number, arg1: number, arg2: number): void {
+export function storeTwoBytesPointerClear(dst: number, arg1: number, arg2: number): void {
   if (tick(74, 0x193f2)) { takeIrq(); }
-  store8(arg0, (arg1 & 0xff));
-  store8((arg0 + 1), (arg2 & 0xff));
-  store8(((arg0 + 1) + 1) + 0x4, 0);
-  setReg('a0', ((arg0 + 1) + 1));
+  store8(dst, (arg1 & 0xff));
+  store8((dst + 1), (arg2 & 0xff));
+  store8(((dst + 1) + 1) + 0x4, 0);
+  setReg('a0', ((dst + 1) + 1));
 }
 
 export function clearKilobytePlayfieldRowOffset(count: number): void {
@@ -170976,7 +170976,7 @@ export function padFieldSpacesReturn(dst_: number, count_: number): void {
   setReg('d1', d1);
 }
 
-export function formatNumberPaddingSeparators(dst_: number, dst2_: number, count_: number, kind_: number, kind2_: number, arg0: number, arg1: number, arg2: number, arg3: number): void {
+export function formatNumberPaddingSeparators(dst_: number, dst2_: number, count_: number, kind_: number, kind2_: number, arg0: number, record: number, arg2: number, arg3: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -171044,7 +171044,7 @@ export function formatNumberPaddingSeparators(dst_: number, dst2_: number, count
         push(t0, 4);
         t1 = (arg2 & 0xffff);
         count = ((count & 0xffff0000) | (t1 & 65535));
-        dst = (arg1) >>> 0;
+        dst = (record) >>> 0;
         dst2 = (dst) >>> 0;
         dst = ((dst + ((((count & 65535)) << 16) >> 16))) >>> 0;
         t2 = 0;
@@ -171229,7 +171229,7 @@ export function formatNumberPaddingSeparators(dst_: number, dst2_: number, count
       }
       case 18: {
         _t18 = tick(36, 0x19696) ? 1 : 0; if (_t18 || SPILL_ALL) { setXSub(t23, t24, 16); setFlagsSub(t23, t24, 16); setReg('a0', dst); setReg('a1', dst2); setReg('d0', count); setReg('d1', kind); setReg('d2', kind2); if (_t18) takeIrq(); }
-        dst = (arg1) >>> 0;
+        dst = (record) >>> 0;
         t25 = (arg2 & 0xffff);
         dst = ((dst + (((t25) << 16) >> 16))) >>> 0;
         dst2 = ((dst2 - 0x1)) >>> 0;
@@ -173771,9 +173771,9 @@ export function expandCompressedSpriteTwoPixels(ptr_: number, ptr2_: number, ptr
   setReg('d3', index2);
 }
 
-export function takeDestinationSourcePointerOff(kind: number, arg1: number): void {
+export function takeDestinationSourcePointerOff(kind: number, record: number): void {
   if (tick(34, 0x19bb8)) { takeIrq(); }
-  setReg('a0', arg1);
+  setReg('a0', record);
   setReg('a1', kind);
   setReg('d0', kind);
   jumpRom(0x19bc2);
@@ -174625,7 +174625,7 @@ export function initialiseSixteenRecordsTheirRings(a0_: number, unused_: number,
   setReg('d2', index2);
 }
 
-export function clearRingSHeadLink(arg0: number): void {
+export function clearRingSHeadLink(dst2: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a0');
@@ -174636,7 +174636,7 @@ export function clearRingSHeadLink(arg0: number): void {
   let t4 = 0;
   let t5 = 0;
   const _t0 = tick(68, 0x1a05a) ? 1 : 0; if (_t0 || SPILL_ALL) { setReg('a0', dst); if (_t0) takeIrq(); }
-  dst = (arg0) >>> 0;
+  dst = (dst2) >>> 0;
   t0 = 0;
   store8(dst + 0xa, t0);
   t1 = load8(dst + 0xa);
@@ -178501,7 +178501,7 @@ export function signExtendByteLong(d0: number): void {
   setReg('d0', t2);
 }
 
-export function runOneChannelSScript(channel_: number, unused_: number, unused3_: number, unused2_: number, arg0: number): void {
+export function runOneChannelSScript(channel_: number, unused_: number, unused3_: number, unused2_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let channel = channel_;
@@ -178544,7 +178544,7 @@ export function runOneChannelSScript(channel_: number, unused_: number, unused3_
   save_a2_5 = channel;
   save_a3_6 = a3;
   save_a4_7 = ptr;
-  a3 = (arg0) >>> 0;
+  a3 = (record) >>> 0;
   ptr = (0x3e36ec) >>> 0;
   d5 = (0x3e36e2) >>> 0;
   d6 = (0x3e36da) >>> 0;
@@ -184215,7 +184215,7 @@ export function strobeControlRegisterThroughShadow(d0: number, preserved: number
   setReg('d0', t5);
 }
 
-export function countFourSampleVoicesDown(dst_: number, ptr_: number, index3_: number, index_: number, unused_: number, index2_: number, arg0: number): void {
+export function countFourSampleVoicesDown(dst_: number, ptr_: number, index3_: number, index_: number, unused_: number, index2_: number, record: number): void {
   let _guard = 0;
   void _guard;
   let preserved = getReg('a0');
@@ -184258,7 +184258,7 @@ export function countFourSampleVoicesDown(dst_: number, ptr_: number, index3_: n
   save_d3_1 = index2;
   save_a2_2 = dst;
   save_a3_3 = ptr;
-  preserved = (arg0) >>> 0;
+  preserved = (record) >>> 0;
   t4 = load8(0x3e3d6c);
   t5 = 0x1;
   t6 = (load8(0x3e3d6c) - 0x1);
@@ -186922,7 +186922,7 @@ export function expandOneNibblePairAcross(dst_: number, d0_: number, count_: num
   setReg('d4', count2);
 }
 
-export function fillEightFourBlockPlayfield(unused_: number, arg0: number, arg1: number): void {
+export function fillEightFourBlockPlayfield(unused_: number, dst2: number, arg1: number): void {
   let _guard = 0;
   void _guard;
   let dst = getReg('a1');
@@ -186943,7 +186943,7 @@ export function fillEightFourBlockPlayfield(unused_: number, arg0: number, arg1:
   save_a1_2 = dst;
   t3 = (arg1 & 0xffff);
   unused = ((unused & 0xffff0000) | (t3 & 65535));
-  dst = (arg0) >>> 0;
+  dst = (dst2) >>> 0;
   count = (3) >>> 0;
   count2 = (7) >>> 0;
   setFlagsCmp((count2 & 65535), 0, 16);
