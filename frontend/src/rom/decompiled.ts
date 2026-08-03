@@ -120488,7 +120488,7 @@ export function secondDecoderStateEmitLow(dst_: number, base_: number, nibble_: 
   setReg('d7', nibble);
 }
 
-export function secondDecoderStateEmitLowFrom1(dst_: number, byte_: number): void {
+export function decoderEmitD4Plain(dst_: number, byte_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -124541,7 +124541,7 @@ export function memoryTestRunPassChain(at_: number, regionStart_: number, region
   setReg('d7', startBit);
 }
 
-export function runOneMemoryTestInterruptsFrom2(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, returnTo_: number, tableCursor_: number, nextStep_: number, expected_: number, walkingBit_: number, failed_: number, preserved_: number, background_: number, passCount_: number, startBit_: number): void {
+export function memoryTestReportFailure(at_: number, regionStart_: number, regionEnd_: number, watchdogPort_: number, returnTo_: number, tableCursor_: number, nextStep_: number, expected_: number, walkingBit_: number, failed_: number, preserved_: number, background_: number, passCount_: number, startBit_: number): void {
   let _guard = 0;
   void _guard;
   let at = at_;
@@ -142541,7 +142541,7 @@ export function centreTwoStringsFortyTwo(index_: number, row: number, first: num
   setReg('d3', preserved);
 }
 
-export function drawTextAtCellCoordinatesWrapper(preserved: number): void {
+export function drawTextWithAttributeByte(preserved: number): void {
   let _guard = 0;
   void _guard;
   let index = getReg('d0');
@@ -142754,7 +142754,7 @@ export function formatNumberDrawLeftTrimmed(ptr_: number, kind_: number, preserv
   setReg('d3', preserved);
 }
 
-export function defaultAttributesThenMeasureWrapper(): void {
+export function defaultAttributesForString1DFB2(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(132, 0x15562) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -142776,7 +142776,7 @@ export function defaultAttributesThenMeasureWrapper(): void {
   return;
 }
 
-export function soundTableInitWrapper(): void {
+export function soundTableInitCall(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(28, 0x15598) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -153936,7 +153936,7 @@ export function resetWithOneThenTail(): void {
   return;
 }
 
-export function resetWithOneThenTailFrom1(): void {
+export function resetDropFourThenTail(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x16d48) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -164648,7 +164648,7 @@ export function toggleSlotSBlinkFlag(ptr2_: number, ptr_: number, index_: number
   setReg('d2', index2);
 }
 
-export function toggleSlotSBlinkFlagFrom1(): void {
+export function glyphSlotDecompressThenDone(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(30, 0x1886a) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -164873,7 +164873,7 @@ export function runSlotSScriptTest(ptr2_: number, index_: number, index2_: numbe
   setReg('d2', index2);
 }
 
-export function runSlotSScriptTestFrom1(ptr_: number, ptr2_: number, index_: number, unused_: number, index2_: number): void {
+export function glyphSlotRunScriptWhenZero(ptr_: number, ptr2_: number, index_: number, unused_: number, index2_: number): void {
   let _guard = 0;
   void _guard;
   let ptr = ptr_;
@@ -165102,7 +165102,7 @@ export function glyphSlotLoopEnd(preserved_: number, count_: number, preserved2_
   setReg('d3', preserved2);
 }
 
-export function runSlotSRecordHandlerFrom2(): void {
+export function glyphSlotReturn(): void {
   let _guard = 0;
   void _guard;
   let a2 = getReg('a2');
@@ -170208,7 +170208,7 @@ export function formatNumberPaddingSeparators(dst_: number, dst2_: number, count
   setReg('d2', kind2);
 }
 
-export function creditCountCoinSlotsWrapper(count_: number, count2_: number): void {
+export function creditReadSlotStateOrDefault(count_: number, count2_: number): void {
   let _guard = 0;
   void _guard;
   let preserved = getReg('a0');
@@ -180526,7 +180526,7 @@ export function advanceScriptByFieldTimesFour(dst_: number): void {
   setReg('d3', d3);
 }
 
-export function readThreeByteBigEndianFrom2(ptr2_: number, ptr_: number, unused_: number, index_: number, index2_: number, kind_: number): void {
+export function scriptOperandRangeSplit(ptr2_: number, ptr_: number, unused_: number, index_: number, index2_: number, kind_: number): void {
   let _guard = 0;
   void _guard;
   let ptr2 = ptr2_;
@@ -180657,7 +180657,7 @@ export function signExtendField5DIntoWord1C(dst_: number, field5D_: number): voi
   setReg('d1', field5D);
 }
 
-export function signExtendField5DIntoWord1CFrom1(dst_: number, field5D_: number): void {
+export function signExtendIntoWord1CThenMark(dst_: number, field5D_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -181274,7 +181274,7 @@ export function scriptTestSkipLongIfZero(dst_: number, index_: number, operand_:
   setReg('d4', operand);
 }
 
-export function scriptTestSkipLongIfZeroFrom1(dst_: number): void {
+export function scriptSkipOneLong(dst_: number): void {
   let _guard = 0;
   void _guard;
   let dst = dst_;
@@ -181540,7 +181540,7 @@ export function setField5EToField5DLessTestResult(dst_: number, index_: number, 
   setReg('d4', operand);
 }
 
-export function setField5EToField5DLessTestResultFrom1(): void {
+export function scriptDropEightAndReturn(): void {
   let _guard = 0;
   void _guard;
   const _t0 = tick(16, 0x1ae24) ? 1 : 0; if (_t0 || SPILL_ALL) { if (_t0) takeIrq(); }
@@ -190373,7 +190373,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x12340, fn: secondDecoderStateEmitLow as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x12350, fn: secondDecoderStateEmitLowFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x12350, fn: decoderEmitD4Plain as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x12354, fn: decoderStateEmitD4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a1' }, { from: 'reg', name: 'd4' }] },
 
@@ -190427,7 +190427,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x130d2, fn: memoryTestRunPassChain as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
-  { at: 0x130dc, fn: runOneMemoryTestInterruptsFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
+  { at: 0x130dc, fn: memoryTestReportFailure as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'a3' }, { from: 'reg', name: 'a4' }, { from: 'reg', name: 'a5' }, { from: 'reg', name: 'a6' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }, { from: 'reg', name: 'd5' }, { from: 'reg', name: 'd6' }, { from: 'reg', name: 'd7' }] },
 
   { at: 0x130ee, fn: reenterSelfTestNotPowerOn as (...a: number[]) => void, params: [{ from: 'reg', name: 'd3' }] },
 
@@ -190603,15 +190603,15 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1545c, fn: centreTwoStringsFortyTwo as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
-  { at: 0x154a8, fn: drawTextAtCellCoordinatesWrapper as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
+  { at: 0x154a8, fn: drawTextWithAttributeByte as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
   { at: 0x154de, fn: callThroughSignedPair as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
   { at: 0x15504, fn: formatNumberDrawLeftTrimmed as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }] },
 
-  { at: 0x15562, fn: defaultAttributesThenMeasureWrapper as (...a: number[]) => void, params: [] },
+  { at: 0x15562, fn: defaultAttributesForString1DFB2 as (...a: number[]) => void, params: [] },
 
-  { at: 0x15598, fn: soundTableInitWrapper as (...a: number[]) => void, params: [] },
+  { at: 0x15598, fn: soundTableInitCall as (...a: number[]) => void, params: [] },
 
   { at: 0x155a0, fn: soundTempoUpdate as (...a: number[]) => void, params: [{ from: 'stack', off: 4 }] },
 
@@ -190667,7 +190667,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x16d3e, fn: resetWithOneThenTail as (...a: number[]) => void, params: [] },
 
-  { at: 0x16d48, fn: resetWithOneThenTailFrom1 as (...a: number[]) => void, params: [] },
+  { at: 0x16d48, fn: resetDropFourThenTail as (...a: number[]) => void, params: [] },
 
   { at: 0x16d4e, fn: resetThen1684C as (...a: number[]) => void, params: [] },
 
@@ -190821,13 +190821,13 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1885a, fn: toggleSlotSBlinkFlag as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x1886a, fn: toggleSlotSBlinkFlagFrom1 as (...a: number[]) => void, params: [] },
+  { at: 0x1886a, fn: glyphSlotDecompressThenDone as (...a: number[]) => void, params: [] },
 
   { at: 0x1888c, fn: stepSlotSRepeatCount as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x188aa, fn: runSlotSScriptTest as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd2' }] },
 
-  { at: 0x188c2, fn: runSlotSScriptTestFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x188c2, fn: glyphSlotRunScriptWhenZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x188ec, fn: runHandlerSlotSRecord as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }] },
 
@@ -190835,7 +190835,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x18902, fn: glyphSlotLoopEnd as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd2' }, { from: 'reg', name: 'd3' }] },
 
-  { at: 0x18906, fn: runSlotSRecordHandlerFrom2 as (...a: number[]) => void, params: [] },
+  { at: 0x18906, fn: glyphSlotReturn as (...a: number[]) => void, params: [] },
 
   { at: 0x1890c, fn: soundGate as (...a: number[]) => void, params: [{ from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }] },
 
@@ -190947,7 +190947,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x19614, fn: formatNumberPaddingSeparators as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a1' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }, { from: 'stack', off: 4 }, { from: 'stack', off: 8 }, { from: 'stack', off: 12 }, { from: 'stack', off: 16 }] },
 
-  { at: 0x196ac, fn: creditCountCoinSlotsWrapper as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
+  { at: 0x196ac, fn: creditReadSlotStateOrDefault as (...a: number[]) => void, params: [{ from: 'reg', name: 'd1' }, { from: 'reg', name: 'd2' }] },
 
   { at: 0x19786, fn: startDivideHelperZeroHigh as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }] },
 
@@ -191153,11 +191153,11 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1ac3c, fn: advanceScriptByFieldTimesFour as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
-  { at: 0x1ac98, fn: readThreeByteBigEndianFrom2 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
+  { at: 0x1ac98, fn: scriptOperandRangeSplit as (...a: number[]) => void, params: [{ from: 'reg', name: 'a0' }, { from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd1' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
   { at: 0x1ace0, fn: signExtendField5DIntoWord1C as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }] },
 
-  { at: 0x1ace4, fn: signExtendField5DIntoWord1CFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }] },
+  { at: 0x1ace4, fn: signExtendIntoWord1CThenMark as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd1' }] },
 
   { at: 0x1acec, fn: copyFieldRecordIntoField as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
@@ -191193,7 +191193,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1adb0, fn: scriptTestSkipLongIfZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1adc4, fn: scriptTestSkipLongIfZeroFrom1 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
+  { at: 0x1adc4, fn: scriptSkipOneLong as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }] },
 
   { at: 0x1adcc, fn: scriptTestBranchIfNonZero as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 
@@ -191203,7 +191203,7 @@ export const DECOMPILED: ReadonlyArray<{
 
   { at: 0x1ae0e, fn: setField5EToField5DLessTestResult as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd3' }, { from: 'reg', name: 'd4' }] },
 
-  { at: 0x1ae24, fn: setField5EToField5DLessTestResultFrom1 as (...a: number[]) => void, params: [] },
+  { at: 0x1ae24, fn: scriptDropEightAndReturn as (...a: number[]) => void, params: [] },
 
   { at: 0x1ae2a, fn: setField5EToField5DLessD4 as (...a: number[]) => void, params: [{ from: 'reg', name: 'a2' }, { from: 'reg', name: 'd0' }, { from: 'reg', name: 'd4' }] },
 

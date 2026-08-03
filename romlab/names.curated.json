@@ -3420,5 +3420,75 @@
     "name": "drop this entry's countdown and run it when it reaches zero",
     "why": "byte 0xe is the countdown and byte 0xd the reload; when it expires the record's pointer at 8 becomes the palette RAM address the handler works on.",
     "ident": "tickTimerOneEntry"
+  },
+  "0x12350": {
+    "name": "store d4 through a1 and return",
+    "why": "two instructions, and no state pointer is moved - the emit that does not advance the decoder.",
+    "ident": "decoderEmitD4Plain"
+  },
+  "0x130dc": {
+    "name": "pack the failing address beside the pattern and unmask",
+    "why": "swaps the pattern into the high half and puts the address register's low word beside it, then drops the interrupt mask to 0x2000.",
+    "ident": "memoryTestReportFailure"
+  },
+  "0x154a8": {
+    "name": "draw the text at a fixed attribute with the byte at 0x3e3d7b",
+    "why": "0x2040 is the attribute pushed, and the signed byte at 0x3e3d7b is the second half of the pair the tail stores.",
+    "ident": "drawTextWithAttributeByte"
+  },
+  "0x15562": {
+    "name": "measure the string at 0x1dfb2 with the default attributes",
+    "why": "every argument is a constant - 0x2040, the string, 0x1b and 0xffff - so this wrapper is entirely its argument list.",
+    "ident": "defaultAttributesForString1DFB2"
+  },
+  "0x15598": {
+    "name": "call the sound table initialiser and return",
+    "why": "a jsr and an rts, which is the whole routine.",
+    "ident": "soundTableInitCall"
+  },
+  "0x16d48": {
+    "name": "drop the pushed argument and go to the shared tail",
+    "why": "the return path for the reset case above it.",
+    "ident": "resetDropFourThenTail"
+  },
+  "0x1886a": {
+    "name": "decompress this slot's tiles, then finish the loop",
+    "why": "one call to decompressChainSTilesInto and a branch to the loop end.",
+    "ident": "glyphSlotDecompressThenDone"
+  },
+  "0x188c2": {
+    "name": "run the slot's script only when the test byte is zero",
+    "why": "the slot number times four indexes the pointer table at 0x34(a2), and that pointer is the script it runs.",
+    "ident": "glyphSlotRunScriptWhenZero"
+  },
+  "0x18906": {
+    "name": "restore the saved registers and return",
+    "why": "the block's epilogue.",
+    "ident": "glyphSlotReturn"
+  },
+  "0x196ac": {
+    "name": "read the coin slot state, or answer 0xff",
+    "why": "0xff is what it hands back when the word at 0x3e340c says the state at 0x3e3672 cannot be read.",
+    "ident": "creditReadSlotStateOrDefault"
+  },
+  "0x1ac98": {
+    "name": "split the operand into its three ranges",
+    "why": "0x16 and above returns at once, under 6 takes one path and the rest another - the bounds that decide which of the three-byte readers runs.",
+    "ident": "scriptOperandRangeSplit"
+  },
+  "0x1ace4": {
+    "name": "sign-extend into word 0x1c and mark it changed",
+    "why": "the store and then the branch into the change-marking tail, where the entry above it stores without marking.",
+    "ident": "signExtendIntoWord1CThenMark"
+  },
+  "0x1adc4": {
+    "name": "step the script pointer four bytes on",
+    "why": "`addq.l #4,$4(a2)` and the jump back - what a test does when it declines to take its branch.",
+    "ident": "scriptSkipOneLong"
+  },
+  "0x1ae24": {
+    "name": "drop eight pushed bytes and go back to the sequencer",
+    "why": "the return path for the cases that pushed the record and an operand.",
+    "ident": "scriptDropEightAndReturn"
   }
 }
