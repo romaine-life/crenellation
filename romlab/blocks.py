@@ -417,6 +417,16 @@ class BlockLifter(Lifter):
                 self.stmts.append(f"{r} = getReg('{r}');")
             self.after_call = True
             self.flags = None
+            # ...and X with them. X outliving the flags is the right rule for a
+            # move or a compare, which leave it alone on the chip - that is
+            # what `xstate` is for. A CALL is not that: the callee can execute
+            # anything, so X on return is whatever it last did, and the caller
+            # has no idea what. Keeping xstate across one made the block head
+            # after the call re-apply the caller's pre-call X over the callee's,
+            # which is the whole of the `frames` floor: interrupt 1220 of 2,125
+            # on attract, taken at the same address with the same status
+            # register but for that one bit.
+            self.xstate = None
             return
         # Set-on-condition: the same test a branch would take, written into a
         # byte as all-ones or all-zeroes instead of jumping. Only this pass can
