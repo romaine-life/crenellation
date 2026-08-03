@@ -627,6 +627,10 @@
     "stack20": {
       "name": "extra",
       "why": "only its low word, read by the FIRST `move.w $1e(a7),d0` while a7 is still where it started. It is zero-extended and becomes the constant 0x357a hands to every per-cell call without looking at it."
+    },
+    "d1": {
+      "name": "width2",
+      "why": "0x35fa reads the word at 0x16(a7), which is the low half of the same width slot the routine already binds - the two are one argument read twice."
     }
   },
   "0x3666": {
@@ -689,6 +693,10 @@
     "stack20": {
       "name": "extra",
       "why": "only its low word, read by the FIRST `move.w $1e(a7),d0` while a7 is still where it started. It is zero-extended and becomes the constant 0x357a hands to every per-cell call without looking at it."
+    },
+    "d1": {
+      "name": "width2",
+      "why": "0x3636 reads the word at 0x16(a7), which is the low half of the same width slot the routine already binds - the two are one argument read twice."
     }
   },
   "0x36a2": {
@@ -6287,6 +6295,10 @@
     "a0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x01500 is `movea.l (a2), a0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d4": {
+      "name": "unused",
+      "why": "0x14e2 assigns it the flag word at 0x3e0dc6, which the routine then clears and walks bit by bit."
     }
   },
   "0x1512": {
@@ -6717,6 +6729,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x1a19a is `move.b $7(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "byte",
+      "why": "its low byte at 7(a7) is stored through the ring cursor at 0x3e3d66, which is then advanced and wrapped back to 0x3e3d5e once it passes 0x3e3d61."
     }
   },
   "0x1a248": {
@@ -7023,6 +7039,10 @@
     "d5": {
       "name": "unused2",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x02742 is `move.b (a1), d5` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d6": {
+      "name": "kind",
+      "why": "cleared at 0x2744 and built from the cell byte's low six bits, which this ROM's cells keep their kind in - the owner being the 0xc0 bits the routine reads beside it."
     }
   },
   "0x7664": {
@@ -8863,6 +8883,60 @@
     "d7": {
       "name": "byte",
       "why": "0x1235e stores it through a1 and the routine's only other act is to point a4 at the next decoder state."
+    }
+  },
+  "0xc538": {
+    "d3": {
+      "name": "wasRaised",
+      "why": "0xc546 saves the byte at 0x3e2498, 0xc548 forces it to 1 for the call, and 0xc550 puts the saved value straight back - the flag's previous state, held across one call."
+    }
+  },
+  "0x79ce": {
+    "stack4": {
+      "name": "phase",
+      "why": "its low byte at 0xb(a7) is written to 0x3e1870 at 0x79d8 - the same byte phaseTimerSet writes and scheduledTrigger compares against."
+    },
+    "stack8": {
+      "name": "startValue",
+      "why": "its low word at 0xe(a7) becomes d2 and is pushed to both 0x7a24 and the call after it - the value the timer starts from, which is what this adds over phaseTimerSet."
+    }
+  },
+  "0xc504": {
+    "d0": {
+      "name": "unused",
+      "why": "both paths assign it before it is read - moveq #0 at 0xc51e, or the call's answer further on."
+    },
+    "d2": {
+      "name": "unused2",
+      "why": "0xc522 assigns it the byte at 0x3e2498 before anything reads it."
+    }
+  },
+  "0x18cde": {
+    "stack4": {
+      "name": "column",
+      "why": "its low byte at 7(a7) is shifted left three at 0x18cfc and added to the screen base - eight bytes per cell across."
+    }
+  },
+  "0x182d4": {
+    "stack4": {
+      "name": "entry",
+      "why": "its low word at 0xa(a7) becomes d1, shifted left two at 0x182de and added to 0x3c0400 - a palette entry on the SECOND page, four bytes apart, where writeColourIntoFirstPalette uses 0x3c0000."
+    }
+  },
+  "0x15830": {
+    "stack4": {
+      "name": "voice",
+      "why": "its low word at 6(a7) is clamped to 0x13 at 0x15834 and passed on - a voice index, and 0x13 is the highest this driver has."
+    }
+  },
+  "0x1957a": {
+    "d0": {
+      "name": "digit",
+      "why": "the byte read from the source at 0x1957a, compared against a space at 0x1957c and stored to the destination at 0x1958c."
+    },
+    "d1": {
+      "name": "separator",
+      "why": "its two halves are swapped around each test: the low byte of the far half is emitted before the digit at 0x19588 when it is not zero. The separator this inserts."
     }
   }
 }
