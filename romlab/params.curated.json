@@ -5787,6 +5787,10 @@
     "stack4": {
       "name": "pair",
       "why": "ONE longword holding two 16-bit numerators - its high word is divided first and its low word second, both by the same divisor, and the two quotients come back packed the same way."
+    },
+    "stack8": {
+      "name": "divisor",
+      "why": "the word at 0xa(a7) is the divisor of both divu.w at 0x186a4 and 0x186b0; the first argument's two words are each divided by it."
     }
   },
   "0x160f8": {
@@ -6433,6 +6437,10 @@
     "stack4": {
       "name": "record",
       "why": "0x12050 is `movea.l $10(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "stack8": {
+      "name": "colour",
+      "why": "its low word at 0x16(a7) becomes d0 and is carried into both halves of the shift at 0x12066 - the block is done twice, 0x1f8 apart, which is one screen row of two."
     }
   },
   "0x121c4": {
@@ -8583,6 +8591,72 @@
     "d0": {
       "name": "unused",
       "why": "0x19cd8 rotates it and 0x19cda immediately replaces its low byte, which is the only part ever stored."
+    }
+  },
+  "0x17d58": {
+    "d4": {
+      "name": "cellAt",
+      "why": "movea.l d4,a0 at 0x17d58 and the byte it points at is masked to 0xc0 - the owner bits - which decides whether the record's word at 2 has its sign flipped."
+    }
+  },
+  "0x19bc2": {
+    "stack12": {
+      "name": "count",
+      "why": "loaded to d1 at 0x19bc2 and counted down by the dbra at 0x19bca, with 0x10000 subtracted each time the word counter wraps - a long count for a byte copy."
+    }
+  },
+  "0x1adcc": {
+    "d4": {
+      "name": "operand",
+      "why": "zero-extended into d1 and pushed to 0x1a58a at the entry's fourth instruction, together with the record in a2 - the operand the script test is run on. The three entries differ only in the branch they take on the answer."
+    },
+    "a2": {
+      "name": "record",
+      "why": "pushed with the operand to 0x1a58a at 0x1adcc - the record the test is against."
+    }
+  },
+  "0x1ade2": {
+    "d4": {
+      "name": "operand",
+      "why": "zero-extended into d1 and pushed to 0x1a58a at the entry's fourth instruction, together with the record in a2 - the operand the script test is run on. The three entries differ only in the branch they take on the answer."
+    },
+    "a2": {
+      "name": "record",
+      "why": "pushed with the operand to 0x1a58a at 0x1ade2 - the record the test is against."
+    }
+  },
+  "0x1adf8": {
+    "d4": {
+      "name": "operand",
+      "why": "zero-extended into d1 and pushed to 0x1a58a at the entry's fourth instruction, together with the record in a2 - the operand the script test is run on. The three entries differ only in the branch they take on the answer."
+    },
+    "a2": {
+      "name": "record",
+      "why": "pushed with the operand to 0x1a58a at 0x1adf8 - the record the test is against."
+    }
+  },
+  "0x1ad82": {
+    "d4": {
+      "name": "operand",
+      "why": "zero-extended into d1 and pushed to 0x1a58a at the entry's fourth instruction, together with the record in a2 - the operand the script test is run on. The three entries differ only in the branch they take on the answer."
+    }
+  },
+  "0x71c4": {
+    "d1": {
+      "name": "code",
+      "why": "the only thing either entry does with it is compare it - 0x11 at 0x71c4, 0x30 at 0x71d0 - and branch. A code, and nothing else."
+    }
+  },
+  "0x71d0": {
+    "d1": {
+      "name": "code",
+      "why": "the only thing either entry does with it is compare it - 0x11 at 0x71c4, 0x30 at 0x71d0 - and branch. A code, and nothing else."
+    }
+  },
+  "0x79b6": {
+    "stack4": {
+      "name": "phase",
+      "why": "its low byte at 7(a7) is written to 0x3e1870 at 0x79ba, which is the byte scheduledTrigger compares its own argument against."
     }
   }
 }
