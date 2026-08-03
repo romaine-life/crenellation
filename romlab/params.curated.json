@@ -7093,6 +7093,10 @@
     "stack8": {
       "name": "src",
       "why": "0x043ce is `movea.l $c(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards reads through it and none writes. Found by stackroles.py."
+    },
+    "d2": {
+      "name": "limit",
+      "why": "the routine writes it exactly once, with the constant 0x2a, and every other instruction that touches it is a cmp - so it holds that constant throughout and is used only as a limit."
     }
   },
   "0x4f8c": {
@@ -7739,6 +7743,14 @@
     "a3": {
       "name": "ptr",
       "why": "0x01a0a is `move.w (a3), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d1": {
+      "name": "limit",
+      "why": "the routine writes it exactly once, with the constant 0x3, and every other instruction that touches it is a cmp - so it holds that constant throughout and is used only as a limit."
+    },
+    "d2": {
+      "name": "mask",
+      "why": "the routine writes it exactly once, with the constant 0xb7ff, and every other instruction that touches it is a and - so it holds that constant throughout and is used only as a mask."
     }
   },
   "0x1b46": {
@@ -7887,6 +7899,10 @@
     "a0": {
       "name": "ptr",
       "why": "0x0c40a is `move.b (a0), d0` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d1": {
+      "name": "limit",
+      "why": "the routine writes it exactly once, with the constant 0x3, and every other instruction that touches it is a cmp - so it holds that constant throughout and is used only as a limit."
     }
   },
   "0xedea": {
@@ -8091,6 +8107,28 @@
     "d4": {
       "name": "wallByte2",
       "why": "the same table byte with 2 or'd in instead, at 0x18370."
+    }
+  },
+  "0x15d6": {
+    "d2": {
+      "name": "mask",
+      "why": "the routine writes it exactly once, with the constant 0x6bff, and every other instruction that touches it is a and - so it holds that constant throughout and is used only as a mask."
+    }
+  },
+  "0x1fd6": {
+    "d2": {
+      "name": "limit",
+      "why": "the routine writes it exactly once, with the constant 0x1, and every other instruction that touches it is a cmp - so it holds that constant throughout and is used only as a limit."
+    },
+    "d3": {
+      "name": "limit2",
+      "why": "the routine writes it exactly once, with the constant 0x2, and every other instruction that touches it is a cmp - so it holds that constant throughout and is used only as a limit."
+    }
+  },
+  "0xac4c": {
+    "d2": {
+      "name": "limit",
+      "why": "the routine writes it exactly once, with the constant 0x3, and every other instruction that touches it is a cmp - so it holds that constant throughout and is used only as a limit."
     }
   }
 }
