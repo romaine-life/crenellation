@@ -113593,7 +113593,7 @@ export function eventTest(descriptor: number, left: number, unused: number): voi
   return;
 }
 
-export function alreadyEventQueue(entry_: number, ptr_: number, count_: number, wantRoutine_: number, unused_: number, arg3: number): void {
+export function alreadyEventQueue(entry_: number, ptr_: number, count_: number, wantRoutine_: number, unused_: number, src: number): void {
   let _guard = 0;
   void _guard;
   let entry = entry_;
@@ -113612,7 +113612,7 @@ export function alreadyEventQueue(entry_: number, ptr_: number, count_: number, 
     setFlagsCmp(count, 0, 32);
   } else {
     const _t1 = tick(42, 0x0f008) ? 1 : 0; if (_t1 || SPILL_ALL) { setFlagsCmp((count & 65535), 0, 16); setReg('a0', entry); setReg('a1', ptr); setReg('d0', count); setReg('d1', wantRoutine); setReg('d2', unused); if (_t1) takeIrq(); }
-    ptr = (arg3) >>> 0;
+    ptr = (src) >>> 0;
     t0 = load32(ptr);
     wantRoutine = (t0) >>> 0;
     entry = (0x3e1cf6) >>> 0;
@@ -168036,7 +168036,7 @@ export function claimSlotKindOneFrom2(unused_: number, arg2: number): void {
   setReg('d1', unused);
 }
 
-export function claimOneFourSlotsFill(src22_: number, kind2_: number, count2_: number, arg0: number, arg1: number): void {
+export function claimOneFourSlotsFill(src22_: number, kind2_: number, count2_: number, record: number, arg1: number): void {
   let _guard = 0;
   void _guard;
   let src22 = src22_;
@@ -168112,7 +168112,7 @@ export function claimOneFourSlotsFill(src22_: number, kind2_: number, count2_: n
     t14 = (count & 65535);
     t15 = (count & 65535);
     count = ((count & 0xffff0000) | (((count & 65535) + (count & 65535)) & 65535));
-    src22 = (arg0) >>> 0;
+    src22 = (record) >>> 0;
     t16 = src22;
     store32((src2 + ((count << 16) >> 16) + 0x34), t16);
     src2 = (src) >>> 0;

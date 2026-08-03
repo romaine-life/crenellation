@@ -79,8 +79,9 @@ def by_sp(md, image, at, hi):
     cannot account for, because a wrong displacement here does not fail - it
     silently names the wrong slot.
     """
-    out, delta, pc = {}, 0, at
+    out, delta, last = {}, 0, at
     for i in md.disasm(image[at:hi], at):
+        last = i.address
         mn, ops = i.mnemonic, i.op_str
         base = mn.split(".")[0]
         if any(mn.startswith(p) for p in
@@ -121,6 +122,22 @@ def by_sp(md, image, at, hi):
             delta -= (-1 if m.group(1) else 1) * int(m.group(2), 16)
         elif ops.strip().endswith(", a7") or "-(a7)" in ops:
             return None                    # something else moved it: stop
+    # ...and if a7 never moves again anywhere in the routine, the displacement
+    # the prologue settled on is the displacement for the WHOLE body, branches
+    # or not. That is worth checking, because the straight line above stops at
+    # the first branch and a great many argument loads sit after one. If
+    # anything past the prologue touches a7, this adds nothing and the
+    # straight-line answer stands on its own.
+    tail = [i for i in md.disasm(image[at:hi], at) if i.address > last]
+    if any(i.op_str.strip().endswith(", a7") or "-(a7)" in i.op_str
+           or i.mnemonic.startswith("link") or i.mnemonic.startswith("unlk")
+           for i in tail):
+        return out
+    for i in tail:
+        for m in SP_REF.finditer(i.op_str):
+            out.setdefault(int(m.group(1), 16) - delta, []).append(i)
+    for off in out:
+        out[off].sort(key=lambda i: i.address)
     return out
 
 

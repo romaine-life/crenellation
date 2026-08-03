@@ -5595,6 +5595,10 @@
     "d2": {
       "name": "unused",
       "why": "saved by the caller's movem and never read here. It is in the signature because the lifter saw it live, not because the routine wants it."
+    },
+    "stack16": {
+      "name": "src",
+      "why": "0x0f008 is `movea.l $10(a7), a1`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a1 afterwards reads through it and none writes. Found by stackroles.py."
     }
   },
   "0x12306": {
@@ -7975,6 +7979,12 @@
     "a1": {
       "name": "ptr",
       "why": "0x140108 is `cmpm.w (a0)+, (a1)+` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    }
+  },
+  "0x18e06": {
+    "stack4": {
+      "name": "record",
+      "why": "0x18e3c is `movea.l $c(a7), a0`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a0 afterwards both reads and writes through it. Found by stackroles.py."
     }
   }
 }
