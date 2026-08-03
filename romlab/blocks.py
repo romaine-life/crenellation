@@ -1321,6 +1321,27 @@ def lift_once(lo, hi, names, seed=()):
     # that interrupt pushed carried a status register of 0x2304 where the
     # oracle's was 0x2319.
     end_xstate = {}
+    # A SECOND PASS OVER THIS LOOP WAS TRIED AND REVERTED, 2026-08-02, and the
+    # reason is worth keeping because the idea will occur again.
+    #
+    # The remaining `frames` difference is a loop header: its latch sits later
+    # in address order, so on one pass the latch has no end_flags yet,
+    # `flags_certain` is false, and sync_flags correctly writes nothing -
+    # leaving the machine holding a stale word. Running the loop twice and
+    # keeping end_flags between the passes looks like the fix, and it is not,
+    # because block 0 is seeded from its predecessors only under `if n:`. On
+    # the second pass block 0 therefore starts holding whatever the LAST block
+    # of the first pass left - flags, pushed, xstate, saved, db_cond,
+    # last_written, used_regs, after_call - and the routine is lifted from the
+    # wrong initial state. Measured: the first differing exception frame went
+    # from 1300 to 76, and the two runs stopped agreeing on the ADDRESS as well
+    # as the status register, which is control flow diverging rather than a
+    # flag being wrong. polls.test caught it immediately.
+    #
+    # A real fixed point has to restore the routine's entry state before each
+    # pass, not just `temps`. That is more than resetting a few fields: the
+    # dirty seeding from `lifter.seed_dirty(decode(lo, hi))` happens once
+    # above, outside any pass.
     for n, (s, e) in enumerate(zip(starts, ends)):
         if n not in seen_r:
             lifted[n] = []
