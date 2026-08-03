@@ -1393,6 +1393,14 @@
     "a0": {
       "name": "ptr",
       "why": "0x07980 is `move.w (a0), d1` - the register is dereferenced, so it holds an address. Found by regroles.py, from every use in the routine's extent rather than the first."
+    },
+    "d0": {
+      "name": "wantByte",
+      "why": "0x795c reads it from the stack and 0x7974 forces bit 0 on before comparing it against each cell along the run - the byte a matching cell must equal."
+    },
+    "d1": {
+      "name": "check",
+      "why": "0x7960 reads it from the stack and 0x796c tests it; where it is set the run is followed through the word at (a0) added to the board base at 0x7984."
     }
   },
   "0x767c": {
@@ -6379,6 +6387,10 @@
     "d0": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x05284 is `move.w $e(a7), d0` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "stack4": {
+      "name": "strict",
+      "why": "its low word at 0xe(a7) is tested at 0x529e and decides only whether the three extra checks on the record in a3 are made - a flag, and nothing else."
     }
   },
   "0x5818": {
@@ -6669,6 +6681,10 @@
     "a1": {
       "name": "unused",
       "why": "dead on arrival: walking forward from this entry in address order, with no branch in between, 0x189a0 is `lea.l $200000.l, a1` - the register is destroyed before anything could read it. Proved by deadregs.py."
+    },
+    "d1": {
+      "name": "rowStep",
+      "why": "0x189be loads 0xc0 into it and 0x189c6 adds that to the screen pointer - one row of the glyph grid, the same step rotateOneRowColumnGlyph subtracts."
     }
   },
   "0x18a5e": {
@@ -7481,6 +7497,10 @@
     "stack8": {
       "name": "record",
       "why": "0x0cd54 is `movea.l $c(a6), a2`, and this routine has a frame pointer, so that offset IS this slot for the whole body. Every use of a2 afterwards both reads and writes through it. Found by stackroles.py."
+    },
+    "stack4": {
+      "name": "script",
+      "why": "loaded to d1 at 0xcd50 and carried untouched to the queue call; the routine's own work is all on the record in the second argument."
     }
   },
   "0xcf40": {
@@ -9321,6 +9341,58 @@
     "d2": {
       "name": "which",
       "why": "0xcbb6 assigns it the word at 0xa(a6) at the host and 0xcbfa moves it into d0 as the switch value - the case this dispatches on."
+    }
+  },
+  "0x13e0a": {
+    "stack4": {
+      "name": "out",
+      "why": "movea.l 0xc(a7),a2 at 0x13e12 and every piece of the formatted time is written through it - the colon at 0x13e34, and the pointer written back to the stack for the next call at 0x13e38."
+    },
+    "stack8": {
+      "name": "seconds",
+      "why": "loaded to d2 at 0x13e0e and divided by 0xe10 at 0x13e1e - 3600, the seconds in an hour - so the quotient is hours and the remainder goes on to the minutes."
+    }
+  },
+  "0xf4ca": {
+    "d4": {
+      "name": "slot",
+      "why": "0xf4fa reads the word at (a0) into it, tests it, uses it as an index at 0xf508 and writes it back to field 4 of the answer at 0xf522 - the slot this hands out."
+    }
+  },
+  "0x47c6": {
+    "d5": {
+      "name": "page",
+      "why": "cleared at 0x47ec, pushed as an argument at 0x47f8 and stepped modulo four at 0x4814 - which of the four palette pages this pass registers."
+    }
+  },
+  "0xd6e6": {
+    "d4": {
+      "name": "player",
+      "why": "cleared at the start of the walk, stepped once per item and bounded at three - it numbers the players the routine walks, not anything the caller passed."
+    }
+  },
+  "0xdb7e": {
+    "stack4": {
+      "name": "control",
+      "why": "its low word at 0xa(a6) becomes d2, which this family already calls control at the register it lands in."
+    }
+  },
+  "0x12222": {
+    "d3": {
+      "name": "byte",
+      "why": "0x1226e reads the source byte into it and 0x12270 adds the carried base before it is stored."
+    }
+  },
+  "0x44a2": {
+    "stack4": {
+      "name": "coord",
+      "why": "loaded to d2 at 0x44a8 and split at once into two bytes - the high half shifted down eight into one local, the low half into the next - which is how every packed coordinate in this ROM is taken apart."
+    }
+  },
+  "0x5e38": {
+    "stack4": {
+      "name": "cellAt",
+      "why": "0x5e48 subtracts the board base 0x3e0864 from it, then 0x5e50 shifts the difference down five for the row and 0x5e56 masks it to 0x1f for the column - the board's 32-byte rows, so this is a cell address turned back into coordinates."
     }
   }
 }
