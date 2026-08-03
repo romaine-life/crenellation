@@ -65,12 +65,19 @@ def main():
     # say which kind of unverified it is instead of landing in "unknown".
     #
     # One of those reasons is not about the port at all: the map no longer
-    # starts a routine at that address. 0x438 is the case - the capture session
-    # recorded it, and reachability has since merged it into 0x430, which
-    # starts six bytes earlier. No capture can ever verify it, because there is
-    # nothing there to verify; a decompiled function has one entry and this is
-    # not one. Counting it as "voided" reads as a gap in the translation, which
-    # it is not, so it gets its own class and leaves the denominator.
+    # starts a routine at that address. 0x438 is the only case, and it is not a
+    # near miss - it is the last two bytes of an immediate operand. 0x434 is
+    # `move.l #$55555555,d0`, which spans 0x434 through 0x439, so 0x438 sits
+    # inside the constant. It is not an instruction boundary, no jump table,
+    # pointer table or branch in the image names it, and out/jumptargets.json,
+    # inner_entries.json and ptrtargets.json are all empty of it. The
+    # classifier invented it once and reachability dropped it, correctly.
+    #
+    # So no capture can ever verify it: there is nothing there to verify.
+    # Counting it as "voided" reads as a gap in the translation, which it is
+    # not, so it gets its own class and leaves the denominator. 904 verified,
+    # 2 incomparable and this is the whole of 907 - the ceiling, not a
+    # shortfall.
     skipped = {int(r["entry"], 16): r.get("why", "")
                for r in result.get("skipped", [])}
     merged = sorted(e for e, why in skipped.items()

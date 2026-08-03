@@ -52,9 +52,12 @@ Worker, SharedArrayBuffer for pixels and input, so COOP/COEP headers matter).
   baselines, which is the only thing that makes their snapshots comparable, and
   the new lines were **appended** to `stepstate.log`, never regenerated.
 
-  The last one is not fixable and should not be: `0x438` is no longer a routine
-  head — reachability merged it into `0x430`, six bytes earlier — so there is
-  nothing there to verify. It has its own class rather than sitting in
+  The last one is not fixable and should not be: **`0x438` is the last two bytes
+  of an immediate operand.** `0x434` is `move.l #$55555555,d0`, which spans
+  0x434–0x439. It is not an instruction boundary, and no jump table, pointer
+  table or branch in the image names it. The classifier invented it once and
+  reachability dropped it, correctly. **904 + 2 incomparable is the ceiling,
+  not a shortfall.** It has its own class rather than sitting in
   `voided`, which would read as a gap in the translation.
 
   The earlier finding stands and is what made all this tractable: Two are
