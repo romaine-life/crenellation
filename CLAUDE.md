@@ -314,7 +314,7 @@ and is 2,334 of 4,419 after it: 3,778 parameters said nothing, 2,085 do.
   still worth naming for the routines, but it will not move this number.
   What is left is reading, one routine at a time, the same grind the 400
   hand-read routine names were.
-- **Dispatch loops are down from 228 to 11**, and `decompiled.ts` is *smaller*
+- **Dispatch loops are down from 228 to 1**, and `decompiled.ts` is *smaller*
   than before — 8.3 MB against 14 MB — because most of what those loops cost
   was duplication. **Count them with `grep -c 'dispatch:'`**: this said "0" for
   a day on the strength of grepping for `while (true)` and `switch (_pc)`,
@@ -331,7 +331,16 @@ and is 2,334 of 4,419 after it: 3,778 parameters said nothing, 2,085 do.
   exponentially — 219 MB on its own — and past 24,000 statements it falls back
   to the dispatch form, which is what that form is for.
   **`WHYDISPATCH=1 python3 blocks.py` prints why each routine falls back**, and
-  that is how all three were found.
+  that is how all three were found — and the fourth, which took it from 11 to
+  1. A loop with several ways out asked for the **header's** immediate
+  post-dominator, and a loop header post-dominates into its own body, because
+  the back-edge means every path from it re-enters. So the answer was always a
+  body node and always rejected. The node wanted is where the **exits**
+  converge: the nearest common post-dominator of the rejoin targets. All ten
+  had exactly two exits and a common continuation; nothing was looking for it.
+  The one left is `titleScreenRenderer`, and it is the budget working rather
+  than failing — structured it costs **5.48 million characters, 77,320 lines**,
+  taking the whole file from 8.26 MiB to 12.46 MiB for one routine.
 
 ## Regenerating
 

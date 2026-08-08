@@ -855,8 +855,38 @@ def loop_exit(edges, body, header):
     #
     # None means the loop has no common continuation at all, and then it
     # really does need the dispatch form.
-    after = ipdoms(edges).get(header)
+    # Where the EXITS converge, not where the header post-dominates. Asking
+    # for the header's immediate post-dominator is the wrong question about a
+    # loop: the back-edge means every path from the header re-enters the body,
+    # so its post-dominator is a body node and the test below rejected it.
+    # That is what put all ten remaining routines in the dispatch form, each
+    # with exactly two exits that did have a common continuation.
+    #
+    # The right node is the nearest common post-dominator of the rejoin
+    # targets - the first place every way out must reach. Walk each one up the
+    # post-dominator tree and take the first node they all share.
+    ip = ipdoms(edges)
+
+    def upward(n):
+        chain, seen = [], set()
+        while n is not None and n not in seen:
+            seen.add(n)
+            chain.append(n)
+            n = ip.get(n)
+        return chain
+
+    chains = [upward(m) for m in sorted(rejoin)]
+    after = None
+    for cand in chains[0]:
+        if all(cand in c for c in chains[1:]):
+            after = cand
+            break
     if after is None or after in body:
+        if os.environ.get("WHYDISPATCH"):
+            print(f"    multi-exit: {len(outs)} exits, {len(rejoin)} rejoin"
+                  f"; common post-dominator of the exits = "
+                  f"{'none' if after is None else 'INSIDE the loop body'}"
+                  f"; rejoin nodes {sorted(rejoin)}")
         raise Bail("loop with more than one way out")
     return after
 
