@@ -1,0 +1,14 @@
+after "one player: coin, join at the middle station, then fire": 21 distinct codes so far
+after "two players: both coin slots, left and right stations": 21 distinct codes so far
+
+distinct codes: 21
+bits ever set   : 0000111111111111
+bits always set : 0000000000000000
+bits that vary  : 0000111111111111
+max code        : 0xcd8
+codes >= 0x1000 : 0
+
+high nibble distribution:
+  0xxx : 21
+
+first 40 codes: 10d 385 76a 7e2 928 950 978 9a0 9c8 ac8 af0 af8 b00 b28 b50 b78 bb8 bd8 c00 c98 cd8
