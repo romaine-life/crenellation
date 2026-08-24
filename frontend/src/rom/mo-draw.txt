@@ -1,8 +1,7 @@
-frame 640, 7 sprites, 2688 pixels painted
-  slot 02  code 01a  at 0,486  2x3 tiles  = 16x24 px
-  slot 04  code 76a  at 0,208  8x1 tiles  = 64x8 px
-  slot 05  code ac8  at 64,208  8x1 tiles  = 64x8 px
-  slot 06  code b00  at 128,208  8x1 tiles  = 64x8 px
-  slot 07  code b28  at 192,208  8x1 tiles  = 64x8 px
-  slot 08  code b50  at 256,208  8x1 tiles  = 64x8 px
-  slot 09  code 7e2  at 320,208  2x1 tiles  = 16x8 px
+frame 600, 6 sprites, 0 pixels painted
+  slot 04  code 76a  at 0,246  8x1 tiles  = 64x8 px
+  slot 05  code ac8  at 64,246  8x1 tiles  = 64x8 px
+  slot 06  code b00  at 128,246  8x1 tiles  = 64x8 px
+  slot 07  code b28  at 192,246  8x1 tiles  = 64x8 px
+  slot 08  code b50  at 256,246  8x1 tiles  = 64x8 px
+  slot 09  code 7e2  at 320,246  2x1 tiles  = 16x8 px

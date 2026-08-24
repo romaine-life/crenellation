@@ -15,6 +15,21 @@ import { drawSprites, sprites } from './mo';
 
 /** Playfield bitmap: one byte per pixel, 512 across, 256 down. */
 export const PF_BASE = 0x200000;
+/**
+ * The first VISIBLE byte of a playfield row, four into it.
+ *
+ * Measured, not guessed. Sliding the port's frame against a MAME snapshot of
+ * the same moment peaks hard at +4: 95.5% of pixels identical there against
+ * 55.3% unshifted, with a clean single maximum either side. Vertically the
+ * best offset is zero, so only this axis was ever wrong.
+ *
+ * Every screenshot this port has produced was four pixels right of the real
+ * machine, and nothing caught it because both dispatchers were equally wrong -
+ * compose, writes and draws all compare the port against itself. It took a
+ * picture from the actual hardware to see it, which is the argument for having
+ * one. CLAUDE.md has said "screen at 0x200004" the whole time.
+ */
+export const PF_VISIBLE = 4;
 export const PF_STRIDE = 512;
 export const PF_ROWS = 256;
 
@@ -223,7 +238,7 @@ export class System {
     const out = into ?? new Uint32Array(SCREEN_W * SCREEN_H);
     const pal = this.palette();
     for (let y = 0; y < SCREEN_H; y += 1) {
-      const row = PF_BASE + y * PF_STRIDE;
+      const row = PF_BASE + PF_VISIBLE + y * PF_STRIDE;
       for (let x = 0; x < SCREEN_W; x += 1) {
         out[y * SCREEN_W + x] = pal[this.m.byte(row + x)];
       }
