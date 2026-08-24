@@ -1,0 +1,18 @@
+frame 640, 7 sprites
+
+bank   0: 2688 px, 1 distinct colours in the band, 1 of them black  000000
+bank  16: 2688 px, 1 distinct colours in the band, 1 of them black  000000
+bank  32: 2688 px, 6 distinct colours in the band  824949 9a6161 b27979 e3aaaa cb9292 fb2828
+bank  48: 2688 px, 6 distinct colours in the band  303092 4949a2 6969ba a2a2db 8282cb 0000eb
+bank  64: 2688 px, 6 distinct colours in the band  1069ba 1879c3 208ad3 30aae3 289adb 0082fb
+bank  80: 2688 px, 6 distinct colours in the band, 1 of them black  8a5959 a27171 ba8a8a ebbaba d3a2a2 000000
+bank  96: 2688 px, 6 distinct colours in the band, 1 of them black  3838a2 5959b2 7171cb b2b2f3 9292db 000000
+bank 112: 2688 px, 6 distinct colours in the band, 1 of them black  1871c3 288acb 389ad3 51c3eb 49b2db 000000
+bank 128: 2688 px, 6 distinct colours in the band  595959 696969 828282 a2a2a2 929292 002059
+bank 144: 2688 px, 6 distinct colours in the band  008200 008a00 009200 00aa00 00a200 00b200
+bank 160: 2688 px, 6 distinct colours in the band  590059 9a6918 a27930 ba9259 b28249 c3a271
+bank 176: 2688 px, 6 distinct colours in the band  1859a2 1861b2 2071cb 82aadb 699adb 92bae3
+bank 192: 2688 px, 6 distinct colours in the band  515151 616161 717171 9a9a9a 8a8a8a aaaaaa
+bank 208: 2688 px, 6 distinct colours in the band  d3ba9a cbaa82 c3a271 b28249 ba9259 a27930
+bank 224: 2688 px, 6 distinct colours in the band, 1 of them black  595959 696969 828282 a2a2a2 929292 000000
+bank 240: 2688 px, 6 distinct colours in the band, 1 of them black  696969 797979 929292 b2b2b2 a2a2a2 000000

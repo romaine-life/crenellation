@@ -40,6 +40,20 @@ export const TILE_BYTES = 32;
  */
 export const Y_BIAS = 18;
 
+/**
+ * Which sixteen palette entries a sprite's four-bit pixels land in.
+ *
+ * NOT settled. Bank 0 paints the band solid black and matches 0 of 2,688
+ * pixels against MAME. Of the sixteen candidates at this stride, 128 and 192
+ * are the only ones whose colours resemble the machine's - 0x515151, 0x616161,
+ * 0x717171 - and they still match only about 2%. So the colours are close and
+ * something else is wrong: tile order, tile index, or an alignment offset (the
+ * port's playfield sits four pixels right of MAME's at the same row, which is
+ * its own unexplained thing). 192 is the best of a bad set, kept as a named
+ * constant so it is obviously a guess rather than a finding.
+ */
+export const SPRITE_BANK = 192;
+
 export type Sprite = {
   slot: number; code: number; x: number; y: number; w: number; h: number;
 };
@@ -76,7 +90,7 @@ export function sprites(m: Machine, yBias = Y_BIAS): Sprite[] {
  */
 export function drawSprites(
   out: Uint32Array, mo: Uint8Array, pal: Uint32Array, list: Sprite[],
-  screenW: number, screenH: number, bank = 0,
+  screenW: number, screenH: number, bank = SPRITE_BANK,
 ): number {
   let painted = 0;
   for (const s of list) {
