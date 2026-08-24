@@ -63,7 +63,7 @@ type Layer = { name: string; state: 'done' | 'part' | 'none'; note: string };
 const LAYERS: Layer[] = [
   { name: 'CPU', state: 'done', note: '68000 core, verified instruction by instruction against the chip' },
   { name: 'Playfield', state: 'done', note: '336×240 bitmap the ROM writes, with the palette decoded at its real stride' },
-  { name: 'Motion objects', state: 'none', note: 'a sprite layer the port never reads. The board keeps a display list that stays populated the whole time the game runs; terrain, castles, walls, cannons and ships all come from the playfield, so what is on that list has not been pinned down yet.' },
+  { name: 'Motion objects', state: 'none', note: 'a sprite layer the port never reads - so terrain, castles, walls, cannons and ships all come from the playfield. The list itself is now decoded and checked against a running machine (molist.test.ts): base 0x3e0000, eight bytes a slot, 0x47 slots, double-buffered at +0x230. Each slot is link, graphic, x, y. At frame 300 it is a pristine free list; by frame 600 six ships sit in it with real graphic codes. What is missing is a renderer, not an understanding.' },
   { name: 'Sound', state: 'none', note: 'YM2413 and OKI6295 writes are seen and ignored. Nothing is audible.' },
   { name: 'Input', state: 'part', note: 'every bit measured; one player station of three is on the keyboard' },
   { name: 'Timing', state: 'part', note: 'the game clock runs 1.4x slow, down from 7.6x. A round now plays through to its score screen.' },
