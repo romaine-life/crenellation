@@ -8,8 +8,12 @@
 // Everything here is checked against a real machine (romlab/mosnap.lua takes a
 // MAME snapshot and dumps the list at the same instant):
 //
-//   list    0x3e0000, eight bytes a slot, 0x47 slots, double-buffered at
-//           +0x230. spriteSlotAddress calls the halt stub above 0x46, so that
+//   list    0x3e0000, eight bytes a slot, 0x47 slots. NOT double-buffered:
+//           the region at +0x230 was counted as a second bank once, on a
+//           tally of non-zero bytes rather than of entries. Read as a
+//           list it holds bank zero's entries plus rows whose codes are
+//           0x5204 upwards - above the twelve bits a tile index has -
+//           at x 0 y 0. It is unrelated RAM. spriteSlotAddress calls the halt stub above 0x46, so that
 //           bound is the hardware's.
 //   +0      link to the next slot
 //   +2      tile index, twelve bits. Nothing above bit 11 is ever set.

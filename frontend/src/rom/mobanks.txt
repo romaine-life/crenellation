@@ -1,0 +1,29 @@
+frame 640
+bank 0 at 0x3e0000: 7 entries with a graphic
+  slot 02  code 01a  x   0  y 504  xlow 32  ylow 11
+  slot 04  code 76a  x   0  y 226  xlow 30  ylow 74
+  slot 05  code ac8  x  64  y 226  xlow 30  ylow 74
+  slot 06  code b00  x 128  y 226  xlow 30  ylow 74
+  slot 07  code b28  x 192  y 226  xlow 30  ylow 74
+  slot 08  code b50  x 256  y 226  xlow 30  ylow 74
+  slot 09  code 7e2  x 320  y 226  xlow 30  ylow 14
+bank 1 at 0x3e0230: 19 entries with a graphic
+  slot 02  code 01a  x   0  y 504  xlow 32  ylow 11
+  slot 04  code 76a  x   0  y 226  xlow 30  ylow 74
+  slot 05  code ac8  x  64  y 226  xlow 30  ylow 74
+  slot 06  code b00  x 128  y 226  xlow 30  ylow 74
+  slot 07  code b28  x 192  y 226  xlow 30  ylow 74
+  slot 08  code b50  x 256  y 226  xlow 30  ylow 74
+  slot 09  code 7e2  x 320  y 226  xlow 30  ylow 14
+  slot 11  code 04a  x   0  y   0  xlow 04  ylow 00
+  slot 12  code 048  x   0  y   0  xlow 00  ylow 0a
+  slot 13  code 009  x   0  y   0  xlow 09  ylow 00
+  slot 17  code 201  x   0  y   0  xlow 03  ylow 00
+  slot 19  code 202  x   0  y   0  xlow 01  ylow 04
+  slot 1b  code 203  x   0  y   0  xlow 00  ylow 00
+  slot 1d  code 5204  x   0  y   2  xlow 05  ylow 0e
+  slot 1f  code 5205  x   0  y   2  xlow 06  ylow 0e
+  slot 21  code 5206  x   0  y   2  xlow 07  ylow 0e
+  slot 23  code 5207  x   0  y   2  xlow 08  ylow 0e
+  slot 25  code 5208  x   0  y   2  xlow 09  ylow 0e
+  slot 27  code 5209  x   0  y   2  xlow 00  ylow 0e
