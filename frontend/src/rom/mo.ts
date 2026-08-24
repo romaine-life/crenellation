@@ -28,15 +28,24 @@ export const MO_SLOTS = 0x47;
 /** 8x8 tiles, 4bpp packed nibbles, 32 bytes each - 4,096 of them in mo.bin. */
 export const TILE_BYTES = 32;
 
-/** The rows between what the y word counts and what the screen shows. */
-export const Y_BIAS = Number(process.env.MO_YBIAS ?? 18);
+/**
+ * The rows between what the y word counts and what the screen shows.
+ *
+ * Calibrated, not derived: at the frame MAME and the port both put the bar at
+ * row 208, the y word counts 226. Nothing has explained the difference yet, so
+ * it is a parameter of `sprites` rather than a constant folded into it.
+ *
+ * It is NOT read from process.env - this module runs in the browser inside the
+ * worker, where `process` does not exist, and reaching for it blanked the page.
+ */
+export const Y_BIAS = 18;
 
 export type Sprite = {
   slot: number; code: number; x: number; y: number; w: number; h: number;
 };
 
 /** Every populated slot, decoded. Reads the list, decides nothing. */
-export function sprites(m: Machine): Sprite[] {
+export function sprites(m: Machine, yBias = Y_BIAS): Sprite[] {
   const w16 = (a: number): number => (m.byte(a) << 8) | m.byte(a + 1);
   const out: Sprite[] = [];
   for (let s = 0; s < MO_SLOTS; s += 1) {
@@ -49,7 +58,7 @@ export function sprites(m: Machine): Sprite[] {
       slot: s,
       code: code & 0xfff,
       x: xw >> 7,
-      y: (yw >> 7) - Y_BIAS,
+      y: (yw >> 7) - yBias,
       h: (xw & 0xf) + 1,
       w: ((yw >> 4) & 7) + 1,
     });

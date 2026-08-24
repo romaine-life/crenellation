@@ -24,15 +24,21 @@ export type StartMessage = {
   board: ArrayBuffer;
   ctrl: SharedArrayBuffer;
   pixels: SharedArrayBuffer;
+  /** The motion-object graphics. The game draws sprites; the tests do not. */
+  mo?: ArrayBuffer;
 };
 
 const FRAME_MS = 1000 / 60;
 
 self.onmessage = (ev: MessageEvent<StartMessage>) => {
-  const { rom, board, ctrl, pixels } = ev.data;
+  const { rom, board, ctrl, pixels, mo } = ev.data;
   const c = new Int32Array(ctrl);
   const px = new Uint32Array(pixels);
   const sys = new System(new Uint8Array(rom), new Uint8Array(board));
+  // The sprite layer is opt-in, and this is the one place that opts in: the
+  // equivalence harnesses compare the playfield alone and must keep doing so,
+  // because no part of the sprite layer is lifted from the ROM.
+  if (mo) { sys.mo = new Uint8Array(mo); sys.drawMotionObjects = true; }
 
   // Idle is every bit high - a button reads clear only while it is held. Bit 3
   // of the first byte is not a button and the System drives it itself, so it

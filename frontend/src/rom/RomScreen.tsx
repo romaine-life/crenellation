@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import romUrl from './rom.bin?url';
 import boardUrl from './io-baseline.bin?url';
+import moUrl from './mo.bin?url';
 import { CTRL_FRAME, CTRL_IN0, CTRL_STEPS, CTRL_TRACK, CTRL_WORDS } from './worker';
 
 const SCREEN_W = 336;
@@ -63,9 +64,10 @@ export function Rampart() {
     let done = false;
 
     (async () => {
-      const [rom, board] = await Promise.all([
+      const [rom, board, mo] = await Promise.all([
         fetch(romUrl).then((r) => r.arrayBuffer()),
         fetch(boardUrl).then((r) => r.arrayBuffer()),
+        fetch(moUrl).then((r) => r.arrayBuffer()),
       ]);
       if (done) return;
 
@@ -74,7 +76,7 @@ export function Rampart() {
       worker.onmessage = (ev: MessageEvent<{ stopped?: string; frames?: number }>) => {
         if (ev.data.stopped) setNote(`the machine stopped after ${ev.data.frames} frames: ${ev.data.stopped}`);
       };
-      worker.postMessage({ rom, board, ctrl, pixels }, [rom, board]);
+      worker.postMessage({ rom, board, ctrl, pixels, mo }, [rom, board, mo]);
 
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext('2d');

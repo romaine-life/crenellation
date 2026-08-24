@@ -11,6 +11,7 @@
 
 import { Machine, PendingInterrupt } from './machine';
 import { call, bind } from './decompiled';
+import { drawSprites, sprites } from './mo';
 
 /** Playfield bitmap: one byte per pixel, 512 across, 256 down. */
 export const PF_BASE = 0x200000;
@@ -206,6 +207,17 @@ export class System {
     return out;
   }
 
+  /**
+   * Paint the motion objects over the playfield as well.
+   *
+   * Off by default, and deliberately so: every equivalence harness compares
+   * this screen between the two dispatchers, and they must go on seeing the
+   * picture they have always seen. The sprite layer is not lifted from the
+   * ROM - no code in it draws sprites - so it is not part of what those tests
+   * prove and must not silently enter their numbers.
+   */
+  drawMotionObjects = false;
+
   /** The visible screen as RGBA, one word per pixel. */
   screen(into?: Uint32Array): Uint32Array {
     const out = into ?? new Uint32Array(SCREEN_W * SCREEN_H);
@@ -216,6 +228,12 @@ export class System {
         out[y * SCREEN_W + x] = pal[this.m.byte(row + x)];
       }
     }
+    if (this.drawMotionObjects && this.mo) {
+      drawSprites(out, this.mo, pal, sprites(this.m), SCREEN_W, SCREEN_H);
+    }
     return out;
   }
+
+  /** The motion-object graphics, if the caller has loaded them. */
+  mo: Uint8Array | null = null;
 }
