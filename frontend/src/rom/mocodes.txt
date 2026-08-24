@@ -11,4 +11,10 @@ codes >= 0x1000 : 0
 high nibble distribution:
   0xxx : 21
 
+
+x low 7 bits : 5 distinct -> 30 32 33 39 3a
+y low 7 bits : 10 distinct -> 11 14 30 36 37 55 70 74 76 77
+x above bit 6: 17 distinct -> 0 18 20 28 30 40 50 58 60 78 80 a8 b8 c0 e8 100 140
+y above bit 6: 119 distinct -> e5 e6 ea eb ef f0 f4 f5 f9 fa fe ff 103 104 108 109 10d 10e 112 113 117 118 11c 11d
+
 first 40 codes: 10d 385 76a 7e2 928 950 978 9a0 9c8 ac8 af0 af8 b00 b28 b50 b78 bb8 bd8 c00 c98 cd8

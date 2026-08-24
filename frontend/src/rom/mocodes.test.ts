@@ -29,6 +29,8 @@ describe('the code field in a display-list slot', () => {
   it('says which of its bits actually vary', () => {
     original();
     const seen = new Set<number>();
+    const xs = new Set<number>(); const ys = new Set<number>();
+    const xc = new Set<number>(); const yc = new Set<number>();
     const lines: string[] = [];
 
     for (const pat of PATTERNS.filter((p) => /one player|two players/.test(p.name))) {
@@ -44,7 +46,12 @@ describe('the code field in a display-list slot', () => {
           if (n % 5 === 0) {
             for (let s = 0; s < SLOTS; s += 1) {
               const c = w(BASE + s * 8 + 2);
-              if (c) seen.add(c);
+              if (!c) continue;
+              seen.add(c);
+              xs.add(w(BASE + s * 8 + 4) & 0x7f);
+              ys.add(w(BASE + s * 8 + 6) & 0x7f);
+              xc.add(w(BASE + s * 8 + 4) >> 7);
+              yc.add(w(BASE + s * 8 + 6) >> 7);
             }
           }
           if (n >= FRAMES) throw STOP;
@@ -72,6 +79,15 @@ describe('the code field in a display-list slot', () => {
     for (const [hi, k] of [...byHi].sort((a, b) => a[0] - b[0])) {
       lines.push(`  ${hi.toString(16)}xxx : ${k}`);
     }
+    lines.push('');
+    const show = (n: string, s: Set<number>) => lines.push(
+      `${n}: ${s.size} distinct -> ` + [...s].sort((a, b) => a - b)
+        .slice(0, 24).map((v) => v.toString(16)).join(' '));
+    lines.push('');
+    show('x low 7 bits ', xs);
+    show('y low 7 bits ', ys);
+    show('x above bit 6', xc);
+    show('y above bit 6', yc);
     lines.push('');
     lines.push('first 40 codes: ' + codes.slice(0, 40).map((c) => c.toString(16)).join(' '));
 
