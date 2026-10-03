@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@azure/identity": "^4.13.1",
-    "@azure/storage-blob": "^12.33.0",
+    "@azure/storage-blob": "^12.34.0",
     "express": "^5.2.1",
     "pg": "^8.22.0"
   }
