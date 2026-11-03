@@ -28,6 +28,7 @@ jobs:
     env:
       REGISTRY: romainecr.azurecr.io
       IMAGE: crenellation
+      FRONTEND_CHECK_COMMAND: npm --prefix frontend run check
     services:
       postgres:
         image: postgres:16
@@ -88,6 +89,65 @@ jobs:
             backend/package-lock.json
             frontend/package-lock.json
 
+      - name: Determine frontend check
+        id: frontend_check
+        if: steps.relevance.outputs.run == 'true'
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          node <<'NODE'
+          const { execFileSync } = require('node:child_process');
+          const { appendFileSync } = require('node:fs');
+          const git = (...args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+          const read = (ref, path) => git('show', `${ref}:${path}`);
+          const workflowPath = '.forgejo/workflows/build-and-deploy.yaml';
+          function contract(ref) {
+            const workflow = read(ref, workflowPath);
+            const versions = [...workflow.matchAll(/^ +node-version: *(.+)$/gm)].map((m) => m[1]);
+            if (versions.length !== 1) throw new Error('Unknown Node version configuration');
+            const backend = JSON.parse(read(ref, 'backend/package.json'));
+            const commands = backend.scripts.test.split('&&').map((s) => s.trim());
+            const inherited = commands.filter((s) => /^npm --prefix \.\.\/frontend run check(?: |$)/.test(s));
+            if (inherited.length !== 1) throw new Error('Unknown default frontend check command');
+            const explicit = workflow.match(/^ +FRONTEND_CHECK_COMMAND: *(.+)$/m);
+            if (explicit && !/^ +run: \$FRONTEND_CHECK_COMMAND *$/m.test(workflow)) {
+              throw new Error('Unknown workflow frontend check invocation');
+            }
+            if (!explicit && !/^ +npm test *$/m.test(workflow)) {
+              throw new Error('Unknown inherited frontend check invocation');
+            }
+            const command = explicit ? explicit[1] : inherited[0].replace('../frontend', 'frontend');
+            // ROM trial lengths and selection also depend on workflow environment values.
+            const env = [...new Set(workflow.split('\n').filter((line) => /^ +[A-Z][A-Z0-9_]*:/.test(line)
+              && !/^ +FRONTEND_CHECK_COMMAND:/.test(line)).map((line) => line.trim()))].sort();
+            const setup = workflow.match(/^ +(?:- )?uses: .*actions\/setup-node@.+$/m)?.[0].trim();
+            if (!setup) throw new Error('Unknown Node setup action');
+            return JSON.stringify({ versions, setup, command, inherited: inherited[0].replace('../frontend', 'frontend'), env });
+          }
+          let run = true;
+          try {
+            const base = process.env.BASE_SHA;
+            if (process.env.EVENT === 'workflow_dispatch' || !base) throw new Error('No event comparison base');
+            git('cat-file', '-e', `${base}^{commit}`);
+            const changed = git('diff', '--name-only', '-z', base, 'HEAD').split('\0').filter(Boolean);
+            const inputs = changed.some((path) => {
+              if (/^(frontend|romlab)\//.test(path)) return true;
+              if (path === workflowPath) return false; // Compare its execution contract below.
+              if (/^(backend|bin|docs|k8s|scripts|tofu|tools|\.github)\//.test(path)) return false;
+              if (path === '.forgejo/workflows/tofu.yaml') return false;
+              if (/^(CLAUDE|DELIVERY|DISASSEMBLY|README|ROUTINES)\.md$/.test(path)) return false;
+              return true; // Root config, locks and unfamiliar inputs require a full check.
+            });
+            run = inputs || contract(base) !== contract('HEAD');
+            console.log(run ? 'Frontend inputs or execution contract changed; run the complete check.'
+              : 'Frontend inputs and execution contract are unchanged; reuse their existing test evidence.');
+          } catch (error) {
+            console.log(`Run the complete frontend check: ${error.message}`);
+          }
+          appendFileSync(process.env.GITHUB_OUTPUT, `run=${run}\n`);
+          NODE
+
       - name: Install Azure CLI
         if: steps.relevance.outputs.run == 'true'
         run: |
@@ -103,7 +163,11 @@ jobs:
           DATABASE_URL: postgres://crenellation:crenellation@localhost:5432/crenellation
         run: |
           npm ci
-          npm test
+          npm run test:backend
+
+      - name: Check frontend
+        if: steps.relevance.outputs.run == 'true' && steps.frontend_check.outputs.run == 'true'
+        run: $FRONTEND_CHECK_COMMAND
 
       - name: Azure Login
         if: steps.relevance.outputs.run == 'true'

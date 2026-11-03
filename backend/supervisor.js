@@ -36,7 +36,11 @@ function startChild() {
   child = spawn(process.execPath, [hotServer], {
     cwd: path.dirname(hotServer),
     env: childEnv(),
-    stdio: 'inherit',
+    stdio: process.send ? ['inherit', 'inherit', 'inherit', 'ipc'] : 'inherit',
+  });
+
+  child.on('message', (message) => {
+    if (process.connected) process.send(message);
   });
 
   child.on('exit', (code, signal) => {
@@ -92,5 +96,6 @@ function stop(signal) {
 process.on('SIGHUP', restartChild);
 process.on('SIGTERM', () => stop('SIGTERM'));
 process.on('SIGINT', () => stop('SIGINT'));
+if (process.send) process.on('disconnect', () => stop('SIGTERM'));
 
 startChild();

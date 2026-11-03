@@ -5,9 +5,16 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const port = 31337;
-const authPort = 31338;
-const bgmPort = 31339;
+let port = null;
+let authPort = null;
+let bgmPort = null;
+let child = null;
+let childError = null;
+let output = '';
+let stopping = false;
+let cleanupPromise = null;
+let fixtureSchema = null;
+let startupPromise = null;
 const hotRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'chess-tactics-hot-'));
 const hotBackendDir = path.join(hotRoot, 'backend');
 const hotStaticDir = path.join(hotRoot, 'static');
@@ -99,19 +106,18 @@ function startEmbeddedPostgres() {
     throw new Error('smoke-test needs Postgres: set DATABASE_URL, or install Postgres so it can self-provision (initdb/pg_ctl/createdb not found).');
   }
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ct-pg-'));
-  const pgPort = 55432;
+  embeddedPg = { dataDir, pgCtl };
   const init = spawnSync(initdb, ['-D', dataDir, '-U', 'postgres', '--auth=trust', '-E', 'UTF8'], { encoding: 'utf8' });
   if (init.status !== 0) throw new Error(`initdb failed: ${init.stderr || init.stdout}`);
   const logFile = path.join(dataDir, 'pg.log');
-  const start = spawnSync(pgCtl, ['-D', dataDir, '-w', '-l', logFile, '-o', `-p ${pgPort} -h 127.0.0.1 -k ${dataDir}`, 'start'], { encoding: 'utf8' });
+  const start = spawnSync(pgCtl, ['-D', dataDir, '-w', '-l', logFile, '-o', `-h '' -k "${dataDir}"`, 'start'], { encoding: 'utf8' });
   if (start.status !== 0) {
     const log = fs.existsSync(logFile) ? fs.readFileSync(logFile, 'utf8') : '';
     throw new Error(`pg_ctl start failed: ${start.stderr || start.stdout}\n${log}`);
   }
-  embeddedPg = { dataDir, pgCtl };
-  const created = spawnSync(createdb, ['-h', '127.0.0.1', '-p', String(pgPort), '-U', 'postgres', 'chess_tactics'], { encoding: 'utf8' });
+  const created = spawnSync(createdb, ['-h', dataDir, '-U', 'postgres', 'chess_tactics'], { encoding: 'utf8' });
   if (created.status !== 0) throw new Error(`createdb failed: ${created.stderr || created.stdout}`);
-  process.env.DATABASE_URL = `postgres://postgres@127.0.0.1:${pgPort}/chess_tactics`;
+  process.env.DATABASE_URL = `postgres://postgres@localhost/chess_tactics?host=${encodeURIComponent(dataDir)}`;
 }
 
 function stopEmbeddedPostgres() {
@@ -124,42 +130,57 @@ function stopEmbeddedPostgres() {
 
 process.on('exit', stopEmbeddedPostgres);
 
-if (!process.env.DATABASE_URL) {
-  startEmbeddedPostgres();
+async function startBackend() {
+  if (!process.env.DATABASE_URL) {
+    startEmbeddedPostgres();
+  }
+  // Migrations and document writes must belong only to this smoke invocation.
+  const schema = `smoke_${crypto.randomBytes(12).toString('hex')}`;
+  await queryDb(`CREATE SCHEMA ${schema}`);
+  fixtureSchema = schema;
+  const isolatedUrl = new URL(process.env.DATABASE_URL);
+  const options = isolatedUrl.searchParams.get('options') || '';
+  isolatedUrl.searchParams.set('options', `${options} -c search_path=${schema}`.trim());
+  process.env.DATABASE_URL = isolatedUrl.toString();
+  if (stopping) throw new Error('Smoke test is stopping');
+
+  child = spawn(process.execPath, ['supervisor.js'], {
+    cwd: __dirname,
+    env: {
+      ...process.env,
+      AUTH_BASE_URL: `http://127.0.0.1:${authPort}`,
+      PORT: '0',
+      PUBLIC_ORIGIN: 'https://chess.romaine.life',
+      BGM_BASE_URL: `http://127.0.0.1:${bgmPort}`,
+      // Non-Azure base: exercise the static-index path (the mock serves index.json).
+      // Prod sets no BGM_READ_URL and lists the Azure container live instead.
+      BGM_READ_URL: `http://127.0.0.1:${bgmPort}`,
+      HOT_BACKEND_DIR: hotBackendDir,
+      STATIC_FRONTEND_DIR: hotStaticDir,
+      // The mock auth returns player@example.com for any non-rival session; make that
+      // the official-campaigns admin so the requireAdmin path is exercised (ADR-0038).
+      ADMIN_EMAILS: 'player@example.com',
+      // DATABASE_URL is set above (external or self-provisioned) and inherited
+      // here via ...process.env.
+    },
+    stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
+  });
+
+  child.on('error', (error) => { childError = error; });
+  child.on('message', (message) => {
+    if (message.type === 'listening') port = message.port;
+  });
+  child.stdout.on('data', (chunk) => {
+    output += chunk.toString();
+  });
+  child.stderr.on('data', (chunk) => {
+    output += chunk.toString();
+  });
 }
-
-const child = spawn(process.execPath, ['supervisor.js'], {
-  cwd: __dirname,
-  env: {
-    ...process.env,
-    AUTH_BASE_URL: `http://127.0.0.1:${authPort}`,
-    PORT: String(port),
-    PUBLIC_ORIGIN: 'https://chess.romaine.life',
-    BGM_BASE_URL: `http://127.0.0.1:${bgmPort}`,
-    // Non-Azure base: exercise the static-index path (the mock serves index.json).
-    // Prod sets no BGM_READ_URL and lists the Azure container live instead.
-    BGM_READ_URL: `http://127.0.0.1:${bgmPort}`,
-    HOT_BACKEND_DIR: hotBackendDir,
-    STATIC_FRONTEND_DIR: hotStaticDir,
-    // The mock auth returns player@example.com for any non-rival session; make that
-    // the official-campaigns admin so the requireAdmin path is exercised (ADR-0038).
-    ADMIN_EMAILS: 'player@example.com',
-    // DATABASE_URL is set above (external or self-provisioned) and inherited
-    // here via ...process.env.
-  },
-  stdio: ['ignore', 'pipe', 'pipe'],
-});
-
-let output = '';
-child.stdout.on('data', (chunk) => {
-  output += chunk.toString();
-});
-child.stderr.on('data', (chunk) => {
-  output += chunk.toString();
-});
 
 function request(method, path, headers = {}, body = null) {
   return new Promise((resolve, reject) => {
+    if (port === null) return reject(new Error('Server has not reported its listening port'));
     const req = http.request({ hostname: '127.0.0.1', port, method, path, headers }, (res) => {
       let body = '';
       res.setEncoding('utf8');
@@ -201,8 +222,8 @@ async function queryDb(sql, params = []) {
 
 async function waitForServer() {
   for (let attempt = 0; attempt < 30; attempt += 1) {
-    if (child.exitCode !== null) {
-      throw new Error(`Server exited early with ${child.exitCode}\n${output}`);
+    if (stopping || childError || child.exitCode !== null || child.signalCode !== null) {
+      throw new Error(`Server stopped before becoming healthy: ${childError || child.exitCode || child.signalCode}\n${output}`);
     }
     try {
       const response = await get('/health');
@@ -216,8 +237,8 @@ async function waitForServer() {
 
 async function waitForHotBackend() {
   for (let attempt = 0; attempt < 30; attempt += 1) {
-    if (child.exitCode !== null) {
-      throw new Error(`Server exited early with ${child.exitCode}\n${output}`);
+    if (stopping || childError || child.exitCode !== null || child.signalCode !== null) {
+      throw new Error(`Server stopped before becoming healthy: ${childError || child.exitCode || child.signalCode}\n${output}`);
     }
     try {
       const response = await get('/__hot_backend');
@@ -229,9 +250,24 @@ async function waitForHotBackend() {
   throw new Error(`Hot backend did not become active\n${output}`);
 }
 
+async function listen(server) {
+  if (stopping) throw new Error('Smoke test is stopping');
+  await new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', () => {
+      server.removeListener('error', reject);
+      resolve();
+    });
+  });
+  return server.address().port;
+}
+
 async function main() {
-  await new Promise((resolve) => mockAuth.listen(authPort, '127.0.0.1', resolve));
-  await new Promise((resolve) => mockBgm.listen(bgmPort, '127.0.0.1', resolve));
+  authPort = await listen(mockAuth);
+  bgmPort = await listen(mockBgm);
+  if (stopping) throw new Error('Smoke test is stopping');
+  startupPromise = startBackend();
+  await startupPromise;
   await waitForServer();
   if (!fs.existsSync(path.join(hotBackendDir, 'server.js'))) {
     throw new Error('Supervisor did not initialize the hot backend entrypoint');
@@ -964,6 +1000,7 @@ async function main() {
       "app.get('/__hot_backend', (_req, res) => res.status(200).send('hot-backend-ok'));\n\napp.get('/health', (_req, res) => {",
     ),
   );
+  port = null;
   child.kill('SIGHUP');
   await waitForHotBackend();
   const hotBackend = await get('/__hot_backend');
@@ -972,13 +1009,39 @@ async function main() {
   }
 }
 
+function cleanup() {
+  if (cleanupPromise) return cleanupPromise;
+  stopping = true;
+  cleanupPromise = (async () => {
+    if (startupPromise) await startupPromise.catch(() => {});
+    if (child && child.exitCode === null && child.signalCode === null) {
+      await new Promise((resolve) => {
+        child.once('close', resolve);
+        child.kill('SIGTERM');
+      });
+    }
+    await Promise.all([mockAuth, mockBgm].map((server) => new Promise((resolve) => {
+      server.close(resolve);
+      server.closeAllConnections();
+    })));
+    try {
+      if (fixtureSchema) await queryDb(`DROP SCHEMA ${fixtureSchema} CASCADE`);
+    } finally {
+      stopEmbeddedPostgres();
+      fs.rmSync(hotRoot, { recursive: true, force: true });
+    }
+  })();
+  return cleanupPromise;
+}
+
+for (const [signal, code] of [['SIGINT', 130], ['SIGTERM', 143]]) {
+  process.once(signal, () => {
+    cleanup().finally(() => process.exit(code));
+  });
+}
+
 main()
-  .finally(() => {
-    child.kill();
-    mockAuth.close();
-    mockBgm.close();
-    fs.rmSync(hotRoot, { recursive: true, force: true });
-  })
+  .finally(cleanup)
   .catch((error) => {
     console.error(error);
     process.exitCode = 1;

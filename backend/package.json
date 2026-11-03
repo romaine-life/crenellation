@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node supervisor.js",
-    "test": "npm --prefix ../frontend ci && npm --prefix ../frontend run check && npm --prefix ../frontend run build && node --check server.js && node --check supervisor.js && node --check smoke-test.js && sh -n ../bin/agent-preview && sh -n ../bin/agent-preview-status && node smoke-test.js"
+    "test": "npm run test:backend && npm --prefix ../frontend run check",
+    "test:backend": "npm --prefix ../frontend ci && npm --prefix ../frontend run build && node --check server.js && node --check supervisor.js && node --check smoke-test.js && sh -n ../bin/agent-preview && sh -n ../bin/agent-preview-status && node --test smoke-test.test.js"
   },
   "dependencies": {
     "@azure/identity": "^4.13.1",

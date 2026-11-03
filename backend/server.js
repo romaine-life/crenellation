@@ -1867,8 +1867,10 @@ app.use((req, res) => {
 });
 
 function startServer() {
-  app.listen(port, () => {
-    console.log(`chess-tactics listening on :${port}`);
+  const server = app.listen(port, () => {
+    const listeningPort = server.address().port;
+    console.log(`chess-tactics listening on :${listeningPort}`);
+    if (process.connected) process.send({ type: 'listening', port: listeningPort });
   });
 }
 
