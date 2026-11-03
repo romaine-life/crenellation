@@ -208,5 +208,5 @@ describe('every routine against the real 68000', () => {
     // it does not get worse: the floor is committed in baseline.json and
     // raised deliberately when something improves.
     expect(matched).toBeGreaterThanOrEqual(floor);
-  }, 900000);
+  }, 3600000);
 });

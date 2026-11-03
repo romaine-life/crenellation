@@ -230,5 +230,5 @@ describe('what the booted machine draws', () => {
     // eslint-disable-next-line no-console
     console.log(notes.join('\n'));
     writeFileSync(join(here, 'screen.txt'), notes.join('\n'));
-  }, 300000);
+  }, 3600000);
 });

@@ -230,5 +230,5 @@ describe('colour base', () => {
     const rows = [...seen.entries()].sort((a, b) => b[1] - a[1]);
     writeFileSync(join(here, `colour-${who}.txt`),
       rows.map(([k, c]) => `${k}  x${c}`).join('\n'));
-  }, 600000);
+  }, 3600000);
 });

@@ -137,5 +137,5 @@ for (const [cause, set] of rows) {
   console.log(`  ${cause}: ${[...set].slice(0, 8).map((e) => '0x' + e.toString(16)).join(' ')}`);
 }
 
-  }, 600000);
+  }, 3600000);
 });

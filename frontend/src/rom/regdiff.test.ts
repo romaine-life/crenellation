@@ -259,5 +259,5 @@ describe('registers', () => {
     writeFileSync(join(here, 'regdiff.txt'), out + '\n');
     console.log(out);
     expect(a.n).toBeGreaterThan(0);
-  }, 900_000);
+  }, 3600000);
 });

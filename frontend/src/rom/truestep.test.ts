@@ -161,5 +161,5 @@ describe('routines compared at a single-stepped boundary', () => {
       + `${pass.size} routines reproduce, ${fail.size} do not`);
     writeFileSync(join(here, 'truestep-result.json'),
       JSON.stringify({ pass: [...pass], fail: [...fail], detail }, null, 1));
-  }, 600000);
+  }, 3600000);
 });

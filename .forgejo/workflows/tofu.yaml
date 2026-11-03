@@ -1,0 +1,158 @@
+name: Infrastructure
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: tofu-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  tofu:
+    name: Plan and apply
+    runs-on: windows-latest
+    enable-openid-connect: true
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      ARM_USE_OIDC: 'true'
+      ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect relevant changes
+        id: relevance
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          $relevant = $true
+          $tofuChanged = $false
+          if ($env:EVENT -ne 'workflow_dispatch' -and $env:BASE_SHA) {
+            git cat-file -e "$($env:BASE_SHA)^{commit}" 2>$null
+            if ($LASTEXITCODE -eq 0) {
+              $changed = @(git diff --name-only $env:BASE_SHA HEAD)
+              $tofuChanged = @($changed | Where-Object { $_ -cmatch '^tofu/' }).Count -gt 0
+              if ($changed.Count -gt 0 -and @($changed | Where-Object { $_ -cnotmatch '^\.github/' }).Count -eq 0) {
+                $relevant = $false
+                Write-Host 'Only GitHub mirror configuration changed; infrastructure inputs are unchanged.'
+              }
+            }
+          }
+          "run=$($relevant.ToString().ToLowerInvariant())" | Add-Content $env:GITHUB_OUTPUT
+          "tofu_changed=$($tofuChanged.ToString().ToLowerInvariant())" | Add-Content $env:GITHUB_OUTPUT
+          exit 0
+
+      - name: Isolate Azure CLI state
+        if: steps.relevance.outputs.run == 'true'
+        run: |
+          if (-not $env:RUNNER_TEMP -or -not $env:GITHUB_RUN_ID) { throw 'Runner temporary directory or run ID is missing' }
+          $directory = Join-Path $env:RUNNER_TEMP "azure-$env:GITHUB_RUN_ID"
+          New-Item -ItemType Directory -Force -Path $directory | Out-Null
+          "AZURE_CONFIG_DIR=$directory" | Add-Content $env:GITHUB_ENV -Encoding utf8NoBOM
+          Write-Host "Azure CLI configuration directory: $directory"
+
+      - uses: https://github.com/opentofu/setup-opentofu@v1
+        if: steps.relevance.outputs.run == 'true'
+        with:
+          tofu_version: '1.9.0'
+          tofu_wrapper: false
+
+      - uses: https://github.com/azure/login@v2
+        if: steps.relevance.outputs.run == 'true'
+        with:
+          client-id: ${{ vars.ARM_CLIENT_ID }}
+          tenant-id: ${{ vars.ARM_TENANT_ID }}
+          subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+
+      - name: Download shared providers
+        if: steps.relevance.outputs.run == 'true'
+        working-directory: tofu
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $source = 'https://forgejo.romaine.life/romaine-life/infra-bootstrap/raw/branch/main/tofu/provider'
+          $headers = @{ Authorization = "token $env:TOKEN" }
+          Invoke-WebRequest "$source/shared-providers.tf" -Headers $headers -OutFile shared-providers.tf
+          Invoke-WebRequest "$source/.terraform.lock.hcl" -Headers $headers -OutFile .terraform.lock.hcl
+
+      - name: Initialize
+        if: steps.relevance.outputs.run == 'true'
+        working-directory: tofu
+        env:
+          BACKEND_STORAGE_ACCOUNT: ${{ vars.TFSTATE_STORAGE_ACCOUNT || 'nelsontofu' }}
+        run: |
+          tofu init -backend-config='resource_group_name=infra' `
+            -backend-config="storage_account_name=$env:BACKEND_STORAGE_ACCOUNT" `
+            -backend-config='container_name=tfstate' -backend-config='key=crenellation.tfstate'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Plan
+        if: steps.relevance.outputs.run == 'true'
+        id: plan
+        working-directory: tofu
+        run: |
+          tofu plan -no-color -out=tfplan
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $plan = tofu show -json tfplan | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $changes = @($plan.resource_changes | Where-Object {
+            $null -ne $_ -and (($_.change.actions -join ',') -ne 'no-op' -or $_.change.importing)
+          })
+          Write-Host "Resource changes detected: $($changes.Count)"
+          "has_changes=$($changes.Count -gt 0)".ToLowerInvariant() | Add-Content $env:GITHUB_OUTPUT
+          exit 0
+
+      - name: Post plan to PR
+        if: github.event_name == 'pull_request' && steps.relevance.outputs.tofu_changed == 'true'
+        working-directory: tofu
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          $planText = tofu show -no-color tfplan | Out-String
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ($planText.Length -gt 60000) { $planText = $planText.Substring(0, 60000) + "`n... (truncated)" }
+          $marker = '<!-- forgejo-tofu-plan -->'
+          $fence = ([string][char]96) * 3
+          $comment = @($marker, '### OpenTofu Plan', '', '<details>', '<summary>Click to expand plan output</summary>', '', $fence, $planText.TrimEnd(), $fence, '', '</details>') -join "`n"
+          $repositoryApi = "$env:GITHUB_SERVER_URL/api/v1/repos/$env:GITHUB_REPOSITORY"
+          $commentsApi = "$repositoryApi/issues/$env:PR_NUMBER/comments"
+          $headers = @{ Authorization = "token $env:TOKEN" }
+          $comments = Invoke-RestMethod ($commentsApi + '?limit=100') -Headers $headers
+          $existing = $null
+          foreach ($candidate in $comments) {
+            if ($candidate.body -and $candidate.body.StartsWith($marker) -and $candidate.user.login -eq $env:GITHUB_ACTOR) {
+              $existing = $candidate
+              break
+            }
+          }
+          $body = @{ body = $comment } | ConvertTo-Json
+          if ($existing) {
+            Invoke-RestMethod -Method Patch "$repositoryApi/issues/comments/$($existing.id)" -Headers $headers -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($body)) | Out-Null
+            Write-Host "Updated plan comment $($existing.id)"
+          } else {
+            Invoke-RestMethod -Method Post $commentsApi -Headers $headers -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($body)) | Out-Null
+            Write-Host 'Created plan comment'
+          }
+
+      - name: Apply
+        if: github.ref == 'refs/heads/main' && steps.plan.outputs.has_changes == 'true' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && steps.relevance.outputs.tofu_changed == 'true'))
+        working-directory: tofu
+        run: |
+          tofu apply tfplan
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

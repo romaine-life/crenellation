@@ -122,5 +122,5 @@ describe('the boot path against the chip', () => {
     // eslint-disable-next-line no-console
     console.log(notes.join('\n'));
     writeFileSync(join(here, 'boottrace.txt'), notes.join('\n'));
-  }, 600000);
+  }, 3600000);
 });

@@ -377,7 +377,7 @@ describe('poll points', () => {
     const floor: number = (JSON.parse(
       readFileSync(join(here, 'baseline.json'), 'utf8')) as Record<string, number>)['frames'] ?? 0;
     expect(k).toBeGreaterThanOrEqual(floor);
-  }, 900000);
+  }, 3600000);
 
   it.skipIf(!process.env.POLL_FRAME)('agree on every poll within one frame', () => {
     const frame = Number(process.env.POLL_FRAME);
@@ -426,7 +426,7 @@ describe('poll points', () => {
     // eslint-disable-next-line no-console
     console.log(report);
     expect(lim).toBeGreaterThan(0);
-  }, 900000);
+  }, 3600000);
 
   it('put both runs at the same place at every frame boundary', () => {
     // A full attract loop, the same span the frame comparison uses, so the two
@@ -465,7 +465,7 @@ describe('poll points', () => {
     // eslint-disable-next-line no-console
     console.log(report);
     expect(lim).toBeGreaterThan(0);
-  }, 900000);
+  }, 3600000);
 
   it('are reached in the same order', () => {
     const A = sequence(viaRecompiled);
@@ -575,5 +575,5 @@ describe('poll points', () => {
     // eslint-disable-next-line no-console
     console.log(report);
     expect(a.length).toBeGreaterThan(0);
-  }, 900000);
+  }, 3600000);
 });

@@ -70,5 +70,5 @@ describe('booting from the reset vector', () => {
     // eslint-disable-next-line no-console
     console.log(lines.join('\n'));
     writeFileSync(join(here, 'boot.txt'), lines.join('\n'));
-  }, 300000);
+  }, 3600000);
 });

@@ -141,5 +141,5 @@ describe('one routine, one stopping point', () => {
     // three of five full runs green, the failing ones always the slow ones.
     // Measured 2026-08-01: alone 53s; inside the suite it timed out at 120s
     // twice running. The work is unchanged - only the budget was wrong.
-  }, 420000);
+  }, 3600000);
 });

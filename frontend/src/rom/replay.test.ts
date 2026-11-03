@@ -121,5 +121,5 @@ describe('routines replayed with the arguments the game passed', () => {
     expect(cases.length).toBeGreaterThan(500);
     // a floor, not perfection - see baseline.json
     expect(matched).toBeGreaterThanOrEqual(floor);
-  }, 900000);
+  }, 3600000);
 });

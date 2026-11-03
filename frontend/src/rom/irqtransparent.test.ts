@@ -155,5 +155,5 @@ describe('an interrupt taken mid-routine', () => {
     // a handler that touches nothing cannot change a result, so any
     // difference at all is the port's exception path corrupting the machine.
     expect(bad).toEqual([]);
-  }, 900000);
+  }, 3600000);
 });

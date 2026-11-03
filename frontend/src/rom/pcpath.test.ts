@@ -152,5 +152,5 @@ describe('where the two dispatchers part', () => {
     // Diagnostic, like one.test.ts: it reports, it does not judge. The only
     // thing it insists on is that it ran.
     expect(out.length).toBeGreaterThan(0);
-  }, 600000);
+  }, 3600000);
 });

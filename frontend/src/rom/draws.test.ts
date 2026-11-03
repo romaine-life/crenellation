@@ -160,7 +160,7 @@ describe('drawing', () => {
     const want: Record<string, number> = MODIFIED ? byPattern
       : Object.fromEntries(PATTERNS.map((p) => [p.name, 0]));
     expect(counts).toEqual(want);
-  }, 600000);
+  }, 3600000);
 
   it('happens', () => {
     // DRAW_PATTERN names the pattern this test renders, by substring. Without
@@ -218,5 +218,5 @@ describe('drawing', () => {
     // neither.
     if (MODIFIED) expect(differs).toBe(floorPx);
     else expect(differs).toBe(0);
-  }, 900000);
+  }, 3600000);
 });

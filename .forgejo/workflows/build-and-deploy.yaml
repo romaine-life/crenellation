@@ -1,0 +1,208 @@
+name: Build and Deploy
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: Git ref or commit SHA to build and publish; defaults to this revision.
+        required: false
+        type: string
+
+permissions:
+  id-token: write
+  contents: write
+
+concurrency:
+  group: build-and-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Test, build and deploy
+    runs-on: [ubuntu-latest, upstairspc-linux]
+    enable-openid-connect: true
+    env:
+      REGISTRY: romainecr.azurecr.io
+      IMAGE: crenellation
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: crenellation
+          POSTGRES_PASSWORD: crenellation
+          POSTGRES_DB: crenellation
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U crenellation"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect relevant changes
+        id: relevance
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          set -euo pipefail
+          relevant=true
+          if [ "$EVENT" != workflow_dispatch ] && [ -n "$BASE_SHA" ] \
+              && git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+            changed="$(git diff --name-only "$BASE_SHA" HEAD)"
+            if [ -n "$changed" ] && ! printf '%s\n' "$changed" | grep -qv '^\.github/'; then
+              relevant=false
+              echo 'Only GitHub mirror configuration changed; application inputs are unchanged.'
+            fi
+          fi
+          echo "run=$relevant" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve requested ref
+        if: inputs.git_ref != ''
+        env:
+          INPUT_REF: ${{ inputs.git_ref }}
+        run: |
+          set -euo pipefail
+          git fetch --tags origin '+refs/heads/*:refs/remotes/origin/*'
+          if git rev-parse --verify "${INPUT_REF}^{commit}" >/dev/null 2>&1; then
+            target="${INPUT_REF}^{commit}"
+          else
+            target="refs/remotes/origin/${INPUT_REF}^{commit}"
+          fi
+          git checkout --detach "$(git rev-parse --verify "$target")"
+
+      - uses: actions/setup-node@v6
+        if: steps.relevance.outputs.run == 'true'
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Install Azure CLI
+        if: steps.relevance.outputs.run == 'true'
+        run: |
+          set -euo pipefail
+          if ! command -v az >/dev/null; then
+            curl -fsSL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          fi
+
+      - name: Test app
+        if: steps.relevance.outputs.run == 'true'
+        working-directory: backend
+        env:
+          DATABASE_URL: postgres://crenellation:crenellation@localhost:5432/crenellation
+        run: |
+          npm ci
+          npm test
+
+      - name: Azure Login
+        if: steps.relevance.outputs.run == 'true'
+        uses: https://github.com/azure/login@v2
+        with:
+          client-id: ${{ vars.ARM_CLIENT_ID }}
+          tenant-id: ${{ vars.ARM_TENANT_ID }}
+          subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+
+      - uses: https://github.com/docker/setup-buildx-action@v4
+        if: steps.relevance.outputs.run == 'true'
+
+      - name: Compute image fingerprint
+        id: fingerprint
+        if: steps.relevance.outputs.run == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          output="$(mktemp)"
+          scripts/image-fingerprint.sh --image app --dockerfile Dockerfile --context . \
+            --paths 'Dockerfile .dockerignore backend frontend' | tee "$output"
+          tag="$(awk -F= '$1 == "proof_tag" { print $2 }' "$output")"
+          test -n "$tag"
+          echo "TAG=$tag" >> "$GITHUB_ENV"
+
+      - name: Login to ACR
+        if: steps.relevance.outputs.run == 'true'
+        run: az acr login --name romainecr
+
+      - name: Check existing image
+        if: steps.relevance.outputs.run == 'true'
+        id: image
+        shell: bash
+        run: |
+          set -euo pipefail
+          if az acr repository show-tags --name romainecr --repository "$IMAGE" \
+              --query "[?@=='${TAG}'] | [0]" --output tsv | grep -qx "$TAG"; then
+            echo 'exists=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'exists=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build image
+        if: steps.relevance.outputs.run == 'true' && steps.image.outputs.exists != 'true'
+        uses: https://github.com/docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ env.TAG }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE }}-build-cache:app
+          cache-to: ${{ github.event_name != 'pull_request' && format('type=registry,ref={0}/{1}-build-cache:app,mode=max', env.REGISTRY, env.IMAGE) || '' }}
+
+      - name: Publish the image tag to prod
+        if: steps.relevance.outputs.run == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'forgejo-actions[bot]'
+          git config user.email 'forgejo-actions@romaine.life'
+          git fetch origin '+refs/heads/prod:refs/remotes/origin/prod'
+          git worktree add --detach prod-deploy origin/prod
+          git -C prod-deploy rm -r k8s
+          cp -r k8s prod-deploy/k8s
+          sed -i "s|^  tag: .*|  tag: \"${TAG}\"|" prod-deploy/k8s/values.yaml
+          grep -qx "  tag: \"${TAG}\"" prod-deploy/k8s/values.yaml
+          git -C prod-deploy add k8s
+          if ! git -C prod-deploy diff --cached --quiet; then
+            git -C prod-deploy commit -m "deploy: crenellation image ${TAG}"
+            git -C prod-deploy push origin HEAD:prod
+          fi
+          git worktree remove prod-deploy
+
+      - name: Publish source release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        shell: bash
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          api="$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY"
+          tag="$(git tag --points-at HEAD --list 'v[0-9]*' --sort=-version:refname | head -1)"
+          if [ -z "$tag" ]; then
+            last="$(git tag --list 'v[0-9]*' --sort=-version:refname | head -1)"
+            if [ -z "$last" ]; then tag=v0.1.0; else
+              tag="$(printf '%s' "$last" | awk -F. '{print $1 "." $2 "." ($3+1)}')"
+            fi
+          fi
+          code="$(curl -sS -o /tmp/crenellation-release.json -w '%{http_code}' \
+            -H "Authorization: token $TOKEN" "$api/releases/tags/$tag")"
+          if [ "$code" = 200 ]; then
+            test "$(jq -r .target_commitish /tmp/crenellation-release.json)" = "$GITHUB_SHA"
+          elif [ "$code" = 404 ]; then
+            jq -n --arg tag "$tag" --arg sha "$GITHUB_SHA" \
+              '{tag_name:$tag,target_commitish:$sha,name:$tag,body:"Source release built and tested on Forgejo."}' \
+              | curl -fsS -X POST -H "Authorization: token $TOKEN" \
+                  -H 'Content-Type: application/json' --data-binary @- "$api/releases" >/dev/null
+          else
+            echo "Release lookup failed: HTTP $code" >&2
+            exit 1
+          fi
+          echo "Published $tag from $GITHUB_SHA"

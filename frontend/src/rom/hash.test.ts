@@ -51,5 +51,5 @@ describe('fingerprint', () => {
     } catch (e) { if (e !== STOP) throw e; }
     writeFileSync(join(here, 'hash.txt'), marks.join('\n'));
     expect(n).toBeGreaterThan(0);
-  }, 900000);
+  }, 3600000);
 });

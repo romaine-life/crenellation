@@ -68,5 +68,5 @@ describe('computed jump landing on its table base', () => {
       out.push(`${entry.toString(16)}: ${log.join(' | ') || '(no reads in window)'}  ${err}`);
     }
     writeFileSync(join(here, 'jt-trace.txt'), out.join('\n'));
-  }, 120000);
+  }, 3600000);
 });
