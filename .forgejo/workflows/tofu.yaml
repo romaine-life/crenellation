@@ -66,13 +66,13 @@ jobs:
           "AZURE_CONFIG_DIR=$directory" | Add-Content $env:GITHUB_ENV -Encoding utf8NoBOM
           Write-Host "Azure CLI configuration directory: $directory"
 
-      - uses: https://github.com/opentofu/setup-opentofu@v1
+      - uses: opentofu/setup-opentofu@v1
         if: steps.relevance.outputs.run == 'true'
         with:
           tofu_version: '1.9.0'
           tofu_wrapper: false
 
-      - uses: https://github.com/azure/login@v2
+      - uses: azure/login@v2
         if: steps.relevance.outputs.run == 'true'
         with:
           client-id: ${{ vars.ARM_CLIENT_ID }}
