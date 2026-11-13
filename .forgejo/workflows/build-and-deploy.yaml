@@ -31,7 +31,7 @@ jobs:
       FRONTEND_CHECK_COMMAND: npm --prefix frontend run check
     services:
       postgres:
-        image: postgres:16
+        image: artifacts.home.romaine.life/dockerhub/library/postgres:16@sha256:63e83b5a3dc36a917dccb76fe1bd2ac51f1ec9c1deb47ff20d4f04233bf6eae9
         env:
           POSTGRES_USER: crenellation
           POSTGRES_PASSWORD: crenellation
@@ -149,13 +149,8 @@ jobs:
           appendFileSync(process.env.GITHUB_OUTPUT, `run=${run}\n`);
           NODE
 
-      - name: Install Azure CLI
+      - uses: romaine-life/pipeline-templates/actions/azure-cli@main
         if: steps.relevance.outputs.run == 'true'
-        run: |
-          set -euo pipefail
-          if ! command -v az >/dev/null; then
-            curl -fsSL https://aka.ms/InstallAzureCLIDeb | sudo bash # internet: Azure CLI install source
-          fi
 
       - name: Test app
         if: steps.relevance.outputs.run == 'true'
@@ -180,6 +175,10 @@ jobs:
 
       - uses: docker/setup-buildx-action@v4
         if: steps.relevance.outputs.run == 'true'
+        with:
+          driver-opts: |
+            network=host
+            image=artifacts.home.romaine.life/dockerhub/moby/buildkit:buildx-stable-1@sha256:c5f8862f52499773af85bc07695b2379ef08e8002352b0df2c4864c91d78dabe
 
       - name: Compute image fingerprint
         id: fingerprint
@@ -215,6 +214,7 @@ jobs:
         if: steps.relevance.outputs.run == 'true' && steps.image.outputs.exists != 'true'
         uses: docker/build-push-action@v7
         with:
+          network: host
           context: .
           file: Dockerfile
           push: ${{ github.event_name != 'pull_request' }}

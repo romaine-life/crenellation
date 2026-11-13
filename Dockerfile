@@ -1,18 +1,20 @@
-FROM node:20-alpine AS frontend-build
+FROM artifacts.home.romaine.life/dockerhub/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 AS frontend-build
 
 WORKDIR /app/frontend
 
 COPY frontend/package*.json ./
+ENV NPM_CONFIG_REGISTRY=https://artifacts.home.romaine.life/npm/npm/
 RUN npm ci
 
 COPY frontend/ ./
 RUN npm run build
 
-FROM node:20-alpine
+FROM artifacts.home.romaine.life/dockerhub/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
 
 WORKDIR /app
 
 COPY backend/package*.json backend/
+ARG NPM_CONFIG_REGISTRY=https://artifacts.home.romaine.life/npm/npm/
 RUN cd backend && npm install --omit=dev
 
 COPY backend/ backend/
