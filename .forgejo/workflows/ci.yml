@@ -85,7 +85,7 @@ jobs:
           fi
           git checkout --detach "$(git rev-parse --verify "$target")"
 
-      - uses: actions/setup-node@v6
+      - uses: romaine-life/pipeline-templates/actions/setup-node@main
         with:
           node-version: '22'
           cache: npm
