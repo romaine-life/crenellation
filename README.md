@@ -168,7 +168,7 @@ The workflows in `.forgejo/workflows/` test the app and plan its infrastructure.
 A passing push to `main` builds or reuses
 `romainecr.azurecr.io/crenellation:app-<content-fingerprint>`, publishes the chart
 and image tag to `prod`, and cuts a source release on Forgejo. ArgoCD reads
-`prod` through the GitHub push mirror. Manual Build and Deploy runs build and
+`prod` through the GitHub push mirror. Manual CI runs build and
 publish the requested `git_ref` without changing `prod`. Infrastructure applies
 run for `tofu/` changes merged to `main`, or a manual run from `main`, when the
 plan changes resources. Terraform PRs receive the readable plan as a Forgejo

@@ -1,8 +1,7 @@
-name: Build and Deploy
+name: CI
 
 on:
   pull_request:
-    branches: [main]
   push:
     branches: [main]
   workflow_dispatch:
@@ -21,13 +20,37 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    name: Test, build and deploy
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.diff.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: romaine-life/pipeline-templates/actions/check-fetches@main
+      - id: diff
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$EVENT" != pull_request ]; then
+            echo code=true >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          files=$(git diff --name-only "$BASE...HEAD")
+          # Markdown under frontend/ and backend/ ships in the image: Vite copies
+          # frontend/public/ (its asset READMEs included) into dist.
+          if grep -qE '^(frontend|backend)/' <<< "$files" \
+              || grep -qvE '\.md$|^docs/|^LICENSE$' <<< "$files"; then
+            echo code=true >> "$GITHUB_OUTPUT"
+          fi
+
+  checks:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: [ubuntu-latest, upstairspc-linux]
-    enable-openid-connect: true
     env:
-      REGISTRY: romainecr.azurecr.io
-      IMAGE: crenellation
       FRONTEND_CHECK_COMMAND: npm --prefix frontend run check
     services:
       postgres:
@@ -47,25 +70,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: romaine-life/pipeline-templates/actions/check-fetches@main
-
-      - name: Detect relevant changes
-        id: relevance
-        env:
-          EVENT: ${{ github.event_name }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
-        run: |
-          set -euo pipefail
-          relevant=true
-          if [ "$EVENT" != workflow_dispatch ] && [ -n "$BASE_SHA" ] \
-              && git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
-            changed="$(git diff --name-only "$BASE_SHA" HEAD)"
-            if [ -n "$changed" ] && ! printf '%s\n' "$changed" | grep -qv '^\.github/'; then
-              relevant=false
-              echo 'Only GitHub mirror configuration changed; application inputs are unchanged.'
-            fi
-          fi
-          echo "run=$relevant" >> "$GITHUB_OUTPUT"
 
       - name: Resolve requested ref
         if: inputs.git_ref != ''
@@ -82,7 +86,6 @@ jobs:
           git checkout --detach "$(git rev-parse --verify "$target")"
 
       - uses: actions/setup-node@v6
-        if: steps.relevance.outputs.run == 'true'
         with:
           node-version: '22'
           cache: npm
@@ -92,7 +95,6 @@ jobs:
 
       - name: Determine frontend check
         id: frontend_check
-        if: steps.relevance.outputs.run == 'true'
         env:
           EVENT: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
@@ -102,7 +104,7 @@ jobs:
           const { appendFileSync } = require('node:fs');
           const git = (...args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
           const read = (ref, path) => git('show', `${ref}:${path}`);
-          const workflowPath = '.forgejo/workflows/build-and-deploy.yaml';
+          const workflowPath = '.forgejo/workflows/ci.yml';
           function contract(ref) {
             const workflow = read(ref, workflowPath);
             const versions = [...workflow.matchAll(/^ +node-version: *(.+)$/gm)].map((m) => m[1]);
@@ -149,11 +151,7 @@ jobs:
           appendFileSync(process.env.GITHUB_OUTPUT, `run=${run}\n`);
           NODE
 
-      - uses: romaine-life/pipeline-templates/actions/azure-cli@main
-        if: steps.relevance.outputs.run == 'true'
-
       - name: Test app
-        if: steps.relevance.outputs.run == 'true'
         working-directory: backend
         env:
           DATABASE_URL: postgres://crenellation:crenellation@localhost:5432/crenellation
@@ -162,11 +160,38 @@ jobs:
           npm run test:backend
 
       - name: Check frontend
-        if: steps.relevance.outputs.run == 'true' && steps.frontend_check.outputs.run == 'true'
+        if: steps.frontend_check.outputs.run == 'true'
         run: $FRONTEND_CHECK_COMMAND
 
+  image:
+    needs: checks
+    runs-on: [ubuntu-latest, upstairspc-linux]
+    enable-openid-connect: true
+    env:
+      REGISTRY: romainecr.azurecr.io
+      IMAGE: crenellation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve requested ref
+        if: inputs.git_ref != ''
+        env:
+          INPUT_REF: ${{ inputs.git_ref }}
+        run: |
+          set -euo pipefail
+          git fetch --tags origin '+refs/heads/*:refs/remotes/origin/*'
+          if git rev-parse --verify "${INPUT_REF}^{commit}" >/dev/null 2>&1; then
+            target="${INPUT_REF}^{commit}"
+          else
+            target="refs/remotes/origin/${INPUT_REF}^{commit}"
+          fi
+          git checkout --detach "$(git rev-parse --verify "$target")"
+
+      - uses: romaine-life/pipeline-templates/actions/azure-cli@main
+
       - name: Azure Login
-        if: steps.relevance.outputs.run == 'true'
         uses: azure/login@v2
         with:
           client-id: ${{ vars.ARM_CLIENT_ID }}
@@ -174,7 +199,6 @@ jobs:
           subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
 
       - uses: docker/setup-buildx-action@v4
-        if: steps.relevance.outputs.run == 'true'
         with:
           driver-opts: |
             network=host
@@ -182,7 +206,6 @@ jobs:
 
       - name: Compute image fingerprint
         id: fingerprint
-        if: steps.relevance.outputs.run == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -194,11 +217,9 @@ jobs:
           echo "TAG=$tag" >> "$GITHUB_ENV"
 
       - name: Login to ACR
-        if: steps.relevance.outputs.run == 'true'
         run: az acr login --name romainecr
 
       - name: Check existing image
-        if: steps.relevance.outputs.run == 'true'
         id: image
         shell: bash
         run: |
@@ -211,7 +232,7 @@ jobs:
           fi
 
       - name: Build image
-        if: steps.relevance.outputs.run == 'true' && steps.image.outputs.exists != 'true'
+        if: steps.image.outputs.exists != 'true'
         uses: docker/build-push-action@v7
         with:
           network: host
@@ -223,7 +244,7 @@ jobs:
           cache-to: ${{ github.event_name != 'pull_request' && format('type=registry,ref={0}/{1}-build-cache:app,mode=max', env.REGISTRY, env.IMAGE) || '' }}
 
       - name: Publish the image tag to prod
-        if: steps.relevance.outputs.run == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' && !inputs.git_ref && github.ref == 'refs/heads/main'
         shell: bash
         run: |
           set -euo pipefail
@@ -243,7 +264,7 @@ jobs:
           git worktree remove prod-deploy
 
       - name: Publish source release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' && !inputs.git_ref && github.ref == 'refs/heads/main'
         shell: bash
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}

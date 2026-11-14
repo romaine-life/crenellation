@@ -1,5 +1,5 @@
 # The content fingerprint image tag is bumped by
-# .forgejo/workflows/build-and-deploy.yaml on every push to main. CI publishes
+# .forgejo/workflows/ci.yml on every push to main. CI publishes
 # the chart and image tag to prod, which ArgoCD reads through the GitHub mirror.
 image:
   repository: romainecr.azurecr.io/crenellation
