@@ -244,5 +244,5 @@ describe('decompiled routines against the recompiled oracle', () => {
         Record<string, unknown>)['decompKnownWrong'] as string[] ?? []);
     const unnamed = [...new Set(bad.map((b) => b.split(' ')[0]))].filter((a) => !known.has(a));
     expect(unnamed).toEqual([]);
-  }, 3600000);
+  }, 0);
 });

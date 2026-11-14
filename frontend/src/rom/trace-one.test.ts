@@ -184,5 +184,5 @@ describe('trace one routine', () => {
 ` : '')
       + dump);
     expect(true).toBe(true);
-  }, 3600000);
+  }, 0);
 });

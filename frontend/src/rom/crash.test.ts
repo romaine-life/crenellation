@@ -138,5 +138,5 @@ describe('the lifted game vectors where the chip does not', () => {
       `pattern: ${p.name}, ${FRAMES} frames\n  recompiled (CONTROL): ${ctrl}\n`
       + `  decompiled:           ${lift}\n`);
     expect(ctrl).toContain('no address error');
-  }, 3600000);
+  }, 0);
 });

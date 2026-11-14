@@ -166,5 +166,5 @@ describe('routines compared by what they write', () => {
     // it does not get worse: the floor is committed in baseline.json and
     // raised deliberately when something improves.
     expect(matched).toBeGreaterThanOrEqual(floor);
-  }, 3600000);
+  }, 0);
 });

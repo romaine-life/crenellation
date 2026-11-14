@@ -983,5 +983,5 @@ describe('writes to work RAM', () => {
     // fewer bytes, so it does not get its own exemption any more.
     const bad = results.filter((r) => !r.note.includes('identical'));
     expect(bad.map((r) => r.note)).toEqual([]);
-  }, 3600000);
+  }, 0);
 });

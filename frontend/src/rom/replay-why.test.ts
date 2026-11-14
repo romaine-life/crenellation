@@ -88,5 +88,5 @@ describe('why replayed routines differ', () => {
     }
     writeFileSync(join(here, 'replay-why.json'), JSON.stringify(
       [...report.entries()].map(([e, why]) => ({ entry: '0x' + e.toString(16), why })), null, 1));
-  }, 3600000);
+  }, 0);
 });

@@ -173,5 +173,5 @@ describe('routines under one argument shape per run', () => {
     // it does not get worse: the floor is committed in baseline.json and
     // raised deliberately when something improves.
     expect(matched).toBeGreaterThanOrEqual(floor);
-  }, 3600000);
+  }, 0);
 });

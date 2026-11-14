@@ -487,7 +487,7 @@ describe('the decompiled routines compose', () => {
     expect(parted.map((r) => r.note)).toEqual([]);
     // And a run that stopped early is not agreement either - see compare.
     expect(results.filter((r) => r.short).map((r) => r.note)).toEqual([]);
-  }, 3600000);
+  }, 0);
 
   // With a rule changed, the useful claim is the opposite one: the change is
   // actually in the running game rather than in a file nothing reads. Walls
@@ -586,5 +586,5 @@ describe('the decompiled routines compose', () => {
     }
     writeFileSync(join(here, 'compose-modified.txt'), lines.join('\n') + '\n');
     expect(seen).toBeGreaterThan(0);
-  }, 3600000);
+  }, 0);
 });

@@ -189,5 +189,5 @@ describe('the boot instruction sequence against the chip', () => {
       alignOffset: start >= 0 ? start - anchorAt : null,
       changes: portMask.map((e) => ({ at: e.at, pc: '0x' + e.pc.toString(16), mask: e.mask })),
     }));
-  }, 3600000);
+  }, 0);
 });

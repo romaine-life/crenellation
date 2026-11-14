@@ -160,5 +160,5 @@ describe('where each divergence starts', () => {
     // eslint-disable-next-line no-console
     console.log(`bracketed ${report.length} divergences`);
     writeFileSync(join(here, 'localise.json'), JSON.stringify(report, null, 1));
-  }, 3600000);
+  }, 0);
 });

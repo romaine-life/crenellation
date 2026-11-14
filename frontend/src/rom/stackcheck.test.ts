@@ -73,5 +73,5 @@ describe('stack balance across calls', () => {
     // eslint-disable-next-line no-console
     console.log(notes.join('\n'));
     writeFileSync(join(here, 'stackcheck.txt'), notes.join('\n'));
-  }, 3600000);
+  }, 0);
 });

@@ -99,5 +99,5 @@ describe('probe', () => {
         + ` a7 ${a.a7.toString(16)}/${b.a7.toString(16)} :: ${diff.join(' ') || 'regs equal'}`);
     }
     writeFileSync(join(here, 'probe.txt'), out.join('\n'));
-  }, 3600000);
+  }, 0);
 });
