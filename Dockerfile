@@ -7,6 +7,8 @@ ENV NPM_CONFIG_REGISTRY=https://artifacts.home.romaine.life/npm/npm/
 RUN npm ci
 
 COPY frontend/ ./
+# The release version Settings → About shows; a build by hand shows dev.
+ARG APP_VERSION=dev
 RUN npm run build
 
 FROM artifacts.home.romaine.life/dockerhub/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293

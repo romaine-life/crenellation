@@ -107,11 +107,12 @@ function asset(file: string): string {
 
 // Build / server provenance, stamped by vite.config buildInfo, surfaced in About so
 // "which server/build am I actually on?" is summonable from one place — dev or prod.
-// In dev it names the WORKTREE + commit + live port (a server from the wrong worktree
-// reports its own name, so being on the wrong one is a glance, not a 2-hour hunt).
+// In dev it names the WORKTREE + live port (a server from the wrong worktree reports
+// its own name, so being on the wrong one is a glance, not a 2-hour hunt); in prod,
+// the release version.
 declare const __BUILD_INFO__:
-  | { mode: 'dev'; worktree: string; commit: string; dirty: boolean; startedAt: number }
-  | { mode: 'prod'; commit: string; dirty: boolean }
+  | { mode: 'dev'; worktree: string; dirty: boolean; startedAt: number }
+  | { mode: 'prod'; version: string }
   | undefined;
 
 // The deployed entry-chunk hash (empty in dev) — the live asset-bundle id for prod.
@@ -125,13 +126,13 @@ function buildSummary(): { headline: string; detail: string } {
   if (info && info.mode === 'dev') {
     const port = window.location.port || 'default';
     return {
-      headline: `${info.worktree} · ${info.commit}${info.dirty ? '*' : ''}`,
+      headline: `${info.worktree} · dev${info.dirty ? '*' : ''}`,
       detail: `Local dev server · :${port} · started ${new Date(info.startedAt).toLocaleTimeString()}`,
     };
   }
   const hash = bootedEntryHash();
   return {
-    headline: `${info?.commit ?? '(unknown)'}${info?.dirty ? '*' : ''}${hash ? ` · ${hash}` : ''}`,
+    headline: `${info?.version ?? '(unknown)'}${hash ? ` · ${hash}` : ''}`,
     detail: 'Production build',
   };
 }

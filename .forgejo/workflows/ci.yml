@@ -189,6 +189,14 @@ jobs:
           fi
           git checkout --detach "$(git rev-parse --verify "$target")"
 
+      # The one number the image, the deploy and the release carry (PIPT-7). A dispatch
+      # of another ref builds an unreleased version.
+      - id: version
+        uses: romaine-life/pipeline-templates/actions/release-version@main
+        with:
+          prefix: v0.1
+          publish: ${{ github.event_name != 'pull_request' && !inputs.git_ref && github.ref == 'refs/heads/main' }}
+
       - uses: romaine-life/pipeline-templates/actions/azure-cli@main
 
       - name: Azure Login
@@ -207,11 +215,15 @@ jobs:
       - name: Compute image fingerprint
         id: fingerprint
         shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
           output="$(mktemp)"
+          # The version is baked into the bundle, so it is an image input too.
+          printf '%s\n' "$VERSION" > app-version
           scripts/image-fingerprint.sh --image app --dockerfile Dockerfile --context . \
-            --paths 'Dockerfile .dockerignore backend frontend' | tee "$output"
+            --paths 'Dockerfile .dockerignore backend frontend app-version' | tee "$output"
           tag="$(awk -F= '$1 == "proof_tag" { print $2 }' "$output")"
           test -n "$tag"
           echo "TAG=$tag" >> "$GITHUB_ENV"
@@ -240,6 +252,8 @@ jobs:
           file: Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ env.TAG }}
+          build-args: |
+            APP_VERSION=${{ steps.version.outputs.version }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE }}-build-cache:app
           cache-to: ${{ github.event_name != 'pull_request' && format('type=registry,ref={0}/{1}-build-cache:app,mode=max', env.REGISTRY, env.IMAGE) || '' }}
 
@@ -264,20 +278,14 @@ jobs:
           git worktree remove prod-deploy
 
       - name: Publish source release
-        if: github.event_name != 'pull_request' && !inputs.git_ref && github.ref == 'refs/heads/main'
+        if: steps.version.outputs.tag != ''
         shell: bash
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.version.outputs.tag }}
         run: |
           set -euo pipefail
           api="$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY"
-          tag="$(git tag --points-at HEAD --list 'v[0-9]*' --sort=-version:refname | head -1)"
-          if [ -z "$tag" ]; then
-            last="$(git tag --list 'v[0-9]*' --sort=-version:refname | head -1)"
-            if [ -z "$last" ]; then tag=v0.1.0; else
-              tag="$(printf '%s' "$last" | awk -F. '{print $1 "." $2 "." ($3+1)}')"
-            fi
-          fi
           code="$(curl -sS -o /tmp/crenellation-release.json -w '%{http_code}' \
             -H "Authorization: token $TOKEN" "$api/releases/tags/$tag")"
           if [ "$code" = 200 ]; then
