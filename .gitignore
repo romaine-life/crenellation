@@ -8,10 +8,11 @@ npm-debug.log
 # (frontend/public/assets/audio/bgm-manifest.json) points at the blob container.
 *.mp3
 
-# OpenTofu local working artifacts. Provider versions + the lockfile are injected
-# by the shared pipeline (see tofu/provider.tf), so neither is committed here.
+# OpenTofu local working artifacts. The providers are pinned in tofu/versions.tf and
+# tofu/.terraform.lock.hcl, the one lockfile committed.
 .terraform/
 .terraform.lock.hcl
+!tofu/.terraform.lock.hcl
 
 # Local Claude Code tooling: worktrees, launch config, and a scratch dir used
 # for headless screenshot capture (Playwright + Chromium). Never committed —

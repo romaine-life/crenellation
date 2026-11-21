@@ -1,10 +1,10 @@
-# The content fingerprint image tag is bumped by
-# .forgejo/workflows/ci.yml on every push to main. CI publishes
-# the chart and image tag to prod, which ArgoCD reads through the GitHub mirror.
+# The released image by tag and digest, rewritten on main by the web-app suite's pin PR for each
+# release (pipeline-templates suites); Argo CD deploys main through the GitHub mirror.
+# Non-production lanes may still supply an ordinary tag.
 image:
   repository: romainecr.azurecr.io/crenellation
-  # Quoted so YAML never reinterprets image tag characters.
-  tag: "app-f82988c322b4ab12777819b38a14414ea120835f7915387a87d0f9b8be12b59d"
+  # Quoted so YAML never reinterprets tag or digest-reference characters.
+  tag: "romainecr.azurecr.io/crenellation:app-7d2bc8eb06f78859c67f469d13bbfd6d1fc191008966ea2c118d76191ef87d9d@sha256:d5c3ab7ef6f64dd88c26492edb8680220c4991d6f9c86836cc928a2440d8bbb3"
   pullPolicy: IfNotPresent
 
 name: crenellation

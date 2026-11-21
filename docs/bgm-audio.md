@@ -91,12 +91,12 @@ provisioned by this repo's OpenTofu (`tofu/storage.tf`):
 
 ## Provisioning runbook (one time)
 
-CI lives in `.github/workflows/`: `tofu.yaml` (plan/apply) and `sync-bgm-metadata.yml`.
+pipeline-templates' tofu suite plans `tofu/` on PRs and applies it on merge.
 
 1. **Enable app-owned tofu** (infra-bootstrap, one line): add `chess-tactics` to
    `local.runs_own_tofu_apps` in `tofu/main.tf`. Merging grants this repo's CI
    service principal state access + the roles it needs.
-2. **Apply this repo's tofu** — the `Infrastructure` workflow plans on PR and
+2. **Apply this repo's tofu** — the tofu suite plans on PR and
    applies on merge to `main`, creating the storage account, the `bgm` container,
    the app identity's `Storage Blob Data Reader` role, and CI's
    `Storage Blob Data Contributor` role.

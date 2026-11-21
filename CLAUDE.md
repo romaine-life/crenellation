@@ -298,8 +298,9 @@ black for hours. Ask what is on screen, not only whether memory matched.
 - **Persistence**: Azure Postgres (`crenellation-pg`, db `crenellation`,
   workload identity `crenellation-identity`), provisioned by `tofu/` (state key
   `crenellation.tfstate`). The game must stay playable with the DB down.
-- **Deploys**: push `main` → build → the workflow publishes the image tag to the
-  `prod` branch, which ArgoCD watches. Host **rampart.romaine.life**
+- **Deploys**: CI is pipeline-templates' suites (cluster-service, tofu, web-app; no
+  workflow of its own). A merge to `main` releases the next `v0.1.N`, pushes that image to
+  ACR and opens a pin PR rewriting `k8s/values.yaml`; Argo CD deploys `main`. Host **rampart.romaine.life**
   (`k8s/values.yaml`; the description in `k8s/Chart.yaml` is stale).
 - **Local dev**: set `DATABASE_URL` (pgadmin + break-glass password from
   ng6-crenellation, `sslmode=require`, password URL-encoded), then

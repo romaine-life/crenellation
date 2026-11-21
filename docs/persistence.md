@@ -71,7 +71,7 @@ The database is owned by this repo. `tofu/postgres.tf` + `tofu/identity.tf` +
 `tofu/keyvault.tf` declare the Flexible Server (westus3 — westus2 is
 offer-restricted for Flexible Server), the `chess-tactics-identity` UAMI + its
 federated credential, the Entra-admin grant, the Azure-internal firewall rule,
-and the Key Vault. `.github/workflows/tofu.yaml` runs `tofu plan` on PRs and
+and the Key Vault. pipeline-templates' tofu suite runs `tofu plan` on PRs and
 `tofu apply` on merge to `main`, against chess-tactics' own state
 (`chess-tactics.tfstate`) and service principal.
 

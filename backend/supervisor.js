@@ -1,3 +1,8 @@
+// `--self-test`: the image checks itself (backend/self-check.js) instead of serving.
+if (process.argv.includes('--self-test')) {
+  require('./self-check.js');
+  return;
+}
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');

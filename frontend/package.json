@@ -19,7 +19,8 @@
     "visual:health": "node scripts/check-local-server.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "node --check src/bgm.js && vitest run && tsc --noEmit"
+    "lint": "node --check src/bgm.js && tsc --noEmit",
+    "check": "npm run lint && npm test"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",

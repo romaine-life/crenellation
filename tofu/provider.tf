@@ -1,7 +1,7 @@
-# Remote state in Azure Storage (backend config passed by CI). Authentication
-# uses Forgejo OIDC through this repo's app service principal. The Infrastructure
-# workflow downloads provider versions and the lockfile from infra-bootstrap's
-# tofu/provider directory, so they are intentionally not declared here.
+# Remote state in Azure Storage (backend config passed by pipeline-templates' tofu
+# suite). Authentication uses Forgejo OIDC through this repo's app service
+# principal. The providers and their versions are pinned in versions.tf and
+# .terraform.lock.hcl.
 
 terraform {
   backend "azurerm" {
