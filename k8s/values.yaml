@@ -4,7 +4,7 @@
 image:
   repository: romainecr.azurecr.io/crenellation
   # Quoted so YAML never reinterprets tag or digest-reference characters.
-  tag: "romainecr.azurecr.io/crenellation:v0.1.9@sha256:c7f51f1ffb2422efe93d6058db702e2d819f20677781b6b4366a590a9e06e78d"
+  tag: "romainecr.azurecr.io/crenellation:v0.1.10@sha256:18c9c76f712a1f51630100a63bc868927cf721fc1c1eb8713154809069299762"
   pullPolicy: IfNotPresent
 
 name: crenellation
