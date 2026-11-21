@@ -911,6 +911,7 @@ function frontendIndexFile() {
   return path.join(frontendDir, 'index.html');
 }
 
+// Liveness only: ok while the process serves, without asking the database.
 app.get('/health', (_req, res) => {
   res.status(200).send('ok');
 });
